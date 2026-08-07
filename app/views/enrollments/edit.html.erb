@@ -1,0 +1,45 @@
+<h2>Edit Enrollment</h2>
+
+<%= form_with model: @enrollment do |f| %>
+
+<div class="mb-3">
+
+<%= f.label :student %>
+
+<%= f.collection_select :student_id,
+      Student.order(:name),
+      :id,
+      :name,
+      {},
+      class:"form-select" %>
+
+</div>
+
+<div class="mb-3">
+
+<%= f.label :course %>
+
+<%= f.collection_select :course_id,
+      Course.order(:Course_name),
+      :id,
+      :Course_name,
+      {},
+      class: "form-select" %>
+
+</div>
+
+<div class="mb-3">
+
+<%= f.label :status %>
+
+<%= f.select :status,
+      ["Pending","Approved","Cancelled"],
+      {},
+      class:"form-select" %>
+
+</div>
+
+<%= f.submit "Update",
+      class:"btn btn-success" %>
+
+<% end %>

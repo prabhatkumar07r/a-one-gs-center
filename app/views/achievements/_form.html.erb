@@ -1,0 +1,40 @@
+<%= form_with(model: @achievement, local: true) do |f| %>
+
+
+  <div class="mb-3">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :rank %>
+    <%= f.text_field :rank, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :year %>
+    <%= f.text_field :year, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description %>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :photo %>
+    <%= f.file_field :photo, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :status %>
+    <%= f.check_box :status %>
+  </div>
+    <div class="mb-3">
+  <%= f.label :student_name %>
+  <%= f.text_field :student_name, class: "form-control" %>
+</div>
+
+  <%= f.submit class: "btn btn-primary" %>
+
+<% end %>

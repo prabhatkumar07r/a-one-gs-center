@@ -1,0 +1,209 @@
+
+<div class="container py-5">
+
+    <div class="row mb-4">
+
+        <div class="col-md-8">
+
+            <h2 class="fw-bold">
+                <i class="fas fa-book-open text-primary"></i>
+                Study Resources
+            </h2>
+
+            <p class="text-muted">
+                Download study notes uploaded by our teachers.
+            </p>
+
+        </div>
+
+<% if current_user.admin? || current_user.teacher? %>
+
+  <%= link_to new_study_note_path,
+      class:"btn btn-success" do %>
+
+      <i class="fas fa-upload"></i>
+
+      Upload Notes
+
+  <% end %>
+
+<% end %>
+
+        <div class="col-md-4">
+
+            <input type="text"
+                   id="searchBox"
+                   class="form-control"
+                   placeholder="Search Notes...">
+
+        </div>
+
+    </div>
+
+    <div class="row" id="notesContainer">
+
+        <% @notes.each do |note| %>
+
+            <div class="col-lg-4 col-md-6 mb-4 note-card">
+
+                <div class="card shadow-sm border-0 h-100">
+
+                    <div class="card-body">
+
+                        <div class="text-center mb-3">
+
+                            <i class="fas fa-file-pdf text-danger"
+                               style="font-size:55px;"></i>
+
+                        </div>
+
+                        <h5 class="fw-bold">
+
+                            <%= note.title %>
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            <%= truncate(note.description,
+                                         length:90) %>
+
+                        </p>
+
+                        <hr>
+
+                        <p>
+
+                            <strong>Course :</strong>
+
+                            <%= note.playlist&.course&.Course_name %>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Playlist :</strong>
+
+                            <%= note.playlist&.title %>
+
+                        </p>
+
+                          <p>
+                           <strong>Uploaded By:</strong>
+
+                          <% if note.user.present? %>
+                           <% if note.user.admin? %>
+                           Admin
+                         <% elsif note.user.teacher? %>
+                        <%= note.user.name %> (Teacher)
+                     <% else %>
+                     <%= note.user.name %>
+                    <% end %>
+                   <% else %>
+                    Unknown
+                    <% end %>
+                       </p>
+
+                        <p>
+
+                            <strong>Uploaded :</strong>
+
+                            <%= note.created_at.strftime("%d %b %Y") %>
+
+                        </p>
+
+                        <span class="badge bg-success">
+
+                            Downloads
+
+                            <%= note.download_count %>
+
+                        </span>
+
+                    </div>
+
+                   <div class="card-footer bg-white">
+
+  <div class="d-grid gap-2">
+
+    <%= link_to preview_note_path(note),
+        class: "btn btn-outline-primary" do %>
+
+      <i class="fas fa-eye"></i>
+      Preview
+
+    <% end %>
+
+    <%= link_to download_note_path(note),
+        class: "btn btn-primary" do %>
+
+      <i class="fas fa-download"></i>
+      Download
+
+    <% end %>
+
+    <% if current_user.admin? || current_user.teacher? %>
+
+      <div class="d-flex gap-2">
+
+        <%= link_to edit_study_note_path(note),
+            class: "btn btn-warning w-50" do %>
+
+          <i class="fas fa-edit"></i>
+          Edit
+
+        <% end %>
+
+        <%= link_to study_note_path(note),
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            },
+            class: "btn btn-danger w-50" do %>
+
+          <i class="fas fa-trash"></i>
+          Delete
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+</div>
+
+</div>
+
+<% end %>
+
+</div>
+
+</div>
+
+<script>
+document.addEventListener("turbo:load", function () {
+
+  const search = document.getElementById("searchBox");
+
+  if (!search) return;
+
+  search.addEventListener("keyup", function () {
+
+    let value = this.value.toLowerCase();
+
+    document.querySelectorAll(".note-card").forEach(function(card){
+
+      let text = card.innerText.toLowerCase();
+
+      card.style.display = text.includes(value) ? "" : "none";
+
+    });
+
+  });
+
+});
+</script>

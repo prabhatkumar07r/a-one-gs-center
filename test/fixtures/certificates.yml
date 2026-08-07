@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  course: one
+  certificate_no: MyString
+  issued_on: 2026-07-26
+
+two:
+  user: two
+  course: two
+  certificate_no: MyString
+  issued_on: 2026-07-26

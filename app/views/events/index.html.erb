@@ -1,0 +1,42 @@
+<h2>Our Events</h2>
+
+<%= link_to "Add Event", new_event_path, class: "btn btn-success mb-3" %>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Photo</th>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @events.each do |event| %>
+      <tr>
+        <td>
+          <% if event.photo.attached? %>
+            <%= image_tag event.photo, width: 80, height: 80 %>
+          <% end %>
+        </td>
+
+        <td><%= event.title %></td>
+
+        <td>
+          <%= event.status ? "Active" : "Inactive" %>
+        </td>
+
+        <td>
+          <%= link_to "Show", event_path(event), class: "btn btn-info btn-sm" %>
+          <%= link_to "Edit", edit_event_path(event), class: "btn btn-warning btn-sm" %>
+          <%= button_to "Delete", event_path(event),
+                method: :delete,
+                data: { turbo_confirm: "Are you sure?" },
+                class: "btn btn-danger btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table><h1>Events#index</h1>
+<p>Find me in app/views/events/index.html.erb</p>

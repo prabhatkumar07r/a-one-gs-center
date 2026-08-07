@@ -1,0 +1,32 @@
+<% content_for :title, "Edit Video" %>
+
+<div class="card">
+
+  <div class="card-header bg-warning">
+    <h3>✏ Edit Video - <%= @course.Course_name %></h3>
+  </div>
+
+  <div class="card-body">
+    <%= render "form", course: @course, video: @video %>
+  </div>
+
+  <div class="card-footer">
+
+    <%= link_to "👁 Show",
+        course_playlist_video_path(
+          @course,
+          @video.playlist,
+          @video
+        ),
+        class: "btn btn-info" %>
+
+    <%= link_to "⬅ Back",
+        course_playlist_videos_path(
+          @course,
+          @video.playlist
+        ),
+        class: "btn btn-secondary" %>
+
+  </div>
+
+</div>

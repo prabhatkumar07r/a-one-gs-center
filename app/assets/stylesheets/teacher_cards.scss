@@ -1,0 +1,45 @@
+.dashboard-card{
+
+    border:none;
+
+    border-radius:20px;
+
+    color:white;
+
+    padding:30px;
+
+    transition:.3s;
+
+    overflow:hidden;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.card-blue{
+
+    background:linear-gradient(45deg,#2563eb,#60a5fa);
+
+}
+
+.card-green{
+
+    background:linear-gradient(45deg,#16a34a,#4ade80);
+
+}
+
+.card-red{
+
+    background:linear-gradient(45deg,#dc2626,#fb7185);
+
+}
+
+.card-purple{
+
+    background:linear-gradient(45deg,#7c3aed,#8b5cf6);
+
+}

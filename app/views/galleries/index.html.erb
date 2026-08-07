@@ -1,0 +1,165 @@
+<%= render "layouts/header" %>
+
+<div class="container mt-4">
+
+<h2>Gallery Management</h2>
+
+<!-- Dashboard Cards -->
+
+<div class="row mb-4">
+
+  <div class="col-md-4">
+    <div class="card shadow border-start border-primary border-4">
+      <div class="card-body text-center">
+        <h6>Total Gallery</h6>
+        <h3><%= @total_gallery %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow border-start border-success border-4">
+      <div class="card-body text-center">
+        <h6>Active</h6>
+        <h3><%= @active_gallery %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow border-start border-danger border-4">
+      <div class="card-body text-center">
+        <h6>Inactive</h6>
+        <h3><%= @inactive_gallery %></h3>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Search -->
+
+<%= form_with url: galleries_path, method: :get, local: true do %>
+
+<div class="row mb-3">
+
+<div class="col-md-10">
+
+<%= text_field_tag :search,
+      params[:search],
+      class: "form-control",
+      placeholder: "Search Gallery..." %>
+
+</div>
+
+<div class="col-md-2">
+
+<%= submit_tag "🔍 Search",
+      class: "btn btn-primary w-100" %>
+
+</div>
+
+</div>
+
+<% end %>
+
+<div class="mb-3">
+
+<%= link_to "➕ Add Gallery",
+      new_gallery_path,
+      class: "btn btn-success" %>
+
+</div>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>#</th>
+<th>Photo</th>
+<th>Title</th>
+<th>Category</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% @galleries.each_with_index do |gallery,index| %>
+
+<tr>
+
+<td><%= index+1 %></td>
+
+<td>
+
+<% if gallery.photos.attached? %>
+
+  <% gallery.photos.each do |photo| %>
+
+    <%= image_tag photo,
+          width: 120,
+          height: 80,
+          class: "rounded shadow-sm me-2 mb-2" %>
+
+  <% end %>
+  <% else %>
+
+<span class="text-muted">No Image</span>
+
+<% end %>
+
+</td>
+
+<td><%= gallery.title %></td>
+
+<td><%= gallery.category %></td>
+
+<td>
+
+<% if gallery.status=="Active" %>
+
+<span class="badge bg-success">Active</span>
+
+<% else %>
+
+<span class="badge bg-danger">Inactive</span>
+
+<% end %>
+
+</td>
+
+<td>
+
+<%= link_to "👁 View",
+      gallery_path(gallery),
+      class:"btn btn-info btn-sm" %>
+
+<%= link_to "✏ Edit",
+      edit_gallery_path(gallery),
+      class:"btn btn-warning btn-sm" %>
+
+<%= button_to "🗑 Delete",
+      gallery_path(gallery),
+      method: :delete,
+      form:{ data:{ turbo_confirm:"Delete Gallery?" }},
+      class:"btn btn-danger btn-sm d-inline" %>
+
+</td>
+
+</tr>
+
+<% end %>
+
+</tbody>
+
+</table>
+
+</div>
+
+<%= render "layouts/footer" %>

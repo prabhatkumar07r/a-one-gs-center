@@ -1,0 +1,9 @@
+one:
+  user: one
+  course: one
+  status: Approved
+
+two:
+  user: two
+  course: two
+  status: Pending

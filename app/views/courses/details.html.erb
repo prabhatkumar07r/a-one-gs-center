@@ -1,0 +1,164 @@
+<% content_for :show_layout, true %>
+
+<div class="container my-5">
+
+  <div class="card shadow">
+
+    <div class="card-body">
+
+      <h1 class="mb-3">
+        <%= @course.Course_name %>
+      </h1>
+
+      <hr>
+      <div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+
+    <h3 class="mb-3">
+      📖 About This Course
+    </h3>
+
+    <p class="text-muted">
+      <%= @course.description %>
+    </p>
+
+  </div>
+</div>
+           <div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+
+    <h3 class="mb-3">
+      📦 Course Information
+    </h3>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <strong>⏱ Duration</strong><br>
+        <%= @course.duration %>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <strong>🎥 Videos</strong><br>
+        <%= @videos.count %> Lessons
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <strong>👨‍🏫 Teacher</strong><br>
+        <%= @course.teacher&.name || "Not Assigned" %>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+      <!-- ========================= -->
+      <!-- Course Playlist -->
+      <!-- ========================= -->
+
+      <h4>📖 Course Playlist</h4>
+
+      <% if @videos.any? %>
+
+        <% if user_signed_in? && @enrollment&.status == "Approved" %>
+
+          <div class="list-group">
+
+            <% @videos.each_with_index do |video, index| %>
+
+              <div class="list-group-item">
+
+                <h6>
+                  <%= index + 1 %>. 🎥 <%= video.title %>
+                </h6>
+
+                <p class="mb-1">
+                  <%= video.description %>
+                </p>
+
+                <small class="text-muted">
+                  Duration: <%= video.duration %>
+                </small>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        <% else %>
+
+          <div class="alert alert-secondary">
+
+            <div class="alert alert-info">
+
+  <h5>
+    🔒 Course Content
+  </h5>
+
+  <p>
+    After your enrollment is approved, you'll get access to:
+  </p>
+
+  <ul class="mb-0">
+    <li>🎥 HD Video Lectures</li>
+    <li>📄 Downloadable PDF Notes</li>
+    <li>📝 Practice Material</li>
+    <li>📚 Complete Course Playlist</li>
+  </ul>
+
+</div>
+
+          </div>
+
+        <% end %>
+
+      <% else %>
+
+        <div class="alert alert-warning">
+          No videos available for this course.
+        </div>
+
+      <% end %>
+
+      <br>
+
+      <!-- ========================= -->
+      <!-- Enroll / Start Learning -->
+      <!-- ========================= -->
+
+      <% if user_signed_in? %>
+
+        <% if @enrollment&.status == "Approved" %>
+
+          <%= link_to "▶ Start Learning",
+              learning_course_path(@course),
+              class: "btn btn-success" %>
+
+        <% elsif @enrollment.present? %>
+
+          <button class="btn btn-warning">
+            ⏳ Waiting for Approval
+          </button>
+
+        <% else %>
+
+          <%= link_to "📝 Enroll Now",
+              new_enrollment_path(course_id: @course.id),
+              class: "btn btn-primary" %>
+
+        <% end %>
+
+      <% else %>
+
+        <%= link_to "🔐 Login to Enroll",
+            new_user_session_path,
+            class: "btn btn-warning" %>
+
+      <% end %>
+
+    </div>
+  </div>
+
+</div>

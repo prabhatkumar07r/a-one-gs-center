@@ -1,0 +1,57 @@
+<%= render "layouts/header" %>
+
+<h2>Gallery Details</h2>
+
+<div class="card shadow">
+
+  <div class="card-body text-center">
+
+    <% if @gallery.photos.attached? %>
+  <label>Current Images</label><br>
+
+  <% @gallery.photos.each do |photo| %>
+    <%= image_tag photo,
+          width: 200,
+          class: "img-thumbnail shadow me-2 mb-2" %>
+  <% end %>
+  <% end %>
+
+    <h3><%= @gallery.title %></h3>
+
+    <p>
+      <strong>Category :</strong>
+      <%= @gallery.category %>
+    </p>
+
+    <p>
+      <strong>Description :</strong>
+      <%= @gallery.description %>
+    </p>
+
+    <p>
+      <strong>Status :</strong>
+
+      <% if @gallery.status == "Active" %>
+
+        <span class="badge bg-success">Active</span>
+
+      <% else %>
+
+        <span class="badge bg-danger">Inactive</span>
+
+      <% end %>
+
+    </p>
+
+    <%= link_to "Edit",
+          edit_gallery_path(@gallery),
+          class: "btn btn-warning" %>
+
+    <%= link_to "Back",
+          galleries_path,
+          class: "btn btn-secondary" %>
+
+  </div>
+
+</div>
+<%= render "layouts/footer" %>

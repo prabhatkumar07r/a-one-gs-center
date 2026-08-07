@@ -1,0 +1,110 @@
+```erb
+<%= form_with model: @teacher, local: true, multipart: true do |f| %>
+<div class="row">
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :mobile %>
+    <%= f.text_field :mobile, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :subject %>
+    <%= f.text_field :subject, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :qualification %>
+    <%= f.text_field :qualification, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :designation %>
+    <%= f.text_field :designation, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :experience %>
+    <%= f.number_field :experience, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :salary %>
+    <%= f.number_field :salary, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :joining_date %>
+    <%= f.date_field :joining_date, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :status %>
+    <%= f.select :status,
+          ["Active", "Inactive"],
+          {},
+          class: "form-select" %>
+  </div>
+
+  <!-- Photo Upload -->
+
+  <div class="col-md-12 mb-3">
+    <%= f.label :photo %>
+    <%= f.file_field :photo, class: "form-control" %>
+  </div>
+
+  <!-- Social Media -->
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :facebook %>
+    <%= f.text_field :facebook,
+          class: "form-control",
+          placeholder: "https://facebook.com/username" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :instagram %>
+    <%= f.text_field :instagram,
+          class: "form-control",
+          placeholder: "https://instagram.com/username" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :linkedin %>
+    <%= f.text_field :linkedin,
+          class: "form-control",
+          placeholder: "https://linkedin.com/in/username" %>
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <%= f.label :gmail %>
+    <%= f.email_field :gmail,
+          class: "form-control",
+          placeholder: "teacher@gmail.com" %>
+  </div>
+
+  <!-- Bio -->
+
+  <div class="col-md-12 mb-3">
+    <%= f.label :bio %>
+    <%= f.text_area :bio,
+          rows: 5,
+          class: "form-control",
+          placeholder: "Write short introduction about teacher..." %>
+  </div>
+
+</div>
+
+<%= f.submit "Save Teacher", class: "btn btn-primary" %>
+
+<% end %>
+```

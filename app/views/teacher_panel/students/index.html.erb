@@ -1,0 +1,147 @@
+<div class="container-fluid">
+
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+      <h2 class="fw-bold">
+        👨‍🎓 <%= @course.Course_name %> Students
+      </h2>
+
+      <p class="text-muted mb-0">
+        Total Students: <%= @students.count %>
+      </p>
+    </div>
+
+
+    <%= link_to teacher_panel_courses_path,
+        class: "btn btn-secondary" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      Back Courses
+
+    <% end %>
+
+  </div>
+
+
+
+
+  <div class="card shadow border-0">
+
+
+    <div class="card-header bg-primary text-white">
+
+      <h5 class="mb-0">
+        Enrolled Students
+      </h5>
+
+    </div>
+
+
+
+    <div class="table-responsive">
+
+
+      <table class="table table-hover mb-0">
+
+
+        <thead class="table-dark">
+
+          <tr>
+
+            <th>#</th>
+
+            <th>Name</th>
+
+            <th>Email</th>
+
+            <th>Mobile</th>
+
+            <th>Status</th>
+
+          </tr>
+
+        </thead>
+
+
+
+        <tbody>
+
+
+        <% if @students.any? %>
+
+
+          <% @students.each_with_index do |student,index| %>
+
+
+            <tr>
+
+
+              <td>
+                <%= index + 1 %>
+              </td>
+
+
+              <td class="fw-bold">
+                <%= student.name %>
+              </td>
+
+
+              <td>
+                <%= student.email %>
+              </td>
+
+
+              <td>
+                <%= student.mobile.presence || "N/A" %>
+              </td>
+
+
+              <td>
+
+                <span class="badge bg-success">
+                  Enrolled
+                </span>
+
+              </td>
+
+
+            </tr>
+
+
+          <% end %>
+
+
+        <% else %>
+
+
+          <tr>
+
+            <td colspan="5"
+                class="text-center text-muted py-4">
+
+              No students enrolled yet.
+
+            </td>
+
+          </tr>
+
+
+        <% end %>
+
+
+
+        </tbody>
+
+
+      </table>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>

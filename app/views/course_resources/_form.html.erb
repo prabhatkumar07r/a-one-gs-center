@@ -1,0 +1,43 @@
+<%= form_with(model: [@course, @playlist, @resource], local: true) do |form| %>
+
+  <% if @resource.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @resource.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, rows: 4, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :resource_type, class: "form-label" %>
+    <%= form.select :resource_type,
+          Resource.resource_types.keys.map { |t| [t.upcase, t] },
+          {},
+          class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :file, class: "form-label" %>
+    <%= form.file_field :file, class: "form-control" %>
+  </div>
+
+  <div class="mt-4">
+    <%= form.submit class: "btn btn-success" %>
+<%= link_to "Back",
+    course_playlist_course_resources_path(@course, @playlist),
+    class: "btn btn-secondary" %>
+  </div>
+
+<% end %>

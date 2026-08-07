@@ -1,0 +1,208 @@
+<style>
+  .course-container{
+  max-width:1200px;
+  margin:40px auto;
+  padding:20px;
+}
+
+.hero-section{
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:white;
+  padding:50px;
+  border-radius:20px;
+  text-align:center;
+}
+
+.hero-section h1{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.course-info{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  flex-wrap:wrap;
+}
+
+.subjects-section{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+
+.subject-card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.subject-card h2{
+  color:#2563eb;
+  margin-bottom:15px;
+}
+
+.subject-card ul{
+  padding-left:20px;
+}
+
+.subject-card li{
+  margin-bottom:8px;
+}
+
+.features-section{
+  margin-top:50px;
+  text-align:center;
+}
+
+.feature-grid{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+}
+
+.feature-box{
+  background:#f3f4f6;
+  padding:20px;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+.button-section{
+  text-align:center;
+  margin-top:40px;
+}
+
+.back-btn{
+  background:#2563eb;
+  color:white;
+  text-decoration:none;
+  padding:12px 30px;
+  border-radius:30px;
+  font-weight:bold;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="course-container">
+
+  <div class="hero-section">
+    <h1>ISC Science (Class 11 & 12)</h1>
+    <p>Build a Strong Foundation for Engineering, Medical & Competitive Exams</p>
+
+    <div class="course-info">
+      <span>📚 Duration: 2 Years</span>
+      <span>🎓 Mode: Online + Offline</span>
+      <span>💰 Fee: ₹40,000 / Year</span>
+    </div>
+  </div>
+
+  <div class="subjects-section">
+
+    <div class="subject-card">
+      <h2>📘 Physics</h2>
+      <ul>
+        <li>Mechanics</li>
+        <li>Thermodynamics</li>
+        <li>Electromagnetism</li>
+        <li>Optics</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>🧪 Chemistry</h2>
+      <ul>
+        <li>Physical Chemistry</li>
+        <li>Organic Chemistry</li>
+        <li>Inorganic Chemistry</li>
+        <li>Chemical Bonding</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>📐 Mathematics</h2>
+      <ul>
+        <li>Algebra</li>
+        <li>Calculus</li>
+        <li>Coordinate Geometry</li>
+        <li>Probability</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>🧬 Biology</h2>
+      <ul>
+        <li>Cell Biology</li>
+        <li>Genetics</li>
+        <li>Human Physiology</li>
+        <li>Ecology</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>💻 Computer Science</h2>
+      <ul>
+        <li>Java Programming</li>
+        <li>Data Structures</li>
+        <li>Object Oriented Programming</li>
+        <li>Database Concepts</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>📖 English</h2>
+      <ul>
+        <li>Grammar</li>
+        <li>Essay Writing</li>
+        <li>Literature</li>
+        <li>Comprehension</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="features-section">
+    <h2>Course Features</h2>
+
+    <div class="feature-grid">
+      <div class="feature-box">📝 Weekly Tests</div>
+      <div class="feature-box">📚 Study Materials</div>
+      <div class="feature-box">🎯 JEE/NEET Foundation</div>
+      <div class="feature-box">👨‍🏫 Expert Faculty</div>
+      <div class="feature-box">📊 Progress Reports</div>
+      <div class="feature-box">🎓 Board Exam Preparation</div>
+    </div>
+  </div>
+
+  <div class="button-section">
+    <%= link_to "Back to Homepage",
+                "/sample/homepage",
+                class: "back-btn" %>
+  </div>
+
+</div>

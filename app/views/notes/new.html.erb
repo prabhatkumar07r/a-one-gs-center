@@ -1,0 +1,252 @@
+<div class="container mt-5">
+
+  <h1>
+    <i class="fas fa-cloud-upload-alt"></i>
+    Upload Study Note
+  </h1>
+
+
+  <%= form_with model: @note, local: true, multipart: true do |f| %>
+
+
+    <% if @note.errors.any? %>
+      <div class="alert alert-danger">
+
+        <h5>
+          <%= pluralize(@note.errors.count, "error") %>
+          prevented saving:
+        </h5>
+
+        <ul>
+          <% @note.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+
+      </div>
+    <% end %>
+
+
+
+    <!-- Course -->
+
+    <div class="mb-3">
+
+      <%= label_tag :course_id,
+          "Course",
+          class: "form-label fw-bold" %>
+
+
+      <%= select_tag :course_id,
+
+          options_from_collection_for_select(
+            @courses,
+            :id,
+            :Course_name
+          ),
+
+          prompt: "Select Course",
+
+          class: "form-select",
+
+          id: "course_select" %>
+
+    </div>
+
+
+
+
+    <!-- Playlist -->
+
+    <div class="mb-3">
+
+      <%= f.label :playlist_id,
+          "Playlist",
+          class: "form-label fw-bold" %>
+
+
+      <%= f.select :playlist_id,
+          [],
+
+          {prompt:"Select Playlist"},
+
+          {
+            class:"form-select",
+            id:"playlist_select",
+            disabled:true
+          } %>
+
+
+    </div>
+
+
+
+
+
+    <!-- Video -->
+
+    <div class="mb-3">
+
+      <%= f.label :video_id,
+          "Video Title",
+
+          class:"form-label fw-bold" %>
+
+
+      <%= f.select :video_id,
+          [],
+
+          {prompt:"Select Video"},
+
+          {
+            class:"form-select",
+            id:"video_select",
+            disabled:true
+          } %>
+
+    </div>
+
+
+
+
+    <!-- Description -->
+
+    <div class="mb-3">
+
+      <%= f.label :description,
+          "Description",
+
+          class:"form-label fw-bold" %>
+
+
+      <%= f.text_area :description,
+
+          rows:4,
+
+          class:"form-control",
+
+          placeholder:"Enter note description..." %>
+
+
+    </div>
+
+
+
+
+
+    <!-- PDF -->
+
+    <div class="mb-3">
+
+      <%= f.label :pdf_file,
+          "PDF File",
+
+          class:"form-label fw-bold" %>
+
+
+      <%= f.file_field :pdf_file,
+
+          accept:"application/pdf",
+
+          class:"form-control",
+
+          required:true %>
+
+    </div>
+
+
+
+
+
+    <%= f.submit "Upload Note",
+        class:"btn btn-primary" %>
+
+
+    <%= link_to "Cancel",
+        resources_path,
+        class:"btn btn-secondary" %>
+
+
+  <% end %>
+
+</div>
+<script>
+document.addEventListener("turbo:load", function(){
+
+const course = document.getElementById("course_select");
+const playlist = document.getElementById("playlist_select");
+const video = document.getElementById("video_select");
+
+
+if(!course) return;
+
+
+
+course.addEventListener("change", function(){
+
+
+fetch(`/study_notes/playlists?course_id=${this.value}`)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+
+playlist.innerHTML =
+"<option>Select Playlist</option>";
+
+playlist.disabled=false;
+
+
+data.forEach(item=>{
+
+playlist.innerHTML +=
+`<option value="${item.id}">
+${item.title}
+</option>`;
+
+});
+
+
+});
+
+
+});
+
+
+
+
+
+playlist.addEventListener("change",function(){
+
+
+fetch(`/study_notes/videos?playlist_id=${this.value}`)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+
+video.innerHTML =
+"<option>Select Video</option>";
+
+video.disabled=false;
+
+
+data.forEach(item=>{
+
+video.innerHTML +=
+`<option value="${item.id}">
+${item.title}
+</option>`;
+
+});
+
+
+});
+
+
+});
+
+
+}); </script>

@@ -1,0 +1,47 @@
+<h2>Achievements</h2>
+
+<%= link_to "Add Achievement", new_achievement_path, class: "btn btn-success mb-3" %>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>student_name</th>
+       <th>Photo</th>
+      <th>Title</th>
+      <th>Rank</th>
+      <th>Year</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @achievements.each do |achievement| %>
+      <tr>
+        <tb><%= achievement.student_name %></tb>
+
+        <td>
+          <% if achievement.photo.attached? %>
+            <%= image_tag achievement.photo, width: 80 %>
+          <% end %>
+        </td>
+
+        <td><%= achievement.title %></td>
+        <td><%= achievement.rank %></td>
+        <td><%= achievement.year %></td>
+
+        <td>
+          <%= link_to "Edit", edit_achievement_path(achievement), class: "btn btn-warning btn-sm" %>
+
+          <%= link_to "Delete",
+              achievement,
+              data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure?"
+              },
+              class: "btn btn-danger btn-sm" %>
+        </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

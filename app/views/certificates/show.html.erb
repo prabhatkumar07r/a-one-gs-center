@@ -1,0 +1,91 @@
+<% content_for :title, "Certificate" %>
+
+<div class="container mt-5">
+
+  <div class="card shadow-lg border-5 border-warning">
+
+    <div class="card-body text-center p-5">
+
+      <h1 class="text-primary fw-bold">
+        🏆 Certificate of Completion
+      </h1>
+
+      <hr>
+
+      <h5>
+        A One GS Art's And Competitive Classes
+      </h5>
+
+      <br>
+
+      <p>This certificate is proudly presented to</p>
+
+      <h2 class="text-success fw-bold">
+        <%= @certificate.user.name %>
+      </h2>
+
+      <br>
+
+      <p>for successfully completing the course</p>
+
+      <h3 class="text-primary">
+        <%= @certificate.course.Course_name %>
+      </h3>
+
+      <br>
+
+      <p>
+        Issue Date :
+        <strong>
+          <%= @certificate.issued_on.strftime("%d %B %Y") %>
+        </strong>
+      </p>
+
+      <p>
+        Certificate No :
+        <strong>
+          CERT-<%= @certificate.id.to_s.rjust(5, "0") %>
+        </strong>
+      </p>
+
+      <br><br>
+
+      <div class="row">
+
+        <div class="col-md-6 text-center">
+
+          _______________________
+
+          <br>
+
+          Student Signature
+
+        </div>
+
+        <div class="col-md-6 text-center">
+
+          _______________________
+
+          <br>
+
+          Director
+
+        </div>
+
+      </div>
+
+      <br><br>
+
+      <%= link_to "📄 Download PDF",
+          certificate_path(@certificate, format: :pdf),
+          class: "btn btn-primary" %>
+
+      <%= link_to "⬅ Back",
+          certificates_path,
+          class: "btn btn-secondary ms-2" %>
+
+    </div>
+
+  </div>
+
+</div>

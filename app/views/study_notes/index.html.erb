@@ -1,0 +1,396 @@
+<div class="container-fluid py-4">
+
+  <!-- Header -->
+
+  <div class="row mb-4">
+
+    <div class="col-md-8">
+
+      <h2 class="fw-bold text-primary">
+        <i class="fas fa-book-open"></i>
+        Study Notes
+      </h2>
+
+      <p class="text-muted">
+        Manage all uploaded study materials.
+      </p>
+
+    </div>
+
+    <div class="col-md-4 text-end">
+
+      <%= link_to new_study_note_path,
+          class:"btn btn-primary btn-lg shadow" do %>
+
+          <i class="fas fa-upload"></i>
+
+          Upload Notes
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- Statistics -->
+
+  <div class="row mb-4">
+
+    <div class="col-lg-4">
+
+      <div class="card shadow border-0">
+
+        <div class="card-body text-center">
+
+          <h1 class="text-primary">
+
+            <%= @notes.count %>
+
+          </h1>
+
+          <p class="mb-0">
+
+            Total Notes
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+      <div class="card shadow border-0">
+
+        <div class="card-body text-center">
+
+          <h1 class="text-success">
+
+            <%= @notes.sum(:download_count) %>
+
+          </h1>
+
+          <p class="mb-0">
+
+            Total Downloads
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+      <div class="card shadow border-0">
+
+        <div class="card-body text-center">
+
+          <h1 class="text-danger">
+
+            <%= @notes.where(created_at: Date.today.all_day).count %>
+
+          </h1>
+
+          <p class="mb-0">
+
+            Uploaded Today
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <% if notice.present? %>
+
+    <div class="alert alert-success">
+
+      <%= notice %>
+
+    </div>
+
+  <% end %>
+
+
+  <% if alert.present? %>
+
+    <div class="alert alert-danger">
+
+      <%= alert %>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- Search -->
+
+  <div class="card shadow-sm mb-3">
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <div class="col-md-5">
+
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control"
+            placeholder="Search notes...">
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <% if @notes.any? %>
+
+  <div class="card shadow">
+
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+
+        <thead class="table-primary">
+
+          <tr>
+
+            <th>#</th>
+
+            <th>Title</th>
+
+            <th>Course</th>
+
+            <th>Playlist</th>
+
+            <th>Teacher</th>
+
+            <th>Downloads</th>
+
+            <th>Date</th>
+
+            <th width="280">
+
+              Actions
+
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+        <% @notes.each_with_index do |note,index| %>
+
+          <tr>
+
+            <td>
+
+              <%= index+1 %>
+
+            </td>
+
+            <td>
+
+              <div class="d-flex align-items-center">
+
+                <span class="badge bg-danger me-2">
+
+                  PDF
+
+                </span>
+
+                <strong>
+
+                  <%= note.title %>
+
+                </strong>
+
+              </div>
+
+              <small class="text-muted">
+
+                <%= truncate(note.description,length:60) %>
+
+              </small>
+
+            </td>
+
+            <td>
+
+              <%= note.playlist&.course&.Course_name || "-" %>
+
+            </td>
+
+            <td>
+
+              <%= note.playlist&.title || "-" %>
+
+            </td>
+
+            <td>
+
+            <% if note.user.present? %>
+  <% if note.user.admin? %>
+    Admin
+  <% elsif note.user.teacher? %>
+    <%= note.user.name %> (Teacher)
+  <% else %>
+    <%= note.user.name %>
+  <% end %>
+<% else %>
+  Unknown
+<% end %>
+
+            </td>
+
+            <td>
+
+              <span class="badge rounded-pill bg-success">
+
+                <i class="fas fa-download"></i>
+
+                <%= note.download_count %>
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <%= note.created_at.strftime("%d %b %Y") %>
+
+            </td>
+
+            <td>
+
+              <% if note.pdf_file.attached? %>
+
+                <%= link_to download_study_note_path(note),
+                    class:"btn btn-success btn-sm" do %>
+
+                  <i class="fas fa-download"></i>
+
+                <% end %>
+
+              <% end %>
+
+              <%= link_to edit_study_note_path(note),
+                  class:"btn btn-warning btn-sm" do %>
+
+                <i class="fas fa-edit"></i>
+
+              <% end %>
+
+              <%= link_to study_note_path(note),
+
+                  data:{
+                    turbo_method: :delete,
+                    turbo_confirm:"Delete this note?"
+                  },
+
+                  class:"btn btn-danger btn-sm" do %>
+
+                <i class="fas fa-trash"></i>
+
+              <% end %>
+
+            </td>
+
+          </tr>
+
+        <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <% else %>
+
+    <div class="card shadow">
+
+      <div class="card-body text-center py-5">
+
+        <i class="fas fa-book-open fa-4x text-secondary mb-3"></i>
+
+        <h3>
+
+          No Study Notes Found
+
+        </h3>
+
+        <p class="text-muted">
+
+          Upload your first study note.
+
+        </p>
+
+        <%= link_to new_study_note_path,
+
+            class:"btn btn-primary" do %>
+
+          Upload Notes
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const input=document.getElementById("searchInput");
+
+if(input){
+
+input.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+document.querySelectorAll("tbody tr").forEach(function(row){
+
+row.style.display=row.innerText.toLowerCase().includes(value)
+
+? ""
+
+: "none";
+
+});
+
+});
+
+}
+
+});
+
+</script>

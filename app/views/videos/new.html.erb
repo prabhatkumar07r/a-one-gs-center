@@ -1,0 +1,21 @@
+<% content_for :title, "Add Video" %>
+
+<div class="card-header bg-primary text-white">
+  <h3>🎥 Add New Video - <%= @course.Course_name %></h3>
+</div>
+
+<div class="card-body">
+  <%= render "form", course: @course, video: @video %>
+</div>
+
+<div class="card-footer">
+  <% if @video.playlist.present? %>
+    <%= link_to "⬅ Back",
+        course_playlist_videos_path(@course, @video.playlist),
+        class: "btn btn-secondary" %>
+  <% else %>
+    <%= link_to "⬅ Back",
+        course_playlists_path(@course),
+        class: "btn btn-secondary" %>
+  <% end %>
+</div>

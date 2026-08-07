@@ -1,0 +1,124 @@
+<% content_for :title, @video.title %>
+
+<div class="container mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+      <h3>🎥 <%= @video.title %></h3>
+    </div>
+
+    <div class="card-body">
+
+      <p>
+        <strong>Course:</strong>
+        <%= @course.Course_name %>
+      </p>
+
+      <p>
+        <strong>Description:</strong><br>
+        <%= @video.description %>
+      </p>
+      <% if @video.thumbnail.attached? %>
+
+  <%= image_tag @video.thumbnail,
+      class: "img-fluid rounded shadow mb-3",
+      style: "max-height:300px;" %>
+
+<% elsif @video.video_url.present? && @video.youtube_thumbnail.present? %>
+
+  <%= image_tag @video.youtube_thumbnail,
+      class: "img-fluid rounded shadow mb-3",
+      style: "max-height:300px;" %>
+
+<% end %>
+
+      <p>
+        <strong>Duration:</strong>
+        <%= @video.duration %>
+      </p>
+      <p>
+  <strong>Playlist:</strong>
+
+  <%= @video.playlist&.title || "Not Assigned" %>
+</p>
+
+      <p>
+        <strong>Position:</strong>
+        <%= @video.position %>
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+
+        <% if @video.active? %>
+          <span class="badge bg-success">Active</span>
+        <% else %>
+          <span class="badge bg-secondary">Inactive</span>
+        <% end %>
+      </p>
+
+      <% if @video.video_url.present? %>
+
+        <% youtube_id = @video.video_url[/v=([^&]+)/, 1] || @video.video_url.split("/").last %>
+
+        <div class="ratio ratio-16x9 mt-3">
+          <iframe
+            src="https://www.youtube.com/embed/<%= youtube_id %>"
+            title="<%= @video.title %>"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+      <% else %>
+
+        <div class="alert alert-warning mt-3">
+          No video available.
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <div class="card-footer d-flex gap-2">
+
+  <% if @video.playlist.present? %>
+
+    <%= link_to "✏ Edit",
+        edit_course_playlist_video_path(
+          @course,
+          @video.playlist,
+          @video
+        ),
+        class: "btn btn-warning" %>
+
+    <%= link_to "⬅ Back",
+        course_playlist_videos_path(
+          @course,
+          @video.playlist
+        ),
+        class: "btn btn-secondary" %>
+
+    <%= button_to "🗑 Delete",
+        course_playlist_video_path(
+          @course,
+          @video.playlist,
+          @video
+        ),
+        method: :delete,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "btn btn-danger" %>
+
+  <% else %>
+
+    <div class="alert alert-warning">
+      This video is not assigned to any playlist.
+    </div>
+
+  <% end %>
+
+</div>
+
+  </div>
+
+</div>

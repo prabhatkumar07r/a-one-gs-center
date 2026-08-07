@@ -1,0 +1,174 @@
+<div class="admin-sidebar">
+
+  <div class="sidebar-title">
+    <h3>🎓 A ONE GS</h3>
+    <small>Admin Panel</small>
+  </div>
+
+  <ul class="nav flex-column">
+
+    <li>
+      <%= link_to dashboard_path, class:"nav-link" do %>
+        <i class="fas fa-home"></i>
+        Dashboard
+      <% end %>
+    </li>
+
+    <!-- Student Management -->
+
+    <li>
+
+      <a class="nav-link"
+         data-bs-toggle="collapse"
+         href="#studentMenu">
+
+         <i class="fas fa-user-graduate"></i>
+
+         Student Management
+
+         <i class="fas fa-chevron-down float-end mt-1"></i>
+
+      </a>
+
+      <div class="collapse show"
+           id="studentMenu">
+
+        <%= link_to students_path,
+            class:"submenu" do %>
+
+            Students
+
+        <% end %>
+
+        <%= link_to enrollments_path,
+            class:"submenu" do %>
+
+            Enrollments
+
+        <% end %>
+
+        <%= link_to attendances_path,
+            class:"submenu" do %>
+
+            Attendance
+
+        <% end %>
+
+        <%= link_to fees_path,
+            class:"submenu" do %>
+
+            Fees
+
+        <% end %>
+
+      </div>
+
+    </li>
+
+    <!-- Academic -->
+
+    <li>
+
+      <a class="nav-link"
+         data-bs-toggle="collapse"
+         href="#academicMenu">
+
+         <i class="fas fa-book"></i>
+
+         Academic
+
+         <i class="fas fa-chevron-down float-end mt-1"></i>
+
+      </a>
+
+      <div class="collapse"
+           id="academicMenu">
+
+        <%= link_to teachers_path,
+            class:"submenu" do %>
+
+            Teachers
+
+        <% end %>
+
+        <%= link_to courses_path,
+            class:"submenu" do %>
+
+            Courses
+
+        <% end %>
+
+        <%= link_to batches_path,
+            class:"submenu" do %>
+
+            Batches
+
+        <% end %>
+         <%= link_to study_notes_path,
+        class:"submenu" do %>
+
+      <i class="fas fa-file-pdf me-2 text-danger"></i>
+
+      Study Notes
+
+    <% end %>
+
+
+      </div>
+
+    </li>
+
+    <!-- Website -->
+
+    <li>
+
+      <a class="nav-link"
+         data-bs-toggle="collapse"
+         href="#websiteMenu">
+
+         <i class="fas fa-globe"></i>
+
+         Website
+
+         <i class="fas fa-chevron-down float-end mt-1"></i>
+
+      </a>
+
+      <div class="collapse"
+           id="websiteMenu">
+
+        <%= link_to galleries_path,
+            class:"submenu" do %>
+
+            Gallery
+
+        <% end %>
+
+        <%= link_to achievements_path,
+            class:"submenu" do %>
+
+            Achievements
+
+        <% end %>
+
+        <%= link_to notifications_path,
+            class:"submenu" do %>
+
+            Notifications
+
+        <% end %>
+
+        <%= link_to demos_path,
+            class:"submenu" do %>
+
+            Demo Requests
+
+        <% end %>
+
+      </div>
+
+    </li>
+
+  </ul>
+
+</div>

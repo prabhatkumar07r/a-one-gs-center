@@ -1,0 +1,8 @@
+import "@hotwired/turbo-rails"
+import "controllers"
+import "notification"
+import * as bootstrap from "bootstrap"
+import "chartkick"
+import "chart.js"
+import "custom"
+import "header"

@@ -1,0 +1,15 @@
+<h2>Hello <%= @user.name %>,</h2>
+
+<p>You requested to reset your password.</p>
+
+<p>
+  Click the link below:
+</p>
+
+<p>
+  <%= link_to "Reset Password", @reset_url %>
+</p>
+
+<p>
+  If you didn't request this, ignore this email.
+</p>

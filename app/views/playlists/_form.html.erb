@@ -1,0 +1,48 @@
+<h2>Add Playlist</h2>
+
+<div class="alert alert-info">
+  <strong>Course:</strong> <%= @course.Course_name %><br>
+  <strong>Teacher:</strong> <%= @course.teacher&.name || "Not Assigned" %>
+</div>
+
+<%= form_with(model: [@course, @playlist], local: true) do |form| %>
+
+  <% if @playlist.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @playlist.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title,
+        class: "form-control",
+        placeholder: "e.g. Indian History" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description,
+        rows: 4,
+        class: "form-control",
+        placeholder: "Brief description of this playlist" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :position, class: "form-label" %>
+    <%= form.number_field :position,
+        class: "form-control",
+        min: 1 %>
+  </div>
+
+  <%= form.submit "Save Playlist", class: "btn btn-success" %>
+
+  <%= link_to "Back",
+      course_playlists_path(@course),
+      class: "btn btn-secondary" %>
+
+<% end %>

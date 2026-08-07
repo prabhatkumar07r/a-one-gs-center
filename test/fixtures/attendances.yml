@@ -1,0 +1,11 @@
+one:
+  user: one
+  course: one
+  date: 2026-07-21
+  status: Present
+
+two:
+  user: two
+  course: two
+  date: 2026-07-22
+  status: Absent

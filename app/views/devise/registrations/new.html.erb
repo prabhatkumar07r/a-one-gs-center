@@ -1,0 +1,274 @@
+<div class="auth-container">
+
+  <div class="auth-image">
+
+    <div class="auth-image-content">
+
+      <%= image_tag "logo.jpeg",
+          alt: "A ONE GS CENTER" %>
+
+      <h2>A ONE GS CENTER</h2>
+
+      <p>
+        Empowering students to excel in Arts through quality education and competitive preparation
+      </p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="auth-forms">
+
+    <div class="close-auth">
+      <i class="fas fa-times"></i>
+    </div>
+
+
+
+    <div class="auth-tabs">
+
+      <%= link_to "Login",
+          new_user_session_path,
+          class: "auth-tab" %>
+
+
+      <div class="auth-tab active">
+        Register
+      </div>
+
+    </div>
+<div class="auth-form active" id="register-form">
+
+  <h2 class="form-title">Create Account</h2>
+
+
+  <%= form_for(resource,
+      as: resource_name,
+      url: registration_path(resource_name)) do |f| %>
+
+
+    <% if resource.errors.any? %>
+
+      <div class="alert alert-danger mb-3">
+
+        <ul class="mb-0">
+
+          <% resource.errors.full_messages.each do |message| %>
+
+            <li>
+              <%= message %>
+            </li>
+
+          <% end %>
+
+        </ul>
+
+      </div>
+
+    <% end %>
+
+
+
+    <div class="form-group">
+
+      <%= f.label :name, "Full Name" %>
+
+      <i class="fas fa-user form-icon"></i>
+
+
+      <%= f.text_field :name,
+
+          class: "form-control",
+
+          placeholder: "Enter your full name",
+
+          required: true %>
+
+
+    </div>
+
+
+
+
+    <div class="form-group">
+
+      <%= f.label :email, "Email Address" %>
+
+      <i class="fas fa-envelope form-icon"></i>
+
+
+      <%= f.email_field :email,
+
+          class: "form-control",
+
+          placeholder: "Enter your email",
+
+          autocomplete: "email",
+
+          required: true %>
+
+
+    </div>
+
+
+
+
+
+    <div class="form-group">
+
+      <%= f.label :mobile, "Mobile Number" %>
+
+      <i class="fas fa-phone form-icon"></i>
+
+
+      <%= f.telephone_field :mobile,
+
+          class: "form-control",
+
+          placeholder: "Enter your mobile number",
+
+          required: true %>
+
+
+    </div>
+
+
+
+
+
+    <div class="form-group">
+
+      <%= f.label :password, "Password" %>
+
+      <i class="fas fa-lock form-icon"></i>
+
+
+      <%= f.password_field :password,
+
+          class: "form-control",
+
+          placeholder: "Create password",
+
+          autocomplete: "new-password",
+
+          required: true %>
+
+
+    </div>
+
+
+
+
+
+    <div class="form-group">
+
+      <%= f.label :password_confirmation, "Confirm Password" %>
+
+      <i class="fas fa-lock form-icon"></i>
+
+
+      <%= f.password_field :password_confirmation,
+
+          class: "form-control",
+
+          placeholder: "Confirm password",
+
+          autocomplete: "new-password",
+
+          required: true %>
+
+
+    </div>
+
+
+
+
+
+    <div class="form-check">
+
+      <%= check_box_tag :terms,
+
+          "yes",
+
+          false,
+
+          class: "form-check-input",
+
+          required: true %>
+
+
+      <%= label_tag :terms,
+
+          "I agree to the Terms & Conditions",
+
+          class: "form-check-label" %>
+
+
+    </div>
+
+
+
+
+
+    <%= f.submit "Create Account",
+
+        class: "btn" %>
+
+
+
+  <% end %>
+
+
+
+
+
+  <div class="auth-divider">
+
+    <span>
+      Or sign up with
+    </span>
+
+  </div>
+
+
+
+
+
+  <div class="social-login">
+
+
+    <div class="social-btn facebook">
+
+      <i class="fab fa-facebook-f"></i>
+
+    </div>
+
+
+     <%= button_to user_google_oauth2_omniauth_authorize_path,
+      method: :post,
+      form: { data: { turbo: false } },
+      class: "social-btn google" do %>
+  <i class="fab fa-google"></i>
+<% end %>
+
+
+  </div>
+
+
+
+
+
+  <div class="auth-footer">
+
+    Already have an account?
+
+    <%= link_to "Login now",
+        new_user_session_path %>
+
+
+  </div>
+
+
+</div>

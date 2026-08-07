@@ -1,0 +1,801 @@
+<% content_for :show_layout, true %>
+
+<div class="container-fluid mt-4">
+
+  <div class="row">
+
+    <!-- Sidebar -->
+<div class="col-lg-3 col-md-4">
+
+  <div class="card shadow border-0 sticky-top"
+       style="top:80px;">
+
+
+    <div class="card-header bg-dark text-white">
+
+      <h5 class="mb-0">
+        📚 Course Content
+      </h5>
+
+    </div>
+
+    <div class="card-body p-0">
+
+      <div class="accordion accordion-flush" id="playlistAccordion">
+
+        <% @playlists.each_with_index do |playlist,index| %>
+
+          <%
+            playlist_total = playlist.videos.count
+
+            playlist_completed =
+                 current_user.video_progresses
+              .joins(:video)
+              .where(
+                videos: {
+                  playlist_id: playlist.id
+                },
+                video_progresses: {
+                  completed: true
+                }
+              )
+              .count
+
+            progress_percent =
+              playlist_total.zero? ? 0 :
+              ((playlist_completed.to_f / playlist_total) * 100).round
+          %>
+
+          <div class="accordion-item">
+
+            <h2 class="accordion-header">
+
+              <button class="accordion-button <%= index == 0 ? '' : 'collapsed' %>"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#playlist<%= playlist.id %>">
+
+                <div class="w-100">
+
+                  <strong>
+                    📁 <%= playlist.title %>
+                  </strong>
+
+                  <div class="progress mt-2"
+                       style="height:6px;">
+
+                    <div class="progress-bar bg-success"
+                         style="width:<%= progress_percent %>%">
+
+                    </div>
+
+                  </div>
+
+                  <small class="text-muted">
+
+                    <%= playlist_completed %> /
+                    <%= playlist_total %> Completed
+
+                  </small>
+
+                </div>
+
+              </button>
+
+            </h2>
+
+            <div id="playlist<%= playlist.id %>"
+                 class="accordion-collapse collapse <%= index == 0 ? 'show' : '' %>"
+                 data-bs-parent="#playlistAccordion">
+
+              <div class="list-group list-group-flush">
+
+                <% playlist.videos.order(:position).each do |video| %>
+
+                  <% progress =
+                      current_user.video_progresses.find_by(video: video) %>
+
+                  <%= link_to learning_video_path(@course, video),
+                      class: "list-group-item list-group-item-action #{'active' if video == @video}" do %>
+
+                    <div class="d-flex justify-content-between">
+
+                      <span>
+
+                        <strong>
+                          <%= video.position %>.
+                        </strong>
+
+                        <%= video.title %>
+
+                      </span>
+
+                      <% if progress&.completed? %>
+
+                        <span class="badge bg-success">
+
+                          <i class="fas fa-check"></i>
+
+                        </span>
+
+                      <% else %>
+
+                        <span class="badge bg-secondary">
+
+                          <i class="fas fa-play"></i>
+
+                        </span>
+
+                      <% end %>
+
+                    </div>
+
+                  <% end %>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+    <!-- Video Area -->
+    <div class="col-lg-9 col-md-8">
+
+      <div class="card border-0 shadow-lg rounded-4">
+
+        <div class="card-body">
+
+         <div class="mb-4">
+          <div class="card border-0 shadow-sm mb-4">
+
+  <div class="card-body">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+      <div>
+
+        <h5 class="fw-bold mb-1">
+
+          🎓 Course Progress
+
+        </h5>
+
+        <small class="text-muted">
+
+          Completed
+          <strong><%= @completed_videos %></strong>
+          of
+          <strong><%= @total_videos %></strong>
+          videos
+
+        </small>
+
+      </div>
+
+      <span class="badge bg-success fs-5">
+
+        <%= @course_progress %>%
+
+      </span>
+
+    </div>
+
+    <div class="progress mt-3"
+         style="height:12px;">
+
+      <div class="progress-bar bg-success"
+
+           role="progressbar"
+
+           style="width:<%= @course_progress %>%">
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<% if @course_progress == 100 && @certificate.present? %>
+
+<div class="card border-0 shadow-lg mb-4">
+
+  <div class="card-body text-center py-5">
+
+    <i class="fas fa-award fa-4x text-warning mb-3"></i>
+
+    <h2 class="fw-bold text-success">
+
+      Congratulations!
+
+    </h2>
+
+    <p class="lead">
+
+      You have successfully completed this course.
+
+    </p>
+
+    <p class="text-muted">
+
+      Your certificate is ready.
+
+    </p>
+
+    <%= link_to certificates_path,
+        class: "btn btn-success btn-lg" do %>
+
+      <i class="fas fa-download"></i>
+
+      Download Certificate
+
+    <% end %>
+
+  </div>
+
+</div>
+
+<% end %>
+<div class="card border-0 shadow-sm mb-4">
+
+  <div class="card-body">
+
+    <div class="row align-items-center">
+
+      <div class="col-md-9">
+
+        <h3 class="fw-bold text-primary mb-2">
+          <%= @course.Course_name %>
+        </h3>
+
+        <p class="text-muted mb-3">
+
+          Welcome back! Continue your learning journey.
+
+        </p>
+
+        <div class="d-flex flex-wrap gap-4">
+
+          <span>
+
+            <i class="fas fa-folder-open text-primary"></i>
+
+            <strong>
+              <%= @playlists.count %>
+            </strong>
+
+            Playlists
+
+          </span>
+
+          <span>
+
+            <i class="fas fa-play-circle text-danger"></i>
+
+            <strong>
+              <%= @total_videos %>
+            </strong>
+
+            Videos
+
+          </span>
+
+          <span>
+
+            <i class="fas fa-book text-warning"></i>
+
+            <strong>
+              <%= @notes.count %>
+            </strong>
+
+            Notes
+
+          </span>
+
+          <span>
+
+            <i class="fas fa-folder text-success"></i>
+
+            <strong>
+              <%= @resources.count %>
+            </strong>
+
+            Resources
+
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-3 text-center">
+
+        <% if @course.image.attached? %>
+
+          <%= image_tag @course.image,
+              class: "img-fluid rounded shadow",
+              style: "max-height:140px;" %>
+
+        <% else %>
+
+          <i class="fas fa-graduation-cap fa-5x text-primary"></i>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  <h2 class="fw-bold mb-2">
+
+  <%= @video.title %>
+
+</h2>
+<% if @course_progress == 100 %>
+
+<div class="alert alert-success shadow-sm">
+
+  <i class="fas fa-check-circle"></i>
+
+  Congratulations!
+
+  You completed
+
+  <strong>
+
+    <%= @course.Course_name %>
+
+  </strong>
+
+</div>
+
+<% end %>
+
+<div class="d-flex flex-wrap gap-4 text-muted mb-3">
+
+  <span>
+    <i class="fas fa-folder text-primary"></i>
+    <strong>Playlist:</strong>
+    <%= @playlist.title %>
+  </span>
+
+  <span>
+    <i class="fas fa-clock text-success"></i>
+    <strong>Duration:</strong>
+    <%= @video.duration %>
+  </span>
+
+  <span>
+    <i class="fas fa-play-circle text-danger"></i>
+    <strong>Lesson:</strong>
+    <%= @video.position %>
+  </span>
+
+  <span>
+    <i class="fas fa-calendar-alt text-warning"></i>
+    <strong>Published:</strong>
+    <%= @video.created_at.strftime("%d %b %Y") %>
+  </span>
+
+</div>
+
+<p class="lead">
+  <%= @video.description %>
+</p>
+  
+
+          <% if @video.video_url.present? %>
+
+            <div class="ratio ratio-16x9 rounded overflow-hidden shadow mb-4">
+
+  <iframe
+      id="youtube-player"
+      src="https://www.youtube.com/embed/<%= @video.youtube_id %>?enablejsapi=1"
+      title="<%= @video.title %>"
+      allowfullscreen>
+  </iframe>
+
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+
+let player;
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player("youtube-player");
+}
+
+setInterval(function () {
+
+  if (!player || typeof player.getDuration !== "function") return;
+
+  let current = player.getCurrentTime();
+  let duration = player.getDuration();
+
+  if (duration > 0 && (current / duration) >= 0.90) {
+
+    const btn = document.getElementById("completeBtn");
+
+    if(btn){
+      btn.disabled = false;
+    }
+
+  }
+
+},1000);
+
+</script>
+
+            </div>
+
+          <% else %>
+
+            <div class="alert alert-warning">
+              Video not available.
+            </div>
+
+          <% end %>
+
+          <hr>
+          <div class="card border-0 bg-light shadow-sm mb-4">
+
+  <div class="card-body">
+
+    <div class="row align-items-center">
+
+      <div class="col-md-8">
+
+        <h5 class="mb-1">
+
+          Continue Learning
+
+        </h5>
+
+        <small class="text-muted">
+
+          Lesson <%= @video.position %> of <%= @total_videos %>
+
+        </small>
+
+      </div>
+
+      <div class="col-md-4 text-end">
+
+        <% if @next_video.present? %>
+
+          <%= link_to learning_video_path(@course,@next_video),
+              class:"btn btn-primary" do %>
+
+            Next Lesson
+
+            <i class="fas fa-arrow-right"></i>
+
+          <% end %>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+          <!-- Study Notes -->
+<!-- ================= Study Notes ================= -->
+<div class="accordion mt-5 mb-4" id="learningAccordion">
+
+  <div class="accordion-item shadow-sm">
+
+    <h2 class="accordion-header">
+
+      <button class="accordion-button"
+
+              type="button"
+
+              data-bs-toggle="collapse"
+
+              data-bs-target="#studyNotes">
+
+        <i class="fas fa-book-open text-danger me-2"></i>
+
+        <strong>Study Notes</strong>
+
+        <span class="badge bg-danger ms-3">
+          <%= @notes.count %>
+        </span>
+
+      </button>
+
+    </h2>
+
+    <div id="studyNotes"
+
+         class="accordion-collapse collapse show"
+
+         data-bs-parent="#learningAccordion">
+
+      <div class="accordion-body">
+
+        <% if @notes.any? %>
+
+          <% @notes.each do |note| %>
+
+            <div class="card border-0 shadow-sm mb-3">
+
+              <div class="card-body">
+
+                <div class="row align-items-center">
+
+                  <div class="col-md-8">
+
+                    <h5><%= note.title %></h5>
+
+                    <p class="text-muted">
+
+                      <%= truncate(note.description, length: 120) %>
+
+                    </p>
+
+                  </div>
+
+                  <div class="col-md-4 text-end">
+
+                    <%= link_to rails_blob_path(note.pdf_file),
+
+                        target: "_blank",
+
+                        class: "btn btn-outline-danger btn-sm" do %>
+
+                      <i class="fas fa-eye"></i>
+
+                      View
+
+                    <% end %>
+
+                    <%= link_to rails_blob_path(
+                          note.pdf_file,
+                          disposition: "attachment"
+                        ),
+                        class: "btn btn-danger btn-sm" do %>
+
+                      <i class="fas fa-download"></i>
+
+                      Download
+
+                    <% end %>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        <% else %>
+
+          <div class="alert alert-info">
+
+            No Study Notes Available.
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<============= Resources ================= -->
+
+<!-- ================= Resources ================= -->
+
+  <div class="accordion-item shadow-sm">
+
+    <h2 class="accordion-header">
+
+      <button class="accordion-button collapsed"
+
+              type="button"
+
+              data-bs-toggle="collapse"
+
+              data-bs-target="#resources">
+
+        <i class="fas fa-folder-open text-success me-2"></i>
+
+        <strong>Learning Resources</strong>
+
+        <span class="badge bg-success ms-3">
+          <%= @resources.count %>
+        </span>
+
+      </button>
+
+    </h2>
+
+    <div id="resources"
+
+         class="accordion-collapse collapse"
+
+         data-bs-parent="#learningAccordion">
+
+      <div class="accordion-body">
+
+        <% if @resources.any? %>
+
+          <% @resources.each do |resource| %>
+
+            <div class="card border-0 shadow-sm mb-3">
+
+              <div class="card-body">
+
+                <div class="row align-items-center">
+
+                  <div class="col-md-8">
+
+                    <h5>
+                      <%= resource.title %>
+                    </h5>
+
+                    <p class="text-muted">
+
+                      <%= truncate(resource.description, length: 120) %>
+
+                    </p>
+
+                    <span class="badge bg-success">
+
+                      <%= resource.resource_type.titleize %>
+
+                    </span>
+
+                  </div>
+
+                  <div class="col-md-4 text-end">
+
+                    <%= link_to rails_blob_path(resource.file),
+
+                        target: "_blank",
+
+                        class: "btn btn-outline-success btn-sm" do %>
+
+                      <i class="fas fa-eye"></i>
+
+                      View
+
+                    <% end %>
+
+                    <%= link_to rails_blob_path(
+                          resource.file,
+                          disposition: "attachment"
+                        ),
+                        class: "btn btn-success btn-sm" do %>
+
+                      <i class="fas fa-download"></i>
+
+                      Download
+
+                    <% end %>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        <% else %>
+
+          <div class="alert alert-warning">
+
+            No Resources Available.
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+  
+
+          <!-- Previous / Next -->
+
+          <div class="card border-0 shadow-sm mt-4">
+
+  <div class="card-body">
+
+    <div class="d-flex justify-content-between">
+
+            <% if @previous_video.present? %>
+
+              <%= link_to "⬅ Previous",
+                  learning_video_path(@course, @previous_video),
+                  class: "btn btn-outline-primary" %>
+
+            <% else %>
+
+              <span></span>
+
+            <% end %>
+
+            <% if @next_video.present? %>
+
+              <%= link_to "Next ➜",
+                  learning_video_path(@course, @next_video),
+                  class: "btn btn-primary" %>
+
+            <% end %>
+
+          </div>
+        </div>
+
+          <hr>
+
+          <!-- Mark as Completed -->
+
+          <% progress = current_user.video_progresses.find_by(video: @video) %>
+
+          <div class="text-center mt-4">
+
+            <% if @course_progress = 100 %>
+
+<%= button_to "✔ Mark as Completed",
+      complete_learning_video_path(@course, @video),
+      method: :post,
+      id: "completeBtn",
+      class: "btn btn-success btn-lg",
+      disabled: true %>
+
+<% else %>
+
+<button class="btn btn-success btn-lg" disabled>
+
+  ✓ Course Completed
+
+</button>
+
+<% end %>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

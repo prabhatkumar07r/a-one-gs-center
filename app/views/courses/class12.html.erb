@@ -1,0 +1,199 @@
+<style>
+  .course-container{
+  max-width:1200px;
+  margin:40px auto;
+  padding:20px;
+}
+
+.hero-section{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  color:white;
+  text-align:center;
+  padding:50px 20px;
+  border-radius:20px;
+  margin-bottom:40px;
+}
+
+.hero-section h1{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.hero-section p{
+  font-size:18px;
+}
+
+.course-details{
+  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.subjects-section{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+  margin-bottom:40px;
+}
+
+.subject-card{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.subject-card:hover{
+  transform:translateY(-5px);
+}
+
+.subject-card h2{
+  color:#4f46e5;
+  margin-bottom:15px;
+}
+
+.subject-card ul{
+  padding-left:20px;
+}
+
+.subject-card li{
+  margin-bottom:10px;
+}
+
+.features-section{
+  text-align:center;
+}
+
+.features-section h2{
+  margin-bottom:25px;
+  color:#333;
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.feature-box{
+  background:#f8fafc;
+  padding:20px;
+  border-radius:12px;
+  font-weight:bold;
+  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.action-buttons{
+  text-align:center;
+  margin-top:40px;
+}
+
+.back-btn{
+  display:inline-block;
+  padding:14px 30px;
+  background:#4f46e5;
+  color:white;
+  text-decoration:none;
+  border-radius:30px;
+  font-weight:bold;
+}
+
+.back-btn:hover{
+  background:#3730a3;
+}
+</style>
+
+
+
+
+
+
+<div class="course-container">
+
+  <div class="hero-section">
+    <h1>Class 12 (BSEB)</h1>
+    <p>Complete Board Exam Preparation Program</p>
+
+    <div class="course-details">
+      <span>📚 Duration: 12 Months</span>
+      <span>🎓 Mode: Online + Offline</span>
+      <span>💰 Fee: ₹11,000 / Year</span>
+    </div>
+  </div>
+
+  <div class="subjects-section">
+
+    <div class="subject-card">
+      <h2>History</h2>
+      <ul>
+        <li>Modern Indian History</li>
+        <li>National Movement</li>
+        <li>World Wars</li>
+        <li>Post Independence India</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>Political Science</h2>
+      <ul>
+        <li>Indian Constitution</li>
+        <li>Democracy & Elections</li>
+        <li>International Relations</li>
+        <li>Government Institutions</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>Geography</h2>
+      <ul>
+        <li>Human Geography</li>
+        <li>Resources & Development</li>
+        <li>Environment & Ecology</li>
+        <li>Map Work</li>
+      </ul>
+    </div>
+
+    <div class="subject-card">
+      <h2>Economics</h2>
+      <ul>
+        <li>Macroeconomics</li>
+        <li>Indian Economy</li>
+        <li>Money & Banking</li>
+        <li>Government Budget</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="features-section">
+    <h2>Course Features</h2>
+
+    <div class="feature-grid">
+      <div class="feature-box">
+        📖 Complete Study Material
+      </div>
+
+      <div class="feature-box">
+        📝 Weekly Tests
+      </div>
+
+      <div class="feature-box">
+        🎯 Board Exam Preparation
+      </div>
+
+      <div class="feature-box">
+        👨‍🏫 Expert Faculty
+      </div>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <%= link_to "Back to Homepage",
+                "/sample/homepage",
+                class: "back-btn" %>
+  </div>
+
+</div>

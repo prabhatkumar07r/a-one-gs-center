@@ -1,0 +1,11 @@
+one:
+  title: Ruby Basics
+  description: Basics playlist
+  position: 1
+  course: one
+
+two:
+  title: Rails Advanced
+  description: Advanced playlist
+  position: 1
+  course: two

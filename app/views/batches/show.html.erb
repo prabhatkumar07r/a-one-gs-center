@@ -1,0 +1,235 @@
+<div class="container-fluid">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+      <h2 class="fw-bold text-primary">
+        <i class="bi bi-people-fill"></i>
+        <%= @batch.name %>
+      </h2>
+
+      <p class="text-muted">
+        Batch Details
+      </p>
+    </div>
+
+    <div>
+
+      <%= link_to edit_batch_path(@batch),
+          class: "btn btn-warning" do %>
+
+        <i class="bi bi-pencil-square"></i>
+        Edit
+
+      <% end %>
+
+      <%= link_to batches_path,
+          class: "btn btn-secondary" do %>
+
+        <i class="bi bi-arrow-left"></i>
+        Back
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="col-lg-8">
+
+      <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+
+          <h5 class="mb-0">
+            Batch Information
+          </h5>
+
+        </div>
+
+        <div class="card-body">
+
+          <table class="table table-bordered">
+
+            <tr>
+              <th width="30%">Batch Name</th>
+              <td><%= @batch.name %></td>
+            </tr>
+
+            <tr>
+              <th>Course</th>
+              <td><%= @batch.course %></td>
+            </tr>
+
+            <tr>
+              <th>Start Date</th>
+              <td><%= @batch.start_date %></td>
+            </tr>
+
+            <tr>
+              <th>End Date</th>
+              <td><%= @batch.end_date %></td>
+            </tr>
+
+            <tr>
+              <th>Timing</th>
+              <td><%= @batch.timing %></td>
+            </tr>
+
+            <tr>
+              <th>Status</th>
+
+              <td>
+
+                <% if @batch.status == "Active" %>
+
+                  <span class="badge bg-success">
+                    Active
+                  </span>
+
+                <% else %>
+
+                  <span class="badge bg-danger">
+                    Inactive
+                  </span>
+
+                <% end %>
+
+              </td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+      <div class="card shadow border-0">
+
+        <div class="card-header bg-success text-white">
+
+          <h5 class="mb-0">
+            Statistics
+          </h5>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="mb-3">
+
+            <h6>Total Students</h6>
+
+            <h2 class="text-primary">
+              <%= @batch.students.count rescue 0 %>
+            </h2>
+
+          </div>
+
+          <div>
+
+            <h6>Batch Status</h6>
+
+            <% if @batch.status == "Active" %>
+
+              <span class="badge bg-success p-2">
+                Active
+              </span>
+
+            <% else %>
+
+              <span class="badge bg-danger p-2">
+                Inactive
+              </span>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card shadow border-0 mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+      <h5 class="mb-0">
+        Students
+      </h5>
+
+    </div>
+
+    <div class="card-body">
+
+      <% if @batch.respond_to?(:students) && @batch.students.any? %>
+
+        <table class="table table-striped">
+
+          <thead>
+
+            <tr>
+
+              <th>Name</th>
+
+              <th>Email</th>
+
+              <th>Mobile</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <% @batch.students.each do |student| %>
+
+              <tr>
+
+                <td><%= student.name %></td>
+
+                <td><%= student.email %></td>
+
+                <td><%= student.mobile %></td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      <% else %>
+
+        <div class="text-center py-4">
+
+          <i class="bi bi-people display-4 text-secondary"></i>
+
+          <h5 class="mt-3">
+            No students assigned yet.
+          </h5>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

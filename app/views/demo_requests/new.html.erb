@@ -1,0 +1,571 @@
+
+<style>
+  /* ===========================
+   Global Variables
+=========================== */
+:root {
+    --gradient-primary: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+    --gradient-secondary: linear-gradient(135deg, #FF057C 0%, #8D0B93 100%);
+    --gradient-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    --gradient-dark: linear-gradient(135deg, #2b2b2b 0%, #1c1c1c 100%);
+
+    --text-dark: #2B2D42;
+    --text-light: #FFFFFF;
+    --text-gray: #6C757D;
+
+    --box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    --transition: all 0.3s ease;
+    --border-radius: 12px;
+}
+
+
+/* ===========================
+   Global Reset
+=========================== */
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body {
+    font-family:'Poppins', sans-serif;
+    color:var(--text-dark);
+    background:#f8f9fa;
+}
+
+
+a {
+    text-decoration:none;
+    color:inherit;
+}
+
+
+ul {
+    list-style:none;
+}
+
+
+.container {
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:0 20px;
+}
+
+
+/* ===========================
+        HEADER
+=========================== */
+
+
+.header {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1000;
+
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(10px);
+
+    box-shadow:0 2px 15px rgba(0,0,0,0.1);
+
+    padding:15px 0;
+}
+
+
+
+.header-content {
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+
+
+/* Logo */
+
+.logo img {
+
+    height:50px;
+
+}
+
+
+
+/* Navigation */
+
+nav ul {
+
+    display:flex;
+    gap:30px;
+
+}
+
+
+
+nav ul li a {
+
+    font-weight:500;
+
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    transition:var(--transition);
+
+}
+
+
+
+nav ul li a:hover {
+
+    background:var(--gradient-light);
+
+    color:#6A11CB;
+
+}
+
+
+
+/* Dropdown */
+
+.dropdown {
+
+    position:absolute;
+
+    top:100%;
+    left:0;
+
+    width:200px;
+
+    background:white;
+
+    box-shadow:var(--box-shadow);
+
+    border-radius:var(--border-radius);
+
+    padding:10px 0;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:translateY(10px);
+
+    transition:var(--transition);
+
+}
+
+
+
+nav ul li:hover .dropdown {
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(0);
+
+}
+
+
+
+.dropdown a {
+
+    display:block;
+
+    padding:10px 20px;
+
+}
+
+
+
+.dropdown a:hover {
+
+    background:var(--gradient-primary);
+
+    color:white;
+
+}
+
+
+
+/* Authentication Buttons */
+
+
+.auth-buttons {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+
+
+.welcome-text {
+
+    font-weight:500;
+
+}
+
+
+
+.auth-btn {
+
+    padding:12px 25px;
+
+    background:var(--gradient-primary);
+
+    color:white;
+
+    border-radius:50px;
+
+    font-weight:500;
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+}
+
+
+
+.auth-btn:hover {
+
+    background:var(--gradient-secondary);
+
+    transform:translateY(-3px);
+
+}
+
+
+
+.logout-btn {
+
+    font-family:inherit;
+
+}
+
+
+
+/* Mobile Menu Button */
+
+.mobile-menu-toggle {
+
+    display:none;
+
+    background:none;
+
+    border:none;
+
+    font-size:1.5rem;
+
+    cursor:pointer;
+
+}
+
+
+
+/* ===========================
+       MOBILE HEADER
+=========================== */
+
+
+@media(max-width:768px){
+
+
+.header-content {
+
+    display:flex;
+
+}
+
+
+
+.logo {
+
+    flex:1;
+
+}
+
+
+
+.auth-buttons {
+
+    flex:1;
+
+    justify-content:center;
+
+}
+
+
+
+.mobile-menu-toggle {
+
+    display:block;
+
+}
+
+
+
+nav {
+
+    position:fixed;
+
+    top:0;
+
+    left:-100%;
+
+    width:80%;
+
+    height:100vh;
+
+    background:white;
+
+    padding:60px 20px;
+
+    box-shadow:var(--box-shadow);
+
+    transition:0.3s;
+
+}
+
+
+
+nav.active {
+
+    left:0;
+
+}
+
+
+
+nav ul {
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+
+.auth-btn {
+
+    padding:10px 15px;
+
+    font-size:0.9rem;
+
+}
+
+
+</style>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+
+      <!-- Logo -->
+      <%= link_to homepage_path, class: "logo" do %>
+        <%= image_tag "logo.jpeg", alt: "A One GS Center" %>
+      <% end %>
+
+      <!-- Navigation -->
+      <nav>
+        <ul>
+          <li><%= link_to "Home", homepage_path %></li>
+          <li><%= link_to "Courses", homepage_path(anchor: "courses") %></li>
+          <li><%= link_to "Gallery", homepage_path(anchor: "gallery") %></li>
+          <li><%= link_to "Teachers", homepage_path(anchor: "teachers") %></li>
+          <%# <li><%= link_to "Resources", resources_path %>  
+        </ul>
+      </nav>
+
+      <!-- Right Side -->
+      <div class="auth-buttons">
+        <% if user_signed_in? %>
+
+          <span class="welcome-text">
+            Welcome, <%= current_user.name %>
+          </span>
+
+          <%= link_to "Dashboard",
+                student_dashboard_path,
+                class: "auth-btn" %>
+
+          <%= button_to "Logout",
+                destroy_user_session_path,
+                method: :delete,
+                class: "auth-btn logout-btn",
+                form_class: "logout-form" %>
+
+        <% else %>
+
+          <%= link_to "Login / Register",
+                new_user_session_path,
+                class: "auth-btn" %>
+
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<div class="container py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+      <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white text-center">
+
+          <h3 class="mb-0">
+            🎓 Fill Form For Demo Class
+          </h3>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+          <%= form_with model: Demo.new,
+              url: demo_requests_path,
+              local: true do |f| %>
+
+
+            <div class="mb-3">
+
+              <%= f.label :name,
+                  "Full Name",
+                  class: "form-label fw-bold" %>
+
+              <%= f.text_field :name,
+                  class: "form-control",
+                  placeholder: "Enter your name",
+                  required: true %>
+
+            </div>
+
+
+
+            <div class="mb-3">
+
+              <%= f.label :phone,
+                  "Contact Number",
+                  class: "form-label fw-bold" %>
+
+              <%= f.telephone_field :phone,
+                  class: "form-control",
+                  placeholder: "Enter mobile number",
+                  required: true %>
+
+            </div>
+
+
+
+            <div class="mb-3">
+
+              <%= f.label :email,
+                  "Email Address",
+                  class: "form-label fw-bold" %>
+
+              <%= f.email_field :email,
+                  class: "form-control",
+                  placeholder: "Enter email",
+                  required: true %>
+
+            </div>
+
+
+
+            <div class="mb-3">
+
+              <%= f.label :course,
+                  class: "form-label fw-bold" %>
+
+              <%= f.select :course,
+
+                [
+                  "SSC CGL",
+                  "SSC GD",
+                  "Railway NTPC",
+                  "BPSC",
+                  "UPSC",
+                  "11th BSEB",
+                  "12th BSEB"
+                ],
+
+                { prompt: "Select Course" },
+
+                { class: "form-select" } %>
+
+            </div>
+
+
+
+            <div class="mb-3">
+
+              <%= f.label :batch,
+                  class: "form-label fw-bold" %>
+
+
+              <%= f.select :batch,
+
+                [
+                  "Morning",
+                  "Afternoon",
+                  "Evening"
+                ],
+
+                { prompt: "Select Batch" },
+
+                { class: "form-select" } %>
+
+            </div>
+
+
+
+            <div class="d-grid">
+
+              <%= f.submit "Book Free Demo",
+                  class: "btn btn-primary btn-lg" %>
+
+            </div>
+
+
+          <% end %>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

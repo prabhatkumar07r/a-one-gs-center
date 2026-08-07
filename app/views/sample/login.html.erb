@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup - A ONE GS CENTER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+            --gradient-secondary: linear-gradient(135deg, #FF057C 0%, #8D0B93 100%);
+            --gradient-accent: linear-gradient(135deg, #FFE53B 0%, #FF2525 100%);
+            --gradient-success: linear-gradient(135deg, #0BA360 0%, #3CBA92 100%);
+            --gradient-warning: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%);
+            --gradient-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            --text-dark: #2B2D42;
+            --text-light: #FFFFFF;
+            --text-gray: #6C757D;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--gradient-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .auth-image {
+            flex: 1;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 15s infinite linear;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .auth-image-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--text-light);
+            padding: 20px;
+        }
+
+        .auth-image-content img {
+            max-width: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+        }
+
+        .auth-image-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-image-content p {
+            font-size: 1.1rem;
+            max-width: 300px;
+            margin: 0 auto;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-forms {
+            flex: 1;
+            padding: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .close-auth {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .close-auth:hover {
+            background: #e9ecef;
+            transform: rotate(90deg);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e9ecef;
+            justify-content: center;
+        }
+
+        .auth-tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-gray);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: #6A11CB;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding:15px;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--gradient-light);
+        }
+
+        .form-control:focus {
+            border-color: #6A11CB;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 1px;
+            top: 53px;
+            color: #6A11CB;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-check-input {
+            margin-right: 10px;
+            accent-color: #6A11CB;
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #6A11CB;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--gradient-primary);
+            color: var(--text-light);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--gradient-secondary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--text-gray);
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e9ecef;
+        }
+
+        .auth-divider span {
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-card);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .social-btn i {
+            font-size: 1.2rem;
+        }
+
+        .social-btn.facebook {
+            background: linear-gradient(135deg, #3b5998 0%, #2d4373 100%);
+            color: white;
+            border: none;
+        }
+
+        .social-btn.google {
+            background: linear-gradient(135deg, #DB4437 0%, #B23121 100%);
+            color: white;
+            border: none;
+        }
+
+        .auth-footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .auth-footer a {
+            color: #6A11CB;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation for form switching */
+        .auth-form {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .auth-form.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 500px;
+                min-height: auto;
+            }
+
+            .auth-image {
+                padding: 30px 20px;
+            }
+
+            .auth-image-content img {
+                max-width: 120px;
+            }
+
+            .auth-image-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .auth-forms {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .auth-tabs {
+                justify-content: center;
+            }
+
+            .auth-tab {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+
+            .auth-image-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .auth-image-content p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-image">
+            <div class="auth-image-content">
+                <%= image_tag "logo.jpeg", alt: "A ONE GS CENTER" %>              
+                <h2>A ONE GS CENTER </h2>
+                <p>Empowering students to excel in Arts through quality education and competitive preparation</p>
+            </div>
+        </div>
+
+        <div class="auth-forms">
+            <div class="close-auth">
+                <i class="fas fa-times"></i>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Login</div>
+                <div class="auth-tab" data-tab="register">Register</div>
+            </div>
+        <%#  <div class="tabs">
+                       <a href="/sample/login">Login</a>
+                       <a href="/sample/registration" class="active">Register</a>
+        </div> %>
+
+            <div class="auth-form active" id="login-form">
+                <h2 class="form-title">Welcome Back</h2>
+
+                <form action="/sample/check" method="post">
+
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                    <div class="form-group">
+                        <label for="loginEmail">Email or Username</label>
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="email" name="email" id="loginEmail" class="form-control"
+                            placeholder="Enter your email or username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" name="password" class="form-control" placeholder="Enter your password"
+                            required>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" id="rememberMe" class="form-check-input">
+                        <label for="rememberMe" class="form-check-label">Remember me</label>
+                    </div>
+
+                    <%= link_to "Forgot Password?", new_password_reset_path, class: "forgot-password" %>
+
+                    <button type="submit" class="btn">Login</button>
+
+                </form>
+
+                <div class="auth-divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div class="social-login">
+                    <div class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-btn google">
+                        <i class="fab fa-google"></i>
+                    </div>
+                </div>
+
+                <div class="auth-footer">
+                    Don't have an account?<%= link_to "Register Now", new_user_registration_path %>
+                </div>
+            </div>
+
+            <div class="auth-form" id="register-form">
+                <h2 class="form-title">Create Account</h2>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <i class="fas fa-user form-icon"></i>
+                        <input type="text" id="fullName" class="form-control" placeholder="Enter your full name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" id="registerEmail" class="form-control" placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" id="registerPassword" class="form-control"
+                            placeholder="Create a password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" id="confirmPassword" class="form-control"
+                            placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" id="termsAgree" class="form-check-input" required>
+                        <label for="termsAgree" class="form-check-label">I agree to the <a href="#">Terms &
+                                Conditions</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" class="btn">Create Account</button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>Or sign up with</span>
+                </div>
+
+                <div class="social-login">
+                    <div class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-btn google">
+                        <i class="fab fa-google"></i>
+                    </div>
+                </div>
+
+                <div class="auth-footer">
+                    Already have an account? <%= link_to "Login", new_user_session_path %>
+                </div>
+            </div>
+        </div>
+    </div>

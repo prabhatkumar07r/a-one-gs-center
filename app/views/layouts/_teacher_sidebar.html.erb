@@ -1,0 +1,123 @@
+<div class="admin-sidebar">
+
+  <div class="sidebar-logo text-center py-4">
+    <%= image_tag "logo.jpeg", width: 70, class: "rounded-circle mb-2" %>
+
+    <h4>A ONE GS CENTER</h4>
+    <small>Teacher Panel</small>
+  </div>
+
+  <hr>
+
+  <ul class="nav flex-column">
+
+    <!-- Dashboard -->
+    <li class="nav-item">
+      <%= link_to teacher_dashboard_path, class: "nav-link" do %>
+        <i class="bi bi-speedometer2"></i>
+        Dashboard
+      <% end %>
+    </li>
+
+    <!-- Courses -->
+    <li class="nav-item">
+
+  <%= link_to teacher_panel_courses_path,
+      class: "nav-link" do %>
+
+    <i class="bi bi-book-fill"></i>
+    My Courses
+
+  <% end %>
+
+</li>
+    <!-- Students -->
+    <li class="nav-item">
+      <%= link_to "#", class: "nav-link" do %>
+        <i class="bi bi-people-fill"></i>
+        Students
+      <% end %>
+    </li>
+
+    <!-- ========================= -->
+    <!-- Study Material -->
+    <!-- ========================= -->
+
+    <li class="nav-item">
+
+      <a class="nav-link"
+         data-bs-toggle="collapse"
+         href="#studyMenu">
+
+        <i class="bi bi-journal-text"></i>
+        Study Material
+
+        <i class="bi bi-chevron-down float-end"></i>
+
+      </a>
+
+      <div class="collapse" id="studyMenu">
+
+        <%= link_to study_notes_path,
+            class: "submenu d-block ps-4 py-2" do %>
+
+          <i class="bi bi-file-earmark-pdf"></i>
+          Study Notes
+
+        <% end %>
+
+        <%= link_to courses_path,
+            class: "submenu d-block ps-4 py-2" do %>
+
+          <i class="bi bi-collection-play"></i>
+          Playlists
+
+        <% end %>
+
+        <%= link_to courses_path,
+            class: "submenu d-block ps-4 py-2" do %>
+
+          <i class="bi bi-play-circle"></i>
+          Videos
+
+        <% end %>
+
+       <% if defined?(@course) && @course.present? %>
+
+  <%= link_to teacher_panel_course_resources_path(@course),
+      class:"submenu" do %>
+
+    <i class="fas fa-folder-open me-2 text-primary"></i>
+    Resources
+
+  <% end %>
+
+<% end %>
+
+      </div>
+
+    </li>
+
+    <!-- Profile -->
+    <li class="nav-item">
+      <%= link_to edit_user_registration_path, class: "nav-link" do %>
+        <i class="bi bi-person-circle"></i>
+        My Profile
+      <% end %>
+    </li>
+
+    <!-- Logout -->
+    <li class="nav-item mt-4">
+      <%= button_to destroy_user_session_path,
+            method: :delete,
+            class: "nav-link text-danger logout-form" do %>
+
+        <i class="bi bi-box-arrow-right"></i>
+        Logout
+
+      <% end %>
+    </li>
+
+  </ul>
+
+</div>

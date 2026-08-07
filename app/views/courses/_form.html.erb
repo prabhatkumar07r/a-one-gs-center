@@ -1,0 +1,89 @@
+<%= form_with model: @course do |f| %>
+
+  <div class="mb-3">
+    <%= f.label :Course_name, "Course Name" %>
+    <%= f.text_field :Course_name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :duration %>
+    <%= f.text_field :duration, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :fee, "Fee" %>
+    <%= f.number_field :fee, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :original_fee, "Original Fee" %>
+    <%= f.number_field :original_fee, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :discount_percentage, "Discount Percentage (%)" %>
+    <%= f.number_field :discount_percentage, class: "form-control" %>
+  </div>
+ <div class="mb-3">
+  <%= f.label :description, class: "form-label" %>
+
+  <%= f.text_area :description,
+      class: "form-control",
+      rows: 5 %>
+</div>
+
+
+  <div class="mb-3">
+  <%= f.label :learning_outcomes, "What You'll Learn" %>
+
+  <%= f.text_area :learning_outcomes,
+      class: "form-control",
+      rows: 6,
+      placeholder: "Enter one learning outcome per line" %>
+
+  <small class="text-muted">
+    Example:
+    Ancient Indian History
+    Modern Indian History
+    Indian Constitution
+  </small>
+</div>
+
+<div class="mb-3">
+  <%= f.label :requirements, "Requirements" %>
+
+  <%= f.text_area :requirements,
+      class: "form-control",
+      rows: 4,
+      placeholder: "Enter one requirement per line" %>
+
+  <small class="text-muted">
+    Example:
+    Basic knowledge of History
+    Notebook & Pen
+    Internet Connection
+  </small>
+</div>
+
+<div class="mb-3">
+  <%= f.label :teacher_id, "Teacher" %>
+
+  <%= f.collection_select :teacher_id,
+                          Teacher.all,
+                          :id,
+                          :name,
+                          { prompt: "Select Teacher" },
+                          { class: "form-select" } %>
+</div>
+
+  <div class="mb-3">
+    <%= f.label :status %>
+    <%= f.select :status,
+        ["Active", "Inactive"],
+        {},
+        class: "form-select" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+
+<% end %>

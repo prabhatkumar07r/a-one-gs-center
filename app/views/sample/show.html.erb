@@ -1,0 +1,65 @@
+<div class="container mt-4">
+
+<h2>Registration Management</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Mobile</th>
+
+<th>Registered On</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% @student.each do |student| %>
+
+<tr>
+
+<td><%= student.id %></td>
+
+<td><%= student.name %></td>
+
+<td><%= student.email %></td>
+
+<td><%= student.mobile %></td>
+
+<td><%= student.created_at.strftime("%d-%m-%Y") %></td>
+
+<td>
+
+<%= link_to "View", student, class:"btn btn-info btn-sm" %>
+
+<%= link_to "Edit", edit_student_path(student), class:"btn btn-warning btn-sm" %>
+
+<%= button_to "Delete",
+      student_path(student),
+      method: :delete,
+      form: { data: { turbo_confirm: "Delete this registration?" } },
+      class:"btn btn-danger btn-sm d-inline" %>
+
+</td>
+
+</tr>
+
+<% end %>
+
+</tbody>
+
+</table>
+
+</div>

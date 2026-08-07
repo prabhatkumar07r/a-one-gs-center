@@ -1,0 +1,99 @@
+/* ================= HERO ================= */
+
+.hero {
+  padding: 120px 0 100px;
+  background:
+    var(--gradient-hero),
+    url("https://images.unsplash.com/photo-1522881193457-37ae97c905bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80")
+      center/cover no-repeat;
+  color: var(--text-light);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background-attachment: fixed;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
+    animation: pulse 15s infinite linear;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  h1 {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-family: "Dancing Script", cursive;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+.coaching-name {
+  font-family: "Dancing Script", cursive;
+  font-size: 4rem;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.coaching-icon {
+  width: auto;
+  height: 60px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}

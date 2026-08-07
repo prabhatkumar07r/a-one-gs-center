@@ -1,0 +1,176 @@
+<div class="container py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+      <div class="card shadow border-0">
+
+        <div class="card-header bg-warning text-dark">
+
+          <h3 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Edit Study Notes
+          </h3>
+
+        </div>
+
+        <div class="card-body">
+
+          <% if @note.errors.any? %>
+
+            <div class="alert alert-danger">
+
+              <h5>
+                <%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved.
+              </h5>
+
+              <ul class="mb-0">
+
+                <% @note.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+
+              </ul>
+
+            </div>
+
+          <% end %>
+
+          <%= form_with model: @note,
+                        url: study_note_path(@note),
+                        method: :patch,
+                        local: true do |f| %>
+
+            <div class="mb-3">
+
+              <%= label_tag :course_id, "Course", class: "form-label fw-bold" %>
+
+              <%= select_tag :course_id,
+                    options_from_collection_for_select(
+                      @courses,
+                      :id,
+                      :Course_name,
+                      @note.playlist&.course_id
+                    ),
+                    class: "form-select",
+                    id: "course_select" %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :playlist_id, class: "form-label fw-bold" %>
+
+              <%= f.select :playlist_id,
+                    Playlist.where(course_id: @note.playlist&.course_id)
+                            .pluck(:title, :id),
+                    {},
+                    class: "form-select",
+                    id: "playlist_select" %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :title, class: "form-label fw-bold" %>
+
+              <%= f.text_field :title,
+                    class: "form-control",
+                    required: true %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :description, class: "form-label fw-bold" %>
+
+              <%= f.text_area :description,
+                    rows: 4,
+                    class: "form-control" %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :pdf_file,
+                    "Replace PDF (Optional)",
+                    class: "form-label fw-bold" %>
+
+              <%= f.file_field :pdf_file,
+                    class: "form-control",
+                    accept: "application/pdf" %>
+
+            </div>
+
+            <% if @note.pdf_file.attached? %>
+
+              <div class="alert alert-info">
+
+                <strong>Current File:</strong>
+
+                <%= @note.pdf_file.filename %>
+
+              </div>
+
+            <% end %>
+
+            <div class="d-flex justify-content-between">
+
+              <%= link_to resources_path,
+                    class: "btn btn-secondary" do %>
+
+                <i class="fas fa-arrow-left"></i>
+
+                Back
+
+              <% end %>
+
+              <%= f.submit "Update Study Notes",
+                    class: "btn btn-warning px-4" %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const course = document.getElementById("course_select");
+    const playlist = document.getElementById("playlist_select");
+
+    course.addEventListener("change", function(){
+
+        fetch(`/study_notes/playlists?course_id=${course.value}`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            playlist.innerHTML = "";
+
+            data.forEach(function(item){
+
+                playlist.innerHTML +=
+                `<option value="${item.id}">${item.title}</option>`;
+
+            });
+
+        });
+
+    });
+
+});
+
+</script>

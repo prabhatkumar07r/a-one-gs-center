@@ -1,0 +1,139 @@
+<div class="container-fluid">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+      <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-primary text-white">
+
+          <h3 class="mb-0">
+            <i class="bi bi-plus-circle-fill"></i>
+            Create New Batch
+          </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+          <%= form_with model: @batch, local: true do |f| %>
+
+            <% if @batch.errors.any? %>
+
+              <div class="alert alert-danger">
+
+                <h5>Please fix the following errors:</h5>
+
+                <ul class="mb-0">
+                  <% @batch.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+
+              </div>
+
+            <% end %>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :name, class: "form-label fw-bold" %>
+
+                <%= f.text_field :batch_name,
+                    class: "form-control",
+                    placeholder: "Morning Batch" %>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :course, class: "form-label fw-bold" %>
+
+                 <%= f.collection_select :course_id,
+                  Course.all,
+                  :id,
+                  :Course_name,
+                  { prompt: "Select Course" },
+                  { class: "form-select" } %>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :start_date, class: "form-label fw-bold" %>
+
+                <%= f.date_field :start_date,
+                    class: "form-control" %>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :end_date, class: "form-label fw-bold" %>
+
+                <%= f.date_field :end_date,
+                    class: "form-control" %>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :timing, class: "form-label fw-bold" %>
+
+                <%= f.text_field :timing,
+                    class: "form-control",
+                    placeholder: "07:00 AM - 09:00 AM" %>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :status, class: "form-label fw-bold" %>
+
+                <%= f.select :status,
+                    ["Active", "Inactive"],
+                    {},
+                    class: "form-select" %>
+
+              </div>
+
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between">
+
+              <%= link_to batches_path,
+                  class: "btn btn-secondary" do %>
+
+                <i class="bi bi-arrow-left"></i>
+                Back
+
+              <% end %>
+
+              <%= f.submit "Create Batch",
+                  class: "btn btn-primary px-4" %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

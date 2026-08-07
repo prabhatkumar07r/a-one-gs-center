@@ -1,0 +1,17 @@
+one:
+  title: Rails Basics Video
+  description: Introduction video
+  duration: "30 min"
+  course: one
+  playlist: one
+  position: 1
+  video_url: "https://youtube.com/watch?v=test123"
+
+two:
+  title: Advanced Rails Video
+  description: Advanced concepts
+  duration: "45 min"
+  course: two
+  playlist: two
+  position: 1
+  video_url: "https://youtube.com/watch?v=test456"
