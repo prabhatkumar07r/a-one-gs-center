@@ -500,6 +500,7 @@ DEPENDENCIES
   jbuilder
   kamal
   kaminari (~> 1.2)
+  matrix
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection

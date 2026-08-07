@@ -21,7 +21,9 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "prawn"
 gem "prawn-table"
+gem "matrix"
 gem "rqrcode"
+
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
