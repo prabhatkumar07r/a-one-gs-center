@@ -1,0 +1,42 @@
+/* ================= FEATURES ================= */
+
+.features {
+  padding: 100px 0;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+.feature-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 45px 30px;
+  text-align: center;
+  transition: .4s;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+  border-left: 5px solid #6a11cb;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+
+.feature-icon {
+  font-size: 55px;
+  color: #5a38ff;
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  font-size: 30px;
+  margin-bottom: 15px;
+  color: #e0008b;
+}
+
+.feature-card p {
+  font-size: 18px;
+  line-height: 1.8;
+}

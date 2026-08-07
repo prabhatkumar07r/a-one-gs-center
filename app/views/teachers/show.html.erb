@@ -1,0 +1,43 @@
+<%= render "layouts/header" %>
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>Teacher Details</h3>
+
+</div>
+
+<div class="card-body">
+
+<p><strong>Name :</strong> <%= @teacher.name %></p>
+
+<p><strong>Email :</strong> <%= @teacher.email %></p>
+
+<p><strong>Mobile :</strong> <%= @teacher.mobile %></p>
+
+<p><strong>Subject :</strong> <%= @teacher.subject %></p>
+
+<p><strong>Qualification :</strong> <%= @teacher.qualification %></p>
+
+<p><strong>Experience :</strong> <%= @teacher.experience %> Years</p>
+
+<p><strong>Salary :</strong> ₹<%= @teacher.salary %></p>
+
+<p><strong>Joining Date :</strong> <%= @teacher.joining_date %></p>
+
+<p><strong>Status :</strong> <%= @teacher.status %></p>
+
+<%= link_to "Back",
+      teachers_path,
+      class:"btn btn-secondary" %>
+
+</div>
+
+</div>
+
+</div>
+
+<%= render "layouts/footer" %>

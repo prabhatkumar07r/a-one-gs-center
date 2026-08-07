@@ -1,0 +1,15 @@
+one:
+  Course_name: Ruby Course
+  description: Learn Ruby
+  duration: 30 Days
+  fee: 1000
+  status: Active
+  teacher: one
+
+two:
+  Course_name: Rails Course
+  description: Learn Rails
+  duration: 45 Days
+  fee: 2000
+  status: Active
+  teacher: two

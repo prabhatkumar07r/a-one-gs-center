@@ -1,0 +1,33 @@
+<% content_for :title, "Upload Resource" %>
+
+<div class="container-fluid mt-4">
+
+  <div class="card shadow border-0">
+
+    <div class="card-header bg-success text-white">
+
+      <h3>
+        📂 Upload Resource
+      </h3>
+
+      <small>
+
+        Course :
+
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
+
+      </small>
+
+    </div>
+
+    <div class="card-body">
+
+      <%= render "form" %>
+
+    </div>
+
+  </div>
+
+</div>

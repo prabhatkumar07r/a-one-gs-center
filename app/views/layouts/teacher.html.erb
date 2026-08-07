@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Teacher Panel | A ONE GS CENTER</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <%= javascript_importmap_tags %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body class="admin-body">
+
+  <div class="admin-wrapper">
+
+    <%= render "layouts/teacher_sidebar" %>
+
+    <div class="admin-main">
+
+      <%= render "layouts/teacher_navbar" %>
+
+      <main class="admin-content">
+
+        <% if notice %>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= notice %>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"></button>
+          </div>
+        <% end %>
+
+        <% if alert %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= alert %>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"></button>
+          </div>
+        <% end %>
+
+        <%= yield %>
+
+      </main>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

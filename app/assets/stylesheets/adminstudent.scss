@@ -1,0 +1,25 @@
+.card{
+    border-radius:15px;
+}
+
+.table td,
+.table th{
+    vertical-align:middle;
+}
+
+.btn{
+    border-radius:8px;
+}
+
+.form-control{
+    border-radius:8px;
+}
+
+.card-header{
+    border-radius:15px 15px 0 0 !important;
+}
+
+.table tbody tr:hover{
+    background:#f8f9fa;
+    transition:.3s;
+}

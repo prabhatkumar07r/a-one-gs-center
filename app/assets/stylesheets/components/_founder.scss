@@ -1,0 +1,71 @@
+/* ==========================================================
+   FOUNDER SECTION
+========================================================== */
+
+.founder {
+  padding: 100px 0;
+  background: var(--gradient-light);
+}
+
+.founder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 50px;
+  align-items: center;
+}
+
+.founder-image {
+  img {
+    width: 100%;
+    border-radius: 50%;
+    // border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+}
+
+.founder-title {
+  font-size: 2rem;
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.founder-quote {
+  font-style: italic;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--gradient-card);
+  border-left: 4px solid;
+  border-image: var(--gradient-primary);
+  border-image-slice: 1;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.founder-contact {
+  margin-top: 30px;
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+
+    i {
+      width: 30px;
+      height: 30px;
+      background: var(--gradient-primary);
+      color: var(--text-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<%= form_with model: @event do |f| %>
+
+  <div class="mb-3">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :photo %>
+    <%= f.file_field :photo, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :status %>
+    <%= f.select :status,
+          [["Active", true], ["Inactive", false]],
+          {},
+          class: "form-select" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+
+<% end %>

@@ -1,0 +1,55 @@
+<%= form_with model: @gallery, local: true do |f| %>
+
+<div class="mb-3">
+  <%= f.label :title %>
+  <%= f.text_field :title, class: "form-control" %>
+</div>
+
+<div class="mb-3">
+  <%= f.label :category %>
+  <%= f.select :category,
+      ["Classroom","Seminar","Event","Prize Distribution","Tour","Other"],
+      {},
+      class: "form-select" %>
+</div>
+
+<div class="mb-3">
+  <%= f.label :description %>
+  <%= f.text_area :description,
+      rows: 4,
+      class: "form-control" %>
+</div>
+
+<!-- Current Image -->
+
+<% if @gallery.photos.attached? %>
+  <label>Current Images</label>
+
+  <div class="row mt-3">
+    <% @gallery.photos.each do |photo| %>
+      <div class="col-md-3 mb-3">
+        <%= image_tag photo,
+            width: 180,
+            class: "img-thumbnail shadow" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="mb-3">
+  <%= f.label :photos %>
+ <%= f.file_field :photos, multiple: true, class: "form-control" %>
+  
+</div>
+
+<div class="mb-3">
+  <%= f.label :status %>
+  <%= f.select :status,
+      ["Active","Inactive"],
+      {},
+      class: "form-select" %>
+</div>
+
+<%= f.submit "Save Gallery", class: "btn btn-primary" %>
+
+<% end %>

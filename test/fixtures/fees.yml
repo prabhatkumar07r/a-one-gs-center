@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enrollment: one
+  total_fee: 9.99
+  paid_amount: 9.99
+  due_amount: 9.99
+  payment_date: 2026-07-21
+  payment_mode: MyString
+  receipt_no: MyString
+  status: MyString
+
+two:
+  enrollment: two
+  total_fee: 9.99
+  paid_amount: 9.99
+  due_amount: 9.99
+  payment_date: 2026-07-21
+  payment_mode: MyString
+  receipt_no: MyString
+  status: MyString

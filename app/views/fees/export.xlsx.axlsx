@@ -1,0 +1,40 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Fee Report") do |sheet|
+
+  sheet.add_row [
+    "Receipt No",
+    "Student",
+    "Course",
+    "Total Fee",
+    "Paid",
+    "Due",
+    "Status",
+    "Payment Date"
+  ]
+
+  @fees.each do |fee|
+
+    sheet.add_row [
+
+      fee.receipt_no,
+
+      fee.enrollment.user.name,
+
+      fee.enrollment.course.Course_name,
+
+      fee.total_fee,
+
+      fee.paid_amount,
+
+      fee.due_amount,
+
+      fee.status,
+
+      fee.payment_date
+
+    ]
+
+  end
+
+end

@@ -1,0 +1,2 @@
+module TeacherPanel::ResourcesHelper
+end

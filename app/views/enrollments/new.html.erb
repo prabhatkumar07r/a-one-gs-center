@@ -1,0 +1,58 @@
+<% content_for :show_layout, true %>
+<%= form_with model: @enrollment do |f| %>
+
+
+<div class="mb-3">
+
+<label class="form-label">
+Student
+</label>
+
+<input type="text"
+class="form-control"
+value="<%= current_user.name %>"
+readonly>
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">
+Course
+</label>
+
+
+<input type="text"
+class="form-control"
+value="<%= @course.Course_name %>"
+readonly>
+
+
+<%= f.hidden_field :course_id, value: @course.id %>
+
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">
+Status
+</label>
+
+<%= f.hidden_field :status, value: "Pending" %>
+
+<input type="text"
+class="form-control"
+value="Pending"
+readonly>
+
+</div>
+
+
+<%= f.submit "Confirm Enrollment",
+class:"btn btn-success" %>
+
+
+<% end %>

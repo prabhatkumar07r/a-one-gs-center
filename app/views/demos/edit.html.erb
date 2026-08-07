@@ -1,0 +1,49 @@
+<%=render "layouts/header"%>
+<div class="container mt-5">
+
+<h2>Edit Demo Request</h2>
+
+<%= form_with model: @demo, local: true do |f| %>
+
+<div class="mb-3">
+
+<%= f.label :name %>
+
+<%= f.text_field :name, class:"form-control" %>
+
+</div>
+
+<div class="mb-3">
+
+<%= f.label :phone %>
+
+<%= f.text_field :phone, class:"form-control" %>
+
+</div>
+
+<div class="mb-3">
+
+<%= f.label :email %>
+
+<%= f.email_field :email, class:"form-control" %>
+
+</div>
+
+<div class="mb-3">
+
+<%= f.label :status %>
+
+<%= f.select :status,
+["Pending","Contacted","Enrolled","Rejected"],
+{},
+class:"form-select" %>
+
+</div>
+
+<%= f.submit "Update Demo",
+class:"btn btn-success" %>
+
+<% end %>
+
+</div>
+<%=render "layouts/footer"%>

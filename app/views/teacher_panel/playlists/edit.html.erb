@@ -1,0 +1,43 @@
+<% content_for :title, "Edit Playlist" %>
+
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-warning">
+
+      <h3 class="mb-0">
+        ✏️ Edit Playlist
+      </h3>
+
+      <small>
+        Course:
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
+      </small>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <%= render "form" %>
+
+    </div>
+
+
+    <div class="card-footer">
+
+      <%= link_to "⬅ Back",
+
+          teacher_course_playlists_path(@course),
+
+          class:"btn btn-secondary" %>
+
+    </div>
+
+
+  </div>
+
+</div>

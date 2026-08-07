@@ -1,0 +1,131 @@
+<div class="container-fluid">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+      <h2 class="fw-bold">📚 My Courses</h2>
+      <p class="text-muted mb-0">
+        Manage your course content, playlists, videos and resources.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <% @courses.each do |course| %>
+
+      <div class="col-lg-4 col-md-6 mb-4">
+
+        <div class="card border-0 shadow-lg h-100">
+
+
+          <div class="card-body">
+
+
+            <h4 class="fw-bold text-primary">
+              <%= course.Course_name %>
+            </h4>
+
+
+            <hr>
+
+
+            <p>
+              <i class="bi bi-clock-fill text-primary"></i>
+              <strong>Duration:</strong>
+              <%= course.duration %>
+            </p>
+
+
+            <p>
+              <i class="bi bi-currency-rupee text-success"></i>
+              <strong>Fee:</strong>
+              ₹<%= course.fee %>
+            </p>
+
+
+            <p>
+              <i class="bi bi-play-circle-fill text-danger"></i>
+              <strong>Videos:</strong>
+              <%= course.videos.count %>
+            </p>
+
+
+            <p>
+              <i class="bi bi-collection-play-fill text-warning"></i>
+              <strong>Playlists:</strong>
+              <%= course.playlists.count %>
+            </p>
+
+
+
+            <div class="d-grid gap-2 mt-4">
+
+
+              <!-- Course Details -->
+              <%= link_to teacher_panel_course_path(course),
+                  class: "btn btn-primary" do %>
+
+                <i class="bi bi-eye-fill"></i>
+                Manage Course
+
+              <% end %>
+
+
+
+              <!-- Students -->
+              <%= link_to teacher_panel_course_students_path(course),
+                  class: "btn btn-info text-white" do %>
+
+                <i class="bi bi-people-fill"></i>
+                Students
+
+              <% end %>
+
+
+
+
+              <!-- Playlists -->
+               <%= link_to teacher_panel_course_playlists_path(course),
+             class: "btn btn-success" do %>
+
+            <i class="bi bi-collection-play-fill"></i>
+            Playlists
+
+           <% end %>
+
+
+
+
+              <!-- Videos -->
+               <%= link_to teacher_panel_course_videos_path(course),
+class:"btn btn-warning text-dark" do %>
+
+<i class="bi bi-camera-video-fill"></i>
+Videos
+
+<% end %>
+
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    <% end %>
+
+
+  </div>
+
+
+</div>

@@ -1,0 +1,287 @@
+<%= render "layouts/header" %>
+
+<div class="row mb-4">
+
+  <div class="col-md-2">
+    <div class="card shadow border-start border-primary border-4">
+      <div class="card-body text-center">
+        <h6>Total</h6>
+        <h3><%= @total_demos %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <div class="card shadow border-start border-warning border-4">
+      <div class="card-body text-center">
+        <h6>Pending</h6>
+        <h3><%= @pending %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <div class="card shadow border-start border-info border-4">
+      <div class="card-body text-center">
+        <h6>Contacted</h6>
+        <h3><%= @contacted %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <div class="card shadow border-start border-success border-4">
+      <div class="card-body text-center">
+        <h6>Enrolled</h6>
+        <h3><%= @enrolled %></h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2">
+    <div class="card shadow border-start border-danger border-4">
+      <div class="card-body text-center">
+        <h6>Rejected</h6>
+        <h3><%= @rejected %></h3>
+      </div>
+    </div>
+  </div>
+
+</div>
+<%# <div class="card shadow mt-4">
+  <div class="card-header bg-primary text-white">
+    <h5>Status Wise Demo Requests</h5>
+  </div>
+
+  <div class="card-body">
+    <%= pie_chart @status_chart,
+          donut: true,
+          height: "350px" %>
+  <%# </div> %>
+<%# </div> %>
+
+
+
+<div class="container mt-5">
+
+  <div class="card shadow-lg border-0 rounded-4">
+
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+      <h3 class="mb-0">
+        📚 Demo Class Requests
+      </h3>
+
+
+      <span class="badge bg-light text-dark fs-6">
+        Total : <%= @demos.count %>
+      </span>
+
+    </div>
+    <div class="card mb-4 shadow-sm">
+
+  <div class="card-body">
+
+    <%= form_with url: demos_path,
+                  method: :get,
+                  local: true do %>
+
+      <div class="row">
+
+        <div class="col-md-10">
+
+          <%= text_field_tag :search,
+                             params[:search],
+                             class: "form-control",
+                             placeholder: "Search by Name, Phone or Email..." %>
+
+        </div>
+        <div class="col-md-3">
+
+          <%= select_tag :status,
+
+              options_for_select(
+                [
+                  ["All Status",""],
+                  ["Pending","Pending"],
+                  ["Contacted","Contacted"],
+                  ["Enrolled","Enrolled"],
+                  ["Rejected","Rejected"]
+                ],
+                params[:status]
+              ),
+
+              class:"form-select" %>
+
+        </div>
+
+        <div class="col-md-2">
+
+          <%= submit_tag "🔍 Search",
+                         class: "btn btn-primary w-100" %>
+
+        </div>
+
+      </div>
+      <div class="mb-3">
+
+  <%= link_to "📥 Export Excel",
+
+      export_demos_path(format: :xlsx),
+
+      class:"btn btn-success" %>
+
+</div>
+
+    <% end %>
+
+  </div>
+
+</div>
+    <div class="card-body">
+
+      <div class="table-responsive">
+
+        <table class="table table-hover table-striped align-middle">
+
+          <thead class="table-dark">
+
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Course</th>
+              <th>Batch</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <% @demos.each_with_index do |demo,index| %>
+
+              <tr>
+
+                <td><%= index+1 %></td>
+
+                <td>
+                  <strong><%= demo.name %></strong>
+                </td>
+
+                <td>
+                  <%= demo.phone %>
+                </td>
+
+                <td>
+                  <%= demo.email %>
+                </td>
+
+                <td>
+
+                  <span class="badge bg-info text-dark">
+                    <%= demo.course %>
+                  </span>
+
+                </td>
+
+                <td>
+
+                  <span class="badge bg-secondary">
+                    <%= demo.batch %>
+                  </span>
+
+                </td>
+
+                   <td>
+  <% if demo.status == "Pending" %>
+
+    <span class="badge bg-warning text-dark">
+      Pending
+    </span>
+
+  <% elsif demo.status == "Contacted" %>
+
+    <span class="badge bg-primary">
+      Contacted
+    </span>
+
+  <% elsif demo.status == "Enrolled" %>
+
+    <span class="badge bg-success">
+      Enrolled
+    </span>
+
+  <% elsif demo.status == "Rejected" %>
+
+    <span class="badge bg-danger">
+      Rejected
+    </span>
+
+  <% else %>
+
+    <span class="badge bg-secondary">
+      <%= demo.status %>
+    </span>
+
+  <% end %>
+</td>
+
+                   <td>
+  <div class="d-flex gap-1">
+
+    <%= link_to demo_path(demo),
+        class: "btn btn-info btn-sm text-white" do %>
+
+      <i class="bi bi-eye-fill"></i> View
+
+    <% end %>
+
+    <%= link_to edit_demo_path(demo),
+        class: "btn btn-warning btn-sm" do %>
+
+      <i class="bi bi-pencil-square"></i> Edit
+
+    <% end %>
+
+    <%= link_to demo_path(demo),
+        data: {
+          turbo_method: :delete,
+          turbo_confirm: "Are you sure?"
+        },
+        class: "btn btn-danger btn-sm" do %>
+
+      <i class="bi bi-trash-fill"></i> Delete
+
+    <% end %>
+
+  </div>
+</td>
+
+</td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+        <div class="d-flex justify-content-center mt-4">
+  <%= paginate @demos %>
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%# <div class="d-flex justify-content-center mt-4">
+  <%= paginate @demos %>
+<%# </div> %> 
+<%= render "layouts/footer" %>

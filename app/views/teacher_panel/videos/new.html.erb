@@ -1,0 +1,49 @@
+<% content_for :title, "Add Video" %>
+
+<div class="container-fluid mt-4">
+
+  <div class="card shadow">
+
+
+    <div class="card-header bg-primary text-white">
+
+      <h3>
+        🎥 Add New Video
+      </h3>
+
+      <small>
+        Course:
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
+      </small>
+
+    </div>
+
+
+
+    <div class="card-body">
+
+
+      <%= render "form", video: @video %>
+
+
+    </div>
+
+
+
+    <div class="card-footer">
+
+
+      <%= link_to "⬅ Back",
+          teacher_course_videos_path(@course),
+          class: "btn btn-secondary" %>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>

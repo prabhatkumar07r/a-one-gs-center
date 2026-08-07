@@ -1,0 +1,68 @@
+<div class="auth-container">
+
+  <div class="auth-image">
+    <div class="auth-image-content">
+      <%= image_tag "logo.jpeg", alt: "A ONE GS CENTER" %>
+
+      <h2>A ONE GS CENTER</h2>
+
+      <p>
+        Reset your password securely and continue your learning journey.
+      </p>
+    </div>
+  </div>
+
+  <div class="auth-forms">
+
+    <div class="auth-tabs">
+      <div class="auth-tab active">
+        Forgot Password
+      </div>
+
+      <div class="auth-tab">
+        <%= link_to "Login", new_user_session_path %>
+      </div>
+    </div>
+
+    <div class="auth-form active">
+
+      <h2 class="form-title">
+        Reset Password
+      </h2>
+
+      <%= form_for(resource,
+            as: resource_name,
+            url: password_path(resource_name),
+            html: { method: :post }) do |f| %>
+
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="form-group">
+
+          <%= f.label :email, "Email Address" %>
+
+          <i class="fas fa-envelope form-icon"></i>
+
+          <%= f.email_field :email,
+                autofocus: true,
+                autocomplete: "email",
+                class: "form-control",
+                placeholder: "Enter your registered email",
+                required: true %>
+
+        </div>
+
+        <%= f.submit "Send Reset Instructions", class: "btn" %>
+
+      <% end %>
+
+      <div class="auth-footer">
+        Remember your password?
+        <%= link_to "Login", new_user_session_path %>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,37 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Demo Requests") do |sheet|
+
+  sheet.add_row [
+    "Name",
+    "Phone",
+    "Email",
+    "Course",
+    "Batch",
+    "Status",
+    "Created At"
+  ]
+
+  @demos.each do |demo|
+
+    sheet.add_row [
+
+      demo.name,
+
+      demo.phone,
+
+      demo.email,
+
+      demo.course,
+
+      demo.batch,
+
+      demo.status,
+
+      demo.created_at.strftime("%d-%m-%Y")
+
+    ]
+
+  end
+
+end

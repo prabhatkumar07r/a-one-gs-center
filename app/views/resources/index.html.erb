@@ -1,0 +1,77 @@
+<% content_for :title, "Resources" %>
+
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+   <h2 class="fw-bold">
+  📂 Resources
+</h2>
+
+    <%= link_to "➕ Add Resource",
+        new_course_playlist_resource_path(@course, @playlist),
+        class: "btn btn-success" %>
+  </div>
+
+  <table class="table table-hover table-bordered">
+
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Type</th>
+        <th>File</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <% @resources.each_with_index do |resource, index| %>
+
+        <tr>
+
+          <td><%= index + 1 %></td>
+
+          <td><%= resource.title %></td>
+
+          <td>
+            <span class="badge bg-primary">
+              <%= resource.resource_type.upcase %>
+            </span>
+          </td>
+
+          <td>
+            <% if resource.file.attached? %>
+              <%= link_to "📥 Download",
+                  rails_blob_path(resource.file, disposition: "attachment"),
+                  class: "btn btn-outline-success btn-sm" %>
+            <% else %>
+              <span class="text-danger">No File</span>
+            <% end %>
+          </td>
+
+          <td>
+
+            <%= link_to "✏️",
+                edit_course_playlist_resource_path(@course, @playlist, resource),
+                class: "btn btn-warning btn-sm" %>
+
+            <%= link_to "🗑️",
+                course_playlist_resource_path(@course, @playlist, resource),
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Delete this resource?"
+                },
+                class: "btn btn-danger btn-sm" %>
+
+          </td>
+
+        </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+
+</div>

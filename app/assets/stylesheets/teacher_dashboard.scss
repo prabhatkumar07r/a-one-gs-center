@@ -1,0 +1,19 @@
+.page-title{
+
+    font-size:34px;
+
+    font-weight:700;
+
+    margin-bottom:25px;
+
+}
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+}

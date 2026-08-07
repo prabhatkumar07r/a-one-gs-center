@@ -1,0 +1,186 @@
+<%= render "layouts/header" %>
+
+<div class="container py-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="fw-bold">
+Fee Collection Report
+</h2>
+
+<%= link_to fees_path,
+      class:"btn btn-secondary" do %>
+
+<i class="bi bi-arrow-left"></i>
+
+Back
+
+<% end %>
+
+</div>
+
+<div class="card shadow mb-4">
+
+<div class="card-body">
+
+<%= form_with url: report_fees_path,
+      method: :get,
+      local: true do %>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<%= month_field_tag :month,
+      params[:month],
+      class:"form-control" %>
+
+</div>
+
+<div class="col-md-2">
+
+<%= submit_tag "Filter",
+      class:"btn btn-primary w-100" %>
+
+</div>
+
+</div>
+
+<% end %>
+
+</div>
+
+</div>
+<div class="row mb-4">
+
+<div class="col-md-4">
+
+<div class="card shadow border-start border-primary border-4">
+
+<div class="card-body text-center">
+
+<h6>Total Fee</h6>
+
+<h3>₹<%= @total_fee %></h3>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow border-start border-success border-4">
+
+<div class="card-body text-center">
+
+<h6>Collected</h6>
+
+<h3 class="text-success">
+₹<%= @paid_fee %>
+</h3>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow border-start border-danger border-4">
+
+<div class="card-body text-center">
+
+<h6>Due</h6>
+
+<h3 class="text-danger">
+₹<%= @due_fee %>
+</h3>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="card shadow">
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Receipt</th>
+<th>Student</th>
+<th>Course</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% @fees.each do |fee| %>
+
+<tr>
+
+<td><%= fee.receipt_no %></td>
+
+<td><%= fee.enrollment.user.name %></td>
+
+<td><%= fee.enrollment.course.Course_name %></td>
+
+<td class="text-success">
+
+₹<%= fee.paid_amount %>
+
+</td>
+
+<td class="text-danger">
+
+₹<%= fee.due_amount %>
+
+</td>
+
+<td>
+
+<%= fee.payment_date %>
+
+</td>
+
+</tr>
+
+<% end %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+<div class="mb-3 text-end">
+
+<%= link_to export_fees_path(format: :xlsx),
+      class:"btn btn-success" do %>
+
+<i class="bi bi-file-earmark-excel-fill"></i>
+
+Export Excel
+
+<% end %>
+
+</div>
+
+<%= render "layouts/footer" %>

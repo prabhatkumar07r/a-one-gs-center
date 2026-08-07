@@ -1,0 +1,19 @@
+@media print {
+
+header,
+footer,
+.btn,
+.card-footer {
+    display: none !important;
+}
+
+body{
+    background:white;
+}
+
+.card{
+    border:none;
+    box-shadow:none;
+}
+
+}

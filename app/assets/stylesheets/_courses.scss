@@ -1,0 +1,148 @@
+/* ================= COURSES ================= */
+
+.courses {
+  padding: 100px 0;
+  background: #fff;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.course-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+  transition: .4s;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+
+/* Course Image */
+
+.course-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.course-placeholder {
+  height: 220px;
+  background: linear-gradient(135deg, #0d6efd, #4f46e5);
+  color: #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 20px;
+
+  font-size: 24px;
+  font-weight: bold;
+
+  border-radius: 10px 10px 0 0;
+}
+
+/* Course Information */
+
+.course-info {
+  padding: 30px;
+
+  h3 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: #6a11cb;
+  }
+
+  p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+  }
+
+  ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    list-style: disc;
+  }
+}
+
+/* Extra Course Details */
+
+.course-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.course-rating {
+  color: #ff9800;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.course-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.course-buttons {
+  margin-top: 25px;
+
+  .btn {
+    border-radius: 30px;
+    font-weight: 600;
+  }
+}
+
+/* Pricing */
+
+.course-price-container {
+  margin-bottom: 20px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: red;
+  margin-right: 10px;
+}
+
+.discounted-price {
+  font-size: 25px;
+  color: green;
+  font-weight: bold;
+}
+
+.discount-badge {
+  display: inline-block;
+  background: red;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+/* Button */
+
+.course-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 30px;
+  text-decoration: none;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: #fff;
+  font-weight: 600;
+  transition: .3s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(106, 17, 203, .25);
+  }
+}

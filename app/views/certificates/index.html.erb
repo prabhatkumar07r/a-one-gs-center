@@ -1,0 +1,47 @@
+<h2>🏆 My Certificates</h2>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Certificate No</th>
+
+<th>Course</th>
+
+<th>Date</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% @certificates.each do |certificate| %>
+
+<tr>
+
+<td><%= certificate.certificate_no %></td>
+
+<td><%= certificate.course.Course_name %></td>
+
+<td><%= certificate.issued_on %></td>
+
+<td>
+
+<%= link_to "View",
+    certificate_path(certificate),
+    class:"btn btn-primary btn-sm" %>
+
+</td>
+
+</tr>
+
+<% end %>
+
+</tbody>
+
+</table>

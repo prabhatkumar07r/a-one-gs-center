@@ -1,0 +1,50 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+
+      <!-- Logo -->
+      <%= link_to homepage_path, class: "logo" do %>
+        <%= image_tag "logo.jpeg", alt: "A One GS Center" %>
+      <% end %>
+
+      <!-- Navigation -->
+      <nav>
+        <ul>
+          <li><%= link_to "Home", homepage_path %></li>
+          <li><%= link_to "Courses", homepage_path(anchor: "courses") %></li>
+          <li><%= link_to "Gallery", homepage_path(anchor: "gallery") %></li>
+          <li><%= link_to "Teachers", homepage_path(anchor: "teachers") %></li>
+          <%# <li><%= link_to "Resources", resources_path %>  
+        </ul>
+      </nav>
+
+      <!-- Right Side -->
+      <div class="auth-buttons">
+        <% if user_signed_in? %>
+
+          <span class="welcome-text">
+            Welcome, <%= current_user.name %>
+          </span>
+
+          <%= link_to "Dashboard",
+                student_dashboard_path,
+                class: "auth-btn" %>
+
+          <%= button_to "Logout",
+                destroy_user_session_path,
+                method: :delete,
+                class: "auth-btn logout-btn",
+                form_class: "logout-form" %>
+
+        <% else %>
+
+          <%= link_to "Login / Register",
+                new_user_session_path,
+                class: "auth-btn" %>
+
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</header>

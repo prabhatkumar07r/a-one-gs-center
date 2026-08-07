@@ -1,0 +1,99 @@
+<%= form_with(model: @notification, local: true) do |form| %>
+
+  <% if @notification.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(@notification.errors.count, "error") %> prohibited this notification from being saved:</h5>
+      <ul>
+        <% @notification.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4>📢 Notification Form</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="mb-3">
+        <%= form.label :title, class: "form-label" %>
+        <%= form.text_field :title,
+              class: "form-control",
+              placeholder: "Enter Notification Title" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :description, class: "form-label" %>
+        <%= form.text_area :description,
+              rows: 5,
+              class: "form-control",
+              placeholder: "Enter Notification Description" %>
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :notification_type, class: "form-label" %>
+          <%= form.select :notification_type,
+                ["Admission",
+                 "Exam",
+                 "Holiday",
+                 "Fee",
+                 "Result",
+                 "Event",
+                 "General"],
+                {},
+                class: "form-select" %>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :status, class: "form-label" %>
+          <%= form.select :status,
+                ["Active", "Inactive"],
+                {},
+                class: "form-select" %>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :start_date, class: "form-label" %>
+          <%= form.date_field :start_date,
+                class: "form-control" %>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <%= form.label :end_date, class: "form-label" %>
+          <%= form.date_field :end_date,
+                class: "form-control" %>
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :attachment, class: "form-label" %>
+        <%= form.file_field :attachment,
+              class: "form-control" %>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+
+      <%= form.submit "💾 Save Notification",
+            class: "btn btn-success" %>
+
+      <%= link_to "Cancel",
+            notifications_path,
+            class: "btn btn-secondary" %>
+
+    </div>
+
+  </div>
+
+<% end %>

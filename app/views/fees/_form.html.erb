@@ -1,0 +1,74 @@
+<%= form_with(model: @fee, local: true) do |f| %>
+
+  <% if @fee.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @fee.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+         <%= f.select :enrollment_id,
+      Enrollment.includes(:user, :course).map { |e|
+        [
+          e.display_name,
+          e.id,
+          { "data-fee": e.course.fee }
+        ]
+      },
+      { prompt: "Select Student" },
+      {
+        class: "form-select",
+        id: "enrollment_select"
+      } %>
+
+         <div class="mb-3">
+  <%= f.label :total_fee %>
+  <%= f.number_field :total_fee,
+        class: "form-control",
+        readonly: true,
+        id: "total_fee" %>
+</div>
+
+  <div class="mb-3">
+    <%= f.label :paid_amount %>
+    <%= f.number_field :paid_amount, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :payment_date %>
+    <%= f.date_field :payment_date, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :payment_mode %>
+    <%= f.select :payment_mode,
+          ["Cash","UPI","Card","Bank Transfer"],
+          {},
+          class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :receipt_no %>
+    <%= f.text_field :receipt_no, class: "form-control" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+
+<% end %>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const enrollment = document.getElementById("enrollment_select");
+  const totalFee = document.getElementById("total_fee");
+
+  function updateFee() {
+    const option = enrollment.options[enrollment.selectedIndex];
+    totalFee.value = option.dataset.fee || "";
+  }
+
+  enrollment.addEventListener("change", updateFee);
+  updateFee();
+});
+</script>

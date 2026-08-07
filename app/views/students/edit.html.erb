@@ -1,0 +1,212 @@
+<div class="container py-4">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card shadow border-0">
+
+<div class="card-header bg-warning text-dark">
+
+<h3>
+
+<i class="fas fa-user-edit"></i>
+
+Edit Student
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<%= form_with model: @student,
+local: true do |f| %>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<%= f.label :name,
+class:"form-label fw-bold" %>
+
+<%= f.text_field :name,
+class:"form-control" %>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<%= f.label :email,
+class:"form-label fw-bold" %>
+
+<%= f.email_field :email,
+class:"form-control" %>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<%= f.label :mobile,
+class:"form-label fw-bold" %>
+
+<%= f.text_field :mobile,
+class:"form-control" %>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<%= f.label :image,
+class:"form-label fw-bold" %>
+
+<%= f.file_field :image,
+class:"form-control" %>
+
+</div>
+
+</div>
+
+<% if @student.image.attached? %>
+
+<div class="mb-4 text-center">
+
+<%= image_tag @student.image,
+width:150,
+class:"rounded-circle border shadow" %>
+
+</div>
+
+<% end %>
+
+<div class="text-end">
+
+<%= link_to "Cancel",
+students_path,
+class:"btn btn-secondary" %>
+
+<%= f.submit "Update Student",
+class:"btn btn-success" %>
+
+</div>
+
+<% end %>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="container py-4">
+
+  <div class="card shadow border-0">
+
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">
+        <i class="fas fa-user-edit"></i>
+        Edit Student
+      </h3>
+    </div>
+
+    <div class="card-body">
+
+      <%= form_with model: @student,
+                    url: student_path(@student),
+                    method: :patch,
+                    local: true do |f| %>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <%= f.label :name, class: "form-label fw-bold" %>
+            <%= f.text_field :name, class: "form-control" %>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <%= f.label :email, class: "form-label fw-bold" %>
+            <%= f.email_field :email, class: "form-control" %>
+          </div>
+
+          <% if @student.respond_to?(:mobile) %>
+          <div class="col-md-6 mb-3">
+            <%= f.label :mobile, class: "form-label fw-bold" %>
+            <%= f.text_field :mobile, class: "form-control" %>
+          </div>
+          <% end %>
+
+          <% if @student.respond_to?(:gender) %>
+          <div class="col-md-6 mb-3">
+            <%= f.label :gender, class: "form-label fw-bold" %>
+            <%= f.select :gender,
+                  ["Male", "Female", "Other"],
+                  {},
+                  class: "form-select" %>
+          </div>
+          <% end %>
+
+          <% if @student.respond_to?(:dob) %>
+          <div class="col-md-6 mb-3">
+            <%= f.label :dob, class: "form-label fw-bold" %>
+            <%= f.date_field :dob, class: "form-control" %>
+          </div>
+          <% end %>
+
+          <% if @student.respond_to?(:address) %>
+          <div class="col-md-12 mb-3">
+            <%= f.label :address, class: "form-label fw-bold" %>
+            <%= f.text_area :address,
+                  rows: 3,
+                  class: "form-control" %>
+          </div>
+          <% end %>
+
+          <% if @student.respond_to?(:city) %>
+          <div class="col-md-6 mb-3">
+            <%= f.label :city, class: "form-label fw-bold" %>
+            <%= f.text_field :city, class: "form-control" %>
+          </div>
+          <% end %>
+
+          <% if @student.respond_to?(:state) %>
+          <div class="col-md-6 mb-3">
+            <%= f.label :state, class: "form-label fw-bold" %>
+            <%= f.text_field :state, class: "form-control" %>
+          </div>
+          <% end %>
+
+          <% if @student.respond_to?(:status) %>
+          <div class="col-md-6 mb-3">
+            <%= f.label :status, class: "form-label fw-bold" %>
+            <%= f.select :status,
+                  ["Active", "Inactive"],
+                  {},
+                  class: "form-select" %>
+          </div>
+          <% end %>
+
+        </div>
+
+        <hr>
+
+        <%= f.submit "Update Student",
+              class: "btn btn-success" %>
+
+        <%= link_to "Cancel",
+              students_path,
+              class: "btn btn-secondary ms-2" %>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

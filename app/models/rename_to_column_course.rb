@@ -1,0 +1,2 @@
+class RenameToColumnCourse < ApplicationRecord
+end

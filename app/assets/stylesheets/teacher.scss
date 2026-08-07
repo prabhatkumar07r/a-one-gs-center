@@ -1,0 +1,29 @@
+/*
+ *= require teacher_sidebar
+ *= require teacher_navbar
+ *= require teacher_dashboard
+ *= require teacher_cards
+ *= require teacher_table
+ *= require teacher_form
+ *= require teacher_responsive
+ */
+
+body{
+    margin:0;
+    background:#f4f7fc;
+    font-family:Poppins,sans-serif;
+}
+
+.admin-wrapper{
+    display:flex;
+    min-height:100vh;
+}
+
+.admin-main{
+    margin-left:270px;
+    width:calc(100% - 270px);
+}
+
+.admin-content{
+    padding:30px;
+}

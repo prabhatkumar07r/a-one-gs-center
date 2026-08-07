@@ -1,0 +1,70 @@
+<%= render "layouts/header" %>
+
+<div class="container mt-5">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+      <h3>Edit Registration</h3>
+    </div>
+
+    <div class="card-body">
+
+      <%= form_with model: @student,
+                    url: registrations_path(@student),
+                    method: :patch,
+                    local: true do |f| %>
+
+        <div class="mb-3">
+          <%= f.label :name %>
+          <%= f.text_field :name,
+                class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :email %>
+          <%= f.email_field :email,
+                class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :mobile %>
+          <%= f.text_field :mobile,
+                class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :age %>
+          <%= f.number_field :age,
+                class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :role %>
+
+          <%= f.select :role,
+                [
+                  ["Student","student"],
+                  ["Teacher","teacher"],
+                  ["Admin","admin"]
+                ],
+                {},
+                class: "form-select" %>
+        </div>
+
+        <%= f.submit "Update Registration",
+              class: "btn btn-success" %>
+
+        <%= link_to "Back",
+              registrations_path,
+              class: "btn btn-secondary" %>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%= render "layouts/footer" %>

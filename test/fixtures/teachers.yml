@@ -1,0 +1,21 @@
+one:
+  name: Teacher One
+  email: teacher1@example.com
+  mobile: "9876543210"
+  designation: Faculty
+  qualification: MCA
+  experience: 5
+  status: Active
+  subject: Mathematics
+  user: two
+
+two:
+  name: Teacher Two
+  email: teacher2@example.com
+  mobile: "9876543211"
+  designation: Faculty
+  qualification: MSc
+  experience: 3
+  status: Active
+  subject: Science
+  user: one

@@ -1,0 +1,357 @@
+<% content_for :title, "Student Dashboard" %>
+
+<div class="container mt-4">
+
+  <h2 class="mb-3">
+    👋 Welcome,
+    <%= current_user.name %>
+  </h2>
+
+  <hr>
+
+  <!-- Dashboard Cards -->
+
+  <div class="row g-4">
+
+    <div class="col-md-4">
+
+      <div class="card shadow text-center">
+
+        <div class="card-body">
+
+          <h5>📚 My Courses</h5>
+
+          <h2><%= @courses.count %></h2>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+      <div class="card shadow text-center">
+
+        <div class="card-body">
+
+          <h5>✅ Completed Videos</h5>
+
+          <h2>
+            <%= current_user.video_progresses.where(completed: true).count %>
+          </h2>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+      <div class="card shadow text-center">
+
+        <div class="card-body">
+
+          <h5>🎥 Total Videos</h5>
+
+          <h2><%= Video.count %></h2>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Profile -->
+
+  <div class="card shadow mt-4">
+
+    <div class="card-body">
+
+      <div class="row align-items-center">
+
+        <div class="col-md-2 text-center">
+
+          <i class="bi bi-person-circle display-1 text-primary"></i>
+
+        </div>
+
+        <div class="col-md-10">
+
+          <h4><%= current_user.name %></h4>
+
+          <p class="mb-1">
+
+            <strong>Email :</strong>
+
+            <%= current_user.email %>
+
+          </p>
+
+          <p class="mb-0">
+
+            <strong>Joined :</strong>
+
+            <%= current_user.created_at.strftime("%d %B %Y") %>
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Continue Learning -->
+
+  <% if @last_progress.present? %>
+
+    <div class="card shadow mt-4">
+
+      <div class="card-header bg-success text-white">
+
+        <h5 class="mb-0">
+          ▶ Continue Learning
+        </h5>
+
+      </div>
+
+      <div class="card-body">
+
+        <h4><%= @last_progress.video.title %></h4>
+
+        <p>
+
+          <%= @last_progress.video.course.Course_name %>
+
+        </p>
+
+        <%= link_to "Resume Course",
+            learning_video_path(
+              @last_progress.video.course,
+              @last_progress.video
+            ),
+            class: "btn btn-success" %>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+ <!-- My Courses -->
+
+<h3 class="mt-5 mb-4">
+  📚 My Courses
+</h3>
+
+<div class="row">
+
+  <% @courses.each do |course| %>
+
+    <div class="col-md-4 mb-4">
+
+      <div class="card shadow h-100">
+
+        <div class="card-body">
+
+          <h5>
+            <%= course.Course_name %>
+          </h5>
+
+
+          <%= link_to "Open Course",
+              learning_course_path(course),
+              class: "btn btn-primary w-100" %>
+
+
+          <% certificate = current_user.certificates.find_by(course: course) %>
+
+
+          <% if certificate.present? %>
+
+            <%= link_to "🏆 View Certificate",
+                certificate_path(certificate),
+                class: "btn btn-success w-100 mt-2" %>
+
+
+          <% else %>
+
+            <button class="btn btn-outline-secondary w-100 mt-2" disabled>
+              🔒 Complete Course to Unlock Certificate
+            </button>
+
+          <% end %>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+  <!-- Resources -->
+
+  <hr class="my-5">
+
+  <h3>
+
+    📄 Latest Resources
+
+  </h3>
+
+  <% if @resources.present? && @resources.any? %>
+
+    <div class="list-group mt-3">
+
+      <% @resources.each do |resource| %>
+
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+          <div>
+
+            <strong>
+
+              <%= resource.title %>
+
+            </strong>
+
+            <br>
+
+            <small class="text-muted">
+
+              <%= resource.playlist.title %>
+
+            </small>
+
+          </div>
+
+          <% if resource.file.attached? %>
+
+            <%= link_to "Download",
+                rails_blob_path(resource.file, disposition: "attachment"),
+                class: "btn btn-success btn-sm" %>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="alert alert-info mt-3">
+
+      No resources available.
+
+    </div>
+
+  <% end %>
+
+  <!-- Notifications -->
+
+  <hr class="my-5">
+
+  <h3>
+
+    🔔 Latest Notifications
+
+  </h3>
+
+  <% if @notifications.present? && @notifications.any? %>
+
+    <div class="list-group mt-3">
+
+      <% @notifications.each do |notification| %>
+
+        <div class="list-group-item">
+
+          <h6>
+
+            <%= notification.title %>
+
+          </h6>
+           <p>
+  <%= notification.description %>
+</p>
+
+          <small class="text-muted">
+
+            <%= notification.created_at.strftime("%d %b %Y") %>
+
+          </small>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="alert alert-warning mt-3">
+
+      No notifications available.
+
+    </div>
+
+  <% end %>
+
+  <!-- Quick Actions -->
+
+  <!-- Quick Actions -->
+
+<hr class="my-5">
+
+<h3>⚡ Quick Actions</h3>
+
+<div class="row mt-3">
+
+  <div class="col-md-3 mb-3">
+
+    <%= link_to "📚 Browse Courses",
+        learning_path,
+        class: "btn btn-primary w-100" %>
+
+  </div>
+
+  <div class="col-md-3 mb-3">
+
+    <%= link_to "👤 Edit Profile",
+        edit_user_registration_path,
+        class: "btn btn-warning w-100" %>
+
+  </div>
+
+  <div class="col-md-3 mb-3">
+
+    <%= link_to "🏆 My Certificates",
+        certificates_path,
+        class: "btn btn-success w-100" %>
+
+  </div>
+
+  <div class="col-md-3 mb-3">
+
+    <%= link_to "🚪 Logout",
+        destroy_user_session_path,
+        data: {
+          turbo_method: :delete,
+          turbo_confirm: "Are you sure?"
+        },
+        class: "btn btn-danger w-100" %>
+
+  </div>
+
+</div>

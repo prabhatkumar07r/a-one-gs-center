@@ -1,0 +1,47 @@
+.card{
+    border-radius:15px;
+}
+
+.card-header{
+    padding:18px;
+}
+
+.table th{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.table td{
+    vertical-align:middle;
+}
+
+.badge{
+    font-size:14px;
+    padding:8px 12px;
+}
+
+/*.btn{
+    border-radius:8px;
+    margin:2px;
+    padding: -1px 32px;
+}*/
+
+.table tbody tr:hover{
+    background:#f8f9fa;
+    transition:.3s;
+}
+.btn {
+    display: inline-block;
+    padding: -1px 32px;
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}

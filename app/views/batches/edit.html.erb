@@ -1,0 +1,154 @@
+<%= render "layouts/header" %>
+
+<div class="container py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+      <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-header bg-warning text-dark py-3">
+          <h3 class="mb-0">
+            <i class="bi bi-pencil-square"></i>
+            Edit Batch
+          </h3>
+        </div>
+
+        <div class="card-body p-4">
+
+          <% if @batch.errors.any? %>
+
+            <div class="alert alert-danger">
+
+              <h5>Please fix the following errors:</h5>
+
+              <ul class="mb-0">
+                <% @batch.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+
+            </div>
+
+          <% end %>
+
+          <%= form_with model: @batch, local: true do |f| %>
+
+            <div class="mb-3">
+
+              <%= f.label :batch_name, class: "form-label fw-bold" %>
+
+              <%= f.text_field :batch_name,
+                    class: "form-control",
+                    placeholder: "Morning Batch" %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :course_id, "Course", class: "form-label fw-bold" %>
+
+              <%= f.collection_select :course_id,
+                    Course.all,
+                    :id,
+                    :Course_name,
+                    { prompt: "Select Course" },
+                    { class: "form-select" } %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :teacher_id, "Teacher", class: "form-label fw-bold" %>
+
+              <%= f.collection_select :teacher_id,
+                    Teacher.all,
+                    :id,
+                    :name,
+                    { prompt: "Select Teacher" },
+                    { class: "form-select" } %>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :start_date, class: "form-label fw-bold" %>
+
+                <%= f.date_field :start_date,
+                      class: "form-control" %>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+
+                <%= f.label :end_date, class: "form-label fw-bold" %>
+
+                <%= f.date_field :end_date,
+                      class: "form-control" %>
+
+              </div>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :timing, class: "form-label fw-bold" %>
+
+              <%= f.text_field :timing,
+                    class: "form-control",
+                    placeholder: "07:00 AM - 09:00 AM" %>
+
+            </div>
+
+            <div class="mb-3">
+
+              <%= f.label :room_no, "Room No", class: "form-label fw-bold" %>
+
+              <%= f.text_field :room_no,
+                    class: "form-control",
+                    placeholder: "101" %>
+
+            </div>
+
+            <div class="mb-4">
+
+              <%= f.label :status, class: "form-label fw-bold" %>
+
+              <%= f.select :status,
+                    ["Active", "Inactive"],
+                    {},
+                    class: "form-select" %>
+
+            </div>
+
+            <div class="d-flex justify-content-between">
+
+              <%= link_to batches_path,
+                    class: "btn btn-secondary px-4" do %>
+
+                <i class="bi bi-arrow-left"></i>
+                Back
+
+              <% end %>
+
+              <%= f.submit "Update Batch",
+                    class: "btn btn-warning px-5" %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%= render "layouts/footer" %>

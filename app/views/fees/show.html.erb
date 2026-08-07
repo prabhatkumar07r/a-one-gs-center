@@ -1,0 +1,223 @@
+<%= render "layouts/header" %>
+
+<div class="container py-5">
+
+  <div class="card shadow-lg border-0">
+
+    <!-- Header -->
+    <div class="card-header bg-primary text-white">
+
+      <div class="row align-items-center">
+
+        <div class="col-md-2 text-center">
+          <%= image_tag "logo.jpeg", width: 80, class: "rounded-circle" %>
+        </div>
+
+        <div class="col-md-10">
+
+          <h2 class="fw-bold mb-0">
+            A ONE GS CENTER
+          </h2>
+
+          <small>
+            Arts & Competitive Classes
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Receipt -->
+
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between">
+
+        <h3 class="text-primary">
+          Fee Receipt
+        </h3>
+
+        <h5>
+
+          Receipt No :
+          <span class="text-success">
+            <%= @fee.receipt_no %>
+          </span>
+
+        </h5>
+
+      </div>
+
+      <hr>
+
+      <div class="row">
+
+        <div class="col-md-6">
+
+          <p>
+
+            <strong>Student :</strong>
+
+            <%= @fee.enrollment.user.name %>
+
+          </p>
+
+          <p>
+
+            <strong>Course :</strong>
+
+            <%= @fee.enrollment.course.Course_name %>
+
+          </p>
+
+        </div>
+
+        <div class="col-md-6">
+
+          <p>
+
+            <strong>Payment Date :</strong>
+
+            <%= @fee.payment_date.strftime("%d-%m-%Y") if @fee.payment_date %>
+
+          </p>
+
+          <p>
+
+            <strong>Payment Mode :</strong>
+
+            <%= @fee.payment_mode %>
+
+          </p>
+
+        </div>
+
+      </div>
+
+      <hr>
+
+      <table class="table table-bordered">
+
+        <tr>
+
+          <th>Total Fee</th>
+
+          <td class="text-end">
+
+            ₹<%= @fee.total_fee %>
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Paid Amount</th>
+
+          <td class="text-end text-success">
+
+            ₹<%= @fee.paid_amount %>
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Due Amount</th>
+
+          <td class="text-end text-danger">
+
+            ₹<%= @fee.due_amount %>
+
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <th>Status</th>
+
+                                   <td>
+
+  <% if @fee.status == "Paid" %>
+
+    <span class="badge bg-success">
+      Paid
+    </span>
+
+  <% elsif @fee.status == "Partial" %>
+
+    <span class="badge bg-warning text-dark">
+      Partial
+    </span>
+
+  <% else %>
+
+    <span class="badge bg-danger">
+      Due
+    </span>
+
+  <% end %>
+
+</td>
+
+        </tr>
+
+      </table>
+
+      <div class="row mt-5">
+
+        <div class="col-md-6 text-center">
+
+          ______________________
+
+          <br>
+
+          Student Signature
+
+        </div>
+
+        <div class="col-md-6 text-center">
+
+          ______________________
+
+          <br>
+
+          Authorized Signature
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card-footer text-center">
+
+      <%= link_to fees_path,
+            class: "btn btn-secondary" do %>
+
+        <i class="bi bi-arrow-left"></i>
+
+        Back
+
+      <% end %>
+
+      <button onclick="window.print()"
+              class="btn btn-success">
+
+        <i class="bi bi-printer-fill"></i>
+
+        Print Receipt
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%= render "layouts/footer" %>

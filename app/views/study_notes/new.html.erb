@@ -1,0 +1,236 @@
+<div class="container py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+      <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">
+            <i class="fas fa-book-open me-2"></i>
+            Upload Study Notes
+          </h3>
+        </div>
+
+
+        <div class="card-body">
+
+          <% if @note.errors.any? %>
+
+            <div class="alert alert-danger">
+
+              <h5>
+                <%= pluralize(@note.errors.count, "error") %>
+                prevented this note from being saved.
+              </h5>
+
+              <ul class="mb-0">
+                <% @note.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+
+            </div>
+
+          <% end %>
+
+
+
+          <%= form_with model: @note,
+                        url: study_notes_path,
+                        local: true do |f| %>
+
+
+            <!-- Course -->
+
+            <div class="mb-3">
+
+              <%= label_tag :course_id,
+                    "Course",
+                    class: "form-label fw-bold" %>
+
+
+              <%= select_tag :course_id,
+
+                  options_from_collection_for_select(
+                    @courses,
+                    :id,
+                    :Course_name
+                  ),
+
+                  prompt: "Select Course",
+
+                  class: "form-select",
+
+                  id: "course_select" %>
+
+
+            </div>
+
+
+
+            <!-- Playlist -->
+
+            <div class="mb-3">
+
+              <%= f.label :playlist_id,
+                    "Playlist",
+                    class: "form-label fw-bold" %>
+
+
+              <%= f.select :playlist_id,
+
+                  [],
+
+                  { prompt: "Select Playlist" },
+
+                  {
+                    class: "form-select",
+                    id: "playlist_select",
+                    required: true
+                  } %>
+
+
+            </div>
+
+
+
+            <!-- Title -->
+
+            <div class="mb-3">
+
+              <%= f.label :title,
+                    class: "form-label fw-bold" %>
+
+
+              <%= f.text_field :title,
+
+                  class: "form-control",
+
+                  placeholder: "Example: HTML Introduction",
+
+                  required: true %>
+
+
+            </div>
+
+
+
+            <!-- Description -->
+
+            <div class="mb-3">
+
+              <%= f.label :description,
+                    class: "form-label fw-bold" %>
+
+
+              <%= f.text_area :description,
+
+                  rows: 4,
+
+                  class: "form-control",
+
+                  placeholder: "Enter short description..." %>
+
+
+            </div>
+
+
+
+            <!-- PDF -->
+
+            <div class="mb-4">
+
+              <%= f.label :pdf_file,
+                    "PDF File",
+                    class: "form-label fw-bold" %>
+
+
+              <%= f.file_field :pdf_file,
+
+                  class: "form-control",
+
+                  accept: "application/pdf",
+
+                  required: true %>
+
+
+            </div>
+
+
+
+            <div class="d-flex justify-content-between">
+
+
+              <%= link_to study_notes_path,
+                    class: "btn btn-secondary" do %>
+
+                <i class="fas fa-arrow-left"></i>
+                Back
+
+              <% end %>
+
+
+
+              <%= f.submit "Upload Study Notes",
+
+                  class: "btn btn-primary px-4" %>
+
+
+            </div>
+
+
+
+          <% end %>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const course = document.getElementById("course_select");
+  const playlist = document.getElementById("playlist_select");
+
+  console.log(course);
+  console.log(playlist);
+
+  if (!course || !playlist) return;
+
+  course.addEventListener("change", function () {
+
+    console.log("Course Changed:", this.value);
+
+    fetch("/study_notes/playlists?course_id=" + this.value)
+      .then(response => response.json())
+      .then(data => {
+
+        console.log(data);
+
+        playlist.innerHTML =
+          '<option value="">Select Playlist</option>';
+
+        data.forEach(function(item) {
+          playlist.innerHTML +=
+            `<option value="${item.id}">${item.title}</option>`;
+        });
+
+      })
+      .catch(error => console.log(error));
+
+  });
+
+});
+</script>

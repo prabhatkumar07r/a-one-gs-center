@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - A ONE GS CENTER</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-image">
+
+        <div class="auth-image-content">
+
+            <%= image_tag "logo.jpeg", alt: "A ONE GS CENTER" %>
+
+            <h2>A ONE GS CENTER</h2>
+
+            <p>
+                Empowering students to excel in Arts through quality education and competitive preparation
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="auth-forms">
+
+        <div class="close-auth">
+            <i class="fas fa-times"></i>
+        </div>
+
+
+        <div class="auth-tabs">
+
+            <div class="auth-tab active">
+                Login
+            </div>
+
+            <div class="auth-tab">
+                <%= link_to "Register", new_user_registration_path %>
+            </div>
+
+        </div>
+
+
+
+        <div class="auth-form active">
+
+            <h2 class="form-title">
+                Welcome Back
+            </h2>
+
+
+
+            <%= form_for(resource,
+                as: resource_name,
+                url: session_path(resource_name)) do |f| %>
+
+
+                <div class="form-group">
+
+                    <%= f.label :email, "Email Address" %>
+
+                    <i class="fas fa-user form-icon"></i>
+
+
+                    <%= f.email_field :email,
+
+                        class: "form-control",
+
+                        placeholder: "Enter your email",
+
+                        autocomplete: "email",
+
+                        required: true %>
+
+
+                </div>
+
+
+
+
+                <div class="form-group">
+
+
+                    <%= f.label :password, "Password" %>
+
+
+                    <i class="fas fa-lock form-icon"></i>
+
+
+
+                    <%= f.password_field :password,
+
+                        class: "form-control",
+
+                        placeholder: "Enter your password",
+
+                        autocomplete: "current-password",
+
+                        required: true %>
+
+
+                </div>
+
+
+
+
+                <% if devise_mapping.rememberable? %>
+
+                    <div class="form-check">
+
+                        <%= f.check_box :remember_me,
+                            class: "form-check-input" %>
+
+
+                        <%= f.label :remember_me,
+                            "Remember me",
+                            class: "form-check-label" %>
+
+                    </div>
+
+                <% end %>
+
+
+
+
+                <%= link_to "Forgot Password?",
+
+                    new_user_password_path,
+
+                    class: "forgot-password" %>
+
+
+
+
+
+                <%= f.submit "Login",
+                    class: "btn" %>
+
+
+
+            <% end %>
+
+
+
+
+
+            <div class="auth-divider">
+
+                <span>
+                    Or continue with
+                </span>
+
+            </div>
+
+
+
+
+
+            <div class="social-login">
+
+
+                <div class="social-btn facebook">
+
+                    <i class="fab fa-facebook-f"></i>
+
+                </div>
+
+
+             <%= button_to user_google_oauth2_omniauth_authorize_path,
+      method: :post,
+      form: { data: { turbo: false } },
+      class: "social-btn google" do %>
+  <i class="fab fa-google"></i>
+<% end %>
+
+            </div>
+
+
+
+
+
+            <div class="auth-footer">
+
+                Don't have an account?
+
+                <%= link_to "Register Now",
+                    new_user_registration_path %>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<style>
+
+.syllabus-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.syllabus-container h1 {
+  text-align: center;
+  color: #6a11cb;
+  margin-bottom: 30px;
+}
+
+.course-info {
+  background: #f4f4f4;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.subject-card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.subject-card h2 {
+  color: #6a11cb;
+  margin-bottom: 10px;
+}
+
+.subject-card ul {
+  padding-left: 20px;
+}
+
+.subject-card li {
+  margin-bottom: 8px;
+}
+
+.back-btn {
+  display: inline-block;
+  text-decoration: none;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+</style>
+
+
+
+
+
+<div class="syllabus-container">
+
+  <h1>Class 11 (BSEB) Syllabus</h1>
+
+  <div class="course-info">
+    <p><strong>Duration:</strong> 1 Year</p>
+    <p><strong>Mode:</strong> Offline / Online</p>
+    <p><strong>Fee:</strong> ₹2,500 / Year</p>
+  </div>
+
+  <div class="subject-card">
+    <h2>History</h2>
+    <ul>
+      <li>Ancient Indian History</li>
+      <li>Medieval India</li>
+      <li>Modern India</li>
+      <li>World History</li>
+    </ul>
+  </div>
+
+  <div class="subject-card">
+    <h2>Geography</h2>
+    <ul>
+      <li>Physical Geography</li>
+      <li>Indian Geography</li>
+      <li>Climate & Resources</li>
+      <li>Maps and Diagrams</li>
+    </ul>
+  </div>
+
+  <div class="subject-card">
+    <h2>Political Science</h2>
+    <ul>
+      <li>Constitution of India</li>
+      <li>Democracy</li>
+      <li>Rights and Duties</li>
+      <li>Political Institutions</li>
+    </ul>
+  </div>
+
+  <div class="subject-card">
+    <h2>Economics</h2>
+    <ul>
+      <li>Introduction to Economics</li>
+      <li>Demand and Supply</li>
+      <li>National Income</li>
+      <li>Indian Economy</li>
+    </ul>
+  </div>
+
+    <%= link_to "Back to Homepage", homepage_path, class: "back-btn" %>
+
+</div>

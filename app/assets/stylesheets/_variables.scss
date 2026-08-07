@@ -1,0 +1,23 @@
+:root {
+  --gradient-primary: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+  --gradient-secondary: linear-gradient(135deg, #FF057C 0%, #8D0B93 100%);
+  --gradient-accent: linear-gradient(135deg, #FFE53B 0%, #FF2525 100%);
+  --gradient-success: linear-gradient(135deg, #0BA360 0%, #3CBA92 100%);
+  --gradient-warning: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%);
+  --gradient-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --gradient-dark: linear-gradient(135deg, #2b2b2b 0%, #1c1c1c 100%);
+  --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  --gradient-hero: linear-gradient(
+    135deg,
+    rgba(106, 17, 203, 0.85) 0%,
+    rgba(37, 117, 252, 0.85) 100%
+  );
+
+  --text-dark: #2b2d42;
+  --text-light: #ffffff;
+  --text-gray: #6c757d;
+
+  --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s ease;
+  --border-radius: 12px;
+}

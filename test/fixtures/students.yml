@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: John
+  email: john@example.com
+  mobile: "9876543210"
+  age: 20
+  password: password123
+  role: student
+
+two:
+  name: Jane
+  email: jane@example.com
+  mobile: "9876543211"
+  age: 21
+  password: password123
+  role: student

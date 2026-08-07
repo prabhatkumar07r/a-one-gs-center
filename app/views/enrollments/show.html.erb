@@ -1,0 +1,35 @@
+<%= render "layouts/header" %>
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>Enrollment Details</h3>
+
+</div>
+
+<div class="card-body">
+
+<p><strong>Student :</strong> <%= @enrollment.user.name %></p>
+
+<p><strong>Course :</strong> <%= @enrollment.course.Course_name %></p>
+
+<p><strong>Status :</strong> <%= @enrollment.status %></p>
+
+<p><strong>Date :</strong>
+<%= @enrollment.created_at.strftime("%d-%m-%Y") %>
+</p>
+
+<%= link_to "Back",
+      enrollments_path,
+      class:"btn btn-secondary" %>
+
+</div>
+
+</div>
+
+</div>
+
+<%= render "layouts/footer" %>

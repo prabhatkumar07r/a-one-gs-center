@@ -1,0 +1,398 @@
+<div class="container-fluid py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold text-primary">
+                <i class="fas fa-user-graduate"></i>
+                Student Management
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage all registered students
+            </p>
+        </div>
+
+        <div>
+
+            <%= link_to new_user_registration_path,
+                class: "btn btn-success shadow" do %>
+
+                <i class="fas fa-plus"></i>
+                Add Student
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+
+    <div class="row mb-4">
+
+        <div class="col-lg-3 col-md-6 mb-3">
+
+            <div class="card border-0 shadow">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Total Students
+
+                            </h6>
+
+                            <h2 class="fw-bold">
+
+                                <%= @students.count %>
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fas fa-users fa-3x text-primary"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+
+            <div class="card border-0 shadow">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Today's Registration
+
+                            </h6>
+
+                            <h2>
+
+                                <%= User.where(role: "student")
+                                .where(created_at: Date.today.all_day)
+                                .count %>
+
+                            </h2>
+
+                        </div>
+
+                        <i class="fas fa-user-plus fa-3x text-success"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+
+            <div class="card border-0 shadow">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                Active Students
+
+                            </h6>
+
+                            <h2>
+
+                                <%= User.where(role: "student").count %>
+
+                            </h2>
+
+                        </div>
+
+                        <i class="fas fa-user-check fa-3x text-info"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+
+            <div class="card border-0 shadow">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+
+                                New This Month
+
+                            </h6>
+
+                            <h2>
+
+                                <%= User.where(role: "student")
+                                .where(created_at: Time.current.beginning_of_month..Time.current.end_of_month)
+                                .count %>
+
+                            </h2>
+
+                        </div>
+
+                        <i class="fas fa-chart-line fa-3x text-warning"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Search -->
+
+    <div class="card shadow border-0 mb-4">
+
+        <div class="card-body">
+
+            <%= form_with url: students_path,
+                          method: :get,
+                          local: true do %>
+
+                <div class="row">
+
+                    <div class="col-md-10">
+
+                        <%= text_field_tag :search,
+                            params[:search],
+                            class: "form-control",
+                            placeholder: "Search by Name, Email or Mobile..." %>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button class="btn btn-primary w-100">
+
+                            <i class="fas fa-search"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+    <!-- Student Table -->
+
+    <div class="card border-0 shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+
+                Student List
+
+            </h5>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Photo</th>
+
+                    <th>Name</th>
+
+                    <th>Email</th>
+
+                    <th>Mobile</th>
+
+                    <th>Role</th>
+
+                    <th>Registered</th>
+
+                    <th class="text-center">
+
+                        Action
+
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <% if @students.any? %>
+
+                    <% @students.each do |student| %>
+
+                    <tr>
+
+                        <td>
+
+                            <strong>#<%= student.id %></strong>
+
+                        </td>
+
+                         <td>
+                            <img src="https://ui-avatars.com/api/?name=<%= student.name %>&background=0D6EFD&color=fff"
+                            class="rounded-circle border"
+                            width="55"
+                            height="55">
+                            </td>
+
+                        <td>
+
+                            <strong>
+
+                                <%= student.name %>
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <%= student.email %>
+
+                        </td>
+
+                        <td>
+
+                            <%= student.mobile %>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                <%= student.role.capitalize %>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <%= student.created_at.strftime("%d %b %Y") %>
+
+                        </td>
+
+                        <td class="text-center">
+
+                            <%= link_to student_path(student),
+                                class:"btn btn-sm btn-info text-white" do %>
+
+                                <i class="fas fa-eye"></i>
+
+                            <% end %>
+
+                                <%= link_to edit_student_path(student),
+      class: "btn btn-warning btn-sm" do %>
+  <i class="fas fa-edit"></i>
+<% end %>
+                            <%= link_to student_path(student),
+                                data:{
+                                    turbo_method: :delete,
+                                    turbo_confirm:"Delete Student?"
+                                },
+                                class:"btn btn-sm btn-danger" do %>
+
+                                <i class="fas fa-trash"></i>
+
+                            <% end %>
+          
+                                      <%= button_to student_path(student),
+      method: :delete,
+      data: {
+        turbo_confirm: "Delete this student?"
+      },
+      class: "btn btn-danger btn-sm d-inline" do %>
+
+  <i class="fas fa-trash"></i>
+
+<% end %>
+
+                        </td>
+
+                    </tr>
+
+                    <% end %>
+
+                <% else %>
+
+                    <tr>
+
+                        <td colspan="8" class="text-center py-5">
+
+                            <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+
+                            <h5>No Students Found</h5>
+
+                        </td>
+
+                    </tr>
+
+                <% end %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="card-footer">
+
+            <%= paginate @students %>
+
+        </div>
+
+    </div>
+
+</div>

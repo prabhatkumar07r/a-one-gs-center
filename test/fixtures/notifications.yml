@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  notification_type: MyString
+  status: MyString
+  start_date: 2026-07-23
+  end_date: 2026-07-23
+
+two:
+  title: MyString
+  description: MyText
+  notification_type: MyString
+  status: MyString
+  start_date: 2026-07-23
+  end_date: 2026-07-23

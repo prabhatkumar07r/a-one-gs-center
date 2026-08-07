@@ -1,0 +1,50 @@
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons";
+
+
+/* Website Common Styles */
+@import "variables";
+@import "base";
+@import "buttons";
+
+
+/* Home Page */
+@import "header";
+@import "hero";
+@import "features";
+@import "about";
+@import "courses";
+@import "teachers";
+@import "contact";
+@import "footer";
+@import "notification";
+@import "responsive";
+
+
+/* Authentication */
+@import "auth";
+
+
+/* Admin */
+@import "style";
+@import "admin";
+@import "adminstudent";
+@import "adminstudentshow";
+@import "adminstudentedit";
+
+
+/* Teacher Module */
+@import "teacher";
+@import "teacher_cards";
+@import "teacher_dashboard";
+@import "teacher_navbar";
+@import "teacher_sidebar";
+@import "teacher_table";
+@impor  "study_notes";
+
+
+/* Other */
+@import "attendance";
+@import "batches";
+@import "demo";
+@import "print";
