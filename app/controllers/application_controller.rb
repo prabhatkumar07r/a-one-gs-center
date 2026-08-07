@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
+
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :authenticate_user!
+  before_action :authenticate_user!, unless: :public_controller?
 
   protected
 
@@ -32,6 +33,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def public_controller?
+    controller_name == "sample" && action_name == "homepage"
+  end
+
   def require_admin
     unless current_user&.admin?
       redirect_to root_path, alert: "Access denied."
@@ -44,15 +49,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-def set_teacher_course
-  course_id = params[:course_id] || params[:id]
+  def set_teacher_course
+    course_id = params[:course_id] || params[:id]
 
-  return unless course_id.present?
+    return unless course_id.present?
 
-  if current_user.admin?
-    @course = Course.find(course_id)
-  else
-    @course = current_user.teacher.courses.find(course_id)
+    if current_user.admin?
+      @course = Course.find(course_id)
+    else
+      @course = current_user.teacher.courses.find(course_id)
+    end
   end
-end
+
 end

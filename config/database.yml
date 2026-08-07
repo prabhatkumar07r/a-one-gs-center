@@ -7,14 +7,14 @@ development:
   <<: *default
   database: my_first_learn_development
   username: postgres
-  password:
+  password: "Prabhat@#07"
   host: localhost
 
 test:
   <<: *default
   database: my_first_learn_test
   username: postgres
-  password:
+  password: "Prabhat@#07"
   host: localhost
 
 production:

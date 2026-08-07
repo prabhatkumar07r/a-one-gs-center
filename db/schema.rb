@@ -11,18 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_08_05_115149) do
-  create_table "students", force: :cascade do |t|
-    t.integer "age"
-    t.datetime "created_at", null: false
-    t.string "email"
-    t.integer "mobile"
-    t.string "name"
-    t.string "password"
-    t.datetime "resets_password_sent_at"
-    t.string "resets_password_token"
-    t.string "role"
-    t.datetime "updated_at", null: false
-  end
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "achievements", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -250,6 +240,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_115149) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["playlist_id"], name: "index_resources_on_playlist_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.integer "age"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.integer "mobile"
+    t.string "name"
+    t.string "password"
+    t.datetime "resets_password_sent_at"
+    t.string "resets_password_token"
+    t.string "role"
+    t.datetime "updated_at", null: false
   end
 
   create_table "teachers", force: :cascade do |t|
