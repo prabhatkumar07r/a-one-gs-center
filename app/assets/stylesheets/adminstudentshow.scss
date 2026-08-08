@@ -1,21 +1,22 @@
 .card{
-    border-radius:15px;
+    border-radius: 15px;
 }
 
 .card-header{
-    border-radius:15px 15px 0 0 !important;
+    border-radius: 15px 15px 0 0 !important;
 }
 
-.table th{
-    width:220px;
-    background:#f8f9fa;
+.table thead th{
+    background: #dc3545 !important;   /* Red */
+    color: #fff !important;           /* White text */
+    text-align: center;
+    vertical-align: middle;
 }
 
-.table td,
-.table th{
-    vertical-align:middle;
+.table td{
+    vertical-align: middle;
 }
 
 .rounded-circle{
-    object-fit:cover;
+    object-fit: cover;
 }

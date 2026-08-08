@@ -3,18 +3,9 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-default: &default
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
 development:
   <<: *default
-  database: my_first_learn_development
-  username: postgres
-  password: <%= ENV["DATABASE_PASSWORD"] %>
-  host: 127.0.0.1
-  port: 5432
+  url: <%= ENV["DATABASE_URL"] %>
 
 test:
   <<: *default

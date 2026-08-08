@@ -23,6 +23,8 @@ gem "prawn"
 gem "prawn-table"
 gem "matrix"
 gem "rqrcode"
+gem "cloudinary"
+gem "activestorage-cloudinary-service"
 
 
 

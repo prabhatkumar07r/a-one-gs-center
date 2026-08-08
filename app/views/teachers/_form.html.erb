@@ -1,4 +1,4 @@
-```erb
+
 <%= form_with model: @teacher, local: true, multipart: true do |f| %>
 <div class="row">
 
@@ -91,6 +91,22 @@
           class: "form-control",
           placeholder: "teacher@gmail.com" %>
   </div>
+  
+  <div class="col-md-6 mb-3">
+  <%= label_tag :password, "Password" %>
+  <%= password_field_tag :password, nil,
+        class: "form-control",
+        placeholder: "Enter Password",
+        required: true %>
+</div>
+
+<div class="col-md-6 mb-3">
+  <%= label_tag :password_confirmation, "Confirm Password" %>
+  <%= password_field_tag :password_confirmation, nil,
+        class: "form-control",
+        placeholder: "Confirm Password",
+        required: true %>
+</div>
 
   <!-- Bio -->
 

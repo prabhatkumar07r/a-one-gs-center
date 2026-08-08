@@ -21,15 +21,33 @@ class TeachersController < ApplicationController
     @teacher = Teacher.new
   end
 
-  def create
+ def create
+ user = User.new(
+  name: params[:teacher][:name],
+  email: params[:teacher][:email],
+  mobile: params[:teacher][:mobile],
+  password: params[:password],
+  password_confirmation: params[:password_confirmation],
+  role: "teacher"
+)
+
+  if user.save
     @teacher = Teacher.new(teacher_params)
+    @teacher.user = user
 
     if @teacher.save
       redirect_to teachers_path, notice: "Teacher Added Successfully"
     else
-      render :new
+      user.destroy
+      flash.now[:alert] = @teacher.errors.full_messages.join(", ")
+      render :new, status: :unprocessable_entity
     end
+  else
+    @teacher = Teacher.new(teacher_params)
+    flash.now[:alert] = user.errors.full_messages.join(", ")
+    render :new, status: :unprocessable_entity
   end
+end
 
   def show
     @teacher = Teacher.find(params[:id])
@@ -75,7 +93,9 @@ class TeachersController < ApplicationController
     :instagram,
     :linkedin,
     :gmail,
-    :photo
+    :photo,
+    :password,
+    :password_confirmation
   )
 end
 end
