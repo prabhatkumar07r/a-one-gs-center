@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   get "/debug_env", to: "sample#debug_env"
   get "/cloudinary_check", to: "sample#cloudinary_check"
+  get "/blob_check", to: "sample#blob_check"
 
   # ==================================================
   # Dashboards

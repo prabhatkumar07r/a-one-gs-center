@@ -25,6 +25,19 @@ end
       api_secret_present: ENV["CLOUDINARY_API_SECRET"].present?
     }.inspect
   end
+  def blob_check
+  teacher = Teacher.first
+
+  if teacher&.photo&.attached?
+    render plain: {
+      teacher: teacher.name,
+      service_name: teacher.photo.blob.service_name,
+      filename: teacher.photo.filename.to_s
+    }.inspect
+  else
+    render plain: "No photo attached"
+  end
+end
 
 end
 
