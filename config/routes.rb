@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
+  get "/debug_env", to: "sample#debug_env"
+
   # ==================================================
   # Dashboards
   # ==================================================

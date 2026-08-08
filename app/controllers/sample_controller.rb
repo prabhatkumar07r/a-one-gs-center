@@ -8,6 +8,14 @@ class SampleController < ApplicationController
   @achievements=Achievement.where(status: "Active")
 end
 
+def debug_env
+  render plain: <<~TEXT
+    Rails.env: #{Rails.env}
+    GOOGLE_CLIENT_ID: #{ENV["GOOGLE_CLIENT_ID"].inspect}
+    GOOGLE_CLIENT_SECRET: #{ENV["GOOGLE_CLIENT_SECRET"] ? "PRESENT" : "MISSING"}
+  TEXT
+end
+
 end
 
   
