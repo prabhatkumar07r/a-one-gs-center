@@ -863,64 +863,63 @@ nav ul li a:hover{
 
 /* ================= TEACHERS ================= */
 
-```css
-.teachers{
-    padding:100px 0;
+.teachers {
+    padding: 100px 0;
 }
 
-.teacher-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:30px;
+.teacher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
 }
 
-.teacher-card{
-    background:white;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,0.08);
-    transition:.4s;
+.teacher-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: 0.4s;
 }
 
-.teacher-card:hover{
-    transform:translateY(-10px);
+.teacher-card:hover {
+    transform: translateY(-10px);
 }
 
-.teacher-img{
-    width:150px;
-    height:150px;
-    object-fit:cover;
-    border-radius:50%;
-    display:block;
-    margin:25px auto 10px;
+.teacher-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 25px auto 10px;
 }
 
-.teacher-info{
-    padding:25px;
-    text-align:center;
+.teacher-info {
+    padding: 25px;
+    text-align: center;
 }
 
-.teacher-info h3{
-    color:#6a11cb;
-    margin-bottom:10px;
+.teacher-info h3 {
+    color: #6a11cb;
+    margin-bottom: 10px;
 }
 
-.subject{
-    color:#ff0080;
-    font-weight:600;
-    margin-bottom:15px;
+.subject {
+    color: #ff0080;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
-.social-links{
-    margin-top:20px;
+.social-links {
+    margin-top: 20px;
 }
 
-.social-links a{
-    margin:0 8px;
-    color:#6a11cb;
-    font-size:18px;
+.social-links a {
+    margin: 0 8px;
+    color: #6a11cb;
+    font-size: 18px;
 }
-```
+
 
 
 /* ================= CONTACT ================= */
