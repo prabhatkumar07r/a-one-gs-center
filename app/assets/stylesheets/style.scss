@@ -863,6 +863,7 @@ nav ul li a:hover{
 
 /* ================= TEACHERS ================= */
 
+```css
 .teachers{
     padding:100px 0;
 }
@@ -886,9 +887,12 @@ nav ul li a:hover{
 }
 
 .teacher-img{
-    width:100%;
-    height:320px;
+    width:150px;
+    height:150px;
     object-fit:cover;
+    border-radius:50%;
+    display:block;
+    margin:25px auto 10px;
 }
 
 .teacher-info{
@@ -916,6 +920,8 @@ nav ul li a:hover{
     color:#6a11cb;
     font-size:18px;
 }
+```
+
 
 /* ================= CONTACT ================= */
 
