@@ -16,6 +16,16 @@ def debug_env
   TEXT
 end
 
+
+  def cloudinary_check
+    render plain: {
+      service: Rails.application.config.active_storage.service,
+      cloud_name: ENV["CLOUDINARY_CLOUD_NAME"],
+      api_key_present: ENV["CLOUDINARY_API_KEY"].present?,
+      api_secret_present: ENV["CLOUDINARY_API_SECRET"].present?
+    }.inspect
+  end
+
 end
 
   
