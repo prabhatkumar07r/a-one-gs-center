@@ -3,13 +3,19 @@ class ContactsController < ApplicationController
     @contact = Contact.new(contact_params)
 
     if @contact.save
-      Rails.logger.info "GMAIL_USERNAME=#{ENV['GMAIL_USERNAME'].inspect}"
-      Rails.logger.info "GMAIL_APP_PASSWORD_PRESENT=#{ENV['GMAIL_APP_PASSWORD'].present?}"
+      begin
+        ContactMailer.contact_email(@contact).deliver_now
+        redirect_to sample_homepage_path, notice: "Message sent successfully."
+      rescue => e
+        Rails.logger.error "=============================="
+        Rails.logger.error e.class
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace.join("\n")
+        Rails.logger.error "=============================="
 
-      ContactMailer.contact_email(@contact).deliver_now
-
-      redirect_to sample_homepage_path,
-                  notice: "Message sent successfully."
+        redirect_to sample_homepage_path,
+                    alert: "Email failed: #{e.class}"
+      end
     else
       redirect_to sample_homepage_path,
                   alert: "Message could not be sent."
@@ -19,11 +25,6 @@ class ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(
-      :name,
-      :email,
-      :subject,
-      :message
-    )
+    params.require(:contact).permit(:name, :email, :subject, :message)
   end
 end
