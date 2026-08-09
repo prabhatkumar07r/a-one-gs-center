@@ -4,7 +4,7 @@ class ContactMailer < ApplicationMailer
 
     mail(
       to: "prabhatkumar27032003@gmail.com",
-      from: "prabhatkumar27032003@gmail.com",
+      from: ENV["GMAIL_USERNAME"],
       subject: "New Contact Message"
     )
   end
