@@ -3,6 +3,9 @@ class ContactsController < ApplicationController
     @contact = Contact.new(contact_params)
 
     if @contact.save
+      Rails.logger.info "GMAIL_USERNAME=#{ENV['GMAIL_USERNAME'].inspect}"
+      Rails.logger.info "GMAIL_APP_PASSWORD_PRESENT=#{ENV['GMAIL_APP_PASSWORD'].present?}"
+
       ContactMailer.contact_email(@contact).deliver_now
 
       redirect_to sample_homepage_path,
