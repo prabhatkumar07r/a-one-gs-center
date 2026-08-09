@@ -25,6 +25,7 @@ gem "matrix"
 gem "rqrcode"
 gem "cloudinary"
 gem "activestorage-cloudinary-service"
+gem "dotenv-rails"
 
 
 

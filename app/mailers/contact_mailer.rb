@@ -3,7 +3,8 @@ class ContactMailer < ApplicationMailer
     @contact = contact
 
     mail(
-      to: "prabhatkumar270320003@gmail.com",
+      to: "prabhatkumar27032003@gmail.com",
+      from: "prabhatkumar27032003@gmail.com",
       subject: "New Contact Message"
     )
   end

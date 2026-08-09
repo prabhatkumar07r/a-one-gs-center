@@ -22,7 +22,6 @@ Rails.application.configure do
   config.server_timing = true
   # config/environments/development.rb
 # Active Storage configuration add karein:
-config.active_storage.service = :local
 
   # Enable/disable Action Controller caching. By default Action Controller caching is disabled.
   # Run rails dev:cache to toggle Action Controller caching.
@@ -38,8 +37,10 @@ config.active_storage.service = :local
   config.cache_store = :memory_store
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
-  config.active_storage.url_options = {
+# Active Storage
+config.active_storage.service = :cloudinary
+
+config.active_storage.url_options = {
   host: "localhost",
   port: 3000
 }
@@ -90,7 +91,7 @@ config.active_storage.service = :local
   # config.generators.apply_rubocop_autocorrect_after_generate!
   #Add Configure Action Mailer
 
-config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+config.action_mailer.raise_delivery_errors = true
 
 config.action_mailer.delivery_method = :smtp
 
@@ -98,10 +99,14 @@ config.action_mailer.smtp_settings = {
   address: "smtp.gmail.com",
   port: 587,
   domain: "gmail.com",
-  user_name: "prabhatkumar27032003@gmail.com",
-  password: "Prabhat@#07",
+  user_name: ENV["GMAIL_USERNAME"],
+  password: ENV["GMAIL_APP_PASSWORD"],
   authentication: "plain",
   enable_starttls_auto: true
+}
+
+config.action_mailer.default_options = {
+  from: ENV["GMAIL_USERNAME"]
 }
 
 
