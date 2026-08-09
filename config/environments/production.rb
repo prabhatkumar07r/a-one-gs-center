@@ -58,7 +58,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
- config.action_mailer.default_url_options = {
+config.action_mailer.default_url_options = {
   host: "a-one-gs-center.onrender.com",
   protocol: "https"
 }
@@ -72,10 +72,14 @@ config.action_mailer.smtp_settings = {
   domain: "gmail.com",
   user_name: ENV["GMAIL_USERNAME"],
   password: ENV["GMAIL_APP_PASSWORD"],
-  authentication: "plain",
-  enable_starttls_auto: true
+  authentication: :plain,
+  enable_starttls_auto: true,
   open_timeout: 15,
   read_timeout: 15
+}
+
+config.action_mailer.default_options = {
+  from: ENV["GMAIL_USERNAME"]
 }
 
 config.action_mailer.default_options = {
