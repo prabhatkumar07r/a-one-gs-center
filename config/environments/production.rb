@@ -74,6 +74,8 @@ config.action_mailer.smtp_settings = {
   password: ENV["GMAIL_APP_PASSWORD"],
   authentication: "plain",
   enable_starttls_auto: true
+  open_timeout: 15,
+  read_timeout: 15
 }
 
 config.action_mailer.default_options = {
