@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get "/admin", to: "dashboard#index", as: :dashboard
   get "/teacher", to: "teacher_panel/dashboard#index", as: :teacher_dashboard
   get "/student/dashboard", to: "student_dashboard#index", as: :student_dashboard
+  get "/smtp_test", to: "smtp_test#index"
 
   # ==================================================
   # Learning
