@@ -66,19 +66,15 @@ config.action_mailer.default_url_options = {
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.delivery_method = :smtp
 
-config.action_mailer.smtp_settings = {
-  address: "smtp-relay.brevo.com",
-  port: 587,
-  domain: "a-one-gs-center.onrender.com",
-  user_name: ENV["BREVO_LOGIN"],
-  password: ENV["BREVO_SMTP_KEY"],
-  authentication: :login,
-  enable_starttls_auto: true
+config.action_mailer.default_url_options = {
+  host: "a-one-gs-center.onrender.com",
+  protocol: "https"
 }
 
 config.action_mailer.default_options = {
   from: ENV["BREVO_SENDER"]
 }
+
 
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

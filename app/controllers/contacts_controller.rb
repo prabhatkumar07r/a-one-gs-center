@@ -8,10 +8,17 @@ class ContactsController < ApplicationController
         Rails.logger.info "BREVO_SENDER=#{ENV['BREVO_SENDER']}"
         Rails.logger.info "BREVO_KEY_PRESENT=#{ENV['BREVO_SMTP_KEY'].present?}"
 
-        ContactMailer.contact_email(@contact).deliver_now
+        response = BrevoService.send_contact(@contact)
 
-        redirect_to sample_homepage_path,
-                    notice: "Message sent successfully."
+        if response.success?
+          redirect_to sample_homepage_path,
+                      notice: "Message sent successfully."
+        else
+          Rails.logger.error response.body
+
+          redirect_to sample_homepage_path,
+                      alert: "Email sending failed."
+        end
 
       rescue => e
         Rails.logger.error "=============================="

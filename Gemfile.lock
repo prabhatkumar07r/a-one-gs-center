@@ -508,6 +508,7 @@ DEPENDENCIES
   dotenv-rails
   fiddle
   groupdate
+  httparty
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
