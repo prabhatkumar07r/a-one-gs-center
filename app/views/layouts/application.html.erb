@@ -14,17 +14,17 @@
 
 <body>
 
-  <% if flash[:success].present? %>
+  <% if flash[:notice].present? %>
   <div class="alert alert-success alert-dismissible fade show">
-    <%= flash[:success] %>
-    <button class="btn-close" data-bs-dismiss="alert"></button>
+    <%= flash[:notice] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
 <% end %>
 
 <% if flash[:alert].present? %>
   <div class="alert alert-danger alert-dismissible fade show">
     <%= flash[:alert] %>
-    <button class="btn-close" data-bs-dismiss="alert"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   </div>
 <% end %>
 
@@ -39,4 +39,4 @@
   <% end %>
 
 </body>
-</html>
+</html> 
