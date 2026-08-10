@@ -1,84 +1,55 @@
-<%= form_with(model: [:teacher, @course, @playlist], local: true) do |form| %>
+
+<%= form_with(
+      model: [:teacher_panel, @course, @playlist],
+      local: true
+    ) do |form| %>
 
   <% if @playlist.errors.any? %>
-
     <div class="alert alert-danger">
-
       <ul class="mb-0">
-
         <% @playlist.errors.full_messages.each do |message| %>
-
           <li>
             <%= message %>
           </li>
-
         <% end %>
-
       </ul>
-
     </div>
-
   <% end %>
 
-
-
   <div class="mb-3">
-
     <%= form.label :title,
-        class:"form-label fw-bold" %>
-
+        class: "form-label fw-bold" %>
 
     <%= form.text_field :title,
-        class:"form-control",
-        placeholder:"Enter playlist title" %>
-
+        class: "form-control",
+        placeholder: "Enter playlist title" %>
   </div>
 
-
-
-
   <div class="mb-3">
-
     <%= form.label :description,
-        class:"form-label fw-bold" %>
-
+        class: "form-label fw-bold" %>
 
     <%= form.text_area :description,
-        rows:4,
-        class:"form-control",
-        placeholder:"Playlist description" %>
-
-
+        rows: 4,
+        class: "form-control",
+        placeholder: "Playlist description" %>
   </div>
-
-
-
 
   <div class="mb-3">
-
     <%= form.label :position,
-        class:"form-label fw-bold" %>
-
+        class: "form-label fw-bold" %>
 
     <%= form.number_field :position,
-        class:"form-control" %>
-
-
+        class: "form-control" %>
   </div>
 
+  <div class="d-flex gap-2">
+    <%= form.submit "Save Playlist",
+        class: "btn btn-success" %>
 
-
-
-  <%= form.submit "Save Playlist",
-      class:"btn btn-success" %>
-
-
-
-  <%= link_to "Back",
-
-     teacher_panel_course_playlists_path(@course),
-
-      class:"btn btn-secondary" %>
-
+    <%= link_to "Back",
+        teacher_panel_course_playlists_path(@course),
+        class: "btn btn-secondary" %>
+  </div>
 
 <% end %>
