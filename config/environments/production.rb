@@ -67,24 +67,19 @@ config.action_mailer.raise_delivery_errors = true
 config.action_mailer.delivery_method = :smtp
 
 config.action_mailer.smtp_settings = {
-  address: "smtp.gmail.com",
+  address: "smtp-relay.brevo.com",
   port: 587,
-  domain: "gmail.com",
-  user_name: ENV["GMAIL_USERNAME"],
-  password: ENV["GMAIL_APP_PASSWORD"],
-  authentication: :plain,
-  enable_starttls_auto: true,
-  open_timeout: 15,
-  read_timeout: 15
+  domain: "a-one-gs-center.onrender.com",
+  user_name: ENV["BREVO_LOGIN"],
+  password: ENV["BREVO_SMTP_KEY"],
+  authentication: :login,
+  enable_starttls_auto: true
 }
 
 config.action_mailer.default_options = {
-  from: ENV["GMAIL_USERNAME"]
+  from: ENV["BREVO_SENDER"]
 }
 
-config.action_mailer.default_options = {
-  from: ENV["GMAIL_USERNAME"]
-}
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

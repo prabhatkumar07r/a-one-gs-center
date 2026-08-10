@@ -4,8 +4,15 @@ class ContactsController < ApplicationController
 
     if @contact.save
       begin
+        Rails.logger.info "BREVO_LOGIN=#{ENV['BREVO_LOGIN']}"
+        Rails.logger.info "BREVO_SENDER=#{ENV['BREVO_SENDER']}"
+        Rails.logger.info "BREVO_KEY_PRESENT=#{ENV['BREVO_SMTP_KEY'].present?}"
+
         ContactMailer.contact_email(@contact).deliver_now
-        redirect_to sample_homepage_path, notice: "Message sent successfully."
+
+        redirect_to sample_homepage_path,
+                    notice: "Message sent successfully."
+
       rescue => e
         Rails.logger.error "=============================="
         Rails.logger.error e.class
@@ -25,6 +32,11 @@ class ContactsController < ApplicationController
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :email, :subject, :message)
+    params.require(:contact).permit(
+      :name,
+      :email,
+      :subject,
+      :message
+    )
   end
 end
