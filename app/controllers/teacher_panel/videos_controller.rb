@@ -50,23 +50,13 @@ end
 
 end
 
-
 def update
-
   if @video.update(video_params)
-
     redirect_to teacher_panel_course_videos_path(@course),
-    notice: "Video updated successfully."
-
+                notice: "Video updated successfully."
   else
-
-    @playlists = @course.playlists
-
-    render :edit,
-    status: :unprocessable_entity
-
+    raise @video.errors.full_messages.inspect
   end
-
 end
 
 

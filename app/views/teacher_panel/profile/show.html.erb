@@ -1,0 +1,1532 @@
+<style>
+  .profile-wrapper{
+    padding:35px;
+    background:#0b1020;
+    min-height:100vh;
+}
+
+.profile-card{
+    background:#121722;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;
+    padding:35px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+.profile-info h2 {
+  margin-bottom: 6px;
+}
+
+.profile-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 10px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.profile-info p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 5px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.default-avatar {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 42px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+}
+
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:25px;
+}
+
+.stat-box{
+    background:#191f2d;
+    border-radius:18px;
+    padding:30px;
+    text-align:center;
+    transition:.3s;
+    border-bottom:3px solid #7c3aed;
+}
+
+.stat-box:hover{
+    transform:translateY(-8px);
+}
+
+.stat-box h3{
+    color:#fff;
+    font-size:42px;
+    font-weight:700;
+}
+
+.stat-box span{
+    color:#a1a1aa;
+    font-size:16px;
+}
+.profile-tabs{
+    display:flex;
+    gap:18px;
+    margin:30px 0;
+    padding:15px;
+    background:#121722;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.tab-btn{
+
+    border:none;
+
+    background:transparent;
+
+    color:#a1a1aa;
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.tab-btn:hover{
+
+    color:white;
+
+    background:#1f2937;
+
+}
+
+.tab-btn.active{
+
+    background:#7c3aed;
+
+    color:white;
+
+}
+
+.tab-content{
+
+    margin-top:30px;
+
+}
+
+.tab-pane{
+
+    display:none;
+
+}
+
+.tab-pane.active{
+
+    display:block;
+
+}
+.overview-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:30px;
+
+}
+
+.overview-card{
+
+    background:#121722;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.overview-card h4{
+
+    color:white;
+
+    margin-bottom:25px;
+
+}
+
+.profile-table{
+
+    color:white;
+
+}
+
+.profile-table th{
+
+    width:160px;
+
+    color:#9ca3af;
+
+    font-weight:600;
+
+}
+
+.profile-table td{
+
+    color:#121722;
+
+}
+
+.summary-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.summary-item span{
+
+    color:#cbd5e1;
+
+}
+
+.summary-item strong{
+
+    color:#7c3aed;
+
+    font-size:22px;
+
+}
+/* ==========================
+   COURSES TAB
+========================== */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-heading h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.section-heading h3 i {
+  margin-right: 8px;
+}
+
+.section-heading p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.section-count {
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* Course Grid */
+
+.profile-course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+
+/* Course Card */
+
+.profile-course-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all .25s ease;
+}
+
+.profile-course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
+}
+
+
+/* Course Image */
+
+.course-cover {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.course-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 42px;
+}
+
+
+/* Course Body */
+
+.course-card-body {
+  padding: 18px;
+}
+
+.course-card-body h4 {
+  margin: 0 0 9px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.course-description {
+  margin: 0 0 15px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* Course Meta */
+
+.course-meta {
+  display: flex;
+  gap: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #eef0f2;
+}
+
+.course-meta span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.course-meta i {
+  margin-right: 5px;
+}
+
+
+/* Empty State */
+
+.empty-profile-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border: 1px dashed #d1d5db;
+  border-radius: 16px;
+}
+
+.empty-profile-state i {
+  font-size: 42px;
+  color: #94a3b8;
+}
+
+.empty-profile-state h4 {
+  margin: 15px 0 5px;
+  font-weight: 700;
+}
+
+.empty-profile-state p {
+  margin: 0;
+  color: #6b7280;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .profile-course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+}
+.default-avatar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5e7eb;
+  color: #64748b;
+  border-radius: 50%;
+  font-size: 45px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+/* ==========================
+   STUDENTS TAB
+========================== */
+
+.profile-students-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.profile-student-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  transition: all .25s ease;
+}
+
+.profile-student-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .07);
+}
+
+.student-avatar {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 23px;
+}
+
+.student-info {
+  min-width: 0;
+}
+
+.student-info h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.student-info p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-info p i {
+  margin-right: 5px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .profile-students-list {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* ==========================
+   RESOURCES TAB
+========================== */
+
+.profile-resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-resource-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  transition: all .25s ease;
+}
+
+.profile-resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .07);
+}
+
+.resource-icon {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+  background: #f1f5f9;
+  color: #475569;
+
+  font-size: 22px;
+}
+
+.resource-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.resource-info h4 {
+  margin: 0 0 6px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  color: #1f2937;
+}
+
+.resource-description {
+  margin: 0 0 8px;
+
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.resource-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  margin: 0;
+
+  color: #64748b;
+  font-size: 12px;
+}
+
+.resource-meta i {
+  margin-right: 4px;
+}
+
+.resource-action {
+  flex-shrink: 0;
+}
+
+.resource-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  background: #f8fafc;
+  color: #334155;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  border: 1px solid #e2e8f0;
+
+  transition: all .2s ease;
+}
+
+.resource-view-btn:hover {
+  background: #e2e8f0;
+  color: #111827;
+}
+
+.resource-unavailable {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 768px) {
+
+  .profile-resource-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .resource-info {
+    flex: 1;
+    width: calc(100% - 70px);
+  }
+
+  .resource-action {
+    width: 100%;
+    margin-left: 66px;
+  }
+
+}
+
+
+/* ==========================
+   ACTIVITY TAB
+========================== */
+
+.activity-timeline {
+  position: relative;
+  margin-top: 10px;
+  padding-left: 8px;
+}
+
+
+/* Vertical Timeline */
+
+.activity-timeline::before {
+  content: "";
+
+  position: absolute;
+
+  top: 10px;
+  bottom: 10px;
+  left: 30px;
+
+  width: 2px;
+
+  background: #e5e7eb;
+}
+
+
+/* Activity Item */
+
+.activity-item {
+  position: relative;
+
+  display: flex;
+
+  gap: 18px;
+
+  padding: 0 0 28px;
+
+  margin-bottom: 5px;
+}
+
+
+/* Activity Icon */
+
+.activity-icon {
+  position: relative;
+
+  z-index: 2;
+
+  width: 46px;
+  height: 46px;
+
+  min-width: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  border: 2px solid #e5e7eb;
+
+  font-size: 18px;
+}
+
+
+/* Different activity types */
+
+.course-icon {
+  color: #4f46e5;
+}
+
+.playlist-icon {
+  color: #0891b2;
+}
+
+.video-icon {
+  color: #dc2626;
+}
+
+.resource-icon {
+  color: #059669;
+}
+
+
+/* Activity Content */
+
+.activity-content {
+  flex: 1;
+
+  padding: 2px 0 0;
+}
+
+.activity-content h4 {
+  margin: 0 0 6px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: #1f2937;
+}
+
+.activity-content p {
+  margin: 0 0 8px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.activity-content strong {
+  color: #374151;
+}
+
+
+/* Time */
+
+.activity-time {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #9ca3af;
+
+  font-size: 12px;
+}
+
+.activity-time i {
+  font-size: 11px;
+}
+
+
+/* Hover */
+
+.activity-item:hover .activity-icon {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .activity-timeline {
+    padding-left: 0;
+  }
+
+  .activity-timeline::before {
+    left: 22px;
+  }
+
+  .activity-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+
+    font-size: 15px;
+  }
+
+  .activity-item {
+    gap: 14px;
+  }
+
+  .activity-content h4 {
+    font-size: 15px;
+  }
+
+  .activity-content p {
+    font-size: 13px;
+  }
+
+}
+
+.admin-sidebar{
+  background: #121722;
+}
+.teacher-navbar{
+  background: #121722;
+}
+*{
+  background: #121722;
+}
+
+
+
+body{
+    background:#0b1020;
+}
+
+.profile-wrapper{
+    background:#0b1020;
+}
+
+.profile-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+    margin-bottom:35px;
+}
+
+.profile-avatar{
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    overflow:hidden;
+    border:5px solid #7c3aed;
+    flex-shrink:0;
+    box-shadow:0 15px 35px rgba(124,58,237,.35);
+}
+
+.avatar-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-info{
+    flex:1;
+}
+
+.profile-info h2{
+    color:white;
+    font-size:38px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.profile-info p{
+    color:#cbd5e1;
+    margin-bottom:10px;
+    font-size:16px;
+}
+</style>
+
+
+<div class="profile-wrapper">
+
+  <div class="profile-card">
+
+    <div class="profile-header">
+
+      <div class="profile-avatar">
+
+        <% if @teacher.photo.attached? %>
+
+  <%= image_tag @teacher.photo, class: "avatar-img" %>
+
+<% else %>
+
+  <div class="default-avatar">
+    <i class="bi bi-person-fill"></i>
+  </div>
+
+<% end %>
+        
+
+      </div>
+
+      <div class="profile-info">
+
+  <h2>
+    <%= @teacher.name %>
+  </h2>
+
+  <div class="profile-role">
+    <i class="bi bi-person-badge"></i>
+    Teacher
+  </div>
+
+  <p>
+    <i class="bi bi-envelope"></i>
+    <%= current_user.email %>
+  </p>
+
+  <% if @teacher.subject.present? %>
+    <p>
+      <i class="bi bi-book"></i>
+      <%= @teacher.subject %>
+    </p>
+  <% end %>
+
+</div>
+
+    </div>
+
+    <div class="stats-grid">
+
+      <div class="stat-box">
+        <h3><%= @courses.count %></h3>
+        <span>Total Courses</span>
+      </div>
+
+      <div class="stat-box">
+        <h3><%= @students.count %></h3>
+        <span>Total Students</span>
+      </div>
+
+      <div class="stat-box">
+        <h3><%= @videos.count %></h3>
+        <span>Total Videos</span>
+      </div>
+
+      <div class="stat-box">
+        <h3><%= @resources.count %></h3>
+        <span>Total Resources</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<div class="profile-tabs">
+
+  <button class="tab-btn active"
+          data-tab="overview">
+      <i class="bi bi-grid"></i>
+      Overview
+  </button>
+
+  <button class="tab-btn"
+          data-tab="courses">
+      <i class="bi bi-book"></i>
+      Courses
+  </button>
+
+  <button class="tab-btn"
+          data-tab="students">
+      <i class="bi bi-people"></i>
+      Students
+  </button>
+
+  <button class="tab-btn"
+          data-tab="resources">
+      <i class="bi bi-folder2-open"></i>
+      Resources
+  </button>
+
+  <button class="tab-btn"
+          data-tab="activity">
+      <i class="bi bi-clock-history"></i>
+      Activity
+  </button>
+</div>
+
+<div class="tab-content">
+
+    <div id="overview" class="tab-pane active">
+
+    <div class="overview-grid">
+
+    <div class="overview-card">
+
+      <h4>
+        <i class="bi bi-person-circle"></i>
+        About Teacher
+      </h4>
+
+      <table class="table table-borderless profile-table">
+
+        <tr>
+          <th>Name</th>
+          <td><%= @teacher.name %></td>
+        </tr>
+
+        <tr>
+          <th>Email</th>
+          <td><%= current_user.email %></td>
+        </tr>
+
+        <tr>
+          <th>Phone</th>
+          <td><%= @teacher.mobile.presence || "-" %></td>
+        </tr>
+
+        <tr>
+          <th>Qualification</th>
+          <td><%= @teacher.qualification.presence || "-" %></td>
+        </tr>
+
+        <tr>
+          <th>Experience</th>
+          <td><%= @teacher.experience.presence || "-" %></td>
+        </tr>
+
+        <tr>
+          <th>Joined</th>
+          <td><%= @teacher.created_at.strftime("%d %B %Y") %></td>
+        </tr>
+
+      </table>
+
+    </div>
+
+    <div class="overview-card">
+
+      <h4>
+        <i class="bi bi-bar-chart"></i>
+        Teaching Summary
+      </h4>
+
+      <div class="summary-item">
+        <span>Courses</span>
+        <strong><%= @courses.count %></strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Students</span>
+        <strong><%= @students.count %></strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Playlists</span>
+        <strong><%= @playlists.count %></strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Videos</span>
+        <strong><%= @videos.count %></strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Resources</span>
+        <strong><%= @resources.count %></strong>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+    </div>
+
+    <div id="courses" class="tab-pane">
+
+  <div class="section-heading">
+    <div>
+      <h3>
+        <i class="bi bi-book"></i>
+        My Courses
+      </h3>
+      <p>Courses currently managed by you</p>
+    </div>
+
+    <span class="section-count">
+      <%= @courses.count %> Courses
+    </span>
+  </div>
+
+  <% if @courses.any? %>
+
+    <div class="profile-course-grid">
+
+      <% @courses.each do |course| %>
+
+  <%= link_to teacher_panel_course_path(course),
+              class: "profile-course-card-link" do %>
+
+    <div class="profile-course-card">
+
+      <% if course.image.attached? %>
+        <%= image_tag course.image, class: "course-cover" %>
+      <% else %>
+        <div class="course-cover course-placeholder">
+          <i class="bi bi-book"></i>
+        </div>
+      <% end %>
+
+      <div class="course-card-body">
+
+        <h4>
+          <%= course.Course_name %>
+        </h4>
+
+        <p class="course-description">
+          <%= truncate(
+                course.description.presence ||
+                "No course description available.",
+                length: 100
+              ) %>
+        </p>
+
+        <div class="course-meta">
+
+          <span>
+            <i class="bi bi-play-circle"></i>
+            <%= course.videos.count %> Videos
+          </span>
+
+          <span>
+            <i class="bi bi-folder2-open"></i>
+            <%= course.playlists.count %> Playlists
+          </span>
+
+        </div>
+
+        <div class="course-view">
+          View Course
+          <i class="bi bi-arrow-right"></i>
+        </div>
+
+      </div>
+
+    </div>
+
+  <% end %>
+  <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="empty-profile-state">
+
+      <i class="bi bi-book"></i>
+
+      <h4>No Courses Yet</h4>
+
+      <p>
+        You have not created any courses yet.
+      </p>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+    <div id="students" class="tab-pane">
+
+  <div class="section-heading">
+
+    <div>
+      <h3>
+        <i class="bi bi-people"></i>
+        My Students
+      </h3>
+
+      <p>Students enrolled in your courses</p>
+    </div>
+
+    <span class="section-count">
+      <%= @students.count %> Students
+    </span>
+
+  </div>
+
+
+  <% if @students.any? %>
+
+    <div class="profile-students-list">
+
+      <% @students.each do |student| %>
+
+        <div class="profile-student-card">
+
+          <div class="student-avatar">
+            <i class="bi bi-person-fill"></i>
+          </div>
+
+          <div class="student-info">
+
+            <h4>
+              <%= student.name.presence || "Student" %>
+            </h4>
+
+            <p>
+              <i class="bi bi-envelope"></i>
+              <%= student.email %>
+            </p>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="empty-profile-state">
+
+      <i class="bi bi-people"></i>
+
+      <h4>No Students Yet</h4>
+
+      <p>
+        No students are currently enrolled in your courses.
+      </p>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+    <div id="resources" class="tab-pane">
+
+  <div class="section-heading">
+
+    <div>
+      <h3>
+        <i class="bi bi-folder2-open"></i>
+        My Resources
+      </h3>
+
+      <p>Learning resources available in your courses</p>
+    </div>
+
+    <span class="section-count">
+      <%= @resources.count %> Resources
+    </span>
+
+  </div>
+
+
+  <% if @resources.any? %>
+
+    <div class="profile-resource-list">
+
+      <% @resources.each do |resource| %>
+
+        <div class="profile-resource-card">
+
+          <div class="resource-icon">
+
+            <% if resource.resource_type.to_s.downcase == "pdf" %>
+
+              <i class="bi bi-file-earmark-pdf"></i>
+
+            <% elsif ["document", "doc", "docx"].include?(resource.resource_type.to_s.downcase) %>
+
+              <i class="bi bi-file-earmark-word"></i>
+
+            <% elsif ["image", "jpg", "jpeg", "png"].include?(resource.resource_type.to_s.downcase) %>
+
+              <i class="bi bi-file-earmark-image"></i>
+
+            <% else %>
+
+              <i class="bi bi-file-earmark-text"></i>
+
+            <% end %>
+
+          </div>
+
+
+          <div class="resource-info">
+
+            <h4>
+              <%= resource.title.presence || "Learning Resource" %>
+            </h4>
+
+
+            <% if resource.description.present? %>
+
+              <p class="resource-description">
+                <%= truncate(resource.description, length: 90) %>
+              </p>
+
+            <% end %>
+
+
+            <p class="resource-meta">
+
+              <span>
+                <i class="bi bi-tag"></i>
+                <%= resource.resource_type.presence || "Resource" %>
+              </span>
+
+
+              <% if resource.playlist.present? %>
+
+                <span>
+                  <i class="bi bi-collection-play"></i>
+                  <%= resource.playlist.title %>
+                </span>
+
+              <% end %>
+
+            </p>
+
+          </div>
+
+
+          <div class="resource-action">
+
+            <% if resource.file.attached? %>
+
+              <%= link_to rails_blob_path(
+                    resource.file,
+                    disposition: "attachment"
+                  ),
+                  class: "resource-view-btn" do %>
+
+                <i class="bi bi-download"></i>
+                Download
+
+              <% end %>
+
+            <% else %>
+
+              <span class="resource-unavailable">
+                No File
+              </span>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+  <% else %>
+
+    <div class="empty-profile-state">
+
+      <i class="bi bi-folder2-open"></i>
+
+      <h4>No Resources Yet</h4>
+
+      <p>
+        No learning resources have been added to your courses.
+      </p>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+    
+
+
+
+
+
+
+    <div id="activity" class="tab-pane">
+
+  <div class="section-heading">
+
+    <div>
+      <h3>
+        <i class="bi bi-clock-history"></i>
+        Recent Activity
+      </h3>
+
+      <p>Your latest teaching activities</p>
+    </div>
+
+    <span class="section-count">
+      <%= @activities.count %> Activities
+    </span>
+
+  </div>
+
+
+  <% if @activities.any? %>
+
+    <div class="activity-timeline">
+
+      <% @activities.each do |activity| %>
+
+        <div class="activity-item">
+
+          <div class="activity-icon
+                      <%= activity[:type] == "course" ? "course-icon" :
+                          activity[:type] == "playlist" ? "playlist-icon" :
+                          activity[:type] == "video" ? "video-icon" :
+                          "resource-icon" %>">
+
+            <% if activity[:type] == "course" %>
+
+              <i class="bi bi-book"></i>
+
+            <% elsif activity[:type] == "playlist" %>
+
+              <i class="bi bi-collection-play"></i>
+
+            <% elsif activity[:type] == "video" %>
+
+              <i class="bi bi-play-circle"></i>
+
+            <% else %>
+
+              <i class="bi bi-file-earmark-text"></i>
+
+            <% end %>
+
+          </div>
+
+
+          <div class="activity-content">
+
+            <h4>
+              <%= activity[:title] %>
+            </h4>
+
+            <p>
+              <strong>
+                <%= activity[:description] %>
+              </strong>
+            </p>
+
+            <span class="activity-time">
+
+              <i class="bi bi-clock"></i>
+
+              <%= time_ago_in_words(activity[:created_at]) %> ago
+
+            </span>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+  <% else %>
+
+    <div class="empty-profile-state">
+
+      <i class="bi bi-clock-history"></i>
+
+      <h4>No Activity Yet</h4>
+
+      <p>
+        Your teaching activity will appear here.
+      </p>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const buttons = document.querySelectorAll(".tab-btn");
+  const panes = document.querySelectorAll(".tab-pane");
+
+  buttons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+      buttons.forEach(btn => btn.classList.remove("active"));
+      panes.forEach(pane => pane.classList.remove("active"));
+
+      this.classList.add("active");
+
+      const tab = this.dataset.tab;
+      document.getElementById(tab).classList.add("active");
+
+    });
+
+  });
+
+});
+</script>

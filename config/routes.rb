@@ -96,13 +96,16 @@ Rails.application.routes.draw do
   # ==================================================
 
   namespace :teacher_panel do
+    get "profile/show"
     resources :courses, only: [:index, :show] do
       resources :students, only: [:index]
       resources :videos
       resources :playlists
       resources :resources
+      resource :profile, only: [:show, :edit, :update]
     end
   end
+  get "teacher/profile", to: "teacher_panel/profile#show", as: :teacher_profile
 
   # ==================================================
   # Admin Courses

@@ -1,9 +1,10 @@
 .btn {
   display: inline-block;
-  padding: 14px 32px;
+  padding: 8px 16px;      /* Reduced from 14px 32px */
+  font-size: 14px;        /* Smaller text */
   background: var(--gradient-primary);
   color: var(--text-light);
-  border-radius: 50px;
+  border-radius: 8px;     /* Optional: less rounded */
   font-weight: 600;
   transition: var(--transition);
   border: none;
@@ -28,8 +29,8 @@
   }
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
   }
 
   &:active {
@@ -39,26 +40,5 @@
   &:focus {
     outline: 2px solid #6A11CB;
     outline-offset: 2px;
-  }
-}
-
-.btn-outline {
-  background: transparent;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-  color: #6A11CB;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: var(--gradient-primary);
-    border-radius: 50px;
-    z-index: -1;
-  }
-
-  &:hover {
-    color: white;
   }
 }

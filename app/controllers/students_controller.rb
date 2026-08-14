@@ -1,4 +1,5 @@
 class StudentsController < ApplicationController
+  layout "admin"
 
   def index
     @students = User.where(role: "student")

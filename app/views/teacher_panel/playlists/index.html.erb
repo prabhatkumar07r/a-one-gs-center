@@ -1,6 +1,88 @@
+<style>
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:6px 10px;   /* Small horizontal padding */
+    width:auto;         /* Only as wide as its content */
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:500;
+    border-radius:10px;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.back-btn i{
+    font-size:15px;
+
+  }  
+.custom-breadcrumb{
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 10px !important;
+}
+
+.custom-breadcrumb .breadcrumb{
+    background: transparent !important;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-breadcrumb .breadcrumb-item{
+    font-size:14px;
+    font-weight:500;
+}
+
+.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+    content: ">";
+    color:#6c757d;
+    padding:0 8px;
+}
+
+.custom-breadcrumb .breadcrumb-item a{
+    color:#0d6efd;
+    text-decoration:none;
+}
+
+.custom-breadcrumb .breadcrumb-item.active{
+    color:#198754;
+    font-weight:600;
+}
+
+</style>
+
+<nav aria-label="breadcrumb" class="custom-breadcrumb mb-2">
+  <ol class="breadcrumb">
+
+    <li class="breadcrumb-item">
+      <%= link_to "Dashboard", teacher_dashboard_path %>
+    </li>
+
+    <li class="breadcrumb-item">
+      <%= link_to "My Courses", teacher_panel_courses_path %>
+    </li>
+
+    <li class="breadcrumb-item">
+      <%= link_to @course.Course_name, teacher_panel_course_path(@course) %>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">
+      Playlists
+    </li>
+
+  </ol>
+</nav>
 <% content_for :title, "#{@course.Course_name} Playlists" %>
 
 <div class="container-fluid mt-4">
+
 
   <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -14,9 +96,11 @@
     </div>
 
 
-    <%= link_to "➕ Add Playlist",
-        new_teacher_panel_course_playlist_path(@course),
-        class: "btn btn-success" %>
+<%= link_to new_teacher_panel_course_playlist_path(@course),
+    class: "btn btn-outline-secondary back-btn" do %>
+  <i class="bi bi-plus-circle"></i>
+  Add Playlist
+<% end %>
 
   </div>
 

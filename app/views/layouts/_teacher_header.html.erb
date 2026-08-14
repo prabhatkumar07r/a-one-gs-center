@@ -1,0 +1,176 @@
+<style>
+.teacher-navbar{
+    position:fixed;
+    top:0;
+    left:270px;
+    width:calc(100% - 270px);
+    height:75px;
+
+    background:#245187;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 30px;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+
+    z-index:1050;
+}
+
+/* DO NOT style .admin-main or .admin-content here */
+
+.teacher-navbar-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#fff;
+    margin-bottom:0;
+}
+
+.welcome-text{
+    color:#eef7ee;
+    font-size:14px;
+}
+
+.teacher-navbar-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.header-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    background:rgba(255,255,255,.15);
+
+    color:#fff;
+
+    padding:10px 18px;
+
+    border-radius:50px;
+}
+
+.header-icon{
+    width:45px;
+    height:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.15);
+
+    color:#fff;
+
+    transition:.3s;
+}
+
+.header-icon:hover{
+    background:#fff;
+    color:#45BA38;
+}
+
+.profile-btn{
+    color:#fff;
+    font-size:38px;
+}
+
+.profile-btn:hover{
+    color:#fff;
+}
+
+.menu-btn{
+    border:none;
+    background:none;
+    color:#fff;
+    font-size:28px;
+}
+</style>
+
+<nav class="teacher-navbar">
+
+  <div class="teacher-navbar-left">
+
+    <button class="menu-btn d-lg-none"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div>
+      <h4 class="page-title mb-0">
+        <%= content_for?(:page_title) ? yield(:page_title) : "Teacher Dashboard" %>
+      </h4>
+
+      <small class="welcome-text">
+        Welcome,
+        <strong><%= current_user.name.presence || current_user.email %></strong>
+      </small>
+    </div>
+
+  </div>
+
+  <div class="teacher-navbar-right">
+
+    <div class="header-item">
+      <i class="bi bi-calendar-event"></i>
+      <span><%= Date.today.strftime("%d %b %Y") %></span>
+    </div>
+
+    <div class="header-icon">
+      <i class="bi bi-bell-fill"></i>
+    </div>
+
+   <%#  <div class="dropdown">
+
+      <a href="#"
+         class="profile-btn text-decoration-none"
+         data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle"></i>
+      </a> %>
+
+     <%# <%# <%# <%#  <ul class="dropdown-menu dropdown-menu-end shadow">
+
+        <li>
+          <h6 class="dropdown-header">
+            <%= current_user.name.presence || current_user.email %>
+       <%#    </h6>
+        </li>
+
+        <li><hr class="dropdown-divider"></li>
+
+        <li>
+          <%= link_to edit_user_registration_path,
+              class:"dropdown-item" do %>
+         <%#    <i class="bi bi-person me-2"></i>
+            My Profile
+          <% end %>
+        <%# </li>  %>
+
+       <%#  <li>
+          <%= button_to destroy_user_session_path,
+              method: :delete,
+              class:"dropdown-item text-danger border-0 bg-transparent w-100 text-start" do %>
+           <%#  <i class="bi bi-box-arrow-right me-2"></i>
+            Logout %>
+    <%#       <% end %>
+        <%# </li> %>
+
+      <%# </ul>  %>
+    <%# </div> %>
+
+  </div>
+
+</nav>

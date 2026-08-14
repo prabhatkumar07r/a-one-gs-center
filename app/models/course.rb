@@ -22,4 +22,12 @@ class Course < ApplicationRecord
   has_many :certificates, dependent: :destroy
 
   validates :Course_name, :duration, :fee, presence: true
+
+
+
+  def discount_percentage
+  return 0 if original_fee.blank? || original_fee.to_f <= 0
+
+  (((original_fee - fee) / original_fee.to_f) * 100).round
+end
 end

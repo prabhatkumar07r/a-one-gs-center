@@ -1,0 +1,2 @@
+module TeacherPanel::ProfileHelper
+end

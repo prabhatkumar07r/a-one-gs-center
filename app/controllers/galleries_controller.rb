@@ -1,4 +1,4 @@
-class GalleriesController < ApplicationController
+class GalleriesController < AdminController
 
   def index
     @galleries = Gallery.order(created_at: :desc)

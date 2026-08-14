@@ -45,12 +45,13 @@ class TeacherPanel::ResourcesController < ApplicationController
     end
   end
 
-  def destroy
-    @resource.destroy
+def destroy
+  @resource.file.purge if @resource.file.attached?
+  @resource.destroy
 
-    redirect_to teacher_panel_course_resources_path(@course),
-                notice: "Resource deleted successfully."
-  end
+  redirect_to teacher_panel_course_resources_path(@course),
+              notice: "Resource deleted successfully."
+end
 
   private
 

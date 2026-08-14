@@ -54,9 +54,15 @@ class PlaylistsController < ApplicationController
     end
   end
 
-  def set_course
+def set_course
+  if current_user.admin?
     @course = Course.find(params[:course_id])
+  elsif current_user.teacher?
+    @course = current_user.teacher.courses.find(params[:course_id])
+  else
+    redirect_to root_path, alert: "Access Denied"
   end
+end
 
   def set_playlist
     @playlist = @course.playlists.find(params[:id])

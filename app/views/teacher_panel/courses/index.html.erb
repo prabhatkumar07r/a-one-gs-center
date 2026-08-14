@@ -1,4 +1,95 @@
-<div class="container-fluid">
+<style>
+.custom-breadcrumb{
+    background:transparent;
+    padding:0;
+    border-radius:0;
+    box-shadow:none;
+    margin-bottom:12px;
+}
+.main-content{
+    margin-top:15px;
+    padding-top:15px;
+}
+
+.custom-breadcrumb .breadcrumb{
+    margin:0;
+}
+
+.custom-breadcrumb .breadcrumb-item{
+    font-size:15px;
+    font-weight:500;
+}
+
+.custom-breadcrumb .breadcrumb-item a{
+    color:#2563eb;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.custom-breadcrumb .breadcrumb-item a:hover{
+    color:#0d6efd;
+}
+
+.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+    content: ">";
+    color:#6c757d;
+    font-weight:bold;
+}
+
+.custom-breadcrumb .breadcrumb-item.active{
+    color:#198754;
+    font-weight:700;
+}
+
+.custom-breadcrumb i{
+    margin-right:6px;
+}
+.container-fluid{
+     padding-top:10px !important
+}
+.container-fluid{
+    padding-top:10px;
+    padding-left:25px;
+    padding-right:25px;
+    padding-bottom:25px;
+}
+.admin-content{
+    padding:85px 30px 30px;
+}
+
+.custom-breadcrumb{
+    background:transparent;
+    padding:0;
+    margin-bottom:10px;
+}
+
+.d-flex.justify-content-between{
+    margin-bottom:20px !important;
+}
+
+</style>
+
+
+<div class="container-fluid px-0 pt-2">
+ <nav aria-label="breadcrumb" class="custom-breadcrumb mb-4">
+
+  <ol class="breadcrumb mb-0">
+
+    <li class="breadcrumb-item">
+      <%= link_to teacher_dashboard_path do %>
+        <i class="bi bi-speedometer2"></i>
+        Dashboard
+      <% end %>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <i class="bi bi-book"></i>
+      My Courses
+    </li>
+
+ 
+
+  </ol>
+</nav>
 
   <div class="d-flex justify-content-between align-items-center mb-4">
 

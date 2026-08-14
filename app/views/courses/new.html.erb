@@ -1,4 +1,25 @@
-<% content_for :show_layout, true %>
-<h2>Add New Course</h2>
+<div class="admin-layout">
 
-<%= render "form" %>
+  <%= render "layouts/admin_sidebar" %>
+
+  <div class="main-content">
+
+    <div class="container-fluid py-4">
+
+      <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-success text-white">
+          <h2>Add Course</h2>
+        </div>
+
+        <div class="card-body">
+          <%= render "form" %>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

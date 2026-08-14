@@ -1,4 +1,133 @@
+<style>
+    .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:6px 10px;   /* Small horizontal padding */
+    width:auto;         /* Only as wide as its content */
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:500;
+    border-radius:10px;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.back-btn i{
+    font-size:15px;
+}
+.table th {
+    width: 220px;
+    background: #000000;
+}
+
+
+
+/* ===========================
+   Teacher Breadcrumb
+=========================== */
+
+.custom-breadcrumb{
+    background: transparent;
+    padding: 0;
+    margin: 0 0 12px 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.custom-breadcrumb .breadcrumb{
+    margin:0;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.custom-breadcrumb .breadcrumb-item{
+    display:flex;
+    align-items:center;
+    font-size:14px;
+    font-weight:500;
+}
+
+.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+    content: ">";
+    color:#6c757d;
+    padding:0 10px;
+    font-weight:600;
+}
+
+.custom-breadcrumb .breadcrumb-item a{
+    color:#0d6efd;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:.3s;
+}
+
+.custom-breadcrumb .breadcrumb-item a:hover{
+    color:#084298;
+}
+
+.custom-breadcrumb .breadcrumb-item.active{
+    color:#198754;
+    font-weight:600;
+}
+
+.custom-breadcrumb i{
+    font-size:14px;
+}
+
+/* Responsive */
+
+@media (max-width:768px){
+
+    .custom-breadcrumb{
+        padding:10px 15px;
+    }
+
+    .custom-breadcrumb .breadcrumb-item{
+        font-size:13px;
+    }
+
+}
+</style>
+
+
 <div class="container-fluid">
+  <nav aria-label="breadcrumb" class="custom-breadcrumb mb-4">
+  <ol class="breadcrumb">
+
+    <li class="breadcrumb-item">
+      <%= link_to teacher_dashboard_path do %>
+        <i class="bi bi-house-door-fill"></i> Dashboard
+      <% end %>
+    </li>
+
+    <li class="breadcrumb-item">
+      <%= link_to teacher_panel_courses_path do %>
+        <i class="bi bi-journal-bookmark-fill"></i> My Courses
+      <% end %>
+    </li>
+
+    <li class="breadcrumb-item">
+      <%= link_to teacher_panel_course_path(@course) do %>
+        <i class="bi bi-book-fill"></i> <%= @course.Course_name %>
+      <% end %>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">
+      <i class="bi bi-camera-video-fill"></i> Videos
+    </li>
+
+  </ol>
+</nav>
+
 
 
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -17,14 +146,11 @@
     </div>
 
 
-
     <%= link_to new_teacher_panel_course_video_path(@course),
-        class: "btn btn-primary" do %>
-
-      <i class="bi bi-plus-circle"></i>
-      Add Video
-
-    <% end %>
+    class: "btn btn-outline-secondary back-btn" do %>
+  <i class="bi bi-plus-circle"></i>
+  Add Video
+<% end %>
 
 
   </div>
@@ -112,46 +238,26 @@
 
               </td>
 
-                      <%= link_to teacher_panel_course_video_path(
-      @course,
-      video
-    ),
-    class:"btn btn-info btn-sm" do %>
+               <td>
 
-  <i class="bi bi-eye"></i>
+          <%= link_to teacher_panel_course_video_path(@course, video),
+             class: "btn btn-info btn-sm" do %>
+              <i class="bi bi-eye"></i>
+           <% end %>
 
-<% end %>
+         <%= link_to edit_teacher_panel_course_video_path(@course, video),
+            class: "btn btn-warning btn-sm" do %>
+               <i class="bi bi-pencil"></i>
+              <% end %>
 
-              <td>
-
-
-                <%= link_to edit_teacher_panel_course_video_path(
-                      @course,
-                      video
-                    ),
-                    class:"btn btn-warning btn-sm" do %>
-
-                  <i class="bi bi-pencil"></i>
-
-                <% end %>
-
-
-
-
-                <%= link_to teacher_panel_course_video_path(
-                      @course,
-                      video
-                    ),
-                    data:{
-                      turbo_method: :delete,
-                      turbo_confirm:"Delete this video?"
-                    },
-                    class:"btn btn-danger btn-sm" do %>
-
-                  <i class="bi bi-trash"></i>
-
-                <% end %>
-
+             <%= link_to teacher_panel_course_video_path(@course, video),
+            data: {
+             turbo_method: :delete,
+              turbo_confirm: "Delete this video?"
+             },
+              class: "btn btn-danger btn-sm" do %>
+             <i class="bi bi-trash"></i>
+             <% end %>
 
               </td>
 

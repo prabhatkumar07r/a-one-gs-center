@@ -1,0 +1,125 @@
+Searching 565 files for "class="container-fluid py-4""
+
+D:\myFirstLearn\app\views\attendances\index.html.erb:
+    1  <%= render "layouts/header" %>
+    2  
+    3: <div class="container-fluid py-4">
+    4  
+    5    <!-- Page Heading -->
+
+D:\myFirstLearn\app\views\fees\index.html.erb:
+    1  <%= render "layouts/header" %>
+    2  
+    3: <div class="container-fluid py-4">
+    4  
+    5    <!-- Page Heading -->
+
+D:\myFirstLearn\app\views\notifications\index.html.erb:
+   27  
+   28    <main class="admin-main">
+   29:     <div class="container-fluid py-4">
+   30  
+   31        <% if notice.present? %>
+
+D:\myFirstLearn\app\views\notifications\new.html.erb:
+    7  
+    8    <main class="admin-main">
+    9:     <div class="container-fluid py-4">
+   10  
+   11        <!-- Page Header -->
+
+D:\myFirstLearn\app\views\notifications\show.html.erb:
+    7  
+    8    <main class="admin-main">
+    9:     <div class="container-fluid py-4">
+   10  
+   11        <!-- Page Header -->
+
+D:\myFirstLearn\app\views\students\index.html.erb:
+    1: <div class="container-fluid py-4">
+    2  
+    3      <!-- Page Header -->
+
+D:\myFirstLearn\app\views\study_notes\index.html.erb:
+    1: <div class="container-fluid py-4">
+    2  
+    3    <!-- Header -->
+
+7 matches across 7 files
+
+
+Searching 567 files for ".table-th"
+
+0 matches
+
+Searching 567 files for ".table th"
+
+D:\myFirstLearn\app\assets\stylesheets\admin.scss:
+   18  }
+   19  
+   20: .table th{
+   21      font-weight:600;
+   22  }
+
+D:\myFirstLearn\app\assets\stylesheets\adminstudent.scss:
+    4  
+    5  .table td,
+    6: .table th{
+    7      vertical-align:middle;
+    8  }
+
+D:\myFirstLearn\app\assets\stylesheets\adminstudentshow.scss:
+    7  }
+    8  
+    9: .table thead th{
+   10      background: #dc3545 !important;   /* Red */
+   11      color: #fff !important;           /* White text */
+
+D:\myFirstLearn\app\assets\stylesheets\batches.scss:
+    3  }
+    4  
+    5: .table th {
+    6      font-weight: 600;
+    7  }
+
+D:\myFirstLearn\app\assets\stylesheets\demo.scss:
+    7  }
+    8  
+    9: .table th{
+   10      text-align:center;
+   11      vertical-align:middle;
+
+D:\myFirstLearn\app\assets\stylesheets\study_notes.scss:
+   39  }
+   40  
+   41: .table thead{
+   42  
+   43      background:#0d6efd;
+   ..
+   47  }
+   48  
+   49: .table thead th{
+   50  
+   51      border:none;
+   ..
+  150  
+  151  .table td,
+  152: .table th{
+  153  
+  154      white-space:nowrap;
+
+D:\myFirstLearn\app\assets\stylesheets\teacher_table.scss:
+    9  }
+   10  
+   11: .table thead{
+   12  
+   13      background:#2563eb;
+
+D:\myFirstLearn\app\views\teachers\index.html.erb:
+   10  }
+   11  
+   12: .table thead th{
+   13      background:#2563eb !important;
+   14      color:#fff !important;
+
+10 matches across 8 files

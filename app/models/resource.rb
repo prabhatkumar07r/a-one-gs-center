@@ -1,7 +1,7 @@
 class Resource < ApplicationRecord
   belongs_to :playlist
 
-  has_one_attached :file
+  has_one_attached :file, dependent: :purge_later
 
   enum :resource_type, {
     pdf: 0,

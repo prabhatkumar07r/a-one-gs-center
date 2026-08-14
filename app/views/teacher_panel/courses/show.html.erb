@@ -1,4 +1,117 @@
+<style>
+ /* ===========================
+   Teacher Breadcrumb
+=========================== */
+
+.custom-breadcrumb{
+    background:#fff;
+    padding:12px 20px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    border:1px solid #e9ecef;
+}
+
+.custom-breadcrumb .breadcrumb{
+    margin:0;
+    background:transparent;
+}
+
+.custom-breadcrumb .breadcrumb-item{
+    font-size:15px;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+}
+
+.custom-breadcrumb .breadcrumb-item a{
+    color:#0d6efd;
+    text-decoration:none;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+}
+
+.custom-breadcrumb .breadcrumb-item a:hover{
+    color:#084298;
+}
+
+.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+    content: ">";
+    color:#6c757d;
+    font-weight:600;
+    padding:0 10px;
+}
+
+.custom-breadcrumb .breadcrumb-item.active{
+    color:#198754;
+    font-weight:700;
+}
+
+.custom-breadcrumb i{
+    margin-right:6px;
+    font-size:14px;
+}
+
+/* Mobile */
+@media (max-width:768px){
+    .custom-breadcrumb{
+        padding:10px 15px;
+    }
+
+    .custom-breadcrumb .breadcrumb-item{
+        font-size:14px;
+    }
+
+    .custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+        padding:0 6px;
+    }
+}
+
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:6px 10px;   /* Small horizontal padding */
+    width:auto;         /* Only as wide as its content */
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:500;
+    border-radius:10px;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.back-btn i{
+    font-size:15px;
+}
+</style>
+
 <div class="container-fluid">
+  <nav aria-label="breadcrumb" class="custom-breadcrumb mb-4">
+  <ol class="breadcrumb">
+
+    <li class="breadcrumb-item">
+      <%= link_to teacher_dashboard_path do %>
+        <i class="bi bi-house-door-fill"></i> Dashboard
+      <% end %>
+    </li>
+
+    <li class="breadcrumb-item">
+      <%= link_to teacher_panel_courses_path do %>
+        <i class="bi bi-journal-bookmark-fill"></i> My Courses
+      <% end %>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">
+      <i class="bi bi-book-fill"></i>
+      <%= @course.Course_name %>
+    </li>
+
+  </ol>
+</nav>
 
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -13,325 +126,159 @@
       </p>
     </div>
 
-    <%= link_to teacher_panel_courses_path,
-          class: "btn btn-secondary" do %>
 
-      <i class="bi bi-arrow-left"></i>
-      Back
 
-    <% end %>
+      <%= link_to teacher_panel_courses_path,
+      class: "btn btn-outline-secondary back-btn" do %>
+    <i class="bi bi-arrow-left"></i>
+    Back
+  <% end %>
 
   </div>
 
 
   <!-- Statistics -->
 
-  <div class="row g-4 mb-4">
+  <!-- Statistics -->
+<div class="row g-4 mb-4">
 
+  <!-- Playlists -->
+  <div class="col-md-3">
+    <%= link_to teacher_panel_course_playlists_path(@course),
+        class: "text-decoration-none text-dark" do %>
 
-    <div class="col-md-3">
-      <div class="card shadow border-start border-primary border-4">
-
+      <div class="card shadow border-start border-primary border-4 h-100">
         <div class="card-body text-center">
-
           <h6>Playlists</h6>
-
-          <h2>
-            <%= @course.playlists.count %>
-          </h2>
-
+          <h2><%= @course.playlists.count %></h2>
+          <small class="text-primary">View Playlists →</small>
         </div>
-
       </div>
-    </div>
 
+    <% end %>
+  </div>
 
+  <!-- Videos -->
+  <div class="col-md-3">
+    <%= link_to teacher_panel_course_videos_path(@course),
+        class: "text-decoration-none text-dark" do %>
 
-    <div class="col-md-3">
-      <div class="card shadow border-start border-success border-4">
-
+      <div class="card shadow border-start border-success border-4 h-100">
         <div class="card-body text-center">
-
           <h6>Videos</h6>
-
-          <h2>
-            <%= @course.videos.count %>
-          </h2>
-
+          <h2><%= @course.videos.count %></h2>
+          <small class="text-success">View Videos →</small>
         </div>
-
       </div>
-    </div>
 
+    <% end %>
+  </div>
 
+  <!-- Resources -->
+  <div class="col-md-3">
+    <%= link_to teacher_panel_course_resources_path(@course),
+        class: "text-decoration-none text-dark" do %>
 
-    <div class="col-md-3">
-      <div class="card shadow border-start border-info border-4">
-
+      <div class="card shadow border-start border-info border-4 h-100">
         <div class="card-body text-center">
-
           <h6>Resources</h6>
-
           <h2>
             <%= Resource.joins(:playlist)
                 .where(playlists: { course_id: @course.id })
                 .count %>
           </h2>
-
+          <small class="text-info">View Resources →</small>
         </div>
-
       </div>
-    </div>
 
-
-
-    <div class="col-md-3">
-      <div class="card shadow border-start border-warning border-4">
-
-        <div class="card-body text-center">
-
-          <h6>Students</h6>
-
-          <h2>
-            <%= @course.students.count %>
-          </h2>
-
-        </div>
-
-      </div>
-    </div>
-
-
+    <% end %>
   </div>
 
+  <!-- Students -->
+  <div class="col-md-3">
+    <%= link_to teacher_panel_course_students_path(@course),
+        class: "text-decoration-none text-dark" do %>
+
+      <div class="card shadow border-start border-warning border-4 h-100">
+        <div class="card-body text-center">
+          <h6>Students</h6>
+          <h2><%= @course.students.count %></h2>
+          <small class="text-warning">View Students →</small>
+        </div>
+      </div>
+
+    <% end %>
+  </div>
+
+</div>
 
 
 
   <!-- Quick Actions -->
 
-  <div class="card shadow mb-4">
+ <!-- Quick Actions -->
+<div class="card shadow mb-4">
 
-
-    <div class="card-header">
-
-      <h5 class="mb-0">
-        Quick Actions
-      </h5>
-
-    </div>
-
-
-
-    <div class="card-body">
-
-
-      <div class="row g-3">
-
-
-
-        <!-- Playlists -->
-
-        <div class="col-md-3">
-
-          <%= link_to teacher_panel_course_playlists_path(@course),
-              class: "btn btn-primary w-100 py-3" do %>
-
-            <i class="bi bi-collection-play-fill"></i><br>
-
-            Playlists
-
-          <% end %>
-
-        </div>
-
-
-
-
-
-        <!-- Students -->
-
-        <div class="col-md-3">
-
-          <%= link_to teacher_panel_course_students_path(@course),
-              class: "btn btn-dark w-100 py-3" do %>
-
-            <i class="bi bi-people-fill"></i><br>
-
-            Students
-
-          <% end %>
-
-        </div>
-
-
-
-
-
-        <!-- Videos -->
-
-        <div class="col-md-3">
-
-          <%= link_to teacher_panel_course_videos_path(@course),
-              class: "btn btn-success w-100 py-3" do %>
-
-            <i class="bi bi-camera-video-fill"></i><br>
-
-            Videos
-
-          <% end %>
-
-        </div>
-
-
-
-
-
-        <!-- Resources -->
-
-        <div class="col-md-3">
-
-          <%= link_to teacher_panel_course_resources_path(@course),
-              class: "btn btn-info text-white w-100 py-3" do %>
-
-            <i class="bi bi-file-earmark-text-fill"></i><br>
-
-            Resources
-
-          <% end %>
-
-        </div>
-
-
-
-      </div>
-
-
-    </div>
-
-
+  <div class="card-header bg-white">
+    <h5 class="mb-0">
+      🚀 Quick Actions
+    </h5>
   </div>
 
+  <div class="card-body">
 
+    <div class="row g-3">
 
+      <!-- Students -->
+      <div class="col-lg-3 col-md-6">
+        <%= link_to teacher_panel_course_students_path(@course),
+            class: "btn btn-outline-dark w-100 py-4" do %>
 
-
-  <!-- Playlist List -->
-
-  <div class="card shadow">
-
-
-    <div class="card-header bg-dark text-white">
-
-      Course Playlists
-
-    </div>
-
-
-
-
-    <div class="card-body">
-
-
-      <% if @playlists.any? %>
-
-
-        <% @playlists.each do |playlist| %>
-
-
-          <div class="card mb-3">
-
-
-            <div class="card-header d-flex justify-content-between">
-
-
-              <strong>
-                <%= playlist.title %>
-              </strong>
-
-
-              <span class="badge bg-primary">
-
-                <%= playlist.videos.count %> Videos
-
-              </span>
-
-
-            </div>
-
-
-
-
-
-            <ul class="list-group list-group-flush">
-
-
-              <% playlist.videos.order(:position).each do |video| %>
-
-
-                <li class="list-group-item d-flex justify-content-between">
-
-
-                  <span>
-                    <%= video.title %>
-                  </span>
-
-
-                  <span class="badge bg-success">
-
-                    <%= video.duration %>
-
-                  </span>
-
-
-                </li>
-
-
-              <% end %>
-
-
-            </ul>
-
-
-          </div>
-
+          <i class="bi bi-people-fill fs-2 d-block mb-2"></i>
+          <strong>Students</strong><br>
+          <small>Manage Enrolled Students</small>
 
         <% end %>
+      </div>
 
+      <!-- Playlists -->
+      <div class="col-lg-3 col-md-6">
+        <%= link_to teacher_panel_course_playlists_path(@course),
+            class: "btn btn-outline-primary w-100 py-4" do %>
 
+          <i class="bi bi-collection-play-fill fs-2 d-block mb-2"></i>
+          <strong>Playlists</strong><br>
+          <small>Create & Manage</small>
 
+        <% end %>
+      </div>
 
+      <!-- Videos -->
+      <div class="col-lg-3 col-md-6">
+        <%= link_to teacher_panel_course_videos_path(@course),
+            class: "btn btn-outline-success w-100 py-4" do %>
 
-      <% else %>
+          <i class="bi bi-camera-video-fill fs-2 d-block mb-2"></i>
+          <strong>Videos</strong><br>
+          <small>Add & Edit Videos</small>
 
+        <% end %>
+      </div>
 
+      <!-- Resources -->
+      <div class="col-lg-3 col-md-6">
+        <%= link_to teacher_panel_course_resources_path(@course),
+            class: "btn btn-outline-info w-100 py-4" do %>
 
-        <div class="text-center py-5">
+          <i class="bi bi-file-earmark-text-fill fs-2 d-block mb-2"></i>
+          <strong>Resources</strong><br>
+          <small>Upload PDFs & Files</small>
 
-
-          <h5>
-            No playlists found.
-          </h5>
-
-
-
-         <%= link_to "Create Playlist",
-        new_teacher_panel_course_playlist_path(@course),
-       class: "btn btn-primary mt-3" %>
-
-
-        </div>
-
-
-
-      <% end %>
-
-
+        <% end %>
+      </div>
 
     </div>
 
-
   </div>
-
-
 
 </div>

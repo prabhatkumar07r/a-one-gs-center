@@ -1,20 +1,4 @@
 <style>
-  .admin-wrapper{
-    display:flex;
-    min-height:100vh;
-}
-
-.admin-main{
-    margin-left:270px;
-    width:calc(100% - 270px);
-}
-
-.admin-content{
-    padding:30px;
-    background:#f4f7fc;
-    min-height:100vh;
-}
-
 .card{
     border-radius:15px;
 }
@@ -41,41 +25,29 @@
 }
 
 .search-box{
-    width: 400px;
-    max-width: 100%;
+    width:400px;
+    max-width:100%;
 }
 
 .add-teacher-btn{
-    width: 180px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    display: inline-block;
-    text-align: center;
+    width:180px;
+    padding:10px 20px;
+    font-size:16px;
+    border-radius:8px;
+    display:inline-block;
+    text-align:center;
 }
 </style>
 
-
-
-<div class="admin-wrapper">
-
-  <!-- Sidebar -->
-  <%= render "layouts/admin_sidebar" %>
-
-  <!-- Main Content -->
-  <div class="admin-main">
-
-    <div class="admin-content">
-
-      <!-- Page Heading -->
-    <div class="d-flex justify-content-end mb-3">
+<!-- Page Heading -->
+<div class="d-flex justify-content-end mb-3">
   <%= link_to "➕ Add Teacher",
         new_teacher_path,
         class: "btn btn-success add-teacher-btn" %>
 </div>
 
-      <!-- Search -->
-   <%= form_with url: teachers_path, method: :get, local: true, class: "mb-4" do %>
+<!-- Search -->
+<%= form_with url: teachers_path, method: :get, local: true, class: "mb-4" do %>
 
   <div class="input-group search-box">
     <%= text_field_tag :search,
@@ -88,127 +60,115 @@
 
 <% end %>
 
-      <!-- Card -->
-      <div class="card shadow">
+<!-- Teacher Card -->
+<div class="card shadow">
 
-        <div class="card-header bg-primary text-white">
-          <h4 class="mb-0">Teacher Details</h4>
-        </div>
+  <div class="card-header">
+    <h4 class="mb-0">Teacher Details</h4>
+  </div>
 
-        <div class="card-body p-0">
+  <div class="card-body p-0">
 
-          <div class="table-responsive">
+    <div class="table-responsive">
 
-            <table class="table table-bordered table-hover mb-0 align-middle">
+      <table class="table table-bordered table-hover mb-0 align-middle">
 
-              <thead class="table-dark">
+        <thead>
 
-                <tr>
-                  <th>#</th>
-                  <th>Photo</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Mobile</th>
-                  <th>Subject</th>
-                  <th>Qualification</th>
-                  <th>Status</th>
-                  <th width="220">Action</th>
-                </tr>
+          <tr>
+            <th>#</th>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Subject</th>
+            <th>Qualification</th>
+            <th>Status</th>
+            <th width="220">Action</th>
+          </tr>
 
-              </thead>
+        </thead>
 
-              <tbody>
+        <tbody>
 
-                <% if @teachers.any? %>
+          <% if @teachers.any? %>
 
-                  <% @teachers.each_with_index do |teacher, index| %>
+            <% @teachers.each_with_index do |teacher, index| %>
 
-                    <tr>
+              <tr>
 
-                      <td><%= index + 1 %></td>
+                <td><%= index + 1 %></td>
 
-                      <td>
-                        <% if teacher.photo.attached? %>
-                          <%= image_tag teacher.photo,
-                                width: 70,
-                                height: 70,
-                                class: "rounded-circle img-thumbnail" %>
-                        <% else %>
-                          <span class="text-danger">No Image</span>
-                        <% end %>
-                      </td>
-
-                      <td><%= teacher.name %></td>
-
-                      <td><%= teacher.email %></td>
-
-                      <td><%= teacher.mobile %></td>
-
-                      <td><%= teacher.subject %></td>
-
-                      <td><%= teacher.qualification %></td>
-
-                      <td>
-                        <% if teacher.status == "Active" %>
-                          <span class="badge bg-success">Active</span>
-                        <% else %>
-                          <span class="badge bg-danger">Inactive</span>
-                        <% end %>
-                      </td>
-
-                      <td>
-
-                        <%= link_to "View",
-                              teacher_path(teacher),
-                              class: "btn btn-info btn-sm" %>
-
-                        <%= link_to "Edit",
-                              edit_teacher_path(teacher),
-                              class: "btn btn-warning btn-sm" %>
-
-                        <%= button_to "Delete",
-                              teacher_path(teacher),
-                              method: :delete,
-                              form: {
-                                data: {
-                                  turbo_confirm: "Delete this teacher?"
-                                }
-                              },
-                              class: "btn btn-danger btn-sm d-inline" %>
-
-                      </td>
-
-                    </tr>
-
+                <td>
+                  <% if teacher.photo.attached? %>
+                    <%= image_tag teacher.photo,
+                          width: 70,
+                          height: 70,
+                          class: "rounded-circle img-thumbnail" %>
+                  <% else %>
+                    <span class="text-danger">No Image</span>
                   <% end %>
+                </td>
 
-                <% else %>
+                <td><%= teacher.name %></td>
+                <td><%= teacher.email %></td>
+                <td><%= teacher.mobile %></td>
+                <td><%= teacher.subject %></td>
+                <td><%= teacher.qualification %></td>
 
-                  <tr>
-                    <td colspan="9" class="text-center text-danger py-4">
-                      No Teachers Found
-                    </td>
-                  </tr>
+                <td>
+                  <% if teacher.status == "Active" %>
+                    <span class="badge bg-success">Active</span>
+                  <% else %>
+                    <span class="badge bg-danger">Inactive</span>
+                  <% end %>
+                </td>
 
-                <% end %>
+                <td>
+                  <%= link_to "View",
+                        teacher_path(teacher),
+                        class: "btn btn-info btn-sm" %>
 
-              </tbody>
+                  <%= link_to "Edit",
+                        edit_teacher_path(teacher),
+                        class: "btn btn-warning btn-sm" %>
 
-            </table>
+                  <%= button_to "Delete",
+                        teacher_path(teacher),
+                        method: :delete,
+                        form: {
+                          data: {
+                            turbo_confirm: "Delete this teacher?"
+                          }
+                        },
+                        class: "btn btn-danger btn-sm d-inline" %>
+                </td>
 
-          </div>
+              </tr>
 
-        </div>
+            <% end %>
 
-        <div class="card-footer">
-          <strong>Total Teachers :</strong>
-          <%= @teachers.count %>
-        </div>
+          <% else %>
 
-      </div>
+            <tr>
+              <td colspan="9" class="text-center text-danger py-4">
+                No Teachers Found
+              </td>
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
 
     </div>
 
+  </div>
+
+  <div class="card-footer">
+    <strong>Total Teachers :</strong>
+    <%= @teachers.count %>
   </div>
 
 </div>

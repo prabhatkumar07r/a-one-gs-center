@@ -1,4 +1,4 @@
-class AttendancesController < ApplicationController
+class AttendancesController < AdminController
     before_action :authenticate_user!
   before_action :allow_admin_or_teacher
 

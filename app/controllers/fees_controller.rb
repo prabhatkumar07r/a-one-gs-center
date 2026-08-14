@@ -1,4 +1,4 @@
-class FeesController < ApplicationController
+class FeesController < AdminController
 
   before_action :authenticate_user!
   before_action :check_admin

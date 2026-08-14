@@ -1,3 +1,35 @@
+<style>
+  .current-course{
+    margin:15px;
+    padding:30px 20px;
+    background:rgba(255,255,255,.12);
+    border-left:4px solid #ffc107;
+    border-radius:10px;
+}
+
+.current-course small{
+    display:block;
+    color:#d1d5db;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin-bottom:4px;
+}
+
+.current-course h6{
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.current-course i{
+    color:#ffc107;
+}
+</style>
+
 <div class="admin-sidebar">
 
   <div class="sidebar-logo text-center py-4">
@@ -9,115 +41,88 @@
 
   <hr>
 
-  <ul class="nav flex-column">
+ <ul class="nav flex-column">
 
-    <!-- Dashboard -->
-    <li class="nav-item">
-      <%= link_to teacher_dashboard_path, class: "nav-link" do %>
-        <i class="bi bi-speedometer2"></i>
-        Dashboard
-      <% end %>
-    </li>
+  <!-- Dashboard -->
+  <li class="nav-item">
+    <%= link_to teacher_dashboard_path, class: "nav-link" do %>
+      <i class="bi bi-speedometer2"></i>
+      Dashboard
+    <% end %>
+  </li>
 
-    <!-- Courses -->
-    <li class="nav-item">
+  <!-- My Courses -->
+  <li class="nav-item">
+    <%= link_to teacher_panel_courses_path, class: "nav-link" do %>
+      <i class="bi bi-book-fill"></i>
+      My Courses
+    <% end %>
+  </li>
 
-  <%= link_to teacher_panel_courses_path,
-      class: "nav-link" do %>
+  <% if @course.present? %>
 
+    <div class="current-course">
+  <small>Current Course</small>
+  <h6 class="mb-0">
     <i class="bi bi-book-fill"></i>
-    My Courses
+    <%= @course.Course_name %>
+  </h6>
+</div>
 
-  <% end %>
-
-</li>
     <!-- Students -->
     <li class="nav-item">
-      <%= link_to "#", class: "nav-link" do %>
+      <%= link_to teacher_panel_course_students_path(@course), class: "nav-link" do %>
         <i class="bi bi-people-fill"></i>
         Students
       <% end %>
     </li>
 
-    <!-- ========================= -->
-    <!-- Study Material -->
-    <!-- ========================= -->
-
+    <!-- Playlists -->
     <li class="nav-item">
+      <%= link_to teacher_panel_course_playlists_path(@course), class: "nav-link" do %>
+        <i class="bi bi-collection-play-fill"></i>
+        Playlists
+      <% end %>
+    </li>
 
-      <a class="nav-link"
-         data-bs-toggle="collapse"
-         href="#studyMenu">
+    <!-- Videos -->
+    <li class="nav-item">
+      <%= link_to teacher_panel_course_videos_path(@course), class: "nav-link" do %>
+        <i class="bi bi-camera-video-fill"></i>
+        Videos
+      <% end %>
+    </li>
 
-        <i class="bi bi-journal-text"></i>
-        Study Material
-
-        <i class="bi bi-chevron-down float-end"></i>
-
-      </a>
-
-      <div class="collapse" id="studyMenu">
-
-        <%= link_to study_notes_path,
-            class: "submenu d-block ps-4 py-2" do %>
-
-          <i class="bi bi-file-earmark-pdf"></i>
-          Study Notes
-
-        <% end %>
-
-        <%= link_to courses_path,
-            class: "submenu d-block ps-4 py-2" do %>
-
-          <i class="bi bi-collection-play"></i>
-          Playlists
-
-        <% end %>
-
-        <%= link_to courses_path,
-            class: "submenu d-block ps-4 py-2" do %>
-
-          <i class="bi bi-play-circle"></i>
-          Videos
-
-        <% end %>
-
-       <% if defined?(@course) && @course.present? %>
-
-  <%= link_to teacher_panel_course_resources_path(@course),
-      class:"submenu" do %>
-
-    <i class="fas fa-folder-open me-2 text-primary"></i>
-    Resources
+    <!-- Resources -->
+    <li class="nav-item">
+      <%= link_to teacher_panel_course_resources_path(@course), class: "nav-link" do %>
+        <i class="bi bi-file-earmark-text-fill"></i>
+        Resources
+      <% end %>
+    </li>
 
   <% end %>
 
-<% end %>
+  <!-- Profile -->
+  <li class="nav-item">
+    <%= link_to teacher_profile_path ,class: "nav-link" do %>
+      <i class="bi bi-person-circle"></i>
+      My Profile
+    <% end %>
+  </li>
 
-      </div>
+  <!-- Logout -->
+  <li class="nav-item mt-4">
+    <%= button_to destroy_user_session_path,
+          method: :delete,
+          class: "nav-link text-danger logout-form" do %>
 
-    </li>
+      <i class="bi bi-box-arrow-right"></i>
+      Logout
 
-    <!-- Profile -->
-    <li class="nav-item">
-      <%= link_to edit_user_registration_path, class: "nav-link" do %>
-        <i class="bi bi-person-circle"></i>
-        My Profile
-      <% end %>
-    </li>
+    <% end %>
+  </li>
 
-    <!-- Logout -->
-    <li class="nav-item mt-4">
-      <%= button_to destroy_user_session_path,
-            method: :delete,
-            class: "nav-link text-danger logout-form" do %>
-
-        <i class="bi bi-box-arrow-right"></i>
-        Logout
-
-      <% end %>
-    </li>
-
-  </ul>
+</ul>
 
 </div>

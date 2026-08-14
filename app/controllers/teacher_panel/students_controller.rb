@@ -16,4 +16,8 @@ class TeacherPanel::StudentsController < ApplicationController
       redirect_to root_path, alert: "Access Denied"
     end
   end
+
+  def set_teacher_course
+    @course = current_user.teacher.courses.find(params[:course_id])
+  end
 end

@@ -1,4 +1,4 @@
-class EnrollmentsController < ApplicationController
+class EnrollmentsController < AdminController
   before_action :authenticate_user!, only: [:new, :create, :index, :edit, :update, :destroy]
   before_action :check_admin, only: [:index, :edit, :update, :destroy]
   before_action :set_enrollment, only: [:show, :edit, :update, :destroy]

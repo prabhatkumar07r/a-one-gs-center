@@ -1,4 +1,7 @@
-<%= form_with model: @course do |f| %>
+
+<%= form_with model: course do |f| %>
+
+  <!-- All form fields -->
 
   <div class="mb-3">
     <%= f.label :Course_name, "Course Name" %>
@@ -84,6 +87,14 @@
         class: "form-select" %>
   </div>
 
-  <%= f.submit class: "btn btn-primary" %>
+  <div class="d-flex justify-content-end">
+    <%= link_to "Cancel", courses_path, class: "btn btn-secondary me-2" %>
+    <%= f.submit class: "btn btn-primary" %>
+  </div>
 
 <% end %>
+
+
+
+
+

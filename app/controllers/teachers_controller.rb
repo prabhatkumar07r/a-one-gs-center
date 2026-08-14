@@ -1,4 +1,4 @@
-class TeachersController < ApplicationController
+class TeachersController < AdminController
 
   def index
     @teachers = Teacher.order(created_at: :asc)

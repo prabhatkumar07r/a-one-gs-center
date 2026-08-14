@@ -1,51 +1,187 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<style>
 
-<%= form_with model: resource,
-              url: user_registration_path,
-              method: :put,
-              local: true do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+   body {
+    background: linear-gradient(
+      180deg,
+      #050A14 0%,
+      #081321 50%,
+      #050A14 100%
+    );
+    background-color: #050A14;
+    min-height: 100vh;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+  }
+
+  .back-btn i {
+    font-size: 15px;
+  }
+
+  .profile-card {
+    max-width: 700px;
+    margin: auto;
+    border-radius: 14px;
+  }
+
+  .profile-card .card-header {
+    padding: 20px 25px;
+  }
+
+  .profile-card .card-body {
+    padding: 30px;
+  }
+
+  .form-control {
+    border-radius: 8px;
+  }
+
+  .btn-success {
+    min-width: 180px;
+  }
+
+  .logo {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+  }
+</style>
+
+<div class="container py-5">
+
+  <div class="card shadow-sm border-0 profile-card">
+
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+      <div class="d-flex align-items-center">
+        <%= image_tag "logo.jpeg", class: "logo rounded-circle me-3" %>
+
+        <div>
+          <h3 class="fw-bold mb-0">A One GS Center</h3>
+          <p class="text-muted mb-0">Update Your Profile</p>
+        </div>
+      </div>
+
+     <%#  <%= link_to teacher_dashboard_path,
+          class: "btn btn-outline-secondary back-btn" do %>
+       <%#  <i class="bi bi-arrow-left"></i>
+        Back
+      <% end %> 
+
+    </div>
+
+    <div class="card-body">
+
+      <%= form_with model: resource,
+                    url: user_registration_path,
+                    method: :put,
+                    local: true do |f| %>
+
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <%= f.label :email, class: "form-label fw-bold" %>
+
+          <%= f.email_field :email,
+              autofocus: true,
+              autocomplete: "email",
+              class: "form-control" %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div class="alert alert-warning">
+            Currently waiting confirmation for
+            <strong><%= resource.unconfirmed_email %></strong>
+          </div>
+        <% end %>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <%= f.label :password, class: "form-label fw-bold" %>
+
+          <%= f.password_field :password,
+              autocomplete: "new-password",
+              class: "form-control",
+              placeholder: "Leave blank if you don't want to change it" %>
+
+          <% if @minimum_password_length %>
+            <small class="text-muted">
+              Minimum <%= @minimum_password_length %> characters
+            </small>
+          <% end %>
+        </div>
+
+        <!-- Password Confirmation -->
+        <div class="mb-3">
+          <%= f.label :password_confirmation, class: "form-label fw-bold" %>
+
+          <%= f.password_field :password_confirmation,
+              autocomplete: "new-password",
+              class: "form-control" %>
+        </div>
+
+        <!-- Current Password -->
+        <div class="mb-4">
+          <%= f.label :current_password, class: "form-label fw-bold" %>
+
+          <%= f.password_field :current_password,
+              autocomplete: "current-password",
+              class: "form-control",
+              placeholder: "Enter your current password" %>
+
+          <small class="text-muted">
+            We need your current password to save your changes.
+          </small>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+
+          <%= f.submit "💾 Update Profile",
+              class: "btn btn-success" %>
+
+          <%= link_to teacher_dashboard_path,
+              class: "btn btn-outline-secondary back-btn" do %>
+            <i class="bi bi-arrow-left"></i>
+            Back
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+      <hr class="my-4">
+
+      <div class="text-center">
+        <h5 class="text-danger fw-bold">Danger Zone</h5>
+
+        <p class="text-muted">
+          Deleting your account is permanent and cannot be undone.
+        </p>
+
+        <%= button_to "Delete My Account",
+            user_registration_path,
+            method: :delete,
+            data: { turbo_confirm: "Are you sure you want to delete your account?" },
+            class: "btn btn-danger" %>
+      </div>
+
+    </div>
+
   </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i></p>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-    <% if @minimum_password_length %>
-      <p><em><%= @minimum_password_length %> characters minimum</em></p>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, autocomplete: "current-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>
-  Unhappy?
-  <%= button_to "Cancel my account",
-      user_registration_path,
-      data: { turbo_confirm: "Are you sure?" },
-      method: :delete %>
 </div>
-
-<%= link_to "Back", :back %>

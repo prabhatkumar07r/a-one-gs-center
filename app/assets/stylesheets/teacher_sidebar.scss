@@ -1,108 +1,130 @@
-.admin-sidebar{
+/* ===========================
+   SIDEBAR
+=========================== */
 
+.admin-sidebar{
     position:fixed;
-    left:0;
     top:0;
+    left:0;
 
     width:270px;
     height:100vh;
 
     background:linear-gradient(180deg,#1e3c72,#2a5298);
 
-    color:white;
+    color:#fff;
 
     overflow-y:auto;
 
-    box-shadow:5px 0 15px rgba(0,0,0,.2);
+    box-shadow:5px 0 15px rgba(0,0,0,.15);
 
+    z-index:1100;
 }
 
-.sidebar-logo{
 
+/* ===========================
+   MAIN AREA
+=========================== */
+
+.admin-main{
+    margin-left:270px;
+    min-height:100vh;
+    background:#f8f9fa;
+}
+
+
+/* ===========================
+   PAGE CONTENT
+=========================== */
+
+.admin-content{
+    padding:75px 25px 25px;
+}
+
+
+/* ===========================
+   SIDEBAR LOGO
+=========================== */
+
+.sidebar-logo{
     padding:30px 20px;
     text-align:center;
-
 }
 
 .sidebar-logo img{
-
     width:80px;
     border-radius:50%;
-    background:white;
+    background:#fff;
     padding:5px;
-
 }
 
 .sidebar-logo h4{
-
     margin-top:15px;
     font-weight:700;
-
+    color:#fff;
 }
 
 .sidebar-logo small{
-
     color:#ddd;
-
 }
+
+
+/* ===========================
+   MENU
+=========================== */
+
 .nav{
-
     padding:20px 0;
-
 }
 
 .nav-link{
-
-    color:white !important;
+    color:#fff !important;
 
     padding:14px 25px;
 
     display:flex;
-
     align-items:center;
-
     gap:15px;
-
-    transition:.3s;
 
     border-left:4px solid transparent;
 
+    transition:.3s;
 }
 
 .nav-link:hover{
-
     background:rgba(255,255,255,.15);
-
-    border-left:4px solid white;
-
+    border-left-color:#fff;
     padding-left:35px;
+}
 
+.nav-link.active{
+    background:rgba(255,255,255,.18);
+    border-left-color:#fff;
 }
 
 .nav-link i{
-
     font-size:20px;
-
 }
 
+
+/* ===========================
+   LOGOUT
+=========================== */
+
 .logout-form{
-
     width:100%;
-
 }
 
 .logout-form button{
-
     width:100%;
-
-    background:none;
-
     border:none;
-
-    color:red;
-
-    text-align:left;
+    background:none;
+    color:#ffb3b3;
 
     padding:14px 25px;
 
+    text-align:left;
 }
+
+
+/* Current Course Box */

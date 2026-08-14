@@ -1,13 +1,7 @@
-class CoursesController < ApplicationController
-  before_action :authenticate_user!,
-                only: [:index, :new, :create, :edit, :update, :destroy]
-
-  before_action :require_admin,
-                only: [:index, :new, :create, :edit, :update, :destroy]
+class CoursesController < AdminController
 
   before_action :set_course,
                 only: [:show, :edit, :update, :destroy]
-
 
   def index
     @courses = Course.order(created_at: :desc)
@@ -30,27 +24,21 @@ class CoursesController < ApplicationController
     @inactive_courses = Course.where(status: "Inactive").count
   end
 
-
   def class11
   end
-
 
   def class12
   end
 
-
   def Isc
   end
-
 
   def GeneralCompetitive
   end
 
-
   def new
     @course = Course.new
   end
-
 
   def create
     @course = Course.new(course_params)
@@ -62,67 +50,60 @@ class CoursesController < ApplicationController
     end
   end
 
-
   def show
   end
 
-
   def edit
   end
-
 
   def update
     if @course.update(course_params)
       redirect_to courses_path, notice: "Course updated successfully"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
-
 
   def destroy
     @course.destroy
 
-    redirect_to courses_path, notice: "Course deleted successfully"
+    redirect_to courses_path,
+                notice: "Course deleted successfully"
   end
-def details
-  @course = Course.find(params[:id])
-  @videos = @course.videos.order(:position)
 
-  @enrollment = current_user.enrollments.find_by(course: @course) if user_signed_in?
+  def details
+    @course = Course.find(params[:id])
 
-  @notes = Note.joins(:playlist)
-               .where(playlists: { course_id: @course.id })
-               .includes(:playlist)
-end
+    @videos = @course.videos.order(:position)
 
+    @enrollment =
+      current_user.enrollments.find_by(course: @course) if user_signed_in?
+
+    @notes = Note
+      .joins(:playlist)
+      .where(playlists: { course_id: @course.id })
+      .includes(:playlist)
+  end
 
   private
-
 
   def set_course
     @course = Course.find(params[:id])
   end
 
-
-def course_params
-  params.require(:course).permit(
-    :Course_name,
-    :duration,
-    :fee,
-    :original_fee,
-    :discount_percentage,
-    :description,
-    :learning_outcomes,
-    :requirements,
-    :teacher_id,
-    :status
-  )
-end
-
-def require_admin
-  unless current_user&.admin?
-    redirect_to new_user_session_path , alert: "Please login as Admin."
+  def course_params
+    params.require(:course).permit(
+      :Course_name,
+      :duration,
+      :fee,
+      :original_fee,
+      :discount_percentage,
+      :description,
+      :learning_outcomes,
+      :requirements,
+      :teacher_id,
+      :status
+    )
   end
-end
+
 end

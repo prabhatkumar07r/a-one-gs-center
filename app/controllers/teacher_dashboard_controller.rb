@@ -5,19 +5,21 @@ class TeacherDashboardController < ApplicationController
   layout "teacher"
 
   def index
-    @courses = Course.order(created_at: :desc)
-    @courses      = Course.count
-    @students     = Student.count
-    @videos       = Video.count
-    @playlists    = Playlist.count
-    @resources    = Resource.count
-    @enrollments  = Enrollment.count
-    @notifications = Notification.count
+  teacher = current_user.teacher
 
-    @recent_students = Student.order(created_at: :desc).limit(5)
-    @recent_videos   = Video.order(created_at: :desc).limit(5)
-    @recent_resources = Resource.order(created_at: :desc).limit(5)
-  end
+  @courses = teacher.courses.order(created_at: :desc)
+
+  @courses_count = @courses.count
+  @students      = Enrollment.where(course: @courses).count
+  @videos        = Video.joins(:course).where(course: @courses).count
+  @playlists     = Playlist.where(course: @courses).count
+  @resources     = Resource.joins(:course).where(course: @courses).count
+
+  @recent_videos = Video.joins(:course)
+                        .where(course: @courses)
+                        .order(created_at: :desc)
+                        .limit(5)
+end
 
   private
 
