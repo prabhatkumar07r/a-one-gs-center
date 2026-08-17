@@ -1,4 +1,243 @@
+<style>
+  /* =========================================================
+   DASHBOARD ANALYTICS
+========================================================= */
 
+.analytics-card {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.analytics-card .card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.analytics-card .card-header h5 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #172033;
+}
+
+
+/* =========================
+   RATIO
+========================= */
+
+.ratio-chart-wrapper {
+  min-height: 330px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 60px;
+}
+
+
+/* Pie */
+
+.ratio-pie {
+  width: 210px;
+  height: 210px;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      #2563eb 0 var(--student),
+      #16a34a var(--student) 100%
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+/* Center */
+
+.ratio-pie-center {
+  width: 125px;
+  height: 125px;
+
+  background: #ffffff;
+
+  border-radius: 50%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+}
+
+.ratio-pie-center strong {
+  font-size: 30px;
+  font-weight: 700;
+
+  color: #172033;
+}
+
+.ratio-pie-center small {
+  color: #8b95a5;
+  font-size: 13px;
+}
+
+
+/* Details */
+
+.ratio-details {
+  min-width: 150px;
+}
+
+.ratio-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+.ratio-dot {
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+.student-dot {
+  background: #2563eb;
+}
+
+.teacher-dot {
+  background: #16a34a;
+}
+
+.ratio-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.ratio-item strong {
+  font-size: 14px;
+  color: #172033;
+}
+
+.ratio-item span {
+  font-size: 20px;
+  font-weight: 700;
+  color: #172033;
+}
+
+
+/* Percentages */
+
+.ratio-percentages {
+  display: flex;
+  gap: 25px;
+
+  margin-top: 10px;
+}
+
+.ratio-percentages div {
+  display: flex;
+  flex-direction: column;
+}
+
+.ratio-percentages strong {
+  font-size: 16px;
+  color: #2563eb;
+}
+
+.ratio-percentages small {
+  color: #8b95a5;
+}
+
+
+/* =========================
+   SYSTEM STATISTICS
+========================= */
+
+.statistics-list {
+  padding: 15px 5px;
+}
+
+.stat-row {
+  margin-bottom: 25px;
+}
+
+.stat-heading {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+}
+
+.stat-heading span {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.stat-heading strong {
+  color: #172033;
+  font-weight: 700;
+}
+
+
+/* Progress */
+
+.stat-progress {
+  width: 100%;
+  height: 12px;
+
+  background: #eef1f5;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+.stat-progress-bar {
+  height: 100%;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    90deg,
+    #6d28d9,
+    #2563eb
+  );
+
+  transition: width .5s ease;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .ratio-chart-wrapper {
+    flex-direction: column;
+
+    gap: 30px;
+
+    padding: 20px 0;
+  }
+
+}
+</style>
 <div class="container-fluid py-2 px-3">
 
   <!-- Page Heading -->
@@ -170,42 +409,102 @@
   </div>
 
   <!-- Charts -->
-  <div class="row mt-4">
+  <!-- =========================
+     DASHBOARD ANALYTICS
+========================= -->
 
-    <div class="col-lg-6">
+<div class="row mt-4">
 
-      <div class="card shadow border-0">
+  <!-- Student & Teacher Ratio -->
+  <div class="col-lg-6">
 
-        <div class="card-header bg-white">
-          Student & Teacher Ratio
-        </div>
+    <div class="card shadow border-0 analytics-card">
 
-        <div class="card-body">
-          <%= pie_chart({
-            "Students" => @students,
-            "Teachers" => @teachers
-          }) %>
-        </div>
-
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Student & Teacher Ratio</h5>
       </div>
 
-    </div>
+      <div class="card-body">
 
-    <div class="col-lg-6">
+        <% total_people = @students.to_i + @teachers.to_i %>
 
-      <div class="card shadow border-0">
+        <% student_percentage =
+             total_people > 0 ? ((@students.to_f / total_people) * 100).round : 0 %>
 
-        <div class="card-header bg-white">
-          System Statistics
-        </div>
+        <% teacher_percentage =
+             total_people > 0 ? ((@teachers.to_f / total_people) * 100).round : 0 %>
 
-        <div class="card-body">
-          <%= column_chart({
-            "Courses" => @courses,
-            "Enrollments" => @enrollments,
-            "Payments" => @payments,
-            "Demo" => @demos
-          }) %>
+
+        <div class="ratio-chart-wrapper">
+
+          <!-- CSS Pie Chart -->
+          <div
+            class="ratio-pie"
+            style="--student: <%= student_percentage %>%;"
+          >
+
+            <div class="ratio-pie-center">
+
+              <strong>
+                <%= total_people %>
+              </strong>
+
+              <small>
+                Total
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- Legend -->
+          <div class="ratio-details">
+
+            <div class="ratio-item">
+
+              <span class="ratio-dot student-dot"></span>
+
+              <div>
+                <strong>Students</strong>
+                <span>
+                  <%= @students %>
+                </span>
+              </div>
+
+            </div>
+
+
+            <div class="ratio-item">
+
+              <span class="ratio-dot teacher-dot"></span>
+
+              <div>
+                <strong>Teachers</strong>
+                <span>
+                  <%= @teachers %>
+                </span>
+              </div>
+
+            </div>
+
+
+            <div class="ratio-percentages">
+
+              <div>
+                <strong><%= student_percentage %>%</strong>
+                <small>Students</small>
+              </div>
+
+              <div>
+                <strong><%= teacher_percentage %>%</strong>
+                <small>Teachers</small>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -213,6 +512,76 @@
     </div>
 
   </div>
+
+
+  <!-- System Statistics -->
+  <div class="col-lg-6">
+
+    <div class="card shadow border-0 analytics-card">
+
+      <div class="card-header bg-white">
+        <h5 class="mb-0">System Statistics</h5>
+      </div>
+
+      <div class="card-body">
+
+        <% statistics = {
+          "Courses" => @courses,
+          "Enrollments" => @enrollments,
+          "Payments" => @payments,
+          "Demo Requests" => @demos
+        } %>
+
+        <% max_value = statistics.values.map(&:to_i).max.to_i %>
+
+        <% max_value = 1 if max_value == 0 %>
+
+
+        <div class="statistics-list">
+
+          <% statistics.each do |label, value| %>
+
+            <% percentage =
+                 ((value.to_i.to_f / max_value) * 100).round %>
+
+
+            <div class="stat-row">
+
+              <div class="stat-heading">
+
+                <span>
+                  <%= label %>
+                </span>
+
+                <strong>
+                  <%= value %>
+                </strong>
+
+              </div>
+
+
+              <div class="stat-progress">
+
+                <div
+                  class="stat-progress-bar"
+                  style="width: <%= percentage %>%;">
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
   <!-- Recent Students -->
   <div class="card shadow border-0 mt-4">

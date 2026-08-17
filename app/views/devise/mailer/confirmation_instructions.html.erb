@@ -1,5 +1,29 @@
-<p>Welcome <%= @email %>!</p>
+<h2>Welcome to A One GS Center</h2>
 
-<p>You can confirm your account email through the link below:</p>
+<p>Hello <%= @resource.name.presence || @resource.email %>,</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+<p>
+  Thank you for creating your account.
+  Please confirm your email address by clicking the button below.
+</p>
+
+<p>
+  <%= link_to "Confirm my account",
+              user_confirmation_url(
+                confirmation_token: @token
+              ),
+              style: "display:inline-block;
+                      padding:12px 24px;
+                      background:#0d6efd;
+                      color:#ffffff;
+                      text-decoration:none;
+                      border-radius:6px;" %>
+</p>
+
+<p>
+  This confirmation link will expire in 3 days.
+</p>
+
+<p>
+  If you did not create this account, you can safely ignore this email.
+</p>

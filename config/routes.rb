@@ -32,11 +32,57 @@ Rails.application.routes.draw do
   get "/student/dashboard", to: "student_dashboard#index", as: :student_dashboard
   get "/smtp_test", to: "smtp_test#index"
 
+
+
+
+namespace :admin do
+
+  # ================= ADMIN PROFILE =================
+
+  resource :profile, only: [:show, :edit, :update]
+
+  # ================= ADMIN SETTINGS =================
+
+  get "settings",
+      to: "settings#index"
+
+  get "settings/notifications",
+      to: "settings#notifications",
+      as: :settings_notifications
+
+  patch "settings/notifications",
+      to: "settings#update_notifications",
+      as: :update_settings_notifications
+
+  get "settings/website",
+      to: "settings#website",
+      as: :settings_website
+
+  patch "settings/website",
+      to: "settings#update_website",
+      as: :update_settings_website
+
+  get "settings/security",
+      to: "settings#security",
+      as: :settings_security
+  get "settings/password",
+    to: "settings#password",
+    as: :settings_password
+
+patch "settings/password",
+      to: "settings#update_password",
+      as: :update_settings_password    
+
+end
+
+
   # ==================================================
   # Learning
   # ==================================================
 
   get "/learn", to: "learning#index", as: :learning
+
+
 
   get "/learn/:id",
       to: "learning#show",

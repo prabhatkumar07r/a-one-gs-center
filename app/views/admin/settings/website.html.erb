@@ -1,0 +1,217 @@
+<style>
+  /* =========================================================
+     ADMIN WEBSITE SETTINGS
+  ========================================================= */
+
+  .website-settings-page {
+    padding: 10px 5px 30px;
+  }
+
+  .website-settings-header {
+    margin-bottom: 25px;
+  }
+
+  .website-settings-title {
+    color: #172033;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 5px;
+  }
+
+  .website-settings-subtitle {
+    color: #8b95a5;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .website-settings-card {
+    border: 0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .website-settings-body {
+    padding: 28px;
+  }
+
+  .website-field {
+    margin-bottom: 22px;
+  }
+
+  .website-field label {
+    display: block;
+    color: #172033;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .website-field .form-control {
+    min-height: 44px;
+    border: 1px solid #e1e5eb;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 10px 13px;
+  }
+
+  .website-field .form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+  }
+
+  .website-field textarea.form-control {
+    min-height: 110px;
+    resize: vertical;
+  }
+
+  .website-actions {
+    padding-top: 8px;
+    border-top: 1px solid #edf0f4;
+    margin-top: 8px;
+  }
+
+  .website-save-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 767px) {
+    .website-settings-page {
+      padding: 5px 0 25px;
+    }
+
+    .website-settings-title {
+      font-size: 24px;
+    }
+
+    .website-settings-body {
+      padding: 20px;
+    }
+  }
+</style>
+
+
+<div class="container-fluid website-settings-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="website-settings-header">
+
+    <h2 class="website-settings-title">
+      Website Settings
+    </h2>
+
+    <p class="website-settings-subtitle">
+      Manage your website's basic information and contact details
+    </p>
+
+  </div>
+
+
+  <!-- ================= FORM ================= -->
+
+  <div class="card shadow-sm website-settings-card">
+
+    <div class="website-settings-body">
+
+      <%= form_with model: @admin,
+          url: admin_update_settings_website_path,
+          method: :patch,
+          local: true do |f| %>
+
+
+        <!-- WEBSITE NAME -->
+
+        <div class="website-field">
+
+          <%= f.label :website_name, "Website Name" %>
+
+          <%= f.text_field :website_name,
+              class: "form-control",
+              placeholder: "Enter website name" %>
+
+        </div>
+
+
+        <div class="row">
+
+          <!-- WEBSITE EMAIL -->
+
+          <div class="col-md-6">
+
+            <div class="website-field">
+
+              <%= f.label :website_email, "Website Email" %>
+
+              <%= f.email_field :website_email,
+                  class: "form-control",
+                  placeholder: "admin@example.com" %>
+
+            </div>
+
+          </div>
+
+
+          <!-- WEBSITE MOBILE -->
+
+          <div class="col-md-6">
+
+            <div class="website-field">
+
+              <%= f.label :website_mobile, "Website Mobile" %>
+
+              <%= f.telephone_field :website_mobile,
+                  class: "form-control",
+                  placeholder: "Enter mobile number" %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- WEBSITE DESCRIPTION -->
+
+        <div class="website-field">
+
+          <%= f.label :website_description, "Website Description" %>
+
+          <%= f.text_area :website_description,
+              class: "form-control",
+              placeholder: "Enter a short description about your website" %>
+
+        </div>
+
+
+        <!-- WEBSITE ADDRESS -->
+
+        <div class="website-field">
+
+          <%= f.label :website_address, "Website Address" %>
+
+          <%= f.text_area :website_address,
+              class: "form-control",
+              placeholder: "Enter your website address" %>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="website-actions d-flex justify-content-end">
+
+          <%= f.submit "Save Website Settings",
+              class: "btn btn-primary website-save-btn" %>
+
+        </div>
+
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

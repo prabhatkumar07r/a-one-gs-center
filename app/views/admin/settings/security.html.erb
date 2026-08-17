@@ -1,0 +1,440 @@
+<style>
+  /* =========================================================
+     ADMIN SECURITY SETTINGS
+  ========================================================= */
+
+  .security-page {
+    padding: 10px 5px 30px;
+  }
+
+  /* ================= HEADER ================= */
+
+  .security-header {
+    margin-bottom: 25px;
+  }
+
+  .security-title {
+    color: #172033;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 5px;
+  }
+
+  .security-subtitle {
+    color: #8b95a5;
+    font-size: 14px;
+    margin: 0;
+  }
+
+
+  /* ================= CARD ================= */
+
+  .security-card {
+    border: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+
+  /* ================= ITEM ================= */
+
+  .security-item {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #edf0f4;
+
+    transition: background .2s ease;
+  }
+
+  .security-item:last-child {
+    border-bottom: 0;
+  }
+
+  .security-item:hover {
+    background: #fafbfc;
+  }
+
+
+  /* ================= ICON ================= */
+
+  .security-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eef4ff;
+
+    color: #2563eb;
+
+    font-size: 18px;
+  }
+
+
+  /* ================= CONTENT ================= */
+
+  .security-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .security-name {
+    color: #172033;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    margin-bottom: 4px;
+  }
+
+  .security-description {
+    color: #8b95a5;
+
+    font-size: 12px;
+
+    margin: 0;
+  }
+
+
+  /* ================= STATUS ================= */
+
+  .security-status {
+    flex-shrink: 0;
+  }
+
+  .security-status .badge {
+    padding: 9px 14px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+
+  /* ================= ACTION ================= */
+
+  .security-action {
+    flex-shrink: 0;
+  }
+
+  .security-action .btn {
+    border-radius: 9px;
+
+    padding: 10px 16px;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+
+  /* ================= MOBILE ================= */
+
+  @media (max-width: 767px) {
+
+    .security-page {
+      padding: 5px 0 25px;
+    }
+
+    .security-title {
+      font-size: 24px;
+    }
+
+    .security-item {
+      padding: 18px;
+
+      gap: 13px;
+
+      align-items: flex-start;
+
+      flex-wrap: wrap;
+    }
+
+    .security-icon {
+      width: 42px;
+      height: 42px;
+
+      font-size: 16px;
+    }
+
+    .security-content {
+      flex: 1;
+    }
+
+    .security-status,
+    .security-action {
+      margin-left: 55px;
+    }
+
+  }
+
+
+      /*========edit profile=====*/
+    .back-btn{
+    display:inline-flex;
+    align-items:right;
+    gap:5px;
+    padding:6px 10px;   /* Small horizontal padding */
+    width:auto;         /* Only as wide as its content */
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:500;
+    border-radius:10px;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.back-btn i{
+    font-size:15px;
+
+  } 
+</style>
+
+
+<div class="container-fluid security-page">
+
+  <div class="d-flex justify-content-end">
+    <%= link_to admin_settings_path,
+        class: "btn btn-outline-secondary back-btn" do %>
+      <i class="bi bi-arrow-left"></i>
+      Back
+    <% end %>
+  </div>
+
+</div>
+  <!-- ================= HEADER ================= -->
+
+  <div class="security-header">
+
+    <h2 class="security-title">
+      Security
+    </h2>
+
+    <p class="security-subtitle">
+      Review and manage your administrator account security.
+    </p>
+
+  </div>
+
+
+  <!-- ================= SECURITY CARD ================= -->
+
+  <div class="card shadow-sm security-card">
+
+
+    <!-- ================= ACCOUNT SECURITY ================= -->
+
+    <div class="security-item">
+
+      <div class="security-icon">
+        <i class="fas fa-shield-halved"></i>
+      </div>
+
+      <div class="security-content">
+
+        <div class="security-name">
+          Account Security
+        </div>
+
+        <p class="security-description">
+          Your administrator account is protected by authentication.
+        </p>
+
+      </div>
+
+      <div class="security-status">
+
+        <span class="badge bg-success">
+          Protected
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= EMAIL ================= -->
+
+    <div class="security-item">
+
+      <div class="security-icon">
+        <i class="fas fa-envelope-circle-check"></i>
+      </div>
+
+      <div class="security-content">
+
+        <div class="security-name">
+          Email Address
+        </div>
+
+        <p class="security-description">
+          <%= current_user.email %>
+        </p>
+
+      </div>
+
+      <div class="security-status">
+
+        <% if current_user.respond_to?(:confirmed_at) &&
+              current_user.confirmed_at.present? %>
+
+          <span class="badge bg-success">
+            Verified
+          </span>
+
+        <% else %>
+
+          <span class="badge bg-warning text-dark">
+            Not Verified
+          </span>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= PASSWORD ================= -->
+
+    <div class="security-item">
+
+      <div class="security-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+
+      <div class="security-content">
+
+        <div class="security-name">
+          Password
+        </div>
+
+        <p class="security-description">
+          Change your administrator account password regularly.
+        </p>
+
+      </div>
+
+      <div class="security-action">
+
+        <%=link_to admin_settings_password_path,
+            class: "btn btn-primary" do %>
+
+          Change Password
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= ADMIN ACCESS ================= -->
+
+    <div class="security-item">
+
+      <div class="security-icon">
+        <i class="fas fa-user-shield"></i>
+      </div>
+
+      <div class="security-content">
+
+        <div class="security-name">
+          Administrator Access
+        </div>
+
+        <p class="security-description">
+          This account has administrator-level access to the application.
+        </p>
+
+      </div>
+
+      <div class="security-status">
+
+        <span class="badge bg-danger">
+          Administrator
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= ACCOUNT CREATED ================= -->
+
+    <div class="security-item">
+
+      <div class="security-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+
+      <div class="security-content">
+
+        <div class="security-name">
+          Account Created
+        </div>
+         <div>
+        <p class="security-description">
+          Your administrator account was created on
+          <%= current_user.created_at.strftime("%d %b %Y") %>.
+        </p>
+      </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= SIGN OUT ================= -->
+
+    <div class="security-item">
+
+      <div class="security-icon">
+        <i class="fas fa-right-from-bracket"></i>
+      </div>
+
+      <div class="security-content">
+
+        <div class="security-name">
+          Sign Out
+        </div>
+
+        <p class="security-description">
+          Sign out of your administrator account on this device.
+        </p>
+
+      </div>
+
+      <div class="security-action">
+
+        <%= button_to destroy_user_session_path,
+            method: :delete,
+            class: "btn btn-outline-danger" do %>
+
+          Sign Out
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>

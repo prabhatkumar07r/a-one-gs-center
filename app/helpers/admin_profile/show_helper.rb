@@ -1,0 +1,2 @@
+module AdminProfile::ShowHelper
+end

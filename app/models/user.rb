@@ -1,15 +1,28 @@
 class User < ApplicationRecord
-  # Devise modules
+
+  # ================= DEVise =================
+
   devise :database_authenticatable,
          :registerable,
          :recoverable,
          :rememberable,
          :validatable,
+         :confirmable,
          :omniauthable,
          omniauth_providers: [:google_oauth2]
-   has_one :teacher    
-  has_one_attached :image   
 
+  # ================= ASSOCIATIONS =================
+
+  has_one :teacher
+  has_one_attached :image
+
+  has_many :enrollments, dependent: :destroy
+  has_many :courses, through: :enrollments
+  has_many :video_progresses, dependent: :destroy
+  has_many :certificates, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
+  # ================= GOOGLE LOGIN =================
 
   def self.from_omniauth(auth)
 
@@ -21,23 +34,21 @@ class User < ApplicationRecord
       create do |u|
         u.email = auth.info.email
         u.name = auth.info.name
-        u.password = Devise.friendly_token[0,20]
-      end
+        u.password = Devise.friendly_token[0, 20]
+
+        # Google already verifies the email
+        u.skip_confirmation!
+     end
     end
 
   end
 
-  # Associations
-  has_many :enrollments, dependent: :destroy
-  has_many :courses, through: :enrollments
-  has_many :video_progresses, dependent: :destroy
-  has_many :certificates, dependent: :destroy
-    has_many :notes, dependent: :destroy
+  # ================= DEFAULT ROLE =================
 
-  # Default role
   after_initialize :set_default_role, if: :new_record?
 
-  # Roles
+  # ================= ROLES =================
+
   enum :role, {
     student: "student",
     teacher: "teacher",
@@ -51,4 +62,5 @@ class User < ApplicationRecord
   def set_default_role
     self.role ||= "student"
   end
+
 end

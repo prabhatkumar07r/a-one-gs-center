@@ -1,0 +1,229 @@
+<style>
+  .notification-page {
+    padding: 10px 5px 30px;
+  }
+
+  .notification-header {
+    margin-bottom: 25px;
+  }
+
+  .notification-title {
+    color: #172033;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .notification-subtitle {
+    color: #8b95a5;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .notification-card {
+    border: 0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .notification-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 25px;
+    border-bottom: 1px solid #edf0f4;
+  }
+
+  .notification-item:last-child {
+    border-bottom: 0;
+  }
+
+  .notification-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    background: #eef4ff;
+    color: #2563eb;
+    font-size: 18px;
+  }
+
+  .notification-content {
+    flex: 1;
+  }
+
+  .notification-name {
+    color: #172033;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .notification-description {
+    color: #8b95a5;
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .notification-toggle {
+    width: 48px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 767px) {
+    .notification-page {
+      padding: 5px 0 25px;
+    }
+
+    .notification-title {
+      font-size: 24px;
+    }
+
+    .notification-item {
+      padding: 18px;
+      gap: 13px;
+    }
+  }
+</style>
+
+<%= form_with model: @admin,
+    url: admin_update_settings_notifications_path,
+    method: :patch,
+    local: true do |f| %>
+
+  <!-- EMAIL NOTIFICATIONS -->
+
+  <div class="notification-item">
+
+    <div class="notification-icon">
+      <i class="fas fa-envelope"></i>
+    </div>
+
+    <div class="notification-content">
+
+      <div class="notification-name">
+        Email Notifications
+      </div>
+
+      <p class="notification-description">
+        Receive important account and system updates by email.
+      </p>
+
+    </div>
+
+    <div class="form-check form-switch">
+
+      <%= f.check_box :email_notifications,
+          class: "form-check-input notification-toggle" %>
+
+    </div>
+
+  </div>
+
+
+  <!-- SYSTEM NOTIFICATIONS -->
+
+  <div class="notification-item">
+
+    <div class="notification-icon">
+      <i class="fas fa-bell"></i>
+    </div>
+
+    <div class="notification-content">
+
+      <div class="notification-name">
+        System Notifications
+      </div>
+
+      <p class="notification-description">
+        Receive notifications about important system activities.
+      </p>
+
+    </div>
+
+    <div class="form-check form-switch">
+
+      <%= f.check_box :system_notifications,
+          class: "form-check-input notification-toggle" %>
+
+    </div>
+
+  </div>
+
+
+  <!-- STUDENT NOTIFICATIONS -->
+
+  <div class="notification-item">
+
+    <div class="notification-icon">
+      <i class="fas fa-user-graduate"></i>
+    </div>
+
+    <div class="notification-content">
+
+      <div class="notification-name">
+        Student Activity
+      </div>
+
+      <p class="notification-description">
+        Receive updates about new registrations and student activity.
+      </p>
+
+    </div>
+
+    <div class="form-check form-switch">
+
+      <%= f.check_box :student_notifications,
+          class: "form-check-input notification-toggle" %>
+
+    </div>
+
+  </div>
+
+
+  <!-- TEACHER NOTIFICATIONS -->
+
+  <div class="notification-item">
+
+    <div class="notification-icon">
+      <i class="fas fa-chalkboard-teacher"></i>
+    </div>
+
+    <div class="notification-content">
+
+      <div class="notification-name">
+        Teacher Activity
+      </div>
+
+      <p class="notification-description">
+        Receive updates about teacher registrations and activities.
+      </p>
+
+    </div>
+
+    <div class="form-check form-switch">
+
+      <%= f.check_box :teacher_notifications,
+          class: "form-check-input notification-toggle" %>
+
+    </div>
+
+  </div>
+
+
+  <!-- SAVE BUTTON -->
+
+  <div class="p-4 text-end">
+
+    <%= f.submit "Save Notification Settings",
+        class: "btn btn-primary px-4" %>
+
+  </div>
+
+<% end %>

@@ -1,0 +1,345 @@
+<style>
+  /* =========================================================
+     ADMIN SETTINGS
+  ========================================================= */
+
+  .admin-settings-page {
+    padding: 10px 5px 30px;
+  }
+
+  /* ================= HEADER ================= */
+
+  .admin-settings-header {
+    margin-bottom: 25px;
+  }
+
+  .admin-settings-title {
+    color: #172033;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 5px;
+  }
+
+  .admin-settings-subtitle {
+    color: #8b95a5;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* ================= SETTINGS CARD ================= */
+
+  .settings-card {
+    border: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .settings-card-body {
+    padding: 0;
+  }
+
+  /* ================= SETTING ITEM ================= */
+
+  .settings-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 22px 25px;
+
+    text-decoration: none;
+
+    border-bottom: 1px solid #edf0f4;
+
+    transition: all .2s ease;
+  }
+
+  .settings-item:last-child {
+    border-bottom: 0;
+  }
+
+  .settings-item:hover {
+    background: #f8fafc;
+  }
+
+  /* ================= ICON ================= */
+
+  .settings-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eef4ff;
+    color: #2563eb;
+
+    font-size: 18px;
+  }
+
+  /* ================= CONTENT ================= */
+
+  .settings-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .settings-title {
+    color: #172033;
+    font-size: 15px;
+    font-weight: 700;
+
+    margin-bottom: 4px;
+  }
+
+  .settings-description {
+    color: #8b95a5;
+    font-size: 12px;
+
+    margin: 0;
+  }
+
+  /* ================= ARROW ================= */
+
+  .settings-arrow {
+    color: #a0a8b5;
+    font-size: 14px;
+
+    transition: transform .2s ease;
+  }
+
+  .settings-item:hover .settings-arrow {
+    transform: translateX(4px);
+    color: #2563eb;
+  }
+
+  /* ================= MOBILE ================= */
+
+  @media (max-width: 767px) {
+
+    .admin-settings-page {
+      padding: 5px 0 25px;
+    }
+
+    .admin-settings-title {
+      font-size: 24px;
+    }
+
+    .settings-item {
+      padding: 18px;
+      gap: 13px;
+    }
+
+    .settings-icon {
+      width: 42px;
+      height: 42px;
+      font-size: 16px;
+    }
+
+    .settings-title {
+      font-size: 14px;
+    }
+
+    .settings-description {
+      font-size: 11px;
+    }
+  }
+</style>
+
+
+<div class="container-fluid admin-settings-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="admin-settings-header">
+
+    <h2 class="admin-settings-title">
+      Settings
+    </h2>
+
+    <p class="admin-settings-subtitle">
+      Manage your administrator account and application preferences
+    </p>
+
+  </div>
+
+
+  <!-- =====================================================
+       SETTINGS
+  ====================================================== -->
+
+  <div class="card shadow-sm settings-card">
+
+    <div class="settings-card-body">
+
+
+      <!-- ================= ACCOUNT ================= -->
+
+      <%= link_to edit_admin_profile_path,
+          class: "settings-item" do %>
+
+        <div class="settings-icon">
+
+          <i class="fas fa-user"></i>
+
+        </div>
+
+        <div class="settings-content">
+
+          <div class="settings-title">
+            Account Settings
+          </div>
+
+          <p class="settings-description">
+            Update your name, email, mobile number and profile photo.
+          </p>
+
+        </div>
+
+        <div class="settings-arrow">
+
+          <i class="fas fa-chevron-right"></i>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ================= PASSWORD ================= -->
+
+      <%= link_to edit_user_password_path,
+          class: "settings-item" do %>
+
+        <div class="settings-icon">
+
+          <i class="fas fa-lock"></i>
+
+        </div>
+
+        <div class="settings-content">
+
+          <div class="settings-title">
+            Change Password
+          </div>
+
+          <p class="settings-description">
+            Change your administrator account password.
+          </p>
+
+        </div>
+
+        <div class="settings-arrow">
+
+          <i class="fas fa-chevron-right"></i>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ================= NOTIFICATIONS ================= -->
+          <%= link_to admin_settings_notifications_path,
+    class: "settings-item" do %>
+
+  <div class="settings-icon">
+
+    <i class="fas fa-bell"></i>
+
+  </div>
+
+  <div class="settings-content">
+
+    <div class="settings-title">
+      Notifications
+    </div>
+
+    <p class="settings-description">
+      Manage email and system notification preferences.
+    </p>
+
+  </div>
+
+  <div class="settings-arrow">
+
+    <i class="fas fa-chevron-right"></i>
+
+  </div>
+
+<% end %>
+
+
+      <!-- ================= WEBSITE ================= -->
+
+      <div class="settings-item">
+
+        <div class="settings-icon">
+
+          <i class="fas fa-globe"></i>
+
+        </div>
+
+        <div class="settings-content">
+
+          <div class="settings-title">
+            Website Settings
+          </div>
+
+          <p class="settings-description">
+            Manage website name, contact information and general settings.
+          </p>
+
+        </div>
+
+        <div class="settings-arrow">
+
+          <i class="fas fa-chevron-right"></i>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= SECURITY ================= -->
+
+      <div class="settings-item">
+
+        <div class="settings-icon">
+
+          <i class="fas fa-shield-halved"></i>
+
+        </div>
+
+        <div class="settings-content">
+
+          <div class="settings-title">
+            Security
+          </div>
+
+          <p class="settings-description">
+            Review administrator security and account access options.
+          </p>
+
+        </div>
+
+        <div class="settings-arrow">
+
+          <i class="fas fa-chevron-right"></i>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>

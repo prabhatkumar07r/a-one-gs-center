@@ -1,0 +1,640 @@
+<style>
+  /* =========================================================
+     ADMIN EDIT PROFILE
+  ========================================================= */
+
+  .admin-edit-profile-page {
+    padding: 10px 5px 30px;
+  }
+
+  /* ================= PAGE HEADER ================= */
+
+  .admin-edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .admin-edit-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #172033;
+    margin: 0 0 5px;
+  }
+
+  .admin-edit-subtitle {
+    color: #8b95a5;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .admin-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ================= MAIN CARD ================= */
+
+  .admin-edit-card {
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .admin-edit-card .card-body {
+    padding: 35px;
+  }
+
+  /* ================= PROFILE IMAGE ================= */
+
+  .admin-edit-avatar-section {
+    text-align: center;
+    border-right: 1px solid #edf0f4;
+    padding-right: 35px;
+  }
+
+  .admin-edit-avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .admin-edit-avatar,
+  .admin-edit-avatar-placeholder {
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+  }
+
+  .admin-edit-avatar {
+    object-fit: cover;
+    border: 5px solid #f1f3f5;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .10);
+  }
+
+  .admin-edit-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 55px;
+
+    box-shadow: 0 8px 25px rgba(37, 99, 235, .20);
+  }
+
+  .avatar-title {
+    color: #172033;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .avatar-help {
+    color: #8b95a5;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* ================= FORM SECTION ================= */
+
+  .admin-edit-form-section {
+    padding-left: 35px;
+  }
+
+  .admin-edit-form-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #172033;
+    margin-bottom: 25px;
+  }
+
+  /* ================= FORM GROUP ================= */
+
+  .admin-form-group {
+    margin-bottom: 20px;
+  }
+
+  .admin-form-label {
+    display: block;
+    color: #344054;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .admin-form-label i {
+    width: 18px;
+    color: #2563eb;
+    margin-right: 5px;
+  }
+
+  .admin-form-control {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 10px 13px;
+
+    border: 1px solid #d9dee7;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #172033;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+      border-color .2s ease,
+      box-shadow .2s ease,
+      background .2s ease;
+  }
+
+  .admin-form-control:focus {
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+
+    background: #ffffff;
+  }
+
+  .admin-form-control::placeholder {
+    color: #a0a8b5;
+  }
+
+  /* ================= FILE INPUT ================= */
+
+  .admin-file-input {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+
+  .admin-file-input::file-selector-button {
+    border: 0;
+    border-radius: 7px;
+
+    padding: 7px 12px;
+    margin-right: 10px;
+
+    background: #eef4ff;
+    color: #2563eb;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+  }
+
+  .admin-file-help {
+    margin-top: 7px;
+    color: #8b95a5;
+    font-size: 11px;
+  }
+
+  /* ================= ERROR ================= */
+
+  .admin-form-error {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+
+  .admin-alert {
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  /* ================= FORM ACTIONS ================= */
+
+  .admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 10px;
+    padding-top: 22px;
+
+    border-top: 1px solid #edf0f4;
+  }
+
+  .admin-cancel-btn,
+  .admin-save-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    min-height: 42px;
+
+    padding: 9px 17px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .admin-save-btn {
+    min-width: 135px;
+  }
+
+  /* ================= MOBILE ================= */
+
+  @media (max-width: 767px) {
+
+    .admin-edit-profile-page {
+      padding: 5px 0 25px;
+    }
+
+    .admin-edit-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .admin-edit-title {
+      font-size: 24px;
+    }
+
+    .admin-back-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .admin-edit-card .card-body {
+      padding: 25px 18px;
+    }
+
+    .admin-edit-avatar-section {
+      border-right: 0;
+      border-bottom: 1px solid #edf0f4;
+
+      padding-right: 0;
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+    }
+
+    .admin-edit-form-section {
+      padding-left: 0;
+    }
+
+    .admin-edit-form-title {
+      font-size: 18px;
+    }
+
+    .admin-form-actions {
+      flex-direction: column-reverse;
+    }
+
+    .admin-cancel-btn,
+    .admin-save-btn {
+      width: 100%;
+    }
+  }
+
+
+ /*=====Back to Profile button===*/
+
+
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:6px 10px;   /* Small horizontal padding */
+    width:auto;         /* Only as wide as its content */
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:500;
+    border-radius:10px;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.back-btn i{
+    font-size:15px;
+
+  }  
+</style>
+
+
+<div class="container-fluid admin-edit-profile-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="admin-edit-header">
+
+    <div>
+      <h2 class="admin-edit-title">
+        Edit Profile
+      </h2>
+
+      <p class="admin-edit-subtitle">
+        Update your administrator account information
+      </p>
+    </div>
+
+     <%= link_to admin_profile_path,
+      class: "btn btn-outline-secondary back-btn" do %>
+  <i class="bi bi-pencil"></i>
+  back  To Profile
+<% end %>
+
+
+  </div>
+
+
+  <!-- =====================================================
+       EDIT CARD
+  ====================================================== -->
+
+  <div class="card shadow-sm admin-edit-card">
+
+    <div class="card-body">
+
+      <%= form_with model: @admin,
+          url: admin_profile_path,
+          method: :patch,
+          local: true do |f| %>
+
+
+        <!-- Display validation errors -->
+
+        <% if @admin.errors.any? %>
+
+          <div class="alert alert-danger admin-alert">
+
+            <strong>
+              Please fix the following errors:
+            </strong>
+
+            <ul class="mb-0 mt-2">
+
+              <% @admin.errors.full_messages.each do |message| %>
+
+                <li>
+                  <%= message %>
+                </li>
+
+              <% end %>
+
+            </ul>
+
+          </div>
+
+        <% end %>
+
+
+        <div class="row align-items-start">
+
+          <!-- =================================================
+               PROFILE IMAGE
+          ================================================== -->
+
+          <div class="col-md-3">
+
+            <div class="admin-edit-avatar-section">
+
+              <div class="admin-edit-avatar-wrapper">
+
+                <% if @admin.image.attached? %>
+
+                  <%= image_tag @admin.image,
+                      class: "admin-edit-avatar",
+                      alt: "Profile image" %>
+
+                <% else %>
+
+                  <div class="admin-edit-avatar-placeholder">
+
+                    <i class="fas fa-user"></i>
+
+                  </div>
+
+                <% end %>
+
+              </div>
+
+
+              <div class="avatar-title">
+                Profile Photo
+              </div>
+
+              <div class="avatar-help">
+                Upload a clear profile image.
+                JPG, PNG or WEBP recommended.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               FORM
+          ================================================== -->
+
+          <div class="col-md-9">
+
+            <div class="admin-edit-form-section">
+
+              <h4 class="admin-edit-form-title">
+                Personal Information
+              </h4>
+
+
+              <div class="row">
+
+
+                <!-- ================= NAME ================= -->
+
+                <div class="col-md-6">
+
+                  <div class="admin-form-group">
+
+                    <%= f.label :name,
+                        class: "admin-form-label" do %>
+
+                      <i class="fas fa-user"></i>
+                      Full Name
+
+                    <% end %>
+
+
+                    <%= f.text_field :name,
+                        class: "admin-form-control",
+                        placeholder: "Enter your full name",
+                        autocomplete: "name" %>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ================= EMAIL ================= -->
+
+                <div class="col-md-6">
+
+                  <div class="admin-form-group">
+
+                    <%= f.label :email,
+                        class: "admin-form-label" do %>
+
+                      <i class="fas fa-envelope"></i>
+                      Email Address
+
+                    <% end %>
+
+
+                    <%= f.email_field :email,
+                        class: "admin-form-control",
+                        placeholder: "Enter your email",
+                        autocomplete: "email" %>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ================= MOBILE ================= -->
+
+                <div class="col-md-6">
+
+                  <div class="admin-form-group">
+
+                    <%= f.label :mobile,
+                        class: "admin-form-label" do %>
+
+                      <i class="fas fa-phone"></i>
+                      Mobile Number
+
+                    <% end %>
+
+
+                    <%= f.telephone_field :mobile,
+                        class: "admin-form-control",
+                        placeholder: "Enter your mobile number",
+                        autocomplete: "tel" %>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ================= ROLE ================= -->
+
+                <div class="col-md-6">
+
+                  <div class="admin-form-group">
+
+                    <label class="admin-form-label">
+
+                      <i class="fas fa-user-shield"></i>
+                      Role
+
+                    </label>
+
+
+                    <input type="text"
+                           class="admin-form-control"
+                           value="Administrator"
+                           readonly>
+
+                  </div>
+
+                </div>
+
+
+                <!-- ================= IMAGE ================= -->
+
+                <div class="col-12">
+
+                  <div class="admin-form-group">
+
+                    <%= f.label :image,
+                        class: "admin-form-label" do %>
+
+                      <i class="fas fa-camera"></i>
+                      Change Profile Photo
+
+                    <% end %>
+
+
+                    <%= f.file_field :image,
+                        class: "form-control admin-form-control admin-file-input",
+                        accept: "image/png,image/jpeg,image/webp" %>
+
+
+                    <div class="admin-file-help">
+
+                      Maximum recommended size: 2 MB.
+                      Supported formats: JPG, PNG, WEBP.
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+              <!-- =================================================
+                   ACTION BUTTONS
+              ================================================== -->
+
+              <div class="admin-form-actions">
+
+
+                <%= link_to admin_profile_path,
+                    class: "btn btn-light border admin-cancel-btn" do %>
+
+                  <i class="fas fa-times"></i>
+
+                  Cancel
+
+                <% end %>
+
+
+                <%= f.button type: "submit",
+                    class: "btn btn-primary admin-save-btn" do %>
+
+                  <i class="fas fa-save"></i>
+
+                  Save Changes
+
+                <% end %>
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

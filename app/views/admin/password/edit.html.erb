@@ -1,0 +1,457 @@
+<style>
+  /* =========================================================
+     ADMIN CHANGE PASSWORD
+  ========================================================= */
+
+  .password-page {
+    padding: 10px 5px 40px;
+  }
+
+  /* ================= HEADER ================= */
+
+  .password-header {
+    margin-bottom: 25px;
+  }
+
+  .password-title {
+    margin: 0 0 6px;
+
+    color: #172033;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .password-subtitle {
+    margin: 0;
+
+    color: #8b95a5;
+    font-size: 14px;
+  }
+
+  /* ================= CARD ================= */
+
+  .password-card {
+    max-width: 700px;
+
+    border: 0;
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+  }
+
+  .password-card-body {
+    padding: 30px;
+  }
+
+  /* ================= ICON HEADER ================= */
+
+  .password-icon-box {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 14px;
+
+    background: #eef4ff;
+    color: #2563eb;
+
+    font-size: 21px;
+  }
+
+  .password-card-title {
+    margin: 0 0 6px;
+
+    color: #172033;
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  .password-card-description {
+    margin: 0 0 25px;
+
+    color: #8b95a5;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ================= FORM ================= */
+
+  .password-form-group {
+    margin-bottom: 20px;
+  }
+
+  .password-form-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #344054;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .password-input-wrapper {
+    position: relative;
+  }
+
+  .password-input-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    transform: translateY(-50%);
+
+    color: #98a2b3;
+    font-size: 14px;
+
+    pointer-events: none;
+  }
+
+  .password-input {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 14px 0 42px;
+
+    border: 1px solid #e2e6eb;
+    border-radius: 10px;
+
+    background: #f9fafb;
+
+    color: #172033;
+    font-size: 14px;
+
+    outline: none;
+
+    transition: all .2s ease;
+  }
+
+  .password-input::placeholder {
+    color: #a0a8b5;
+  }
+
+  .password-input:focus {
+    border-color: #4f46e5;
+
+    background: #ffffff;
+
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, .08);
+  }
+
+  /* ================= ERROR ================= */
+
+  .password-error {
+    margin-bottom: 20px;
+
+    padding: 13px 15px;
+
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+
+    background: #fff1f2;
+
+    color: #b42318;
+
+    font-size: 13px;
+  }
+
+  .password-error ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  /* ================= BUTTONS ================= */
+
+  .password-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 28px;
+  }
+
+  .password-btn {
+    min-height: 42px;
+
+    padding: 0 20px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: all .2s ease;
+  }
+
+  .password-btn-primary {
+    border: 0;
+
+    background: #4f46e5;
+    color: #ffffff;
+  }
+
+  .password-btn-primary:hover {
+    background: #4338ca;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 15px rgba(79, 70, 229, .20);
+  }
+
+  .password-btn-cancel {
+    border: 1px solid #e2e6eb;
+
+    background: #ffffff;
+
+    color: #475467;
+  }
+
+  .password-btn-cancel:hover {
+    background: #f8fafc;
+
+    color: #172033;
+  }
+
+  /* ================= PASSWORD INFO ================= */
+
+  .password-info {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 25px;
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+  }
+
+  .password-info i {
+    margin-top: 2px;
+
+    color: #667085;
+    font-size: 14px;
+  }
+
+  .password-info p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* ================= MOBILE ================= */
+
+  @media (max-width: 767px) {
+
+    .password-page {
+      padding: 5px 0 30px;
+    }
+
+    .password-title {
+      font-size: 24px;
+    }
+
+    .password-card-body {
+      padding: 22px;
+    }
+
+    .password-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .password-btn {
+      width: 100%;
+    }
+
+  }
+</style>
+
+
+<div class="container-fluid password-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="password-header">
+
+    <h2 class="password-title">
+      Change Password
+    </h2>
+
+    <p class="password-subtitle">
+      Update your administrator account password
+    </p>
+
+  </div>
+
+
+  <!-- ================= PASSWORD CARD ================= -->
+
+  <div class="card password-card">
+
+    <div class="password-card-body">
+
+      <!-- Icon -->
+
+      <div class="password-icon-box">
+        <i class="fas fa-lock"></i>
+      </div>
+
+
+      <h4 class="password-card-title">
+        Create a new password
+      </h4>
+
+      <p class="password-card-description">
+        For your security, enter your current password and then
+        choose a new password for your administrator account.
+      </p>
+
+
+      <!-- ================= ERRORS ================= -->
+
+      <% if @admin.errors.any? %>
+
+        <div class="password-error">
+
+          <ul>
+            <% @admin.errors.full_messages.each do |message| %>
+              <li>
+                <%= message %>
+              </li>
+            <% end %>
+          </ul>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ================= FORM ================= -->
+
+      <%= form_with model: @admin,
+          url: admin_password_path,
+          method: :patch,
+          local: true do |f| %>
+
+
+        <!-- Current Password -->
+
+        <div class="password-form-group">
+
+          <%= f.label :current_password,
+              "Current Password",
+              class: "password-form-label" %>
+
+          <div class="password-input-wrapper">
+
+            <i class="fas fa-key password-input-icon"></i>
+
+            <%= f.password_field :current_password,
+                class: "password-input",
+                placeholder: "Enter your current password",
+                autocomplete: "current-password" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- New Password -->
+
+        <div class="password-form-group">
+
+          <%= f.label :password,
+              "New Password",
+              class: "password-form-label" %>
+
+          <div class="password-input-wrapper">
+
+            <i class="fas fa-lock password-input-icon"></i>
+
+            <%= f.password_field :password,
+                class: "password-input",
+                placeholder: "Enter your new password",
+                autocomplete: "new-password" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- Confirm Password -->
+
+        <div class="password-form-group">
+
+          <%= f.label :password_confirmation,
+              "Confirm New Password",
+              class: "password-form-label" %>
+
+          <div class="password-input-wrapper">
+
+            <i class="fas fa-lock password-input-icon"></i>
+
+            <%= f.password_field :password_confirmation,
+                class: "password-input",
+                placeholder: "Confirm your new password",
+                autocomplete: "new-password" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <div class="password-actions">
+
+          <%= f.submit "Change Password",
+              class: "password-btn password-btn-primary" %>
+
+
+          <%= link_to admin_settings_security_path,
+              class: "password-btn password-btn-cancel text-decoration-none text-center" do %>
+
+            Cancel
+
+          <% end %>
+
+        </div>
+
+
+      <% end %>
+
+
+      <!-- ================= INFO ================= -->
+
+      <div class="password-info">
+
+        <i class="fas fa-circle-info"></i>
+
+        <p>
+          Use a strong password containing a combination of
+          uppercase letters, lowercase letters, numbers and
+          special characters.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -6,8 +6,8 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin "bootstrap", to: "bootstrap.bundle.min.js"
 
-pin "chartkick"
-pin "chart.js"
+pin "chartkick", to: "chartkick.js"
+pin "chart.js", to: "chart.js.js"
 pin "@kurkle/color", to: "@kurkle--color.js"
 
 pin "notification", to: "notification.js"

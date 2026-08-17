@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_05_115149) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_17_054807) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -294,8 +294,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_115149) do
 
   create_table "users", force: :cascade do |t|
     t.integer "age"
+    t.datetime "confirmation_sent_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
     t.datetime "created_at", null: false
     t.string "email"
+    t.boolean "email_notifications"
     t.string "encrypted_password", default: "", null: false
     t.string "image"
     t.string "mobile"
@@ -305,7 +309,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_115149) do
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.string "role"
+    t.boolean "student_notifications"
+    t.boolean "system_notifications"
+    t.boolean "teacher_notifications"
+    t.string "unconfirmed_email"
     t.datetime "updated_at", null: false
+    t.text "website_address"
+    t.text "website_description"
+    t.string "website_email"
+    t.string "website_mobile"
+    t.string "website_name"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

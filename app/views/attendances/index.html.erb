@@ -1,4 +1,30 @@
-<%= render "layouts/header" %>
+<style>
+  
+ /*=====Back to Profile button===*/
+
+
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:6px 10px;   /* Small horizontal padding */
+    width:auto;         /* Only as wide as its content */
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:500;
+    border-radius:10px;
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.back-btn i{
+    font-size:15px;
+
+  } 
+</style>
 
 <div class="container-fluid py-4">
 
@@ -16,13 +42,11 @@
       </p>
     </div>
 
-    <%= link_to new_attendance_path,
-        class: "btn btn-success shadow" do %>
-
-      <i class="bi bi-plus-circle"></i>
-      Take Attendance
-
-    <% end %>
+       <%= link_to new_attendance_path,
+    class: "btn btn-outline-secondary back-btn" do %>
+  <i class="bi bi-plus-circle"></i>
+  Take Attendance
+<% end %>
 
   </div>
 
@@ -258,5 +282,3 @@
   </div>
 
 </div>
-
-<%= render "layouts/footer" %>

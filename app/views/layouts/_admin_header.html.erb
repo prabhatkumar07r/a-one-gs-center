@@ -1,0 +1,492 @@
+<style>
+  /* =========================================================
+   ADMIN HEADER
+========================================================= */
+
+.admin-navbar {
+  height: 80px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 30px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e9ecef;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  z-index: 1000;
+}
+
+
+/* ================= LEFT ================= */
+
+.admin-navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.admin-navbar-left h4 {
+  color: #172033;
+  font-size: 20px;
+}
+
+
+/* ================= RIGHT ================= */
+
+.admin-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+
+/* ================= SEARCH ================= */
+
+.admin-search {
+  width: 250px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+
+  background: #f6f7f9;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  padding: 0 14px;
+}
+
+.admin-search i {
+  color: #8b95a5;
+  font-size: 14px;
+
+  margin-right: 10px;
+}
+
+.admin-search input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-size: 14px;
+  color: #343a40;
+}
+
+.admin-search input::placeholder {
+  color: #9aa3b2;
+}
+
+
+/* ================= NOTIFICATION ================= */
+
+.admin-notification {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.admin-notification:hover {
+  background: #f4f6f8;
+}
+
+.admin-notification i {
+  font-size: 18px;
+  color: #566174;
+}
+
+
+/* Notification badge */
+
+.notification-badge {
+  position: absolute;
+
+  top: 2px;
+  right: 2px;
+
+  min-width: 17px;
+  height: 17px;
+
+  padding: 0 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #dc3545;
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  border-radius: 50%;
+
+  border: 2px solid #ffffff;
+}
+
+
+/* ================= PROFILE ================= */
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 5px 8px;
+
+  border: none;
+  background: transparent;
+
+  color: #172033;
+
+  cursor: pointer;
+}
+
+.admin-profile::after {
+  margin-left: 5px;
+}
+
+.admin-profile:hover,
+.admin-profile:focus {
+  background: #f6f7f9;
+
+  border-radius: 10px;
+}
+
+
+/* Avatar */
+
+.admin-avatar {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 17px;
+}
+
+
+/* User information */
+
+.admin-user-info {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  line-height: 1.2;
+}
+
+.admin-user-name {
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #172033;
+}
+
+.admin-user-info small {
+  margin-top: 3px;
+
+  font-size: 11px;
+
+  color: #8b95a5;
+}
+
+
+/* ================= DROPDOWN ================= */
+
+.admin-dropdown {
+  min-width: 210px;
+
+  margin-top: 10px;
+
+  padding: 8px;
+
+  border: 1px solid #e9ecef;
+
+  border-radius: 12px;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .10);
+
+  background: #ffffff;
+}
+
+
+/* Dropdown items */
+
+.admin-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 11px 12px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  color: #343a40;
+
+  transition: .2s ease;
+}
+
+.admin-dropdown .dropdown-item i {
+  width: 18px;
+
+  text-align: center;
+
+  color: #6c757d;
+}
+
+.admin-dropdown .dropdown-item:hover {
+  background: #f4f6f8;
+
+  color: #4f46e5;
+}
+
+.admin-dropdown .dropdown-item:hover i {
+  color: #4f46e5;
+}
+
+
+/* ================= LOGOUT ================= */
+
+.admin-dropdown .logout-item {
+  color: #dc3545;
+}
+
+.admin-dropdown .logout-item i {
+  color: #dc3545;
+}
+
+.admin-dropdown .logout-item:hover {
+  background: #fff1f2;
+
+  color: #dc3545;
+}
+
+.admin-dropdown .logout-item:hover i {
+  color: #dc3545;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .admin-navbar {
+    padding: 0 15px;
+  }
+
+  .admin-search {
+    width: 180px;
+  }
+
+  .admin-user-info {
+    display: none;
+  }
+
+  .admin-profile {
+    padding: 0;
+  }
+
+  .admin-navbar-right {
+    gap: 10px;
+  }
+
+}
+
+
+@media (max-width: 576px) {
+
+  .admin-navbar-left h4 {
+    font-size: 17px;
+  }
+
+  .admin-search {
+    display: none;
+  }
+
+}
+
+.admin-avatar {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9ecef;
+}
+
+.admin-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-avatar i {
+  font-size: 18px;
+}
+</style>
+
+
+<nav class="admin-navbar">
+
+  <!-- Left -->
+  <div class="admin-navbar-left">
+  <h4 class="mb-0 fw-bold">
+    <% if controller_path.start_with?("admin/settings") %>
+      Settings
+    <% elsif controller_path.start_with?("admin/profile") %>
+      Profile
+    <% else %>
+      Dashboard
+    <% end %>
+  </h4>
+</div>
+
+  <!-- Right -->
+  <div class="admin-navbar-right">
+
+    <!-- Search -->
+    <form class="admin-search">
+      <i class="fas fa-search"></i>
+
+      <input type="text"
+             placeholder="Search..."
+             aria-label="Search">
+    </form>
+
+
+    <!-- Notification -->
+    <div class="admin-notification">
+
+      <i class="fas fa-bell"></i>
+
+      <span class="notification-badge">
+        5
+      </span>
+
+    </div>
+
+
+    <!-- Admin Profile -->
+    <div class="dropdown">
+
+      <button class="admin-profile dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+
+       <div class="admin-avatar">
+
+  <% if current_user.image.attached? %>
+
+    <%= image_tag current_user.image,
+        class: "admin-avatar-image",
+        alt: current_user.name %>
+
+  <% else %>
+
+    <i class="fas fa-user"></i>
+
+  <% end %>
+
+</div>
+
+        <div class="admin-user-info">
+          <span class="admin-user-name">
+            <%= current_user.name if user_signed_in? %>
+          </span>
+
+          <small>
+            Administrator
+          </small>
+        </div>
+
+      </button>
+
+
+      <!-- Dropdown -->
+      <li>
+    <ul class="dropdown-menu dropdown-menu-end admin-dropdown">
+
+  <%= link_to "/admin/profile",
+    class: "dropdown-item" do %>
+
+  <i class="fas fa-user-edit"></i>
+  <span>Profile</span>
+<% end %>
+</li>
+
+
+ <li>
+  <%= link_to admin_settings_path,
+      class: "dropdown-item" do %>
+
+    <i class="fas fa-cog"></i>
+    <span>Settings</span>
+
+  <% end %>
+</li>
+
+
+  <li>
+    <hr class="dropdown-divider">
+  </li>
+
+
+  <li>
+    <%= button_to destroy_user_session_path,
+        method: :delete,
+        class: "dropdown-item logout-item" do %>
+
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+
+    <% end %>
+  </li>
+
+</ul>
+
+    </div>
+
+  </div>
+
+</nav>

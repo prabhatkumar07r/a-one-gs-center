@@ -95,6 +95,16 @@
                     placeholder: "07:00 AM - 09:00 AM" %>
 
               </div>
+              <div class="mb-3">
+                       <%= f.label :teacher_id, "Teacher", class: "form-label" %>
+
+                      <%= f.collection_select :teacher_id,
+                      Teacher.includes(:user),
+                       :id,
+                     ->(teacher) { teacher.user.name },
+                     { prompt: "Select Teacher" },
+                      { class: "form-select" } %>
+                      </div>
 
               <div class="col-md-6 mb-3">
 

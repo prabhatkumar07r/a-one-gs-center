@@ -55,12 +55,6 @@
 
 <% end %>
 
-<!-- Add Button -->
-<div class="mb-3">
-  <%= link_to "➕ Enroll Student",
-      new_enrollment_path,
-      class: "btn btn-success" %>
-</div>
 
 <!-- Enrollment Table -->
 
@@ -171,5 +165,3 @@ Cancelled
 <div class="d-flex justify-content-center mt-4">
   <%= paginate @enrollments %>
 </div>
-
-<%= render "layouts/footer" %>

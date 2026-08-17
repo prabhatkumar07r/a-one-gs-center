@@ -5,9 +5,12 @@ class DashboardController < ApplicationController
   layout "admin"
 
   def index
+    # =========================
     # Statistics
-    @students      = Student.count
-    @teachers      = Teacher.count
+    # =========================
+
+    @students      = User.student.count
+    @teachers      = User.teacher.count
     @courses       = Course.count
     @enrollments   = Enrollment.count
     @payments      = Payment.count
@@ -18,15 +21,34 @@ class DashboardController < ApplicationController
     @playlists     = Playlist.count
     @resources     = Resource.count
 
+    # =========================
     # Recent Data
-    @recent_students      = Student.order(created_at: :desc).limit(5)
-    @recent_payments      = Payment.order(created_at: :desc).limit(5)
-    @recent_notifications = Notification.order(created_at: :desc).limit(5)
+    # =========================
 
-    # Charts (requires chartkick + groupdate)
-    @student_chart = Student.group_by_month(:created_at).count
-    @payment_chart = Payment.group_by_month(:created_at).sum(:amount)
-    @course_chart  = Enrollment.joins(:course).group("courses.Course_name").count
+    @recent_students =
+      User.student.order(created_at: :desc).limit(5)
+
+    @recent_payments =
+      Payment.order(created_at: :desc).limit(5)
+
+    @recent_notifications =
+      Notification.order(created_at: :desc).limit(5)
+
+    # =========================
+    # Charts
+    # =========================
+
+    @student_chart =
+      Student.group_by_month(:created_at).count
+
+    @payment_chart =
+      Payment.group_by_month(:created_at).sum(:amount)
+
+    @course_chart =
+      Enrollment
+        .joins(:course)
+        .group("courses.Course_name")
+        .count
   end
 
   private
