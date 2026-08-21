@@ -9,15 +9,15 @@
   left: 0;
 
   width: 260px;
-  height: 100vh;
+  height: 100dvh;
 
   background: blueviolet;
 
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
 
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
 
-  z-index: 1900;
+  z-index: 3000;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -35,7 +35,7 @@
 }
 
 .admin-sidebar::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: rgba(255, 255, 255, 0.35);
   border-radius: 10px;
 }
 
@@ -45,7 +45,7 @@
 
 
 /* =========================================================
-   LOGO
+   LOGO AREA
 ========================================================= */
 
 .sidebar-logo {
@@ -56,9 +56,11 @@
 
   gap: 12px;
 
-  padding: 18px 20px;
+  padding: 18px 18px;
 
-  border-bottom: 1px solid #edf0f3;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+
+  box-sizing: border-box;
 }
 
 .sidebar-logo-img {
@@ -67,21 +69,24 @@
 
   object-fit: contain;
 
-  flex-shrink: 0;
+  flex: 0 0 48px;
 
   border-radius: 10px;
+
+  background: #ffffff;
 }
 
 .sidebar-title {
   min-width: 0;
   flex: 1;
+
   overflow: hidden;
 }
 
 .sidebar-title h3 {
   margin: 0;
 
-  color: whitesmoke;
+  color: #ffffff;
 
   font-size: 15px;
   font-weight: 900;
@@ -90,19 +95,17 @@
 
   white-space: normal;
   word-break: normal;
-
-  overflow: visible;
 }
 
 .sidebar-title small {
   display: block;
 
-  margin-top: 3px;
+  margin-top: 4px;
 
-  color: yellow;
+  color: #fff200;
 
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
 
   white-space: nowrap;
 }
@@ -114,6 +117,8 @@
 
 .admin-sidebar > .nav {
   padding: 15px 12px 30px;
+
+  margin: 0;
 }
 
 .admin-sidebar .nav > li {
@@ -135,16 +140,20 @@
 
   width: 100%;
 
-  padding: 11px 13px;
+  min-height: 44px;
+
+  padding: 10px 13px;
 
   border-radius: 9px;
 
-  color: #4b5563;
+  color: #ffffff;
 
   text-decoration: none;
 
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
+
+  box-sizing: border-box;
 
   transition:
     background 0.2s ease,
@@ -152,31 +161,45 @@
     transform 0.2s ease;
 }
 
+.admin-sidebar .nav-link span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
 .admin-sidebar .nav-link i:first-child {
   width: 20px;
 
-  flex-shrink: 0;
+  flex: 0 0 20px;
 
   text-align: center;
 
   font-size: 16px;
 
-  color: #6b7280;
+  color: #ffffff;
 
   transition: color 0.2s ease;
 }
 
 
-/* Chevron */
+/* =========================================================
+   CHEVRON
+========================================================= */
 
 .admin-sidebar .nav-link .fa-chevron-down {
   margin-left: auto;
 
   width: auto !important;
 
+  flex: 0 0 auto;
+
   font-size: 10px !important;
 
-  color: #9ca3af !important;
+  color: rgba(255, 255, 255, 0.65) !important;
 
   transition: transform 0.25s ease;
 }
@@ -187,15 +210,15 @@
 ========================================================= */
 
 .admin-sidebar .nav-link:hover {
-  background: #f5f7fb;
+  background: rgba(255, 255, 255, 0.14);
 
-  color: #4f46e5;
+  color: #ffffff;
 
   transform: translateX(2px);
 }
 
 .admin-sidebar .nav-link:hover i:first-child {
-  color: #4f46e5;
+  color: #ffffff;
 }
 
 
@@ -203,14 +226,25 @@
    ACTIVE LINK
 ========================================================= */
 
-.admin-sidebar .nav-link.active {
-  background: #eef2ff;
+.admin-sidebar .nav-link.active,
+.admin-sidebar .nav-link.parent-active {
+  background: rgba(255, 255, 255, 0.20);
 
-  color: #4f46e5;
+  color: #ffffff;
 }
 
-.admin-sidebar .nav-link.active i:first-child {
-  color: #4f46e5;
+.admin-sidebar .nav-link.active i:first-child,
+.admin-sidebar .nav-link.parent-active i:first-child {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   OPEN CHEVRON
+========================================================= */
+
+.admin-sidebar .nav-link[aria-expanded="true"] .fa-chevron-down {
+  transform: rotate(180deg);
 }
 
 
@@ -219,7 +253,7 @@
 ========================================================= */
 
 .admin-sidebar .collapse {
-  padding: 4px 0 5px 20px;
+  padding: 4px 0 6px 20px;
 }
 
 .admin-sidebar .submenu {
@@ -230,16 +264,20 @@
 
   width: 100%;
 
-  padding: 9px 12px 9px 35px;
+  min-height: 40px;
 
-  color: #whitesmoke;
+  padding: 8px 12px 8px 35px;
+
+  box-sizing: border-box;
+
+  color: rgba(255, 255, 255, 0.90);
 
   text-decoration: none;
 
   border-radius: 8px;
 
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
 
   transition:
     background 0.2s ease,
@@ -257,21 +295,21 @@
   width: 5px;
   height: 5px;
 
-  background: #cbd5e1;
+  background: rgba(255, 255, 255, 0.55);
 
   border-radius: 50%;
 }
 
 .admin-sidebar .submenu:hover {
-  background: #f8fafc;
+  background: rgba(255, 255, 255, 0.13);
 
-  color: #4f46e5;
+  color: #ffffff;
 
   padding-left: 39px;
 }
 
 .admin-sidebar .submenu:hover::before {
-  background: #4f46e5;
+  background: #ffffff;
 }
 
 
@@ -280,24 +318,26 @@
 ========================================================= */
 
 .admin-sidebar .submenu.active {
-  background: #eef2ff;
+  background: rgba(255, 255, 255, 0.20);
 
-  color: #4f46e5;
+  color: #ffffff;
 
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .admin-sidebar .submenu.active::before {
-  background: #4f46e5;
+  background: #ffffff;
 }
 
 
 /* =========================================================
-   STUDY NOTES ICON
+   SUBMENU ICON
 ========================================================= */
 
 .admin-sidebar .submenu i {
   width: 18px;
+
+  margin-right: 8px;
 
   text-align: center;
 }
@@ -314,11 +354,11 @@
 
   inset: 0;
 
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(15, 23, 42, 0.55);
 
   backdrop-filter: blur(2px);
 
-  z-index: 1050;
+  z-index: 2990;
 }
 
 .admin-sidebar-overlay.show {
@@ -335,7 +375,7 @@
 
   position: fixed;
 
-  top: 18px;
+  top: 15px;
   left: 15px;
 
   width: 42px;
@@ -343,6 +383,8 @@
 
   align-items: center;
   justify-content: center;
+
+  padding: 0;
 
   border: 1px solid #e5e7eb;
 
@@ -354,17 +396,22 @@
 
   cursor: pointer;
 
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
 
-  z-index: 2000;
+  z-index: 3100;
 
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .admin-sidebar-toggle:hover {
   background: #f5f7fb;
 
   color: #4f46e5;
+
+  transform: translateY(-1px);
 }
 
 .admin-sidebar-toggle i {
@@ -373,7 +420,7 @@
 
 
 /* =========================================================
-   SIDEBAR CLOSE BUTTON
+   CLOSE BUTTON
 ========================================================= */
 
 .admin-sidebar-close {
@@ -381,50 +428,65 @@
 
   position: absolute;
 
-  top: 22px;
-  right: 15px;
+  top: 18px;
+  right: 14px;
 
   width: 35px;
   height: 35px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
 
   border: 0;
 
   border-radius: 8px;
 
-  background: #f3f4f6;
+  background: rgba(255, 255, 255, 0.15);
 
-  color: #6b7280;
+  color: #ffffff;
 
   cursor: pointer;
+
+  z-index: 3101;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .admin-sidebar-close:hover {
-  background: #fee2e2;
+  background: rgba(255, 255, 255, 0.25);
 
-  color: #dc2626;
+  color: #ffffff;
 }
 
 
 /* =========================================================
-   TABLET
+   TABLET / MOBILE
 ========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 991px) {
 
   .admin-sidebar {
-    width: 235px;
+    width: 280px;
+
+    max-width: calc(100vw - 45px);
+
+    transform: translateX(-105%);
   }
 
-  .sidebar-logo {
-    padding: 16px;
+  .admin-sidebar.mobile-open {
+    transform: translateX(0);
   }
 
-  .sidebar-title h3 {
-    font-size: 14px;
+  .admin-sidebar-toggle {
+    display: flex;
   }
 
-  .admin-sidebar .nav-link {
-    font-size: 13px;
+  .admin-sidebar-close {
+    display: flex;
   }
 
 }
@@ -434,65 +496,25 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 991px) {
+@media (max-width: 600px) {
 
   .admin-sidebar {
-    width: 270px;
-    transform: translateX(-100%);
-    z-index: 3000;
-  }
+    width: min(290px, 86vw);
 
-  .admin-sidebar.mobile-open {
-    transform: translateX(0);
-  }
-
-  .admin-sidebar-toggle {
-    display: flex;
-    z-index: 3100;
-  }
-
-  .admin-sidebar-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3101;
-  }
-
-}
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-  .admin-sidebar {
-    width: 82%;
-    max-width: 290px;
-  }
-
-  .admin-sidebar .nav-link {
-    padding: 12px;
-    min-height: 46px;
-  }
-
-  .admin-sidebar .submenu {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    min-height: 42px;
+    max-width: 86vw;
   }
 
   .sidebar-logo {
+    min-height: 82px;
+
     padding: 16px;
   }
 
   .sidebar-logo-img {
     width: 44px;
     height: 44px;
+
+    flex-basis: 44px;
   }
 
   .sidebar-title h3 {
@@ -503,66 +525,57 @@
     font-size: 10px;
   }
 
+  .admin-sidebar .nav {
+    padding: 12px 10px 25px;
+  }
+
+  .admin-sidebar .nav-link {
+    min-height: 46px;
+
+    padding: 11px 12px;
+
+    font-size: 14px;
+  }
+
+  .admin-sidebar .submenu {
+    min-height: 42px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
 }
 
 
 /* =========================================================
-   VERY SMALL SCREEN
+   VERY SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 360px) {
 
   .admin-sidebar {
-    width: 88%;
+    width: 88vw;
+
+    max-width: 88vw;
+  }
+
+  .sidebar-logo {
+    padding: 15px;
   }
 
   .sidebar-logo-img {
     width: 42px;
     height: 42px;
+
+    flex-basis: 42px;
   }
 
   .sidebar-title h3 {
     font-size: 13px;
   }
 
-}
-
-
-
-
-
-
-/* =========================================================
-   ACTIVE PARENT MENU
-========================================================= */
-
-.admin-sidebar .nav-link.parent-active {
-  background: #eef2ff;
-  color: #4f46e5;
-}
-
-.admin-sidebar .nav-link.parent-active i:first-child {
-  color: #4f46e5;
-}
-
-.admin-sidebar .nav-link[aria-expanded="true"] .fa-chevron-down {
-  transform: rotate(180deg);
-}
-
-/* Smooth submenu appearance */
-.admin-sidebar .collapse {
-  transition: height 0.25s ease;
-}
-
-/* Better mobile touch area */
-@media (max-width: 768px) {
-
   .admin-sidebar .nav-link {
-    min-height: 46px;
-  }
-
-  .admin-sidebar .submenu {
-    min-height: 42px;
+    font-size: 13px;
   }
 
 }
@@ -598,7 +611,9 @@
      SIDEBAR
 ========================================================= -->
 
-<div class="admin-sidebar" id="adminSidebar">
+<div
+  class="admin-sidebar"
+  id="adminSidebar">
 
 
   <!-- =======================================================
@@ -659,9 +674,7 @@
 
         <i class="fas fa-home"></i>
 
-        <span>
-          Dashboard
-        </span>
+        <span>Dashboard</span>
 
       <% end %>
 
@@ -675,7 +688,7 @@
     <li>
 
       <a
-        class="nav-link"
+        class="nav-link #{'parent-active' if controller_path.start_with?('admin/students') || controller_path.start_with?('admin/enrollments') || controller_path.start_with?('admin/attendances') || controller_path.start_with?('admin/fees')}"
         data-bs-toggle="collapse"
         href="#studentMenu"
         role="button"
@@ -684,14 +697,11 @@
 
         <i class="fas fa-user-graduate"></i>
 
-        <span>
-          Student Management
-        </span>
+        <span>Student Management</span>
 
         <i class="fas fa-chevron-down"></i>
 
       </a>
-
 
       <div
         class="collapse show"
@@ -704,7 +714,6 @@
 
         <% end %>
 
-
         <%= link_to enrollments_path,
             class: "submenu #{'active' if controller_path == 'admin/enrollments'}" do %>
 
@@ -712,14 +721,12 @@
 
         <% end %>
 
-
         <%= link_to attendances_path,
             class: "submenu #{'active' if controller_path == 'admin/attendances'}" do %>
 
           Attendance
 
         <% end %>
-
 
         <%= link_to fees_path,
             class: "submenu #{'active' if controller_path == 'admin/fees'}" do %>
@@ -740,7 +747,7 @@
     <li>
 
       <a
-        class="nav-link"
+        class="nav-link #{'parent-active' if controller_path.start_with?('admin/teachers') || controller_path.start_with?('admin/courses') || controller_path.start_with?('admin/batches') || controller_path.start_with?('admin/study_notes')}"
         data-bs-toggle="collapse"
         href="#academicMenu"
         role="button"
@@ -749,19 +756,15 @@
 
         <i class="fas fa-book"></i>
 
-        <span>
-          Academic
-        </span>
+        <span>Academic</span>
 
         <i class="fas fa-chevron-down"></i>
 
       </a>
 
-
       <div
         class="collapse"
         id="academicMenu">
-
 
         <%= link_to teachers_path,
             class: "submenu #{'active' if controller_path == 'admin/teachers'}" do %>
@@ -770,14 +773,12 @@
 
         <% end %>
 
-
         <%= link_to courses_path,
             class: "submenu #{'active' if controller_path == 'admin/courses'}" do %>
 
           Courses
 
         <% end %>
-
 
         <%= link_to batches_path,
             class: "submenu #{'active' if controller_path == 'admin/batches'}" do %>
@@ -786,11 +787,10 @@
 
         <% end %>
 
-
         <%= link_to study_notes_path,
             class: "submenu #{'active' if controller_path == 'admin/study_notes'}" do %>
 
-          <i class="fas fa-file-pdf me-2 text-danger"></i>
+          <i class="fas fa-file-pdf me-2"></i>
 
           Study Notes
 
@@ -808,7 +808,7 @@
     <li>
 
       <a
-        class="nav-link"
+        class="nav-link #{'parent-active' if controller_path.start_with?('admin/galleries') || controller_path.start_with?('admin/achievements') || controller_path.start_with?('admin/notifications') || controller_path.start_with?('admin/demos')}"
         data-bs-toggle="collapse"
         href="#websiteMenu"
         role="button"
@@ -817,19 +817,15 @@
 
         <i class="fas fa-globe"></i>
 
-        <span>
-          Website
-        </span>
+        <span>Website</span>
 
         <i class="fas fa-chevron-down"></i>
 
       </a>
 
-
       <div
         class="collapse"
         id="websiteMenu">
-
 
         <%= link_to galleries_path,
             class: "submenu #{'active' if controller_path == 'admin/galleries'}" do %>
@@ -838,14 +834,12 @@
 
         <% end %>
 
-
         <%= link_to achievements_path,
             class: "submenu #{'active' if controller_path == 'admin/achievements'}" do %>
 
           Achievements
 
         <% end %>
-
 
         <%= link_to notifications_path,
             class: "submenu #{'active' if controller_path == 'admin/notifications'}" do %>
@@ -854,7 +848,6 @@
 
         <% end %>
 
-
         <%= link_to demos_path,
             class: "submenu #{'active' if controller_path == 'admin/demos'}" do %>
 
@@ -862,11 +855,9 @@
 
         <% end %>
 
-
       </div>
 
     </li>
-
 
   </ul>
 
@@ -879,141 +870,56 @@
 
 <script>
 
-document.addEventListener("turbo:load", function () {
+(function () {
 
-  const sidebar =
-    document.getElementById("adminSidebar");
+  function initAdminSidebar() {
 
-  const toggle =
-    document.getElementById("adminSidebarToggle");
+    const sidebar =
+      document.getElementById("adminSidebar");
 
-  const close =
-    document.getElementById("adminSidebarClose");
+    const toggle =
+      document.getElementById("adminSidebarToggle");
 
-  const overlay =
-    document.getElementById("adminSidebarOverlay");
+    const close =
+      document.getElementById("adminSidebarClose");
 
-
-  if (!sidebar || !toggle || !close || !overlay) {
-    return;
-  }
+    const overlay =
+      document.getElementById("adminSidebarOverlay");
 
 
-  /* =========================================================
-     OPEN SIDEBAR
-  ========================================================= */
-
-  function openSidebar() {
-
-    sidebar.classList.add("mobile-open");
-
-    overlay.classList.add("show");
-
-    document.body.style.overflow = "hidden";
-
-  }
+    if (!sidebar || !toggle || !close || !overlay) {
+      return;
+    }
 
 
-  /* =========================================================
-     CLOSE SIDEBAR
-  ========================================================= */
+    /* Prevent duplicate initialization */
+    if (sidebar.dataset.initialized === "true") {
+      return;
+    }
 
-  function closeSidebar() {
-
-    sidebar.classList.remove("mobile-open");
-
-    overlay.classList.remove("show");
-
-    document.body.style.overflow = "";
-
-  }
+    sidebar.dataset.initialized = "true";
 
 
-  /* =========================================================
-     TOGGLE
-  ========================================================= */
+    /* =======================================================
+       OPEN
+    ======================================================== */
 
-  toggle.onclick = function () {
+    function openSidebar() {
 
-    if (sidebar.classList.contains("mobile-open")) {
+      sidebar.classList.add("mobile-open");
 
-      closeSidebar();
+      overlay.classList.add("show");
 
-    } else {
-
-      openSidebar();
+      document.body.style.overflow = "hidden";
 
     }
 
-  };
 
+    /* =======================================================
+       CLOSE
+    ======================================================== */
 
-  /* =========================================================
-     CLOSE BUTTON
-  ========================================================= */
-
-  close.onclick = function () {
-
-    closeSidebar();
-
-  };
-
-
-  /* =========================================================
-     OVERLAY
-  ========================================================= */
-
-  overlay.onclick = function () {
-
-    closeSidebar();
-
-  };
-
-
-  /* =========================================================
-     CLOSE AFTER LINK CLICK ON MOBILE
-  ========================================================= */
-
-  sidebar.querySelectorAll("a.submenu").forEach(function (link) {
-
-    link.addEventListener("click", function () {
-
-      if (window.innerWidth <= 768) {
-
-        closeSidebar();
-
-      }
-
-    });
-
-  });
-
-
-  /* =========================================================
-     ESCAPE KEY
-  ========================================================= */
-
-  document.addEventListener("keydown", function (event) {
-
-    if (
-      event.key === "Escape" &&
-      sidebar.classList.contains("mobile-open")
-    ) {
-
-      closeSidebar();
-
-    }
-
-  });
-
-
-  /* =========================================================
-     RESET WHEN SCREEN BECOMES DESKTOP
-  ========================================================= */
-
-  window.addEventListener("resize", function () {
-
-    if (window.innerWidth > 768) {
+    function closeSidebar() {
 
       sidebar.classList.remove("mobile-open");
 
@@ -1023,8 +929,125 @@ document.addEventListener("turbo:load", function () {
 
     }
 
-  });
 
-});
+    /* =======================================================
+       TOGGLE
+    ======================================================== */
+
+    toggle.addEventListener("click", function () {
+
+      if (
+        sidebar.classList.contains("mobile-open")
+      ) {
+
+        closeSidebar();
+
+      } else {
+
+        openSidebar();
+
+      }
+
+    });
+
+
+    /* =======================================================
+       CLOSE BUTTON
+    ======================================================== */
+
+    close.addEventListener("click", function () {
+
+      closeSidebar();
+
+    });
+
+
+    /* =======================================================
+       OVERLAY
+    ======================================================== */
+
+    overlay.addEventListener("click", function () {
+
+      closeSidebar();
+
+    });
+
+
+    /* =======================================================
+       CLOSE AFTER SUBMENU CLICK
+    ======================================================== */
+
+    sidebar
+      .querySelectorAll("a.submenu")
+      .forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+          if (window.innerWidth <= 991) {
+
+            closeSidebar();
+
+          }
+
+        });
+
+      });
+
+
+    /* =======================================================
+       ESCAPE KEY
+    ======================================================== */
+
+    document.addEventListener("keydown", function (event) {
+
+      if (
+        event.key === "Escape" &&
+        sidebar.classList.contains("mobile-open")
+      ) {
+
+        closeSidebar();
+
+      }
+
+    });
+
+
+    /* =======================================================
+       RESIZE
+    ======================================================== */
+
+    window.addEventListener("resize", function () {
+
+      if (window.innerWidth > 991) {
+
+        closeSidebar();
+
+      }
+
+    });
+
+  }
+
+
+  /* ===========================================================
+     TURBO
+  ============================================================ */
+
+  document.addEventListener(
+    "turbo:load",
+    initAdminSidebar
+  );
+
+
+  /* ===========================================================
+     NORMAL PAGE LOAD
+  ============================================================ */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initAdminSidebar
+  );
+
+})();
 
 </script>
