@@ -164,6 +164,27 @@ end
     end
   end
 
+
+
+get "student/profile",
+    to: "student/profile#show",
+    as: :student_profile
+
+get "student/profile/edit",
+    to: "student/profile#edit",
+    as: :edit_student_profile
+
+patch "student/profile",
+      to: "student/profile#update"
+
+get "student/profile/password",
+    to: "student/profile#password",
+    as: :student_profile_password
+
+patch "student/profile/change_password",
+      to: "student/profile#change_password",
+      as: :change_password_student_profile    
+
   # ==================================================
   # Main Resources
   # ==================================================

@@ -1,31 +1,154 @@
 document.addEventListener("turbo:load", () => {
-  const menuBtn = document.querySelector(".mobile-menu-toggle");
-  const closeBtn = document.querySelector(".mobile-menu-close");
-  const nav = document.querySelector("nav");
+
+  /* =========================================================
+     MOBILE MENU
+  ========================================================== */
+
+  const menuBtn = document.getElementById("mobileMenuToggle");
+  const closeBtn = document.getElementById("mobileMenuClose");
+  const nav = document.getElementById("mainNavigation");
+
 
   if (menuBtn && nav) {
-    menuBtn.addEventListener("click", () => {
+
+    menuBtn.addEventListener("click", (event) => {
+
+      event.stopPropagation();
+
       nav.classList.add("active");
+
     });
+
   }
+
 
   if (closeBtn && nav) {
-    closeBtn.addEventListener("click", () => {
+
+    closeBtn.addEventListener("click", (event) => {
+
+      event.stopPropagation();
+
       nav.classList.remove("active");
+
     });
+
   }
 
-  document.querySelectorAll(".has-dropdown > a").forEach((item) => {
-    item.addEventListener("click", (e) => {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
 
-        const dropdown = item.nextElementSibling;
+  /* =========================================================
+     STUDENT PROFILE DROPDOWN
+  ========================================================== */
 
-        if (dropdown) {
-          dropdown.classList.toggle("active");
-        }
-      }
+  const profileButton =
+    document.getElementById("studentProfileButton");
+
+  const profileMenu =
+    document.getElementById("studentProfileMenu");
+
+
+  if (profileButton && profileMenu) {
+
+    /* -----------------------------------------
+       OPEN / CLOSE
+    ----------------------------------------- */
+
+    profileButton.addEventListener("click", (event) => {
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+      const isOpen =
+        profileMenu.classList.contains("open");
+
+
+      /* Toggle */
+
+      profileMenu.classList.toggle("open");
+
+      profileButton.classList.toggle("active");
+
+      profileButton.setAttribute(
+        "aria-expanded",
+        String(!isOpen)
+      );
+
+      profileMenu.setAttribute(
+        "aria-hidden",
+        String(isOpen)
+      );
+
     });
-  });
+
+
+    /* -----------------------------------------
+       PREVENT MENU CLICK FROM CLOSING
+    ----------------------------------------- */
+
+    profileMenu.addEventListener("click", (event) => {
+
+      event.stopPropagation();
+
+    });
+
+
+    /* -----------------------------------------
+       CLICK OUTSIDE
+    ----------------------------------------- */
+
+    document.addEventListener("click", (event) => {
+
+      if (
+        !profileButton.contains(event.target) &&
+        !profileMenu.contains(event.target)
+      ) {
+
+        profileMenu.classList.remove("open");
+
+        profileButton.classList.remove("active");
+
+        profileButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        profileMenu.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+      }
+
+    });
+
+
+    /* -----------------------------------------
+       ESC KEY
+    ----------------------------------------- */
+
+    document.addEventListener("keydown", (event) => {
+
+      if (event.key === "Escape") {
+
+        profileMenu.classList.remove("open");
+
+        profileButton.classList.remove("active");
+
+        profileButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        profileMenu.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+      }
+
+    });
+
+  }
+
+
 });

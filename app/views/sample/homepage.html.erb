@@ -1,347 +1,739 @@
+
 <style>
-  .hero{
+    /* =========================================================
+   HERO SECTION
+========================================================= */
 
-    min-height:100vh;
+/* =========================================================
+   HERO SECTION
+========================================================= */
 
-    display:flex;
+.hero {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
 
-    align-items:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    justify-content:center;
+    text-align: center;
 
-    text-align:center;
+    background: linear-gradient(
+        135deg,
+        #07111f 0%,
+        #0b2345 50%,
+        #07111f 100%
+    );
 
-    background:#07111f;
+    overflow: hidden;
 
-    overflow:hidden;
+    box-sizing: border-box;
 
-}
-.hero-logo img{
-    width:100%;
-    max-width:1200px;   /* Increase or remove if needed */
-    height:auto;
-    display:block;
-    object-fit:contain;
-
-    /* Remove any white box */
-    background:transparent;
-    border:none;
-    border-radius:0;
-    box-shadow:none;
-    padding:0;
-    margin:0;
-  }
-
-
-.hero-content{
-
-    max-width:1200px;
-
-    margin:auto;
-
+    padding: 60px 24px;
 }
 
-.hero-logo{
-
-    width:100%;
-
-    max-width:950px;
-
-    height:auto;
-
-    display:block;
-
-    margin:0 auto;
-
-    animation:floatLogo 4s ease-in-out infinite;
-
-    transition:.4s;
-
-    mix-blend-mode:multiply; /* hides white background */
-
+.hero *,
+.hero *::before,
+.hero *::after {
+    box-sizing: border-box;
 }
 
-.hero-logo:hover{
-
-    transform:scale(1.05);
-
+.hero .container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.hero-subtitle{
-
-    color:#ffffff;
-
-    font-size:24px;
-
-    margin-top:25px;
-
-    letter-spacing:2px;
-
-}
-
-.hero-buttons{
-
-    margin-top:40px;
-
-}
-
-.btn{
-
-    padding:14px 35px;
-
-    background:#ff8c00;
-
-    color:#fff;
-
-    text-decoration:none;
-
-    border-radius:8px;
-
-    margin:0 10px;
-
-    transition:.3s;
-
-}
-
-.btn:hover{
-
-    background:#ff6b00;
-
-}
-
-.btn-outline{
-
-    background:transparent;
-
-    border:2px solid #fff;
-
-}
-
-.btn-outline:hover{
-
-    background:#fff;
-
-    color:#111;
-
-}
-
-@keyframes floatLogo{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(-12px);
-
-}
-
-}
-
-.hero-logo{
-    width:100%;
-    max-width:1200px;
-    height:auto;
-    display:block;
-    margin:0 auto;
-    padding:0;
-    background:transparent;
-    border:none;
-    border-radius:0;
-    box-shadow:none;
+.hero-content {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 
-/* Hero Social Icons */
+/* =========================================================
+   LOGO
+========================================================= */
 
-.hero-social{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:25px;
-    margin:35px 0;
+.hero-logo {
+    display: block;
+
+    width: min(90vw, 1100px);
+    max-width: 100%;
+
+    height: auto;
+
+    margin: 0 auto;
+
+    object-fit: contain;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+
+    filter: drop-shadow(
+        0 18px 35px rgba(0, 0, 0, 0.45)
+    );
+
+    animation: floatLogo 5s ease-in-out infinite;
+
+    transition: transform 0.4s ease;
 }
 
-.hero-social a{
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
-    font-size:30px;
-    transition:.35s ease;
-}
-
-.hero-social a:hover{
-    transform:translateY(-8px) scale(1.12);
-}
-
-/* LinkedIn */
-
-.hero-social .linkedin{
-    color:#0A66C2;
-    border:2px solid #0A66C2;
-    background:rgba(10,102,194,.08);
-}
-
-.hero-social .linkedin:hover{
-    background:#0A66C2;
-    color:#fff;
-    box-shadow:0 0 20px rgba(10,102,194,.6);
-}
-
-/* YouTube */
-
-.hero-social .youtube{
-    color:#ff0000;
-    border:2px solid #ff0000;
-    background:rgba(255,0,0,.08);
-}
-
-.hero-social .youtube:hover{
-    background:#ff0000;
-    color:#fff;
-    box-shadow:0 0 20px rgba(255,0,0,.6);
-}
-
-/* Instagram */
-
-.hero-social .instagram{
-    color:#E1306C;
-    border:2px solid #E1306C;
-    background:rgba(225,48,108,.08);
-}
-
-.hero-social .instagram:hover{
-    background:#E1306C;
-    color:#fff;
-    box-shadow:0 0 20px rgba(225,48,108,.6);
+.hero-logo:hover {
+    transform: scale(1.03);
 }
 
 
+@keyframes floatLogo {
 
+    0%,
+    100% {
+        transform: translateY(0);
+    }
 
-
-
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    background:linear-gradient(135deg,#07111f,#0b2345,#07111f);
-    overflow:hidden;
-    padding:120px 20px 80px;
-}
-
-.hero-content{
-    max-width:1400px;
-    margin:auto;
-}
-
-.hero-logo{
-    width:100%;
-    max-width:1250px;
-    display:block;
-    margin:0 auto;
-    background:transparent;
-    animation:floatLogo 5s ease-in-out infinite;
-    filter:drop-shadow(0 18px 35px rgba(0,0,0,.45));
-}
-
-.hero-subtitle{
-    color:#fff;
-    font-size:28px;
-    font-weight:500;
-    margin-top:25px;
-}
-
-.hero-features{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:20px;
-    margin:30px 0;
-}
-
-.hero-features span{
-    color:#fff;
-    background:rgba(255,255,255,.08);
-    padding:12px 22px;
-    border-radius:50px;
-    border:1px solid rgba(255,255,255,.15);
-}
-
-.hero-buttons{
-    margin-top:40px;
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 
+/* =========================================================
+   SUBTITLE
+========================================================= */
 
+.hero-subtitle {
+    width: 100%;
+    max-width: 850px;
 
+    margin: 25px auto 0;
 
+    color: #ffffff;
 
+    font-family: "Poppins", sans-serif;
 
+    font-size: clamp(18px, 2.2vw, 28px);
 
+    font-weight: 500;
 
+    line-height: 1.5;
 
-
-.founder-image{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    letter-spacing: 1.5px;
 }
 
-.founder-image img{
-    width:380px;
-    height:480px;
-    object-fit:cover;
-    object-position:top;
-    border-radius:20px;
-    border:5px solid #ffffff;
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-    transition:0.4s ease;
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.hero-features {
+    width: 100%;
+    max-width: 950px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin: 30px auto;
 }
 
-.founder-image img:hover{
-    transform:scale(1.03);
-}
-.founder-grid{
-    display:flex;
-    align-items:center;
-    gap:60px;
-    flex-wrap:wrap;
+.hero-features span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 100%;
+
+    padding: 10px 18px;
+
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 50px;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    backdrop-filter: blur(8px);
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
 }
 
-.founder-image{
-    flex:1;
-    display:flex;
-    justify-content:center;
+.hero-features span:hover {
+    background: rgba(255, 255, 255, 0.15);
+
+    transform: translateY(-3px);
 }
 
-.founder-photo{
-    width:100%;
-    max-width:430px;
-    height:520px;
-    object-fit:cover;
-    border-radius:20px;
-    border:6px solid #fff;
-    box-shadow:0 20px 45px rgba(0,0,0,.25);
-    transition:.4s;
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.hero-buttons {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    margin-top: 35px;
 }
 
-.founder-photo:hover{
-    transform:scale(1.03);
+.hero-buttons .btn {
+    min-width: 160px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 30px;
+
+    color: #ffffff;
+
+    background: #ff8c00;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.3;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.founder-content{
-    flex:1;
+.hero-buttons .btn:hover {
+    background: #ff6b00;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(255, 140, 0, 0.3);
+}
+
+.hero-buttons .btn-outline {
+    background: transparent;
+
+    border: 2px solid #ffffff;
+}
+
+.hero-buttons .btn-outline:hover {
+    background: #ffffff;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+.hero-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin: 32px 0;
+}
+
+.hero-social a {
+    width: 56px;
+    height: 56px;
+
+    flex: 0 0 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    text-decoration: none;
+
+    font-size: 25px;
+
+    transition:
+        transform 0.35s ease,
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.hero-social a:hover {
+    transform: translateY(-6px) scale(1.08);
+}
+
+
+/* =========================================================
+   LINKEDIN
+========================================================= */
+
+.hero-social .linkedin {
+    color: #0a66c2;
+
+    border: 2px solid #0a66c2;
+
+    background: rgba(10, 102, 194, 0.08);
+}
+
+.hero-social .linkedin:hover {
+    color: #ffffff;
+
+    background: #0a66c2;
+
+    box-shadow:
+        0 0 20px rgba(10, 102, 194, 0.6);
+}
+
+
+/* =========================================================
+   YOUTUBE
+========================================================= */
+
+.hero-social .youtube {
+    color: #ff0000;
+
+    border: 2px solid #ff0000;
+
+    background: rgba(255, 0, 0, 0.08);
+}
+
+.hero-social .youtube:hover {
+    color: #ffffff;
+
+    background: #ff0000;
+
+    box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+
+/* =========================================================
+   INSTAGRAM
+========================================================= */
+
+.hero-social .instagram {
+    color: #e1306c;
+
+    border: 2px solid #e1306c;
+
+    background: rgba(225, 48, 108, 0.08);
+}
+
+.hero-social .instagram:hover {
+    color: #ffffff;
+
+    background: #e1306c;
+
+    box-shadow:
+        0 0 20px rgba(225, 48, 108, 0.6);
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1400px+
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .hero {
+        padding: 70px 40px;
+    }
+
+    .hero-logo {
+        width: min(80vw, 1200px);
+    }
+
+    .hero-subtitle {
+        margin-top: 30px;
+    }
+
+    .hero-features {
+        margin-top: 35px;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP / LAPTOP
+   993px - 1399px
+========================================================= */
+
+@media (max-width: 1399px) {
+
+    .hero {
+        padding: 60px 30px;
+    }
+
+    .hero-logo {
+        width: min(90vw, 950px);
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   769px - 992px
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .hero {
+        min-height: auto;
+
+        padding: 70px 25px;
+    }
+
+    .hero-logo {
+        width: min(90vw, 750px);
+    }
+
+    .hero-subtitle {
+        max-width: 700px;
+
+        margin-top: 20px;
+
+        font-size: clamp(18px, 2.8vw, 23px);
+
+        letter-spacing: 1px;
+    }
+
+    .hero-features {
+        max-width: 700px;
+
+        gap: 10px;
+
+        margin: 25px auto;
+    }
+
+    .hero-features span {
+        padding: 9px 15px;
+
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        margin-top: 28px;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET / LARGE MOBILE
+   577px - 768px
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .hero {
+        min-height: auto;
+
+        padding: 55px 20px 45px;
+    }
+
+    .hero-logo {
+        width: min(92vw, 600px);
+
+        animation: none;
+    }
+
+    .hero-subtitle {
+        max-width: 600px;
+
+        margin-top: 18px;
+
+        font-size: clamp(17px, 3vw, 20px);
+
+        line-height: 1.5;
+
+        letter-spacing: 0.8px;
+    }
+
+    .hero-features {
+        max-width: 600px;
+
+        gap: 8px;
+
+        margin: 22px auto;
+    }
+
+    .hero-features span {
+        padding: 8px 13px;
+
+        font-size: 13px;
+    }
+
+    .hero-buttons {
+        gap: 10px;
+
+        margin-top: 25px;
+    }
+
+    .hero-buttons .btn {
+        min-width: 145px;
+
+        padding: 12px 20px;
+
+        font-size: 14px;
+    }
+
+    .hero-social {
+        gap: 14px;
+
+        margin: 25px 0;
+    }
+
+    .hero-social a {
+        width: 50px;
+        height: 50px;
+
+        flex-basis: 50px;
+
+        font-size: 22px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   577px AND BELOW
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .hero {
+        padding: 40px 14px 35px;
+    }
+
+    .hero-logo {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .hero-subtitle {
+        max-width: 350px;
+
+        margin-top: 15px;
+
+        font-size: 16px;
+
+        line-height: 1.45;
+
+        letter-spacing: 0.5px;
+    }
+
+    .hero-features {
+        display: grid;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        width: 100%;
+        max-width: 380px;
+
+        gap: 8px;
+
+        margin: 20px auto;
+    }
+
+    .hero-features span {
+        width: 100%;
+
+        min-height: 38px;
+
+        padding: 8px 6px;
+
+        border-radius: 10px;
+
+        font-size: 12px;
+
+        line-height: 1.3;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        width: 100%;
+
+        gap: 9px;
+
+        margin-top: 22px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+
+        min-width: 0;
+
+        padding: 12px 18px;
+
+        font-size: 14px;
+    }
+
+    .hero-social {
+        gap: 11px;
+
+        margin: 24px 0;
+    }
+
+    .hero-social a {
+        width: 46px;
+        height: 46px;
+
+        flex-basis: 46px;
+
+        font-size: 19px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   400px AND BELOW
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .hero {
+        padding: 30px 10px 30px;
+    }
+
+    .hero-logo {
+        width: 100%;
+    }
+
+    .hero-subtitle {
+        max-width: 300px;
+
+        font-size: 14px;
+
+        line-height: 1.4;
+    }
+
+    .hero-features {
+        grid-template-columns: 1fr;
+
+        max-width: 280px;
+
+        gap: 6px;
+
+        margin: 17px auto;
+    }
+
+    .hero-features span {
+        min-height: 36px;
+
+        padding: 8px 10px;
+
+        font-size: 12px;
+    }
+
+    .hero-buttons {
+        margin-top: 20px;
+    }
+
+    .hero-buttons .btn {
+        max-width: 260px;
+
+        padding: 11px 16px;
+
+        font-size: 13px;
+    }
+
+    .hero-social {
+        gap: 9px;
+
+        margin: 20px 0;
+    }
+
+    .hero-social a {
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONES
+========================================================= */
+
+@media (max-height: 600px) and (max-width: 900px) {
+
+    .hero {
+        min-height: auto;
+
+        padding: 35px 20px;
+    }
+
+    .hero-logo {
+        width: min(75vw, 500px);
+    }
+
+    .hero-subtitle {
+        margin-top: 10px;
+    }
+
+    .hero-features {
+        margin: 12px auto;
+    }
+
+    .hero-buttons {
+        margin-top: 15px;
+    }
+
+    .hero-social {
+        margin: 15px 0;
+    }
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-logo {
+        animation: none;
+    }
+
+    .hero-logo:hover,
+    .hero-social a:hover,
+    .hero-features span:hover,
+    .hero-buttons .btn:hover {
+        transform: none;
+    }
 }
 </style>
 <!DOCTYPE html>
@@ -361,7 +753,6 @@ transform:translateY(-12px);
 <body>
   
     <!-- Header  -->
-
 
     <!-- Hero  -->
   <section class="hero" id="home">
@@ -835,121 +1226,6 @@ transform:translateY(-12px);
 
 </section>
 
-    <!-- Resources  -->
-  <%#   <div class="resources-categories">
-
-    <!-- 11th Arts -->
-    <div class="resource-category">
-        <h3 class="category-title" data-category="11th">
-            11th Arts Notes
-            <i class="fas fa-chevron-down"></i>
-        </h3>
-
-            <div class="subject-buttons" id="11th-subjects">
-            <select>
-            <button class="subject-btn" data-subject="history-11">
-                History 
-            </button>
-
-            <button class="subject-btn" data-subject="politicalscience-11">
-                Political Science
-            </button>
-
-            <button class="subject-btn" data-subject="geography-11">
-                Geography
-            </button>
-
-            <button class="subject-btn" data-subject="economics-11">
-                Economics
-            </button>
-
-            <button class="subject-btn" data-subject="hindi-11">
-                Hindi
-            </button>
-
-            <button class="subject-btn" data-subject="english-11">
-                English
-            </button>
-            </select>
-            <a href="https://byjus.com/free-ias-prep/modern-history-notes-upsc/" target="_blank" class="subject-btn">Mathematics Notes</a>
-        </div>
-    </div>
-
-    <!-- 12th Arts -->
-    <div class="resource-category">
-        <h3 class="category-title" data-category="12th">
-            12th Arts Notes
-            <i class="fas fa-chevron-down"></i>
-        </h3>
-
-        <div class="subject-buttons" id="12th-subjects">
-            <button  class="subject-btn" data-subject="history-12">
-                History
-            </button>
-
-            <button class="subject-btn" data-subject="politicalscience-12">
-                Political Science
-            </button>
-
-            <button class="subject-btn" data-subject="geography-12">
-                Geography
-            </button>
-
-            <button class="subject-btn" data-subject="economics-12">
-                Economics
-            </button>
-
-            <button class="subject-btn" data-subject="sociology-12">
-                Sociology
-            </button>
-
-            <button class="subject-btn" data-subject="hindi-12">
-                Hindi
-            </button>
-
-            <button class="subject-btn" data-subject="english-12">
-                English
-            </button>
-
-        </div>
-    </div>
-
-    <!-- General Competitive -->
-    <div class="resource-category">
-
-        <h3 class="category-title" data-category="competitive">
-            Competitive Exam Notes
-            <i class="fas fa-chevron-down"></i>
-        </h3>
-
-        <div class="subject-buttons" id="competitive-subjects">
-
-            <button class="subject-btn" data-subject="gk">
-                General Knowledge
-            </button>
-
-            <button class="subject-btn" data-subject="reasoning">
-                Reasoning
-            </button>
-
-            <button class="subject-btn" data-subject="maths">
-                Mathematics
-            </button>
-
-            <button class="subject-btn" data-subject="english">
-                English
-            </button>
-
-            <button class="subject-btn" data-subject="current-affairs">
-                Current Affairs
-            </button>
-
-        </div>
-    </div>
-
-</div>
-    </section> %>
-
     <!-- Founder  -->
     <section class="founder" id="founder">
         <div class="container">
@@ -1079,6 +1355,9 @@ transform:translateY(-12px);
          <div class="form-group">
           <%= f.email_field :email, placeholder: "Your Email", required: true, class: "form-control" %>
           </div>
+          <div class="form-group">
+            <%= f.telephone_field  :mobile,  placeholder: "Your Mobile Number",required:true,class: "form-control" %>
+        </div>
 
             <div class="form-group">
            <%= f.text_field :subject, placeholder: "Subject", class: "form-control" %>
@@ -1097,99 +1376,6 @@ transform:translateY(-12px);
             </div>
           </div>
       </section>
-
-
-
-    <!-- Course Modal -->
-   <%#  <div id="courseModal" class="modal">
-        <div class="modal-content course-modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="course-modal-container">
-                <div class="course-modal-front">
-                    <!-- Course content will be inserted here dynamically -->
-                </div>
-                <div class="course-modal-back">
-                    <h2>Enroll Now</h2>
-                    <form id="courseEnrollForm">
-                        <div class="form-group">
-                            <label for="courseName">Full Name</label>
-                            <input type="text" id="courseName" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="coursePhone">Contact Number</label>
-                            <input type="tel" id="coursePhone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="courseEmail">Email Address</label>
-                            <input type="email" id="courseEmail" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="courseBatch">Select Batch Timing</label>
-                            <select id="courseBatch" name="batch" required>
-                                <option value="">Choose batch timing</option>
-                                <option value="morning">Morning (7-9 AM)</option>
-                                <option value="afternoon">Afternoon (2-4 PM)</option>
-                                <option value="evening">Evening (5-7 PM)</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn">Complete Enrollment</button>
-                    </form>
-                    <button class="btn btn-outline flip-back">Back to Course</button>
-                </div>
-            </div>
-        </div>
-    </div> %>
-    <!-- Footer  -->
-   <%#  <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-icons">
-                        <a href="http:"https://www.facebook.com/profile.php?id=100013438546373">
-                            <i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a
-                            href="https://www.instagram.com/atsir_fan_club?igsh=Z2VxdXVoNndyM2w0><i
-                                class="fab fa-instagram"></i>
-                        </a>        
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://www.youtube.com/@AONEGS77"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">👉 Home</a></li>
-                        <li><a href="#courses">👉 Courses</a></li>
-                        <li><a href="#gallery">👉 Gallery</a></li>
-                        <li><a href="#teachers">👉 Teachers</a></li>
-                        <li><a href="#resources">👉 Resources</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <div class="contact-info">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <p>, Professor Colony, Gali No 01, Bara Chakia, East Champaran</p>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-phone"></i>
-                        <p>+91 9117572747</p>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-envelope"></i>
-                        <p>aonegs4coaching@gmail.com</p>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2026 A One Gs Art's And Competative Classes. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <button id="scrollTopBtn"><i class="fas fa-arrow-up"></i></button>
- %>
 
 
 

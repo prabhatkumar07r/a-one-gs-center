@@ -1,9 +1,16 @@
-/* ================= COURSES ================= */
+/* ==========================================================
+   COURSES
+========================================================== */
 
 .courses {
   padding: 100px 0;
   background: #fff;
 }
+
+
+/* ==========================================================
+   COURSE GRID
+========================================================== */
 
 .course-grid {
   display: grid;
@@ -11,30 +18,68 @@
   gap: 30px;
 }
 
+
+/* ==========================================================
+   COURSE CARD
+========================================================== */
+
 .course-card {
   background: #fff;
+
   border-radius: 20px;
+
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
-  transition: .4s;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, .08);
+
+  transition:
+    transform .4s ease,
+    box-shadow .4s ease;
+
+  min-width: 0;
 
   &:hover {
     transform: translateY(-10px);
+
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, .12);
   }
 }
 
-/* Course Image */
+
+/* ==========================================================
+   COURSE IMAGE
+========================================================== */
 
 .course-image {
   width: 100%;
+
   height: 220px;
+
   object-fit: cover;
+
+  display: block;
+
   border-radius: 10px 10px 0 0;
 }
 
+
+/* ==========================================================
+   COURSE PLACEHOLDER
+========================================================== */
+
 .course-placeholder {
+  width: 100%;
   height: 220px;
-  background: linear-gradient(135deg, #0d6efd, #4f46e5);
+
+  background:
+    linear-gradient(
+      135deg,
+      #0d6efd,
+      #4f46e5
+    );
+
   color: #fff;
 
   display: flex;
@@ -42,6 +87,7 @@
   align-items: center;
 
   text-align: center;
+
   padding: 20px;
 
   font-size: 24px;
@@ -50,99 +96,469 @@
   border-radius: 10px 10px 0 0;
 }
 
-/* Course Information */
+
+/* ==========================================================
+   COURSE INFORMATION
+========================================================== */
 
 .course-info {
   padding: 30px;
 
+  min-width: 0;
+
   h3 {
     font-size: 28px;
+
     margin-bottom: 15px;
+
     color: #6a11cb;
+
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
   }
 
   p {
     line-height: 1.8;
+
     margin-bottom: 15px;
+
+    overflow-wrap: anywhere;
   }
 
   ul {
     margin-left: 20px;
+
     margin-bottom: 20px;
+
     list-style: disc;
+
+    li {
+      margin-bottom: 6px;
+    }
   }
 }
 
-/* Extra Course Details */
+
+/* ==========================================================
+   COURSE TITLE
+========================================================== */
 
 .course-title {
   font-size: 22px;
+
   font-weight: 700;
+
   margin-bottom: 15px;
+
+  line-height: 1.3;
+
+  overflow-wrap: anywhere;
 }
+
+
+/* ==========================================================
+   COURSE RATING
+========================================================== */
 
 .course-rating {
   color: #ff9800;
+
   font-weight: 600;
+
   margin-bottom: 15px;
 }
 
+
+/* ==========================================================
+   COURSE META
+========================================================== */
+
 .course-meta {
   display: flex;
+
   justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
   margin-bottom: 20px;
+
+  flex-wrap: wrap;
 }
+
+
+/* ==========================================================
+   COURSE BUTTONS
+========================================================== */
 
 .course-buttons {
   margin-top: 25px;
 
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
   .btn {
     border-radius: 30px;
+
     font-weight: 600;
   }
 }
 
-/* Pricing */
+
+/* ==========================================================
+   PRICING
+========================================================== */
 
 .course-price-container {
   margin-bottom: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
 }
+
 
 .original-price {
   text-decoration: line-through;
+
   color: red;
+
   margin-right: 10px;
 }
 
+
 .discounted-price {
   font-size: 25px;
+
   color: green;
+
   font-weight: bold;
 }
 
+
 .discount-badge {
   display: inline-block;
+
   background: red;
+
   color: #fff;
+
   padding: 5px 10px;
+
   border-radius: 10px;
+
   font-size: 13px;
+
+  white-space: nowrap;
 }
 
-/* Button */
+
+/* ==========================================================
+   COURSE BUTTON
+========================================================== */
 
 .course-btn {
-  display: inline-block;
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
   padding: 12px 25px;
+
+  min-height: 44px;
+
   border-radius: 30px;
+
   text-decoration: none;
-  background: linear-gradient(to right, #6a11cb, #2575fc);
+
+  background:
+    linear-gradient(
+      to right,
+      #6a11cb,
+      #2575fc
+    );
+
   color: #fff;
+
   font-weight: 600;
-  transition: .3s;
+
+  transition: .3s ease;
+
+  text-align: center;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(106, 17, 203, .25);
+
+    box-shadow:
+      0 8px 18px rgba(106, 17, 203, .25);
+
+    color: #fff;
+  }
+
+  &:active {
+    transform: scale(.98);
+  }
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 992px) {
+
+  .courses {
+    padding: 80px 0;
+  }
+
+  .course-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+  }
+
+  .course-image,
+  .course-placeholder {
+    height: 200px;
+  }
+
+  .course-info {
+    padding: 24px;
+
+    h3 {
+      font-size: 24px;
+    }
+  }
+
+  .course-title {
+    font-size: 20px;
+  }
+
+  .discounted-price {
+    font-size: 23px;
+  }
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 768px) {
+
+  .courses {
+    padding: 65px 0;
+  }
+
+  .course-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .course-card {
+    border-radius: 16px;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  .course-image,
+  .course-placeholder {
+    height: 210px;
+
+    border-radius: 8px 8px 0 0;
+  }
+
+  .course-placeholder {
+    font-size: 21px;
+
+    padding: 18px;
+  }
+
+  .course-info {
+    padding: 22px 20px;
+
+    h3 {
+      font-size: 22px;
+
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 14px;
+
+      line-height: 1.7;
+    }
+
+    ul {
+      margin-left: 18px;
+
+      font-size: 14px;
+    }
+  }
+
+  .course-title {
+    font-size: 19px;
+
+    margin-bottom: 12px;
+  }
+
+  .course-rating {
+    font-size: 14px;
+
+    margin-bottom: 12px;
+  }
+
+  .course-meta {
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+  }
+
+  .course-buttons {
+    margin-top: 20px;
+
+    width: 100%;
+
+    .btn {
+      width: auto;
+    }
+  }
+
+  .course-price-container {
+    margin-bottom: 16px;
+  }
+
+  .original-price {
+    font-size: 14px;
+  }
+
+  .discounted-price {
+    font-size: 22px;
+  }
+
+  .discount-badge {
+    font-size: 12px;
+
+    padding: 4px 8px;
+  }
+
+  .course-btn {
+    width: 100%;
+
+    padding: 11px 20px;
+
+    font-size: 14px;
+  }
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+  .courses {
+    padding: 50px 0;
+  }
+
+  .course-grid {
+    gap: 16px;
+  }
+
+  .course-card {
+    border-radius: 14px;
+  }
+
+  .course-image,
+  .course-placeholder {
+    height: 180px;
+  }
+
+  .course-placeholder {
+    font-size: 18px;
+
+    padding: 15px;
+  }
+
+  .course-info {
+    padding: 18px 15px;
+
+    h3 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+
+    ul {
+      font-size: 13px;
+
+      margin-left: 17px;
+    }
+  }
+
+  .course-title {
+    font-size: 18px;
+  }
+
+  .course-rating {
+    font-size: 13px;
+  }
+
+  .course-meta {
+    font-size: 13px;
+
+    gap: 8px;
+  }
+
+  .course-price-container {
+    gap: 5px;
+  }
+
+  .original-price {
+    font-size: 13px;
+
+    margin-right: 4px;
+  }
+
+  .discounted-price {
+    font-size: 20px;
+  }
+
+  .discount-badge {
+    font-size: 11px;
+
+    padding: 4px 7px;
+  }
+
+  .course-buttons {
+    margin-top: 18px;
+  }
+
+  .course-btn {
+    min-height: 42px;
+
+    padding: 10px 16px;
+
+    font-size: 13px;
   }
 }

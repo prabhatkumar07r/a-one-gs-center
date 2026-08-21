@@ -1,42 +1,330 @@
 <style>
-.card{
-    border-radius:15px;
+<style>
+/* =========================================================
+   TEACHER PAGE
+========================================================= */
+
+.teacher-page {
+    width: 100%;
+    padding: 20px;
 }
 
-.card-header{
-    background:#2563eb !important;
-    color:#fff;
-    border-radius:15px 15px 0 0;
+/* =========================================================
+   CARD
+========================================================= */
+
+.teacher-card {
+    width: 100%;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
 }
 
-.table thead th{
-    background:#2563eb !important;
-    color:#fff !important;
-    text-align:center;
-    vertical-align:middle;
+.teacher-card .card-header {
+    background: #2563eb !important;
+    color: #fff;
+
+    padding: 18px 22px;
+
+    border: none;
+    border-radius: 0;
 }
 
-.table td{
-    vertical-align:middle;
+.teacher-card .card-header h4 {
+    font-size: 20px;
+    font-weight: 600;
 }
 
-.rounded-circle{
-    object-fit:cover;
+/* =========================================================
+   SEARCH + ADD BUTTON
+========================================================= */
+
+.teacher-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
 }
 
-.search-box{
-    width:400px;
-    max-width:100%;
+.search-box {
+    width: 400px;
+    max-width: 100%;
 }
 
-.add-teacher-btn{
-    width:180px;
-    padding:10px 20px;
-    font-size:16px;
-    border-radius:8px;
-    display:inline-block;
-    text-align:center;
+.search-box .form-control {
+    min-height: 44px;
 }
+
+.search-box .btn {
+    min-width: 90px;
+}
+
+.add-teacher-btn {
+    min-width: 180px;
+
+    padding: 10px 20px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    border-radius: 8px;
+
+    white-space: nowrap;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.teacher-table {
+    width: 100%;
+    margin: 0;
+}
+
+.teacher-table thead th {
+    background: #2563eb !important;
+    color: #fff !important;
+
+    text-align: center;
+    vertical-align: middle;
+
+    padding: 13px 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.teacher-table tbody td {
+    vertical-align: middle;
+    text-align: center;
+
+    padding: 12px 10px;
+
+    font-size: 14px;
+}
+
+.teacher-table tbody tr {
+    transition: background .2s ease;
+}
+
+.teacher-table tbody tr:hover {
+    background: #f8faff;
+}
+
+/* =========================================================
+   TEACHER PHOTO
+========================================================= */
+
+.teacher-photo {
+    width: 60px;
+    height: 60px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid #e5e7eb;
+}
+
+.no-image {
+    width: 60px;
+    height: 60px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: #ef4444;
+
+    font-size: 11px;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.teacher-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+    flex-wrap: nowrap;
+}
+
+.teacher-actions .btn {
+    white-space: nowrap;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.teacher-card .card-footer {
+    padding: 14px 20px;
+
+    background: #f8fafc;
+
+    border-top: 1px solid #e5e7eb;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .teacher-page {
+        padding: 15px;
+    }
+
+    .teacher-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .add-teacher-btn {
+        width: 100%;
+    }
+
+    .teacher-table {
+        min-width: 1000px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .teacher-page {
+        padding: 10px;
+    }
+
+    .teacher-card {
+        border-radius: 12px;
+    }
+
+    .teacher-card .card-header {
+        padding: 15px;
+    }
+
+    .teacher-card .card-header h4 {
+        font-size: 18px;
+    }
+
+    /*
+       Keep table readable.
+       User can scroll horizontally.
+    */
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .teacher-table {
+        min-width: 950px;
+    }
+
+    .teacher-table thead th,
+    .teacher-table tbody td {
+        font-size: 13px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .teacher-page {
+        padding: 8px;
+    }
+
+    .teacher-toolbar {
+        gap: 10px;
+    }
+
+    .search-box .btn {
+        min-width: 75px;
+    }
+
+    .add-teacher-btn {
+        width: 100%;
+        min-width: 0;
+
+        padding: 11px;
+
+        font-size: 14px;
+    }
+
+    .teacher-card .card-header {
+        padding: 13px 15px;
+    }
+
+    .teacher-card .card-header h4 {
+        font-size: 17px;
+    }
+
+    .teacher-card .card-footer {
+        padding: 12px 15px;
+
+        font-size: 13px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .teacher-page {
+        padding: 5px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .search-box .form-control {
+        font-size: 13px;
+    }
+
+    .search-box .btn {
+        font-size: 13px;
+    }
+
+}
+</style>
 </style>
 
 <!-- Page Heading -->

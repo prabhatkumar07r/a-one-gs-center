@@ -32,3 +32,99 @@
     font-size:.85rem;
     padding:8px 14px;
 }
+
+/* =========================================================
+   ATTENDANCE PAGE
+   Safe additions - does not affect other pages
+========================================================= */
+
+.attendance-card {
+  border-radius: 15px;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.attendance-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.10);
+}
+
+
+/* ================= ATTENDANCE TABLE ================= */
+
+.attendance-card .table {
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  margin-bottom: 0;
+}
+
+.attendance-card .table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.attendance-card .table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.attendance-card .table th,
+.attendance-card .table td {
+  vertical-align: middle;
+}
+
+
+/* ================= ATTENDANCE CARD ================= */
+
+.attendance-card .card-header {
+  border-radius: 15px 15px 0 0 !important;
+}
+
+
+/* ================= ATTENDANCE BUTTONS ================= */
+
+.attendance-card .btn {
+  border-radius: 10px;
+}
+
+
+/* ================= ATTENDANCE BADGES ================= */
+
+.attendance-card .badge {
+  font-size: 0.85rem;
+
+  padding: 8px 14px;
+
+  border-radius: 8px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .attendance-card {
+    border-radius: 12px;
+  }
+
+  .attendance-card .table {
+    font-size: 13px;
+  }
+
+  .attendance-card .badge {
+    font-size: 0.75rem;
+
+    padding: 6px 10px;
+  }
+
+  .attendance-card .btn {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+}

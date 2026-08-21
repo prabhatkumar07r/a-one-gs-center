@@ -1,47 +1,180 @@
-.card{
-    border-radius:15px;
+/* ==========================================================
+   ADMIN / TABLE / CARD COMPONENTS
+========================================================== */
+
+/* Card */
+
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
-.card-header{
-    padding:18px;
+.card-header {
+  padding: 18px;
+  border-radius: 15px 15px 0 0 !important;
+  font-weight: 600;
 }
 
-.table th{
-    text-align:center;
-    vertical-align:middle;
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.table th {
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 600;
 }
 
-.table td{
-    vertical-align:middle;
+.table td {
+  vertical-align: middle;
 }
 
-.badge{
-    font-size:14px;
-    padding:8px 12px;
+.table tbody tr {
+  transition: background 0.3s ease;
 }
 
-/*.btn{
-    border-radius:8px;
-    margin:2px;
-    padding: -1px 32px;
-}*/
-
-.table tbody tr:hover{
-    background:#f8f9fa;
-    transition:.3s;
+.table tbody tr:hover {
+  background: #f8f9fa;
 }
+
+
+/* ==========================================================
+   BADGES
+========================================================== */
+
+.badge {
+  display: inline-block;
+
+  padding: 8px 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  border-radius: 8px;
+}
+
+
+/* ==========================================================
+   BUTTON
+========================================================== */
+
 .btn {
-    display: inline-block;
-    padding: -1px 32px;
-    background: var(--gradient-primary);
-    color: var(--text-light);
-    border-radius: 50px;
-    font-weight: 600;
-    transition: var(--transition);
-    border: none;
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 20px;
+
+  min-height: 40px;
+
+  background: var(--gradient-primary);
+
+  color: var(--text-light);
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  box-shadow: var(--box-shadow);
+
+  position: relative;
+
+  overflow: hidden;
+
+  z-index: 1;
+}
+
+
+/* Button hover effect */
+
+.btn::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 0;
+
+  background: var(--gradient-secondary);
+
+  transition: var(--transition);
+
+  z-index: -1;
+}
+
+.btn:hover::before {
+  width: 100%;
+}
+
+.btn:hover {
+  color: #fff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 2px solid #6a11cb;
+  outline-offset: 2px;
+}
+
+
+/* ==========================================================
+   BUTTON SPACING
+========================================================== */
+
+.table .btn {
+  margin: 2px;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+
+  .card {
+    border-radius: 12px;
+  }
+
+  .card-header {
+    padding: 15px;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+  .badge {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    min-height: 38px;
+    font-size: 13px;
+  }
 }

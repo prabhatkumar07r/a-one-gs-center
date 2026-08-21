@@ -20,3 +20,517 @@
 .rounded-circle{
     object-fit: cover;
 }
+/* =========================================================
+   FINAL SAFE OVERRIDES
+   Keeps existing design and prevents unwanted conflicts
+========================================================= */
+
+/* ================= GLOBAL ================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   PUBLIC HEADER
+========================================================= */
+
+.header {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px !important;
+
+  background: #ffffff !important;
+
+  z-index: 9999;
+}
+
+.header-content {
+  height: 100%;
+}
+
+
+/* Remove the temporary testing colors */
+.header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+.header nav a {
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+
+/* =========================================================
+   ADMIN NAVBAR
+========================================================= */
+
+.admin-navbar {
+  height: 80px !important;
+
+  position: fixed !important;
+  top: 0;
+  right: 0;
+
+  width: calc(100% - 270px);
+
+  background: #ffffff !important;
+
+  z-index: 1000;
+}
+
+
+/* Admin content must stay beside sidebar */
+
+.admin-main {
+  margin-left: 270px;
+  padding-top: 80px;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   ADMIN SIDEBAR
+========================================================= */
+
+.admin-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 270px;
+  height: 100vh;
+
+  min-height: 100vh;
+
+  overflow-y: auto;
+
+  z-index: 1100;
+}
+
+
+/* =========================================================
+   ADMIN CONTENT
+========================================================= */
+
+.admin-content {
+  padding: 30px;
+}
+
+
+/* =========================================================
+   ADMIN CARDS
+========================================================= */
+
+.admin-main .card {
+  border: none;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.admin-main .card:hover {
+  transform: translateY(-5px);
+}
+
+
+/* Dashboard cards */
+
+.dashboard-card {
+  border-radius: 15px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.dashboard-card i {
+  opacity: 0.25;
+}
+
+
+/* =========================================================
+   ADMIN TABLES
+========================================================= */
+
+.admin-main .table th,
+.admin-main .table td {
+  vertical-align: middle;
+}
+
+.admin-main .table th {
+  font-weight: 600;
+}
+
+.admin-main .table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.admin-main .table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+
+/* Keep your red table header */
+
+.admin-main .table thead th {
+  background: #dc3545 !important;
+  color: #ffffff !important;
+
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   ADMIN FORMS
+========================================================= */
+
+.admin-main .form-control,
+.admin-main .form-select {
+  border-radius: 10px;
+}
+
+.admin-main .form-control:focus,
+.admin-main .form-select:focus {
+  border-color: #6a11cb;
+
+  box-shadow:
+    0 0 0 0.2rem rgba(106, 17, 203, 0.12);
+}
+
+
+/* =========================================================
+   ADMIN BUTTONS
+========================================================= */
+
+.admin-main .btn {
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   ADMIN SIDEBAR NAVIGATION
+========================================================= */
+
+.admin-sidebar .nav-link {
+  cursor: pointer;
+
+  color: #ffffff !important;
+
+  padding: 12px 20px;
+
+  border-radius: 8px;
+
+  margin: 4px 12px;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.admin-sidebar .nav-link:hover {
+  background: #ffffff;
+
+  color: #0d6efd !important;
+}
+
+.admin-sidebar .nav-link i {
+  width: 25px;
+}
+
+
+/* Submenu */
+
+.admin-sidebar .submenu {
+  display: block;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  padding: 10px 45px;
+
+  font-size: 15px;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.admin-sidebar .submenu:hover {
+  background: #ffffff;
+
+  color: #0d6efd;
+}
+
+
+/* =========================================================
+   SIDEBAR LOGO
+========================================================= */
+
+.sidebar-logo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 20px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-logo-img {
+  width: 55px;
+  height: 55px;
+
+  min-width: 55px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  padding: 4px;
+
+  object-fit: cover;
+}
+
+.sidebar-title {
+  padding: 0;
+
+  text-align: left;
+
+  border: none;
+}
+
+.sidebar-title h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.sidebar-title small {
+  color: #d6e4ff;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   PUBLIC BUTTON
+========================================================= */
+
+body > .btn {
+  border-radius: 8px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer {
+  background: #111;
+
+  color: #ffffff;
+
+  padding: 25px 0 10px;
+}
+
+.site-footer .footer-content {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+
+  gap: 20px;
+}
+
+.site-footer .footer-section h3,
+.site-footer .footer-section h4 {
+  color: #ff00aa;
+
+  margin-bottom: 10px;
+
+  font-size: 18px;
+}
+
+.site-footer .footer-section ul {
+  list-style: none;
+
+  padding: 0;
+}
+
+.site-footer .footer-section ul li {
+  margin-bottom: 6px;
+}
+
+.site-footer .footer-section ul li a {
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 14px;
+}
+
+.site-footer .social-icons a {
+  color: #ffffff;
+
+  margin-right: 10px;
+
+  font-size: 18px;
+}
+
+.site-footer .social-icons a:hover {
+  color: #ff00aa;
+}
+
+
+/* =========================================================
+   CONTACT TOAST
+========================================================= */
+
+.contact-toast {
+  position: fixed !important;
+
+  top: 90px !important;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 999999 !important;
+
+  width: min(420px, calc(100% - 30px));
+}
+
+
+/* =========================================================
+   MOBILE ADMIN
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .admin-navbar {
+    width: calc(100% - 220px);
+  }
+
+  .admin-sidebar {
+    width: 220px;
+  }
+
+  .admin-main {
+    margin-left: 220px;
+  }
+
+  .sidebar-title h3 {
+    font-size: 17px;
+  }
+
+  .sidebar-logo {
+    padding: 15px;
+  }
+
+  .sidebar-logo-img {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-sidebar {
+    width: 0;
+
+    transform: translateX(-100%);
+
+    transition: transform 0.3s ease;
+  }
+
+  .admin-main {
+    margin-left: 0;
+
+    padding-top: 80px;
+  }
+
+  .admin-navbar {
+    width: 100% !important;
+
+    padding: 0 15px;
+  }
+
+  .admin-content {
+    padding: 20px 15px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+  .admin-content {
+    padding: 15px 10px;
+  }
+
+  .dashboard-card h2 {
+    font-size: 1.6rem;
+  }
+
+  .contact-toast {
+    top: 15px !important;
+
+    width: calc(100% - 24px);
+  }
+
+}

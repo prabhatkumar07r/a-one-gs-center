@@ -1,151 +1,749 @@
-/* ================= NOTIFICATIONS ================= */
+/* =========================================================
+   GLOBAL RESPONSIVE FIXES
+   Added without changing existing desktop design
+========================================================= */
 
-.notifications {
-  padding: 2rem 0;
+html {
+  overflow-x: hidden;
 }
 
-.notif-showcase {
-  width: 100%;
+body {
+  overflow-x: hidden;
 }
 
-.ticker-glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border-radius: 2rem;
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2),
-              0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-  padding: 1rem 0;
-  transition: all 0.3s ease;
-  overflow: hidden;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 28px 48px -16px rgba(0, 0, 0, 0.25);
-  }
+img {
+  max-width: 100%;
 }
 
-.notification-ticker-container {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  cursor: pointer;
 
-  &:hover .notification-ticker {
-    animation-play-state: paused;
-  }
-}
+/* =========================================================
+   TABLET
+   769px - 992px
+========================================================= */
 
-.notification-ticker {
-  display: flex;
-  gap: 1.5rem;
-  width: max-content;
-  animation: scrollHorizontalFlow 35s linear infinite;
-  will-change: transform;
-}
+@media (max-width: 992px) {
 
-.ticker-notification {
-  display: flex;
-  gap: 1.2rem;
-  background: white;
-  width: 360px;
-  padding: 1.2rem 1.4rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
-  border: 1px solid rgba(106, 17, 203, 0.15);
-  flex-shrink: 0;
+  /* ================= CONTAINER ================= */
 
-  &:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: #6A11CB;
-    box-shadow: 0 20px 30px -12px rgba(106, 17, 203, 0.25);
-    background: linear-gradient(135deg, #ffffff, #fef9f0);
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
-  i {
-    width: 52px;
+
+  /* ================= HEADER ================= */
+
+  .header {
+    height: 75px;
+  }
+
+  body {
+    padding-top: 75px;
+  }
+
+  .logo img {
     height: 52px;
-    background: linear-gradient(145deg, #6A11CB, #2575FC);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-    box-shadow: 0 10px 15px -6px rgba(106, 17, 203, 0.4);
-    transition: 0.2s;
   }
 
-  &:hover i {
-    transform: scale(.96);
-  }
-}
 
-.ticker-content {
-  flex: 1;
+  /* ================= HERO ================= */
 
-  strong {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1e2f3e;
-    display: block;
-    margin-bottom: 6px;
+  .hero {
+    padding: 100px 20px 80px;
+    background-attachment: scroll;
   }
 
-  p {
-    font-size: .82rem;
-    color: #4a5568;
-    line-height: 1.4;
-    margin-bottom: 8px;
-  }
-}
-
-.ticker-date {
-  font-size: .68rem;
-  background: #f0eef7;
-  padding: 4px 12px;
-  border-radius: 30px;
-  display: inline-block;
-  color: #4a3f7c;
-  font-weight: 500;
-}
-
-@keyframes scrollHorizontalFlow {
-  0% {
-    transform: translateX(0);
+  .hero-content h1 {
+    font-size: 4rem;
   }
 
-  100% {
-    transform: translateX(-50%);
+  .coaching-name {
+    font-size: 3.2rem;
   }
-}
 
-@media (max-width: 780px) {
+  .coaching-icon {
+    height: 52px;
+  }
+
+  .hero-content p {
+    max-width: 650px;
+    font-size: 1.05rem;
+  }
+
+
+  /* ================= COURSES ================= */
+
+  .course-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .course-image,
+  .course-placeholder {
+    height: 200px;
+  }
+
+  .course-info {
+    padding: 24px;
+  }
+
+  .course-info h3 {
+    font-size: 24px;
+  }
+
+
+  /* ================= ABOUT ================= */
+
+  .about-section {
+    padding: 80px 0;
+  }
+
+  .toppers-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .collage {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-cta {
+    gap: 25px;
+  }
+
+
+  /* ================= CONTACT ================= */
+
+  .contact {
+    padding: 80px 0;
+  }
+
+  .contact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+  }
+
+  .contact-form {
+    padding: 30px;
+  }
+
+
+  /* ================= NOTIFICATIONS ================= */
+
   .ticker-notification {
     width: 310px;
+  }
+
+
+  /* ================= FOOTER ================= */
+
+  .footer-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   768px and below
+========================================================= */
+
+@media (max-width: 768px) {
+
+  /* ================= GLOBAL ================= */
+
+  body {
+    padding-top: 70px;
+  }
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+
+  /* ================= HEADINGS ================= */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    word-break: normal;
+  }
+
+  .Demo-class {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+
+  /* ================= HEADER ================= */
+
+  .header {
+    height: 70px;
+  }
+
+  .header-content {
+    gap: 8px;
+  }
+
+  .logo img {
+    height: 48px;
+    max-width: 150px;
+  }
+
+
+  /* ================= HERO ================= */
+
+  .hero {
+    min-height: auto;
+
+    padding: 80px 15px 70px;
+
+    background-attachment: scroll;
+  }
+
+  .hero-content h1 {
+    font-size: 3rem;
+
+    line-height: 1.15;
+
+    gap: 8px;
+
+    margin-bottom: 1.2rem;
+  }
+
+  .coaching-name {
+    font-size: 2.7rem;
+  }
+
+  .coaching-icon {
+    height: 45px;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+
+    line-height: 1.7;
+
+    margin-bottom: 2rem;
+
+    max-width: 100%;
+  }
+
+  .hero-content div {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+
+  /* ================= BUTTON ================= */
+
+  .btn {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+
+
+  /* ================= COURSES ================= */
+
+  .courses {
+    padding: 70px 0;
+  }
+
+  .course-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .course-card {
+    width: 100%;
+  }
+
+  .course-image,
+  .course-placeholder {
+    height: 210px;
+  }
+
+  .course-info {
+    padding: 22px;
+  }
+
+  .course-info h3 {
+    font-size: 23px;
+  }
+
+  .course-title {
+    font-size: 20px;
+  }
+
+  .course-meta {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .course-price-container {
+    margin-bottom: 16px;
+  }
+
+  .discounted-price {
+    font-size: 22px;
+  }
+
+  .course-buttons {
+    margin-top: 20px;
+  }
+
+  .course-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+
+  /* ================= ABOUT ================= */
+
+  .about-section {
+    padding: 70px 0;
+  }
+
+  .toppers-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .topper-card img {
+    height: 210px;
+  }
+
+  .collage {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin: 45px 5px;
+  }
+
+  .collage img {
+    height: 220px;
+  }
+
+  .goal-quote {
+    padding: 30px 20px;
+    margin: 40px 0;
+  }
+
+  .goal-quote strong {
+    font-size: 1.25rem;
+  }
+
+  .goal-quote p {
+    font-size: 1rem;
+  }
+
+  .about-cta {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 22px;
+  }
+
+  .highlight-box h3 {
+    font-size: 1.5rem;
+  }
+
+  .highlight-img {
+    width: 100%;
+  }
+
+
+  /* ================= CONTACT ================= */
+
+  .contact {
+    padding: 70px 0;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contact-form {
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 13px;
+    font-size: 15px;
+  }
+
+
+  /* ================= NOTIFICATIONS ================= */
+
+  .notifications {
+    padding: 1.5rem 0;
+  }
+
+  .ticker-glass-panel {
+    border-radius: 1.3rem;
+    padding: .8rem 0;
+  }
+
+  .notification-ticker {
+    gap: 1rem;
+    animation-duration: 30s;
+  }
+
+  .ticker-notification {
+    width: 290px;
     padding: 1rem;
+    gap: .9rem;
+    border-radius: 1.2rem;
+  }
+
+  .ticker-notification i {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+    border-radius: 14px;
   }
 
   .ticker-content strong {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 550px) {
-  .ticker-notification {
-    width: 280px;
-    gap: .8rem;
-
-    i {
-      width: 44px;
-      height: 44px;
-      font-size: 1.3rem;
-      border-radius: 14px;
-    }
+    font-size: .95rem;
   }
 
   .ticker-content p {
     font-size: .75rem;
+  }
+
+  .ticker-date {
+    font-size: .65rem;
+  }
+
+
+  /* ================= FOOTER ================= */
+
+  .site-footer,
+  footer {
+    padding: 25px 0 10px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    text-align: center;
+  }
+
+  .footer-section h3,
+  .footer-section h4 {
+    font-size: 17px;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 8px;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  .social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    margin: 0 4px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .08);
+  }
+
+  .copyright {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   576px and below
+========================================================= */
+
+@media (max-width: 576px) {
+
+  /* ================= GLOBAL ================= */
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  /* ================= HEADER ================= */
+
+  .header {
+    height: 65px;
+  }
+
+  body {
+    padding-top: 65px;
+  }
+
+  .logo img {
+    height: 44px;
+    max-width: 135px;
+  }
+
+
+  /* ================= HERO ================= */
+
+  .hero {
+    padding: 65px 12px 55px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.35rem;
+  }
+
+  .coaching-name {
+    font-size: 2.15rem;
+  }
+
+  .coaching-icon {
+    height: 38px;
+  }
+
+  .hero-content p {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .hero-content div {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-content div .btn {
+    width: auto;
+    min-width: 150px;
+  }
+
+
+  /* ================= SECTION SPACING ================= */
+
+  .courses,
+  .about-section,
+  .contact {
+    padding: 55px 0;
+  }
+
+
+  /* ================= COURSE ================= */
+
+  .course-image,
+  .course-placeholder {
+    height: 190px;
+  }
+
+  .course-info {
+    padding: 18px;
+  }
+
+  .course-info h3 {
+    font-size: 21px;
+  }
+
+  .course-info p {
+    font-size: 14px;
+  }
+
+  .course-title {
+    font-size: 18px;
+  }
+
+  .course-rating {
+    font-size: 14px;
+  }
+
+  .course-meta {
+    font-size: 13px;
+  }
+
+  .course-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+
+  /* ================= ABOUT ================= */
+
+  .topper-card img {
+    height: 190px;
+  }
+
+  .collage img {
+    height: 190px;
+  }
+
+  .goal-quote {
+    padding: 25px 16px;
+  }
+
+  .goal-quote strong {
+    font-size: 1.1rem;
+  }
+
+  .goal-quote p {
+    font-size: .9rem;
+  }
+
+  .about-cta {
+    padding: 18px;
+  }
+
+  .highlight-box h3 {
+    font-size: 1.35rem;
+  }
+
+
+  /* ================= CONTACT ================= */
+
+  .contact-form {
+    padding: 20px 15px;
+  }
+
+
+  /* ================= NOTIFICATIONS ================= */
+
+  .ticker-notification {
+    width: 275px;
+    padding: .85rem;
+    gap: .75rem;
+  }
+
+  .ticker-notification i {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+
+  .ticker-content strong {
+    font-size: .9rem;
+  }
+
+  .ticker-content p {
+    font-size: .72rem;
+  }
+
+
+  /* ================= FOOTER ================= */
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 13px;
+  }
+
+  .copyright p {
+    font-size: 11px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   400px and below
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .logo img {
+    max-width: 120px;
+    height: 40px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .coaching-name {
+    font-size: 1.85rem;
+  }
+
+  .coaching-icon {
+    height: 32px;
+  }
+
+  .course-image,
+  .course-placeholder {
+    height: 170px;
+  }
+
+  .ticker-notification {
+    width: 255px;
+  }
+
+  .contact-form {
+    padding: 18px 12px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   Avoid hover transforms causing layout problems
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .course-card:hover,
+  .topper-card:hover {
+    transform: none;
+  }
+
+  .collage img:hover {
+    transform: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+
+  .course-btn:hover {
+    transform: none;
+  }
+
+  .ticker-notification:hover {
+    transform: none;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
   }
 }

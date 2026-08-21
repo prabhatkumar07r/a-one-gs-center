@@ -1,286 +1,700 @@
 <style>
-  .back-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:6px 10px;   /* Small horizontal padding */
-    width:auto;         /* Only as wide as its content */
-    white-space:nowrap;
-    font-size:14px;
-    font-weight:500;
-    border-radius:10px;
+/* =========================================================
+   TEACHER PLAYLIST PAGE
+   Responsive - Desktop / Tablet / Mobile
+========================================================= */
+
+.teacher-playlist-page {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px 25px 40px;
+  box-sizing: border-box;
 }
 
-.back-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 4px 12px rgba(0,0,0,.12);
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.custom-breadcrumb {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 0 15px !important;
 }
 
-.back-btn i{
-    font-size:15px;
-
-  }  
-.custom-breadcrumb{
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin-bottom: 10px !important;
+.custom-breadcrumb .breadcrumb {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.custom-breadcrumb .breadcrumb{
-    background: transparent !important;
-    margin: 0;
-    padding: 0;
+.custom-breadcrumb .breadcrumb-item {
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.custom-breadcrumb .breadcrumb-item{
-    font-size:14px;
-    font-weight:500;
+.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+  color: #6c757d;
+  padding: 0 8px;
 }
 
-.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
-    content: ">";
-    color:#6c757d;
-    padding:0 8px;
+.custom-breadcrumb .breadcrumb-item a {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: .2s ease;
 }
 
-.custom-breadcrumb .breadcrumb-item a{
-    color:#0d6efd;
-    text-decoration:none;
+.custom-breadcrumb .breadcrumb-item a:hover {
+  color: #084298;
 }
 
-.custom-breadcrumb .breadcrumb-item.active{
-    color:#198754;
-    font-weight:600;
+.custom-breadcrumb .breadcrumb-item.active {
+  color: #198754;
+  font-weight: 600;
 }
 
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.playlist-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.playlist-page-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #212529;
+}
+
+.playlist-page-subtitle {
+  margin: 7px 0 0;
+  color: #6c757d;
+  font-size: 15px;
+}
+
+.playlist-page-subtitle strong {
+  color: #343a40;
+}
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.playlist-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  width: auto;
+  min-width: 145px;
+
+  padding: 9px 16px;
+
+  white-space: nowrap;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  border-radius: 10px;
+
+  transition: .25s ease;
+}
+
+.playlist-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,.12);
+}
+
+/* =========================================================
+   PLAYLIST CARD
+========================================================= */
+
+.playlist-card {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+.playlist-card-body {
+  padding: 0;
+}
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.playlist-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.playlist-table {
+  width: 100%;
+  min-width: 900px;
+  margin: 0;
+}
+
+.playlist-table th {
+  white-space: nowrap;
+  vertical-align: middle;
+  font-size: 14px;
+  padding: 14px 12px;
+}
+
+.playlist-table td {
+  vertical-align: middle;
+  padding: 14px 12px;
+  font-size: 14px;
+}
+
+.playlist-table tbody tr {
+  transition: .2s ease;
+}
+
+.playlist-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+/* =========================================================
+   PLAYLIST TITLE
+========================================================= */
+
+.playlist-title {
+  font-weight: 700;
+  color: #212529;
+  display: block;
+}
+
+.playlist-description {
+  display: block;
+  margin-top: 4px;
+  max-width: 300px;
+  color: #6c757d;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.playlist-position-badge,
+.playlist-count-badge {
+  min-width: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.playlist-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.playlist-action-btn {
+  white-space: nowrap;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 9px;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.playlist-empty {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.playlist-empty-icon {
+  font-size: 45px;
+  margin-bottom: 12px;
+  opacity: .7;
+}
+
+.playlist-empty h5 {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.playlist-empty p {
+  color: #6c757d;
+  margin-bottom: 15px;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .teacher-playlist-page {
+    padding: 10px 20px 35px;
+  }
+
+  .playlist-page-title {
+    font-size: 26px;
+  }
+
+  .playlist-page-header {
+    gap: 15px;
+  }
+
+  .playlist-add-btn {
+    min-width: 135px;
+  }
+
+  .playlist-table {
+    min-width: 850px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .teacher-playlist-page {
+    padding: 8px 15px 30px;
+  }
+
+  /* Breadcrumb */
+
+  .custom-breadcrumb {
+    margin-bottom: 15px !important;
+  }
+
+  .custom-breadcrumb .breadcrumb-item {
+    font-size: 12px;
+  }
+
+  .custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    padding: 0 5px;
+  }
+
+  /* Header */
+
+  .playlist-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .playlist-page-title {
+    font-size: 23px;
+  }
+
+  .playlist-page-subtitle {
+    font-size: 13px;
+  }
+
+  /* Button becomes full width */
+
+  .playlist-add-btn {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 15px;
+  }
+
+  /* Card */
+
+  .playlist-card {
+    border-radius: 12px;
+  }
+
+  /* Table */
+
+  .playlist-table {
+    min-width: 820px;
+  }
+
+  .playlist-table th,
+  .playlist-table td {
+    padding: 11px 9px;
+    font-size: 13px;
+  }
+
+  .playlist-description {
+    max-width: 220px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .teacher-playlist-page {
+    padding: 5px 10px 25px;
+  }
+
+  .custom-breadcrumb .breadcrumb {
+    row-gap: 4px;
+  }
+
+  .custom-breadcrumb .breadcrumb-item {
+    font-size: 11px;
+  }
+
+  .playlist-page-title {
+    font-size: 20px;
+  }
+
+  .playlist-page-subtitle {
+    font-size: 12px;
+  }
+
+  .playlist-add-btn {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .playlist-table {
+    min-width: 780px;
+  }
+
+  .playlist-table th,
+  .playlist-table td {
+    padding: 9px 8px;
+    font-size: 12px;
+  }
+
+  .playlist-action-btn {
+    font-size: 11px;
+    padding: 5px 7px;
+  }
+
+  .playlist-empty {
+    padding: 45px 15px;
+  }
+
+  .playlist-empty-icon {
+    font-size: 38px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .teacher-playlist-page {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .playlist-page-title {
+    font-size: 18px;
+  }
+
+  .playlist-table {
+    min-width: 750px;
+  }
+}
 </style>
 
-<nav aria-label="breadcrumb" class="custom-breadcrumb mb-2">
-  <ol class="breadcrumb">
 
-    <li class="breadcrumb-item">
-      <%= link_to "Dashboard", teacher_dashboard_path %>
-    </li>
-
-    <li class="breadcrumb-item">
-      <%= link_to "My Courses", teacher_panel_courses_path %>
-    </li>
-
-    <li class="breadcrumb-item">
-      <%= link_to @course.Course_name, teacher_panel_course_path(@course) %>
-    </li>
-
-    <li class="breadcrumb-item active" aria-current="page">
-      Playlists
-    </li>
-
-  </ol>
-</nav>
 <% content_for :title, "#{@course.Course_name} Playlists" %>
 
-<div class="container-fluid mt-4">
+
+<div class="teacher-playlist-page">
+
+  <!-- =====================================================
+       BREADCRUMB
+  ====================================================== -->
+
+  <nav aria-label="breadcrumb" class="custom-breadcrumb">
+
+    <ol class="breadcrumb">
+
+      <li class="breadcrumb-item">
+        <%= link_to "Dashboard", teacher_dashboard_path %>
+      </li>
+
+      <li class="breadcrumb-item">
+        <%= link_to "My Courses", teacher_panel_courses_path %>
+      </li>
+
+      <li class="breadcrumb-item">
+        <%= link_to @course.Course_name,
+            teacher_panel_course_path(@course) %>
+      </li>
+
+      <li class="breadcrumb-item active" aria-current="page">
+        Playlists
+      </li>
+
+    </ol>
+
+  </nav>
 
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="playlist-page-header">
 
     <div>
-      <h2>📚 Playlist Management</h2>
 
-      <p class="text-muted mb-0">
+      <h2 class="playlist-page-title">
+        📚 Playlist Management
+      </h2>
+
+      <p class="playlist-page-subtitle">
         Course:
-        <strong><%= @course.Course_name %></strong>
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
       </p>
+
     </div>
 
 
-<%= link_to new_teacher_panel_course_playlist_path(@course),
-    class: "btn btn-outline-secondary back-btn" do %>
-  <i class="bi bi-plus-circle"></i>
-  Add Playlist
-<% end %>
+    <%= link_to new_teacher_panel_course_playlist_path(@course),
+        class: "btn btn-outline-secondary playlist-add-btn" do %>
+
+      <i class="bi bi-plus-circle"></i>
+      Add Playlist
+
+    <% end %>
 
   </div>
 
 
+  <!-- =====================================================
+       PLAYLIST CARD
+  ====================================================== -->
 
-  <div class="card shadow-sm">
+  <div class="playlist-card">
 
-    <div class="card-body">
+    <div class="playlist-card-body">
 
 
       <% if @playlists.any? %>
 
 
-        <table class="table table-hover align-middle">
+        <!-- Horizontal scroll only when required -->
 
+        <div class="playlist-table-wrapper">
 
-          <thead class="table-dark">
+          <table class="table table-hover align-middle playlist-table">
 
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Position</th>
-              <th>Videos</th>
-              <th>Resources</th>
-              <th width="320">Actions</th>
-            </tr>
-
-          </thead>
-
-
-
-          <tbody>
-
-
-            <% @playlists.each_with_index do |playlist,index| %>
-
+            <thead class="table-dark">
 
               <tr>
 
+                <th>#</th>
 
-                <td>
-                  <%= index + 1 %>
-                </td>
+                <th>Title</th>
 
+                <th>Position</th>
 
+                <th>Videos</th>
 
-                <td>
+                <th>Resources</th>
 
-                  <strong>
-                    <%= playlist.title %>
-                  </strong>
-
-
-                  <% if playlist.description.present? %>
-
-                    <br>
-
-                    <small class="text-muted">
-                      <%= truncate(
-                        playlist.description,
-                        length:60
-                      ) %>
-                    </small>
-
-                  <% end %>
-
-
-                </td>
-
-
-
-                <td>
-
-                  <span class="badge bg-primary">
-                    <%= playlist.position %>
-                  </span>
-
-                </td>
-
-
-
-                <td>
-
-                  <span class="badge bg-success">
-
-                    <%= playlist.videos.count %>
-
-                  </span>
-
-                </td>
-
-
-
-                <td>
-
-                  <span class="badge bg-info">
-
-                    <%= playlist.resources.count %>
-
-                  </span>
-
-                </td>
-
-
-
-
-                <td>
-
-
-                  <%= link_to "🎥 Videos",
-                      teacher_panel_course_videos_path(
-                        @course,
-                        playlist_id: playlist.id
-                      ),
-                      class:"btn btn-info btn-sm" %>
-
-
-
-
-                  <%= link_to "✏️ Edit",
-                      edit_teacher_panel_course_playlist_path(
-                        @course,
-                        playlist
-                      ),
-                      class:"btn btn-warning btn-sm" %>
-
-
-
-
-
-                  <%= link_to "🗑 Delete",
-                      teacher_panel_course_playlist_path(
-                        @course,
-                        playlist
-                      ),
-                      data:{
-                        turbo_method: :delete,
-                        turbo_confirm:"Delete this playlist?"
-                      },
-                      class:"btn btn-danger btn-sm" %>
-
-
-
-                </td>
-
+                <th width="320">
+                  Actions
+                </th>
 
               </tr>
 
-
-            <% end %>
-
-
-          </tbody>
+            </thead>
 
 
-        </table>
+            <tbody>
+
+
+              <% @playlists.each_with_index do |playlist,index| %>
+
+                <tr>
+
+                  <!-- Number -->
+
+                  <td>
+                    <%= index + 1 %>
+                  </td>
+
+
+                  <!-- Title -->
+
+                  <td>
+
+                    <span class="playlist-title">
+                      <%= playlist.title %>
+                    </span>
+
+
+                    <% if playlist.description.present? %>
+
+                      <span class="playlist-description">
+
+                        <%= truncate(
+                          playlist.description,
+                          length: 60
+                        ) %>
+
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <!-- Position -->
+
+                  <td>
+
+                    <span class="badge bg-primary playlist-position-badge">
+                      <%= playlist.position %>
+                    </span>
+
+                  </td>
+
+
+                  <!-- Videos -->
+
+                  <td>
+
+                    <span class="badge bg-success playlist-count-badge">
+                      <%= playlist.videos.count %>
+                    </span>
+
+                  </td>
+
+
+                  <!-- Resources -->
+
+                  <td>
+
+                    <span class="badge bg-info playlist-count-badge">
+                      <%= playlist.resources.count %>
+                    </span>
+
+                  </td>
+
+
+                  <!-- Actions -->
+
+                  <td>
+
+                    <div class="playlist-actions">
+
+                      <%= link_to teacher_panel_course_videos_path(
+                            @course,
+                            playlist_id: playlist.id
+                          ),
+                          class: "btn btn-info playlist-action-btn" do %>
+
+                        🎥 Videos
+
+                      <% end %>
+
+
+                      <%= link_to edit_teacher_panel_course_playlist_path(
+                            @course,
+                            playlist
+                          ),
+                          class: "btn btn-warning playlist-action-btn" do %>
+
+                        ✏️ Edit
+
+                      <% end %>
+
+
+                      <%= link_to teacher_panel_course_playlist_path(
+                            @course,
+                            playlist
+                          ),
+                          data: {
+                            turbo_method: :delete,
+                            turbo_confirm: "Delete this playlist?"
+                          },
+                          class: "btn btn-danger playlist-action-btn" do %>
+
+                        🗑 Delete
+
+                      <% end %>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+
+            </tbody>
+
+          </table>
+
+        </div>
 
 
       <% else %>
 
 
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
 
-        <div class="text-center py-5">
+        <div class="playlist-empty">
 
+          <div class="playlist-empty-icon">
+            📚
+          </div>
 
           <h5>
             No playlists found.
           </h5>
 
+          <p>
+            Create your first playlist for this course.
+          </p>
 
 
-          <%= link_to "➕ Create First Playlist",
+          <%= link_to new_teacher_panel_course_playlist_path(@course),
+              class: "btn btn-primary" do %>
 
-              new_teacher_panel_course_playlist_path(@course),
+            ➕ Create First Playlist
 
-              class:"btn btn-primary mt-2" %>
-
+          <% end %>
 
         </div>
-
 
 
       <% end %>
@@ -289,6 +703,5 @@
     </div>
 
   </div>
-
 
 </div>

@@ -43,6 +43,7 @@ end
     params.require(:contact).permit(
       :name,
       :email,
+      :mobile,
       :subject,
       :message
     )

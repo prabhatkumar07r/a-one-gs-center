@@ -1,25 +1,71 @@
-.card{
-    border-radius:15px;
+/* ==========================================================
+   ADMIN COMMON COMPONENTS
+========================================================== */
+
+
+/* ================= CARDS ================= */
+
+.admin-main .card {
+  border: none;
+
+  border-radius: 15px;
 }
 
-.table td,
-.table th{
-    vertical-align:middle;
+
+/* ================= CARD HEADER ================= */
+
+.admin-main .card-header {
+  border-radius: 15px 15px 0 0 !important;
+
+  font-weight: 600;
+
+  background: #fff;
 }
 
-.btn{
-    border-radius:8px;
+
+/* ================= TABLE ================= */
+
+.admin-main .table td,
+.admin-main .table th {
+  vertical-align: middle;
 }
 
-.form-control{
-    border-radius:8px;
+.admin-main .table tbody tr {
+  transition: background-color .3s ease;
 }
 
-.card-header{
-    border-radius:15px 15px 0 0 !important;
+.admin-main .table tbody tr:hover {
+  background: #f8f9fa;
 }
 
-.table tbody tr:hover{
-    background:#f8f9fa;
-    transition:.3s;
+
+/* ================= BUTTONS ================= */
+
+.admin-main .btn {
+  border-radius: 8px;
+}
+
+
+/* ================= FORM CONTROLS ================= */
+
+.admin-main .form-control {
+  border-radius: 8px;
+}
+
+
+/* ================= SELECT ================= */
+
+.admin-main .form-select {
+  border-radius: 8px;
+}
+
+
+/* ================= SEARCH / INPUT FOCUS ================= */
+
+.admin-main .form-control:focus,
+.admin-main .form-select:focus {
+  border-color: #86b7fe;
+
+  box-shadow:
+    0 0 0 0.2rem rgba(13, 110, 253, .12);
 }

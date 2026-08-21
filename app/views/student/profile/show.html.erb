@@ -1,0 +1,762 @@
+<style>
+  /* ===============================
+     STUDENT PROFILE
+  =============================== */
+
+  .student-profile-page {
+    min-height: 100vh;
+    background: #08090d;
+    color: #f5f5f7;
+    padding: 35px 40px 70px;
+  }
+
+  /* ===============================
+     PROFILE HEADER
+  =============================== */
+
+  .student-profile-header {
+    background: #0d0f15;
+    border: 1px solid #20232d;
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.25);
+  }
+
+  .student-profile-top {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  /* ===============================
+     PROFILE IMAGE
+  =============================== */
+
+  .student-profile-image-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+  }
+
+  .student-profile-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 7px solid #17101f;
+    outline: 4px solid #7137e8;
+  }
+
+  .student-profile-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #17101f;
+    border: 7px solid #17101f;
+    outline: 4px solid #7137e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 55px;
+    color: #9c6cff;
+  }
+
+  .student-online-dot {
+    position: absolute;
+    right: 1px;
+    bottom: 4px;
+
+    width: 25px;
+    height: 25px;
+
+    background: #15d866;
+    border: 4px solid #0d0f15;
+    border-radius: 50%;
+  }
+
+  /* ===============================
+     NAME
+  =============================== */
+
+  .student-profile-info h1 {
+    margin: 0 0 12px;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+
+  .student-email {
+    color: #9299ad;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .student-email i {
+    color: #8ea0b9;
+  }
+
+  /* ===============================
+     STATISTICS
+  =============================== */
+
+  .student-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 35px;
+  }
+
+  .student-stat {
+    text-align: center;
+    padding: 12px 10px 22px;
+    border-bottom: 2px solid #7137e8;
+    border-radius: 0 0 15px 15px;
+  }
+
+  .student-stat-number {
+    font-size: 38px;
+    font-weight: 800;
+    color: #f5f5f7;
+  }
+
+  .student-stat-label {
+    margin-top: 5px;
+    color: #9299ad;
+    font-size: 16px;
+  }
+
+  /* ===============================
+     TABS
+  =============================== */
+
+  .student-profile-tabs {
+    margin-top: 30px;
+
+    background: #0d0f15;
+    border: 1px solid #20232d;
+    border-radius: 20px;
+
+    padding: 15px;
+
+    display: flex;
+    gap: 15px;
+  }
+
+  .student-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 15px 25px;
+
+    border-radius: 14px;
+
+    color: #9ba3b7;
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    transition: .25s;
+  }
+
+  .student-tab:hover {
+    color: #fff;
+    background: #17121f;
+  }
+
+  .student-tab.active {
+    background: linear-gradient(
+      135deg,
+      #7137e8,
+      #9148f5
+    );
+
+    color: white;
+
+    box-shadow: 0 8px 25px rgba(113,55,232,.25);
+  }
+
+  /* ===============================
+     CONTENT
+  =============================== */
+
+  .student-profile-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+
+    margin-top: 30px;
+  }
+
+  .student-content-card {
+    background: #0d0f15;
+    border: 1px solid #20232d;
+    border-radius: 20px;
+    padding: 28px;
+  }
+
+  .student-content-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    margin-bottom: 25px;
+  }
+
+  .student-content-title i {
+    color: #7137e8;
+  }
+
+  /* ===============================
+     COURSE
+  =============================== */
+
+  .student-course-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    background: #11131a;
+    border: 1px solid #222632;
+    border-radius: 16px;
+
+    padding: 18px;
+    margin-bottom: 15px;
+  }
+
+  .student-course-image {
+    width: 180px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .student-course-placeholder {
+    width: 180px;
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #191224;
+    color: #7137e8;
+
+    font-size: 35px;
+  }
+
+  .student-course-name {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .student-course-description {
+    margin-top: 8px;
+    color: #9299ad;
+    line-height: 1.5;
+  }
+
+  /* ===============================
+     RIGHT SIDE
+  =============================== */
+
+  .student-learning-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #222632;
+  }
+
+  .student-learning-item:last-child {
+    border-bottom: none;
+  }
+
+  .student-learning-label {
+    color: #9ba3b7;
+    font-size: 16px;
+  }
+
+  .student-learning-value {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  /* ===============================
+     RESPONSIVE
+  =============================== */
+
+  @media (max-width: 992px) {
+
+    .student-profile-page {
+      padding: 25px 20px;
+    }
+
+    .student-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .student-profile-content {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+  @media (max-width: 600px) {
+
+    .student-profile-top {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .student-profile-info h1 {
+      font-size: 28px;
+    }
+
+    .student-email {
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .student-stats {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .student-profile-tabs {
+      overflow-x: auto;
+    }
+
+    .student-tab {
+      white-space: nowrap;
+    }
+
+    .student-course-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .student-course-image,
+    .student-course-placeholder {
+      width: 100%;
+      height: 160px;
+    }
+
+  }
+
+
+  /* ===============================
+   UPDATE PROFILE BUTTON
+================================ */
+
+.profile-overview-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profile-overview-actions .profile-update-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 20px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #7137e8,
+    #9148f5
+  );
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  transition: .25s;
+}
+
+.profile-overview-actions .profile-update-button:hover {
+  color: white;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(113,55,232,.25);
+}
+
+
+
+.profile-password-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 20px;
+
+  border: 1px solid #292d38;
+  border-radius: 10px;
+
+  background: #11131a;
+  color: #c9ceda;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: .25s;
+}
+
+.profile-password-link:hover {
+  color: white;
+  border-color: #7137e8;
+  background: #17121f;
+}
+.profile-overview-actions {
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.profile-overview-actions .profile-update-button,
+.profile-overview-actions .profile-password-link {
+  width: 100%;
+  justify-content: center;
+  box-sizing: border-box;
+}
+</style>
+
+
+<div class="student-profile-page">
+
+  <!-- ================= PROFILE HEADER ================= -->
+
+  <div class="student-profile-header">
+
+    <div class="student-profile-top">
+
+  <div class="student-profile-image-wrapper">
+
+    <% if @student.image.attached? %>
+
+      <%= image_tag @student.image,
+          class: "student-profile-image",
+          alt: @student.name %>
+
+    <% else %>
+
+      <div class="student-profile-placeholder">
+        <i class="bi bi-person"></i>
+      </div>
+
+    <% end %>
+
+    <span class="student-online-dot"></span>
+
+  </div>
+
+
+  <div class="student-profile-info">
+
+    <h1>
+      <%= @student.name %>
+    </h1>
+
+    <div class="student-email">
+
+      <i class="bi bi-envelope"></i>
+
+      <%= @student.email %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- UPDATE PROFILE BUTTON -->
+
+<div class="profile-overview-actions">
+
+  <%= link_to edit_student_profile_path,
+      class: "profile-update-button" do %>
+
+    <i class="bi bi-person-gear"></i>
+    Update Profile
+
+  <% end %>
+
+
+  <%= link_to student_profile_password_path,
+      class: "profile-password-link" do %>
+
+    <i class="bi bi-shield-lock"></i>
+    Change Password
+
+  <% end %>
+
+</div>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="student-stats">
+
+      <div class="student-stat">
+
+        <div class="student-stat-number">
+          <%= @total_courses %>
+        </div>
+
+        <div class="student-stat-label">
+          Total Courses
+        </div>
+
+      </div>
+
+
+      <div class="student-stat">
+
+        <div class="student-stat-number">
+          <%= @completed_courses %>
+        </div>
+
+        <div class="student-stat-label">
+          Completed
+        </div>
+
+      </div>
+
+
+      <div class="student-stat">
+
+        <div class="student-stat-number">
+          <%= @lectures_done %>
+        </div>
+
+        <div class="student-stat-label">
+          Lectures Done
+        </div>
+
+      </div>
+
+
+      <div class="student-stat">
+
+        <div class="student-stat-number">
+          <%= @total_modules %>
+        </div>
+
+        <div class="student-stat-label">
+          Total Modules
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= TABS ================= -->
+
+  <div class="student-profile-tabs">
+
+    <%= link_to student_profile_path,
+        class: "student-tab active" do %>
+
+      <i class="bi bi-graph-up-arrow"></i>
+      Overview
+
+    <% end %>
+
+
+    <%= link_to "#",
+        class: "student-tab" do %>
+
+      <i class="bi bi-award"></i>
+      Certificates
+
+    <% end %>
+
+
+    <%= link_to "#",
+        class: "student-tab" do %>
+
+      <i class="bi bi-clock-history"></i>
+      Activity
+
+    <% end %>
+
+  </div>
+
+
+  <!-- ================= CONTENT ================= -->
+
+  <div class="student-profile-content">
+
+    <!-- LEFT -->
+
+    <div class="student-content-card">
+
+      <div class="student-content-title">
+
+        <i class="bi bi-graph-up-arrow"></i>
+
+        Current Progress
+
+      </div>
+
+
+      <% if @courses.present? %>
+
+        <% @courses.each do |course| %>
+
+          <div class="student-course-card">
+
+            <% if course.image.attached? %>
+
+              <%= image_tag course.image,
+                  class: "student-course-image",
+                  alt: course.Course_name %>
+
+            <% else %>
+
+              <div class="student-course-placeholder">
+
+                <i class="bi bi-book"></i>
+
+              </div>
+
+            <% end %>
+
+
+            <div>
+
+              <div class="student-course-name">
+
+                <%= course.Course_name %>
+
+              </div>
+
+              <div class="student-course-description">
+
+                <%= truncate(course.description.to_s, length: 130) %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      <% else %>
+
+        <p class="text-muted">
+          You haven't enrolled in any courses yet.
+        </p>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <div class="student-content-card">
+
+      <div class="student-content-title">
+
+        <i class="bi bi-star"></i>
+
+        Learning Stats
+
+      </div>
+
+
+      <div class="student-learning-item">
+
+        <span class="student-learning-label">
+          Total Lectures
+        </span>
+
+        <span class="student-learning-value">
+          <%= @lectures_done %>
+        </span>
+
+      </div>
+
+
+      <div class="student-learning-item">
+
+        <span class="student-learning-label">
+          Completed Lectures
+        </span>
+
+        <span class="student-learning-value">
+          <%= @lectures_done %>
+        </span>
+
+      </div>
+
+
+      <div class="student-learning-item">
+
+        <span class="student-learning-label">
+          Courses
+        </span>
+
+        <span class="student-learning-value">
+          <%= @total_courses %>
+        </span>
+
+      </div>
+
+
+      <div class="student-learning-item">
+
+        <span class="student-learning-label">
+          Modules
+        </span>
+
+        <span class="student-learning-value">
+          <%= @total_modules %>
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("turbo:load", () => {
+  const dropdownButtons = document.querySelectorAll(
+    '.student-profile-button[data-bs-toggle="dropdown"]'
+  )
+
+  dropdownButtons.forEach((button) => {
+    bootstrap.Dropdown.getOrCreateInstance(button)
+  })
+})
+</script>

@@ -1,26 +1,66 @@
+/* =========================================================
+   GLOBAL BUTTON
+========================================================= */
+
 .btn {
-  display: inline-block;
-  padding: 8px 16px;      /* Reduced from 14px 32px */
-  font-size: 14px;        /* Smaller text */
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 8px 16px;
+
+  min-height: 38px;
+
+  font-size: 14px;
+
+  line-height: 1.2;
+
   background: var(--gradient-primary);
+
   color: var(--text-light);
-  border-radius: 8px;     /* Optional: less rounded */
+
+  border-radius: 8px;
+
   font-weight: 600;
+
   transition: var(--transition);
+
   border: none;
+
   cursor: pointer;
+
   box-shadow: var(--box-shadow);
+
   position: relative;
+
   overflow: hidden;
+
   z-index: 1;
+
+  white-space: nowrap;
+
+  text-decoration: none;
+
+  vertical-align: middle;
+
+  /* Gradient hover layer */
 
   &::before {
     content: "";
+
     position: absolute;
+
     inset: 0 auto 0 0;
+
     width: 0%;
+
     background: var(--gradient-secondary);
+
     transition: var(--transition);
+
     z-index: -1;
   }
 
@@ -30,7 +70,11 @@
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+
+    color: var(--text-light);
+
+    box-shadow:
+      0 8px 18px rgba(0, 0, 0, 0.2);
   }
 
   &:active {
@@ -39,6 +83,107 @@
 
   &:focus {
     outline: 2px solid #6A11CB;
+
     outline-offset: 2px;
   }
+
+  &:disabled,
+  &.disabled {
+    opacity: .65;
+
+    cursor: not-allowed;
+
+    pointer-events: none;
+  }
+}
+
+
+/* =========================================================
+   BUTTON WITH ICON
+========================================================= */
+
+.btn i {
+  font-size: 14px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .btn {
+    padding: 8px 15px;
+
+    min-height: 37px;
+
+    font-size: 13.5px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .btn {
+    padding: 8px 14px;
+
+    min-height: 36px;
+
+    font-size: 13px;
+
+    border-radius: 7px;
+  }
+
+  .btn i {
+    font-size: 13px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .btn {
+    padding: 7px 12px;
+
+    min-height: 35px;
+
+    font-size: 12.5px;
+
+    gap: 5px;
+  }
+
+  .btn i {
+    font-size: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .btn {
+    padding: 7px 10px;
+
+    min-height: 34px;
+
+    font-size: 12px;
+  }
+
 }

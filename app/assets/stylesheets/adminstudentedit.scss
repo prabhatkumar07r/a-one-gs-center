@@ -1,15 +1,38 @@
-.card{
-    border-radius:15px;
+/* ==========================================================
+   ADMIN COMPONENT STYLING
+========================================================== */
+
+/* ================= CARD ================= */
+
+.admin-main .card {
+  border: none;
+  border-radius: 15px;
 }
 
-.card-header{
-    border-radius:15px 15px 0 0 !important;
+
+/* ================= CARD HEADER ================= */
+
+.admin-main .card-header {
+  border-radius: 15px 15px 0 0 !important;
 }
 
-.form-control{
-    border-radius:10px;
+
+/* ================= FORM ================= */
+
+.admin-main .form-control {
+  border-radius: 10px;
+
+  &:focus {
+    border-color: #86b7fe;
+
+    box-shadow:
+      0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+  }
 }
 
-.btn{
-    border-radius:10px;
+
+/* ================= BUTTON ================= */
+
+.admin-main .btn {
+  border-radius: 10px;
 }

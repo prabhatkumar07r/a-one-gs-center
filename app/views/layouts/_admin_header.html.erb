@@ -1,11 +1,18 @@
 <style>
-  /* =========================================================
+/* =========================================================
    ADMIN HEADER
 ========================================================= */
 
 .admin-navbar {
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  left: 260px;
+
+  width: auto;
+
   height: 80px;
-  width: 100%;
 
   display: flex;
   align-items: center;
@@ -14,39 +21,58 @@
   padding: 0 30px;
 
   background: #ffffff;
+
   border-bottom: 1px solid #e9ecef;
 
-  position: fixed;
-  top: 0;
-  right: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 
   z-index: 1000;
 }
 
 
-/* ================= LEFT ================= */
+/* =========================================================
+   LEFT SIDE
+========================================================= */
 
 .admin-navbar-left {
   display: flex;
   align-items: center;
+
+  min-width: 0;
 }
 
 .admin-navbar-left h4 {
+  margin: 0;
+
   color: #172033;
+
   font-size: 20px;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
-/* ================= RIGHT ================= */
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
 
 .admin-navbar-right {
   display: flex;
   align-items: center;
-  gap: 25px;
+
+  gap: 18px;
+
+  flex-shrink: 0;
 }
 
 
-/* ================= SEARCH ================= */
+/* =========================================================
+   SEARCH
+========================================================= */
 
 .admin-search {
   width: 250px;
@@ -62,13 +88,27 @@
   border-radius: 10px;
 
   padding: 0 14px;
+
+  transition: all 0.2s ease;
+}
+
+.admin-search:focus-within {
+  background: #ffffff;
+
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.10);
 }
 
 .admin-search i {
+  margin-right: 10px;
+
   color: #8b95a5;
+
   font-size: 14px;
 
-  margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .admin-search input {
@@ -79,8 +119,9 @@
 
   background: transparent;
 
-  font-size: 14px;
   color: #343a40;
+
+  font-size: 14px;
 }
 
 .admin-search input::placeholder {
@@ -88,13 +129,15 @@
 }
 
 
-/* ================= NOTIFICATION ================= */
+/* =========================================================
+   NOTIFICATION
+========================================================= */
 
 .admin-notification {
   position: relative;
 
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
 
   display: flex;
   align-items: center;
@@ -104,7 +147,9 @@
 
   cursor: pointer;
 
-  transition: .2s ease;
+  transition: all 0.2s ease;
+
+  flex-shrink: 0;
 }
 
 .admin-notification:hover {
@@ -112,18 +157,21 @@
 }
 
 .admin-notification i {
-  font-size: 18px;
   color: #566174;
+
+  font-size: 18px;
 }
 
 
-/* Notification badge */
+/* =========================================================
+   NOTIFICATION BADGE
+========================================================= */
 
 .notification-badge {
   position: absolute;
 
-  top: 2px;
-  right: 2px;
+  top: 1px;
+  right: 1px;
 
   min-width: 17px;
   height: 17px;
@@ -138,16 +186,29 @@
 
   color: #ffffff;
 
-  font-size: 10px;
-  font-weight: 700;
+  border: 2px solid #ffffff;
 
   border-radius: 50%;
 
-  border: 2px solid #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+
+  line-height: 1;
 }
 
 
-/* ================= PROFILE ================= */
+/* =========================================================
+   PROFILE DROPDOWN CONTAINER
+========================================================= */
+
+.admin-profile-wrapper {
+  position: relative;
+}
+
+
+/* =========================================================
+   PROFILE BUTTON
+========================================================= */
 
 .admin-profile {
   display: flex;
@@ -155,37 +216,63 @@
 
   gap: 10px;
 
-  padding: 5px 8px;
+  min-height: 52px;
 
-  border: none;
+  padding: 5px 9px 5px 6px;
+
+  border: 1px solid transparent;
+
+  border-radius: 12px;
+
   background: transparent;
 
   color: #172033;
 
   cursor: pointer;
+
+  transition: all 0.2s ease;
 }
 
-.admin-profile::after {
-  margin-left: 5px;
-}
-
-.admin-profile:hover,
-.admin-profile:focus {
+.admin-profile:hover {
   background: #f6f7f9;
 
-  border-radius: 10px;
+  border-color: #e9ecef;
+}
+
+.admin-profile:focus {
+  outline: none;
+
+  background: #f6f7f9;
+
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.10);
 }
 
 
-/* Avatar */
+/* Remove Bootstrap arrow if desired */
+
+.admin-profile::after {
+  margin-left: 3px;
+}
+
+
+/* =========================================================
+   ADMIN AVATAR
+========================================================= */
 
 .admin-avatar {
   width: 42px;
   height: 42px;
 
+  min-width: 42px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  overflow: hidden;
 
   border-radius: 50%;
 
@@ -196,10 +283,27 @@
   font-size: 17px;
 }
 
+.admin-avatar-image {
+  width: 100%;
+  height: 100%;
 
-/* User information */
+  display: block;
+
+  object-fit: cover;
+}
+
+.admin-avatar i {
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   USER INFORMATION
+========================================================= */
 
 .admin-user-info {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
 
@@ -209,27 +313,39 @@
 }
 
 .admin-user-name {
-  font-size: 14px;
-  font-weight: 600;
+  max-width: 130px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 
   color: #172033;
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .admin-user-info small {
   margin-top: 3px;
 
+  color: #8b95a5;
+
   font-size: 11px;
 
-  color: #8b95a5;
+  white-space: nowrap;
 }
 
 
-/* ================= DROPDOWN ================= */
+/* =========================================================
+   DROPDOWN
+========================================================= */
 
 .admin-dropdown {
-  min-width: 210px;
+  min-width: 220px;
 
-  margin-top: 10px;
+  margin-top: 8px !important;
 
   padding: 8px;
 
@@ -237,13 +353,18 @@
 
   border-radius: 12px;
 
-  box-shadow: 0 10px 35px rgba(0, 0, 0, .10);
-
   background: #ffffff;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
 }
 
 
-/* Dropdown items */
+/* =========================================================
+   DROPDOWN ITEMS
+========================================================= */
 
 .admin-dropdown .dropdown-item {
   display: flex;
@@ -251,23 +372,27 @@
 
   gap: 12px;
 
+  width: 100%;
+
   padding: 11px 12px;
 
   border-radius: 8px;
 
-  font-size: 14px;
-
   color: #343a40;
 
-  transition: .2s ease;
+  font-size: 14px;
+
+  transition: all 0.2s ease;
 }
 
 .admin-dropdown .dropdown-item i {
   width: 18px;
 
-  text-align: center;
+  flex-shrink: 0;
 
   color: #6c757d;
+
+  text-align: center;
 }
 
 .admin-dropdown .dropdown-item:hover {
@@ -281,7 +406,9 @@
 }
 
 
-/* ================= LOGOUT ================= */
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 .admin-dropdown .logout-item {
   color: #dc3545;
@@ -302,12 +429,65 @@
 }
 
 
-/* ================= MOBILE ================= */
+/* =========================================================
+   LOGOUT FORM
+========================================================= */
 
-@media (max-width: 768px) {
+.admin-dropdown form {
+  margin: 0;
+}
+
+.admin-dropdown form .dropdown-item {
+  border: none;
+
+  background: transparent;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
 
   .admin-navbar {
+    padding: 0 20px;
+  }
+
+  .admin-navbar-right {
+    gap: 12px;
+  }
+
+  .admin-search {
+    width: 210px;
+  }
+
+  .admin-user-name {
+    max-width: 100px;
+  }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .admin-navbar {
+    height: 72px;
+
     padding: 0 15px;
+  }
+
+  .admin-navbar-left h4 {
+    font-size: 18px;
+  }
+
+  .admin-navbar-right {
+    gap: 8px;
   }
 
   .admin-search {
@@ -319,83 +499,283 @@
   }
 
   .admin-profile {
-    padding: 0;
+    min-height: auto;
+
+    padding: 4px;
   }
 
-  .admin-navbar-right {
-    gap: 10px;
+  .admin-profile::after {
+    display: none;
+  }
+
+  .admin-avatar {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
   }
 
 }
 
 
-@media (max-width: 576px) {
+/* =========================================================
+   MOBILE
+========================================================= */
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-navbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    width: 100%;
+    height: 68px;
+
+    padding: 0 12px;
+
+    z-index: 1000;
+  }
+
+
+  /* =======================================================
+     LEFT
+  ======================================================== */
+
+  .admin-navbar-left {
+    flex: 1;
+
+    min-width: 0;
+
+    /*
+      Space for hamburger button
+    */
+    padding-left: 55px;
+  }
 
   .admin-navbar-left h4 {
+    max-width: 150px;
+
     font-size: 17px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
+
+
+  /* =======================================================
+     RIGHT
+  ======================================================== */
+
+  .admin-navbar-right {
+    gap: 5px;
+
+    flex-shrink: 0;
+  }
+
+
+  /* =======================================================
+     SEARCH
+  ======================================================== */
 
   .admin-search {
     display: none;
   }
 
+
+  /* =======================================================
+     NOTIFICATION
+  ======================================================== */
+
+  .admin-notification {
+    width: 38px;
+    height: 38px;
+  }
+
+  .admin-notification i {
+    font-size: 17px;
+  }
+
+
+  /* =======================================================
+     BADGE
+  ======================================================== */
+
+  .notification-badge {
+    top: 0;
+    right: 0;
+
+    min-width: 16px;
+    height: 16px;
+
+    font-size: 8px;
+  }
+
+
+  /* =======================================================
+     PROFILE
+  ======================================================== */
+
+  .admin-profile {
+    width: 40px;
+    height: 40px;
+
+    min-height: 40px;
+
+    padding: 2px;
+
+    justify-content: center;
+  }
+
+  .admin-avatar {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+  }
+
+
+  /* =======================================================
+     DROPDOWN
+  ======================================================== */
+
+  .admin-dropdown {
+    position: absolute;
+
+    top: 100%;
+    right: 0;
+
+    min-width: 210px;
+
+    max-width: calc(100vw - 24px);
+
+    margin-top: 8px !important;
+  }
+
 }
 
-.admin-avatar {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e9ecef;
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .admin-navbar {
+    padding: 0 9px;
+  }
+
+  .admin-navbar-left h4 {
+    max-width: 125px;
+
+    font-size: 15px;
+  }
+
+  .admin-navbar-right {
+    gap: 2px;
+  }
+
+  .admin-notification {
+    width: 36px;
+    height: 36px;
+  }
+
+  .admin-profile {
+    width: 38px;
+    height: 38px;
+  }
+
+  .admin-avatar {
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+  }
+
+  .admin-dropdown {
+    right: -3px;
+
+    width: 205px;
+  }
 }
 
-.admin-avatar-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 
-.admin-avatar i {
-  font-size: 18px;
-}
+
+
 </style>
 
 
+<!-- =========================================================
+     ADMIN NAVBAR
+========================================================= -->
+
 <nav class="admin-navbar">
 
-  <!-- Left -->
-  <div class="admin-navbar-left">
-  <h4 class="mb-0 fw-bold">
-    <% if controller_path.start_with?("admin/settings") %>
-      Settings
-    <% elsif controller_path.start_with?("admin/profile") %>
-      Profile
-    <% else %>
-      Dashboard
-    <% end %>
-  </h4>
-</div>
 
-  <!-- Right -->
+  <!-- =======================================================
+       LEFT
+  ======================================================== -->
+
+  <div class="admin-navbar-left">
+
+    <h4 class="mb-0 fw-bold">
+
+      <% if controller_path.start_with?("admin/settings") %>
+
+        Settings
+
+      <% elsif controller_path.start_with?("admin/profile") %>
+
+        Profile
+
+      <% else %>
+
+        Dashboard
+
+      <% end %>
+
+    </h4>
+
+  </div>
+
+
+  <!-- =======================================================
+       RIGHT
+  ======================================================== -->
+
   <div class="admin-navbar-right">
 
-    <!-- Search -->
+
+    <!-- =====================================================
+         SEARCH
+    ====================================================== -->
+
     <form class="admin-search">
+
       <i class="fas fa-search"></i>
 
-      <input type="text"
-             placeholder="Search..."
-             aria-label="Search">
+      <input
+        type="text"
+        placeholder="Search..."
+        aria-label="Search">
+
     </form>
 
 
-    <!-- Notification -->
-    <div class="admin-notification">
+    <!-- =====================================================
+         NOTIFICATION
+    ====================================================== -->
+
+    <div
+      class="admin-notification"
+      role="button"
+      aria-label="Notifications">
 
       <i class="fas fa-bell"></i>
 
@@ -406,86 +786,139 @@
     </div>
 
 
-    <!-- Admin Profile -->
-    <div class="dropdown">
+    <!-- =====================================================
+         PROFILE
+    ====================================================== -->
 
-      <button class="admin-profile dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
+    <% if user_signed_in? %>
 
-       <div class="admin-avatar">
-
-  <% if current_user.image.attached? %>
-
-    <%= image_tag current_user.image,
-        class: "admin-avatar-image",
-        alt: current_user.name %>
-
-  <% else %>
-
-    <i class="fas fa-user"></i>
-
-  <% end %>
-
-</div>
-
-        <div class="admin-user-info">
-          <span class="admin-user-name">
-            <%= current_user.name if user_signed_in? %>
-          </span>
-
-          <small>
-            Administrator
-          </small>
-        </div>
-
-      </button>
+      <div class="dropdown admin-profile-wrapper">
 
 
-      <!-- Dropdown -->
-      <li>
-    <ul class="dropdown-menu dropdown-menu-end admin-dropdown">
-
-  <%= link_to "/admin/profile",
-    class: "dropdown-item" do %>
-
-  <i class="fas fa-user-edit"></i>
-  <span>Profile</span>
-<% end %>
-</li>
+        <button
+          class="admin-profile dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false">
 
 
- <li>
-  <%= link_to admin_settings_path,
-      class: "dropdown-item" do %>
+          <!-- Avatar -->
 
-    <i class="fas fa-cog"></i>
-    <span>Settings</span>
+          <div class="admin-avatar">
 
-  <% end %>
-</li>
+            <% if current_user.image.attached? %>
+
+              <%= image_tag current_user.image,
+                  class: "admin-avatar-image",
+                  alt: current_user.name %>
+
+            <% else %>
+
+              <i class="fas fa-user"></i>
+
+            <% end %>
+
+          </div>
 
 
-  <li>
-    <hr class="dropdown-divider">
-  </li>
+          <!-- User Information -->
+
+          <div class="admin-user-info">
+
+            <span class="admin-user-name">
+
+              <%= current_user.name %>
+
+            </span>
+
+            <small>
+              Administrator
+            </small>
+
+          </div>
 
 
-  <li>
-    <%= button_to destroy_user_session_path,
-        method: :delete,
-        class: "dropdown-item logout-item" do %>
+        </button>
 
-      <i class="fas fa-sign-out-alt"></i>
-      <span>Logout</span>
+
+        <!-- =================================================
+             DROPDOWN MENU
+        ================================================== -->
+
+        <ul class="dropdown-menu dropdown-menu-end admin-dropdown">
+
+
+          <!-- Profile -->
+
+          <li>
+
+            <%= link_to admin_profile_path,
+                class: "dropdown-item" do %>
+
+              <i class="fas fa-user-edit"></i>
+
+              <span>
+                Profile
+              </span>
+
+            <% end %>
+
+          </li>
+
+
+          <!-- Settings -->
+
+          <li>
+
+            <%= link_to admin_settings_path,
+                class: "dropdown-item" do %>
+
+              <i class="fas fa-cog"></i>
+
+              <span>
+                Settings
+              </span>
+
+            <% end %>
+
+          </li>
+
+
+          <!-- Divider -->
+
+          <li>
+
+            <hr class="dropdown-divider">
+
+          </li>
+
+
+          <!-- Logout -->
+
+          <li>
+
+            <%= button_to destroy_user_session_path,
+                method: :delete,
+                class: "dropdown-item logout-item" do %>
+
+              <i class="fas fa-sign-out-alt"></i>
+
+              <span>
+                Logout
+              </span>
+
+            <% end %>
+
+          </li>
+
+
+        </ul>
+
+      </div>
 
     <% end %>
-  </li>
 
-</ul>
-
-    </div>
 
   </div>
 

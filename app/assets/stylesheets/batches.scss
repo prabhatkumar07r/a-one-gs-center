@@ -1,49 +1,106 @@
+/* ==========================================================
+   COMMON BOOTSTRAP / ADMIN UI
+========================================================== */
+
+/* Cards */
+
 .card {
-    border-radius: 15px;
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
+.card-header {
+  border-radius: 15px 15px 0 0 !important;
+  font-weight: 600;
+}
+
+
+/* Tables */
+
 .table th {
-    font-weight: 600;
+  font-weight: 600;
+  vertical-align: middle;
 }
 
 .table td {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
-.badge {
-    font-size: 13px;
-    padding: 8px 12px;
-}
-
-.btn {
-    border-radius: 8px;
-}
-
-.card-header {
-    border-radius: 15px 15px 0 0 !important;
+.table tbody tr {
+  transition: background 0.2s ease;
 }
 
 .table tbody tr:hover {
-    background: #f8f9fa;
-}
-.form-control,
-.form-select {
-    border-radius: 10px;
-    height: 48px;
+  background: #f8f9fa;
 }
 
-.card {
-    border-radius: 15px;
+
+/* Badges */
+
+.badge {
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
-.card-header {
-    border-radius: 15px 15px 0 0 !important;
-}
+
+/* Buttons */
 
 .btn {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
+
+/* Form controls */
+
+.form-control,
+.form-select {
+  height: 48px;
+  border-radius: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.12);
+}
+
+
+/* Form labels */
+
 .form-label {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+
+  .card {
+    border-radius: 12px;
+  }
+
+  .card-header {
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .form-control,
+  .form-select {
+    height: 45px;
+  }
 }

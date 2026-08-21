@@ -1,145 +1,571 @@
 <style>
-    .back-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:6px 10px;   /* Small horizontal padding */
-    width:auto;         /* Only as wide as its content */
-    white-space:nowrap;
-    font-size:14px;
-    font-weight:500;
-    border-radius:10px;
+/* =========================================================
+   TEACHER VIDEOS PAGE
+   All styles are scoped to avoid affecting other pages
+========================================================= */
+
+.teacher-videos-page {
+  width: 100%;
+  padding: 25px;
+  box-sizing: border-box;
 }
 
-.back-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 4px 12px rgba(0,0,0,.12);
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.teacher-videos-page .custom-breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0 0 18px 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
-.back-btn i{
-    font-size:15px;
-}
-.table th {
-    width: 220px;
-    background: #000000;
-}
+.teacher-videos-page .custom-breadcrumb .breadcrumb {
+  margin: 0;
+  padding: 0;
+  background: transparent;
 
-
-
-/* ===========================
-   Teacher Breadcrumb
-=========================== */
-
-.custom-breadcrumb{
-    background: transparent;
-    padding: 0;
-    margin: 0 0 12px 0;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.custom-breadcrumb .breadcrumb{
-    margin:0;
-    background:transparent;
-    display:flex;
-    align-items:center;
-    flex-wrap:wrap;
+.teacher-videos-page .custom-breadcrumb .breadcrumb-item {
+  display: flex;
+  align-items: center;
+
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.custom-breadcrumb .breadcrumb-item{
-    display:flex;
-    align-items:center;
-    font-size:14px;
-    font-weight:500;
+.teacher-videos-page
+.custom-breadcrumb
+.breadcrumb-item
++ .breadcrumb-item::before {
+
+  content: ">";
+
+  color: #6c757d;
+
+  padding: 0 10px;
+
+  font-weight: 600;
 }
 
-.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
-    content: ">";
-    color:#6c757d;
-    padding:0 10px;
-    font-weight:600;
+.teacher-videos-page .custom-breadcrumb .breadcrumb-item a {
+
+  color: #0d6efd;
+
+  text-decoration: none;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  transition: color 0.2s ease;
 }
 
-.custom-breadcrumb .breadcrumb-item a{
-    color:#0d6efd;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    gap:6px;
-    transition:.3s;
+.teacher-videos-page .custom-breadcrumb .breadcrumb-item a:hover {
+  color: #084298;
 }
 
-.custom-breadcrumb .breadcrumb-item a:hover{
-    color:#084298;
+.teacher-videos-page .custom-breadcrumb .breadcrumb-item.active {
+
+  color: #198754;
+
+  font-weight: 600;
 }
 
-.custom-breadcrumb .breadcrumb-item.active{
-    color:#198754;
-    font-weight:600;
+.teacher-videos-page .custom-breadcrumb i {
+  font-size: 14px;
 }
 
-.custom-breadcrumb i{
-    font-size:14px;
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.teacher-videos-page .videos-page-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 25px;
 }
 
-/* Responsive */
+.teacher-videos-page .videos-page-title {
+  min-width: 0;
+}
 
-@media (max-width:768px){
+.teacher-videos-page .videos-page-title h2 {
 
-    .custom-breadcrumb{
-        padding:10px 15px;
-    }
+  margin: 0;
 
-    .custom-breadcrumb .breadcrumb-item{
-        font-size:13px;
-    }
+  font-size: 2rem;
+
+  font-weight: 700;
+
+  color: #1f2937;
+}
+
+.teacher-videos-page .videos-page-title p {
+
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   ADD VIDEO BUTTON
+========================================================= */
+
+.teacher-videos-page .back-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 6px 10px;
+
+  width: auto;
+
+  min-width: auto;
+
+  white-space: nowrap;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  border-radius: 10px;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.teacher-videos-page .back-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.teacher-videos-page .back-btn i {
+  font-size: 15px;
+}
+
+/* =========================================================
+   VIDEO CARD
+========================================================= */
+
+.teacher-videos-page .videos-card {
+
+  border: none;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.teacher-videos-page .videos-table {
+
+  width: 100%;
+
+  margin-bottom: 0;
+}
+
+/* Table Header */
+
+.teacher-videos-page .videos-table thead th {
+
+  background: #000 !important;
+
+  color: #fff !important;
+
+  border: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  padding: 14px;
+
+  vertical-align: middle;
+
+  white-space: nowrap;
+}
+
+/* Table Body */
+
+.teacher-videos-page .videos-table tbody td {
+
+  padding: 14px;
+
+  vertical-align: middle;
+
+  font-size: 14px;
+
+  color: #374151;
+
+  border-color: #eef0f2;
+}
+
+.teacher-videos-page .videos-table tbody tr {
+
+  transition: background 0.2s ease;
+}
+
+.teacher-videos-page .videos-table tbody tr:hover {
+
+  background: #f8f9fa;
+}
+
+/* =========================================================
+   VIDEO TITLE
+========================================================= */
+
+.teacher-videos-page .video-title {
+
+  font-weight: 600;
+
+  color: #1f2937;
+
+  max-width: 250px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+.teacher-videos-page .video-status {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border-radius: 50px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.teacher-videos-page .video-actions {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  white-space: nowrap;
+}
+
+.teacher-videos-page .video-actions .btn {
+
+  width: 34px;
+
+  height: 34px;
+
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 7px;
+}
+
+.teacher-videos-page .video-actions i {
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.teacher-videos-page .videos-empty {
+
+  text-align: center;
+
+  padding: 45px 20px !important;
+
+  color: #6b7280;
+}
+
+.teacher-videos-page .videos-empty i {
+
+  display: block;
+
+  font-size: 40px;
+
+  color: #94a3b8;
+
+  margin-bottom: 12px;
+}
+
+.teacher-videos-page .videos-empty h5 {
+
+  margin: 0 0 5px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .teacher-videos-page {
+
+    padding: 20px;
+  }
+
+  .teacher-videos-page .videos-page-title h2 {
+
+    font-size: 1.7rem;
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .teacher-videos-page {
+
+    padding: 15px;
+  }
+
+  /* Breadcrumb */
+
+  .teacher-videos-page .custom-breadcrumb {
+
+    margin-bottom: 15px;
+  }
+
+  .teacher-videos-page
+  .custom-breadcrumb
+  .breadcrumb-item {
+
+    font-size: 13px;
+  }
+
+  .teacher-videos-page
+  .custom-breadcrumb
+  .breadcrumb-item
+  + .breadcrumb-item::before {
+
+    padding: 0 6px;
+  }
+
+  /* Header */
+
+  .teacher-videos-page .videos-page-header {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 12px;
+  }
+
+  .teacher-videos-page .videos-page-title h2 {
+
+    font-size: 1.45rem;
+  }
+
+  .teacher-videos-page .videos-page-title p {
+
+    font-size: 13px;
+  }
+
+  .teacher-videos-page .back-btn {
+
+    font-size: 13px;
+
+    padding: 6px 10px;
+  }
+
+  /* Table */
+
+  .teacher-videos-page .table-responsive {
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .teacher-videos-page .videos-table {
+
+    min-width: 800px;
+  }
+
+  .teacher-videos-page .videos-table thead th,
+  .teacher-videos-page .videos-table tbody td {
+
+    padding: 10px;
+
+    font-size: 13px;
+  }
+
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .teacher-videos-page {
+
+    padding: 12px;
+  }
+
+  .teacher-videos-page .videos-page-title h2 {
+
+    font-size: 1.25rem;
+  }
+
+  .teacher-videos-page .videos-page-title p {
+
+    font-size: 12px;
+  }
+
+  .teacher-videos-page .custom-breadcrumb .breadcrumb-item {
+
+    font-size: 12px;
+  }
+
+  .teacher-videos-page .custom-breadcrumb i {
+
+    font-size: 12px;
+  }
+
+  .teacher-videos-page .videos-card {
+
+    border-radius: 12px;
+  }
 
 }
 </style>
 
 
-<div class="container-fluid">
-  <nav aria-label="breadcrumb" class="custom-breadcrumb mb-4">
-  <ol class="breadcrumb">
+<div class="teacher-videos-page">
 
-    <li class="breadcrumb-item">
-      <%= link_to teacher_dashboard_path do %>
-        <i class="bi bi-house-door-fill"></i> Dashboard
-      <% end %>
-    </li>
+  <!-- =====================================================
+       BREADCRUMB
+  ====================================================== -->
 
-    <li class="breadcrumb-item">
-      <%= link_to teacher_panel_courses_path do %>
-        <i class="bi bi-journal-bookmark-fill"></i> My Courses
-      <% end %>
-    </li>
+  <nav aria-label="breadcrumb" class="custom-breadcrumb">
 
-    <li class="breadcrumb-item">
-      <%= link_to teacher_panel_course_path(@course) do %>
-        <i class="bi bi-book-fill"></i> <%= @course.Course_name %>
-      <% end %>
-    </li>
+    <ol class="breadcrumb">
 
-    <li class="breadcrumb-item active" aria-current="page">
-      <i class="bi bi-camera-video-fill"></i> Videos
-    </li>
+      <li class="breadcrumb-item">
 
-  </ol>
-</nav>
+        <%= link_to teacher_dashboard_path do %>
+
+          <i class="bi bi-house-door-fill"></i>
+          Dashboard
+
+        <% end %>
+
+      </li>
 
 
+      <li class="breadcrumb-item">
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
+        <%= link_to teacher_panel_courses_path do %>
+
+          <i class="bi bi-journal-bookmark-fill"></i>
+          My Courses
+
+        <% end %>
+
+      </li>
 
 
-    <div>
+      <li class="breadcrumb-item">
 
-      <h2 class="fw-bold">
+        <%= link_to teacher_panel_course_path(@course) do %>
+
+          <i class="bi bi-book-fill"></i>
+          <%= @course.Course_name %>
+
+        <% end %>
+
+      </li>
+
+
+      <li class="breadcrumb-item active" aria-current="page">
+
+        <i class="bi bi-camera-video-fill"></i>
+        Videos
+
+      </li>
+
+    </ol>
+
+  </nav>
+
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="videos-page-header">
+
+    <div class="videos-page-title">
+
+      <h2>
         🎥 My Videos
       </h2>
 
-      <p class="text-muted mb-0">
+      <p>
         Manage videos of your assigned courses.
       </p>
 
@@ -147,35 +573,40 @@
 
 
     <%= link_to new_teacher_panel_course_video_path(@course),
-    class: "btn btn-outline-secondary back-btn" do %>
-  <i class="bi bi-plus-circle"></i>
-  Add Video
-<% end %>
+        class: "btn btn-outline-secondary back-btn" do %>
 
+      <i class="bi bi-plus-circle"></i>
+      Add Video
+
+    <% end %>
 
   </div>
 
 
+  <!-- =====================================================
+       VIDEO CARD
+  ====================================================== -->
 
-
-  <div class="card shadow border-0">
-
+  <div class="videos-card">
 
     <div class="table-responsive">
 
+      <table class="table table-hover videos-table">
 
-      <table class="table table-hover mb-0">
-
-
-        <thead class="table-dark">
+        <thead>
 
           <tr>
 
             <th>#</th>
+
             <th>Title</th>
+
             <th>Course</th>
+
             <th>Duration</th>
+
             <th>Status</th>
+
             <th>Action</th>
 
           </tr>
@@ -183,120 +614,169 @@
         </thead>
 
 
-
         <tbody>
 
+          <% if @videos.any? %>
 
-        <% if @videos.any? %>
+            <% @videos.each_with_index do |video, index| %>
+
+              <tr>
+
+                <!-- Number -->
+
+                <td>
+                  <%= index + 1 %>
+                </td>
 
 
-          <% @videos.each_with_index do |video,index| %>
+                <!-- Title -->
 
+                <td>
+
+                  <div class="video-title"
+                       title="<%= video.title %>">
+
+                    <%= video.title %>
+
+                  </div>
+
+                </td>
+
+
+                <!-- Course -->
+
+                <td>
+
+                  <%= video.course&.Course_name || "N/A" %>
+
+                </td>
+
+
+                <!-- Duration -->
+
+                <td>
+
+                  <%= video.duration.presence || "-" %>
+
+                </td>
+
+
+                <!-- Status -->
+
+                <td>
+
+                  <% if video.status == 1 %>
+
+                    <span class="badge bg-success video-status">
+
+                      Active
+
+                    </span>
+
+                  <% else %>
+
+                    <span class="badge bg-secondary video-status">
+
+                      Inactive
+
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- Actions -->
+
+                <td>
+
+                  <div class="video-actions">
+
+                    <!-- View -->
+
+                    <%= link_to teacher_panel_course_video_path(
+                          @course,
+                          video
+                        ),
+                        class: "btn btn-info btn-sm",
+                        title: "View Video" do %>
+
+                      <i class="bi bi-eye"></i>
+
+                    <% end %>
+
+
+                    <!-- Edit -->
+
+                    <%= link_to edit_teacher_panel_course_video_path(
+                          @course,
+                          video
+                        ),
+                        class: "btn btn-warning btn-sm",
+                        title: "Edit Video" do %>
+
+                      <i class="bi bi-pencil"></i>
+
+                    <% end %>
+
+
+                    <!-- Delete -->
+
+                    <%= link_to teacher_panel_course_video_path(
+                          @course,
+                          video
+                        ),
+                        data: {
+                          turbo_method: :delete,
+                          turbo_confirm: "Delete this video?"
+                        },
+                        class: "btn btn-danger btn-sm",
+                        title: "Delete Video" do %>
+
+                      <i class="bi bi-trash"></i>
+
+                    <% end %>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+
+          <% else %>
 
             <tr>
 
+              <td
+                colspan="6"
+                class="videos-empty"
+              >
 
-              <td>
-                <%= index + 1 %>
-              </td>
+                <i class="bi bi-camera-video-off"></i>
 
+                <h5>
+                  No Videos Available
+                </h5>
 
-
-              <td class="fw-bold">
-                <%= video.title %>
-              </td>
-
-
-
-              <td>
-                <%= video.course&.Course_name || "N/A" %>
-              </td>
-
-
-
-              <td>
-                <%= video.duration || "-" %>
-              </td>
-
-
-
-              <td>
-
-                <% if video.status == 1 %>
-
-                  <span class="badge bg-success">
-                    Active
-                  </span>
-
-                <% else %>
-
-                  <span class="badge bg-secondary">
-                    Inactive
-                  </span>
-
-                <% end %>
+                <p class="mb-0">
+                  No videos have been added to this course yet.
+                </p>
 
               </td>
-
-               <td>
-
-          <%= link_to teacher_panel_course_video_path(@course, video),
-             class: "btn btn-info btn-sm" do %>
-              <i class="bi bi-eye"></i>
-           <% end %>
-
-         <%= link_to edit_teacher_panel_course_video_path(@course, video),
-            class: "btn btn-warning btn-sm" do %>
-               <i class="bi bi-pencil"></i>
-              <% end %>
-
-             <%= link_to teacher_panel_course_video_path(@course, video),
-            data: {
-             turbo_method: :delete,
-              turbo_confirm: "Delete this video?"
-             },
-              class: "btn btn-danger btn-sm" do %>
-             <i class="bi bi-trash"></i>
-             <% end %>
-
-              </td>
-
 
             </tr>
 
-
           <% end %>
-
-
-        <% else %>
-
-
-          <tr>
-
-            <td colspan="6"
-                class="text-center text-muted py-4">
-
-              No videos available.
-
-            </td>
-
-          </tr>
-
-
-        <% end %>
-
-
 
         </tbody>
 
-
       </table>
-
 
     </div>
 
-
   </div>
-
 
 </div>

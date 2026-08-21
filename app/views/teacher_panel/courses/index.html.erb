@@ -1,222 +1,589 @@
 <style>
-.custom-breadcrumb{
-    background:transparent;
-    padding:0;
-    border-radius:0;
-    box-shadow:none;
-    margin-bottom:12px;
-}
-.main-content{
-    margin-top:15px;
-    padding-top:15px;
+/* =========================================================
+   TEACHER MY COURSES PAGE
+   All styles are scoped to .teacher-courses-page
+   so existing application CSS is not affected.
+========================================================= */
+
+.teacher-courses-page {
+    width: 100%;
+    padding: 15px 25px 30px;
 }
 
-.custom-breadcrumb .breadcrumb{
-    margin:0;
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.teacher-courses-page .custom-breadcrumb {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0 0 18px;
 }
 
-.custom-breadcrumb .breadcrumb-item{
-    font-size:15px;
-    font-weight:500;
+.teacher-courses-page .custom-breadcrumb .breadcrumb {
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
 }
 
-.custom-breadcrumb .breadcrumb-item a{
-    color:#2563eb;
-    text-decoration:none;
-    transition:.3s;
+.teacher-courses-page .custom-breadcrumb .breadcrumb-item {
+    font-size: 15px;
+    font-weight: 500;
 }
 
-.custom-breadcrumb .breadcrumb-item a:hover{
-    color:#0d6efd;
+.teacher-courses-page .custom-breadcrumb .breadcrumb-item a {
+    color: #2563eb;
+    text-decoration: none;
+    transition: color .25s ease;
 }
 
-.custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+.teacher-courses-page .custom-breadcrumb .breadcrumb-item a:hover {
+    color: #0d6efd;
+}
+
+.teacher-courses-page
+.custom-breadcrumb
+.breadcrumb-item
++ .breadcrumb-item::before {
     content: ">";
-    color:#6c757d;
-    font-weight:bold;
+    color: #6c757d;
+    font-weight: 700;
 }
 
-.custom-breadcrumb .breadcrumb-item.active{
-    color:#198754;
-    font-weight:700;
+.teacher-courses-page
+.custom-breadcrumb
+.breadcrumb-item.active {
+    color: #198754;
+    font-weight: 700;
 }
 
-.custom-breadcrumb i{
-    margin-right:6px;
-}
-.container-fluid{
-     padding-top:10px !important
-}
-.container-fluid{
-    padding-top:10px;
-    padding-left:25px;
-    padding-right:25px;
-    padding-bottom:25px;
-}
-.admin-content{
-    padding:85px 30px 30px;
+.teacher-courses-page .custom-breadcrumb i {
+    margin-right: 6px;
 }
 
-.custom-breadcrumb{
-    background:transparent;
-    padding:0;
-    margin-bottom:10px;
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.teacher-courses-page .teacher-courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
 }
 
-.d-flex.justify-content-between{
-    margin-bottom:20px !important;
+.teacher-courses-page .teacher-courses-title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #212529;
 }
 
+.teacher-courses-page .teacher-courses-subtitle {
+    margin: 6px 0 0;
+    color: #6c757d;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   COURSE CARD
+========================================================= */
+
+.teacher-courses-page .teacher-course-card {
+    height: 100%;
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.teacher-courses-page .teacher-course-card:hover {
+    transform: translateY(-5px);
+}
+
+.teacher-courses-page .teacher-course-card .card-body {
+    padding: 25px;
+}
+
+/* =========================================================
+   COURSE NAME
+========================================================= */
+
+.teacher-courses-page .teacher-course-name {
+    margin: 0 0 15px;
+    color: #2563eb;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+/* =========================================================
+   COURSE INFORMATION
+========================================================= */
+
+.teacher-courses-page .teacher-course-info {
+    margin: 0 0 12px;
+    color: #343a40;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.teacher-courses-page .teacher-course-info i {
+    width: 22px;
+    margin-right: 3px;
+}
+
+/* =========================================================
+   COURSE BUTTONS
+========================================================= */
+
+.teacher-courses-page .teacher-course-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.teacher-courses-page .teacher-course-actions .btn {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 9px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px) {
+
+    .teacher-courses-page {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .teacher-courses-page .teacher-course-card .card-body {
+        padding: 26px;
+    }
+
+}
+
+/* =========================================================
+   TABLET / SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 1199.98px) {
+
+    .teacher-courses-page {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .teacher-courses-page .teacher-courses-title {
+        font-size: 28px;
+    }
+
+    .teacher-courses-page .teacher-course-card .card-body {
+        padding: 22px;
+    }
+
+    .teacher-courses-page .teacher-course-name {
+        font-size: 20px;
+    }
+
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .teacher-courses-page {
+        padding: 15px 18px 25px;
+    }
+
+    .teacher-courses-page .teacher-courses-header {
+        margin-bottom: 22px;
+    }
+
+    .teacher-courses-page .teacher-courses-title {
+        font-size: 26px;
+    }
+
+    .teacher-courses-page .teacher-courses-subtitle {
+        font-size: 14px;
+    }
+
+    .teacher-courses-page .teacher-course-card {
+        border-radius: 16px;
+    }
+
+    .teacher-courses-page .teacher-course-card .card-body {
+        padding: 20px;
+    }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .teacher-courses-page {
+        padding: 12px 15px 25px;
+    }
+
+    .teacher-courses-page .custom-breadcrumb {
+        margin-bottom: 15px;
+    }
+
+    .teacher-courses-page .custom-breadcrumb .breadcrumb-item {
+        font-size: 13px;
+    }
+
+    .teacher-courses-page .teacher-courses-header {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .teacher-courses-page .teacher-courses-title {
+        font-size: 24px;
+    }
+
+    .teacher-courses-page .teacher-courses-subtitle {
+        margin-top: 7px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .teacher-courses-page .teacher-course-card {
+        border-radius: 15px;
+    }
+
+    .teacher-courses-page .teacher-course-card .card-body {
+        padding: 19px;
+    }
+
+    .teacher-courses-page .teacher-course-name {
+        font-size: 20px;
+    }
+
+    .teacher-courses-page .teacher-course-info {
+        font-size: 14px;
+    }
+
+    .teacher-courses-page .teacher-course-actions {
+        margin-top: 20px;
+        gap: 9px;
+    }
+
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .teacher-courses-page {
+        padding: 10px 10px 20px;
+    }
+
+    .teacher-courses-page .custom-breadcrumb .breadcrumb-item {
+        font-size: 12px;
+    }
+
+    .teacher-courses-page .teacher-courses-title {
+        font-size: 21px;
+    }
+
+    .teacher-courses-page .teacher-courses-subtitle {
+        font-size: 12px;
+    }
+
+    .teacher-courses-page .teacher-course-card {
+        border-radius: 14px;
+    }
+
+    .teacher-courses-page .teacher-course-card .card-body {
+        padding: 17px;
+    }
+
+    .teacher-courses-page .teacher-course-name {
+        font-size: 18px;
+    }
+
+    .teacher-courses-page .teacher-course-info {
+        font-size: 13px;
+    }
+
+    .teacher-courses-page .teacher-course-actions .btn {
+        min-height: 42px;
+        font-size: 13px;
+    }
+
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .teacher-courses-page {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .teacher-courses-page .teacher-courses-title {
+        font-size: 19px;
+    }
+
+    .teacher-courses-page .teacher-course-card .card-body {
+        padding: 15px;
+    }
+
+    .teacher-courses-page .teacher-course-name {
+        font-size: 17px;
+    }
+
+    .teacher-courses-page .teacher-course-info {
+        font-size: 12px;
+    }
+
+    .teacher-courses-page .teacher-course-actions .btn {
+        font-size: 12px;
+        min-height: 40px;
+    }
+
+}
 </style>
 
 
-<div class="container-fluid px-0 pt-2">
- <nav aria-label="breadcrumb" class="custom-breadcrumb mb-4">
+<!-- =====================================================
+     TEACHER MY COURSES PAGE
+===================================================== -->
 
-  <ol class="breadcrumb mb-0">
+<div class="teacher-courses-page">
 
-    <li class="breadcrumb-item">
-      <%= link_to teacher_dashboard_path do %>
-        <i class="bi bi-speedometer2"></i>
-        Dashboard
-      <% end %>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-      <i class="bi bi-book"></i>
-      My Courses
-    </li>
+  <!-- ===================================================
+       BREADCRUMB
+  ==================================================== -->
 
- 
+  <nav aria-label="breadcrumb" class="custom-breadcrumb">
 
-  </ol>
-</nav>
+    <ol class="breadcrumb">
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
+      <li class="breadcrumb-item">
+
+        <%= link_to teacher_dashboard_path do %>
+
+          <i class="bi bi-speedometer2"></i>
+
+          Dashboard
+
+        <% end %>
+
+      </li>
+
+      <li class="breadcrumb-item active" aria-current="page">
+
+        <i class="bi bi-book"></i>
+
+        My Courses
+
+      </li>
+
+    </ol>
+
+  </nav>
+
+
+  <!-- ===================================================
+       PAGE HEADER
+  ==================================================== -->
+
+  <div class="teacher-courses-header">
 
     <div>
-      <h2 class="fw-bold">📚 My Courses</h2>
-      <p class="text-muted mb-0">
+
+      <h2 class="teacher-courses-title">
+        📚 My Courses
+      </h2>
+
+      <p class="teacher-courses-subtitle">
         Manage your course content, playlists, videos and resources.
       </p>
+
     </div>
 
   </div>
 
 
-  <div class="row">
+  <!-- ===================================================
+       COURSE GRID
+  ==================================================== -->
+
+  <div class="row g-3 g-md-4">
 
     <% @courses.each do |course| %>
 
-      <div class="col-lg-4 col-md-6 mb-4">
+      <!--
+        Mobile  : 1 card
+        Tablet  : 2 cards
+        Desktop : 3 cards
+      -->
 
-        <div class="card border-0 shadow-lg h-100">
+      <div class="col-12 col-md-6 col-xl-4">
 
+        <div class="card shadow-lg teacher-course-card">
 
           <div class="card-body">
 
+            <!-- Course Name -->
 
-            <h4 class="fw-bold text-primary">
+            <h4 class="teacher-course-name">
+
               <%= course.Course_name %>
+
             </h4>
 
 
             <hr>
 
 
-            <p>
+            <!-- Duration -->
+
+            <p class="teacher-course-info">
+
               <i class="bi bi-clock-fill text-primary"></i>
+
               <strong>Duration:</strong>
+
               <%= course.duration %>
+
             </p>
 
 
-            <p>
+            <!-- Fee -->
+
+            <p class="teacher-course-info">
+
               <i class="bi bi-currency-rupee text-success"></i>
+
               <strong>Fee:</strong>
+
               ₹<%= course.fee %>
+
             </p>
 
 
-            <p>
+            <!-- Videos -->
+
+            <p class="teacher-course-info">
+
               <i class="bi bi-play-circle-fill text-danger"></i>
+
               <strong>Videos:</strong>
+
               <%= course.videos.count %>
+
             </p>
 
 
-            <p>
+            <!-- Playlists -->
+
+            <p class="teacher-course-info">
+
               <i class="bi bi-collection-play-fill text-warning"></i>
+
               <strong>Playlists:</strong>
+
               <%= course.playlists.count %>
+
             </p>
 
 
+            <!-- =================================================
+                 ACTION BUTTONS
+            ================================================== -->
 
-            <div class="d-grid gap-2 mt-4">
+            <div class="teacher-course-actions">
 
 
-              <!-- Course Details -->
+              <!-- Manage Course -->
+
               <%= link_to teacher_panel_course_path(course),
                   class: "btn btn-primary" do %>
 
                 <i class="bi bi-eye-fill"></i>
-                Manage Course
+
+                <span>Manage Course</span>
 
               <% end %>
 
 
-
               <!-- Students -->
+
               <%= link_to teacher_panel_course_students_path(course),
                   class: "btn btn-info text-white" do %>
 
                 <i class="bi bi-people-fill"></i>
-                Students
+
+                <span>Students</span>
 
               <% end %>
 
 
-
-
               <!-- Playlists -->
-               <%= link_to teacher_panel_course_playlists_path(course),
-             class: "btn btn-success" do %>
 
-            <i class="bi bi-collection-play-fill"></i>
-            Playlists
+              <%= link_to teacher_panel_course_playlists_path(course),
+                  class: "btn btn-success" do %>
 
-           <% end %>
+                <i class="bi bi-collection-play-fill"></i>
 
+                <span>Playlists</span>
 
+              <% end %>
 
 
               <!-- Videos -->
-               <%= link_to teacher_panel_course_videos_path(course),
-class:"btn btn-warning text-dark" do %>
 
-<i class="bi bi-camera-video-fill"></i>
-Videos
+              <%= link_to teacher_panel_course_videos_path(course),
+                  class: "btn btn-warning text-dark" do %>
 
-<% end %>
+                <i class="bi bi-camera-video-fill"></i>
 
+                <span>Videos</span>
+
+              <% end %>
 
 
             </div>
 
-
           </div>
-
 
         </div>
 
-
       </div>
-
 
     <% end %>
 
-
   </div>
-
 
 </div>

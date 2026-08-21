@@ -16,7 +16,7 @@ class Users::SessionsController < Devise::SessionsController
       teacher_dashboard_path
 
     when "student"
-      student_dashboard_path
+      homepage_path
 
     else
       root_path

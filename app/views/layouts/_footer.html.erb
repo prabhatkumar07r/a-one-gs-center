@@ -1,70 +1,794 @@
+<!-- =========================================================
+     FOOTER
+========================================================= -->
 
-<!-- Footer  -->
-    <footer class="site-footer">
-  ...
+<footer class="site-footer">
 
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-icons">
-                        <a href="https://www.facebook.com/profile.php?id=100013438546373" target="_blank">
-  <i class="fab fa-facebook-f"></i>
-</a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/atsir_fan_club?igsh=Z2VxdXVoNndyM2w0" target="_blank">
-  <i class="fab fa-instagram"></i>
-</a>       
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://www.youtube.com/@AONEGS77"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-               <div class="footer-section">
-    <h3>Quick Links</h3>
-    <ul>
-        <li><a href="#home">👉 Home</a></li>
-        <li><a href="#courses">👉 Courses</a></li>
-        <li><a href="#gallery">👉 Gallery</a></li>
-        <li><a href="#teachers">👉 Teachers</a></li>
-        <li><a href="#resources">👉 Resources</a></li>
-    </ul>
-</div>
+  <div class="footer-container">
 
-<div class="footer-section">
-    <h3>Contact Info</h3>
+    <!-- =====================================================
+         FOOTER CONTENT
+    ====================================================== -->
 
-    <div class="contact-info">
-        <i class="fas fa-map-marker-alt"></i>
-        <p>
-            <a href="https://maps.google.com/?q=Professor+Colony+Gali+No+1+Bara+Chakia+East+Champaran+Bihar"
-               target="_blank"
-               rel="noopener">
-                Professor Colony, Gali No 01, Bara Chakia, East Champaran
-            </a>
+    <div class="footer-content">
+
+
+      <!-- ===================================================
+           FOLLOW US
+      ==================================================== -->
+
+      <div class="footer-section footer-social">
+
+        <h3>Follow Us</h3>
+
+        <p class="footer-description">
+          Stay connected with A One GS Center through our
+          social media platforms.
         </p>
-    </div>
 
-    <div class="contact-info">
-        <i class="fas fa-phone"></i>
-        <p>
-            <a href="tel:+919117572747">
-                +91 91175 72747
-            </a>
-        </p>
-    </div>
+        <div class="social-icons">
 
-    <div class="contact-info">
-        <i class="fas fa-envelope"></i>
-        <p>
-            <a href="mailto:aonegs4coaching@gmail.com">
-                aonegs4coaching@gmail.com
-            </a>
-        </p>
-    </div>
-</div>
+          <a
+            href="https://www.facebook.com/profile.php?id=100013438546373"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook">
 
-<div class="copyright">
-    <p>© 2026 A One GS Art's And Competitive Classes. All rights reserved.</p>
-</div>
+            <i class="fab fa-facebook-f"></i>
+
+          </a>
+
+
+          <a
+            href="#"
+            aria-label="Twitter">
+
+            <i class="fab fa-twitter"></i>
+
+          </a>
+
+
+          <a
+            href="https://www.instagram.com/atsir_fan_club?igsh=Z2VxdXVoNndyM2w0"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram">
+
+            <i class="fab fa-instagram"></i>
+
+          </a>
+
+
+          <a
+            href="#"
+            aria-label="LinkedIn">
+
+            <i class="fab fa-linkedin-in"></i>
+
+          </a>
+
+
+          <a
+            href="https://www.youtube.com/@AONEGS77"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube">
+
+            <i class="fab fa-youtube"></i>
+
+          </a>
+
         </div>
-    </footer>
+
+      </div>
+
+
+      <!-- ===================================================
+           QUICK LINKS
+      ==================================================== -->
+
+      <div class="footer-section">
+
+        <h3>Quick Links</h3>
+
+        <ul class="footer-links">
+
+          <li>
+            <%= link_to homepage_path(anchor: "home") do %>
+              <i class="fas fa-angle-right"></i>
+              Home
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to homepage_path(anchor: "courses") do %>
+              <i class="fas fa-angle-right"></i>
+              Courses
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to homepage_path(anchor: "gallery") do %>
+              <i class="fas fa-angle-right"></i>
+              Gallery
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to homepage_path(anchor: "teachers") do %>
+              <i class="fas fa-angle-right"></i>
+              Teachers
+            <% end %>
+          </li>
+
+          <li>
+            <%= link_to homepage_path(anchor: "resources") do %>
+              <i class="fas fa-angle-right"></i>
+              Resources
+            <% end %>
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <!-- ===================================================
+           CONTACT INFO
+      ==================================================== -->
+
+      <div class="footer-section">
+
+        <h3>Contact Info</h3>
+
+
+        <div class="contact-info">
+
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+
+          <div class="contact-text">
+
+            <a
+              href="https://maps.google.com/?q=Professor+Colony+Gali+No+1+Bara+Chakia+East+Champaran+Bihar"
+              target="_blank"
+              rel="noopener noreferrer">
+
+              Professor Colony, Gali No 01,
+              Bara Chakia, East Champaran
+
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+
+          <div class="contact-text">
+
+            <a href="tel:+919117572747">
+
+              +91 91175 72747
+
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="contact-info">
+
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+
+          <div class="contact-text">
+
+            <a href="mailto:aonegs4coaching@gmail.com">
+
+              aonegs4coaching@gmail.com
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         COPYRIGHT
+    ====================================================== -->
+
+    <div class="footer-bottom">
+
+      <p>
+        © 2026 A One GS Art's And Competitive Classes.
+        All rights reserved.
+      </p>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<style>
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer {
+
+  width: 100%;
+
+  margin-top: 50px;
+
+  background: #111827;
+
+  color: #ffffff;
+
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.footer-container {
+
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 0 30px;
+
+}
+
+
+/* =========================================================
+   FOOTER CONTENT
+========================================================= */
+
+.footer-content {
+
+  display: grid;
+
+  grid-template-columns:
+    1.2fr
+    1fr
+    1.4fr;
+
+  gap: 60px;
+
+  padding: 55px 0 45px;
+}
+
+
+/* =========================================================
+   FOOTER SECTION
+========================================================= */
+
+.footer-section {
+
+  min-width: 0;
+
+}
+
+
+.footer-section h3 {
+
+  margin: 0 0 20px;
+
+  color: #ffffff;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+}
+
+
+.footer-section h3::after {
+
+  content: "";
+
+  display: block;
+
+  width: 35px;
+
+  height: 3px;
+
+  margin-top: 8px;
+
+  background: #6a11cb;
+
+  border-radius: 5px;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.footer-description {
+
+  max-width: 330px;
+
+  margin: 0 0 20px;
+
+  color: #9ca3af;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+.social-icons {
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+}
+
+
+.social-icons a {
+
+  width: 40px;
+
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #1f2937;
+
+  border: 1px solid #374151;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 15px;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+
+}
+
+
+.social-icons a:hover {
+
+  transform: translateY(-4px);
+
+  background: #6a11cb;
+
+  border-color: #6a11cb;
+
+  color: #ffffff;
+
+}
+
+
+/* =========================================================
+   QUICK LINKS
+========================================================= */
+
+.footer-links {
+
+  margin: 0;
+
+  padding: 0;
+
+  list-style: none;
+
+}
+
+
+.footer-links li {
+
+  margin-bottom: 11px;
+
+}
+
+
+.footer-links a {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: #9ca3af;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.footer-links a i {
+
+  font-size: 12px;
+
+  color: #6a11cb;
+
+}
+
+
+.footer-links a:hover {
+
+  color: #ffffff;
+
+  transform: translateX(4px);
+
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact-info {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 13px;
+
+  margin-bottom: 18px;
+
+}
+
+
+.contact-icon {
+
+  width: 34px;
+
+  height: 34px;
+
+  min-width: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #1f2937;
+
+  color: #a78bfa;
+
+}
+
+
+.contact-icon i {
+
+  font-size: 14px;
+
+}
+
+
+.contact-text {
+
+  min-width: 0;
+
+}
+
+
+.contact-text a {
+
+  display: block;
+
+  color: #9ca3af;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  word-break: break-word;
+
+  transition: color 0.2s ease;
+
+}
+
+
+.contact-text a:hover {
+
+  color: #ffffff;
+
+}
+
+
+/* =========================================================
+   COPYRIGHT
+========================================================= */
+
+.footer-bottom {
+
+  padding: 20px 0;
+
+  border-top: 1px solid #283242;
+
+  text-align: center;
+
+}
+
+
+.footer-bottom p {
+
+  margin: 0;
+
+  color: #9ca3af;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .footer-container {
+
+    padding: 0 25px;
+
+  }
+
+
+  .footer-content {
+
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap: 40px;
+
+    padding: 45px 0 35px;
+
+  }
+
+
+  .footer-social {
+
+    grid-column: 1 / -1;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .site-footer {
+
+    margin-top: 35px;
+
+  }
+
+
+  .footer-container {
+
+    padding: 0 20px;
+
+  }
+
+
+  .footer-content {
+
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+
+    padding: 40px 0 30px;
+
+  }
+
+
+  .footer-social {
+
+    grid-column: auto;
+
+  }
+
+
+  .footer-section h3 {
+
+    font-size: 17px;
+
+    margin-bottom: 16px;
+
+  }
+
+
+  .footer-description {
+
+    max-width: 100%;
+
+  }
+
+
+  .social-icons a {
+
+    width: 38px;
+
+    height: 38px;
+
+  }
+
+
+  .footer-bottom {
+
+    padding: 18px 10px;
+
+  }
+
+
+  .footer-bottom p {
+
+    font-size: 12px;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .footer-container {
+
+    padding: 0 16px;
+
+  }
+
+
+  .footer-content {
+
+    gap: 30px;
+
+    padding: 35px 0 25px;
+
+  }
+
+
+  .footer-section h3 {
+
+    font-size: 16px;
+
+  }
+
+
+  .footer-links a {
+
+    font-size: 13px;
+
+  }
+
+
+  .contact-text a {
+
+    font-size: 13px;
+
+  }
+
+
+  .contact-info {
+
+    gap: 10px;
+
+  }
+
+
+  .contact-icon {
+
+    width: 32px;
+
+    height: 32px;
+
+    min-width: 32px;
+
+  }
+
+
+  .social-icons {
+
+    gap: 8px;
+
+  }
+
+
+  .social-icons a {
+
+    width: 36px;
+
+    height: 36px;
+
+    font-size: 14px;
+
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .footer-container {
+
+    padding: 0 12px;
+
+  }
+
+
+  .footer-bottom p {
+
+    font-size: 11px;
+
+  }
+
+}
+
+</style>

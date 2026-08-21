@@ -1,0 +1,735 @@
+<style>
+  /* ===============================
+     STUDENT EDIT PROFILE PAGE
+  =============================== */
+
+  .student-profile-page {
+    min-height: 100vh;
+    background: #08090d;
+    color: #f5f5f7;
+    padding: 35px 40px 70px;
+  }
+
+  /* ===============================
+     HEADER
+  =============================== */
+
+  .edit-profile-header {
+    background: #0d0f15;
+    border: 1px solid #20232d;
+    border-radius: 22px;
+    padding: 30px 35px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.25);
+  }
+
+  .edit-profile-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .edit-profile-title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .edit-profile-subtitle {
+    margin: 8px 0 0;
+    color: #9299ad;
+    font-size: 15px;
+  }
+
+  .back-profile-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border: 1px solid #292d38;
+    border-radius: 10px;
+
+    background: #11131a;
+    color: #c9ceda;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: .25s;
+  }
+
+  .back-profile-button:hover {
+    color: #fff;
+    border-color: #7137e8;
+    background: #17121f;
+  }
+
+
+  /* ===============================
+     MAIN CARD
+  =============================== */
+
+  .student-update-profile-card {
+    background: #0d0f15;
+    border: 1px solid #20232d;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.20);
+  }
+
+  .student-content-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 30px;
+
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .student-content-title i {
+    color: #7137e8;
+  }
+
+
+  /* ===============================
+     EDIT LAYOUT
+  =============================== */
+
+  .profile-edit-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 50px;
+    align-items: start;
+  }
+
+
+  /* ===============================
+     PROFILE PHOTO
+  =============================== */
+
+  .profile-photo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    padding: 10px;
+  }
+
+  .profile-edit-image-wrapper {
+    width: 165px;
+    height: 165px;
+    margin-bottom: 22px;
+  }
+
+  .profile-edit-image {
+    width: 165px;
+    height: 165px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 7px solid #17101f;
+    outline: 4px solid #7137e8;
+
+    display: block;
+  }
+
+  .profile-edit-placeholder {
+    width: 165px;
+    height: 165px;
+
+    border-radius: 50%;
+
+    background: #17101f;
+
+    border: 7px solid #17101f;
+    outline: 4px solid #7137e8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 58px;
+    color: #9c6cff;
+  }
+
+  .profile-photo-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 11px 20px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+      135deg,
+      #7137e8,
+      #9148f5
+    );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .25s;
+  }
+
+  .profile-photo-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 8px 20px rgba(113,55,232,.25);
+  }
+
+  .profile-photo-help {
+    margin-top: 12px;
+
+    max-width: 200px;
+
+    color: #777f94;
+
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+
+  /* ===============================
+     FORM
+  =============================== */
+
+  .profile-edit-fields {
+    width: 100%;
+  }
+
+  .profile-form-group {
+    margin-bottom: 22px;
+  }
+
+  .profile-form-group label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #c9ceda;
+
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .profile-form-control {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 14px 16px;
+
+    background: #11131a;
+
+    border: 1px solid #292d38;
+
+    border-radius: 10px;
+
+    color: #f5f5f7;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: .25s;
+  }
+
+  .profile-form-control::placeholder {
+    color: #626a7d;
+  }
+
+  .profile-form-control:hover {
+    border-color: #3a3e4b;
+  }
+
+  .profile-form-control:focus {
+    border-color: #7137e8;
+
+    box-shadow:
+      0 0 0 3px rgba(113,55,232,.12);
+  }
+
+
+  /* ===============================
+     ACTION BUTTONS
+  =============================== */
+
+  .profile-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 30px;
+  }
+
+  .profile-update-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+
+    padding: 13px 25px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+      135deg,
+      #7137e8,
+      #9148f5
+    );
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    transition: .25s;
+  }
+
+  .profile-update-button:hover {
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 8px 22px rgba(113,55,232,.28);
+  }
+
+  .profile-cancel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 13px 23px;
+
+    border-radius: 10px;
+
+    background: #11131a;
+
+    border: 1px solid #292d38;
+
+    color: #9ba3b7;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: .25s;
+  }
+
+  .profile-cancel-button:hover {
+    color: white;
+
+    border-color: #7137e8;
+
+    background: #17121f;
+  }
+
+
+  /* ===============================
+     FORM REQUIREMENTS
+  =============================== */
+
+  .profile-requirements {
+    margin-top: 25px;
+
+    padding: 15px 18px;
+
+    background: #11131a;
+
+    border: 1px solid #222632;
+
+    border-radius: 12px;
+  }
+
+  .profile-requirements-title {
+    margin-bottom: 8px;
+
+    color: #c9ceda;
+
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .profile-requirements ul {
+    margin: 0;
+    padding-left: 18px;
+
+    color: #777f94;
+
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+
+  /* ===============================
+     RESPONSIVE
+  =============================== */
+
+  @media (max-width: 992px) {
+
+    .student-profile-page {
+      padding: 25px 20px 50px;
+    }
+
+    .profile-edit-layout {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+
+    .profile-photo-section {
+      align-items: center;
+    }
+
+  }
+
+
+  @media (max-width: 600px) {
+
+    .student-profile-page {
+      padding: 20px 15px 40px;
+    }
+
+    .edit-profile-header {
+      padding: 25px 20px;
+    }
+
+    .edit-profile-header-top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .edit-profile-title {
+      font-size: 27px;
+    }
+
+    .student-update-profile-card {
+      padding: 22px 18px;
+    }
+
+    .student-content-title {
+      font-size: 21px;
+    }
+
+    .profile-form-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .profile-update-button,
+    .profile-cancel-button {
+      width: 100%;
+    }
+
+  }
+</style>
+
+
+<div class="student-profile-page">
+
+  <!-- ===============================
+       PAGE HEADER
+  =============================== -->
+
+  <div class="edit-profile-header">
+
+    <div class="edit-profile-header-top">
+
+      <div>
+
+        <h1 class="edit-profile-title">
+          Update Profile
+        </h1>
+
+        <p class="edit-profile-subtitle">
+          Update your personal information and profile photo.
+        </p>
+
+      </div>
+
+
+      <%= link_to student_profile_path,
+          class: "back-profile-button" do %>
+
+        <i class="bi bi-arrow-left"></i>
+        Back to Profile
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===============================
+       UPDATE PROFILE CARD
+  =============================== -->
+
+  <div class="student-update-profile-card">
+
+    <div class="student-content-title">
+
+      <i class="bi bi-person-gear"></i>
+
+      Personal Information
+
+    </div>
+
+
+    <%= form_with model: @student,
+                  url: student_profile_path,
+                  method: :patch,
+                  local: true,
+                  multipart: true do |f| %>
+
+
+      <div class="profile-edit-layout">
+
+
+        <!-- ===============================
+             PROFILE PHOTO
+        =============================== -->
+
+        <div class="profile-photo-section">
+
+          <div class="profile-edit-image-wrapper">
+
+            <% if @student.image.attached? %>
+
+              <%= image_tag @student.image,
+                  class: "profile-edit-image",
+                  id: "profileImagePreview",
+                  alt: @student.name %>
+
+            <% else %>
+
+              <div class="profile-edit-placeholder"
+                   id="profileImagePlaceholder">
+
+                <i class="bi bi-person"></i>
+
+              </div>
+
+              <img id="profileImagePreview"
+                   class="profile-edit-image d-none"
+                   alt="Profile preview">
+
+            <% end %>
+
+          </div>
+
+
+          <label for="profile_image_upload"
+                 class="profile-photo-button">
+
+            <i class="bi bi-camera"></i>
+
+            Change Photo
+
+          </label>
+
+
+          <%= f.file_field :image,
+              id: "profile_image_upload",
+              accept: "image/png,image/jpeg,image/webp",
+              class: "d-none" %>
+
+
+          <small class="profile-photo-help">
+            JPG, PNG or WEBP.<br>
+            Maximum recommended size 2MB.
+          </small>
+
+        </div>
+
+
+        <!-- ===============================
+             FORM FIELDS
+        =============================== -->
+
+        <div class="profile-edit-fields">
+
+
+          <!-- NAME -->
+
+          <div class="profile-form-group">
+
+            <%= f.label :name, "Full Name" %>
+
+            <%= f.text_field :name,
+                class: "profile-form-control",
+                placeholder: "Enter your full name",
+                required: true,
+                minlength: 2 %>
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="profile-form-group">
+
+            <%= f.label :email, "Email Address" %>
+
+            <%= f.email_field :email,
+                class: "profile-form-control",
+                placeholder: "Enter your email address",
+                required: true %>
+
+          </div>
+
+
+          <!-- MOBILE -->
+
+          <div class="profile-form-group">
+
+            <%= f.label :mobile, "Mobile Number" %>
+
+            <%= f.text_field :mobile,
+                class: "profile-form-control",
+                placeholder: "Enter your mobile number",
+                required: true,
+                minlength: 10,
+                maxlength: 10 %>
+
+          </div>
+
+
+          <!-- REQUIREMENTS -->
+
+          <div class="profile-requirements">
+
+            <div class="profile-requirements-title">
+              Profile requirements
+            </div>
+
+            <ul>
+              <li>Name is required.</li>
+              <li>Email address is required.</li>
+              <li>Mobile number must contain 10 digits.</li>
+              <li>Profile photo should be JPG, PNG or WEBP.</li>
+            </ul>
+
+          </div>
+
+
+          <!-- BUTTONS -->
+
+          <div class="profile-form-actions">
+
+            <%= f.submit "Save Changes",
+                class: "profile-update-button" %>
+
+
+            <%= link_to student_profile_path,
+                class: "profile-cancel-button" do %>
+
+              Cancel
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("turbo:load", () => {
+
+    const imageInput =
+      document.getElementById("profile_image_upload");
+
+    const imagePreview =
+      document.getElementById("profileImagePreview");
+
+    const placeholder =
+      document.getElementById("profileImagePlaceholder");
+
+    if (!imageInput) return;
+
+
+    imageInput.addEventListener("change", function(event) {
+
+      const file = event.target.files[0];
+
+      if (!file) return;
+
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+
+      if (!allowedTypes.includes(file.type)) {
+
+        alert("Please select a JPG, PNG, or WEBP image.");
+
+        imageInput.value = "";
+
+        return;
+      }
+
+
+      const reader = new FileReader();
+
+
+      reader.onload = function(e) {
+
+        if (imagePreview) {
+
+          imagePreview.src = e.target.result;
+
+          imagePreview.classList.remove("d-none");
+
+        }
+
+
+        if (placeholder) {
+
+          placeholder.classList.add("d-none");
+
+        }
+
+      };
+
+
+      reader.readAsDataURL(file);
+
+    });
+
+  });
+</script>

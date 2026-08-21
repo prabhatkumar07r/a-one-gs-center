@@ -1,12 +1,10 @@
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons";
 
-
 /* Website Common Styles */
 @import "variables";
 @import "base";
 @import "buttons";
-
 
 /* Home Page */
 @import "header";
@@ -18,12 +16,12 @@
 @import "contact";
 @import "footer";
 @import "notification";
-@import "responsive";
 
+/* Responsive */
+@import "responsive";
 
 /* Authentication */
 @import "auth";
-
 
 /* Admin */
 @import "style";
@@ -32,7 +30,6 @@
 @import "adminstudentshow";
 @import "adminstudentedit";
 
-
 /* Teacher Module */
 @import "teacher";
 @import "teacher_cards";
@@ -40,9 +37,8 @@
 @import "teacher_navbar";
 @import "teacher_sidebar";
 @import "teacher_table";
-@import  "study_notes";
-@import  "teacher_profile";
-
+@import "study_notes";
+@import "teacher_profile";
 
 /* Other */
 @import "attendance";

@@ -1,50 +1,1677 @@
+<style>
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 80px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  z-index: 99999;
+}
+
+.header .container {
+  width: 100%;
+  max-width: 1400px;
+  height: 100%;
+
+  margin: 0 auto;
+  padding: 0 25px;
+}
+
+.header-content {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 25px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.header .logo {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  text-decoration: none;
+}
+
+.header .logo img {
+  display: block;
+
+  width: 165px;
+  max-width: 100%;
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   DESKTOP NAVIGATION
+========================================================= */
+
+.header nav {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(25px, 4vw, 55px);
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.header nav ul li {
+  margin: 0;
+  padding: 0;
+}
+
+.header nav ul li a {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 0;
+
+  color: #2b2d42;
+
+  text-decoration: none;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: color 0.2s ease;
+}
+
+.header nav ul li a:hover {
+  color: #6a11cb;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.student-header-right {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   PROFILE CONTAINER
+========================================================= */
+
+.student-profile-dropdown {
+  position: relative;
+  z-index: 100001;
+}
+
+
+/* =========================================================
+   PROFILE BUTTON
+========================================================= */
+
+.student-profile-button {
+  display: flex;
+  align-items: center;
+   z-index: 100002;
+   position: relative;
+
+  gap: 9px;
+
+  height: 50px;
+  min-width: 180px;
+
+  padding: 5px 11px 5px 6px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 30px;
+
+  color: #1f2937;
+
+  cursor: pointer;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  font-family: "Poppins", sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+
+  touch-action: manipulation
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.student-profile-button:hover {
+  background: #f8fafc;
+
+  border-color: #d1d5db;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.10);
+}
+
+.student-profile-button:focus {
+  outline: none;
+
+  border-color: #7c3aed;
+
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+
+/* =========================================================
+   HEADER AVATAR
+========================================================= */
+
+.student-header-avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background: #eef2f7;
+
+  border: 2px solid #e5e7eb;
+
+  color: #64748b;
+
+  font-size: 18px;
+}
+
+.student-header-avatar-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+.student-header-name {
+  max-width: 105px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.student-dropdown-arrow {
+  margin-left: auto;
+
+  font-size: 11px;
+
+  color: #6b7280;
+
+  transition: transform 0.2s ease;
+}
+
+.student-profile-button.active .student-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   PROFILE DROPDOWN
+========================================================= */
+
+.student-dropdown-menu {
+  display: block;
+
+  position: absolute;
+
+  top: calc(100% + 10px);
+  right: 0;
+
+  width: 310px;
+  max-width: calc(100vw - 30px);
+
+  padding: 8px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+
+  z-index: 100003;
+   opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transform: translateY(-6px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.student-dropdown-menu.open {
+  display: block;
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   USER INFORMATION
+========================================================= */
+
+.student-dropdown-user {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 12px;
+}
+
+
+/* =========================================================
+   DROPDOWN AVATAR
+========================================================= */
+
+.student-dropdown-avatar {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background: #eef2f7;
+
+  border: 2px solid #e5e7eb;
+
+  color: #64748b;
+
+  font-size: 20px;
+}
+
+.student-dropdown-avatar img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   USER INFO
+========================================================= */
+
+.student-dropdown-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.student-dropdown-info strong {
+  color: #111827;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.3;
+}
+
+.student-dropdown-info small {
+  margin-top: 3px;
+
+  color: #6b7280;
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ROLE
+========================================================= */
+
+.student-role {
+  width: fit-content;
+
+  margin-top: 6px;
+
+  padding: 3px 9px;
+
+  background: #7c3aed;
+  color: #ffffff;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.student-dropdown-divider {
+  height: 1px;
+
+  margin: 7px 4px;
+
+  background: #e5e7eb;
+}
+
+
+/* =========================================================
+   DROPDOWN ITEMS
+========================================================= */
+
+.student-dropdown-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #374151;
+
+  text-decoration: none;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.student-dropdown-item:hover {
+  background: #f3f4f6;
+
+  color: #111827;
+}
+
+.student-dropdown-item i {
+  width: 20px;
+
+  flex-shrink: 0;
+
+  color: #64748b;
+
+  font-size: 18px;
+
+  text-align: center;
+}
+
+.student-dropdown-item:hover i {
+  color: #7c3aed;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.student-logout {
+  color: #dc2626;
+}
+
+.student-logout i {
+  color: #dc2626;
+}
+
+.student-logout:hover {
+  background: #fef2f2;
+
+  color: #dc2626;
+}
+
+.student-logout:hover i {
+  color: #dc2626;
+}
+
+.student-logout-form {
+  display: block;
+
+  width: 100%;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu-button {
+  display: none;
+
+  position: relative;
+
+  z-index: 100000;
+
+  width: 42px;
+  height: 42px;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #374151;
+
+  font-size: 21px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  touch-action: manipulation;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.mobile-menu-button:hover {
+  background: #f8fafc;
+
+  color: #6a11cb;
+
+  border-color: #d1d5db;
+}
+
+.mobile-menu-button.active {
+  background: #f3f4f6;
+
+  color: #6a11cb;
+}
+
+.mobile-menu-button:focus {
+  outline: none;
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+.mobile-navigation {
+  display: none;
+
+  position: fixed;
+
+  top: 80px;
+  left: 0;
+
+  width: 100%;
+
+  max-height: calc(100dvh - 80px);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+  z-index: 99998;
+}
+
+.mobile-navigation.open {
+  display: block;
+}
+
+.mobile-navigation ul {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  width: 100%;
+
+  margin: 0;
+
+  padding: 8px 10px 12px;
+
+  list-style: none;
+}
+
+.mobile-navigation ul li {
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-navigation ul li a {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  min-height: 44px;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  color: #374151;
+
+  text-decoration: none;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.mobile-navigation ul li a:hover {
+  background: #f3f4f6;
+
+  color: #6a11cb;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.auth-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 16px;
+
+  border-radius: 8px;
+
+  background: #6a11cb;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: all 0.2s ease;
+}
+
+.auth-btn:hover {
+  background: #550da8;
+
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .header .container {
+    padding: 0 18px;
+  }
+
+  .header-content {
+    gap: 18px;
+  }
+
+  .header .logo img {
+    width: 145px;
+  }
+
+  .header nav ul {
+    gap: 25px;
+  }
+
+  .header nav ul li a {
+    font-size: 14px;
+  }
+
+  .student-profile-button {
+    min-width: 160px;
+  }
+
+  .student-header-name {
+    max-width: 80px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE / TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .header {
+    height: 72px;
+  }
+
+  .header .container {
+    padding: 0 15px;
+  }
+
+  .header-content {
+    height: 72px;
+
+    gap: 8px;
+
+    justify-content: flex-start;
+  }
+
+
+  /* -------------------------------------------------------
+     LOGO
+  ------------------------------------------------------- */
+
+  .header .logo {
+    order: 1;
+
+    margin-right: 0;
+
+    flex: 0 1 auto;
+
+    min-width: 0;
+  }
+
+  .header .logo img {
+    width: 135px;
+
+    max-width: 100%;
+  }
+
+
+  /* -------------------------------------------------------
+     DESKTOP NAV HIDDEN
+  ------------------------------------------------------- */
+
+  .header nav {
+    display: none;
+  }
+
+
+  /* -------------------------------------------------------
+     MOBILE BUTTON
+  ------------------------------------------------------- */
+
+  .mobile-menu-button {
+    display: flex;
+
+    order: 2;
+
+    margin-left: auto;
+  }
+
+
+  /* -------------------------------------------------------
+     PROFILE
+  ------------------------------------------------------- */
+
+  .student-header-right {
+    order: 3;
+
+    margin-left: 0;
+  }
+
+  .student-profile-button {
+    min-width: 45px;
+
+    width: 45px;
+    height: 45px;
+
+    padding: 3px;
+
+    justify-content: center;
+  }
+
+  .student-header-avatar {
+    width: 37px;
+    height: 37px;
+
+    min-width: 37px;
+  }
+
+  .student-header-name,
+  .student-dropdown-arrow {
+    display: none;
+  }
+
+
+  /* -------------------------------------------------------
+     MOBILE NAV
+  ------------------------------------------------------- */
+
+  .mobile-navigation {
+    top: 72px;
+
+    max-height: calc(100dvh - 72px);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+  .header {
+    height: 68px;
+  }
+
+  .header .container {
+    padding: 0 12px;
+  }
+
+  .header-content {
+    height: 68px;
+
+    gap: 7px;
+  }
+
+
+  /* -------------------------------------------------------
+     LOGO
+  ------------------------------------------------------- */
+
+  .header .logo img {
+    width: 120px;
+
+    max-height: 52px;
+  }
+
+
+  /* -------------------------------------------------------
+     MOBILE BUTTON
+  ------------------------------------------------------- */
+
+  .mobile-menu-button {
+    width: 40px;
+    height: 40px;
+
+    font-size: 19px;
+  }
+
+
+  /* -------------------------------------------------------
+     PROFILE
+  ------------------------------------------------------- */
+
+  .student-profile-button {
+    width: 40px;
+    height: 40px;
+
+    padding: 2px;
+  }
+
+  .student-header-avatar {
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+
+    font-size: 16px;
+  }
+
+
+  /* -------------------------------------------------------
+     MOBILE NAV
+  ------------------------------------------------------- */
+
+  .mobile-navigation {
+    top: 68px;
+
+    max-height: calc(100dvh - 68px);
+
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .mobile-navigation ul {
+    gap: 1px;
+
+    padding: 7px 10px 12px;
+  }
+
+  .mobile-navigation ul li a {
+    min-height: 42px;
+
+    padding: 9px 12px;
+
+    font-size: 14px;
+  }
+
+
+  /* -------------------------------------------------------
+     PROFILE DROPDOWN
+  ------------------------------------------------------- */
+
+  .student-dropdown-menu {
+    position: fixed;
+
+    top: 74px;
+    right: 10px;
+    left: auto;
+
+    width: 300px;
+
+    max-width: calc(100vw - 20px);
+  }
+
+
+  /* -------------------------------------------------------
+     LOGIN
+  ------------------------------------------------------- */
+
+  .auth-btn {
+    padding: 8px 11px;
+
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .header .logo img {
+    width: 105px;
+  }
+
+  .header-content {
+    gap: 6px;
+  }
+
+  .mobile-menu-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .student-profile-button {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .student-header-avatar {
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+  }
+
+  .student-dropdown-menu {
+    top: 72px;
+
+    right: 8px;
+
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+  }
+
+  .student-dropdown-user {
+    padding: 11px 9px;
+  }
+}
+
+
+/* =========================================================
+   FORCE MOBILE NAVIGATION HIDDEN ON DESKTOP
+========================================================= */
+
+@media (min-width: 851px) {
+
+  .mobile-navigation,
+  .mobile-navigation.open {
+    display: none !important;
+  }
+
+}
+</style>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
 <header class="header">
+
   <div class="container">
+
     <div class="header-content">
 
-      <!-- Logo -->
+
+      <!-- =====================================================
+           LOGO
+      ====================================================== -->
+
       <%= link_to homepage_path, class: "logo" do %>
-        <%= image_tag "Coaching_logo.jpeg", alt: "A One GS Center" %>
+
+        <%= image_tag "Coaching_logo.jpeg",
+            alt: "A One GS Center" %>
+
       <% end %>
 
-      <!-- Navigation -->
+
+      <!-- =====================================================
+           DESKTOP NAVIGATION
+      ====================================================== -->
+
       <nav>
+
         <ul>
-          <li><%= link_to "Home", homepage_path %></li>
-          <li><%= link_to "Courses", homepage_path(anchor: "courses") %></li>
-          <li><%= link_to "Gallery", homepage_path(anchor: "gallery") %></li>
-          <li><%= link_to "Teachers", homepage_path(anchor: "teachers") %></li>
-          <%# <li><%= link_to "Resources", resources_path %>  
+
+          <li>
+            <%= link_to "Home", homepage_path %>
+          </li>
+
+          <li>
+            <%= link_to "Courses",
+                homepage_path(anchor: "courses") %>
+          </li>
+
+          <li>
+            <%= link_to "Gallery",
+                homepage_path(anchor: "gallery") %>
+          </li>
+
+          <li>
+            <%= link_to "Teachers",
+                homepage_path(anchor: "teachers") %>
+          </li>
+
         </ul>
+
       </nav>
 
-      <!-- Right Side -->
-      <div class="auth-buttons">
-        <% if user_signed_in? %>
 
-          <span class="welcome-text">
-            Welcome, <%= current_user.name %>
-          </span>
+      <!-- =====================================================
+           MOBILE MENU BUTTON
+      ====================================================== -->
 
-          <%= link_to "Dashboard",
-                student_dashboard_path,
-                class: "auth-btn" %>
+      <button
+        type="button"
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Open navigation menu"
+        aria-expanded="false">
 
-          <%= button_to "Logout",
-                destroy_user_session_path,
-                method: :delete,
-                class: "auth-btn logout-btn",
-                form_class: "logout-form" %>
+        <i class="bi bi-list"></i>
 
-        <% else %>
+      </button>
 
-          <%= link_to "Login / Register",
-                new_user_session_path,
-                class: "auth-btn" %>
 
-        <% end %>
-      </div>
+      <!-- =====================================================
+           RIGHT SIDE
+      ====================================================== -->
+
+      <% if user_signed_in? %>
+
+        <div class="student-header-right">
+
+          <div class="student-profile-dropdown">
+
+
+            <!-- PROFILE BUTTON -->
+
+            <button
+              type="button"
+              class="student-profile-button"
+              id="studentProfileButton"
+              aria-expanded="false"
+              aria-controls="studentProfileMenu">
+
+              <span class="student-header-avatar">
+
+                <% if current_user.image.attached? %>
+
+                  <%= image_tag current_user.image,
+                      class: "student-header-avatar-image",
+                      alt: current_user.name %>
+
+                <% else %>
+
+                  <i class="bi bi-person-fill"></i>
+
+                <% end %>
+
+              </span>
+
+              <span class="student-header-name">
+                <%= truncate(current_user.name, length: 16) %>
+              </span>
+
+              <i class="bi bi-chevron-down student-dropdown-arrow"></i>
+
+            </button>
+
+
+            <!-- PROFILE DROPDOWN -->
+
+            <div
+              class="student-dropdown-menu"
+              id="studentProfileMenu">
+
+              <div class="student-dropdown-user">
+
+                <div class="student-dropdown-avatar">
+
+                  <% if current_user.image.attached? %>
+
+                    <%= image_tag current_user.image,
+                        alt: current_user.name %>
+
+                  <% else %>
+
+                    <i class="bi bi-person-fill"></i>
+
+                  <% end %>
+
+                </div>
+
+                <div class="student-dropdown-info">
+
+                  <strong>
+                    <%= current_user.name %>
+                  </strong>
+
+                  <small>
+                    <%= truncate(current_user.email, length: 28) %>
+                  </small>
+
+                  <span class="student-role">
+                    <%= current_user.role.to_s.upcase %>
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div class="student-dropdown-divider"></div>
+
+
+              <!-- PROFILE -->
+
+              <%= link_to student_profile_path,
+                  class: "student-dropdown-item" do %>
+
+                <i class="bi bi-person-circle"></i>
+
+                <span>My Profile</span>
+
+              <% end %>
+
+
+              <!-- DASHBOARD -->
+
+              <%= link_to student_dashboard_path,
+                  class: "student-dropdown-item" do %>
+
+                <i class="bi bi-grid-1x2"></i>
+
+                <span>Dashboard</span>
+
+              <% end %>
+
+
+              <div class="student-dropdown-divider"></div>
+
+
+              <!-- LOGOUT -->
+
+              <%= button_to destroy_user_session_path,
+                  method: :delete,
+                  class: "student-dropdown-item student-logout",
+                  form_class: "student-logout-form" do %>
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>Sign Out</span>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      <% else %>
+
+        <%= link_to "Login / Register",
+            new_user_session_path,
+            class: "auth-btn" %>
+
+      <% end %>
+
 
     </div>
+
   </div>
+
 </header>
+
+
+<!-- =========================================================
+     MOBILE NAVIGATION
+========================================================= -->
+
+<nav
+  class="mobile-navigation"
+  id="mobileNavigation">
+
+  <ul>
+
+    <li>
+      <%= link_to "Home", homepage_path %>
+    </li>
+
+    <li>
+      <%= link_to "Courses",
+          homepage_path(anchor: "courses") %>
+    </li>
+
+    <li>
+      <%= link_to "Gallery",
+          homepage_path(anchor: "gallery") %>
+    </li>
+
+    <li>
+      <%= link_to "Teachers",
+          homepage_path(anchor: "teachers") %>
+    </li>
+
+  </ul>
+
+</nav>
+
+
+
+<script>
+(function () {
+
+  /* =========================================================
+     PREVENT DUPLICATE INITIALIZATION
+  ========================================================= */
+
+  if (window.studentHeaderInitialized) {
+    return;
+  }
+
+  window.studentHeaderInitialized = true;
+
+
+  /* =========================================================
+     GET ELEMENTS
+  ========================================================= */
+
+  function getElements() {
+
+    return {
+      profileButton:
+        document.getElementById("studentProfileButton"),
+
+      profileMenu:
+        document.getElementById("studentProfileMenu"),
+
+      mobileButton:
+        document.getElementById("mobileMenuButton"),
+
+      mobileNavigation:
+        document.getElementById("mobileNavigation")
+    };
+
+  }
+
+
+  /* =========================================================
+     CLOSE PROFILE
+  ========================================================= */
+
+  function closeProfile() {
+
+    const {
+      profileButton,
+      profileMenu
+    } = getElements();
+
+    if (!profileButton || !profileMenu) {
+      return;
+    }
+
+    profileMenu.classList.remove("open");
+
+    profileButton.classList.remove("active");
+
+    profileButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  }
+
+
+  /* =========================================================
+     CLOSE MOBILE MENU
+  ========================================================= */
+
+  function closeMobile() {
+
+    const {
+      mobileButton,
+      mobileNavigation
+    } = getElements();
+
+    if (!mobileButton || !mobileNavigation) {
+      return;
+    }
+
+    mobileNavigation.classList.remove("open");
+
+    mobileButton.classList.remove("active");
+
+    mobileButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+    mobileButton.setAttribute(
+      "aria-label",
+      "Open navigation menu"
+    );
+
+    const icon =
+      mobileButton.querySelector("i");
+
+    if (icon) {
+      icon.className = "bi bi-list";
+    }
+
+  }
+
+
+  /* =========================================================
+     PROFILE BUTTON
+     
+     EVENT DELEGATION
+     
+     This works correctly with Rails Turbo.
+  ========================================================= */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const profileButton =
+        event.target.closest(
+          "#studentProfileButton"
+        );
+
+      if (!profileButton) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+
+      const profileMenu =
+        document.getElementById(
+          "studentProfileMenu"
+        );
+
+      if (!profileMenu) {
+        return;
+      }
+
+
+      const isOpen =
+        profileMenu.classList.contains("open");
+
+
+      /* Close mobile menu */
+
+      closeMobile();
+
+
+      /* Toggle profile */
+
+      if (isOpen) {
+
+        closeProfile();
+
+      } else {
+
+        profileMenu.classList.add("open");
+
+        profileButton.classList.add("active");
+
+        profileButton.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+      }
+
+    },
+    true
+  );
+
+
+  /* =========================================================
+     MOBILE MENU BUTTON
+  ========================================================= */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const mobileButton =
+        event.target.closest(
+          "#mobileMenuButton"
+        );
+
+      if (!mobileButton) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+
+      const mobileNavigation =
+        document.getElementById(
+          "mobileNavigation"
+        );
+
+      if (!mobileNavigation) {
+        return;
+      }
+
+
+      const isOpen =
+        mobileNavigation.classList.contains("open");
+
+
+      /* Close profile */
+
+      closeProfile();
+
+
+      if (isOpen) {
+
+        closeMobile();
+
+      } else {
+
+        mobileNavigation.classList.add("open");
+
+        mobileButton.classList.add("active");
+
+        mobileButton.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+        mobileButton.setAttribute(
+          "aria-label",
+          "Close navigation menu"
+        );
+
+
+        const icon =
+          mobileButton.querySelector("i");
+
+        if (icon) {
+          icon.className = "bi bi-x-lg";
+        }
+
+      }
+
+    },
+    true
+  );
+
+
+  /* =========================================================
+     CLICK OUTSIDE
+  ========================================================= */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const profileDropdown =
+        event.target.closest(
+          ".student-profile-dropdown"
+        );
+
+      const mobileNavigation =
+        event.target.closest(
+          "#mobileNavigation"
+        );
+
+      const mobileButton =
+        event.target.closest(
+          "#mobileMenuButton"
+        );
+
+
+      /* Profile */
+
+      if (!profileDropdown) {
+        closeProfile();
+      }
+
+
+      /* Mobile */
+
+      if (
+        !mobileNavigation &&
+        !mobileButton
+      ) {
+        closeMobile();
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     ESCAPE
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      closeProfile();
+
+      closeMobile();
+
+    }
+  );
+
+
+  /* =========================================================
+     MOBILE NAV LINKS
+  ========================================================= */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const link =
+        event.target.closest(
+          "#mobileNavigation a"
+        );
+
+      if (!link) {
+        return;
+      }
+
+      closeMobile();
+
+    }
+  );
+
+
+  /* =========================================================
+     RESIZE
+  ========================================================= */
+
+  window.addEventListener(
+    "resize",
+    function () {
+
+      if (window.innerWidth > 850) {
+        closeMobile();
+      }
+
+    }
+  );
+
+})();
+</script>
