@@ -26,8 +26,7 @@ Devise.setup do |config|
   # with default "from" parameter.
   # ==> Mailer Configuration
 
-config.mailer_sender = ENV.fetch("MAILER_FROM")
-
+config.mailer_sender = ENV.fetch("BREVO_SENDER")
 config.mailer = "UsersMailer"
 
 # ==> Configuration for :confirmable
@@ -36,7 +35,7 @@ config.allow_unconfirmed_access_for = 0.days
 config.confirm_within = 3.days
 config.reconfirmable = true
   # Configure the class responsible to send e-mails.
-  config.mailer = 'Devise::Mailer'
+  # config.mailer = 'Devise::Mailer'
 
   # Configure the parent class responsible to send e-mails.
   # config.parent_mailer = 'ActionMailer::Base'

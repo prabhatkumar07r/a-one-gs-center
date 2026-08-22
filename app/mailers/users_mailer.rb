@@ -2,6 +2,7 @@ class UsersMailer < Devise::Mailer
   helper :application
 
   include Devise::Controllers::UrlHelpers
+  include Rails.application.routes.url_helpers
 
   def confirmation_instructions(record, token, opts = {})
     @resource = record
@@ -52,7 +53,7 @@ class UsersMailer < Devise::Mailer
               font-size:16px;
               line-height:1.6;
             ">
-              Hello #{@resource.name.presence || "Student"},
+              Hello #{ERB::Util.html_escape(@resource.name.presence || "Student")},
             </p>
 
             <p style="
@@ -66,7 +67,7 @@ class UsersMailer < Devise::Mailer
 
             <div style="margin:30px 0;">
 
-              <a href="#{confirmation_url}"
+              <a href="#{ERB::Util.html_escape(confirmation_url)}"
                  style="
                    display:inline-block;
                    padding:14px 24px;
@@ -95,7 +96,7 @@ class UsersMailer < Devise::Mailer
               font-size:13px;
               color:#2563eb;
             ">
-              #{confirmation_url}
+              #{ERB::Util.html_escape(confirmation_url)}
             </p>
 
             <p style="
@@ -145,14 +146,11 @@ class UsersMailer < Devise::Mailer
       to: [
         {
           email: @resource.email,
-          name: @resource.name
+          name: @resource.name.presence || "Student"
         }
       ],
-
       subject: "Confirm your A-One GS Center account",
-
       html_content: html,
-
       text_content: text
     )
   end
