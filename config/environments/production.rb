@@ -58,22 +58,32 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-config.action_mailer.default_url_options = {
-  host: "a-one-gs-center.onrender.com",
-  protocol: "https"
-}
+# =========================================================
+# ACTION MAILER
+# =========================================================
 
-config.action_mailer.raise_delivery_errors = true
 config.action_mailer.delivery_method = :smtp
 
+config.action_mailer.smtp_settings = {
+  address: "smtp-relay.brevo.com",
+  port: 587,
+  domain: ENV.fetch("MAIL_DOMAIN", "a-one-gs-center.onrender.com"),
+  user_name: ENV["BREVO_SMTP_USERNAME"],
+  password: ENV["BREVO_SMTP_PASSWORD"],
+  authentication: :plain,
+  enable_starttls_auto: true
+}
+
 config.action_mailer.default_url_options = {
-  host: "a-one-gs-center.onrender.com",
+  host: ENV.fetch("APP_HOST", "a-one-gs-center.onrender.com"),
   protocol: "https"
 }
 
 config.action_mailer.default_options = {
   from: ENV["BREVO_SENDER"]
 }
+
+config.action_mailer.raise_delivery_errors = true
 
 
 

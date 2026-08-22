@@ -202,16 +202,29 @@ patch "student/profile/change_password",
 
   resources :certificates, only: [:index, :show]
 
-  resources :payments do
-    member do
-      get :success
-      get :failed
-    end
+# ==================================================
+# Payments / Razorpay
+# ==================================================
 
-    collection do
-      post :webhook
-    end
-  end
+get "/payments/:id",
+    to: "payments#show",
+    as: :payment
+
+post "/payments/:id",
+     to: "payments#create",
+     as: :create_payment
+
+post "/payments/:id/verify",
+     to: "payments#verify",
+     as: :verify_payment
+
+get "/payments/:id/success",
+    to: "payments#success",
+    as: :payment_success
+
+get "/payments/:id/failed",
+    to: "payments#failed",
+    as: :payment_failed
 
   resources :fees do
     collection do

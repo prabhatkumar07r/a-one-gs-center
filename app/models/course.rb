@@ -23,7 +23,17 @@ class Course < ApplicationRecord
 
   validates :Course_name, :duration, :fee, presence: true
 
+  # ==========================================
+  # FREE / PAID COURSE
+  # ==========================================
 
+  def free?
+    fee.to_d.zero?
+  end
+
+  def paid?
+    fee.to_d.positive?
+  end
 
   def discount_percentage
   return 0 if original_fee.blank? || original_fee.to_f <= 0

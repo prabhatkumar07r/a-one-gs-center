@@ -1,8 +1,27 @@
-
 <style>
-    /* =========================================================
-   HERO SECTION
+
+/* =========================================================
+   GLOBAL HOMEPAGE SAFETY
 ========================================================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 
 /* =========================================================
    HERO SECTION
@@ -28,15 +47,7 @@
 
     overflow: hidden;
 
-    box-sizing: border-box;
-
     padding: 60px 24px;
-}
-
-.hero *,
-.hero *::before,
-.hero *::after {
-    box-sizing: border-box;
 }
 
 .hero .container {
@@ -53,7 +64,7 @@
 
 
 /* =========================================================
-   LOGO
+   HERO LOGO
 ========================================================= */
 
 .hero-logo {
@@ -86,7 +97,6 @@
     transform: scale(1.03);
 }
 
-
 @keyframes floatLogo {
 
     0%,
@@ -101,7 +111,7 @@
 
 
 /* =========================================================
-   SUBTITLE
+   HERO SUBTITLE
 ========================================================= */
 
 .hero-subtitle {
@@ -125,7 +135,7 @@
 
 
 /* =========================================================
-   FEATURES
+   HERO FEATURES
 ========================================================= */
 
 .hero-features {
@@ -161,6 +171,7 @@
     border-radius: 50px;
 
     font-family: "Poppins", sans-serif;
+
     font-size: 15px;
     font-weight: 500;
 
@@ -181,7 +192,7 @@
 
 
 /* =========================================================
-   BUTTONS
+   HERO BUTTONS
 ========================================================= */
 
 .hero-buttons {
@@ -216,6 +227,7 @@
     text-decoration: none;
 
     font-family: "Poppins", sans-serif;
+
     font-size: 15px;
     font-weight: 600;
 
@@ -250,13 +262,15 @@
 
 
 /* =========================================================
-   SOCIAL ICONS
+   HERO SOCIAL
 ========================================================= */
 
 .hero-social {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    flex-wrap: wrap;
 
     gap: 18px;
 
@@ -289,11 +303,6 @@
     transform: translateY(-6px) scale(1.08);
 }
 
-
-/* =========================================================
-   LINKEDIN
-========================================================= */
-
 .hero-social .linkedin {
     color: #0a66c2;
 
@@ -304,17 +313,8 @@
 
 .hero-social .linkedin:hover {
     color: #ffffff;
-
     background: #0a66c2;
-
-    box-shadow:
-        0 0 20px rgba(10, 102, 194, 0.6);
 }
-
-
-/* =========================================================
-   YOUTUBE
-========================================================= */
 
 .hero-social .youtube {
     color: #ff0000;
@@ -326,17 +326,8 @@
 
 .hero-social .youtube:hover {
     color: #ffffff;
-
     background: #ff0000;
-
-    box-shadow:
-        0 0 20px rgba(255, 0, 0, 0.6);
 }
-
-
-/* =========================================================
-   INSTAGRAM
-========================================================= */
 
 .hero-social .instagram {
     color: #e1306c;
@@ -348,11 +339,481 @@
 
 .hero-social .instagram:hover {
     color: #ffffff;
-
     background: #e1306c;
+}
+
+
+/* =========================================================
+   COMMON SECTION
+========================================================= */
+
+section {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.section-title {
+    width: 100%;
+
+    text-align: center;
+
+    margin-bottom: 45px;
+}
+
+
+/* =========================================================
+   CONTACT SECTION
+========================================================= */
+/* =========================================================
+   CONTACT SECTION
+========================================================= */
+
+.contact {
+    width: 100%;
+    padding: 100px 20px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.contact *,
+.contact *::before,
+.contact *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.contact .container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   CONTACT GRID
+========================================================= */
+
+.contact-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+    gap: 70px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   CONTACT INFORMATION
+========================================================= */
+
+.contact-info {
+    width: 100%;
+    min-width: 0;
+
+    padding: 10px 0;
+}
+
+.contact-info > h3 {
+    margin: 0 0 35px;
+
+    color: #172033;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: clamp(28px, 3vw, 40px);
+
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   CONTACT DETAILS
+========================================================= */
+
+.contact-details {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 28px;
+}
+
+
+/* =========================================================
+   CONTACT ITEM
+========================================================= */
+
+.contact-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   CONTACT ICON
+========================================================= */
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #172033;
+
+    color: #ffffff;
+
+    font-size: 19px;
+}
+
+
+/* =========================================================
+   CONTACT CONTENT
+========================================================= */
+
+.contact-item-content {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.contact-item-content h4 {
+    margin: 0 0 6px;
+
+    color: #172033;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+.contact-item-content p {
+    margin: 0;
+
+    color: #4b5563;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    overflow-wrap: anywhere;
+}
+
+.contact-item-content a {
+    display: inline-block;
+
+    max-width: 100%;
+
+    color: #4b5563;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    text-decoration: none;
+
+    overflow-wrap: anywhere;
+
+    transition: color 0.25s ease;
+}
+
+.contact-item-content a:hover {
+    color: #6d28d9;
+}
+
+
+/* =========================================================
+   SOCIAL
+========================================================= */
+
+.contact-social {
+    margin-top: 42px;
+}
+
+.contact-social h4 {
+    margin: 0 0 18px;
+
+    color: #172033;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 21px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+.social-icons {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 14px;
+}
+
+.social-icons a {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #172033;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.social-icons a:hover {
+    background: #6d28d9;
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 8px 20px rgba(109, 40, 217, 0.25);
+}
+
+
+/* =========================================================
+   CONTACT FORM CARD
+========================================================= */
+
+.contact-form {
+    width: 100%;
+
+    min-width: 0;
+
+    padding: 42px;
+
+    background: #f8f8f8;
+
+    border-radius: 28px;
 
     box-shadow:
-        0 0 20px rgba(225, 48, 108, 0.6);
+        0 12px 40px rgba(0, 0, 0, 0.07);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   FORM TITLE
+========================================================= */
+
+.contact-form h3 {
+    margin: 0 0 28px;
+
+    color: #172033;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: clamp(25px, 2.5vw, 34px);
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.contact-form .form-group {
+    width: 100%;
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   INPUT / TEXTAREA
+========================================================= */
+
+.contact-form .form-control {
+    width: 100%;
+
+    min-width: 0;
+
+    display: block;
+
+    padding: 17px 20px;
+
+    border: 1px solid transparent;
+
+    border-radius: 14px;
+
+    background: #eeeeee;
+
+    color: #172033;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    outline: none;
+
+    box-shadow: none;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.contact-form .form-control::placeholder {
+    color: #64748b;
+
+    opacity: 1;
+}
+
+.contact-form .form-control:focus {
+    background: #ffffff;
+
+    border-color: #6d28d9;
+
+    box-shadow:
+        0 0 0 3px rgba(109, 40, 217, 0.10);
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.contact-form textarea.form-control {
+    min-height: 150px;
+
+    resize: vertical;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.contact-submit {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #6d28d9;
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.contact-submit:hover {
+    background: #5b21b6;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(109, 40, 217, 0.25);
+}
+
+
+/* =========================================================
+   FORM MESSAGE
+========================================================= */
+
+.form-message {
+    width: 100%;
+
+    margin-top: 15px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -363,37 +824,45 @@
 
 @media (min-width: 1400px) {
 
-    .hero {
-        padding: 70px 40px;
+    .contact {
+        padding: 120px 30px;
     }
 
-    .hero-logo {
-        width: min(80vw, 1200px);
+    .contact .container {
+        max-width: 1350px;
     }
 
-    .hero-subtitle {
-        margin-top: 30px;
+    .contact-grid {
+        gap: 90px;
+
+        grid-template-columns:
+            minmax(0, 0.85fr)
+            minmax(0, 1.15fr);
     }
 
-    .hero-features {
-        margin-top: 35px;
+    .contact-form {
+        padding: 48px;
     }
 }
 
 
 /* =========================================================
-   DESKTOP / LAPTOP
-   993px - 1399px
+   LAPTOP
+   993px - 1199px
 ========================================================= */
 
-@media (max-width: 1399px) {
+@media (max-width: 1199px) {
 
-    .hero {
-        padding: 60px 30px;
+    .contact {
+        padding: 85px 25px;
     }
 
-    .hero-logo {
-        width: min(90vw, 950px);
+    .contact-grid {
+        gap: 45px;
+    }
+
+    .contact-form {
+        padding: 35px;
     }
 }
 
@@ -405,211 +874,253 @@
 
 @media (max-width: 992px) {
 
-    .hero {
-        min-height: auto;
-
-        padding: 70px 25px;
+    .contact {
+        padding: 75px 22px;
     }
 
-    .hero-logo {
-        width: min(90vw, 750px);
+    /*
+       Stack the contact area.
+       This prevents the form from becoming too narrow.
+    */
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
     }
 
-    .hero-subtitle {
-        max-width: 700px;
+    .contact-info {
+        max-width: 800px;
 
-        margin-top: 20px;
-
-        font-size: clamp(18px, 2.8vw, 23px);
-
-        letter-spacing: 1px;
+        margin: 0 auto;
     }
 
-    .hero-features {
-        max-width: 700px;
-
-        gap: 10px;
-
-        margin: 25px auto;
+    .contact-info > h3 {
+        text-align: center;
     }
 
-    .hero-features span {
-        padding: 9px 15px;
+    /*
+       Put contact information into two columns.
+    */
 
-        font-size: 14px;
+    .contact-details {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 25px;
     }
 
-    .hero-buttons {
-        margin-top: 28px;
-    }
-}
-
-
-/* =========================================================
-   SMALL TABLET / LARGE MOBILE
-   577px - 768px
-========================================================= */
-
-@media (max-width: 768px) {
-
-    .hero {
-        min-height: auto;
-
-        padding: 55px 20px 45px;
+    .contact-social {
+        text-align: center;
     }
 
-    .hero-logo {
-        width: min(92vw, 600px);
-
-        animation: none;
+    .social-icons {
+        justify-content: center;
     }
 
-    .hero-subtitle {
-        max-width: 600px;
+    .contact-form {
+        width: 100%;
 
-        margin-top: 18px;
+        max-width: 800px;
 
-        font-size: clamp(17px, 3vw, 20px);
+        margin: 0 auto;
 
-        line-height: 1.5;
-
-        letter-spacing: 0.8px;
-    }
-
-    .hero-features {
-        max-width: 600px;
-
-        gap: 8px;
-
-        margin: 22px auto;
-    }
-
-    .hero-features span {
-        padding: 8px 13px;
-
-        font-size: 13px;
-    }
-
-    .hero-buttons {
-        gap: 10px;
-
-        margin-top: 25px;
-    }
-
-    .hero-buttons .btn {
-        min-width: 145px;
-
-        padding: 12px 20px;
-
-        font-size: 14px;
-    }
-
-    .hero-social {
-        gap: 14px;
-
-        margin: 25px 0;
-    }
-
-    .hero-social a {
-        width: 50px;
-        height: 50px;
-
-        flex-basis: 50px;
-
-        font-size: 22px;
+        padding: 35px;
     }
 }
 
 
 /* =========================================================
    MOBILE
-   577px AND BELOW
+   577px - 768px
 ========================================================= */
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
 
-    .hero {
-        padding: 40px 14px 35px;
+    .contact {
+        padding: 65px 18px;
     }
 
-    .hero-logo {
-        width: 100%;
-        max-width: 450px;
+    .contact-grid {
+        gap: 35px;
     }
 
-    .hero-subtitle {
-        max-width: 350px;
+    .contact-details {
+        grid-template-columns: 1fr;
 
-        margin-top: 15px;
-
-        font-size: 16px;
-
-        line-height: 1.45;
-
-        letter-spacing: 0.5px;
+        gap: 22px;
     }
 
-    .hero-features {
-        display: grid;
+    .contact-info > h3 {
+        margin-bottom: 28px;
 
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        width: 100%;
-        max-width: 380px;
-
-        gap: 8px;
-
-        margin: 20px auto;
+        font-size: 30px;
     }
 
-    .hero-features span {
-        width: 100%;
-
-        min-height: 38px;
-
-        padding: 8px 6px;
-
-        border-radius: 10px;
-
-        font-size: 12px;
-
-        line-height: 1.3;
+    .contact-item {
+        gap: 14px;
     }
 
-    .hero-buttons {
-        flex-direction: column;
-
-        width: 100%;
-
-        gap: 9px;
-
-        margin-top: 22px;
-    }
-
-    .hero-buttons .btn {
-        width: 100%;
-        max-width: 300px;
-
-        min-width: 0;
-
-        padding: 12px 18px;
-
-        font-size: 14px;
-    }
-
-    .hero-social {
-        gap: 11px;
-
-        margin: 24px 0;
-    }
-
-    .hero-social a {
+    .contact-icon {
         width: 46px;
         height: 46px;
 
         flex-basis: 46px;
 
+        font-size: 17px;
+    }
+
+    .contact-item-content h4 {
+        font-size: 16px;
+    }
+
+    .contact-item-content p,
+    .contact-item-content a {
+        font-size: 14px;
+    }
+
+    .contact-social {
+        margin-top: 32px;
+    }
+
+    .contact-form {
+        padding: 28px 22px;
+
+        border-radius: 22px;
+    }
+
+    .contact-form h3 {
+        margin-bottom: 22px;
+
+        font-size: 26px;
+    }
+
+    .contact-form .form-control {
+        padding: 15px 16px;
+
+        font-size: 14px;
+
+        border-radius: 12px;
+    }
+
+    .contact-form textarea.form-control {
+        min-height: 135px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   576px AND BELOW
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .contact {
+        padding: 55px 14px;
+    }
+
+    .contact-grid {
+        gap: 30px;
+    }
+
+    .contact-info > h3 {
+        font-size: 28px;
+
+        text-align: left;
+    }
+
+    .contact-details {
+        gap: 20px;
+    }
+
+    .contact-item {
+        align-items: flex-start;
+    }
+
+    .contact-icon {
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+
+        font-size: 16px;
+    }
+
+    .contact-item-content {
+        min-width: 0;
+    }
+
+    .contact-item-content h4 {
+        font-size: 15px;
+    }
+
+    .contact-item-content p,
+    .contact-item-content a {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .contact-social {
+        margin-top: 28px;
+
+        text-align: left;
+    }
+
+    .contact-social h4 {
         font-size: 19px;
+    }
+
+    .social-icons {
+        justify-content: flex-start;
+
+        gap: 10px;
+    }
+
+    .social-icons a {
+        width: 43px;
+        height: 43px;
+
+        flex-basis: 43px;
+
+        font-size: 16px;
+    }
+
+    .contact-form {
+        padding: 24px 16px;
+
+        border-radius: 18px;
+    }
+
+    .contact-form h3 {
+        font-size: 23px;
+
+        margin-bottom: 20px;
+    }
+
+    .contact-form .form-group {
+        margin-bottom: 14px;
+    }
+
+    .contact-form .form-control {
+        padding: 14px 15px;
+
+        font-size: 14px;
+
+        border-radius: 10px;
+    }
+
+    .contact-form textarea.form-control {
+        min-height: 125px;
+    }
+
+    .contact-submit {
+        min-height: 48px;
+
+        font-size: 14px;
     }
 }
 
@@ -621,101 +1132,65 @@
 
 @media (max-width: 400px) {
 
-    .hero {
-        padding: 30px 10px 30px;
+    .contact {
+        padding: 45px 10px;
     }
 
-    .hero-logo {
-        width: 100%;
+    .contact-info > h3 {
+        font-size: 25px;
     }
 
-    .hero-subtitle {
-        max-width: 300px;
+    .contact-item {
+        gap: 11px;
+    }
+
+    .contact-icon {
+        width: 38px;
+        height: 38px;
+
+        flex-basis: 38px;
 
         font-size: 14px;
-
-        line-height: 1.4;
     }
 
-    .hero-features {
-        grid-template-columns: 1fr;
-
-        max-width: 280px;
-
-        gap: 6px;
-
-        margin: 17px auto;
+    .contact-item-content h4 {
+        font-size: 14px;
     }
 
-    .hero-features span {
-        min-height: 36px;
-
-        padding: 8px 10px;
-
-        font-size: 12px;
+    .contact-item-content p,
+    .contact-item-content a {
+        font-size: 12.5px;
     }
 
-    .hero-buttons {
-        margin-top: 20px;
+    .contact-form {
+        padding: 20px 13px;
+
+        border-radius: 15px;
     }
 
-    .hero-buttons .btn {
-        max-width: 260px;
+    .contact-form h3 {
+        font-size: 21px;
+    }
 
-        padding: 11px 16px;
+    .contact-form .form-control {
+        padding: 13px 13px;
 
         font-size: 13px;
     }
 
-    .hero-social {
-        gap: 9px;
-
-        margin: 20px 0;
+    .social-icons {
+        gap: 8px;
     }
 
-    .hero-social a {
-        width: 42px;
-        height: 42px;
+    .social-icons a {
+        width: 40px;
+        height: 40px;
 
-        flex-basis: 42px;
-
-        font-size: 17px;
+        flex-basis: 40px;
     }
 }
 
 
-/* =========================================================
-   LANDSCAPE PHONES
-========================================================= */
-
-@media (max-height: 600px) and (max-width: 900px) {
-
-    .hero {
-        min-height: auto;
-
-        padding: 35px 20px;
-    }
-
-    .hero-logo {
-        width: min(75vw, 500px);
-    }
-
-    .hero-subtitle {
-        margin-top: 10px;
-    }
-
-    .hero-features {
-        margin: 12px auto;
-    }
-
-    .hero-buttons {
-        margin-top: 15px;
-    }
-
-    .hero-social {
-        margin: 15px 0;
-    }
-}
 
 
 /* =========================================================
@@ -724,789 +1199,1202 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    .hero-logo {
-        animation: none;
+    .social-icons a,
+    .contact-form .btn {
+        transition: none;
     }
 
-    .hero-logo:hover,
-    .hero-social a:hover,
-    .hero-features span:hover,
-    .hero-buttons .btn:hover {
+    .social-icons a:hover,
+    .contact-form .btn:hover {
         transform: none;
     }
 }
+
 </style>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A One Gs Art's And Competitive Classes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
-<link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap"
-        rel="stylesheet">
-</head>
 
-<body>
-  
-    <!-- Header  -->
+<!-- =========================================================
+     HERO
+========================================================= -->
 
-    <!-- Hero  -->
-  <section class="hero" id="home">
-  <div class="container">
-    <div class="hero-content">
-<%= image_tag "chatlogo.png", class: "hero-logo", alt: "A One GS Center" %>
+<section class="hero" id="home">
 
-      <p class="hero-subtitle">
-        Empowering Students to Learn, Prepare & Succeed
-      </p>
+    <div class="container">
 
-<div class="hero-features">
-    <span>🎓 Expert Faculty</span>
-    <span>📚 Weekly Test Series</span>
-    <span>💻 Online & Offline Classes</span>
-</div>
-      <div class="hero-social">
+        <div class="hero-content">
 
- <%#  <a href="https://www.linkedin.com/in/YOUR_LINKEDIN"
-     target="_blank"
-     class="linkedin">
-      <i class="fab fa-linkedin-in"></i>
-  </a> %>
+            <%= image_tag "chatlogo.png",
+                class: "hero-logo",
+                alt: "A One GS Center" %>
 
-  <a href="https://youtube.com/@aonegs77?si=eYbHZlwjBYCkezd8"
-     target="_blank"
-     class="youtube">
-      <i class="fab fa-youtube"></i>
-  </a>
+            <p class="hero-subtitle">
+                Empowering Students to Learn, Prepare & Succeed
+            </p>
 
-  <a href="https://www.instagram.com/atsirshorts?igsh=M2dlZ3p6dnB2cDd1"
-     target="_blank"
-     class="instagram">
-      <i class="fab fa-instagram"></i>
-  </a>
+            <div class="hero-features">
 
-</div>
+                <span>🎓 Expert Faculty</span>
 
-      <div class="hero-buttons">
-        <%= link_to "Explore Courses", "#courses", class: "btn" %>
-        <%= link_to "Contact Us", "#contact", class: "btn btn-outline" %>
-      </div>
+                <span>📚 Weekly Test Series</span>
+
+                <span>💻 Online & Offline Classes</span>
+
+            </div>
+
+            <div class="hero-social">
+
+                <a href="https://youtube.com/@aonegs77"
+                   target="_blank"
+                   rel="noopener"
+                   class="youtube">
+
+                    <i class="fab fa-youtube"></i>
+
+                </a>
+
+                <a href="https://www.instagram.com/atsirshorts/"
+                   target="_blank"
+                   rel="noopener"
+                   class="instagram">
+
+                    <i class="fab fa-instagram"></i>
+
+                </a>
+
+            </div>
+
+            <div class="hero-buttons">
+
+                <%= link_to "Explore Courses",
+                    "#courses",
+                    class: "btn" %>
+
+                <%= link_to "Contact Us",
+                    "#contact",
+                    class: "btn btn-outline" %>
+
+            </div>
+
+        </div>
 
     </div>
-  </div>
+
 </section>
 
-    <!-- Features  -->
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose Us</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-chalkboard-teacher feature-icon"></i>
-                    <h3>Expert Faculty</h3>
-                    <p>Learn from highly qualified and experienced teachers who have successfully guided students in many competitive exams like  SSC, Bihar Police, Railway, Banking, and NDA.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-book-open feature-icon"></i>
-                    <h3>Study Materials</h3>
-                    <p>Comprehensive study materials and practice problems.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-clipboard-check feature-icon"></i>
-                    <h3>Regular Tests</h3>
-                    <p>Weekly tests and performance analysis to track progress.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-laptop feature-icon"></i>
-                    <h3>Online Portal</h3>
-                    <p>Access lessons, assignments and tests through our online portal.</p>
-                </div>
+
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+
+<section class="features" id="features">
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Why Choose Us
+        </h2>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+
+                <i class="fas fa-chalkboard-teacher feature-icon"></i>
+
+                <h3>
+                    Expert Faculty
+                </h3>
+
+                <p>
+                    Learn from highly qualified and experienced
+                    teachers who have successfully guided students
+                    in SSC, Bihar Police, Railway, Banking and NDA.
+                </p>
+
             </div>
-        </div>
-    </section>
 
-    <!-- About  -->
-    <section class="about-section" id="about">
-        <div class="container">
-            <h2 class="section-title">Our Achievements</h2>
-           <div class="toppers-container">
 
-  <% if @achievements.present? %>
+            <div class="feature-card">
 
-    <% @achievements.each do |achievement| %>
+                <i class="fas fa-book-open feature-icon"></i>
 
-      <div class="topper-card">
+                <h3>
+                    Study Materials
+                </h3>
 
-        <% if achievement.photo.attached? %>
-          <%= image_tag achievement.photo, class: "topper-image" %>
-        <% end %>
+                <p>
+                    Comprehensive study materials and practice
+                    problems.
+                </p>
 
-        <div class="topper-info">
-          <h4><%= achievement.title %></h4>
-          <p><%= achievement.rank %></p>
-          <small><%= achievement.year %></small>
-          <p><%= achievement.description %></p>
-        </div>
-
-      </div>
-    <% end %>
-
-  <% else %>
-
-    <p class="text-center">No achievements available.</p>
-
-  <% end %>
-
-</div>
-             <div class="collage">
-              <% @events.limit(6).each do |event| %>
-              <div class="event-card">
-              <% if event.photo.attached? %>
-              <%= image_tag event.photo, alt: event.title %>
-           <% else %>
-             <%= image_tag "default-event.jpg", alt: "No Image" %>
-           <% end %>
-
-          <h5><%= event.title %></h5>
-         </div>
-       <% end %>
-        </div>
-            <div class="goal-quote">
-                <strong>🎯 Our Goal</strong>
-                <p>"Har student ko strong foundation ke sath unke sapne ke career tak pahunchana."</p>
-                <p>"Agle saalon me aur zyada district aur state toppers dena."</p>
             </div>
-            <div class="about-cta">
-                <div class="highlight-box">
-                    <h3>Quick Facts</h3>
-                    <ul>
-                        <li>Founded: 2017</li>
-                        <li>Batch Size: Limited seats</li>
-                        <li>Test Series: Weekly + Monthly</li>
-                        <li>Subjects: History • Geography • Political Science • Economics</li>
-                    </ul>
-                      <%= link_to "Join a Demo Class",
-    new_demo_request_path,
-    class: "btn demo-btn" %>
-                </div>
-                <div class="highlight-img">
-                    <img src="logo.jpeg" alt="Highlight Image">
-                </div>
+
+
+            <div class="feature-card">
+
+                <i class="fas fa-clipboard-check feature-icon"></i>
+
+                <h3>
+                    Regular Tests
+                </h3>
+
+                <p>
+                    Weekly tests and performance analysis to
+                    track progress.
+                </p>
+
             </div>
+
+
+            <div class="feature-card">
+
+                <i class="fas fa-laptop feature-icon"></i>
+
+                <h3>
+                    Online Portal
+                </h3>
+
+                <p>
+                    Access lessons, assignments and tests through
+                    our online portal.
+                </p>
+
+            </div>
+
         </div>
-    </section>
+
+    </div>
+
+</section>
 
 
-  <!-- Notification  -->
+<!-- =========================================================
+     ABOUT / ACHIEVEMENTS
+========================================================= -->
 
-<!-- Notification -->
-<section class="notifications" id="notifications">
-  <div class="container">
+<section class="about-section" id="about">
 
-    <h2 class="section-title">
-      <i class="fas fa-bell"></i> Latest Notifications
-    </h2>
+    <div class="container">
 
-    <div class="notif-showcase">
-      <div class="ticker-glass-panel">
+        <h2 class="section-title">
+            Our Achievements
+        </h2>
 
-        <div class="notification-ticker-container">
-          <div class="notification-ticker">
+        <div class="toppers-container">
 
-            <% if @notifications.present? %>
+            <% if @achievements.present? %>
 
-              <% @notifications.each do |notification| %>
+                <% @achievements.each do |achievement| %>
 
-                <div class="notification-card">
+                    <div class="topper-card">
 
-                  <h5>
-                    <i class="fas fa-bullhorn text-danger"></i>
-                    <%= notification.title %>
-                  </h5>
+                        <% if achievement.photo.attached? %>
 
-                  <p>
-                    <%= truncate(notification.description, length: 120) %>
-                  </p>
+                            <%= image_tag achievement.photo,
+                                class: "topper-image",
+                                alt: achievement.title %>
 
-                  <p>
-                    <strong>📅 Start:</strong>
-                    <%= notification.start_date.strftime("%d %b %Y") if notification.start_date.present? %>
-                  </p>
+                        <% end %>
 
-                  <p>
-                    <strong>📅 End:</strong>
-                    <%= notification.end_date.strftime("%d %b %Y") if notification.end_date.present? %>
-                  </p>
+                        <div class="topper-info">
 
-                 <%#  <p>
-                    <span class="badge bg-success">
-                      <%= notification.status %>
-                    <%# </span> %>
-                  <%# </p>  %>
+                            <h4>
+                                <%= achievement.title %>
+                            </h4>
 
-                  <small class="text-muted">
-                    <i class="fas fa-calendar-alt"></i>
-                    Posted:
-                    <%= notification.created_at.strftime("%d %b %Y") %>
-                  </small>
+                            <p>
+                                <%= achievement.rank %>
+                            </p>
 
-                </div>
+                            <small>
+                                <%= achievement.year %>
+                            </small>
 
-              <% end %>
+                            <p>
+                                <%= achievement.description %>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                <% end %>
 
             <% else %>
 
-              <div class="alert alert-info text-center">
-                No latest notifications available.
-              </div>
+                <p class="text-center">
+                    No achievements available.
+                </p>
 
             <% end %>
 
-          </div>
         </div>
 
-      </div>
+
+        <div class="collage">
+
+            <% @events.limit(6).each do |event| %>
+
+                <div class="event-card">
+
+                    <% if event.photo.attached? %>
+
+                        <%= image_tag event.photo,
+                            alt: event.title %>
+
+                    <% else %>
+
+                        <%= image_tag "default-event.jpg",
+                            alt: "No Image" %>
+
+                    <% end %>
+
+                    <h5>
+                        <%= event.title %>
+                    </h5>
+
+                </div>
+
+            <% end %>
+
+        </div>
+
+
+        <div class="goal-quote">
+
+            <strong>
+                🎯 Our Goal
+            </strong>
+
+            <p>
+                "Har student ko strong foundation ke sath
+                unke sapne ke career tak pahunchana."
+            </p>
+
+            <p>
+                "Agle saalon me aur zyada district aur state
+                toppers dena."
+            </p>
+
+        </div>
+
+
+        <div class="about-cta">
+
+            <div class="highlight-box">
+
+                <h3>
+                    Quick Facts
+                </h3>
+
+                <ul>
+
+                    <li>
+                        Founded: 2017
+                    </li>
+
+                    <li>
+                        Batch Size: Limited seats
+                    </li>
+
+                    <li>
+                        Test Series: Weekly + Monthly
+                    </li>
+
+                    <li>
+                        Subjects:
+                        History • Geography • Political Science • Economics
+                    </li>
+
+                </ul>
+
+                <%= link_to "Join a Demo Class",
+                    new_demo_request_path,
+                    class: "btn demo-btn" %>
+
+            </div>
+
+
+            <div class="highlight-img">
+
+                <%= image_tag "logo.jpeg",
+                    alt: "A One GS Center" %>
+
+            </div>
+
+        </div>
+
     </div>
 
-  </div>
 </section>
 
-  <!-- Gallery  -->
-    <section class="gallery" id="gallery">
 
-  <div class="container">
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================= -->
 
-    <h2 class="section-title">Gallery</h2>
+<section class="notifications" id="notifications">
 
-    <div class="gallery-container">
+    <div class="container">
 
-      <div class="gallery-slider">
+        <h2 class="section-title">
 
-       <% @galleries.each_with_index do |gallery, index| %>
+            <i class="fas fa-bell"></i>
 
-      <% if gallery.photos.attached? %>
-      <% gallery.photos.each do |photo| %>
-      <%= image_tag photo,
-        width: 200,
-        class: "img-thumbnail" %>
-     <% end %>
-   <% else %>
-  <p>No photos uploaded.</p>
-<% end %>
-<% end %>
+            Latest Notifications
 
-      </div>
+        </h2>
 
-      <button class="gallery-nav gallery-prev">
-        <i class="fas fa-chevron-left"></i>
-      </button>
+        <div class="notif-showcase">
 
-      <button class="gallery-nav gallery-next">
-        <i class="fas fa-chevron-right"></i>
-      </button>
+            <div class="ticker-glass-panel">
 
-      <div class="gallery-dots"></div>
+                <div class="notification-ticker-container">
+
+                    <div class="notification-ticker">
+
+                        <% if @notifications.present? %>
+
+                            <% @notifications.each do |notification| %>
+
+                                <div class="notification-card">
+
+                                    <h5>
+
+                                        <i class="fas fa-bullhorn text-danger"></i>
+
+                                        <%= notification.title %>
+
+                                    </h5>
+
+                                    <p>
+                                        <%= truncate(
+                                            notification.description,
+                                            length: 120
+                                        ) %>
+                                    </p>
+
+                                    <p>
+                                        <strong>📅 Start:</strong>
+
+                                        <%= notification.start_date.strftime(
+                                            "%d %b %Y"
+                                        ) if notification.start_date.present? %>
+                                    </p>
+
+                                    <p>
+                                        <strong>📅 End:</strong>
+
+                                        <%= notification.end_date.strftime(
+                                            "%d %b %Y"
+                                        ) if notification.end_date.present? %>
+                                    </p>
+
+                                    <small class="text-muted">
+
+                                        <i class="fas fa-calendar-alt"></i>
+
+                                        Posted:
+
+                                        <%= notification.created_at.strftime(
+                                            "%d %b %Y"
+                                        ) %>
+
+                                    </small>
+
+                                </div>
+
+                            <% end %>
+
+                        <% else %>
+
+                            <div class="alert alert-info text-center">
+                                No latest notifications available.
+                            </div>
+
+                        <% end %>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
+</section>
+
+
+<!-- =========================================================
+     GALLERY
+========================================================= -->
+
+<section class="gallery" id="gallery">
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Gallery
+        </h2>
+
+        <div class="gallery-container">
+
+            <div class="gallery-slider">
+
+                <% @galleries.each_with_index do |gallery, index| %>
+
+                    <% if gallery.photos.attached? %>
+
+                        <% gallery.photos.each do |photo| %>
+
+                            <%= image_tag photo,
+                                width: 200,
+                                class: "img-thumbnail",
+                                alt: "Gallery Image" %>
+
+                        <% end %>
+
+                    <% else %>
+
+                        <p>
+                            No photos uploaded.
+                        </p>
+
+                    <% end %>
+
+                <% end %>
+
+            </div>
+
+            <button class="gallery-nav gallery-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <button class="gallery-nav gallery-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <div class="gallery-dots"></div>
+
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =========================================================
+     COURSES
+========================================================= -->
 
-<!-- Courses -->
 <section class="courses" id="courses">
-  <div class="container">
 
-    <h2 class="section-title">Our Courses</h2>
+    <div class="container">
 
-    <div class="course-grid">
+        <h2 class="section-title">
+            Our Courses
+        </h2>
 
-      <% @courses.each do |course| %>
+        <div class="course-grid">
 
-       <div class="course-card">
+            <% @courses.each do |course| %>
 
-  <!-- Course Image -->
-     <% if course.respond_to?(:image) && course.image.attached? %>
+                <div class="course-card">
 
-  <%= image_tag course.image, class: "course-image" %>
+                    <% if course.respond_to?(:image) &&
+                          course.image.attached? %>
 
-<% else %>
+                        <%= image_tag course.image,
+                            class: "course-image",
+                            alt: course.Course_name %>
 
-  <div class="course-placeholder">
-    <h3><%= course.Course_name %></h3>
-  </div>
+                    <% else %>
 
-<% end %>
+                        <div class="course-placeholder">
 
-  <div class="course-info">
+                            <h3>
+                                <%= course.Course_name %>
+                            </h3>
 
-    <!-- Course Name -->
-    <h3 class="course-title">
-      <%= course.Course_name %>
-    </h3>
+                        </div>
 
-    <!-- Rating -->
-    <div class="course-rating">
-      ⭐ 4.8
-      <span>(250 Students)</span>
-    </div>
+                    <% end %>
 
-    <!-- Duration -->
-    <div class="course-meta">
 
-      <span>
-        <i class="fas fa-clock"></i>
-        <%= course.duration %>
-      </span>
+                    <div class="course-info">
 
-      <span>
-        <i class="fas fa-users"></i>
-        Limited Seats
-      </span>
+                        <h3 class="course-title">
+                            <%= course.Course_name %>
+                        </h3>
 
-    </div>
 
-    <!-- Price -->
-    <!-- Price -->
-<div class="course-price-container">
+                        <div class="course-rating">
 
-  <% if course.original_fee.present? && course.original_fee > course.fee %>
+                            ⭐ 4.8
 
-    <span class="original-price">
-      ₹<%= number_with_delimiter(course.original_fee) %>
-    </span>
+                            <span>
+                                (250 Students)
+                            </span>
 
-    <span class="discounted-price">
-      ₹<%= number_with_delimiter(course.fee) %>
-    </span>
+                        </div>
 
-    <span class="discount-badge">
-      <%= course.discount_percentage %>% OFF
-    </span>
 
-  <% else %>
+                        <div class="course-meta">
 
-    <span class="discounted-price">
-      ₹<%= number_with_delimiter(course.fee) %>
-    </span>
+                            <span>
 
-  <% end %>
+                                <i class="fas fa-clock"></i>
 
-</div>
+                                <%= course.duration %>
 
-    <!-- Buttons -->
-    <div class="course-buttons">
+                            </span>
 
-  <%= link_to "📖 View Course",
-      course_details_path(course),
-      class: "btn btn-primary w-100 mb-2" %>
+                            <span>
 
+                                <i class="fas fa-users"></i>
 
-  <%= link_to "📝 Enroll Now",
-      new_enrollment_path(course_id: course.id),
-      class: "btn btn-success w-100" %>
+                                Limited Seats
 
-</div>
+                            </span>
 
-  </div>
+                        </div>
 
-</div>
 
-      <% end %>
+                        <div class="course-price-container">
 
-    </div>
+                            <% if course.original_fee.present? &&
+                                  course.original_fee > course.fee %>
 
-  </div>
-</section>
-    <!-- Teachers  -->
-   <section class="teachers" id="teachers">
+                                <span class="original-price">
 
-  <div class="container">
+                                    ₹<%= number_with_delimiter(
+                                        course.original_fee
+                                    ) %>
 
-    <h2 class="section-title">Our Expert Faculty</h2>
+                                </span>
 
-    <div class="teacher-grid">
+                                <span class="discounted-price">
 
-      <% @teachers.each do |teacher| %>
+                                    ₹<%= number_with_delimiter(
+                                        course.fee
+                                    ) %>
 
-        <div class="teacher-card">
+                                </span>
 
-          <% if teacher.photo.attached? %>
+                                <span class="discount-badge">
 
-           <%= image_tag teacher.photo, class: "teacher-img" %>
+                                    <%= course.discount_percentage %>%
+                                    OFF
 
-           <% else %>
+                                </span>
 
-             <img src="https://placehold.co/300x300?text=Teacher"
-              class="teacher-img">
+                            <% else %>
 
-           <% end %>
+                                <span class="discounted-price">
 
-          <div class="teacher-info">
+                                    ₹<%= number_with_delimiter(
+                                        course.fee
+                                    ) %>
 
-            <h3><%= teacher.name %></h3>
+                                </span>
 
-            <p class="subject">
-              <%= teacher.subject %>
-            </p>
+                            <% end %>
 
-            <p>
+                        </div>
 
-              <strong>Qualification:</strong>
 
-              <%= teacher.qualification %>
+                        <div class="course-buttons">
 
-            </p>
+                            <%= link_to "📖 View Course",
+                                course_details_path(course),
+                                class: "btn btn-primary w-100 mb-2" %>
 
-            <p>
+                            <%= link_to "📝 Enroll Now",
+                                new_enrollment_path(
+                                    course_id: course.id
+                                ),
+                                class: "btn btn-success w-100" %>
 
-              <strong>Designation:</strong>
+                        </div>
 
-              <%= teacher.designation %>
+                    </div>
 
-            </p>
+                </div>
 
-            <p>
-
-              <strong>Experience:</strong>
-
-              <%= teacher.experience %> Years
-
-            </p>
-
-            <p>
-
-              <%= truncate(teacher.bio, length: 100) %>
-
-            </p>
-
-            <div class="social-links">
-
-              <% if teacher.facebook.present? %>
-                <%= link_to teacher.facebook, target: "_blank" do %>
-                  <i class="fab fa-facebook-f"></i>
-                <% end %>
-              <% end %>
-
-              <% if teacher.instagram.present? %>
-                <%= link_to teacher.instagram, target: "_blank" do %>
-                  <i class="fab fa-instagram"></i>
-                <% end %>
-              <% end %>
-
-              <% if teacher.linkedin.present? %>
-                <%= link_to teacher.linkedin, target: "_blank" do %>
-                  <i class="fab fa-linkedin-in"></i>
-                <% end %>
-              <% end %>
-
-              <% if teacher.gmail.present? %>
-                <%= mail_to teacher.gmail do %>
-                  <i class="fas fa-envelope"></i>
-                <% end %>
-              <% end %>
-
-            </div>
-
-          </div>
+            <% end %>
 
         </div>
 
-      <% end %>
-
     </div>
-
-  </div>
 
 </section>
 
-    <!-- Founder  -->
-    <section class="founder" id="founder">
-        <div class="container">
-            <h2 class="section-title">Founder & Director</h2>
-            <div class="founder-grid">
-               <div class="founder-image">
-                <%= image_tag "Founder.jpeg", alt: "AT Sir", class: "founder-photo" %>            
-                 </div>
-                <div class="founder-content">
-                    <h3 class="founder-title">AT sir</h3>
-                    <div class="founder-quote">
-                        <p>
-    B.Sc. | Bihar SI Qualified | Educator|Motivator<br>
-    10+ Years of Teaching Experience
-</p>
-                        <p>"My vision is to provide quality education to every student, regardless of their background.
-                            Education is the most powerful tool to change the world."</p>
-                    </div>
-                    <p>AT Sir established A One Arts and Competitive Classes with the vision of delivering quality education to Arts students and competitive exam aspirants.Through expert guidance, disciplined preparation,and dedicated mentorship, many students have successfully cleared board examinations and competitive exams including SSC, Bihar Police,Railway, Banking, NDA, and CUET.
-</p>
-                    <div class="founder-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <p>aonegscoaching@gmail.com</p>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <p>+91 9117572747</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Testimonial  -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <h2 class="section-title">What Our Students Say</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        <p>
-    AT Sir teaches in a very motivating and practical way His guidance helped me improve my preparation for board exams and competitive exams like SSC and Bihar Police. The study materials and regular tests were
-    extremely helpful.
-</p>
-                  <%#   <div class="testimonial-author">
-                        <img src="https://via.placeholder.com/60x60?text=Rahul" alt="Rahul Kumar">
-                        <div class="author-details">
-                            <h4>Rahul Kumar</h4>
-                            <p>PCM Topper, 2023</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        <p>The study material provided by A One Classes is excellent. The regular tests helped me track
-                            my progress and improve my weak areas. Thank you for your guidance!</p>
-                    </div> %>
-                    <div class="testimonial-author">
-                        <img src="https://via.placeholder.com/60x60?text=Priya" alt="Muskan Kumari">
-                        <div class="author-details">
-                            <h4>Muskan Kumari</h4>
-                            <p>District Topper in Home Scinece</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        <p>The teachers are very supportive and always available to clear doubts. The online portal is
-                            very helpful for accessing recorded lectures and study material anytime.</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://via.placeholder.com/60x60?text=Aman" alt="Adarsh Kumar">
-                        <div class="author-details">
-                            <h4>Adarsh Kumar</h4>
-                            <p>SSC CGL Qualified</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- =========================================================
+     TEACHERS
+========================================================= -->
 
-    <!-- Contact  -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2 class="section-title">Contact Us</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <p>Professor Colony, Gali No 01, Bara Chakia, East Champaran</p>
+<section class="teachers" id="teachers">
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Our Expert Faculty
+        </h2>
+
+        <div class="teacher-grid">
+
+            <% @teachers.each do |teacher| %>
+
+                <div class="teacher-card">
+
+                    <% if teacher.photo.attached? %>
+
+                        <%= image_tag teacher.photo,
+                            class: "teacher-img",
+                            alt: teacher.name %>
+
+                    <% else %>
+
+                        <img src="https://placehold.co/300x300?text=Teacher"
+                             class="teacher-img"
+                             alt="Teacher">
+
+                    <% end %>
+
+
+                    <div class="teacher-info">
+
+                        <h3>
+                            <%= teacher.name %>
+                        </h3>
+
+                        <p class="subject">
+                            <%= teacher.subject %>
+                        </p>
+
+                        <p>
+                            <strong>Qualification:</strong>
+                            <%= teacher.qualification %>
+                        </p>
+
+                        <p>
+                            <strong>Designation:</strong>
+                            <%= teacher.designation %>
+                        </p>
+
+                        <p>
+                            <strong>Experience:</strong>
+                            <%= teacher.experience %> Years
+                        </p>
+
+                        <p>
+                            <%= truncate(
+                                teacher.bio,
+                                length: 100
+                            ) %>
+                        </p>
+
+
+                        <div class="social-links">
+
+                            <% if teacher.facebook.present? %>
+
+                                <%= link_to teacher.facebook,
+                                    target: "_blank",
+                                    rel: "noopener" do %>
+
+                                    <i class="fab fa-facebook-f"></i>
+
+                                <% end %>
+
+                            <% end %>
+
+
+                            <% if teacher.instagram.present? %>
+
+                                <%= link_to teacher.instagram,
+                                    target: "_blank",
+                                    rel: "noopener" do %>
+
+                                    <i class="fab fa-instagram"></i>
+
+                                <% end %>
+
+                            <% end %>
+
+
+                            <% if teacher.linkedin.present? %>
+
+                                <%= link_to teacher.linkedin,
+                                    target: "_blank",
+                                    rel: "noopener" do %>
+
+                                    <i class="fab fa-linkedin-in"></i>
+
+                                <% end %>
+
+                            <% end %>
+
+
+                            <% if teacher.gmail.present? %>
+
+                                <%= mail_to teacher.gmail do %>
+
+                                    <i class="fas fa-envelope"></i>
+
+                                <% end %>
+
+                            <% end %>
+
+                        </div>
+
                     </div>
+
+                </div>
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOUNDER
+========================================================= -->
+
+<section class="founder" id="founder">
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Founder & Director
+        </h2>
+
+        <div class="founder-grid">
+
+            <div class="founder-image">
+
+                <%= image_tag "Founder.jpeg",
+                    alt: "AT Sir",
+                    class: "founder-photo" %>
+
+            </div>
+
+
+            <div class="founder-content">
+
+                <h3 class="founder-title">
+                    AT Sir
+                </h3>
+
+                <div class="founder-quote">
+
+                    <p>
+                        B.Sc. | Bihar SI Qualified | Educator |
+                        Motivator<br>
+                        10+ Years of Teaching Experience
+                    </p>
+
+                    <p>
+                        "My vision is to provide quality education
+                        to every student, regardless of their background.
+                        Education is the most powerful tool to change
+                        the world."
+                    </p>
+
+                </div>
+
+                <p>
+                    AT Sir established A One Arts and Competitive
+                    Classes with the vision of delivering quality
+                    education to Arts students and competitive exam
+                    aspirants. Through expert guidance, disciplined
+                    preparation, and dedicated mentorship, many
+                    students have successfully cleared board examinations
+                    and competitive exams including SSC, Bihar Police,
+                    Railway, Banking, NDA, and CUET.
+                </p>
+
+
+                <div class="founder-contact">
+
                     <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <p>+91 9117572747</p>
-                    </div>
-                    <div class="contact-item">
+
                         <i class="fas fa-envelope"></i>
-                        <p>aonegs@gmail.com</p>
+
+                        <p>
+                            aonegscoaching@gmail.com
+                        </p>
+
                     </div>
-                    <div class="contact-social">
-                        <h4>Follow Us</h4>
-                        <div class="social-icons">
-                            <a href="https://www.facebook.com/share/1CMP9Hw8Vn/"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a
-                                href="https://www.instagram.com/atsir_fan_club?igsh=Z2VxdXVoNndyM2w0"><i
-                                    class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="https://www.youtube.com/@AONEGS77"><i
-                                    class="fab fa-youtube"></i></a>
-                        </div>
+
+                    <div class="contact-item">
+
+                        <i class="fas fa-phone"></i>
+
+                        <p>
+                            +91 9117572747
+                        </p>
+
                     </div>
+
                 </div>
-              <div class="contact-form">
-           <h3>Send us a Message</h3>
 
-         <%= form_with model: Contact.new, url: contacts_path, local: true, id: "contactForm" do |f| %>
-
-         <div class="form-group">
-        <%= f.text_field :name, placeholder: "Your Name", required: true, class: "form-control" %>
-        </div>
-
-         <div class="form-group">
-          <%= f.email_field :email, placeholder: "Your Email", required: true, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= f.telephone_field  :mobile,  placeholder: "Your Mobile Number",required:true,class: "form-control" %>
-        </div>
-
-            <div class="form-group">
-           <%= f.text_field :subject, placeholder: "Subject", class: "form-control" %>
             </div>
 
-          <div class="form-group">
-          <%= f.text_area :message, placeholder: "Your Message", rows: 5, required: true, class: "form-control" %>
-         </div>
+        </div>
 
-         <%= f.submit "Send Message", class: "btn" %>
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TESTIMONIALS
+========================================================= -->
+
+<section class="testimonials" id="testimonials">
+
+    <div class="container">
+
+        <h2 class="section-title">
+            What Our Students Say
+        </h2>
+
+        <div class="testimonial-grid">
+
+            <div class="testimonial-card">
+
+                <div class="testimonial-text">
+
+                    <p>
+                        AT Sir teaches in a very motivating and
+                        practical way. His guidance helped me improve
+                        my preparation for board exams and competitive
+                        exams like SSC and Bihar Police.
+                    </p>
+
+                </div>
+
+                <div class="testimonial-author">
+
+                    <img src="https://via.placeholder.com/60x60?text=Muskan"
+                         alt="Muskan Kumari">
+
+                    <div class="author-details">
+
+                        <h4>
+                            Muskan Kumari
+                        </h4>
+
+                        <p>
+                            District Topper in Home Science
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="testimonial-card">
+
+                <div class="testimonial-text">
+
+                    <p>
+                        The teachers are very supportive and always
+                        available to clear doubts. The online portal
+                        is very helpful for accessing recorded lectures
+                        and study material anytime.
+                    </p>
+
+                </div>
+
+                <div class="testimonial-author">
+
+                    <img src="https://via.placeholder.com/60x60?text=Adarsh"
+                         alt="Adarsh Kumar">
+
+                    <div class="author-details">
+
+                        <h4>
+                            Adarsh Kumar
+                        </h4>
+
+                        <p>
+                            SSC CGL Qualified
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
+<!-- =========================================================
+     CONTACT SECTION
+========================================================= -->
+
+<section class="contact" id="contact">
+
+  <div class="container">
+
+    <h2 class="section-title">Contact Us</h2>
+
+    <div class="contact-grid">
+
+      <!-- =====================================================
+           CONTACT INFORMATION
+      ====================================================== -->
+
+      <div class="contact-info">
+
+        <h3>Get in Touch</h3>
+
+        <div class="contact-details">
+
+          <!-- ADDRESS -->
+          <div class="contact-item">
+
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+
+            <div class="contact-item-content">
+              <h4>Address</h4>
+              <p>
+                Professor Colony, Gali No 01,<br>
+                Bara Chakia, East Champaran
+              </p>
+            </div>
+
+          </div>
+
+
+          <!-- PHONE -->
+          <div class="contact-item">
+
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+
+            <div class="contact-item-content">
+              <h4>Phone</h4>
+
+              <a href="tel:+919117572747">
+                +91 9117572747
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- EMAIL -->
+          <div class="contact-item">
+
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+
+            <div class="contact-item-content">
+              <h4>Email</h4>
+
+              <a href="mailto:aonegs@gmail.com">
+                aonegs@gmail.com
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SOCIAL MEDIA
+        ================================================== -->
+
+        <div class="contact-social">
+
+          <h4>Follow Us</h4>
+
+          <div class="social-icons">
+
+            <a
+              href="https://www.facebook.com/share/1CMP9Hw8Vn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <i class="fab fa-facebook-f"></i>
+            </a>
+
+            <a
+              href="#"
+              aria-label="Twitter"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+
+            <a
+              href="https://www.instagram.com/atsir_fan_club?igsh=Z2VxdXVoNndyM2w0"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+
+            <a
+              href="#"
+              aria-label="LinkedIn"
+            >
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+
+            <a
+              href="https://www.youtube.com/@AONEGS77"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+            >
+              <i class="fab fa-youtube"></i>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           CONTACT FORM
+      ====================================================== -->
+
+      <div class="contact-form">
+
+        <h3>Send us a Message</h3>
+
+        <%= form_with model: Contact.new,
+              url: contacts_path,
+              local: true,
+              id: "contactForm" do |f| %>
+
+
+          <div class="form-group">
+
+            <%= f.text_field :name,
+                placeholder: "Your Name",
+                required: true,
+                class: "form-control" %>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <%= f.email_field :email,
+                placeholder: "Your Email",
+                required: true,
+                class: "form-control" %>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <%= f.telephone_field :mobile,
+                placeholder: "Your Mobile Number",
+                required: true,
+                class: "form-control" %>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <%= f.text_field :subject,
+                placeholder: "Subject",
+                class: "form-control" %>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <%= f.text_area :message,
+                placeholder: "Your Message",
+                rows: 5,
+                required: true,
+                class: "form-control" %>
+
+          </div>
+
+
+          <%= f.submit "Send Message", class: "btn contact-submit" %>
 
           <div id="contactMsg" class="form-message"></div>
 
-           <% end %>
-            </div>
-            </div>
-          </div>
-      </section>
+        <% end %>
 
-
-
-
-
-
-
-
-
-  <script>
-
-     const notificationsData = [
-    {
-      title: "New Batch Starting Soon",
-      desc: "We are starting a new batch for Intermediate Art's from next Monday. Limited seats available.",
-      date: "February 25, 2026",
-      icon: "fa-bullhorn"
-    },
-    {
-      title: "Special Weekend Classes",
-      desc: "Special weekend classes for Chemistry practicals will begin from October 1st.",
-      date: "September 20, 2023",
-      icon: "fa-calendar-week"
-    },
-    {
-      title: "Parent-Teacher Meeting",
-      desc: "Quarterly parent-teacher meeting scheduled on October 5th at 4:00 PM.",
-      date: "September 18, 2023",
-      icon: "fa-chalkboard-user"
-    },
-    // Extra notification to make scroll richer (from original vibe)
-    {
-      title: "Exam Form Notice",
-      desc: "Last date to submit examination forms is October 15th, 2023.",
-      date: "October 01, 2023",
-      icon: "fa-file-alt"
-    }
-  ];
-
-  // Helper: escape HTML
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
-  }
-
-  // Build ticker with 2 cycles for seamless infinite horizontal scroll
-  function buildTicker() {
-    const ticker = document.getElementById('notificationTicker');
-    if (!ticker) return;
-    ticker.innerHTML = '';
-    
-    // 2 cycles to make translateX(-50%) work seamlessly
-    const cycles = 2;
-    for (let cycle = 0; cycle < cycles; cycle++) {
-      notificationsData.forEach(notif => {
-        const notifDiv = document.createElement('div');
-        notifDiv.className = 'ticker-notification';
-        const iconClass = notif.icon || "fa-bullhorn";
-        notifDiv.innerHTML = `
-          <i class="fas ${iconClass}"></i>
-          <div class="ticker-content">
-            <strong>${escapeHtml(notif.title)}</strong>
-            <p>${escapeHtml(notif.desc)}</p>
-            <span class="ticker-date"><i class="far fa-calendar-alt"></i> Posted on: ${escapeHtml(notif.date)}</span>
-          </div>
-        `;
-        ticker.appendChild(notifDiv);
-      });
-    }
-  }
-
-  // Global reference
-  let tickerTrack = null;
-  let currentSpeed = 35;
-
-  // Function to dynamically add new notification (keeps infinite scroll alive)
-  window.addLiveNotification = function(title, message, date, icon = 'fa-bullhorn') {
-    if (!tickerTrack) return;
-    const newItem = document.createElement('div');
-    newItem.className = 'ticker-notification';
-    newItem.innerHTML = `
-      <i class="fas ${icon}"></i>
-      <div class="ticker-content">
-        <strong>${escapeHtml(title)}</strong>
-        <p>${escapeHtml(message)}</p>
-        <span class="ticker-date"><i class="far fa-calendar-alt"></i> Posted on: ${escapeHtml(date)}</span>
       </div>
-    `;
-    tickerTrack.appendChild(newItem);
-    // No restart needed — animation continues seamlessly
-  };
 
-  // Initialize ticker
-  function init() {
-    buildTicker();
-    tickerTrack = document.getElementById('notificationTicker');
-    if (!tickerTrack) return;
-    
-    // Apply animation
-    tickerTrack.style.animation = `scrollHorizontalFlow 35s linear infinite`;
-    tickerTrack.style.willChange = 'transform';
-    
-    // Handle window resize to keep animation smooth
-    window.addEventListener('resize', function() {
-      if (tickerTrack) {
-        tickerTrack.style.animation = `scrollHorizontalFlow ${currentSpeed}s linear infinite`;
-      }
-    });
-    
-    // Optional: Auto add fresh notifications periodically to simulate live updates
-    setTimeout(() => {
-      if (window.addLiveNotification) {
-        window.addLiveNotification("📢 Workshop Alert", "Free workshop on Web Development on October 25th.", "October 10, 2023", "fa-laptop-code");
-      }
-    }, 8000);
-    
-    setTimeout(() => {
-      if (window.addLiveNotification) {
-        window.addLiveNotification("🏆 Cultural Fest", "Annual fest 'Utsav 2023' from November 5th to 7th.", "October 12, 2023", "fa-music");
-      }
-    }, 15000);
-  }
-  
-  // Start after DOM ready
-  document.addEventListener('DOMContentLoaded', init);
-  </script>
-</body>
+    </div>
 
-</html>
+  </div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   NOTIFICATION TICKER
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ticker =
+        document.querySelector(".notification-ticker");
+
+    if (!ticker) {
+        return;
+    }
+
+    ticker.style.willChange = "transform";
+
+});
+
+
+/* =========================================================
+   PREVENT ACCIDENTAL HORIZONTAL OVERFLOW
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.documentElement.style.overflowX = "hidden";
+
+    document.body.style.overflowX = "hidden";
+
+});
+
+</script>

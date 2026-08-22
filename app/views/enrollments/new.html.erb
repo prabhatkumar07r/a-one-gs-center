@@ -1,58 +1,884 @@
 <% content_for :show_layout, true %>
-<%= form_with model: @enrollment do |f| %>
+
+<div class="enrollment-page">
+
+  <div class="enrollment-wrapper">
+
+    <div class="enrollment-card">
+
+      <!-- HEADER -->
+
+      <div class="enrollment-header">
+
+        <div class="enrollment-icon">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+
+        <div>
+          <h2>Confirm Enrollment</h2>
+
+          <p>
+            Review your enrollment details
+          </p>
+        </div>
+
+      </div>
 
 
-<div class="mb-3">
+      <!-- COURSE -->
 
-<label class="form-label">
-Student
-</label>
+      <div class="course-box">
 
-<input type="text"
-class="form-control"
-value="<%= current_user.name %>"
-readonly>
+        <div class="course-icon">
+          <i class="bi bi-book-fill"></i>
+        </div>
+
+        <div class="course-details">
+
+          <span class="course-label">
+            COURSE
+          </span>
+
+          <h3>
+            <%= @course.Course_name %>
+          </h3>
+
+          <% if @course.respond_to?(:duration) && @course.duration.present? %>
+
+            <p>
+              <i class="bi bi-clock"></i>
+              <%= @course.duration %>
+            </p>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORM -->
+
+      <%= form_with model: @enrollment,
+                    local: true,
+                    id: "enrollment-form" do |f| %>
+
+
+        <!-- STUDENT -->
+
+        <div class="form-group">
+
+          <label class="form-label">
+            <i class="bi bi-person-fill"></i>
+            Student
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            value="<%= current_user.name %>"
+            readonly>
+
+        </div>
+
+
+        <!-- COURSE -->
+
+        <div class="form-group">
+
+          <label class="form-label">
+            <i class="bi bi-book"></i>
+            Selected Course
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            value="<%= @course.Course_name %>"
+            readonly>
+
+          <%= f.hidden_field :course_id,
+                value: @course.id %>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label class="form-label">
+            <i class="bi bi-info-circle"></i>
+            Enrollment Status
+          </label>
+
+          <input
+            type="text"
+            class="form-control status-input"
+            value="Pending"
+            readonly>
+
+          <%= f.hidden_field :status,
+                value: "Pending" %>
+
+        </div>
+
+
+        <!-- COURSE FEE -->
+
+        <div class="fee-box">
+
+          <span>
+            Course Fee
+          </span>
+
+          <strong>
+
+            <% if @course.free? %>
+
+              FREE
+
+            <% else %>
+
+              ₹<%= number_with_precision(
+                    @course.fee,
+                    precision: 2
+                  ) %>
+
+            <% end %>
+
+          </strong>
+
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="submit"
+          class="confirm-button"
+          id="confirm-enrollment-button">
+
+          <span id="confirm-icon">
+            <i class="bi bi-check-circle-fill"></i>
+          </span>
+
+          <span id="confirm-text">
+            Confirm Enrollment
+          </span>
+
+        </button>
+
+
+        <!-- BACK -->
+
+        <%= link_to course_details_path(@course),
+              class: "back-button",
+              id: "back-button" do %>
+
+          <i class="bi bi-arrow-left"></i>
+
+          Back to Course
+
+        <% end %>
+
+
+      <% end %>
+
+
+      <!-- FOOTER -->
+
+      <div class="enrollment-footer">
+
+        <i class="bi bi-shield-check"></i>
+
+        Your enrollment information is secure
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
 
-<div class="mb-3">
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
-<label class="form-label">
-Course
-</label>
+<script>
 
+document.addEventListener("DOMContentLoaded", function () {
 
-<input type="text"
-class="form-control"
-value="<%= @course.Course_name %>"
-readonly>
+  const form =
+    document.getElementById("enrollment-form");
 
+  const button =
+    document.getElementById(
+      "confirm-enrollment-button"
+    );
 
-<%= f.hidden_field :course_id, value: @course.id %>
+  const icon =
+    document.getElementById(
+      "confirm-icon"
+    );
 
+  const text =
+    document.getElementById(
+      "confirm-text"
+    );
 
-</div>
-
-
-<div class="mb-3">
-
-<label class="form-label">
-Status
-</label>
-
-<%= f.hidden_field :status, value: "Pending" %>
-
-<input type="text"
-class="form-control"
-value="Pending"
-readonly>
-
-</div>
+  if (!form || !button) {
+    return;
+  }
 
 
-<%= f.submit "Confirm Enrollment",
-class:"btn btn-success" %>
+  form.addEventListener("submit", function () {
+
+    button.disabled = true;
+
+    button.classList.add("loading");
 
 
-<% end %>
+    if (icon) {
+
+      icon.innerHTML =
+        '<i class="bi bi-arrow-repeat"></i>';
+
+    }
+
+
+    if (text) {
+
+      text.textContent =
+        "Processing Enrollment...";
+
+    }
+
+  });
+
+
+  /*
+    Prevent accidental double-click.
+  */
+
+  let submitted = false;
+
+  form.addEventListener("submit", function (event) {
+
+    if (submitted) {
+
+      event.preventDefault();
+
+      return;
+
+    }
+
+    submitted = true;
+
+  });
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     CSS
+========================================================= -->
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.enrollment-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f4f7fb 0%,
+      #eef3ff 100%
+    );
+
+  font-family:
+    "Poppins",
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.enrollment-wrapper {
+
+  width: 100%;
+
+  max-width: 560px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.enrollment-card {
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  padding: 32px;
+
+  border: 1px solid #e8edf5;
+
+  box-shadow:
+    0 15px 45px rgba(
+      15,
+      23,
+      42,
+      0.12
+    );
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.enrollment-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 28px;
+}
+
+
+.enrollment-icon {
+
+  width: 58px;
+
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #e8f1ff;
+
+  color: #0d6efd;
+
+  font-size: 24px;
+
+  flex-shrink: 0;
+}
+
+
+.enrollment-header h2 {
+
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #172033;
+}
+
+
+.enrollment-header p {
+
+  margin: 4px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   COURSE BOX
+========================================================= */
+
+.course-box {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  margin-bottom: 24px;
+
+  background: #f8fafc;
+
+  border: 1px solid #edf0f5;
+
+  border-radius: 16px;
+}
+
+
+.course-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #0d6efd;
+
+  color: #ffffff;
+
+  border-radius: 14px;
+
+  font-size: 22px;
+
+  flex-shrink: 0;
+}
+
+
+.course-details {
+
+  min-width: 0;
+}
+
+
+.course-label {
+
+  display: block;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #6b7280;
+}
+
+
+.course-details h3 {
+
+  margin: 4px 0;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  color: #172033;
+
+  word-break: break-word;
+}
+
+
+.course-details p {
+
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+
+.course-details p i {
+
+  color: #0d6efd;
+
+  margin-right: 4px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+
+  margin-bottom: 20px;
+}
+
+
+.form-label {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+
+.form-label i {
+
+  color: #0d6efd;
+
+  margin-right: 5px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.form-control {
+
+  width: 100%;
+
+  min-height: 50px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 11px;
+
+  background: #f8fafc;
+
+  color: #172033;
+
+  font-size: 14px;
+
+  box-sizing: border-box;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.form-control:focus {
+
+  border-color: #86b7fe;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(13, 110, 253, 0.10);
+}
+
+
+.status-input {
+
+  color: #856404;
+
+  background: #fff8e1;
+
+  border-color: #ffe69c;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   FEE
+========================================================= */
+
+.fee-box {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 18px;
+
+  margin: 4px 0 22px;
+
+  border-radius: 13px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #d1fae5;
+}
+
+
+.fee-box span {
+
+  color: #4b5563;
+
+  font-size: 14px;
+}
+
+
+.fee-box strong {
+
+  color: #198754;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   CONFIRM BUTTON
+========================================================= */
+
+.confirm-button {
+
+  width: 100%;
+
+  min-height: 56px;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #198754,
+      #157347
+    );
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      25,
+      135,
+      84,
+      0.22
+    );
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.confirm-button:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px
+    rgba(
+      25,
+      135,
+      84,
+      0.28
+    );
+}
+
+
+.confirm-button:active {
+
+  transform: translateY(0);
+}
+
+
+.confirm-button:disabled {
+
+  cursor: wait;
+}
+
+
+.confirm-button.loading {
+
+  opacity: 0.75;
+
+  cursor: wait;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-button {
+
+  width: 100%;
+
+  min-height: 48px;
+
+  margin-top: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 12px;
+
+  color: #6b7280;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+
+.back-button:hover {
+
+  color: #172033;
+
+  background: #f8fafc;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.enrollment-footer {
+
+  margin-top: 22px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #edf0f5;
+
+  text-align: center;
+
+  color: #9ca3af;
+
+  font-size: 12px;
+}
+
+
+.enrollment-footer i {
+
+  color: #198754;
+
+  margin-right: 5px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+  .enrollment-page {
+
+    padding: 20px 12px;
+
+    align-items: flex-start;
+  }
+
+
+  .enrollment-card {
+
+    margin-top: 20px;
+
+    padding: 22px 18px;
+
+    border-radius: 18px;
+  }
+
+
+  .enrollment-header {
+
+    margin-bottom: 22px;
+  }
+
+
+  .enrollment-header h2 {
+
+    font-size: 20px;
+  }
+
+
+  .enrollment-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    font-size: 21px;
+  }
+
+
+  .course-box {
+
+    padding: 14px;
+  }
+
+
+  .course-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    font-size: 19px;
+  }
+
+
+  .course-details h3 {
+
+    font-size: 16px;
+  }
+
+
+  .fee-box strong {
+
+    font-size: 20px;
+  }
+
+}
+
+</style>
