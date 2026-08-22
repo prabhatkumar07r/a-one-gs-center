@@ -1,42 +1,87 @@
+
+
 <style>
+
 /* =========================================================
-   HEADER
+   TRANSPARENT FLOATING GLASS HEADER
 ========================================================= */
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
+    position: fixed;
 
-  width: 100%;
-  height: 80px;
+    top: 0;
+    left: 0;
 
-  background: #ffffff;
+    width: 100%;
+    height: 82px;
 
-  border-bottom: 1px solid #e5e7eb;
+    background: transparent !important;;
 
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+     border: none !important;
+    box-shadow: none !important;;
 
-  z-index: 99999;
+    z-index: 99999;
+
+    pointer-events: none;
 }
+
+
+/* =========================================================
+   OUTER CONTAINER
+========================================================= */
 
 .header .container {
-  width: 100%;
-  max-width: 1400px;
-  height: 100%;
+    width: 100%;
+    max-width: 1400px;
 
-  margin: 0 auto;
-  padding: 0 25px;
+    height: 100%;
+
+    margin: 0 auto;
+
+    padding: 0 18px;
 }
 
+
+/* =========================================================
+   MAIN GLASS BAR
+========================================================= */
+
 .header-content {
-  width: 100%;
-  height: 100%;
+    position: relative;
 
-  display: flex;
-  align-items: center;
+    width: 100%;
+    max-width: 1250px;
 
-  gap: 25px;
+    height: 64px;
+
+    margin: 8px auto 0;
+
+    padding: 5px 8px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    background: rgba(8, 10, 16, 0.42);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 36px;
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+    pointer-events: auto;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 
@@ -45,22 +90,32 @@
 ========================================================= */
 
 .header .logo {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  flex-shrink: 0;
+    flex-shrink: 0;
 
-  text-decoration: none;
+    width: auto;
+
+    padding-left: 6px;
+
+    text-decoration: none;
 }
 
 .header .logo img {
-  display: block;
+    display: block;
 
-  width: 165px;
-  max-width: 100%;
-  height: auto;
+    width: 145px;
 
-  object-fit: contain;
+    max-width: 100%;
+
+    height: auto;
+
+    max-height: 52px;
+
+    object-fit: contain;
+
+    border-radius: 4px;
 }
 
 
@@ -69,52 +124,118 @@
 ========================================================= */
 
 .header nav {
-  flex: 1;
+    flex: 1;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header nav ul {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
 
-  gap: clamp(25px, 4vw, 55px);
+    align-items: center;
+    justify-content: center;
 
-  margin: 0;
-  padding: 0;
+    gap: 3px;
 
-  list-style: none;
+    margin: 0;
+    padding: 4px;
+
+    list-style: none;
+
+    background: rgba(0, 0, 0, 0.17);
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 32px;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .header nav ul li {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
 
 .header nav ul li a {
-  display: inline-flex;
-  align-items: center;
+    display: inline-flex;
 
-  padding: 8px 0;
+    align-items: center;
+    justify-content: center;
 
-  color: #2b2d42;
+    min-height: 44px;
 
-  text-decoration: none;
+    padding: 0 18px;
 
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+    border-radius: 25px;
 
-  white-space: nowrap;
+    color: #9da9bc;
 
-  transition: color 0.2s ease;
+    background: transparent;
+
+    text-decoration: none;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 }
 
+
+/* =========================================================
+   NAV HOVER
+========================================================= */
+
 .header nav ul li a:hover {
-  color: #6a11cb;
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* =========================================================
+   CONTACT US ACTIVE
+========================================================= */
+
+.header nav ul li.contact-nav-item a {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7135e8 0%,
+            #9655f7 100%
+        );
+
+    box-shadow:
+        0 8px 25px rgba(124, 58, 237, 0.38);
+}
+
+.header nav ul li.contact-nav-item a:hover {
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 30px rgba(124, 58, 237, 0.50);
 }
 
 
@@ -123,22 +244,23 @@
 ========================================================= */
 
 .student-header-right {
-  margin-left: auto;
+    margin-left: auto;
 
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 
 /* =========================================================
-   PROFILE CONTAINER
+   PROFILE WRAPPER
 ========================================================= */
 
 .student-profile-dropdown {
-  position: relative;
-  z-index: 100001;
+    position: relative;
+
+    z-index: 100001;
 }
 
 
@@ -147,55 +269,62 @@
 ========================================================= */
 
 .student-profile-button {
-  display: flex;
-  align-items: center;
-   z-index: 100002;
-   position: relative;
+    position: relative;
 
-  gap: 9px;
+    display: flex;
+    align-items: center;
 
-  height: 50px;
-  min-width: 180px;
+    gap: 9px;
 
-  padding: 5px 11px 5px 6px;
+    width: auto;
+    min-width: 170px;
 
-  background: #ffffff;
+    height: 46px;
 
-  border: 1px solid #e5e7eb;
-  border-radius: 30px;
+    padding: 4px 10px 4px 5px;
 
-  color: #1f2937;
+    background: rgba(255, 255, 255, 0.035);
 
-  cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.09);
 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    border-radius: 28px;
 
-  font-family: "Poppins", sans-serif;
-  appearance: none;
-  -webkit-appearance: none;
+    color: #d8deea;
 
-  touch-action: manipulation
+    cursor: pointer;
 
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    font-family: "Poppins", sans-serif;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.16);
+
+    touch-action: manipulation;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .student-profile-button:hover {
-  background: #f8fafc;
+    background: rgba(255, 255, 255, 0.07);
 
-  border-color: #d1d5db;
+    border-color: rgba(168, 85, 247, 0.38);
 
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.10);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.20);
 }
 
 .student-profile-button:focus {
-  outline: none;
+    outline: none;
 
-  border-color: #7c3aed;
-
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+    border-color: rgba(168, 85, 247, 0.45);
 }
 
 
@@ -204,52 +333,58 @@
 ========================================================= */
 
 .student-header-avatar {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+    width: 38px;
+    height: 38px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    min-width: 38px;
 
-  overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  border-radius: 50%;
+    overflow: hidden;
 
-  background: #eef2f7;
+    border-radius: 50%;
 
-  border: 2px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.08);
 
-  color: #64748b;
+    border: 2px solid rgba(255, 255, 255, 0.13);
 
-  font-size: 18px;
+    color: #aab4c5;
+
+    font-size: 17px;
 }
 
 .student-header-avatar-image {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  display: block;
+    display: block;
 
-  object-fit: cover;
+    object-fit: cover;
 }
 
 
 /* =========================================================
-   NAME
+   USER NAME
 ========================================================= */
 
 .student-header-name {
-  max-width: 105px;
+    max-width: 100px;
 
-  overflow: hidden;
+    overflow: hidden;
 
-  text-overflow: ellipsis;
+    text-overflow: ellipsis;
 
-  white-space: nowrap;
+    white-space: nowrap;
 
-  font-size: 14px;
-  font-weight: 600;
+    color: #dce2ec;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
 }
 
 
@@ -258,17 +393,18 @@
 ========================================================= */
 
 .student-dropdown-arrow {
-  margin-left: auto;
+    margin-left: auto;
 
-  font-size: 11px;
+    color: #94a0b4;
 
-  color: #6b7280;
+    font-size: 10px;
 
-  transition: transform 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
-.student-profile-button.active .student-dropdown-arrow {
-  transform: rotate(180deg);
+.student-profile-button.active
+.student-dropdown-arrow {
+    transform: rotate(180deg);
 }
 
 
@@ -277,63 +413,66 @@
 ========================================================= */
 
 .student-dropdown-menu {
-  display: block;
+    position: absolute;
 
-  position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
 
-  top: calc(100% + 10px);
-  right: 0;
+    width: 310px;
+    max-width: calc(100vw - 20px);
 
-  width: 310px;
-  max-width: calc(100vw - 30px);
+    padding: 8px;
 
-  padding: 8px;
+    background: rgba(10, 13, 21, 0.94);
 
-  background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.10);
 
-  border: 1px solid #e5e7eb;
+    border-radius: 18px;
 
-  border-radius: 16px;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
 
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.38);
 
-  z-index: 100003;
-   opacity: 0;
-  visibility: hidden;
+    z-index: 100003;
 
-  pointer-events: none;
+    opacity: 0;
 
-  transform: translateY(-6px);
+    visibility: hidden;
 
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    visibility 0.2s ease;
+    pointer-events: none;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
 }
 
 .student-dropdown-menu.open {
-  display: block;
-  opacity: 1;
+    opacity: 1;
 
-  visibility: visible;
+    visibility: visible;
 
-  pointer-events: auto;
+    pointer-events: auto;
 
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 
 /* =========================================================
-   USER INFORMATION
+   DROPDOWN USER
 ========================================================= */
 
 .student-dropdown-user {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  gap: 12px;
+    gap: 12px;
 
-  padding: 13px 12px;
+    padding: 13px 12px;
 }
 
 
@@ -342,71 +481,74 @@
 ========================================================= */
 
 .student-dropdown-avatar {
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
+    width: 50px;
+    height: 50px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    min-width: 50px;
 
-  overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  border-radius: 50%;
+    overflow: hidden;
 
-  background: #eef2f7;
+    border-radius: 50%;
 
-  border: 2px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.08);
 
-  color: #64748b;
+    border: 2px solid rgba(255, 255, 255, 0.12);
 
-  font-size: 20px;
+    color: #aab4c5;
+
+    font-size: 20px;
 }
 
 .student-dropdown-avatar img {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  display: block;
+    display: block;
 
-  object-fit: cover;
+    object-fit: cover;
 }
 
 
 /* =========================================================
-   USER INFO
+   DROPDOWN USER INFORMATION
 ========================================================= */
 
 .student-dropdown-info {
-  min-width: 0;
+    min-width: 0;
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+
+    flex-direction: column;
 }
 
 .student-dropdown-info strong {
-  color: #111827;
+    color: #ffffff;
 
-  font-size: 15px;
-  font-weight: 700;
+    font-size: 15px;
 
-  line-height: 1.3;
+    font-weight: 700;
+
+    line-height: 1.3;
 }
 
 .student-dropdown-info small {
-  margin-top: 3px;
+    margin-top: 3px;
 
-  color: #6b7280;
+    color: #9da9bc;
 
-  font-size: 12px;
+    font-size: 12px;
 
-  line-height: 1.3;
+    line-height: 1.3;
 
-  overflow: hidden;
+    overflow: hidden;
 
-  text-overflow: ellipsis;
+    text-overflow: ellipsis;
 
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 
@@ -415,34 +557,41 @@
 ========================================================= */
 
 .student-role {
-  width: fit-content;
+    width: fit-content;
 
-  margin-top: 6px;
+    margin-top: 6px;
 
-  padding: 3px 9px;
+    padding: 3px 9px;
 
-  background: #7c3aed;
-  color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #7135e8,
+            #9558f7
+        );
 
-  border-radius: 20px;
+    color: #ffffff;
 
-  font-size: 10px;
-  font-weight: 700;
+    border-radius: 20px;
 
-  line-height: 1.3;
+    font-size: 10px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
 }
 
 
 /* =========================================================
-   DIVIDER
+   DROPDOWN DIVIDER
 ========================================================= */
 
 .student-dropdown-divider {
-  height: 1px;
+    height: 1px;
 
-  margin: 7px 4px;
+    margin: 7px 4px;
 
-  background: #e5e7eb;
+    background: rgba(255, 255, 255, 0.09);
 }
 
 
@@ -451,59 +600,60 @@
 ========================================================= */
 
 .student-dropdown-item {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  gap: 12px;
+    gap: 12px;
 
-  width: 100%;
+    width: 100%;
 
-  padding: 11px 13px;
+    padding: 11px 13px;
 
-  border: 0;
+    border: 0;
 
-  border-radius: 9px;
+    border-radius: 10px;
 
-  background: transparent;
+    background: transparent;
 
-  color: #374151;
+    color: #c5cedc;
 
-  text-decoration: none;
+    text-decoration: none;
 
-  font-family: "Poppins", sans-serif;
+    font-family: "Poppins", sans-serif;
 
-  font-size: 14px;
-  font-weight: 500;
+    font-size: 14px;
 
-  cursor: pointer;
+    font-weight: 500;
 
-  text-align: left;
+    cursor: pointer;
 
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
+    text-align: left;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
 .student-dropdown-item:hover {
-  background: #f3f4f6;
+    background: rgba(255, 255, 255, 0.07);
 
-  color: #111827;
+    color: #ffffff;
 }
 
 .student-dropdown-item i {
-  width: 20px;
+    width: 20px;
 
-  flex-shrink: 0;
+    flex-shrink: 0;
 
-  color: #64748b;
+    color: #9da9bc;
 
-  font-size: 18px;
+    font-size: 18px;
 
-  text-align: center;
+    text-align: center;
 }
 
 .student-dropdown-item:hover i {
-  color: #7c3aed;
+    color: #a855f7;
 }
 
 
@@ -512,186 +662,27 @@
 ========================================================= */
 
 .student-logout {
-  color: #dc2626;
+    color: #f87171;
 }
 
 .student-logout i {
-  color: #dc2626;
+    color: #f87171;
 }
 
 .student-logout:hover {
-  background: #fef2f2;
+    background: rgba(239, 68, 68, 0.10);
 
-  color: #dc2626;
+    color: #f87171;
 }
 
 .student-logout:hover i {
-  color: #dc2626;
+    color: #f87171;
 }
 
 .student-logout-form {
-  display: block;
+    width: 100%;
 
-  width: 100%;
-
-  margin: 0;
-}
-
-
-/* =========================================================
-   MOBILE MENU BUTTON
-========================================================= */
-
-.mobile-menu-button {
-  display: none;
-
-  position: relative;
-
-  z-index: 100000;
-
-  width: 42px;
-  height: 42px;
-
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  padding: 0;
-
-  border: 1px solid #e5e7eb;
-
-  border-radius: 10px;
-
-  background: #ffffff;
-
-  color: #374151;
-
-  font-size: 21px;
-
-  line-height: 1;
-
-  cursor: pointer;
-
-  appearance: none;
-  -webkit-appearance: none;
-
-  touch-action: manipulation;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.mobile-menu-button:hover {
-  background: #f8fafc;
-
-  color: #6a11cb;
-
-  border-color: #d1d5db;
-}
-
-.mobile-menu-button.active {
-  background: #f3f4f6;
-
-  color: #6a11cb;
-}
-
-.mobile-menu-button:focus {
-  outline: none;
-}
-
-
-/* =========================================================
-   MOBILE NAVIGATION
-========================================================= */
-
-.mobile-navigation {
-  display: none;
-
-  position: fixed;
-
-  top: 80px;
-  left: 0;
-
-  width: 100%;
-
-  max-height: calc(100dvh - 80px);
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  overscroll-behavior: contain;
-
-  -webkit-overflow-scrolling: touch;
-
-  background: #ffffff;
-
-  border-bottom: 1px solid #e5e7eb;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-
-  z-index: 99998;
-}
-
-.mobile-navigation.open {
-  display: block;
-}
-
-.mobile-navigation ul {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 2px;
-
-  width: 100%;
-
-  margin: 0;
-
-  padding: 8px 10px 12px;
-
-  list-style: none;
-}
-
-.mobile-navigation ul li {
-  width: 100%;
-
-  margin: 0;
-  padding: 0;
-}
-
-.mobile-navigation ul li a {
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-
-  min-height: 44px;
-
-  padding: 10px 12px;
-
-  border-radius: 8px;
-
-  color: #374151;
-
-  text-decoration: none;
-
-  font-family: "Poppins", sans-serif;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.mobile-navigation ul li a:hover {
-  background: #f3f4f6;
-
-  color: #6a11cb;
+    margin: 0;
 }
 
 
@@ -700,35 +691,234 @@
 ========================================================= */
 
 .auth-btn {
-  display: inline-flex;
+    display: inline-flex;
 
-  align-items: center;
-  justify-content: center;
+    align-items: center;
+    justify-content: center;
 
-  padding: 9px 16px;
+    min-height: 44px;
 
-  border-radius: 8px;
+    padding: 0 18px;
 
-  background: #6a11cb;
+    border-radius: 25px;
 
-  color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #7135e8,
+            #9558f7
+        );
 
-  text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
-  font-size: 14px;
-  font-weight: 600;
+    color: #ffffff;
 
-  white-space: nowrap;
+    text-decoration: none;
 
-  transition: all 0.2s ease;
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 7px 22px rgba(124, 58, 237, 0.30);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .auth-btn:hover {
-  background: #550da8;
+    color: #ffffff;
 
-  color: #ffffff;
+    transform: translateY(-1px);
 
-  transform: translateY(-1px);
+    box-shadow:
+        0 10px 28px rgba(124, 58, 237, 0.45);
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu-button {
+    display: none;
+
+    position: relative;
+
+    z-index: 100000;
+
+    width: 42px;
+    height: 42px;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    color: #e5e7eb;
+
+    font-size: 20px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.mobile-menu-button:hover,
+.mobile-menu-button.active {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(113, 53, 232, 0.8),
+            rgba(149, 88, 247, 0.8)
+        );
+
+    border-color: rgba(168, 85, 247, 0.45);
+}
+
+.mobile-menu-button:focus {
+    outline: none;
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+.mobile-navigation {
+    display: none;
+
+    position: fixed;
+
+    top: 76px;
+
+    left: 10px;
+
+    width: calc(100% - 20px);
+
+    max-height: calc(100dvh - 88px);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: rgba(8, 10, 16, 0.88);
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 18px;
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.38);
+
+    z-index: 99998;
+}
+
+.mobile-navigation.open {
+    display: block;
+}
+
+.mobile-navigation ul {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    margin: 0;
+
+    padding: 9px;
+
+    list-style: none;
+}
+
+.mobile-navigation ul li {
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-navigation ul li a {
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    color: #aeb8c9;
+
+    text-decoration: none;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.mobile-navigation ul li a:hover {
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* =========================================================
+   MOBILE CONTACT ACTIVE
+========================================================= */
+
+.mobile-navigation
+li.contact-mobile-item a {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7135e8,
+            #9558f7
+        );
+
+    box-shadow:
+        0 7px 20px rgba(124, 58, 237, 0.30);
 }
 
 
@@ -738,33 +928,33 @@
 
 @media (max-width: 1100px) {
 
-  .header .container {
-    padding: 0 18px;
-  }
+    .header .container {
+        padding: 0 14px;
+    }
 
-  .header-content {
-    gap: 18px;
-  }
+    .header-content {
+        max-width: 100%;
 
-  .header .logo img {
-    width: 145px;
-  }
+        gap: 12px;
+    }
 
-  .header nav ul {
-    gap: 25px;
-  }
+    .header .logo img {
+        width: 130px;
+    }
 
-  .header nav ul li a {
-    font-size: 14px;
-  }
+    .header nav ul li a {
+        padding: 0 13px;
 
-  .student-profile-button {
-    min-width: 160px;
-  }
+        font-size: 13px;
+    }
 
-  .student-header-name {
-    max-width: 80px;
-  }
+    .student-profile-button {
+        min-width: 150px;
+    }
+
+    .student-header-name {
+        max-width: 75px;
+    }
 }
 
 
@@ -774,109 +964,77 @@
 
 @media (max-width: 850px) {
 
-  .header {
-    height: 72px;
-  }
+    .header {
+        height: 74px;
+    }
 
-  .header .container {
-    padding: 0 15px;
-  }
+    .header .container {
+        padding: 0 10px;
+    }
 
-  .header-content {
-    height: 72px;
+    .header-content {
+        width: 100%;
 
-    gap: 8px;
+        height: 58px;
 
-    justify-content: flex-start;
-  }
+        margin-top: 7px;
 
+        padding: 5px 7px;
 
-  /* -------------------------------------------------------
-     LOGO
-  ------------------------------------------------------- */
+        gap: 7px;
 
-  .header .logo {
-    order: 1;
+        border-radius: 30px;
+    }
 
-    margin-right: 0;
+    .header .logo {
+        min-width: 0;
 
-    flex: 0 1 auto;
+        flex: 0 1 auto;
+    }
 
-    min-width: 0;
-  }
+    .header .logo img {
+        width: 125px;
 
-  .header .logo img {
-    width: 135px;
+        max-height: 48px;
+    }
 
-    max-width: 100%;
-  }
+    .header nav {
+        display: none;
+    }
 
+    .mobile-menu-button {
+        display: flex;
 
-  /* -------------------------------------------------------
-     DESKTOP NAV HIDDEN
-  ------------------------------------------------------- */
+        margin-left: auto;
+    }
 
-  .header nav {
-    display: none;
-  }
+    .student-header-right {
+        margin-left: 0;
+    }
 
+    .student-profile-button {
+        width: 43px;
 
-  /* -------------------------------------------------------
-     MOBILE BUTTON
-  ------------------------------------------------------- */
+        min-width: 43px;
 
-  .mobile-menu-button {
-    display: flex;
+        height: 43px;
 
-    order: 2;
+        padding: 3px;
 
-    margin-left: auto;
-  }
+        justify-content: center;
+    }
 
+    .student-header-avatar {
+        width: 36px;
+        height: 36px;
 
-  /* -------------------------------------------------------
-     PROFILE
-  ------------------------------------------------------- */
+        min-width: 36px;
+    }
 
-  .student-header-right {
-    order: 3;
-
-    margin-left: 0;
-  }
-
-  .student-profile-button {
-    min-width: 45px;
-
-    width: 45px;
-    height: 45px;
-
-    padding: 3px;
-
-    justify-content: center;
-  }
-
-  .student-header-avatar {
-    width: 37px;
-    height: 37px;
-
-    min-width: 37px;
-  }
-
-  .student-header-name,
-  .student-dropdown-arrow {
-    display: none;
-  }
-
-
-  /* -------------------------------------------------------
-     MOBILE NAV
-  ------------------------------------------------------- */
-
-  .mobile-navigation {
-    top: 72px;
-
-    max-height: calc(100dvh - 72px);
-  }
+    .student-header-name,
+    .student-dropdown-arrow {
+        display: none;
+    }
 }
 
 
@@ -886,121 +1044,80 @@
 
 @media (max-width: 576px) {
 
-  .header {
-    height: 68px;
-  }
+    .header {
+        height: 68px;
+    }
 
-  .header .container {
-    padding: 0 12px;
-  }
+    .header .container {
+        padding: 0 8px;
+    }
 
-  .header-content {
-    height: 68px;
+    .header-content {
+        height: 54px;
 
-    gap: 7px;
-  }
+        margin-top: 7px;
 
+        gap: 5px;
 
-  /* -------------------------------------------------------
-     LOGO
-  ------------------------------------------------------- */
+        border-radius: 28px;
+    }
 
-  .header .logo img {
-    width: 120px;
+    .header .logo img {
+        width: 110px;
 
-    max-height: 52px;
-  }
+        max-height: 44px;
+    }
 
+    .mobile-menu-button {
+        width: 39px;
+        height: 39px;
 
-  /* -------------------------------------------------------
-     MOBILE BUTTON
-  ------------------------------------------------------- */
+        font-size: 18px;
+    }
 
-  .mobile-menu-button {
-    width: 40px;
-    height: 40px;
+    .student-profile-button {
+        width: 39px;
+        min-width: 39px;
 
-    font-size: 19px;
-  }
+        height: 39px;
+    }
 
+    .student-header-avatar {
+        width: 33px;
+        height: 33px;
 
-  /* -------------------------------------------------------
-     PROFILE
-  ------------------------------------------------------- */
+        min-width: 33px;
+    }
 
-  .student-profile-button {
-    width: 40px;
-    height: 40px;
+    .mobile-navigation {
+        top: 68px;
 
-    padding: 2px;
-  }
+        left: 8px;
 
-  .student-header-avatar {
-    width: 34px;
-    height: 34px;
+        width: calc(100% - 16px);
 
-    min-width: 34px;
+        max-height: calc(100dvh - 78px);
+    }
 
-    font-size: 16px;
-  }
+    .auth-btn {
+        min-height: 39px;
 
+        padding: 0 10px;
 
-  /* -------------------------------------------------------
-     MOBILE NAV
-  ------------------------------------------------------- */
+        font-size: 11px;
+    }
 
-  .mobile-navigation {
-    top: 68px;
+    .student-dropdown-menu {
+        position: fixed;
 
-    max-height: calc(100dvh - 68px);
+        top: 72px;
 
-    padding: 0;
+        right: 8px;
 
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+        width: 300px;
 
-  .mobile-navigation ul {
-    gap: 1px;
-
-    padding: 7px 10px 12px;
-  }
-
-  .mobile-navigation ul li a {
-    min-height: 42px;
-
-    padding: 9px 12px;
-
-    font-size: 14px;
-  }
-
-
-  /* -------------------------------------------------------
-     PROFILE DROPDOWN
-  ------------------------------------------------------- */
-
-  .student-dropdown-menu {
-    position: fixed;
-
-    top: 74px;
-    right: 10px;
-    left: auto;
-
-    width: 300px;
-
-    max-width: calc(100vw - 20px);
-  }
-
-
-  /* -------------------------------------------------------
-     LOGIN
-  ------------------------------------------------------- */
-
-  .auth-btn {
-    padding: 8px 11px;
-
-    font-size: 12px;
-  }
+        max-width: calc(100vw - 16px);
+    }
 }
 
 
@@ -1010,62 +1127,74 @@
 
 @media (max-width: 400px) {
 
-  .header .logo img {
-    width: 105px;
-  }
+    .header .logo img {
+        width: 100px;
+    }
 
-  .header-content {
-    gap: 6px;
-  }
+    .header-content {
+        gap: 4px;
+    }
 
-  .mobile-menu-button {
-    width: 38px;
-    height: 38px;
-  }
+    .mobile-menu-button {
+        width: 37px;
+        height: 37px;
+    }
 
-  .student-profile-button {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
+    .student-profile-button {
+        width: 37px;
+        min-width: 37px;
 
-  .student-header-avatar {
-    width: 32px;
-    height: 32px;
+        height: 37px;
+    }
 
-    min-width: 32px;
-  }
+    .student-header-avatar {
+        width: 31px;
+        height: 31px;
 
-  .student-dropdown-menu {
-    top: 72px;
+        min-width: 31px;
+    }
 
-    right: 8px;
+    .student-dropdown-menu {
+        top: 70px;
 
-    width: calc(100vw - 16px);
-    max-width: calc(100vw - 16px);
-  }
+        right: 7px;
 
-  .student-dropdown-user {
-    padding: 11px 9px;
-  }
+        width: calc(100vw - 14px);
+
+        max-width: calc(100vw - 14px);
+    }
 }
 
 
 /* =========================================================
-   FORCE MOBILE NAVIGATION HIDDEN ON DESKTOP
+   FORCE MOBILE NAV HIDDEN ON DESKTOP
 ========================================================= */
 
 @media (min-width: 851px) {
 
-  .mobile-navigation,
-  .mobile-navigation.open {
-    display: none !important;
-  }
-
+    .mobile-navigation,
+    .mobile-navigation.open {
+        display: none !important;
+    }
 }
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .header-content,
+    .header nav ul li a,
+    .student-profile-button,
+    .student-dropdown-menu,
+    .mobile-menu-button {
+        transition: none !important;
+    }
+}
+
 </style>
-
-
 <!-- =========================================================
      HEADER
 ========================================================= -->
@@ -1083,7 +1212,7 @@
 
       <%= link_to homepage_path, class: "logo" do %>
 
-        <%= image_tag "Coaching_logo.jpeg",
+        <%= image_tag "logo.jpeg",
             alt: "A One GS Center" %>
 
       <% end %>
@@ -1098,12 +1227,18 @@
         <ul>
 
           <li>
-            <%= link_to "Home", homepage_path %>
+            <%= link_to "Home",
+                homepage_path %>
           </li>
 
           <li>
             <%= link_to "Courses",
                 homepage_path(anchor: "courses") %>
+          </li>
+
+          <li class="contact-nav-item">
+            <%= link_to "Contact Us",
+                homepage_path(anchor: "contact") %>
           </li>
 
           <li>
@@ -1122,7 +1257,7 @@
 
 
       <!-- =====================================================
-           MOBILE MENU BUTTON
+           MOBILE MENU
       ====================================================== -->
 
       <button
@@ -1146,9 +1281,6 @@
         <div class="student-header-right">
 
           <div class="student-profile-dropdown">
-
-
-            <!-- PROFILE BUTTON -->
 
             <button
               type="button"
@@ -1182,7 +1314,9 @@
             </button>
 
 
-            <!-- PROFILE DROPDOWN -->
+            <!-- =================================================
+                 PROFILE DROPDOWN
+            ================================================== -->
 
             <div
               class="student-dropdown-menu"
@@ -1227,8 +1361,6 @@
               <div class="student-dropdown-divider"></div>
 
 
-              <!-- PROFILE -->
-
               <%= link_to student_profile_path,
                   class: "student-dropdown-item" do %>
 
@@ -1238,8 +1370,6 @@
 
               <% end %>
 
-
-              <!-- DASHBOARD -->
 
               <%= link_to student_dashboard_path,
                   class: "student-dropdown-item" do %>
@@ -1253,8 +1383,6 @@
 
               <div class="student-dropdown-divider"></div>
 
-
-              <!-- LOGOUT -->
 
               <%= button_to destroy_user_session_path,
                   method: :delete,
@@ -1282,7 +1410,6 @@
 
       <% end %>
 
-
     </div>
 
   </div>
@@ -1301,12 +1428,18 @@
   <ul>
 
     <li>
-      <%= link_to "Home", homepage_path %>
+      <%= link_to "Home",
+          homepage_path %>
     </li>
 
     <li>
       <%= link_to "Courses",
           homepage_path(anchor: "courses") %>
+    </li>
+
+    <li class="contact-mobile-item">
+      <%= link_to "Contact Us",
+          homepage_path(anchor: "contact") %>
     </li>
 
     <li>
@@ -1324,354 +1457,349 @@
 </nav>
 
 
-
 <script>
+
 (function () {
 
-  /* =========================================================
-     PREVENT DUPLICATE INITIALIZATION
-  ========================================================= */
+    /* =====================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ===================================================== */
 
-  if (window.studentHeaderInitialized) {
-    return;
-  }
-
-  window.studentHeaderInitialized = true;
-
-
-  /* =========================================================
-     GET ELEMENTS
-  ========================================================= */
-
-  function getElements() {
-
-    return {
-      profileButton:
-        document.getElementById("studentProfileButton"),
-
-      profileMenu:
-        document.getElementById("studentProfileMenu"),
-
-      mobileButton:
-        document.getElementById("mobileMenuButton"),
-
-      mobileNavigation:
-        document.getElementById("mobileNavigation")
-    };
-
-  }
-
-
-  /* =========================================================
-     CLOSE PROFILE
-  ========================================================= */
-
-  function closeProfile() {
-
-    const {
-      profileButton,
-      profileMenu
-    } = getElements();
-
-    if (!profileButton || !profileMenu) {
-      return;
+    if (window.studentHeaderInitialized) {
+        return;
     }
 
-    profileMenu.classList.remove("open");
-
-    profileButton.classList.remove("active");
-
-    profileButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-  }
+    window.studentHeaderInitialized = true;
 
 
-  /* =========================================================
-     CLOSE MOBILE MENU
-  ========================================================= */
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-  function closeMobile() {
+    function getElements() {
 
-    const {
-      mobileButton,
-      mobileNavigation
-    } = getElements();
+        return {
 
-    if (!mobileButton || !mobileNavigation) {
-      return;
+            profileButton:
+                document.getElementById(
+                    "studentProfileButton"
+                ),
+
+            profileMenu:
+                document.getElementById(
+                    "studentProfileMenu"
+                ),
+
+            mobileButton:
+                document.getElementById(
+                    "mobileMenuButton"
+                ),
+
+            mobileNavigation:
+                document.getElementById(
+                    "mobileNavigation"
+                )
+
+        };
+
     }
 
-    mobileNavigation.classList.remove("open");
 
-    mobileButton.classList.remove("active");
+    /* =====================================================
+       CLOSE PROFILE
+    ===================================================== */
 
-    mobileButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
+    function closeProfile() {
 
-    mobileButton.setAttribute(
-      "aria-label",
-      "Open navigation menu"
-    );
+        const {
+            profileButton,
+            profileMenu
+        } = getElements();
 
-    const icon =
-      mobileButton.querySelector("i");
-
-    if (icon) {
-      icon.className = "bi bi-list";
-    }
-
-  }
-
-
-  /* =========================================================
-     PROFILE BUTTON
-     
-     EVENT DELEGATION
-     
-     This works correctly with Rails Turbo.
-  ========================================================= */
-
-  document.addEventListener(
-    "click",
-    function (event) {
-
-      const profileButton =
-        event.target.closest(
-          "#studentProfileButton"
-        );
-
-      if (!profileButton) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-
-      const profileMenu =
-        document.getElementById(
-          "studentProfileMenu"
-        );
-
-      if (!profileMenu) {
-        return;
-      }
-
-
-      const isOpen =
-        profileMenu.classList.contains("open");
-
-
-      /* Close mobile menu */
-
-      closeMobile();
-
-
-      /* Toggle profile */
-
-      if (isOpen) {
-
-        closeProfile();
-
-      } else {
-
-        profileMenu.classList.add("open");
-
-        profileButton.classList.add("active");
-
-        profileButton.setAttribute(
-          "aria-expanded",
-          "true"
-        );
-
-      }
-
-    },
-    true
-  );
-
-
-  /* =========================================================
-     MOBILE MENU BUTTON
-  ========================================================= */
-
-  document.addEventListener(
-    "click",
-    function (event) {
-
-      const mobileButton =
-        event.target.closest(
-          "#mobileMenuButton"
-        );
-
-      if (!mobileButton) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-
-      const mobileNavigation =
-        document.getElementById(
-          "mobileNavigation"
-        );
-
-      if (!mobileNavigation) {
-        return;
-      }
-
-
-      const isOpen =
-        mobileNavigation.classList.contains("open");
-
-
-      /* Close profile */
-
-      closeProfile();
-
-
-      if (isOpen) {
-
-        closeMobile();
-
-      } else {
-
-        mobileNavigation.classList.add("open");
-
-        mobileButton.classList.add("active");
-
-        mobileButton.setAttribute(
-          "aria-expanded",
-          "true"
-        );
-
-        mobileButton.setAttribute(
-          "aria-label",
-          "Close navigation menu"
-        );
-
-
-        const icon =
-          mobileButton.querySelector("i");
-
-        if (icon) {
-          icon.className = "bi bi-x-lg";
+        if (!profileButton || !profileMenu) {
+            return;
         }
 
-      }
+        profileMenu.classList.remove("open");
 
-    },
-    true
-  );
+        profileButton.classList.remove("active");
 
-
-  /* =========================================================
-     CLICK OUTSIDE
-  ========================================================= */
-
-  document.addEventListener(
-    "click",
-    function (event) {
-
-      const profileDropdown =
-        event.target.closest(
-          ".student-profile-dropdown"
+        profileButton.setAttribute(
+            "aria-expanded",
+            "false"
         );
 
-      const mobileNavigation =
-        event.target.closest(
-          "#mobileNavigation"
+    }
+
+
+    /* =====================================================
+       CLOSE MOBILE
+    ===================================================== */
+
+    function closeMobile() {
+
+        const {
+            mobileButton,
+            mobileNavigation
+        } = getElements();
+
+        if (!mobileButton || !mobileNavigation) {
+            return;
+        }
+
+        mobileNavigation.classList.remove("open");
+
+        mobileButton.classList.remove("active");
+
+        mobileButton.setAttribute(
+            "aria-expanded",
+            "false"
         );
 
-      const mobileButton =
-        event.target.closest(
-          "#mobileMenuButton"
+        mobileButton.setAttribute(
+            "aria-label",
+            "Open navigation menu"
         );
 
+        const icon =
+            mobileButton.querySelector("i");
 
-      /* Profile */
+        if (icon) {
 
-      if (!profileDropdown) {
-        closeProfile();
-      }
+            icon.className =
+                "bi bi-list";
 
-
-      /* Mobile */
-
-      if (
-        !mobileNavigation &&
-        !mobileButton
-      ) {
-        closeMobile();
-      }
+        }
 
     }
-  );
 
 
-  /* =========================================================
-     ESCAPE
-  ========================================================= */
+    /* =====================================================
+       PROFILE BUTTON
+    ===================================================== */
 
-  document.addEventListener(
-    "keydown",
-    function (event) {
+    document.addEventListener(
+        "click",
+        function (event) {
 
-      if (event.key !== "Escape") {
-        return;
-      }
+            const button =
+                event.target.closest(
+                    "#studentProfileButton"
+                );
 
-      closeProfile();
+            if (!button) {
+                return;
+            }
 
-      closeMobile();
+            event.preventDefault();
 
-    }
-  );
+            event.stopPropagation();
+
+            const menu =
+                document.getElementById(
+                    "studentProfileMenu"
+                );
+
+            if (!menu) {
+                return;
+            }
+
+            const isOpen =
+                menu.classList.contains("open");
+
+            closeMobile();
+
+            if (isOpen) {
+
+                closeProfile();
+
+            } else {
+
+                menu.classList.add("open");
+
+                button.classList.add("active");
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            }
+
+        },
+        true
+    );
 
 
-  /* =========================================================
-     MOBILE NAV LINKS
-  ========================================================= */
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
 
-  document.addEventListener(
-    "click",
-    function (event) {
+    document.addEventListener(
+        "click",
+        function (event) {
 
-      const link =
-        event.target.closest(
-          "#mobileNavigation a"
-        );
+            const button =
+                event.target.closest(
+                    "#mobileMenuButton"
+                );
 
-      if (!link) {
-        return;
-      }
+            if (!button) {
+                return;
+            }
 
-      closeMobile();
+            event.preventDefault();
 
-    }
-  );
+            event.stopPropagation();
+
+            const navigation =
+                document.getElementById(
+                    "mobileNavigation"
+                );
+
+            if (!navigation) {
+                return;
+            }
+
+            const isOpen =
+                navigation.classList.contains(
+                    "open"
+                );
+
+            closeProfile();
+
+            if (isOpen) {
+
+                closeMobile();
+
+            } else {
+
+                navigation.classList.add("open");
+
+                button.classList.add("active");
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                button.setAttribute(
+                    "aria-label",
+                    "Close navigation menu"
+                );
+
+                const icon =
+                    button.querySelector("i");
+
+                if (icon) {
+
+                    icon.className =
+                        "bi bi-x-lg";
+
+                }
+
+            }
+
+        },
+        true
+    );
 
 
-  /* =========================================================
-     RESIZE
-  ========================================================= */
+    /* =====================================================
+       CLICK OUTSIDE
+    ===================================================== */
 
-  window.addEventListener(
-    "resize",
-    function () {
+    document.addEventListener(
+        "click",
+        function (event) {
 
-      if (window.innerWidth > 850) {
-        closeMobile();
-      }
+            const profile =
+                event.target.closest(
+                    ".student-profile-dropdown"
+                );
 
-    }
-  );
+            const mobile =
+                event.target.closest(
+                    "#mobileNavigation"
+                );
+
+            const mobileButton =
+                event.target.closest(
+                    "#mobileMenuButton"
+                );
+
+
+            if (!profile) {
+                closeProfile();
+            }
+
+
+            if (!mobile && !mobileButton) {
+                closeMobile();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       ESCAPE
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key !== "Escape") {
+                return;
+            }
+
+            closeProfile();
+
+            closeMobile();
+
+        }
+    );
+
+
+    /* =====================================================
+       MOBILE LINKS
+    ===================================================== */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const link =
+                event.target.closest(
+                    "#mobileNavigation a"
+                );
+
+            if (!link) {
+                return;
+            }
+
+            closeMobile();
+
+        }
+    );
+
+
+    /* =====================================================
+       RESIZE
+    ===================================================== */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (window.innerWidth > 850) {
+                closeMobile();
+            }
+
+        }
+    );
 
 })();
+
 </script>

@@ -6,12 +6,7 @@
 
   <div class="footer-container">
 
-    <!-- =====================================================
-         FOOTER CONTENT
-    ====================================================== -->
-
     <div class="footer-content">
-
 
       <!-- ===================================================
            FOLLOW US
@@ -28,53 +23,54 @@
 
         <div class="social-icons">
 
+          <!-- FACEBOOK -->
           <a
             href="https://www.facebook.com/profile.php?id=100013438546373"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook">
 
-            <i class="fab fa-facebook-f"></i>
+            <i class="bi bi-facebook"></i>
 
           </a>
 
-
+          <!-- TWITTER / X -->
           <a
             href="#"
             aria-label="Twitter">
 
-            <i class="fab fa-twitter"></i>
+            <i class="bi bi-twitter-x"></i>
 
           </a>
 
-
+          <!-- INSTAGRAM -->
           <a
             href="https://www.instagram.com/atsir_fan_club?igsh=Z2VxdXVoNndyM2w0"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram">
 
-            <i class="fab fa-instagram"></i>
+            <i class="bi bi-instagram"></i>
 
           </a>
 
-
+          <!-- LINKEDIN -->
           <a
             href="#"
             aria-label="LinkedIn">
 
-            <i class="fab fa-linkedin-in"></i>
+            <i class="bi bi-linkedin"></i>
 
           </a>
 
-
+          <!-- YOUTUBE -->
           <a
             href="https://www.youtube.com/@AONEGS77"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="YouTube">
 
-            <i class="fab fa-youtube"></i>
+            <i class="bi bi-youtube"></i>
 
           </a>
 
@@ -95,35 +91,35 @@
 
           <li>
             <%= link_to homepage_path(anchor: "home") do %>
-              <i class="fas fa-angle-right"></i>
+              <i class="bi bi-chevron-right"></i>
               Home
             <% end %>
           </li>
 
           <li>
             <%= link_to homepage_path(anchor: "courses") do %>
-              <i class="fas fa-angle-right"></i>
+              <i class="bi bi-chevron-right"></i>
               Courses
             <% end %>
           </li>
 
           <li>
             <%= link_to homepage_path(anchor: "gallery") do %>
-              <i class="fas fa-angle-right"></i>
+              <i class="bi bi-chevron-right"></i>
               Gallery
             <% end %>
           </li>
 
           <li>
             <%= link_to homepage_path(anchor: "teachers") do %>
-              <i class="fas fa-angle-right"></i>
+              <i class="bi bi-chevron-right"></i>
               Teachers
             <% end %>
           </li>
 
           <li>
             <%= link_to homepage_path(anchor: "resources") do %>
-              <i class="fas fa-angle-right"></i>
+              <i class="bi bi-chevron-right"></i>
               Resources
             <% end %>
           </li>
@@ -141,11 +137,12 @@
 
         <h3>Contact Info</h3>
 
+        <!-- ADDRESS -->
 
         <div class="contact-info">
 
           <div class="contact-icon">
-            <i class="fas fa-map-marker-alt"></i>
+            <i class="bi bi-geo-alt-fill"></i>
           </div>
 
           <div class="contact-text">
@@ -165,10 +162,12 @@
         </div>
 
 
+        <!-- PHONE -->
+
         <div class="contact-info">
 
           <div class="contact-icon">
-            <i class="fas fa-phone"></i>
+            <i class="bi bi-telephone-fill"></i>
           </div>
 
           <div class="contact-text">
@@ -184,10 +183,12 @@
         </div>
 
 
+        <!-- EMAIL -->
+
         <div class="contact-info">
 
           <div class="contact-icon">
-            <i class="fas fa-envelope"></i>
+            <i class="bi bi-envelope-fill"></i>
           </div>
 
           <div class="contact-text">
@@ -203,7 +204,6 @@
         </div>
 
       </div>
-
 
     </div>
 
@@ -228,37 +228,31 @@
 
 <style>
 
+<style>
+
 /* =========================================================
-   FOOTER
+   FOOTER — CONTACT US STYLE
 ========================================================= */
 
 .site-footer {
-
   width: 100%;
-
   margin-top: 50px;
-
-  background: #111827;
-
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   color: #ffffff;
-
+  position: relative;
+  overflow: hidden;
 }
 
 
 /* =========================================================
-   CONTAINER
+   FOOTER CONTAINER
 ========================================================= */
 
 .footer-container {
-
   width: 100%;
-
   max-width: 1400px;
-
   margin: 0 auto;
-
   padding: 0 30px;
-
 }
 
 
@@ -267,16 +261,9 @@
 ========================================================= */
 
 .footer-content {
-
   display: grid;
-
-  grid-template-columns:
-    1.2fr
-    1fr
-    1.4fr;
-
-  gap: 60px;
-
+  grid-template-columns: 1.25fr 1fr 1.35fr;
+  gap: 35px;
   padding: 55px 0 45px;
 }
 
@@ -286,60 +273,58 @@
 ========================================================= */
 
 .footer-section {
-
   min-width: 0;
-
-}
-
-
-.footer-section h3 {
-
-  margin: 0 0 20px;
-
-  color: #ffffff;
-
-  font-size: 18px;
-
-  font-weight: 700;
-
-}
-
-
-.footer-section h3::after {
-
-  content: "";
-
-  display: block;
-
-  width: 35px;
-
-  height: 3px;
-
-  margin-top: 8px;
-
-  background: #6a11cb;
-
-  border-radius: 5px;
-
 }
 
 
 /* =========================================================
-   DESCRIPTION
+   SECTION HEADING
+========================================================= */
+
+.footer-section h3 {
+  position: relative;
+  margin: 0 0 24px;
+  padding-bottom: 12px;
+
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.2px;
+}
+
+
+/* Heading underline */
+
+.footer-section h3::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 45px;
+  height: 4px;
+
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   FOOTER DESCRIPTION
 ========================================================= */
 
 .footer-description {
+  max-width: 360px;
 
-  max-width: 330px;
+  margin: 0 0 24px;
 
-  margin: 0 0 20px;
+  color: rgba(255, 255, 255, 0.90);
 
-  color: #9ca3af;
-
-  font-size: 14px;
-
-  line-height: 1.7;
-
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.75;
 }
 
 
@@ -348,61 +333,54 @@
 ========================================================= */
 
 .social-icons {
-
   display: flex;
-
   align-items: center;
-
   flex-wrap: wrap;
-
-  gap: 10px;
-
+  gap: 11px;
 }
 
 
 .social-icons a {
-
-  width: 40px;
-
-  height: 40px;
+  width: 44px;
+  height: 44px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
-  border-radius: 50%;
+  border-radius: 12px;
 
-  background: #1f2937;
+  background: rgba(255, 255, 255, 0.14);
 
-  border: 1px solid #374151;
+  border: 1px solid rgba(255, 255, 255, 0.30);
 
   color: #ffffff;
 
   text-decoration: none;
 
-  font-size: 15px;
+  font-size: 18px;
+  font-weight: 700;
+
+  backdrop-filter: blur(8px);
 
   transition:
     transform 0.25s ease,
     background 0.25s ease,
-    color 0.25s ease,
+    box-shadow 0.25s ease,
     border-color 0.25s ease;
-
 }
 
 
 .social-icons a:hover {
+  transform: translateY(-5px);
 
-  transform: translateY(-4px);
+  background: #ffffff;
 
-  background: #6a11cb;
+  color: #6a11cb;
 
-  border-color: #6a11cb;
+  border-color: #ffffff;
 
-  color: #ffffff;
-
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 
@@ -411,139 +389,155 @@
 ========================================================= */
 
 .footer-links {
-
   margin: 0;
-
   padding: 0;
 
   list-style: none;
-
 }
 
 
 .footer-links li {
-
-  margin-bottom: 11px;
-
+  margin-bottom: 13px;
 }
 
 
 .footer-links a {
-
   display: inline-flex;
-
   align-items: center;
 
-  gap: 9px;
+  gap: 10px;
 
-  color: #9ca3af;
+  color: #ffffff;
 
   text-decoration: none;
 
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 700;
 
   transition:
     color 0.2s ease,
     transform 0.2s ease;
-
 }
 
 
 .footer-links a i {
+  width: 20px;
 
-  font-size: 12px;
+  font-size: 13px;
 
-  color: #6a11cb;
+  color: #ffffff;
 
+  transition: transform 0.2s ease;
 }
 
 
 .footer-links a:hover {
-
   color: #ffffff;
 
-  transform: translateX(4px);
+  transform: translateX(5px);
+}
 
+
+.footer-links a:hover i {
+  transform: translateX(3px);
 }
 
 
 /* =========================================================
-   CONTACT
+   CONTACT INFO
 ========================================================= */
 
 .contact-info {
-
   display: flex;
-
   align-items: flex-start;
 
-  gap: 13px;
+  gap: 14px;
 
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
 }
 
 
+.contact-info:hover {
+  background: rgba(255, 255, 255, 0.17);
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CONTACT ICON
+========================================================= */
+
 .contact-icon {
+  width: 40px;
+  height: 40px;
 
-  width: 34px;
-
-  height: 34px;
-
-  min-width: 34px;
+  min-width: 40px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
-  border-radius: 8px;
+  border-radius: 10px;
 
-  background: #1f2937;
+  background: #ffffff;
 
-  color: #a78bfa;
+  color: #6a11cb;
 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 
 .contact-icon i {
-
-  font-size: 14px;
-
+  font-size: 17px;
+  font-weight: 800;
 }
 
 
+/* =========================================================
+   CONTACT TEXT
+========================================================= */
+
 .contact-text {
-
   min-width: 0;
-
+  flex: 1;
 }
 
 
 .contact-text a {
-
   display: block;
 
-  color: #9ca3af;
+  color: #ffffff;
 
   text-decoration: none;
 
   font-size: 14px;
+  font-weight: 700;
 
-  line-height: 1.6;
+  line-height: 1.65;
 
   word-break: break-word;
 
   transition: color 0.2s ease;
-
 }
 
 
 .contact-text a:hover {
-
   color: #ffffff;
 
+  text-decoration: underline;
 }
 
 
@@ -552,26 +546,23 @@
 ========================================================= */
 
 .footer-bottom {
+  padding: 22px 10px;
 
-  padding: 20px 0;
-
-  border-top: 1px solid #283242;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
 
   text-align: center;
-
 }
 
 
 .footer-bottom p {
-
   margin: 0;
 
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.90);
 
   font-size: 13px;
+  font-weight: 700;
 
   line-height: 1.6;
-
 }
 
 
@@ -582,29 +573,26 @@
 @media (max-width: 992px) {
 
   .footer-container {
-
     padding: 0 25px;
-
   }
 
 
   .footer-content {
+    grid-template-columns: 1fr 1fr;
 
-    grid-template-columns:
-      1fr
-      1fr;
-
-    gap: 40px;
+    gap: 30px;
 
     padding: 45px 0 35px;
-
   }
 
 
   .footer-social {
-
     grid-column: 1 / -1;
+  }
 
+
+  .footer-description {
+    max-width: 600px;
   }
 
 }
@@ -617,73 +605,51 @@
 @media (max-width: 768px) {
 
   .site-footer {
-
     margin-top: 35px;
-
   }
 
 
   .footer-container {
-
     padding: 0 20px;
-
   }
 
 
   .footer-content {
-
     grid-template-columns: 1fr;
 
-    gap: 35px;
+    gap: 32px;
 
     padding: 40px 0 30px;
-
   }
 
 
   .footer-social {
-
     grid-column: auto;
-
   }
 
 
   .footer-section h3 {
+    font-size: 19px;
 
-    font-size: 17px;
-
-    margin-bottom: 16px;
-
+    margin-bottom: 20px;
   }
 
 
   .footer-description {
-
     max-width: 100%;
 
+    font-size: 14px;
+  }
+
+
+  .contact-info {
+    padding: 11px;
   }
 
 
   .social-icons a {
-
-    width: 38px;
-
-    height: 38px;
-
-  }
-
-
-  .footer-bottom {
-
-    padding: 18px 10px;
-
-  }
-
-
-  .footer-bottom p {
-
-    font-size: 12px;
-
+    width: 42px;
+    height: 42px;
   }
 
 }
@@ -696,75 +662,79 @@
 @media (max-width: 480px) {
 
   .footer-container {
-
     padding: 0 16px;
-
   }
 
 
   .footer-content {
-
-    gap: 30px;
+    gap: 28px;
 
     padding: 35px 0 25px;
-
   }
 
 
   .footer-section h3 {
+    font-size: 18px;
+  }
 
-    font-size: 16px;
 
+  .footer-description {
+    font-size: 13px;
   }
 
 
   .footer-links a {
-
-    font-size: 13px;
-
-  }
-
-
-  .contact-text a {
-
-    font-size: 13px;
-
+    font-size: 14px;
   }
 
 
   .contact-info {
-
     gap: 10px;
 
+    padding: 10px;
   }
 
 
   .contact-icon {
+    width: 36px;
+    height: 36px;
 
-    width: 32px;
+    min-width: 36px;
+  }
 
-    height: 32px;
 
-    min-width: 32px;
+  .contact-icon i {
+    font-size: 15px;
+  }
 
+
+  .contact-text a {
+    font-size: 13px;
   }
 
 
   .social-icons {
-
     gap: 8px;
-
   }
 
 
   .social-icons a {
+    width: 39px;
+    height: 39px;
 
-    width: 36px;
+    border-radius: 10px;
 
-    height: 36px;
+    font-size: 16px;
+  }
 
-    font-size: 14px;
 
+  .footer-bottom {
+    padding: 18px 8px;
+  }
+
+
+  .footer-bottom p {
+    font-size: 11px;
   }
 
 }
@@ -777,18 +747,33 @@
 @media (max-width: 360px) {
 
   .footer-container {
-
     padding: 0 12px;
+  }
 
+
+  .footer-section h3 {
+    font-size: 17px;
+  }
+
+
+  .contact-text a {
+    font-size: 12px;
+  }
+
+
+  .social-icons a {
+    width: 37px;
+    height: 37px;
+
+    font-size: 15px;
   }
 
 
   .footer-bottom p {
-
-    font-size: 11px;
-
+    font-size: 10px;
   }
 
 }
 
+</style>
 </style>

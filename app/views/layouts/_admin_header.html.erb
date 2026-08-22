@@ -11,22 +11,28 @@
   left: 260px;
 
   width: auto;
-
   height: 80px;
 
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
 
   padding: 0 30px;
 
-  background: darkorchid;
+  /* Transparent Glass Header */
+  background: rgba(15, 23, 42, 0.72);
 
-  border-bottom: 1px solid #e9ecef;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 
-  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+
+  z-index: 9999;
+
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 
@@ -44,7 +50,7 @@
 .admin-navbar-left h4 {
   margin: 0;
 
-  color: #172033;
+  color: #ffffff !important;
 
   font-size: 20px;
   font-weight: 700;
@@ -57,6 +63,47 @@
 
 
 /* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.admin-mobile-menu {
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition: all 0.25s ease;
+}
+
+.admin-mobile-menu:hover {
+  background: rgba(255, 255, 255, 0.18);
+
+  transform: scale(1.05);
+}
+
+.admin-mobile-menu i {
+  font-size: 19px;
+}
+
+
+/* =========================================================
    RIGHT SIDE
 ========================================================= */
 
@@ -64,7 +111,7 @@
   display: flex;
   align-items: center;
 
-  gap: 18px;
+  gap: 12px;
 
   flex-shrink: 0;
 }
@@ -81,30 +128,32 @@
   display: flex;
   align-items: center;
 
-  background: #f6f7f9;
+  background: rgba(255, 255, 255, 0.08);
 
-  border: 1px solid #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
-  border-radius: 10px;
+  border-radius: 12px;
 
   padding: 0 14px;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   transition: all 0.2s ease;
 }
 
 .admin-search:focus-within {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
 
-  border-color: #6366f1;
+  border-color: rgba(255, 255, 255, 0.25);
 
-  box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.10);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
 }
 
 .admin-search i {
   margin-right: 10px;
 
-  color: #8b95a5;
+  color: rgba(255, 255, 255, 0.65);
 
   font-size: 14px;
 
@@ -119,13 +168,13 @@
 
   background: transparent;
 
-  color: #343a40;
+  color: #ffffff;
 
   font-size: 14px;
 }
 
 .admin-search input::placeholder {
-  color: #9aa3b2;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 
@@ -143,9 +192,16 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  border-radius: 12px;
 
   cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   transition: all 0.2s ease;
 
@@ -153,11 +209,13 @@
 }
 
 .admin-notification:hover {
-  background: #f4f6f8;
+  background: rgba(255, 255, 255, 0.15);
+
+  transform: scale(1.04);
 }
 
 .admin-notification i {
-  color: #566174;
+  color: #ffffff;
 
   font-size: 18px;
 }
@@ -170,8 +228,8 @@
 .notification-badge {
   position: absolute;
 
-  top: 1px;
-  right: 1px;
+  top: -2px;
+  right: -2px;
 
   min-width: 17px;
   height: 17px;
@@ -182,11 +240,11 @@
   align-items: center;
   justify-content: center;
 
-  background: #dc3545;
+  background: #ef4444;
 
   color: #ffffff;
 
-  border: 2px solid #ffffff;
+  border: 2px solid #0f172a;
 
   border-radius: 50%;
 
@@ -198,7 +256,7 @@
 
 
 /* =========================================================
-   PROFILE DROPDOWN CONTAINER
+   PROFILE WRAPPER
 ========================================================= */
 
 .admin-profile-wrapper {
@@ -226,7 +284,7 @@
 
   background: transparent;
 
-  color: #172033;
+  color: #ffffff;
 
   cursor: pointer;
 
@@ -234,32 +292,30 @@
 }
 
 .admin-profile:hover {
-  background: #f6f7f9;
+  background: rgba(255, 255, 255, 0.08);
 
-  border-color: #e9ecef;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .admin-profile:focus {
   outline: none;
 
-  background: #f6f7f9;
+  background: rgba(255, 255, 255, 0.10);
 
-  border-color: #6366f1;
+  border-color: rgba(255, 255, 255, 0.18);
 
-  box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.10);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
 }
-
-
-/* Remove Bootstrap arrow if desired */
 
 .admin-profile::after {
   margin-left: 3px;
+
+  color: rgba(255, 255, 255, 0.65);
 }
 
 
 /* =========================================================
-   ADMIN AVATAR
+   AVATAR
 ========================================================= */
 
 .admin-avatar {
@@ -276,11 +332,13 @@
 
   border-radius: 50%;
 
-  background: #eef2ff;
+  background: rgba(255, 255, 255, 0.12);
 
-  color: #4f46e5;
+  color: #ffffff;
 
   font-size: 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .admin-avatar-image {
@@ -321,7 +379,7 @@
 
   white-space: nowrap;
 
-  color: #172033;
+  color: #ffffff !important;
 
   font-size: 14px;
   font-weight: 600;
@@ -330,7 +388,7 @@
 .admin-user-info small {
   margin-top: 3px;
 
-  color: #8b95a5;
+  color: rgba(255, 255, 255, 0.60);
 
   font-size: 11px;
 
@@ -353,12 +411,13 @@
 
   border-radius: 12px;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.98);
 
-  box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
 
   overflow: hidden;
+
+  z-index: 10000;
 }
 
 
@@ -403,6 +462,17 @@
 
 .admin-dropdown .dropdown-item:hover i {
   color: #4f46e5;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.admin-dropdown .dropdown-divider {
+  margin: 7px 4px;
+
+  border-color: #e9ecef;
 }
 
 
@@ -457,7 +527,7 @@
   }
 
   .admin-navbar-right {
-    gap: 12px;
+    gap: 8px;
   }
 
   .admin-search {
@@ -487,7 +557,7 @@
   }
 
   .admin-navbar-right {
-    gap: 8px;
+    gap: 6px;
   }
 
   .admin-search {
@@ -514,13 +584,9 @@
 
     min-width: 40px;
   }
-
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -539,7 +605,34 @@
 
     padding: 0 12px;
 
-    z-index: 1000;
+    background: rgba(15, 23, 42, 0.78);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+    z-index: 9999;
+  }
+
+
+  /* =======================================================
+     MOBILE MENU
+  ======================================================== */
+
+  .admin-mobile-menu {
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    display: flex;
+
+    transform: translateY(-50%);
+  }
+
+  .admin-mobile-menu:hover {
+    transform: translateY(-50%) scale(1.05);
   }
 
 
@@ -552,9 +645,6 @@
 
     min-width: 0;
 
-    /*
-      Space for hamburger button
-    */
     padding-left: 55px;
   }
 
@@ -563,9 +653,7 @@
 
     font-size: 17px;
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: #ffffff !important;
   }
 
 
@@ -657,7 +745,6 @@
 
     margin-top: 8px !important;
   }
-
 }
 
 
@@ -671,6 +758,10 @@
     padding: 0 9px;
   }
 
+  .admin-navbar-left {
+    padding-left: 52px;
+  }
+
   .admin-navbar-left h4 {
     max-width: 125px;
 
@@ -679,6 +770,10 @@
 
   .admin-navbar-right {
     gap: 2px;
+  }
+
+  .admin-mobile-menu {
+    left: 9px;
   }
 
   .admin-notification {
@@ -705,9 +800,6 @@
   }
 }
 
-
-
-
 </style>
 
 
@@ -716,6 +808,22 @@
 ========================================================= -->
 
 <nav class="admin-navbar">
+
+
+  <!-- =======================================================
+       MOBILE MENU BUTTON
+  ======================================================== -->
+
+  <button
+    type="button"
+    class="admin-mobile-menu"
+    id="adminMobileMenuButton"
+    aria-label="Toggle menu"
+    aria-expanded="false">
+
+    <i class="fas fa-bars"></i>
+
+  </button>
 
 
   <!-- =======================================================
@@ -794,14 +902,12 @@
 
       <div class="dropdown admin-profile-wrapper">
 
-
         <button
           class="admin-profile dropdown-toggle"
           type="button"
           data-bs-toggle="dropdown"
           data-bs-auto-close="outside"
           aria-expanded="false">
-
 
           <!-- Avatar -->
 
@@ -827,9 +933,7 @@
           <div class="admin-user-info">
 
             <span class="admin-user-name">
-
               <%= current_user.name %>
-
             </span>
 
             <small>
@@ -837,7 +941,6 @@
             </small>
 
           </div>
-
 
         </button>
 
@@ -912,13 +1015,11 @@
 
           </li>
 
-
         </ul>
 
       </div>
 
     <% end %>
-
 
   </div>
 
