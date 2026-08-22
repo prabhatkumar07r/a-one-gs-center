@@ -5,14 +5,30 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     if resource.save
-      # User is created but NOT confirmed.
-      # Devise Confirmable will send the confirmation email.
-      redirect_to new_user_session_path,
-                  notice: "Account created successfully. Please check your email to confirm your account."
+
+      begin
+        BrevoService.send_confirmation(resource)
+
+        redirect_to new_user_session_path,
+                    notice: "Account created successfully. Please check your email to confirm your account."
+
+      rescue StandardError => e
+
+        Rails.logger.error(
+          "Confirmation email failed: #{e.class}: #{e.message}"
+        )
+
+        redirect_to new_user_session_path,
+                    alert: "Account created, but confirmation email could not be sent."
+      end
+
     else
+
       clean_up_passwords resource
       set_minimum_password_length
-      render :new, status: :unprocessable_entity
+
+      render :new,
+             status: :unprocessable_entity
     end
   end
 end
