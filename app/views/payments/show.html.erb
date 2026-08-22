@@ -2,10 +2,6 @@
 
   <div class="payment-wrapper">
 
-    <!-- =====================================================
-         PAYMENT CARD
-    ====================================================== -->
-
     <div class="payment-card">
 
       <!-- ===================================================
@@ -54,11 +50,9 @@
           </h3>
 
           <p>
-
             <i class="bi bi-person-fill"></i>
 
             <%= @enrollment.user.name %>
-
           </p>
 
         </div>
@@ -77,12 +71,10 @@
         </span>
 
         <strong>
-
           ₹<%= number_with_precision(
                 @course.fee,
                 precision: 2
               ) %>
-
         </strong>
 
       </div>
@@ -104,6 +96,8 @@
 
           <p>
             Your payment is securely processed by Razorpay.
+            UPI, QR, cards and other available payment
+            methods are supported by Razorpay Checkout.
           </p>
 
         </div>
@@ -112,10 +106,15 @@
 
 
       <!-- ===================================================
-           PAYMENT BUTTON
+           PAYMENT SECTION
       ==================================================== -->
 
       <% if @order_id.present? %>
+
+
+        <!-- =================================================
+             RAZORPAY CHECKOUT BUTTON
+        ================================================== -->
 
         <button
           type="button"
@@ -137,34 +136,81 @@
 
         </button>
 
+
       <% else %>
 
-        <%= form_with
+
+        <!-- =================================================
+             CREATE RAZORPAY ORDER
+        ================================================== -->
+
+        <%= form_with(
               url: payment_path(@enrollment),
               method: :post,
               local: true,
-              id: "payment-form" do %>
+              id: "payment-form"
+            ) do %>
 
           <button
             type="submit"
             class="pay-button"
             id="create-order-button">
 
-            <span>
-
+            <span id="create-order-icon">
               <i class="bi bi-credit-card-fill"></i>
-
             </span>
 
-            <span>
+            <span id="create-order-text">
 
-              Continue to Payment
+              Pay ₹<%= number_with_precision(
+                        @course.fee,
+                        precision: 2
+                      ) %> Securely
 
             </span>
 
           </button>
 
         <% end %>
+
+
+      <% end %>
+
+
+      <!-- ===================================================
+           RAZORPAY VERIFICATION FORM
+           
+           IMPORTANT:
+           This replaces fetch().
+           
+           Razorpay handler fills these hidden fields and
+           submits this normal Rails POST form.
+      ==================================================== -->
+
+      <%= form_with(
+            url: verify_payment_path(@enrollment),
+            method: :post,
+            local: true,
+            id: "razorpay-verification-form"
+          ) do %>
+
+        <%= hidden_field_tag(
+              :razorpay_payment_id,
+              "",
+              id: "razorpay_payment_id"
+            ) %>
+
+        <%= hidden_field_tag(
+              :razorpay_order_id,
+              "",
+              id: "razorpay_order_id"
+            ) %>
+
+        <%= hidden_field_tag(
+              :razorpay_signature,
+              "",
+              id: "razorpay_signature"
+            ) %>
 
       <% end %>
 
@@ -174,7 +220,8 @@
       ==================================================== -->
 
       <%= link_to course_details_path(@course),
-            class: "cancel-button" do %>
+            class: "cancel-button",
+            id: "cancel-button" do %>
 
         <i class="bi bi-arrow-left"></i>
 
@@ -216,11 +263,11 @@ document.addEventListener(
   function () {
 
 
-    /* ======================================================
+    /* =====================================================
        ELEMENTS
     ====================================================== */
 
-    const form =
+    const paymentForm =
       document.getElementById(
         "payment-form"
       );
@@ -250,13 +297,49 @@ document.addEventListener(
       );
 
 
-    /* ======================================================
+    const createOrderIcon =
+      document.getElementById(
+        "create-order-icon"
+      );
+
+
+    const createOrderText =
+      document.getElementById(
+        "create-order-text"
+      );
+
+
+    const verificationForm =
+      document.getElementById(
+        "razorpay-verification-form"
+      );
+
+
+    const paymentIdField =
+      document.getElementById(
+        "razorpay_payment_id"
+      );
+
+
+    const orderIdField =
+      document.getElementById(
+        "razorpay_order_id"
+      );
+
+
+    const signatureField =
+      document.getElementById(
+        "razorpay_signature"
+      );
+
+
+    /* =====================================================
        CREATE ORDER FORM
     ====================================================== */
 
-    if (form) {
+    if (paymentForm) {
 
-      form.addEventListener(
+      paymentForm.addEventListener(
         "submit",
         function () {
 
@@ -265,8 +348,21 @@ document.addEventListener(
             createOrderButton.disabled =
               true;
 
-            createOrderButton.innerHTML =
-              '<i class="bi bi-arrow-repeat"></i> Creating Secure Payment...';
+          }
+
+
+          if (createOrderIcon) {
+
+            createOrderIcon.innerHTML =
+              '<i class="bi bi-arrow-repeat"></i>';
+
+          }
+
+
+          if (createOrderText) {
+
+            createOrderText.textContent =
+              "Creating Secure Payment...";
 
           }
 
@@ -276,19 +372,17 @@ document.addEventListener(
     }
 
 
-    /* ======================================================
-       RAZORPAY ORDER ID
+    /* =====================================================
+       NO RAZORPAY ORDER YET
+       
+       Rails will create it first.
+       
+       After redirect, this page will have @order_id.
     ====================================================== */
 
     const razorpayOrderId =
       "<%= j @order_id.to_s %>";
 
-
-    /*
-      No order yet.
-
-      Rails will create the order first.
-    */
 
     if (!razorpayOrderId) {
 
@@ -297,8 +391,27 @@ document.addEventListener(
     }
 
 
-    /* ======================================================
+    /* =====================================================
+       PAYMENT BUTTON MUST EXIST
+    ====================================================== */
+
+    if (!button) {
+
+      console.error(
+        "Razorpay payment button not found."
+      );
+
+      return;
+
+    }
+
+
+    /* =====================================================
        RAZORPAY KEY
+       
+       ONLY PUBLIC KEY IS SENT TO BROWSER.
+       
+       NEVER send RAZORPAY_KEY_SECRET here.
     ====================================================== */
 
     const razorpayKey =
@@ -311,32 +424,41 @@ document.addEventListener(
         "RAZORPAY_KEY_ID is missing."
       );
 
-      if (button) {
 
-        button.disabled =
-          false;
+      button.disabled =
+        false;
+
+
+      if (text) {
+
+        text.textContent =
+          "Payment Configuration Error";
 
       }
+
 
       alert(
         "Razorpay configuration is missing. Please contact support."
       );
+
 
       return;
 
     }
 
 
-    /* ======================================================
+    /* =====================================================
        PAYMENT AMOUNT
+       
+       Razorpay amount must be in paise.
     ====================================================== */
 
     const amount =
       <%= (@payment&.amount || @course.fee).to_d * 100 %>;
 
 
-    /* ======================================================
-       RAZORPAY OPTIONS
+    /* =====================================================
+       RAZORPAY CHECKOUT OPTIONS
     ====================================================== */
 
     const options = {
@@ -365,8 +487,8 @@ document.addEventListener(
         razorpayOrderId,
 
 
-      /* ====================================================
-         PREFILL
+      /* ===================================================
+         PREFILL USER DETAILS
       ==================================================== */
 
       prefill: {
@@ -383,79 +505,22 @@ document.addEventListener(
       },
 
 
-      /* ====================================================
-         PAYMENT METHOD CONFIGURATION
+      /* ===================================================
+         NOTES
       ==================================================== */
 
-      config: {
+      notes: {
 
-        display: {
+        enrollment_id:
+          "<%= @enrollment.id %>",
 
-          blocks: {
-
-            upi_block: {
-
-              name:
-                "Pay via UPI",
-
-              instruments: [
-
-                {
-                  method: "upi"
-                }
-
-              ]
-
-            },
-
-            other_block: {
-
-              name:
-                "Other Payment Methods",
-
-              instruments: [
-
-                {
-                  method: "card"
-                },
-
-                {
-                  method: "netbanking"
-                },
-
-                {
-                  method: "wallet"
-                }
-
-              ]
-
-            }
-
-          },
-
-
-          sequence: [
-
-            "block.upi_block",
-
-            "block.other_block"
-
-          ],
-
-
-          preferences: {
-
-            show_default_blocks:
-              false
-
-          }
-
-        }
+        course_id:
+          "<%= @course.id %>"
 
       },
 
 
-      /* ====================================================
+      /* ===================================================
          THEME
       ==================================================== */
 
@@ -467,35 +532,64 @@ document.addEventListener(
       },
 
 
-      /* ====================================================
+      /* ===================================================
          PAYMENT SUCCESS
       ==================================================== */
 
       handler:
         function (response) {
 
+
           console.log(
-            "Razorpay payment response:",
+            "Razorpay payment completed:",
             response
           );
 
 
-          if (button) {
+          /* -----------------------------------------------
+             Validate response
+          ------------------------------------------------ */
 
-            button.disabled =
-              true;
+          if (
+            !response ||
+            !response.razorpay_payment_id ||
+            !response.razorpay_order_id ||
+            !response.razorpay_signature
+          ) {
 
-            button.classList.add(
-              "loading"
+            console.error(
+              "Incomplete Razorpay response:",
+              response
             );
 
+
+            alert(
+              "Razorpay returned incomplete payment information. Please contact support."
+            );
+
+
+            return;
+
           }
+
+
+          /* -----------------------------------------------
+             Update button
+          ------------------------------------------------ */
+
+          button.disabled =
+            true;
+
+
+          button.classList.add(
+            "loading"
+          );
 
 
           if (icon) {
 
             icon.innerHTML =
-              '<i class="bi bi-arrow-repeat"></i>';
+              '<i class="bi bi-check-circle-fill"></i>';
 
           }
 
@@ -508,166 +602,66 @@ document.addEventListener(
           }
 
 
-          /* ================================================
-             VERIFY URL
-          ================================================= */
+          /* -----------------------------------------------
+             Fill Rails verification form
+          ------------------------------------------------ */
 
-          const verifyUrl =
-            "<%= verify_payment_path(@enrollment) %>";
+          if (!verificationForm) {
 
-
-          /* ================================================
-             CSRF TOKEN
-          ================================================= */
-
-          const csrfElement =
-            document.querySelector(
-              'meta[name="csrf-token"]'
+            console.error(
+              "Verification form not found."
             );
 
 
-          const csrfToken =
-            csrfElement
-              ? csrfElement.content
-              : "";
+            alert(
+              "Payment verification form is missing."
+            );
 
 
-          /* ================================================
-             VERIFY PAYMENT
-          ================================================= */
+            return;
 
-          fetch(
-
-            verifyUrl,
-
-            {
-
-              method:
-                "POST",
+          }
 
 
-              headers: {
-
-                "Content-Type":
-                  "application/json",
-
-                "X-CSRF-Token":
-                  csrfToken,
-
-                "Accept":
-                  "text/html"
-
-              },
+          paymentIdField.value =
+            response.razorpay_payment_id;
 
 
-              body:
-                JSON.stringify({
-
-                  razorpay_payment_id:
-                    response.razorpay_payment_id,
-
-                  razorpay_order_id:
-                    response.razorpay_order_id,
-
-                  razorpay_signature:
-                    response.razorpay_signature
-
-                })
-
-            }
-
-          )
-
-          .then(
-            function (response) {
-
-              if (
-                response.redirected
-              ) {
-
-                window.location.href =
-                  response.url;
-
-                return null;
-
-              }
-
-              return response.text();
-
-            }
-          )
-
-          .then(
-            function (html) {
-
-              if (html) {
-
-                document.open();
-
-                document.write(html);
-
-                document.close();
-
-              }
-
-            }
-          )
-
-          .catch(
-            function (error) {
-
-              console.error(
-                "Payment verification error:",
-                error
-              );
+          orderIdField.value =
+            response.razorpay_order_id;
 
 
-              if (button) {
-
-                button.disabled =
-                  false;
-
-                button.classList.remove(
-                  "loading"
-                );
-
-              }
+          signatureField.value =
+            response.razorpay_signature;
 
 
-              if (icon) {
+          /* -----------------------------------------------
+             NORMAL RAILS POST
+             
+             NO FETCH
+             NO document.write
+             NO AJAX
+          ------------------------------------------------ */
 
-                icon.innerHTML =
-                  '<i class="bi bi-exclamation-circle-fill"></i>';
-
-              }
-
-
-              if (text) {
-
-                text.textContent =
-                  "Verification Failed - Try Again";
-
-              }
-
-
-              alert(
-                "Unable to verify payment. Please contact support."
-              );
-
-            }
-          );
+          verificationForm.submit();
 
         },
 
 
-      /* ====================================================
-         CHECKOUT CLOSED
+      /* ===================================================
+         PAYMENT FAILED
       ==================================================== */
 
       modal: {
 
         ondismiss:
           function () {
+
+
+            console.log(
+              "Razorpay checkout closed."
+            );
+
 
             if (button) {
 
@@ -706,7 +700,7 @@ document.addEventListener(
     };
 
 
-    /* ======================================================
+    /* =====================================================
        CHECK RAZORPAY SCRIPT
     ====================================================== */
 
@@ -720,10 +714,14 @@ document.addEventListener(
       );
 
 
-      if (button) {
+      button.disabled =
+        false;
 
-        button.disabled =
-          false;
+
+      if (text) {
+
+        text.textContent =
+          "Payment Service Unavailable";
 
       }
 
@@ -738,51 +736,140 @@ document.addEventListener(
     }
 
 
-    /* ======================================================
+    /* =====================================================
        CREATE RAZORPAY INSTANCE
     ====================================================== */
 
-    const razorpay =
-      new Razorpay(
-        options
+    let razorpay;
+
+
+    try {
+
+      razorpay =
+        new Razorpay(
+          options
+        );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Unable to initialize Razorpay:",
+        error
       );
 
 
-    /* ======================================================
-       PAYMENT FAILURE
+      button.disabled =
+        false;
+
+
+      if (text) {
+
+        text.textContent =
+          "Payment Unavailable";
+
+      }
+
+
+      alert(
+        "Unable to initialize Razorpay Checkout. Please try again."
+      );
+
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       PAYMENT FAILED EVENT
     ====================================================== */
 
     razorpay.on(
       "payment.failed",
       function (response) {
 
+
         console.error(
           "Razorpay payment failed:",
-          response.error
+          response
         );
 
 
-        window.location.href =
+        const failedUrl =
           "<%= payment_failed_path(@enrollment) %>";
+
+
+        window.location.href =
+          failedUrl;
 
       }
     );
 
 
-    /* ======================================================
-       OPEN CHECKOUT
+    /* =====================================================
+       OPEN RAZORPAY CHECKOUT
     ====================================================== */
 
-    if (button) {
+    button.addEventListener(
+      "click",
+      function () {
 
-      button.addEventListener(
-        "click",
-        function () {
+
+        if (
+          button.disabled
+        ) {
+
+          return;
+
+        }
+
+
+        button.disabled =
+          true;
+
+
+        button.classList.add(
+          "loading"
+        );
+
+
+        if (icon) {
+
+          icon.innerHTML =
+            '<i class="bi bi-arrow-repeat"></i>';
+
+        }
+
+
+        if (text) {
+
+          text.textContent =
+            "Opening Secure Checkout...";
+
+        }
+
+
+        try {
+
+          razorpay.open();
+
+        }
+
+        catch (error) {
+
+          console.error(
+            "Razorpay Checkout Error:",
+            error
+          );
+
 
           button.disabled =
-            true;
+            false;
 
-          button.classList.add(
+
+          button.classList.remove(
             "loading"
           );
 
@@ -790,7 +877,7 @@ document.addEventListener(
           if (icon) {
 
             icon.innerHTML =
-              '<i class="bi bi-arrow-repeat"></i>';
+              '<i class="bi bi-credit-card-fill"></i>';
 
           }
 
@@ -798,64 +885,666 @@ document.addEventListener(
           if (text) {
 
             text.textContent =
-              "Opening Secure Checkout...";
+              "Pay ₹<%= number_with_precision(
+                        @course.fee,
+                        precision: 2
+                      ) %> Securely";
 
           }
 
 
-          try {
-
-            razorpay.open();
-
-          }
-
-          catch (error) {
-
-            console.error(
-              "Razorpay Checkout Error:",
-              error
-            );
-
-
-            button.disabled =
-              false;
-
-            button.classList.remove(
-              "loading"
-            );
-
-
-            if (icon) {
-
-              icon.innerHTML =
-                '<i class="bi bi-credit-card-fill"></i>';
-
-            }
-
-
-            if (text) {
-
-              text.textContent =
-                "Pay ₹<%= number_with_precision(
-                          @course.fee,
-                          precision: 2
-                        ) %> Securely";
-
-            }
-
-
-            alert(
-              "Unable to open Razorpay Checkout. Please try again."
-            );
-
-          }
+          alert(
+            "Unable to open Razorpay Checkout. Please try again."
+          );
 
         }
-      );
 
-    }
+      }
+    );
 
   }
+
 );
 
 </script>
+
+
+<style>
+
+/* =========================================================
+   PAYMENT PAGE
+========================================================= */
+
+.payment-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f4f7fb 0%,
+      #eef3ff 100%
+    );
+
+  font-family:
+    "Poppins",
+    Arial,
+    sans-serif;
+
+}
+
+
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.payment-wrapper {
+
+  width: 100%;
+
+  max-width: 560px;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.payment-card {
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  padding: 32px;
+
+  box-shadow:
+    0 15px 45px
+    rgba(15, 23, 42, 0.12);
+
+  border:
+    1px solid #e8edf5;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.payment-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 28px;
+
+}
+
+
+.payment-icon {
+
+  width: 58px;
+
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #e8f1ff;
+
+  color: #0d6efd;
+
+  font-size: 25px;
+
+  flex-shrink: 0;
+
+}
+
+
+.payment-header h2 {
+
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #172033;
+
+}
+
+
+.payment-header p {
+
+  margin: 4px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+}
+
+
+/* =========================================================
+   COURSE
+========================================================= */
+
+.course-section {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border:
+    1px solid #edf0f5;
+
+  border-radius: 16px;
+
+  margin-bottom: 20px;
+
+}
+
+
+.course-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #0d6efd;
+
+  color: white;
+
+  font-size: 22px;
+
+  flex-shrink: 0;
+
+}
+
+
+.course-info {
+
+  min-width: 0;
+
+}
+
+
+.course-label {
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #6b7280;
+
+}
+
+
+.course-info h3 {
+
+  margin: 3px 0;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  color: #172033;
+
+  word-break: break-word;
+
+}
+
+
+.course-info p {
+
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+}
+
+
+.course-info p i {
+
+  color: #0d6efd;
+
+  margin-right: 4px;
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.price-section {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px 0;
+
+  border-bottom:
+    1px solid #e5e7eb;
+
+  margin-bottom: 20px;
+
+}
+
+
+.price-section span {
+
+  font-size: 15px;
+
+  color: #6b7280;
+
+}
+
+
+.price-section strong {
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+  color: #198754;
+
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+.security-box {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  background: #f0fdf4;
+
+  border:
+    1px solid #d1fae5;
+
+  margin-bottom: 22px;
+
+}
+
+
+.security-box > i {
+
+  color: #198754;
+
+  font-size: 22px;
+
+  margin-top: 2px;
+
+}
+
+
+.security-box strong {
+
+  display: block;
+
+  color: #166534;
+
+  font-size: 14px;
+
+}
+
+
+.security-box p {
+
+  margin: 3px 0 0;
+
+  color: #4b5563;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   PAY BUTTON
+========================================================= */
+
+.pay-button {
+
+  width: 100%;
+
+  min-height: 56px;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #198754,
+      #157347
+    );
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+  box-shadow:
+    0 8px 20px
+    rgba(25, 135, 84, 0.22);
+
+}
+
+
+.pay-button:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 25px
+    rgba(25, 135, 84, 0.28);
+
+}
+
+
+.pay-button:active {
+
+  transform:
+    translateY(0);
+
+}
+
+
+.pay-button:disabled {
+
+  cursor: wait;
+
+}
+
+
+.pay-button.loading {
+
+  opacity: 0.75;
+
+  cursor: wait;
+
+  transform: none;
+
+}
+
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.bi-arrow-repeat {
+
+  display: inline-block;
+
+  animation:
+    payment-spin 1s linear infinite;
+
+}
+
+
+@keyframes payment-spin {
+
+  from {
+
+    transform:
+      rotate(0deg);
+
+  }
+
+  to {
+
+    transform:
+      rotate(360deg);
+
+  }
+
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.cancel-button {
+
+  width: 100%;
+
+  margin-top: 12px;
+
+  min-height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 12px;
+
+  color: #6b7280;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition:
+    0.2s ease;
+
+}
+
+
+.cancel-button:hover {
+
+  color: #172033;
+
+  background: #f8fafc;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.payment-footer {
+
+  margin-top: 22px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid #edf0f5;
+
+  text-align: center;
+
+  color: #9ca3af;
+
+  font-size: 12px;
+
+}
+
+
+.payment-footer i {
+
+  margin-right: 5px;
+
+  color: #198754;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+  .payment-page {
+
+    padding:
+      20px 12px;
+
+    align-items:
+      flex-start;
+
+  }
+
+
+  .payment-card {
+
+    margin-top: 20px;
+
+    padding:
+      22px 18px;
+
+    border-radius:
+      18px;
+
+  }
+
+
+  .payment-header h2 {
+
+    font-size:
+      20px;
+
+  }
+
+
+  .payment-header {
+
+    margin-bottom:
+      22px;
+
+  }
+
+
+  .payment-icon {
+
+    width:
+      50px;
+
+    height:
+      50px;
+
+    font-size:
+      21px;
+
+  }
+
+
+  .course-section {
+
+    padding:
+      14px;
+
+  }
+
+
+  .course-icon {
+
+    width:
+      46px;
+
+    height:
+      46px;
+
+    font-size:
+      19px;
+
+  }
+
+
+  .course-info h3 {
+
+    font-size:
+      16px;
+
+  }
+
+
+  .price-section strong {
+
+    font-size:
+      25px;
+
+  }
+
+}
+
+</style>
