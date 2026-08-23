@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_20_074102) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_102823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -225,6 +225,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_074102) do
     t.integer "enrollment_id", null: false
     t.string "razorpay_order_id"
     t.string "razorpay_payment_id"
+    t.string "razorpay_qr_id"
+    t.string "razorpay_qr_image_url"
     t.string "razorpay_signature"
     t.string "status"
     t.datetime "updated_at", null: false
