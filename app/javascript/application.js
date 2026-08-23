@@ -13,4 +13,3 @@ window.bootstrap = bootstrap
 import "custom"
 import "header"
 import "profile"
-import "./student_header"
