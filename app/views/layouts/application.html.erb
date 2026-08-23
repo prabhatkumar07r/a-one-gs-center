@@ -1,281 +1,4 @@
-<style>
-  /* =========================================================
-     FLASH / CONTACT TOAST
-  ========================================================= */
-
-  .contact-toast {
-    position: fixed;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    z-index: 999999;
-
-    width: min(420px, calc(100vw - 30px));
-    min-height: 64px;
-
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    padding: 13px 15px;
-
-    background: #ffffff;
-
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-
-    animation: contactToastSlideDown 0.35s ease forwards;
-  }
-
-
-  /* =========================================================
-     SUCCESS
-  ========================================================= */
-
-  .contact-toast-success {
-    border-left: 5px solid #198754;
-  }
-
-  .contact-toast-success .contact-toast-icon {
-    color: #198754;
-  }
-
-
-  /* =========================================================
-     ERROR
-  ========================================================= */
-
-  .contact-toast-error {
-    border-left: 5px solid #dc3545;
-  }
-
-  .contact-toast-error .contact-toast-icon {
-    color: #dc3545;
-  }
-
-
-  /* =========================================================
-     ICON
-  ========================================================= */
-
-  .contact-toast-icon {
-    flex: 0 0 auto;
-
-    width: 30px;
-    height: 30px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 23px;
-  }
-
-
-  /* =========================================================
-     CONTENT
-  ========================================================= */
-
-  .contact-toast-content {
-    min-width: 0;
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
-  }
-
-  .contact-toast-content strong {
-    color: #172033;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    line-height: 1.3;
-  }
-
-  .contact-toast-content span {
-    color: #596273;
-
-    font-size: 13px;
-
-    line-height: 1.4;
-
-    overflow-wrap: anywhere;
-  }
-
-
-  /* =========================================================
-     CLOSE BUTTON
-  ========================================================= */
-
-  .contact-toast-close {
-    flex: 0 0 auto;
-
-    width: 30px;
-    height: 30px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-    background: transparent;
-
-    color: #7a808c;
-
-    font-size: 22px;
-
-    cursor: pointer;
-
-    border-radius: 7px;
-
-    transition: all 0.2s ease;
-  }
-
-  .contact-toast-close:hover {
-    background: #f3f4f6;
-    color: #172033;
-  }
-
-
-  /* =========================================================
-     ANIMATION
-  ========================================================= */
-
-  @keyframes contactToastSlideDown {
-
-    from {
-      opacity: 0;
-      transform: translate(-50%, -25px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-  }
-
-
-  .contact-toast.hide {
-    animation: contactToastSlideUp 0.3s ease forwards;
-  }
-
-
-  @keyframes contactToastSlideUp {
-
-    from {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    to {
-      opacity: 0;
-      transform: translate(-50%, -25px);
-    }
-
-  }
-
-
-  /* =========================================================
-     TABLET
-  ========================================================= */
-
-  @media (max-width: 768px) {
-
-    .contact-toast {
-      top: 80px;
-
-      width: min(400px, calc(100vw - 30px));
-
-      padding: 12px 14px;
-    }
-
-    .contact-toast-content strong {
-      font-size: 14px;
-    }
-
-    .contact-toast-content span {
-      font-size: 13px;
-    }
-
-  }
-
-
-  /* =========================================================
-     MOBILE
-  ========================================================= */
-
-  @media (max-width: 576px) {
-
-    .contact-toast {
-      top: 15px;
-
-      width: calc(100vw - 24px);
-
-      min-height: 58px;
-
-      padding: 10px 12px;
-
-      gap: 9px;
-
-      border-radius: 10px;
-    }
-
-    .contact-toast-icon {
-      width: 28px;
-      height: 28px;
-
-      font-size: 21px;
-    }
-
-    .contact-toast-content strong {
-      font-size: 13px;
-    }
-
-    .contact-toast-content span {
-      font-size: 12px;
-    }
-
-    .contact-toast-close {
-      width: 27px;
-      height: 27px;
-
-      font-size: 20px;
-    }
-
-  }
-
-
-  /* =========================================================
-     VERY SMALL MOBILE
-  ========================================================= */
-
-  @media (max-width: 360px) {
-
-    .contact-toast {
-      width: calc(100vw - 16px);
-
-      padding: 9px 10px;
-
-      gap: 7px;
-    }
-
-    .contact-toast-content span {
-      font-size: 11.5px;
-    }
-
-  }
-</style>
-
-
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -288,7 +11,6 @@
   <title>A One GS Center</title>
 
   <%= csrf_meta_tags %>
-
   <%= csp_meta_tag %>
 
   <%= yield :head %>
@@ -298,15 +20,226 @@
 
   <%= javascript_importmap_tags %>
 
+
+  <style>
+    /* =========================================================
+       FLASH / CONTACT TOAST
+    ========================================================= */
+
+    .contact-toast {
+      position: fixed;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      z-index: 999999;
+
+      width: min(420px, calc(100vw - 30px));
+      min-height: 64px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 13px 15px;
+
+      background: #ffffff;
+
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+
+      animation: contactToastSlideDown 0.35s ease forwards;
+    }
+
+    .contact-toast-success {
+      border-left: 5px solid #198754;
+    }
+
+    .contact-toast-success .contact-toast-icon {
+      color: #198754;
+    }
+
+    .contact-toast-error {
+      border-left: 5px solid #dc3545;
+    }
+
+    .contact-toast-error .contact-toast-icon {
+      color: #dc3545;
+    }
+
+    .contact-toast-icon {
+      flex: 0 0 auto;
+
+      width: 30px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 23px;
+    }
+
+    .contact-toast-content {
+      min-width: 0;
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 2px;
+    }
+
+    .contact-toast-content strong {
+      color: #172033;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      line-height: 1.3;
+    }
+
+    .contact-toast-content span {
+      color: #596273;
+
+      font-size: 13px;
+
+      line-height: 1.4;
+
+      overflow-wrap: anywhere;
+    }
+
+    .contact-toast-close {
+      flex: 0 0 auto;
+
+      width: 30px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: none;
+      background: transparent;
+
+      color: #7a808c;
+
+      font-size: 22px;
+
+      cursor: pointer;
+
+      border-radius: 7px;
+
+      transition: all 0.2s ease;
+    }
+
+    .contact-toast-close:hover {
+      background: #f3f4f6;
+      color: #172033;
+    }
+
+    @keyframes contactToastSlideDown {
+
+      from {
+        opacity: 0;
+        transform: translate(-50%, -25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+    }
+
+    .contact-toast.hide {
+      animation: contactToastSlideUp 0.3s ease forwards;
+    }
+
+    @keyframes contactToastSlideUp {
+
+      from {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      to {
+        opacity: 0;
+        transform: translate(-50%, -25px);
+      }
+
+    }
+
+    @media (max-width: 768px) {
+
+      .contact-toast {
+        top: 80px;
+        width: min(400px, calc(100vw - 30px));
+        padding: 12px 14px;
+      }
+
+    }
+
+    @media (max-width: 576px) {
+
+      .contact-toast {
+        top: 15px;
+
+        width: calc(100vw - 24px);
+
+        min-height: 58px;
+
+        padding: 10px 12px;
+
+        gap: 9px;
+
+        border-radius: 10px;
+      }
+
+      .contact-toast-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 21px;
+      }
+
+      .contact-toast-content strong {
+        font-size: 13px;
+      }
+
+      .contact-toast-content span {
+        font-size: 12px;
+      }
+
+      .contact-toast-close {
+        width: 27px;
+        height: 27px;
+        font-size: 20px;
+      }
+
+    }
+
+    @media (max-width: 360px) {
+
+      .contact-toast {
+        width: calc(100vw - 16px);
+        padding: 9px 10px;
+        gap: 7px;
+      }
+
+      .contact-toast-content span {
+        font-size: 11.5px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 
 <body>
-
-
-  <!-- =======================================================
-       SUCCESS FLASH
-  ======================================================== -->
 
   <% if flash[:notice].present? %>
 
@@ -314,17 +247,12 @@
          data-contact-toast>
 
       <div class="contact-toast-icon">
-
         <i class="bi bi-check-circle-fill"></i>
-
       </div>
-
 
       <div class="contact-toast-content">
 
-        <strong>
-          Success
-        </strong>
+        <strong>Success</strong>
 
         <span>
           <%= flash[:notice] %>
@@ -332,7 +260,6 @@
 
       </div>
 
-
       <button type="button"
               class="contact-toast-close"
               onclick="closeContactToast(this)"
@@ -346,11 +273,6 @@
 
   <% end %>
 
-
-
-  <!-- =======================================================
-       ERROR FLASH
-  ======================================================== -->
 
   <% if flash[:alert].present? %>
 
@@ -358,24 +280,18 @@
          data-contact-toast>
 
       <div class="contact-toast-icon">
-
         <i class="bi bi-exclamation-circle-fill"></i>
-
       </div>
-
 
       <div class="contact-toast-content">
 
-        <strong>
-          Error
-        </strong>
+        <strong>Error</strong>
 
         <span>
           <%= flash[:alert] %>
         </span>
 
       </div>
-
 
       <button type="button"
               class="contact-toast-close"
@@ -390,11 +306,6 @@
 
   <% end %>
 
-
-
-  <!-- =======================================================
-       HEADER
-  ======================================================== -->
 
   <% unless content_for?(:hide_header) %>
 
@@ -403,22 +314,10 @@
   <% end %>
 
 
-
-  <!-- =======================================================
-       PAGE CONTENT
-  ======================================================== -->
-
   <main>
-
     <%= yield %>
-
   </main>
 
-
-
-  <!-- =======================================================
-       FOOTER
-  ======================================================== -->
 
   <% unless content_for?(:hide_footer) %>
 
@@ -426,11 +325,6 @@
 
   <% end %>
 
-
-
-  <!-- =======================================================
-       TOAST JAVASCRIPT
-  ======================================================== -->
 
   <script>
 
@@ -445,9 +339,7 @@
       toast.classList.add("hide");
 
       setTimeout(function () {
-
         toast.remove();
-
       }, 300);
 
     }
@@ -462,17 +354,13 @@
         return;
       }
 
-
       toasts.forEach(function (toast) {
-
-        /* Prevent duplicate timers */
 
         if (toast.dataset.toastInitialized === "true") {
           return;
         }
 
         toast.dataset.toastInitialized = "true";
-
 
         setTimeout(function () {
 
@@ -502,18 +390,12 @@
       initializeContactToasts
     );
 
-
-    /*
-     * Rails Turbo support
-     */
-
     document.addEventListener(
       "turbo:load",
       initializeContactToasts
     );
 
   </script>
-
 
 </body>
 

@@ -2,214 +2,1681 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - A ONE GS CENTER</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <meta charset="UTF-8">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Login - A ONE GS CENTER</title>
+
+  <%= stylesheet_link_tag "application",
+      "data-turbo-track": "reload" %>
+
+  <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+<style>
+
+/* =========================================================
+   A ONE GS CENTER
+   DEVISE LOGIN PAGE
+   #B902DD PURPLE DARK THEME
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --aone-purple: #b902dd;
+    --aone-purple-dark: #8f00aa;
+    --aone-purple-light: #d45bea;
+
+    --aone-bg: #080a12;
+    --aone-panel: #0a0d15;
+    --aone-card: #101522;
+
+    --aone-white: #ffffff;
+    --aone-muted: #94a3b8;
+    --aone-border: rgba(255,255,255,0.10);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+html,
+body {
+
+    width: 100% !important;
+
+    min-width: 100% !important;
+
+    min-height: 100% !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    overflow-x: hidden !important;
+
+    background: var(--aone-bg) !important;
+}
+
+
+#aone-login-page,
+#aone-login-page *,
+#aone-login-page *::before,
+#aone-login-page *::after {
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+
+    font-family: "Poppins", sans-serif !important;
+
+    color: var(--aone-white) !important;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+#aone-login-page {
+
+    width: 100% !important;
+
+    min-height: 100vh !important;
+
+    display: flex !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    background:
+
+        radial-gradient(
+            circle at 10% 50%,
+            rgba(185,2,221,0.25),
+            transparent 38%
+        ),
+
+        radial-gradient(
+            circle at 90% 25%,
+            rgba(185,2,221,0.15),
+            transparent 40%
+        ),
+
+        #080a12 !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   LEFT BRAND PANEL
+========================================================= */
+
+#aone-login-page .aone-brand-panel {
+
+    width: 50% !important;
+
+    min-width: 50% !important;
+
+    min-height: 100vh !important;
+
+    position: relative !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    padding: 50px !important;
+
+    overflow: hidden !important;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #b902dd 0%,
+            #8f00aa 45%,
+            #21002b 100%
+        ) !important;
+
+    border-right:
+        1px solid rgba(255,255,255,0.10) !important;
+}
+
+
+/* =========================================================
+   LEFT DECORATION
+========================================================= */
+
+#aone-login-page .aone-brand-panel::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: 550px !important;
+
+    height: 550px !important;
+
+    top: -250px !important;
+
+    left: -200px !important;
+
+    border-radius: 50% !important;
+
+    background:
+        rgba(255,255,255,0.10) !important;
+
+    filter: blur(5px) !important;
+}
+
+
+#aone-login-page .aone-brand-panel::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: 450px !important;
+
+    height: 450px !important;
+
+    right: -220px !important;
+
+    bottom: -220px !important;
+
+    border-radius: 50% !important;
+
+    background:
+        rgba(255,255,255,0.08) !important;
+
+    filter: blur(5px) !important;
+}
+
+
+/* =========================================================
+   BRAND CONTENT
+========================================================= */
+
+#aone-login-page .aone-brand-content {
+
+    width: 100% !important;
+
+    max-width: 550px !important;
+
+    position: relative !important;
+
+    z-index: 5 !important;
+
+    text-align: center !important;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+#aone-login-page .aone-logo {
+
+    width: 220px !important;
+
+    height: 220px !important;
+
+    min-width: 220px !important;
+
+    max-width: 220px !important;
+
+    min-height: 220px !important;
+
+    max-height: 220px !important;
+
+    display: block !important;
+
+    object-fit: contain !important;
+
+    margin: 0 auto 30px auto !important;
+
+    border-radius: 50% !important;
+
+    background: #ffffff !important;
+
+    padding: 5px !important;
+
+    box-shadow:
+
+        0 0 0 8px rgba(255,255,255,0.05),
+
+        0 25px 70px rgba(0,0,0,0.45),
+
+        0 0 60px rgba(255,255,255,0.10) !important;
+}
+
+
+/* =========================================================
+   BRAND TITLE
+========================================================= */
+
+#aone-login-page .aone-brand-title {
+
+    margin: 0 0 14px 0 !important;
+
+    color: #ffffff !important;
+
+    font-size: 34px !important;
+
+    line-height: 1.2 !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0.2px !important;
+}
+
+
+/* =========================================================
+   BRAND DESCRIPTION
+========================================================= */
+
+#aone-login-page .aone-brand-description {
+
+    max-width: 450px !important;
+
+    margin: 0 auto !important;
+
+    color:
+        rgba(255,255,255,0.78) !important;
+
+    font-size: 15px !important;
+
+    line-height: 1.8 !important;
+
+    font-weight: 400 !important;
+}
+
+
+/* =========================================================
+   RIGHT LOGIN PANEL
+========================================================= */
+
+#aone-login-page .aone-login-panel {
+
+    width: 50% !important;
+
+    min-width: 50% !important;
+
+    min-height: 100vh !important;
+
+    position: relative !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    padding: 50px 70px !important;
+
+    overflow-y: auto !important;
+
+    background:
+
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(185,2,221,0.16),
+            transparent 40%
+        ),
+
+        #0a0d15 !important;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+#aone-login-page .aone-close {
+
+    position: absolute !important;
+
+    top: 25px !important;
+
+    right: 28px !important;
+
+    width: 40px !important;
+
+    height: 40px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    background:
+        rgba(255,255,255,0.05) !important;
+
+    border:
+        1px solid rgba(255,255,255,0.08) !important;
+
+    color: #94a3b8 !important;
+
+    text-decoration: none !important;
+
+    cursor: pointer !important;
+
+    transition: all .25s ease !important;
+
+    z-index: 20 !important;
+}
+
+
+#aone-login-page .aone-close:hover {
+
+    color: #ffffff !important;
+
+    background:
+        rgba(185,2,221,0.20) !important;
+
+    border-color:
+        rgba(185,2,221,0.45) !important;
+
+    transform:
+        rotate(90deg) !important;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+#aone-login-page .aone-login-card {
+
+    width: 100% !important;
+
+    max-width: 500px !important;
+
+    padding: 38px 42px !important;
+
+    border-radius: 22px !important;
+
+    position: relative !important;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.065),
+            rgba(255,255,255,0.018)
+        ) !important;
+
+    border:
+        1px solid rgba(255,255,255,0.10) !important;
+
+    box-shadow:
+
+        0 25px 70px rgba(0,0,0,0.55),
+
+        0 0 60px rgba(185,2,221,0.08) !important;
+
+    backdrop-filter: blur(20px) !important;
+
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+#aone-login-page .aone-auth-tabs {
+
+    width: 100% !important;
+
+    display: flex !important;
+
+    gap: 6px !important;
+
+    padding: 5px !important;
+
+    margin-bottom: 28px !important;
+
+    background:
+        rgba(255,255,255,0.035) !important;
+
+    border:
+        1px solid rgba(255,255,255,0.07) !important;
+
+    border-radius: 13px !important;
+}
+
+
+#aone-login-page .aone-auth-tab {
+
+    flex: 1 1 0 !important;
+
+    min-width: 0 !important;
+
+    height: 44px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 9px !important;
+
+    color: #94a3b8 !important;
+
+    background: transparent !important;
+
+    text-decoration: none !important;
+
+    font-size: 14px !important;
+
+    font-weight: 500 !important;
+
+    transition: all .2s ease !important;
+}
+
+
+#aone-login-page .aone-auth-tab:hover {
+
+    color: #ffffff !important;
+
+    background:
+        rgba(185,2,221,0.10) !important;
+}
+
+
+#aone-login-page .aone-auth-tab.active {
+
+    color: #ffffff !important;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #8f00aa,
+            #b902dd
+        ) !important;
+
+    box-shadow:
+        0 7px 20px
+        rgba(185,2,221,0.28) !important;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+#aone-login-page .aone-login-title {
+
+    margin: 0 0 28px 0 !important;
+
+    text-align: center !important;
+
+    color: #ffffff !important;
+
+    font-size: 28px !important;
+
+    line-height: 1.3 !important;
+
+    font-weight: 600 !important;
+}
+
+
+#aone-login-page .aone-login-title::after {
+
+    content: "" !important;
+
+    display: block !important;
+
+    width: 45px !important;
+
+    height: 3px !important;
+
+    margin: 10px auto 0 auto !important;
+
+    border-radius: 20px !important;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #8f00aa,
+            #b902dd,
+            #d45bea
+        ) !important;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+#aone-login-page .aone-login-form {
+
+    width: 100% !important;
+
+    margin: 0 !important;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+#aone-login-page .aone-field {
+
+    width: 100% !important;
+
+    margin-bottom: 18px !important;
+}
+
+
+#aone-login-page .aone-field-label {
+
+    display: block !important;
+
+    width: 100% !important;
+
+    margin: 0 0 7px 0 !important;
+
+    color: #cbd5e1 !important;
+
+    font-size: 13px !important;
+
+    font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   INPUT WRAPPER
+========================================================= */
+
+#aone-login-page .aone-input-wrap {
+
+    width: 100% !important;
+
+    height: 52px !important;
+
+    position: relative !important;
+
+    display: block !important;
+}
+
+
+/* =========================================================
+   INPUT ICON
+========================================================= */
+
+#aone-login-page .aone-input-icon {
+
+    position: absolute !important;
+
+    left: 16px !important;
+
+    top: 50% !important;
+
+    transform:
+        translateY(-50%) !important;
+
+    color:
+        #b902dd !important;
+
+    font-size: 14px !important;
+
+    pointer-events: none !important;
+
+    z-index: 5 !important;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+#aone-login-page .aone-input {
+
+    width: 100% !important;
+
+    height: 52px !important;
+
+    display: block !important;
+
+    margin: 0 !important;
+
+    padding:
+        0 45px 0 45px !important;
+
+    border:
+        1px solid rgba(255,255,255,0.10) !important;
+
+    border-radius: 11px !important;
+
+    outline: none !important;
+
+    background:
+        #111622 !important;
+
+    color:
+        #ffffff !important;
+
+    font-family:
+        "Poppins", sans-serif !important;
+
+    font-size: 13px !important;
+
+    appearance: none !important;
+
+    -webkit-appearance: none !important;
+
+    transition: all .25s ease !important;
+}
+
+
+#aone-login-page .aone-input::placeholder {
+
+    color: #64748b !important;
+
+    opacity: 1 !important;
+}
+
+
+#aone-login-page .aone-input:hover {
+
+    border-color:
+        rgba(185,2,221,0.30) !important;
+}
+
+
+#aone-login-page .aone-input:focus {
+
+    background:
+        #141827 !important;
+
+    border-color:
+        #b902dd !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(185,2,221,0.15) !important;
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+#aone-login-page .aone-password-toggle {
+
+    position: absolute !important;
+
+    top: 50% !important;
+
+    right: 15px !important;
+
+    transform:
+        translateY(-50%) !important;
+
+    border: none !important;
+
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    color: #64748b !important;
+
+    cursor: pointer !important;
+
+    z-index: 10 !important;
+}
+
+
+#aone-login-page .aone-password-toggle:hover {
+
+    color:
+        #d45bea !important;
+}
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+#aone-login-page .aone-password-row {
+
+    width: 100% !important;
+
+    display: flex !important;
+
+    justify-content: flex-end !important;
+
+    margin-top: 8px !important;
+}
+
+
+#aone-login-page .aone-forgot {
+
+    color:
+        #d45bea !important;
+
+    font-size: 12px !important;
+
+    text-decoration: none !important;
+}
+
+
+#aone-login-page .aone-forgot:hover {
+
+    color: #ffffff !important;
+
+    text-decoration: underline !important;
+}
+
+
+/* =========================================================
+   REMEMBER ME
+========================================================= */
+
+#aone-login-page .aone-remember {
+
+    width: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+
+    margin:
+        21px 0 20px 0 !important;
+}
+
+
+#aone-login-page .aone-remember-input {
+
+    width: 16px !important;
+
+    height: 16px !important;
+
+    margin: 0 !important;
+
+    flex: 0 0 16px !important;
+
+    accent-color:
+        #b902dd !important;
+
+    cursor: pointer !important;
+}
+
+
+#aone-login-page .aone-remember-label {
+
+    margin: 0 !important;
+
+    color: #94a3b8 !important;
+
+    font-size: 12px !important;
+
+    cursor: pointer !important;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+#aone-login-page .aone-login-button {
+
+    width: 100% !important;
+
+    height: 52px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    margin: 0 !important;
+
+    padding: 0 20px !important;
+
+    border: none !important;
+
+    border-radius: 11px !important;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #8f00aa,
+            #b902dd,
+            #d45bea
+        ) !important;
+
+    color: #ffffff !important;
+
+    font-family:
+        "Poppins", sans-serif !important;
+
+    font-size: 14px !important;
+
+    font-weight: 600 !important;
+
+    cursor: pointer !important;
+
+    box-shadow:
+        0 10px 30px
+        rgba(185,2,221,0.30) !important;
+
+    transition:
+        all .25s ease !important;
+}
+
+
+#aone-login-page .aone-login-button:hover {
+
+    transform:
+        translateY(-2px) !important;
+
+    filter:
+        brightness(1.08) !important;
+
+    box-shadow:
+        0 15px 38px
+        rgba(185,2,221,0.43) !important;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+#aone-login-page .aone-divider {
+
+    width: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 14px !important;
+
+    margin:
+        23px 0 20px 0 !important;
+
+    color: #64748b !important;
+
+    font-size: 11px !important;
+}
+
+
+#aone-login-page .aone-divider::before,
+#aone-login-page .aone-divider::after {
+
+    content: "" !important;
+
+    flex: 1 !important;
+
+    height: 1px !important;
+
+    background:
+        rgba(255,255,255,0.08) !important;
+}
+
+
+/* =========================================================
+   SOCIAL
+========================================================= */
+
+#aone-login-page .aone-social {
+
+    width: 100% !important;
+
+    display: flex !important;
+
+    justify-content: center !important;
+
+    gap: 12px !important;
+
+    margin-bottom: 18px !important;
+}
+
+
+#aone-login-page .aone-social-button {
+
+    width: 48px !important;
+
+    height: 48px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    border:
+        1px solid rgba(255,255,255,0.10) !important;
+
+    border-radius: 11px !important;
+
+    background:
+        rgba(255,255,255,0.045) !important;
+
+    color: #ffffff !important;
+
+    text-decoration: none !important;
+
+    cursor: pointer !important;
+
+    transition:
+        all .25s ease !important;
+}
+
+
+#aone-login-page .aone-social-button:hover {
+
+    transform:
+        translateY(-2px) !important;
+
+    background:
+        rgba(185,2,221,0.13) !important;
+
+    border-color:
+        rgba(185,2,221,0.45) !important;
+}
+
+
+#aone-login-page .aone-social-button i {
+
+    font-size: 16px !important;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+#aone-login-page .aone-auth-footer {
+
+    width: 100% !important;
+
+    text-align: center !important;
+
+    color:
+        #64748b !important;
+
+    font-size: 12px !important;
+}
+
+
+#aone-login-page .aone-auth-footer a {
+
+    margin-left: 5px !important;
+
+    color:
+        #d45bea !important;
+
+    font-weight: 600 !important;
+
+    text-decoration: none !important;
+}
+
+
+#aone-login-page .aone-auth-footer a:hover {
+
+    color:
+        #ffffff !important;
+
+    text-decoration: underline !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #aone-login-page {
+
+        flex-direction: column !important;
+    }
+
+
+    #aone-login-page .aone-brand-panel {
+
+        width: 100% !important;
+
+        min-width: 100% !important;
+
+        min-height: 330px !important;
+
+        padding:
+            40px 25px !important;
+
+        border-right: none !important;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.10) !important;
+    }
+
+
+    #aone-login-page .aone-logo {
+
+        width: 160px !important;
+
+        height: 160px !important;
+
+        min-width: 160px !important;
+
+        max-width: 160px !important;
+
+        min-height: 160px !important;
+
+        max-height: 160px !important;
+
+        margin-bottom:
+            20px !important;
+    }
+
+
+    #aone-login-page .aone-brand-title {
+
+        font-size: 28px !important;
+    }
+
+
+    #aone-login-page .aone-brand-description {
+
+        font-size: 13px !important;
+    }
+
+
+    #aone-login-page .aone-login-panel {
+
+        width: 100% !important;
+
+        min-width: 100% !important;
+
+        min-height: auto !important;
+
+        padding:
+            55px 20px !important;
+    }
+
+
+    #aone-login-page .aone-login-card {
+
+        max-width: 520px !important;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+    #aone-login-page .aone-brand-panel {
+
+        min-height: 290px !important;
+
+        padding:
+            30px 20px !important;
+    }
+
+
+    #aone-login-page .aone-logo {
+
+        width: 125px !important;
+
+        height: 125px !important;
+
+        min-width: 125px !important;
+
+        max-width: 125px !important;
+
+        min-height: 125px !important;
+
+        max-height: 125px !important;
+    }
+
+
+    #aone-login-page .aone-brand-title {
+
+        font-size: 24px !important;
+    }
+
+
+    #aone-login-page .aone-brand-description {
+
+        font-size: 12px !important;
+
+        line-height: 1.7 !important;
+    }
+
+
+    #aone-login-page .aone-login-panel {
+
+        padding:
+            45px 15px !important;
+    }
+
+
+    #aone-login-page .aone-login-card {
+
+        padding:
+            28px 20px !important;
+
+        border-radius:
+            18px !important;
+    }
+
+
+    #aone-login-page .aone-login-title {
+
+        font-size: 24px !important;
+    }
+
+
+    #aone-login-page .aone-close {
+
+        top: 15px !important;
+
+        right: 15px !important;
+
+        width: 38px !important;
+
+        height: 38px !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    #aone-login-page .aone-login-card {
+
+        padding:
+            24px 17px !important;
+    }
+
+
+    #aone-login-page .aone-auth-tab {
+
+        font-size: 13px !important;
+    }
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-<div class="auth-container">
+<div id="aone-login-page">
 
-    <div class="auth-image">
 
-        <div class="auth-image-content">
+  <!-- =====================================================
+       LEFT BRANDING
+  ====================================================== -->
 
-            <%= image_tag "logo.jpeg", alt: "A ONE GS CENTER" %>
+  <section class="aone-brand-panel">
 
-            <h2>A ONE GS CENTER</h2>
+    <div class="aone-brand-content">
 
-            <p>
-                Empowering students to excel in Arts through quality education and competitive preparation
-            </p>
+      <%= image_tag "logo.jpeg",
+          alt: "A ONE GS CENTER",
+          class: "aone-logo" %>
 
-        </div>
+      <h1 class="aone-brand-title">
+        A ONE GS CENTER
+      </h1>
+
+      <p class="aone-brand-description">
+        Empowering students to excel in Arts through
+        quality education and competitive preparation.
+      </p>
 
     </div>
 
+  </section>
 
-    <div class="auth-forms">
 
-        <div class="close-auth">
-            <i class="fas fa-times"></i>
+  <!-- =====================================================
+       RIGHT LOGIN
+  ====================================================== -->
+
+  <section class="aone-login-panel">
+
+
+    <!-- CLOSE -->
+
+    <%= link_to new_user_registration_path,
+        class: "aone-close",
+        title: "Register" do %>
+
+      <i class="fas fa-times"></i>
+
+    <% end %>
+
+
+    <!-- ===================================================
+         LOGIN CARD
+    ==================================================== -->
+
+    <div class="aone-login-card">
+
+
+      <!-- =================================================
+           LOGIN / REGISTER TABS
+      ================================================== -->
+
+      <div class="aone-auth-tabs">
+
+        <div class="aone-auth-tab active">
+          Login
+        </div>
+
+        <%= link_to "Register",
+            new_user_registration_path,
+            class: "aone-auth-tab" %>
+
+      </div>
+
+
+      <!-- =================================================
+           TITLE
+      ================================================== -->
+
+      <h2 class="aone-login-title">
+        Welcome Back
+      </h2>
+
+
+      <!-- =================================================
+           DEVise LOGIN FORM
+      ================================================== -->
+
+      <%= form_for(
+            resource,
+            as: resource_name,
+            url: session_path(resource_name),
+            html: {
+              class: "aone-login-form",
+              data: {
+                turbo: false
+              }
+            }
+          ) do |f| %>
+
+
+        <!-- EMAIL -->
+
+        <div class="aone-field">
+
+          <%= f.label :email,
+              "Email Address",
+              class: "aone-field-label" %>
+
+          <div class="aone-input-wrap">
+
+            <i class="fas fa-envelope aone-input-icon"></i>
+
+            <%= f.email_field :email,
+                class: "aone-input",
+                placeholder: "Enter your email",
+                autocomplete: "email",
+                required: true %>
+
+          </div>
+
         </div>
 
 
-        <div class="auth-tabs">
+        <!-- PASSWORD -->
 
-            <div class="auth-tab active">
-                Login
-            </div>
+        <div class="aone-field">
 
-            <div class="auth-tab">
-                <%= link_to "Register", new_user_registration_path %>
-            </div>
+          <%= f.label :password,
+              "Password",
+              class: "aone-field-label" %>
+
+          <div class="aone-input-wrap">
+
+            <i class="fas fa-lock aone-input-icon"></i>
+
+            <%= f.password_field :password,
+                class: "aone-input aone-password-input",
+                placeholder: "Enter your password",
+                autocomplete: "current-password",
+                required: true %>
+
+            <button
+              type="button"
+              class="aone-password-toggle"
+              aria-label="Show password">
+
+              <i class="fas fa-eye"></i>
+
+            </button>
+
+          </div>
+
+
+          <!-- FORGOT -->
+
+          <div class="aone-password-row">
+
+            <%= link_to(
+                  "Forgot Password?",
+                  new_user_password_path,
+                  class: "aone-forgot"
+                ) %>
+
+          </div>
 
         </div>
 
 
+        <!-- REMEMBER ME -->
 
-        <div class="auth-form active">
+        <% if devise_mapping.rememberable? %>
 
-            <h2 class="form-title">
-                Welcome Back
-            </h2>
+          <div class="aone-remember">
 
+            <%= f.check_box(
+                  :remember_me,
+                  class: "aone-remember-input"
+                ) %>
 
+            <%= f.label(
+                  :remember_me,
+                  "Remember me",
+                  class: "aone-remember-label"
+                ) %>
 
-            <%= form_for(resource,
-                as: resource_name,
-                url: session_path(resource_name)) do |f| %>
+          </div>
 
+        <% end %>
 
-                <div class="form-group">
 
-                    <%= f.label :email, "Email Address" %>
+        <!-- LOGIN -->
 
-                    <i class="fas fa-user form-icon"></i>
+        <%= f.submit(
+              "Login",
+              class: "aone-login-button"
+            ) %>
 
 
-                    <%= f.email_field :email,
+      <% end %>
 
-                        class: "form-control",
 
-                        placeholder: "Enter your email",
+      <!-- =================================================
+           DIVIDER
+      ================================================== -->
 
-                        autocomplete: "email",
+      <div class="aone-divider">
 
-                        required: true %>
+        <span>
+          Or continue with
+        </span>
 
+      </div>
 
-                </div>
 
+      <!-- =================================================
+           SOCIAL LOGIN
+      ================================================== -->
 
+      <div class="aone-social">
 
 
-                <div class="form-group">
+        <!-- GOOGLE -->
 
+        <%= button_to(
+              user_google_oauth2_omniauth_authorize_path,
+              method: :post,
+              form: {
+                data: {
+                  turbo: false
+                }
+              },
+              class: "aone-social-button",
+              title: "Continue with Google"
+            ) do %>
 
-                    <%= f.label :password, "Password" %>
+          <i class="fab fa-google"></i>
 
+        <% end %>
 
-                    <i class="fas fa-lock form-icon"></i>
 
+      </div>
 
 
-                    <%= f.password_field :password,
+      <!-- =================================================
+           FOOTER
+      ================================================== -->
 
-                        class: "form-control",
+      <div class="aone-auth-footer">
 
-                        placeholder: "Enter your password",
+        <span>
+          Don't have an account?
+        </span>
 
-                        autocomplete: "current-password",
+        <%= link_to(
+              "Register Now",
+              new_user_registration_path
+            ) %>
 
-                        required: true %>
-
-
-                </div>
-
-
-
-
-                <% if devise_mapping.rememberable? %>
-
-                    <div class="form-check">
-
-                        <%= f.check_box :remember_me,
-                            class: "form-check-input" %>
-
-
-                        <%= f.label :remember_me,
-                            "Remember me",
-                            class: "form-check-label" %>
-
-                    </div>
-
-                <% end %>
-
-
-
-
-                <%= link_to "Forgot Password?",
-
-                    new_user_password_path,
-
-                    class: "forgot-password" %>
-
-
-
-
-
-                <%= f.submit "Login",
-                    class: "btn" %>
-
-
-
-            <% end %>
-
-
-
-
-
-            <div class="auth-divider">
-
-                <span>
-                    Or continue with
-                </span>
-
-            </div>
-
-
-
-
-
-            <div class="social-login">
-
-
-                <div class="social-btn facebook">
-
-                    <i class="fab fa-facebook-f"></i>
-
-                </div>
-
-
-             <%= button_to user_google_oauth2_omniauth_authorize_path,
-      method: :post,
-      form: { data: { turbo: false } },
-      class: "social-btn google" do %>
-  <i class="fab fa-google"></i>
-<% end %>
-
-            </div>
-
-
-
-
-
-            <div class="auth-footer">
-
-                Don't have an account?
-
-                <%= link_to "Register Now",
-                    new_user_registration_path %>
-
-
-            </div>
-
-
-        </div>
+      </div>
 
 
     </div>
+
+  </section>
 
 </div>
 
 
-</body>
+<script>
 
+/* =========================================================
+   A ONE GS CENTER
+   LOGIN JAVASCRIPT
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================================
+       PASSWORD SHOW / HIDE
+    ===================================================== */
+
+    const toggle =
+        document.querySelector(
+            "#aone-login-page .aone-password-toggle"
+        );
+
+
+    if (toggle) {
+
+        toggle.addEventListener("click", function () {
+
+            const wrapper =
+                toggle.closest(".aone-input-wrap");
+
+            if (!wrapper) return;
+
+
+            const input =
+                wrapper.querySelector(
+                    ".aone-password-input"
+                );
+
+            const icon =
+                toggle.querySelector("i");
+
+
+            if (!input) return;
+
+
+            if (input.type === "password") {
+
+                input.type = "text";
+
+                icon.classList.remove("fa-eye");
+
+                icon.classList.add("fa-eye-slash");
+
+                toggle.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+            } else {
+
+                input.type = "password";
+
+                icon.classList.remove("fa-eye-slash");
+
+                icon.classList.add("fa-eye");
+
+                toggle.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+            }
+
+        });
+
+    }
+
+
+    /* =====================================================
+       INPUT FOCUS EFFECT
+    ===================================================== */
+
+    const inputs =
+        document.querySelectorAll(
+            "#aone-login-page .aone-input"
+        );
+
+
+    inputs.forEach(function (input) {
+
+        input.addEventListener("focus", function () {
+
+            const wrapper =
+                input.closest(".aone-input-wrap");
+
+            if (wrapper) {
+
+                wrapper.classList.add("focused");
+
+            }
+
+        });
+
+
+        input.addEventListener("blur", function () {
+
+            const wrapper =
+                input.closest(".aone-input-wrap");
+
+            if (wrapper) {
+
+                wrapper.classList.remove("focused");
+
+            }
+
+        });
+
+    });
+
+
+    /* =====================================================
+       PREVENT DOUBLE LOGIN
+    ===================================================== */
+
+    const form =
+        document.querySelector(
+            "#aone-login-page .aone-login-form"
+        );
+
+
+    if (form) {
+
+        form.addEventListener("submit", function () {
+
+            const button =
+                form.querySelector(
+                    ".aone-login-button"
+                );
+
+            if (!button) return;
+
+
+            setTimeout(function () {
+
+                button.disabled = true;
+
+                button.innerHTML =
+                    '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+            }, 50);
+
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
 </html>

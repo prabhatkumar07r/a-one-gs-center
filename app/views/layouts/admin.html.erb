@@ -11,43 +11,291 @@
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
   <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <%= javascript_importmap_tags %>
 
+
+  <style>
+<style>
+
+/* =========================================================
+   ADMIN BODY
+========================================================= */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  overflow-x: hidden;
+}
+
+body.admin-body {
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(196, 181, 253, 0.30),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(59, 130, 246, 0.22),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #4c1d95 0%,
+      #6d28d9 45%,
+      #7c3aed 100%
+    ) !important;
+
+  color: #ffffff;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   ADMIN WRAPPER
+========================================================= */
+
+.admin-wrapper {
+
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  background: transparent !important;
+}
+
+
+/* =========================================================
+   ADMIN MAIN
+========================================================= */
+
+.admin-main {
+
+  position: relative;
+
+  width: calc(100% - 260px);
+
+  min-height: 100vh;
+
+  margin-left: 260px;
+
+  background: transparent !important;
+
+  padding: 0;
+}
+
+
+/* =========================================================
+   ADMIN CONTENT
+========================================================= */
+
+.admin-content {
+
+  position: relative;
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  margin: 0;
+
+  padding: 110px 30px 30px;
+
+  background: transparent !important;
+
+  color: #ffffff;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   REMOVE WHITE BOOTSTRAP BACKGROUNDS
+========================================================= */
+
+.admin-content .container,
+.admin-content .container-fluid,
+.admin-content .row,
+.admin-content section {
+
+  background: transparent !important;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .admin-main {
+
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .admin-content {
+
+    padding-top: 100px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-main {
+
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .admin-content {
+
+    padding-top: 88px;
+
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 20px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .admin-content {
+
+    padding-top: 84px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+}
+
+</style>
+
+  </style>
+
 </head>
+
 
 <body class="admin-body">
 
+
+  <!-- =======================================================
+       ADMIN WRAPPER
+  ======================================================== -->
+
   <div class="admin-wrapper">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
     <%= render "layouts/admin_sidebar" %>
 
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <div class="admin-main">
+
+
+      <!-- ===================================================
+           HEADER
+      ==================================================== -->
 
       <%= render "layouts/admin_header" %>
 
+
+      <!-- ===================================================
+           CONTENT
+      ==================================================== -->
+
       <main class="admin-content">
 
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+        ================================================== -->
+
         <% if notice %>
+
           <div class="alert alert-success">
+
             <%= notice %>
+
           </div>
+
         <% end %>
+
+
+        <!-- =================================================
+             ERROR MESSAGE
+        ================================================== -->
 
         <% if alert %>
+
           <div class="alert alert-danger">
+
             <%= alert %>
+
           </div>
+
         <% end %>
 
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
         <%= yield %>
+
 
       </main>
 
     </div>
 
   </div>
+
+
+  <!-- =======================================================
+       BOOTSTRAP JS
+  ======================================================== -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

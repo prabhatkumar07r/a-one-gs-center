@@ -1,25 +1,199 @@
-<h2>Change your password</h2>
+<div class="auth-container">
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+  <!-- =====================================================
+       LEFT SIDE - BRANDING
+  ====================================================== -->
 
-  <div class="field">
-    <p><%= f.label :password, "New password" %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
-    <% end %>
-    <p><%= f.password_field :password, autofocus: true, autocomplete: "new-password" %></p>
+  <div class="auth-image">
+
+    <div class="auth-image-content">
+
+      <%= image_tag "logo.jpeg",
+          alt: "A ONE GS CENTER" %>
+
+      <h2>A ONE GS CENTER</h2>
+
+      <p>
+        Create a new secure password and continue your
+        learning journey with us.
+      </p>
+
+    </div>
+
   </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation, "Confirm new password" %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
+
+  <!-- =====================================================
+       RIGHT SIDE - CHANGE PASSWORD
+  ====================================================== -->
+
+  <div class="auth-forms">
+
+    <!-- AUTH TABS -->
+    <div class="auth-tabs">
+
+      <div class="auth-tab active">
+        Change Password
+      </div>
+
+      <div class="auth-tab">
+        <%= link_to "Login", new_user_session_path %>
+      </div>
+
+    </div>
+
+
+    <!-- FORM -->
+    <div class="auth-form active">
+
+      <h2 class="form-title">
+        Create New Password
+      </h2>
+
+      <p class="form-subtitle">
+        Enter your new password below. Make sure it is
+        strong and easy for you to remember.
+      </p>
+
+
+      <%= form_for(
+            resource,
+            as: resource_name,
+            url: password_path(resource_name),
+            html: { method: :put }
+          ) do |f| %>
+
+        <!-- DEVise ERRORS -->
+        <%= render "devise/shared/error_messages",
+            resource: resource %>
+
+
+        <!-- RESET TOKEN -->
+        <%= f.hidden_field :reset_password_token %>
+
+
+        <!-- NEW PASSWORD -->
+        <div class="form-group">
+
+          <%= f.label :password, "New Password" %>
+
+          <i class="bi bi-lock form-icon"></i>
+
+          <%= f.password_field :password,
+                autofocus: true,
+                autocomplete: "new-password",
+                class: "form-control",
+                placeholder: "Enter your new password",
+                required: true %>
+
+          <% if @minimum_password_length %>
+            <small class="password-hint">
+              Minimum <%= @minimum_password_length %> characters
+            </small>
+          <% end %>
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="form-group">
+
+          <%= f.label :password_confirmation,
+              "Confirm New Password" %>
+
+          <i class="bi bi-shield-lock form-icon"></i>
+
+          <%= f.password_field :password_confirmation,
+                autocomplete: "new-password",
+                class: "form-control",
+                placeholder: "Confirm your new password",
+                required: true %>
+
+        </div>
+
+
+        <!-- SUBMIT -->
+        <%= f.submit "Change My Password",
+              class: "btn" %>
+
+      <% end %>
+
+
+      <!-- FOOTER -->
+      <div class="auth-footer">
+
+        Remember your password?
+
+        <%= link_to "Login",
+            new_user_session_path %>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+</div>
+<style>
+  /* =========================================================
+   CHANGE PASSWORD
+   DEVISE PASSWORD RESET
+========================================================= */
 
-<%= render "devise/shared/links" %>
+
+/* =========================================================
+   PASSWORD HINT
+========================================================= */
+
+.auth-container .password-hint {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT ICON
+========================================================= */
+
+.auth-container .form-group .form-icon {
+  color: #64748b;
+
+  transition: color 0.25s ease;
+}
+
+
+/* Change icon color when input is focused */
+
+.auth-container .form-group:focus-within .form-icon {
+  color: #a78bfa;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT SPACING
+========================================================= */
+
+.auth-container input[type="password"].form-control {
+  padding-right: 48px;
+}
+
+
+/* =========================================================
+   PASSWORD HINT MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .auth-container .password-hint {
+    font-size: 11px;
+  }
+
+}
+</style>

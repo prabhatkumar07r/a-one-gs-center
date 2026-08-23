@@ -8,22 +8,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
       redirect_to new_user_session_path,
                   notice: "Account created successfully. Please check your email to confirm your account."
     else
-      clean_up_passwords(resource)
+      clean_up_passwords resource
       set_minimum_password_length
 
       render :new, status: :unprocessable_content
     end
-  end
-
-  private
-
-  def sign_up_params
-    params.require(:user).permit(
-      :name,
-      :email,
-      :mobile,
-      :password,
-      :password_confirmation
-    )
   end
 end

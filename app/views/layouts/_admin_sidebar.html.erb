@@ -1,33 +1,60 @@
 <style>
 /* =========================================================
+   A ONE GS CENTER
    ADMIN SIDEBAR
+   DARK GLASS / BLUE-VIOLET THEME
 ========================================================= */
 
+
+/* =========================================================
+   1. SIDEBAR
+========================================================= */
+
+.admin-sidebar,
+.admin-sidebar *,
+.admin-sidebar *::before,
+.admin-sidebar *::after {
+  box-sizing: border-box;
+}
+
 .admin-sidebar {
+
   position: fixed;
+
   top: 0;
   left: 0;
 
   width: 260px;
   height: 100dvh;
 
-  background: blueviolet;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.28),
+      rgba(30, 27, 75, 0.22)
+    ) !important;
 
-  border-right: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+
+  box-shadow:
+    4px 0 30px rgba(0, 0, 0, 0.15);
 
   z-index: 3000;
 
   overflow-y: auto;
   overflow-x: hidden;
 
-  transition: transform 0.3s ease, width 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease;
 }
 
 
 /* =========================================================
-   SCROLLBAR
+   2. SCROLLBAR
 ========================================================= */
 
 .admin-sidebar::-webkit-scrollbar {
@@ -35,7 +62,8 @@
 }
 
 .admin-sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.18);
+
   border-radius: 10px;
 }
 
@@ -45,7 +73,7 @@
 
 
 /* =========================================================
-   LOGO AREA
+   3. LOGO AREA
 ========================================================= */
 
 .sidebar-logo {
@@ -56,28 +84,44 @@
 
   gap: 12px;
 
-  padding: 18px 18px;
+  padding: 18px;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.025);
 
-  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 }
+
+
+/* =========================================================
+   LOGO IMAGE
+========================================================= */
 
 .sidebar-logo-img {
   width: 48px;
   height: 48px;
 
-  object-fit: contain;
-
   flex: 0 0 48px;
 
-  border-radius: 10px;
+  object-fit: contain;
+
+  border-radius: 12px;
 
   background: #ffffff;
+
+  padding: 2px;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.20);
 }
+
+
+/* =========================================================
+   SIDEBAR TITLE
+========================================================= */
 
 .sidebar-title {
   min-width: 0;
+
   flex: 1;
 
   overflow: hidden;
@@ -89,11 +133,13 @@
   color: #ffffff;
 
   font-size: 15px;
-  font-weight: 900;
+
+  font-weight: 800;
 
   line-height: 1.3;
 
   white-space: normal;
+
   word-break: normal;
 }
 
@@ -102,9 +148,10 @@
 
   margin-top: 4px;
 
-  color: #fff200;
+  color: #c4b5fd;
 
   font-size: 11px;
+
   font-weight: 600;
 
   white-space: nowrap;
@@ -112,7 +159,7 @@
 
 
 /* =========================================================
-   NAVIGATION
+   4. NAVIGATION
 ========================================================= */
 
 .admin-sidebar > .nav {
@@ -127,13 +174,14 @@
 
 
 /* =========================================================
-   MAIN NAV LINK
+   5. MAIN NAV LINK
 ========================================================= */
 
 .admin-sidebar .nav-link {
   position: relative;
 
   display: flex;
+
   align-items: center;
 
   gap: 12px;
@@ -144,22 +192,29 @@
 
   padding: 10px 13px;
 
-  border-radius: 9px;
+  border: 1px solid transparent;
 
-  color: #ffffff;
+  border-radius: 10px;
+
+  color: #e2e8f0;
 
   text-decoration: none;
 
   font-size: 14px;
-  font-weight: 700;
 
-  box-sizing: border-box;
+  font-weight: 650;
 
   transition:
     background 0.2s ease,
     color 0.2s ease,
+    border-color 0.2s ease,
     transform 0.2s ease;
 }
+
+
+/* =========================================================
+   NAV TEXT
+========================================================= */
 
 .admin-sidebar .nav-link span {
   min-width: 0;
@@ -171,7 +226,12 @@
   white-space: nowrap;
 }
 
-.admin-sidebar .nav-link i:first-child {
+
+/* =========================================================
+   MAIN ICON
+========================================================= */
+
+.admin-sidebar .nav-link > i:first-child {
   width: 20px;
 
   flex: 0 0 20px;
@@ -180,9 +240,11 @@
 
   font-size: 16px;
 
-  color: #ffffff;
+  color: #c4b5fd;
 
-  transition: color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 
@@ -190,18 +252,20 @@
    CHEVRON
 ========================================================= */
 
-.admin-sidebar .nav-link .fa-chevron-down {
+.admin-sidebar .nav-link .sidebar-chevron {
   margin-left: auto;
 
   width: auto !important;
 
   flex: 0 0 auto;
 
-  font-size: 10px !important;
+  font-size: 10px;
 
-  color: rgba(255, 255, 255, 0.65) !important;
+  color: rgba(255, 255, 255, 0.45);
 
-  transition: transform 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    color 0.2s ease;
 }
 
 
@@ -210,31 +274,45 @@
 ========================================================= */
 
 .admin-sidebar .nav-link:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.06);
 
   color: #ffffff;
 
   transform: translateX(2px);
 }
 
-.admin-sidebar .nav-link:hover i:first-child {
+.admin-sidebar .nav-link:hover > i:first-child {
   color: #ffffff;
+
+  transform: scale(1.05);
 }
 
 
 /* =========================================================
-   ACTIVE LINK
+   ACTIVE / PARENT ACTIVE
 ========================================================= */
 
 .admin-sidebar .nav-link.active,
 .admin-sidebar .nav-link.parent-active {
-  background: rgba(255, 255, 255, 0.20);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(124, 58, 237, 0.32),
+      rgba(37, 99, 235, 0.16)
+    );
+
+  border-color: rgba(167, 139, 250, 0.14);
 
   color: #ffffff;
+
+  box-shadow:
+    inset 3px 0 0 rgba(167, 139, 250, 0.90);
 }
 
-.admin-sidebar .nav-link.active i:first-child,
-.admin-sidebar .nav-link.parent-active i:first-child {
+.admin-sidebar .nav-link.active > i:first-child,
+.admin-sidebar .nav-link.parent-active > i:first-child {
   color: #ffffff;
 }
 
@@ -243,13 +321,17 @@
    OPEN CHEVRON
 ========================================================= */
 
-.admin-sidebar .nav-link[aria-expanded="true"] .fa-chevron-down {
+.admin-sidebar
+.nav-link[aria-expanded="true"]
+.sidebar-chevron {
   transform: rotate(180deg);
+
+  color: #c4b5fd;
 }
 
 
 /* =========================================================
-   SUBMENU
+   6. SUBMENU
 ========================================================= */
 
 .admin-sidebar .collapse {
@@ -260,6 +342,7 @@
   position: relative;
 
   display: flex;
+
   align-items: center;
 
   width: 100%;
@@ -268,22 +351,29 @@
 
   padding: 8px 12px 8px 35px;
 
-  box-sizing: border-box;
-
-  color: rgba(255, 255, 255, 0.90);
+  color: rgba(226, 232, 240, 0.82);
 
   text-decoration: none;
+
+  border: 1px solid transparent;
 
   border-radius: 8px;
 
   font-size: 13px;
+
   font-weight: 600;
 
   transition:
     background 0.2s ease,
     color 0.2s ease,
-    padding-left 0.2s ease;
+    padding-left 0.2s ease,
+    border-color 0.2s ease;
 }
+
+
+/* =========================================================
+   SUBMENU DOT
+========================================================= */
 
 .admin-sidebar .submenu::before {
   content: "";
@@ -295,13 +385,24 @@
   width: 5px;
   height: 5px;
 
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.40);
 
   border-radius: 50%;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
+
+/* =========================================================
+   SUBMENU HOVER
+========================================================= */
+
 .admin-sidebar .submenu:hover {
-  background: rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.07);
+
+  border-color: rgba(255, 255, 255, 0.05);
 
   color: #ffffff;
 
@@ -309,7 +410,9 @@
 }
 
 .admin-sidebar .submenu:hover::before {
-  background: #ffffff;
+  background: #a78bfa;
+
+  transform: scale(1.25);
 }
 
 
@@ -318,15 +421,27 @@
 ========================================================= */
 
 .admin-sidebar .submenu.active {
-  background: rgba(255, 255, 255, 0.20);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(124, 58, 237, 0.25),
+      rgba(37, 99, 235, 0.10)
+    );
+
+  border-color: rgba(167, 139, 250, 0.10);
 
   color: #ffffff;
 
   font-weight: 700;
+
+  box-shadow:
+    inset 2px 0 0 #a78bfa;
 }
 
 .admin-sidebar .submenu.active::before {
-  background: #ffffff;
+  background: #a78bfa;
+
+  transform: scale(1.2);
 }
 
 
@@ -340,11 +455,13 @@
   margin-right: 8px;
 
   text-align: center;
+
+  color: #a78bfa;
 }
 
 
 /* =========================================================
-   MOBILE OVERLAY
+   7. MOBILE OVERLAY
 ========================================================= */
 
 .admin-sidebar-overlay {
@@ -354,9 +471,10 @@
 
   inset: 0;
 
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(2, 6, 23, 0.58);
 
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 
   z-index: 2990;
 }
@@ -367,7 +485,7 @@
 
 
 /* =========================================================
-   MOBILE MENU BUTTON
+   8. MOBILE MENU BUTTON
 ========================================================= */
 
 .admin-sidebar-toggle {
@@ -386,41 +504,47 @@
 
   padding: 0;
 
-  border: 1px solid #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
-  border-radius: 9px;
+  border-radius: 12px;
 
-  background: #ffffff;
+  background: rgba(15, 23, 42, 0.75);
 
-  color: #374151;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  color: #ffffff;
 
   cursor: pointer;
 
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.20);
 
   z-index: 3100;
 
   transition:
     background 0.2s ease,
-    color 0.2s ease,
+    border-color 0.2s ease,
     transform 0.2s ease;
 }
 
 .admin-sidebar-toggle:hover {
-  background: #f5f7fb;
+  background: rgba(124, 58, 237, 0.30);
 
-  color: #4f46e5;
+  border-color: rgba(167, 139, 250, 0.30);
+
+  color: #ffffff;
 
   transform: translateY(-1px);
 }
 
 .admin-sidebar-toggle i {
-  font-size: 18px;
+  font-size: 19px;
 }
 
 
 /* =========================================================
-   CLOSE BUTTON
+   9. CLOSE BUTTON
 ========================================================= */
 
 .admin-sidebar-close {
@@ -439,11 +563,11 @@
 
   padding: 0;
 
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.10);
 
-  border-radius: 8px;
+  border-radius: 9px;
 
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
 
   color: #ffffff;
 
@@ -453,18 +577,18 @@
 
   transition:
     background 0.2s ease,
-    color 0.2s ease;
+    transform 0.2s ease;
 }
 
 .admin-sidebar-close:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(239, 68, 68, 0.20);
 
-  color: #ffffff;
+  transform: rotate(4deg);
 }
 
 
 /* =========================================================
-   TABLET / MOBILE
+   10. TABLET
 ========================================================= */
 
 @media (max-width: 991px) {
@@ -473,6 +597,19 @@
     width: 280px;
 
     max-width: calc(100vw - 45px);
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(15, 23, 42, 0.90),
+        rgba(30, 27, 75, 0.88)
+      );
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    box-shadow:
+      8px 0 40px rgba(0, 0, 0, 0.35);
 
     transform: translateX(-105%);
   }
@@ -493,7 +630,7 @@
 
 
 /* =========================================================
-   MOBILE
+   11. MOBILE
 ========================================================= */
 
 @media (max-width: 600px) {
@@ -548,7 +685,7 @@
 
 
 /* =========================================================
-   VERY SMALL MOBILE
+   12. VERY SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 360px) {
@@ -592,7 +729,7 @@
   id="adminSidebarToggle"
   aria-label="Open admin menu">
 
-  <i class="fas fa-bars"></i>
+  <i class="bi bi-list"></i>
 
 </button>
 
@@ -626,7 +763,7 @@
     id="adminSidebarClose"
     aria-label="Close menu">
 
-    <i class="fas fa-times"></i>
+    <i class="bi bi-x-lg"></i>
 
   </button>
 
@@ -672,9 +809,11 @@
       <%= link_to dashboard_path,
           class: "nav-link #{'active' if controller_path == 'admin/dashboard'}" do %>
 
-        <i class="fas fa-home"></i>
+        <i class="bi bi-grid-1x2"></i>
 
-        <span>Dashboard</span>
+        <span>
+          Dashboard
+        </span>
 
       <% end %>
 
@@ -695,13 +834,16 @@
         aria-expanded="true"
         aria-controls="studentMenu">
 
-        <i class="fas fa-user-graduate"></i>
+        <i class="bi bi-mortarboard"></i>
 
-        <span>Student Management</span>
+        <span>
+          Student Management
+        </span>
 
-        <i class="fas fa-chevron-down"></i>
+        <i class="bi bi-chevron-down sidebar-chevron"></i>
 
       </a>
+
 
       <div
         class="collapse show"
@@ -714,6 +856,7 @@
 
         <% end %>
 
+
         <%= link_to enrollments_path,
             class: "submenu #{'active' if controller_path == 'admin/enrollments'}" do %>
 
@@ -721,12 +864,14 @@
 
         <% end %>
 
+
         <%= link_to attendances_path,
             class: "submenu #{'active' if controller_path == 'admin/attendances'}" do %>
 
           Attendance
 
         <% end %>
+
 
         <%= link_to fees_path,
             class: "submenu #{'active' if controller_path == 'admin/fees'}" do %>
@@ -754,17 +899,21 @@
         aria-expanded="false"
         aria-controls="academicMenu">
 
-        <i class="fas fa-book"></i>
+        <i class="bi bi-book"></i>
 
-        <span>Academic</span>
+        <span>
+          Academic
+        </span>
 
-        <i class="fas fa-chevron-down"></i>
+        <i class="bi bi-chevron-down sidebar-chevron"></i>
 
       </a>
+
 
       <div
         class="collapse"
         id="academicMenu">
+
 
         <%= link_to teachers_path,
             class: "submenu #{'active' if controller_path == 'admin/teachers'}" do %>
@@ -773,12 +922,14 @@
 
         <% end %>
 
+
         <%= link_to courses_path,
             class: "submenu #{'active' if controller_path == 'admin/courses'}" do %>
 
           Courses
 
         <% end %>
+
 
         <%= link_to batches_path,
             class: "submenu #{'active' if controller_path == 'admin/batches'}" do %>
@@ -787,12 +938,15 @@
 
         <% end %>
 
+
         <%= link_to study_notes_path,
             class: "submenu #{'active' if controller_path == 'admin/study_notes'}" do %>
 
-          <i class="fas fa-file-pdf me-2"></i>
+          <i class="bi bi-file-earmark-pdf"></i>
 
-          Study Notes
+          <span>
+            Study Notes
+          </span>
 
         <% end %>
 
@@ -815,17 +969,21 @@
         aria-expanded="false"
         aria-controls="websiteMenu">
 
-        <i class="fas fa-globe"></i>
+        <i class="bi bi-globe2"></i>
 
-        <span>Website</span>
+        <span>
+          Website
+        </span>
 
-        <i class="fas fa-chevron-down"></i>
+        <i class="bi bi-chevron-down sidebar-chevron"></i>
 
       </a>
+
 
       <div
         class="collapse"
         id="websiteMenu">
+
 
         <%= link_to galleries_path,
             class: "submenu #{'active' if controller_path == 'admin/galleries'}" do %>
@@ -834,6 +992,7 @@
 
         <% end %>
 
+
         <%= link_to achievements_path,
             class: "submenu #{'active' if controller_path == 'admin/achievements'}" do %>
 
@@ -841,12 +1000,14 @@
 
         <% end %>
 
+
         <%= link_to notifications_path,
             class: "submenu #{'active' if controller_path == 'admin/notifications'}" do %>
 
           Notifications
 
         <% end %>
+
 
         <%= link_to demos_path,
             class: "submenu #{'active' if controller_path == 'admin/demos'}" do %>
@@ -858,6 +1019,7 @@
       </div>
 
     </li>
+
 
   </ul>
 
@@ -893,6 +1055,7 @@
 
 
     /* Prevent duplicate initialization */
+
     if (sidebar.dataset.initialized === "true") {
       return;
     }
@@ -910,6 +1073,11 @@
 
       overlay.classList.add("show");
 
+      toggle.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
       document.body.style.overflow = "hidden";
 
     }
@@ -925,6 +1093,11 @@
 
       overlay.classList.remove("show");
 
+      toggle.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
       document.body.style.overflow = "";
 
     }
@@ -934,43 +1107,52 @@
        TOGGLE
     ======================================================== */
 
-    toggle.addEventListener("click", function () {
+    toggle.addEventListener(
+      "click",
+      function () {
 
-      if (
-        sidebar.classList.contains("mobile-open")
-      ) {
+        if (
+          sidebar.classList.contains("mobile-open")
+        ) {
 
-        closeSidebar();
+          closeSidebar();
 
-      } else {
+        } else {
 
-        openSidebar();
+          openSidebar();
+
+        }
 
       }
-
-    });
+    );
 
 
     /* =======================================================
        CLOSE BUTTON
     ======================================================== */
 
-    close.addEventListener("click", function () {
+    close.addEventListener(
+      "click",
+      function () {
 
-      closeSidebar();
+        closeSidebar();
 
-    });
+      }
+    );
 
 
     /* =======================================================
        OVERLAY
     ======================================================== */
 
-    overlay.addEventListener("click", function () {
+    overlay.addEventListener(
+      "click",
+      function () {
 
-      closeSidebar();
+        closeSidebar();
 
-    });
+      }
+    );
 
 
     /* =======================================================
@@ -981,15 +1163,18 @@
       .querySelectorAll("a.submenu")
       .forEach(function (link) {
 
-        link.addEventListener("click", function () {
+        link.addEventListener(
+          "click",
+          function () {
 
-          if (window.innerWidth <= 991) {
+            if (window.innerWidth <= 991) {
 
-            closeSidebar();
+              closeSidebar();
+
+            }
 
           }
-
-        });
+        );
 
       });
 
@@ -998,40 +1183,46 @@
        ESCAPE KEY
     ======================================================== */
 
-    document.addEventListener("keydown", function (event) {
+    document.addEventListener(
+      "keydown",
+      function (event) {
 
-      if (
-        event.key === "Escape" &&
-        sidebar.classList.contains("mobile-open")
-      ) {
+        if (
+          event.key === "Escape" &&
+          sidebar.classList.contains("mobile-open")
+        ) {
 
-        closeSidebar();
+          closeSidebar();
+
+        }
 
       }
-
-    });
+    );
 
 
     /* =======================================================
        RESIZE
     ======================================================== */
 
-    window.addEventListener("resize", function () {
+    window.addEventListener(
+      "resize",
+      function () {
 
-      if (window.innerWidth > 991) {
+        if (window.innerWidth > 991) {
 
-        closeSidebar();
+          closeSidebar();
+
+        }
 
       }
-
-    });
+    );
 
   }
 
 
-  /* ===========================================================
+  /* =========================================================
      TURBO
-  ============================================================ */
+  ========================================================= */
 
   document.addEventListener(
     "turbo:load",
@@ -1039,14 +1230,15 @@
   );
 
 
-  /* ===========================================================
+  /* =========================================================
      NORMAL PAGE LOAD
-  ============================================================ */
+  ========================================================= */
 
   document.addEventListener(
     "DOMContentLoaded",
     initAdminSidebar
   );
+
 
 })();
 

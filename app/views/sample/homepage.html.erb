@@ -1,13 +1,49 @@
 <style>
 /* =========================================================
    A ONE GS CENTER
-   HOMEPAGE - CLEAN MASTER CSS
-   HERO + SECTIONS + CONTACT + FOOTER
+   HOMEPAGE - COMPLETE MASTER CSS
+   PURPLE GLASS THEME
+   MAIN BACKGROUND: #8009e2
 ========================================================= */
+
+/* =========================================================
+   1. GLOBAL VARIABLES
+========================================================= */
+
+:root {
+    --page-bg: #8009e2;
+
+    --purple: #8009e2;
+    --purple-dark: #5b08a8;
+    --purple-light: #b86cff;
+
+    --blue: #2563eb;
+    --blue-light: #60a5fa;
+
+    --orange: #ff8c00;
+    --green: #10b981;
+
+    --white: #ffffff;
+    --text: #ffffff;
+    --text-soft: rgba(255, 255, 255, 0.88);
+    --text-muted: rgba(255, 255, 255, 0.70);
+
+    --glass: rgba(255, 255, 255, 0.10);
+    --glass-light: rgba(255, 255, 255, 0.14);
+    --glass-dark: rgba(30, 0, 55, 0.22);
+
+    --border: rgba(255, 255, 255, 0.20);
+
+    --shadow:
+        0 20px 60px rgba(30, 0, 50, 0.25);
+
+    --shadow-heavy:
+        0 30px 80px rgba(30, 0, 50, 0.35);
+}
 
 
 /* =========================================================
-   1. GLOBAL RESET / SAFETY
+   2. GLOBAL RESET
 ========================================================= */
 
 html,
@@ -20,12 +56,35 @@ body {
     overflow-x: hidden;
 
     scroll-behavior: smooth;
+
+    background: var(--page-bg);
+
+    color: var(--text);
+
+    font-family: "Poppins", sans-serif;
 }
 
 *,
 *::before,
 *::after {
     box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(255, 255, 255, 0.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(255, 255, 255, 0.08),
+            transparent 30%
+        ),
+        #8009e2;
 }
 
 img {
@@ -36,7 +95,12 @@ img {
 section {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: transparent;
 }
 
 button,
@@ -52,7 +116,7 @@ a {
 
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1250px;
 
     margin-left: auto;
     margin-right: auto;
@@ -63,36 +127,149 @@ a {
 
 
 /* =========================================================
-   2. HERO SECTION
+   3. COMMON GLASS
+========================================================= */
+
+.glass {
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   4. SECTION TITLE
+========================================================= */
+
+.section-title {
+    position: relative;
+
+    width: 100%;
+
+    margin: 0 0 50px;
+
+    text-align: center;
+
+    color: #ffffff;
+
+    font-size: clamp(32px, 4vw, 48px);
+
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    text-shadow:
+        0 4px 20px rgba(40, 0, 70, 0.35);
+}
+
+.section-title::after {
+    content: "";
+
+    display: block;
+
+    width: 75px;
+    height: 4px;
+
+    margin: 16px auto 0;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #d8b4fe
+        );
+
+    box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.45);
+}
+
+
+/* =========================================================
+   5. HERO
 ========================================================= */
 
 .hero {
+    position: relative;
+
     width: 100%;
+
     min-height: 100vh;
     min-height: 100svh;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     text-align: center;
 
+    padding: 80px 24px;
+
     background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(255, 255, 255, 0.15),
+            transparent 35%
+        ),
         linear-gradient(
-            135deg,
-            #07111f 0%,
-            #0b2345 50%,
-            #07111f 100%
+            180deg,
+            rgba(80, 0, 140, 0.18),
+            rgba(128, 9, 226, 0.02)
         );
+}
 
-    overflow: hidden;
+.hero::before {
+    content: "";
 
-    padding: 60px 24px;
+    position: absolute;
 
-    position: relative;
+    width: 500px;
+    height: 500px;
+
+    top: -250px;
+    left: -180px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    filter: blur(80px);
+
+    pointer-events: none;
+}
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    right: -220px;
+    bottom: -250px;
+
+    border-radius: 50%;
+
+    background: rgba(30, 0, 70, 0.18);
+
+    filter: blur(90px);
+
+    pointer-events: none;
 }
 
 .hero .container {
+    position: relative;
+
+    z-index: 2;
+
     width: 100%;
     max-width: 1400px;
 }
@@ -106,13 +283,14 @@ a {
 
 
 /* =========================================================
-   3. HERO LOGO
+   6. HERO LOGO
 ========================================================= */
 
 .hero-logo {
     display: block;
 
     width: min(90vw, 1100px);
+
     max-width: 100%;
 
     height: auto;
@@ -127,11 +305,9 @@ a {
 
     border-radius: 0;
 
-    box-shadow: none;
-
     filter:
         drop-shadow(
-            0 18px 35px rgba(0, 0, 0, 0.45)
+            0 20px 40px rgba(35, 0, 65, 0.40)
         );
 
     animation: floatLogo 5s ease-in-out infinite;
@@ -157,36 +333,37 @@ a {
 
 
 /* =========================================================
-   4. HERO SUBTITLE
+   7. HERO SUBTITLE
 ========================================================= */
 
 .hero-subtitle {
     width: 100%;
-    max-width: 850px;
+    max-width: 900px;
 
-    margin: 25px auto 0;
+    margin: 28px auto 0;
 
     color: #ffffff;
 
-    font-family: "Poppins", sans-serif;
-
     font-size: clamp(18px, 2.2vw, 28px);
 
-    font-weight: 500;
+    font-weight: 600;
 
     line-height: 1.5;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 4px 15px rgba(30, 0, 60, 0.30);
 }
 
 
 /* =========================================================
-   5. HERO FEATURES
+   8. HERO FEATURES
 ========================================================= */
 
 .hero-features {
     width: 100%;
-    max-width: 950px;
+    max-width: 1000px;
 
     display: flex;
 
@@ -197,7 +374,7 @@ a {
 
     gap: 12px;
 
-    margin: 30px auto;
+    margin: 32px auto;
 }
 
 .hero-features span {
@@ -208,26 +385,27 @@ a {
 
     max-width: 100%;
 
-    padding: 10px 18px;
+    padding: 11px 18px;
 
     color: #ffffff;
 
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.12);
 
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.24);
 
     border-radius: 50px;
 
-    font-family: "Poppins", sans-serif;
+    font-size: 14px;
 
-    font-size: 15px;
-
-    font-weight: 500;
+    font-weight: 600;
 
     line-height: 1.4;
 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 8px 25px rgba(30, 0, 60, 0.16);
 
     transition:
         background 0.3s ease,
@@ -235,91 +413,14 @@ a {
 }
 
 .hero-features span:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.20);
 
     transform: translateY(-3px);
 }
 
 
 /* =========================================================
-   6. HERO BUTTONS
-========================================================= */
-
-.hero-buttons {
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 15px;
-
-    margin-top: 35px;
-}
-
-.hero-buttons .btn {
-    min-width: 160px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 14px 30px;
-
-    color: #ffffff;
-
-    background: #ff8c00;
-
-    border: 2px solid transparent;
-
-    border-radius: 8px;
-
-    text-decoration: none;
-
-    font-family: "Poppins", sans-serif;
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-    line-height: 1.3;
-
-    transition:
-        background 0.3s ease,
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.hero-buttons .btn:hover {
-    background: #ff6b00;
-
-    color: #ffffff;
-
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 10px 25px rgba(255, 140, 0, 0.3);
-}
-
-.hero-buttons .btn-outline {
-    background: transparent;
-
-    border: 2px solid #ffffff;
-}
-
-.hero-buttons .btn-outline:hover {
-    background: #ffffff;
-
-    color: #111111;
-}
-
-
-/* =========================================================
-   7. HERO SOCIAL
+   9. HERO SOCIAL
 ========================================================= */
 
 .hero-social {
@@ -348,9 +449,15 @@ a {
 
     border-radius: 50%;
 
-    text-decoration: none;
+    font-size: 24px;
 
-    font-size: 25px;
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 2px solid rgba(255, 255, 255, 0.30);
+
+    backdrop-filter: blur(10px);
 
     transition:
         transform 0.35s ease,
@@ -360,152 +467,1503 @@ a {
 
 .hero-social a:hover {
     transform: translateY(-6px) scale(1.08);
-}
 
-.hero-social .linkedin {
-    color: #0a66c2;
+    background: rgba(255, 255, 255, 0.20);
 
-    border: 2px solid #0a66c2;
-
-    background: rgba(10, 102, 194, 0.08);
-}
-
-.hero-social .linkedin:hover {
-    color: #ffffff;
-
-    background: #0a66c2;
+    box-shadow:
+        0 15px 35px rgba(30, 0, 60, 0.25);
 }
 
 .hero-social .youtube {
-    color: #ff0000;
+    color: #ffdddd;
 
-    border: 2px solid #ff0000;
-
-    background: rgba(255, 0, 0, 0.08);
-}
-
-.hero-social .youtube:hover {
-    color: #ffffff;
-
-    background: #ff0000;
+    border-color: #ff5c5c;
 }
 
 .hero-social .instagram {
-    color: #e1306c;
+    color: #ffd2e2;
 
-    border: 2px solid #e1306c;
-
-    background: rgba(225, 48, 108, 0.08);
-}
-
-.hero-social .instagram:hover {
-    color: #ffffff;
-
-    background: #e1306c;
+    border-color: #ff6b9a;
 }
 
 
 /* =========================================================
-   8. COMMON SECTION TITLES
+   10. HERO BUTTONS
 ========================================================= */
 
-.section-title {
+.hero-buttons {
     width: 100%;
 
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    margin-top: 35px;
+}
+
+.hero-buttons .btn {
+    min-width: 170px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 30px;
+
+    color: #ffffff;
+
+    background: #ff8c00;
+
+    border: 2px solid transparent;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 12px 30px rgba(60, 0, 90, 0.18);
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.hero-buttons .btn:hover {
+    background: #ff6b00;
+
+    color: #ffffff;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 35px rgba(255, 140, 0, 0.30);
+}
+
+.hero-buttons .btn-outline {
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 2px solid rgba(255, 255, 255, 0.75);
+
+    backdrop-filter: blur(8px);
+}
+
+.hero-buttons .btn-outline:hover {
+    background: #ffffff;
+
+    color: #8009e2;
+}
+
+
+/* =========================================================
+   11. FEATURES
+========================================================= */
+
+.features {
+    width: 100%;
+
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(91, 8, 168, 0.10),
+            rgba(255, 255, 255, 0.04)
+        );
+}
+
+.features-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 24px;
+}
+
+.feature-card {
+    min-width: 0;
+
+    padding: 32px 25px;
+
     text-align: center;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 20px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+
+    background: rgba(255, 255, 255, 0.15);
+
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.feature-icon {
+    display: block;
+
+    margin-bottom: 20px;
+
+    color: #ffffff;
+
+    font-size: 42px;
+
+    text-shadow:
+        0 5px 20px rgba(30, 0, 60, 0.30);
+}
+
+.feature-card h3 {
+    margin: 0 0 14px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+.feature-card p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   12. ABOUT / ACHIEVEMENTS
+========================================================= */
+
+.about-section {
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(91, 8, 168, 0.12)
+        );
+}
+
+.toppers-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 25px;
+
+    margin-bottom: 50px;
+}
+
+.topper-card {
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 20px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(14px);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.topper-card:hover {
+    transform: translateY(-6px);
+
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.topper-image {
+    display: block;
+
+    width: 100%;
+
+    height: 260px;
+
+    object-fit: cover;
+}
+
+.topper-info {
+    padding: 22px;
+}
+
+.topper-info h4 {
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+.topper-info p {
+    margin: 7px 0;
+
+    color: rgba(255, 255, 255, 0.80);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.topper-info small {
+    color: #ead7ff;
+}
+
+
+/* =========================================================
+   13. EVENTS
+========================================================= */
+
+.collage {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
 
     margin-bottom: 45px;
 }
 
+.event-card {
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 18px;
+
+    backdrop-filter: blur(12px);
+
+    box-shadow: var(--shadow);
+}
+
+.event-card img {
+    display: block;
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+}
+
+.event-card h5 {
+    margin: 0;
+
+    padding: 15px;
+
+    color: #ffffff;
+
+    font-size: 15px;
+}
+
 
 /* =========================================================
-   9. CONTACT SECTION
-   HERO-STYLE DARK TRANSPARENT DESIGN
+   14. GOAL
+========================================================= */
+
+.goal-quote {
+    max-width: 850px;
+
+    margin: 0 auto 45px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow: var(--shadow);
+}
+
+.goal-quote strong {
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+.goal-quote p {
+    margin: 10px 0;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 16px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   15. ABOUT CTA
+========================================================= */
+
+.about-cta {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 35px;
+
+    align-items: center;
+}
+
+.highlight-box {
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow: var(--shadow);
+}
+
+.highlight-box h3 {
+    margin: 0 0 20px;
+
+    color: #ffffff;
+
+    font-size: 24px;
+}
+
+.highlight-box ul {
+    margin: 0 0 25px;
+
+    padding-left: 20px;
+}
+
+.highlight-box li {
+    margin-bottom: 12px;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    line-height: 1.6;
+}
+
+.demo-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 22px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5b08a8,
+            #9c27ff
+        );
+
+    border-radius: 10px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 25px rgba(50, 0, 90, 0.25);
+
+    transition:
+        transform 0.25s ease;
+}
+
+.demo-btn:hover {
+    color: #ffffff;
+
+    transform: translateY(-2px);
+}
+
+.highlight-img {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow: var(--shadow);
+}
+
+.highlight-img img {
+    max-width: 450px;
+
+    width: 100%;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   16. NOTIFICATIONS
+========================================================= */
+
+.notifications {
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(91, 8, 168, 0.12),
+            rgba(255, 255, 255, 0.04)
+        );
+}
+
+.notif-showcase {
+    width: 100%;
+}
+
+.ticker-glass-panel {
+    position: relative;
+
+    width: 100%;
+
+    padding: 25px;
+
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow-heavy);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.notification-ticker-container {
+    width: 100%;
+
+    overflow: hidden;
+
+    position: relative;
+}
+
+.notification-ticker-container::before,
+.notification-ticker-container::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 90px;
+
+    z-index: 5;
+
+    pointer-events: none;
+}
+
+.notification-ticker-container::before {
+    left: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(104, 4, 180, 0.75),
+            transparent
+        );
+}
+
+.notification-ticker-container::after {
+    right: 0;
+
+    background:
+        linear-gradient(
+            270deg,
+            rgba(104, 4, 180, 0.75),
+            transparent
+        );
+}
+
+.notification-ticker {
+    width: max-content;
+
+    display: flex;
+
+    align-items: stretch;
+
+    gap: 20px;
+
+    will-change: transform;
+
+    animation:
+        notificationScroll 35s linear infinite;
+}
+
+.notification-ticker:hover {
+    animation-play-state: paused;
+}
+
+.notification-card {
+    width: 330px;
+
+    min-width: 330px;
+
+    padding: 24px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 15px 40px rgba(40, 0, 80, 0.20);
+
+    backdrop-filter: blur(12px);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.notification-card:hover {
+    transform: translateY(-5px);
+
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.notification-card h5 {
+    margin: 0 0 14px;
+
+    color: #ffffff;
+
+    font-size: 17px;
+}
+
+.notification-card h5 i {
+    margin-right: 7px;
+
+    color: #ffd166;
+}
+
+.notification-card p {
+    margin: 9px 0;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.notification-card strong {
+    color: #ffffff;
+}
+
+.notification-card small {
+    display: block;
+
+    margin-top: 15px;
+
+    color: rgba(255, 255, 255, 0.58) !important;
+}
+
+@keyframes notificationScroll {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+
+/* =========================================================
+   17. GALLERY
+========================================================= */
+
+.gallery {
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(91, 8, 168, 0.10)
+        );
+}
+
+.gallery-container {
+    position: relative;
+
+    width: 100%;
+
+    padding: 20px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 22px;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+}
+
+.gallery-slider {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.gallery-slider img {
+    display: block;
+
+    width: 100%;
+
+    height: 220px;
+
+    object-fit: cover;
+
+    padding: 0 !important;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    border: 1px solid rgba(255, 255, 255, 0.20) !important;
+
+    border-radius: 14px !important;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.gallery-slider img:hover {
+    transform: scale(1.03);
+
+    box-shadow:
+        0 15px 35px rgba(30, 0, 60, 0.30);
+}
+
+.gallery-nav {
+    position: absolute;
+
+    top: 50%;
+
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(-50%);
+
+    color: #ffffff;
+
+    background: rgba(70, 0, 120, 0.65);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    backdrop-filter: blur(10px);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.gallery-nav:hover {
+    background: rgba(255, 255, 255, 0.20);
+
+    transform:
+        translateY(-50%)
+        scale(1.08);
+}
+
+.gallery-prev {
+    left: 10px;
+}
+
+.gallery-next {
+    right: 10px;
+}
+
+.gallery-dots {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================================================
+   18. COURSES
+========================================================= */
+
+.courses {
+    position: relative;
+
+    width: 100%;
+
+    padding: 100px 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 255, 255, 0.10),
+            transparent 35%
+        );
+}
+
+.course-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 30px;
+
+    align-items: stretch;
+}
+
+.course-card {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.11);
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    border-radius: 21px;
+
+    box-shadow:
+        0 20px 50px rgba(40, 0, 80, 0.25);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-7px);
+
+    border-color: rgba(255, 255, 255, 0.40);
+
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.course-image {
+    display: block;
+
+    width: 100%;
+
+    height: 285px;
+
+    object-fit: cover;
+
+    background: rgba(0, 0, 0, 0.10);
+
+    border: none;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+.course-placeholder {
+    width: 100%;
+
+    height: 285px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.13),
+            transparent 65%
+        ),
+        rgba(70, 0, 120, 0.20);
+}
+
+.course-placeholder h3 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.course-info {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 30px;
+}
+
+.course-title {
+    min-height: 78px;
+
+    margin: 0 0 16px;
+
+    color: #ffffff;
+
+    font-size: 27px;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+}
+
+.course-rating {
+    margin-bottom: 20px;
+
+    color: #ffd166;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+.course-rating span {
+    color: rgba(255, 255, 255, 0.72);
+
+    font-weight: 500;
+}
+
+.course-meta {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 18px 0;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+.course-meta span {
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 14px;
+
+    white-space: nowrap;
+}
+
+.course-meta i {
+    margin-right: 6px;
+
+    color: #ffffff;
+}
+
+.course-price-container {
+    min-height: 70px;
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    padding: 15px 0;
+}
+
+.original-price {
+    color: rgba(255, 255, 255, 0.50);
+
+    font-size: 15px;
+
+    text-decoration: line-through;
+}
+
+.discounted-price {
+    color: #ffffff;
+
+    font-size: 28px;
+
+    font-weight: 800;
+}
+
+.discount-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 10px;
+
+    color: #ffffff;
+
+    background: rgba(16, 185, 129, 0.30);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 7px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.course-buttons {
+    margin-top: auto;
+
+    padding-top: 15px;
+}
+
+.course-buttons .btn {
+    min-height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    border: none !important;
+
+    border-radius: 10px !important;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.course-buttons .btn:hover {
+    transform: translateY(-2px);
+}
+
+.course-buttons .btn-primary {
+    background:
+        linear-gradient(
+            135deg,
+            #5b08a8,
+            #9c27ff
+        ) !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+        0 10px 25px rgba(60, 0, 100, 0.25);
+}
+
+.course-buttons .btn-success {
+    background:
+        linear-gradient(
+            135deg,
+            #059669,
+            #10b981
+        ) !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   19. TEACHERS
+========================================================= */
+
+.teachers {
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(91, 8, 168, 0.10)
+        );
+}
+
+.teacher-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 28px;
+}
+
+.teacher-card {
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 20px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(14px);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.teacher-card:hover {
+    transform: translateY(-7px);
+
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.teacher-img {
+    display: block;
+
+    width: 100%;
+
+    height: 300px;
+
+    object-fit: cover;
+
+    background: rgba(0, 0, 0, 0.10);
+}
+
+.teacher-info {
+    padding: 25px;
+}
+
+.teacher-info h3 {
+    margin: 0 0 5px;
+
+    color: #ffffff;
+
+    font-size: 22px;
+}
+
+.teacher-info .subject {
+    margin: 0 0 18px;
+
+    color: #ead7ff;
+
+    font-weight: 600;
+}
+
+.teacher-info p {
+    color: rgba(255, 255, 255, 0.75);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.teacher-info strong {
+    color: #ffffff;
+}
+
+.social-links {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.social-links a {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 50%;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.social-links a:hover {
+    background: rgba(255, 255, 255, 0.22);
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   20. FOUNDER
+========================================================= */
+
+.founder {
+    padding: 100px 0;
+
+    background:
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(255, 255, 255, 0.08),
+            transparent 35%
+        );
+}
+
+.founder-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 0.8fr)
+        minmax(0, 1.2fr);
+
+    gap: 60px;
+
+    align-items: center;
+}
+
+.founder-image {
+    display: flex;
+
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.founder-photo {
+    width: 100%;
+
+    max-width: 450px;
+
+    border-radius: 22px;
+
+    object-fit: cover;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    box-shadow: var(--shadow-heavy);
+}
+
+.founder-content h3 {
+    margin: 0 0 20px;
+
+    color: #ffffff;
+
+    font-size: 42px;
+
+    font-weight: 800;
+}
+
+.founder-content p {
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+.founder-quote {
+    margin: 20px 0;
+
+    padding: 20px;
+
+    background: rgba(255, 255, 255, 0.09);
+
+    border-left: 4px solid #ffffff;
+
+    border-radius: 8px;
+
+    backdrop-filter: blur(10px);
+}
+
+.founder-contact {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    margin-top: 25px;
+}
+
+.contact-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.contact-item i {
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+.contact-item p {
+    margin: 0;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   21. TESTIMONIALS
+========================================================= */
+
+.testimonials {
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(91, 8, 168, 0.10)
+        );
+}
+
+.testimonial-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 28px;
+}
+
+.testimonial-card {
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 20px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(14px);
+}
+
+.testimonial-text p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+.testimonial-author {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.author-details h4 {
+    margin: 0 0 5px;
+
+    color: #ffffff;
+
+    font-size: 16px;
+}
+
+.author-details p {
+    margin: 0;
+
+    color: #ead7ff;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   22. CONTACT
 ========================================================= */
 
 .contact-section {
     position: relative;
 
     width: 100%;
-    max-width: 100%;
-
-    min-height: 100vh;
 
     padding: 100px 20px 90px;
 
     background:
         radial-gradient(
             circle at 20% 20%,
-            rgba(37, 117, 252, 0.16),
+            rgba(255, 255, 255, 0.10),
             transparent 35%
         ),
         radial-gradient(
             circle at 80% 45%,
-            rgba(106, 17, 203, 0.18),
+            rgba(50, 0, 90, 0.15),
             transparent 38%
-        ),
-        linear-gradient(
-            135deg,
-            #07111f 0%,
-            #0b2345 50%,
-            #07111f 100%
         );
 
     color: #ffffff;
-
-    overflow: hidden;
 }
 
-.contact-section::before {
+.contact-section::before,
+.contact-section::after {
     content: "";
 
     position: absolute;
 
+    border-radius: 50%;
+
+    filter: blur(100px);
+
+    pointer-events: none;
+}
+
+.contact-section::before {
     width: 500px;
     height: 500px;
 
     top: -180px;
     right: -150px;
 
-    background: rgba(106, 17, 203, 0.12);
-
-    border-radius: 50%;
-
-    filter: blur(100px);
-
-    pointer-events: none;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .contact-section::after {
-    content: "";
-
-    position: absolute;
-
     width: 450px;
     height: 450px;
 
     bottom: -200px;
     left: -150px;
 
-    background: rgba(37, 117, 252, 0.10);
-
-    border-radius: 50%;
-
-    filter: blur(100px);
-
-    pointer-events: none;
+    background: rgba(40, 0, 80, 0.18);
 }
 
-.contact-section *,
-.contact-section *::before,
-.contact-section *::after {
+.contact-section * {
     box-sizing: border-box;
 }
-
-
-/* =========================================================
-   10. CONTACT CONTAINER
-========================================================= */
 
 .contact-container {
     position: relative;
@@ -513,18 +1971,15 @@ a {
     z-index: 2;
 
     width: 100%;
+
     max-width: 1380px;
 
     margin: 0 auto;
 }
 
-
-/* =========================================================
-   11. CONTACT HEADING
-========================================================= */
-
 .contact-heading {
     width: 100%;
+
     max-width: 900px;
 
     margin: 0 0 55px;
@@ -541,36 +1996,25 @@ a {
 
     padding: 7px 14px;
 
-    border: 1px solid rgba(139, 92, 246, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
     border-radius: 50px;
 
-    background: rgba(124, 58, 237, 0.08);
+    background: rgba(255, 255, 255, 0.10);
 
-    color: #a78bfa;
-
-    font-family: "Poppins", sans-serif;
+    color: #ffffff;
 
     font-size: 12px;
 
     font-weight: 600;
+
+    backdrop-filter: blur(10px);
 }
-
-.contact-eyebrow i {
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   12. CONTACT MAIN HEADING
-========================================================= */
 
 .contact-heading h2 {
     margin: 0;
 
-    color: #f8fafc;
-
-    font-family: "Poppins", sans-serif;
+    color: #ffffff;
 
     font-size: clamp(48px, 6vw, 76px);
 
@@ -587,9 +2031,8 @@ a {
     background:
         linear-gradient(
             135deg,
-            #7c3aed 0%,
-            #8b5cf6 45%,
-            #a855f7 100%
+            #ffffff,
+            #e9d5ff
         );
 
     -webkit-background-clip: text;
@@ -598,30 +2041,17 @@ a {
     -webkit-text-fill-color: transparent;
 }
 
-
-/* =========================================================
-   13. CONTACT DESCRIPTION
-========================================================= */
-
 .contact-heading p {
-    width: 100%;
     max-width: 720px;
 
     margin: 25px 0 0;
 
-    color: #9aa7bd;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.76);
 
     font-size: 17px;
 
     line-height: 1.8;
 }
-
-
-/* =========================================================
-   14. CONTACT CONTENT
-========================================================= */
 
 .contact-content {
     width: 100%;
@@ -637,29 +2067,11 @@ a {
     align-items: center;
 }
 
-
-/* =========================================================
-   15. CONTACT FORM WRAPPER
-========================================================= */
-
 .contact-form-wrapper {
     width: 100%;
 
     min-width: 0;
-
-    padding: 0;
-
-    background: transparent;
-
-    border: none;
-
-    box-shadow: none;
 }
-
-
-/* =========================================================
-   16. CONTACT FORM HEADER
-========================================================= */
 
 .contact-form-header {
     display: flex;
@@ -684,78 +2096,47 @@ a {
 
     border-radius: 12px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #6d28d9,
-            #8b5cf6
-        );
+    background: rgba(255, 255, 255, 0.18);
 
     color: #ffffff;
 
     font-size: 18px;
 
-    box-shadow:
-        0 10px 30px rgba(124, 58, 237, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .contact-form-header h3 {
     margin: 0 0 3px;
 
-    color: #f8fafc;
-
-    font-family: "Poppins", sans-serif;
+    color: #ffffff;
 
     font-size: 20px;
-
-    font-weight: 700;
 }
 
 .contact-form-header p {
     margin: 0;
 
-    color: #7f8ca3;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.65);
 
     font-size: 12px;
 }
 
-
-/* =========================================================
-   17. CONTACT FORM
-   GLASS / TRANSPARENT
-========================================================= */
-
 .contact-form {
     width: 100%;
 
-    min-width: 0;
-
-    display: block;
-
     padding: 35px;
 
-    background: rgba(255, 255, 255, 0.055);
+    background: rgba(255, 255, 255, 0.10);
 
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
 
     border-radius: 24px;
 
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-heavy);
 
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-
-    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
-
-
-/* =========================================================
-   18. CONTACT ROW
-========================================================= */
 
 .contact-row {
     width: 100%;
@@ -770,11 +2151,6 @@ a {
     margin-bottom: 28px;
 }
 
-
-/* =========================================================
-   19. CONTACT FIELD
-========================================================= */
-
 .contact-field {
     width: 100%;
 
@@ -786,19 +2162,12 @@ a {
 
     margin: 0 0 9px;
 
-    color: #f1f5f9;
-
-    font-family: "Poppins", sans-serif;
+    color: #ffffff;
 
     font-size: 13px;
 
     font-weight: 600;
 }
-
-
-/* =========================================================
-   20. INPUT WRAPPER
-========================================================= */
 
 .input-wrapper,
 .textarea-wrapper {
@@ -806,11 +2175,6 @@ a {
 
     width: 100%;
 }
-
-
-/* =========================================================
-   21. INPUT ICONS
-========================================================= */
 
 .input-wrapper i,
 .textarea-wrapper i {
@@ -820,13 +2184,11 @@ a {
 
     z-index: 2;
 
-    color: #8b9ab2;
+    color: rgba(255, 255, 255, 0.65);
 
     font-size: 18px;
 
     pointer-events: none;
-
-    transition: color 0.25s ease;
 }
 
 .input-wrapper i {
@@ -839,28 +2201,21 @@ a {
     top: 18px;
 }
 
-
-/* =========================================================
-   22. CONTACT INPUTS
-========================================================= */
-
 .contact-form input,
 .contact-form textarea {
     width: 100%;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: #ffffff;
+
+    background: rgba(40, 0, 70, 0.22);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
 
     border-radius: 12px;
 
-    background: rgba(0, 0, 0, 0.22);
-
-    color: #ffffff;
-
-    font-family: "Poppins", sans-serif;
+    outline: none;
 
     font-size: 15px;
-
-    outline: none;
 
     transition:
         border-color 0.25s ease,
@@ -884,74 +2239,28 @@ a {
     line-height: 1.7;
 }
 
-
-/* =========================================================
-   23. PLACEHOLDER
-========================================================= */
-
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
-    color: #8795aa;
+    color: rgba(255, 255, 255, 0.58);
 
     opacity: 1;
 }
 
-
-/* =========================================================
-   24. INPUT HOVER
-========================================================= */
-
-.contact-form input:hover,
-.contact-form textarea:hover {
-    border-color: rgba(139, 92, 246, 0.35);
-}
-
-
-/* =========================================================
-   25. INPUT FOCUS
-========================================================= */
-
 .contact-form input:focus,
 .contact-form textarea:focus {
-    border-color: #7c3aed;
+    border-color: #ffffff;
 
-    background: rgba(0, 0, 0, 0.30);
+    background: rgba(40, 0, 70, 0.30);
 
     box-shadow:
-        0 0 0 3px rgba(124, 58, 237, 0.14);
+        0 0 0 3px rgba(255, 255, 255, 0.10);
 }
-
-.input-wrapper:focus-within i,
-.textarea-wrapper:focus-within i {
-    color: #a78bfa;
-}
-
-
-/* =========================================================
-   26. MESSAGE FIELD
-========================================================= */
-
-.contact-message-field {
-    width: 100%;
-
-    margin-top: 2px;
-}
-
-
-/* =========================================================
-   27. SUBMIT AREA
-========================================================= */
 
 .contact-submit {
     width: 100%;
 
     margin-top: 27px;
 }
-
-
-/* =========================================================
-   28. SUBMIT BUTTON
-========================================================= */
 
 .contact-submit-btn {
     width: 100%;
@@ -972,13 +2281,11 @@ a {
     background:
         linear-gradient(
             135deg,
-            #6d28d9,
-            #8b5cf6
+            #5b08a8,
+            #b026ff
         ) !important;
 
     color: #ffffff !important;
-
-    font-family: "Poppins", sans-serif;
 
     font-size: 15px !important;
 
@@ -986,39 +2293,27 @@ a {
 
     cursor: pointer;
 
-    box-shadow:
-        0 12px 30px rgba(124, 58, 237, 0.22);
-
     transition:
         transform 0.25s ease,
-        box-shadow 0.25s ease,
-        filter 0.25s ease;
+        box-shadow 0.25s ease;
 }
 
 .contact-submit-btn:hover {
     transform: translateY(-2px);
 
-    filter: brightness(1.08);
-
     box-shadow:
-        0 16px 35px rgba(124, 58, 237, 0.32);
-}
-
-.contact-submit-btn:active {
-    transform: translateY(0);
+        0 16px 35px rgba(40, 0, 80, 0.30);
 }
 
 
 /* =========================================================
-   29. CONTACT VISUAL
+   23. CONTACT VISUAL
 ========================================================= */
 
 .contact-visual {
     position: relative;
 
     width: 100%;
-
-    min-width: 0;
 
     min-height: 520px;
 
@@ -1035,17 +2330,10 @@ a {
     background:
         radial-gradient(
             circle at center,
-            rgba(124, 58, 237, 0.16),
+            rgba(255, 255, 255, 0.10),
             transparent 58%
         );
-
-    overflow: visible;
 }
-
-
-/* =========================================================
-   30. CONTACT IMAGE CARD
-========================================================= */
 
 .contact-image-card {
     position: relative;
@@ -1065,29 +2353,16 @@ a {
 
     padding: 20px;
 
-    border: 1px solid rgba(139, 92, 246, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.20);
 
     border-radius: 20px;
 
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(124, 58, 237, 0.20),
-            rgba(16, 12, 31, 0.55) 65%
-        );
+    background: rgba(255, 255, 255, 0.10);
 
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.35),
-        inset 0 0 50px rgba(124, 58, 237, 0.05);
+    box-shadow: var(--shadow-heavy);
 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(14px);
 }
-
-
-/* =========================================================
-   31. CONTACT IMAGE
-========================================================= */
 
 .contact-image {
     display: block;
@@ -1098,17 +2373,10 @@ a {
 
     max-height: 390px;
 
-    height: auto;
-
     object-fit: contain;
 
     border-radius: 14px;
 }
-
-
-/* =========================================================
-   32. ONLINE BADGE
-========================================================= */
 
 .contact-online {
     position: absolute;
@@ -1127,118 +2395,32 @@ a {
 
     padding: 10px 16px;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
 
     border-radius: 15px;
 
-    background: rgba(7, 12, 22, 0.82);
+    background: rgba(40, 0, 70, 0.60);
 
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .contact-online > span {
     width: 9px;
     height: 9px;
 
-    flex: 0 0 9px;
-
     border-radius: 50%;
 
-    background: #00c853;
+    background: #00e676;
 
     box-shadow:
-        0 0 0 4px rgba(0, 200, 83, 0.10);
-}
-
-.contact-online div {
-    display: flex;
-
-    flex-direction: column;
+        0 0 0 4px rgba(0, 230, 118, 0.12);
 }
 
 .contact-online strong {
-    color: #dbe4f0;
-
-    font-family: "Poppins", sans-serif;
+    color: #ffffff;
 
     font-size: 12px;
-
-    font-weight: 600;
 }
-
-.contact-online small {
-    display: none;
-}
-
-
-/* =========================================================
-   33. QUICK RESPONSE
-========================================================= */
-
-.contact-response {
-    position: absolute;
-
-    z-index: 5;
-
-    left: 5px;
-
-    bottom: 25px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 9px 16px;
-
-    border: 1px solid rgba(255, 255, 255, 0.10);
-
-    border-radius: 14px;
-
-    background: rgba(7, 12, 22, 0.84);
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.28);
-}
-
-.contact-response > i {
-    color: #00d26a;
-
-    font-size: 18px;
-}
-
-.contact-response div {
-    display: flex;
-
-    align-items: center;
-}
-
-.contact-response strong {
-    color: #cbd5e1;
-
-    font-family: "Poppins", sans-serif;
-
-    font-size: 12px;
-
-    font-weight: 600;
-}
-
-.contact-response span {
-    display: none;
-}
-
-
-/* =========================================================
-   34. CONTACT HIGHLIGHTS
-========================================================= */
 
 .contact-highlights {
     position: relative;
@@ -1268,18 +2450,17 @@ a {
 
     padding: 12px;
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 
     border-radius: 11px;
 
-    background: rgba(13, 16, 22, 0.48);
+    background: rgba(255, 255, 255, 0.09);
 
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
 .contact-highlight > i {
-    color: #8b5cf6;
+    color: #ffffff;
 
     font-size: 17px;
 }
@@ -1289,9 +2470,7 @@ a {
 
     flex-direction: column;
 
-    color: #7f8ca3;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.68);
 
     font-size: 10px;
 
@@ -1299,176 +2478,33 @@ a {
 }
 
 .contact-highlight strong {
-    color: #cbd5e1;
+    color: #ffffff;
 
     font-size: 11px;
 }
 
 
 /* =========================================================
-   35. CONTACT FORM CONTROL SUPPORT
-========================================================= */
-
-.contact-form .form-group {
-    width: 100%;
-
-    margin-bottom: 18px;
-}
-
-
-/* If Rails / Bootstrap generates form-control */
-
-.contact-form .form-control {
-    width: 100% !important;
-
-    min-width: 0;
-
-    display: block !important;
-
-    color: #ffffff !important;
-
-    background: rgba(0, 0, 0, 0.22) !important;
-
-    border: 1px solid rgba(255, 255, 255, 0.10) !important;
-
-    border-radius: 12px !important;
-
-    box-shadow: none !important;
-
-    outline: none;
-
-    font-family: "Poppins", sans-serif;
-
-    transition:
-        border-color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-.contact-form .form-control::placeholder {
-    color: #8795aa !important;
-
-    opacity: 1;
-}
-
-.contact-form .form-control:focus {
-    color: #ffffff !important;
-
-    background: rgba(0, 0, 0, 0.30) !important;
-
-    border-color: #7c3aed !important;
-
-    box-shadow:
-        0 0 0 3px rgba(124, 58, 237, 0.14) !important;
-}
-
-
-/* =========================================================
-   36. SOCIAL ICONS
-   FOOTER ONLY
-========================================================= */
-
-.site-footer .social-icons {
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: flex-start;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin: 0;
-}
-
-.site-footer .social-icons a {
-    width: 40px;
-    height: 40px;
-
-    min-width: 40px;
-
-    flex: 0 0 40px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #172033;
-
-    border: 1px solid #263248;
-
-    color: #ffffff;
-
-    font-size: 16px;
-
-    line-height: 1;
-
-    text-decoration: none;
-
-    transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
-}
-
-.site-footer .social-icons a i {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    color: #ffffff;
-
-    font-size: 17px;
-
-    line-height: 1;
-}
-
-.site-footer .social-icons a:hover {
-    background: #6d28d9;
-
-    border-color: #6d28d9;
-
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 8px 20px rgba(109, 40, 217, 0.25);
-}
-
-
-/* =========================================================
-   37. FOOTER
+   24. FOOTER
 ========================================================= */
 
 .site-footer {
     width: 100%;
 
-    margin-top: 0;
-
     background:
         linear-gradient(
             135deg,
-            #050b14 0%,
-            #07111f 50%,
-            #050b14 100%
+            rgba(50, 0, 80, 0.55),
+            rgba(80, 0, 130, 0.45),
+            rgba(40, 0, 70, 0.55)
         );
 
     color: #ffffff;
 
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+
+    backdrop-filter: blur(15px);
 }
-
-
-/* =========================================================
-   38. FOOTER CONTAINER
-========================================================= */
 
 .footer-container {
     width: 100%;
@@ -1479,11 +2515,6 @@ a {
 
     padding: 0 30px;
 }
-
-
-/* =========================================================
-   39. FOOTER CONTENT
-========================================================= */
 
 .footer-content {
     display: grid;
@@ -1498,11 +2529,6 @@ a {
     padding: 55px 0 45px;
 }
 
-
-/* =========================================================
-   40. FOOTER SECTION
-========================================================= */
-
 .footer-section {
     min-width: 0;
 }
@@ -1512,11 +2538,7 @@ a {
 
     color: #ffffff;
 
-    font-family: "Poppins", sans-serif;
-
     font-size: 18px;
-
-    font-weight: 700;
 }
 
 .footer-section h3::after {
@@ -1530,39 +2552,22 @@ a {
 
     margin-top: 8px;
 
-    background:
-        linear-gradient(
-            90deg,
-            #6d28d9,
-            #8b5cf6
-        );
+    background: #ffffff;
 
     border-radius: 5px;
 }
-
-
-/* =========================================================
-   41. FOOTER DESCRIPTION
-========================================================= */
 
 .footer-description {
     max-width: 330px;
 
     margin: 0 0 20px;
 
-    color: #9ca3af;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.70);
 
     font-size: 14px;
 
     line-height: 1.7;
 }
-
-
-/* =========================================================
-   42. FOOTER LINKS
-========================================================= */
 
 .footer-links {
     margin: 0;
@@ -1583,11 +2588,7 @@ a {
 
     gap: 9px;
 
-    color: #9ca3af;
-
-    text-decoration: none;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.70);
 
     font-size: 14px;
 
@@ -1597,9 +2598,7 @@ a {
 }
 
 .footer-links a i {
-    font-size: 12px;
-
-    color: #8b5cf6;
+    color: #ffffff;
 }
 
 .footer-links a:hover {
@@ -1607,11 +2606,6 @@ a {
 
     transform: translateX(4px);
 }
-
-
-/* =========================================================
-   43. FOOTER CONTACT INFO
-========================================================= */
 
 .site-footer .contact-info {
     display: flex;
@@ -1636,13 +2630,9 @@ a {
 
     border-radius: 8px;
 
-    background: #172033;
+    background: rgba(255, 255, 255, 0.10);
 
-    color: #a78bfa;
-}
-
-.site-footer .contact-icon i {
-    font-size: 14px;
+    color: #ffffff;
 }
 
 .site-footer .contact-text {
@@ -1652,34 +2642,67 @@ a {
 .site-footer .contact-text a {
     display: block;
 
-    color: #9ca3af;
-
-    text-decoration: none;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.72);
 
     font-size: 14px;
 
     line-height: 1.6;
 
     word-break: break-word;
-
-    transition: color 0.2s ease;
 }
 
-.site-footer .contact-text a:hover {
+.site-footer .social-icons {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.site-footer .social-icons a {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
     color: #ffffff;
+
+    font-size: 16px;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease;
 }
 
+.site-footer .social-icons a:hover {
+    background: rgba(255, 255, 255, 0.22);
 
-/* =========================================================
-   44. FOOTER BOTTOM
-========================================================= */
+    border-color: rgba(255, 255, 255, 0.30);
+
+    transform: translateY(-4px);
+}
 
 .footer-bottom {
     padding: 20px 0;
 
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
 
     text-align: center;
 }
@@ -1687,9 +2710,7 @@ a {
 .footer-bottom p {
     margin: 0;
 
-    color: #9ca3af;
-
-    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.65);
 
     font-size: 13px;
 
@@ -1698,13 +2719,24 @@ a {
 
 
 /* =========================================================
-   45. TABLET - CONTACT
+   25. TABLET
 ========================================================= */
 
 @media (max-width: 1050px) {
 
-    .contact-section {
-        padding: 80px 25px;
+    .features-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .course-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .teacher-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .contact-content {
@@ -1725,76 +2757,53 @@ a {
         right: 5%;
     }
 
-    .contact-response {
-        left: 5%;
-    }
-}
-
-
-/* =========================================================
-   46. TABLET - FOOTER
-========================================================= */
-
-@media (max-width: 992px) {
-
-    .footer-container {
-        padding: 0 25px;
+    .about-cta {
+        grid-template-columns: 1fr;
     }
 
     .footer-content {
         grid-template-columns:
             1fr
             1fr;
-
-        gap: 40px;
-
-        padding: 45px 0 35px;
-    }
-
-    .footer-social {
-        grid-column: 1 / -1;
     }
 }
 
 
 /* =========================================================
-   47. MOBILE - CONTACT
+   26. TABLET 768
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
+
+    .features-grid,
+    .course-grid,
+    .teacher-grid,
+    .toppers-container,
+    .collage {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-slider {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .founder-grid {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
 
     .contact-section {
-        min-height: auto;
-
-        padding: 65px 16px 70px;
-    }
-
-    .contact-heading {
-        margin-bottom: 38px;
-    }
-
-    .contact-heading h2 {
-        font-size: clamp(40px, 12vw, 54px);
-
-        letter-spacing: -1.5px;
-    }
-
-    .contact-heading p {
-        margin-top: 18px;
-
-        font-size: 14px;
-
-        line-height: 1.75;
-    }
-
-    .contact-content {
-        gap: 45px;
+        padding: 70px 16px;
     }
 
     .contact-form {
         padding: 28px 22px;
-
-        border-radius: 20px;
     }
 
     .contact-row {
@@ -1805,62 +2814,12 @@ a {
         margin-bottom: 18px;
     }
 
-    .contact-form input {
-        height: 58px;
-    }
-
-    .contact-form textarea {
-        min-height: 155px;
-    }
-
     .contact-visual {
-        min-height: 380px;
-
-        padding: 15px;
-    }
-
-    .contact-image-card {
-        min-height: 300px;
-
-        padding: 15px;
-
-        border-radius: 17px;
-    }
-
-    .contact-image {
-        max-height: 290px;
-    }
-
-    .contact-online {
-        top: -5px;
-
-        right: 0;
-
-        padding: 8px 12px;
-    }
-
-    .contact-response {
-        left: 0;
-
-        bottom: 0;
-
-        padding: 8px 13px;
+        min-height: 400px;
     }
 
     .contact-highlights {
         grid-template-columns: 1fr;
-    }
-}
-
-
-/* =========================================================
-   48. MOBILE - FOOTER
-========================================================= */
-
-@media (max-width: 768px) {
-
-    .site-footer {
-        margin-top: 0;
     }
 
     .footer-container {
@@ -1875,74 +2834,233 @@ a {
         padding: 40px 0 30px;
     }
 
-    .footer-social {
-        grid-column: auto;
-    }
+    .notification-card {
+        width: 290px;
 
-    .footer-section h3 {
-        font-size: 17px;
-
-        margin-bottom: 16px;
-    }
-
-    .footer-description {
-        max-width: 100%;
-    }
-
-    .site-footer .social-icons a {
-        width: 38px;
-        height: 38px;
-
-        min-width: 38px;
-
-        flex-basis: 38px;
-    }
-
-    .footer-bottom {
-        padding: 18px 10px;
-    }
-
-    .footer-bottom p {
-        font-size: 12px;
+        min-width: 290px;
     }
 }
 
 
 /* =========================================================
-   49. SMALL MOBILE
+   27. MOBILE
 ========================================================= */
 
-@media (max-width: 450px) {
+@media (max-width: 600px) {
 
-    .contact-section {
-        padding: 50px 12px 60px;
+    .hero {
+        padding: 60px 16px;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+
+        letter-spacing: 0.5px;
+    }
+
+    .hero-features span {
+        font-size: 13px;
+
+        padding: 8px 13px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+    .features,
+    .about-section,
+    .notifications,
+    .gallery,
+    .courses,
+    .teachers,
+    .founder,
+    .testimonials {
+        padding: 70px 0;
+    }
+
+    .section-title {
+        margin-bottom: 35px;
+
+        font-size: 32px;
+    }
+
+    .course-card {
+        border-radius: 17px;
+    }
+
+    .course-image,
+    .course-placeholder {
+        height: 230px;
+    }
+
+    .course-title {
+        min-height: auto;
+
+        font-size: 24px;
+    }
+
+    .course-info {
+        padding: 22px;
+    }
+
+    .course-meta span {
+        font-size: 12px;
+    }
+
+    .discounted-price {
+        font-size: 24px;
+    }
+
+    .gallery-slider {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-slider img {
+        height: 250px;
     }
 
     .contact-heading h2 {
-        font-size: 39px;
+        font-size: clamp(40px, 12vw, 54px);
 
-        letter-spacing: -1px;
+        letter-spacing: -1.5px;
     }
 
     .contact-heading p {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .contact-form {
-        padding: 22px 16px;
+        padding: 24px 18px;
 
         border-radius: 18px;
     }
 
     .contact-form input {
-        height: 55px;
+        height: 58px;
+    }
 
+    .contact-form textarea {
+        min-height: 155px;
+    }
+
+    .contact-image-card {
+        min-height: 300px;
+
+        padding: 15px;
+    }
+
+    .contact-image {
+        max-height: 290px;
+    }
+
+    .contact-online {
+        top: -5px;
+
+        right: 0;
+
+        padding: 8px 12px;
+    }
+
+    .founder-content h3 {
+        font-size: 34px;
+    }
+
+    .footer-section h3 {
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================================
+   28. SMALL MOBILE
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .hero {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 17px;
+    }
+
+    .hero-social a {
+        width: 50px;
+        height: 50px;
+
+        flex-basis: 50px;
+    }
+
+    .course-image,
+    .course-placeholder {
+        height: 210px;
+    }
+
+    .course-placeholder h3 {
+        font-size: 21px;
+    }
+
+    .course-info {
+        padding: 20px;
+    }
+
+    .course-title {
+        font-size: 22px;
+    }
+
+    .course-rating {
+        font-size: 14px;
+    }
+
+    .course-meta {
+        gap: 8px;
+    }
+
+    .course-meta span {
+        font-size: 11px;
+    }
+
+    .course-price-container {
+        gap: 9px;
+    }
+
+    .original-price {
+        font-size: 13px;
+    }
+
+    .discounted-price {
+        font-size: 22px;
+    }
+
+    .discount-badge {
+        font-size: 10px;
+
+        padding: 7px 8px;
+    }
+
+    .contact-section {
+        padding: 55px 12px;
+    }
+
+    .contact-form {
+        padding: 20px 15px;
+    }
+
+    .contact-form input {
         font-size: 13px;
     }
 
     .contact-form textarea {
-        min-height: 140px;
-
         font-size: 13px;
     }
 
@@ -1966,173 +3084,74 @@ a {
         max-height: 240px;
     }
 
-    .contact-online {
-        right: 0;
-
-        transform: scale(0.9);
-
-        transform-origin: right top;
-    }
-
-    .contact-response {
-        transform: scale(0.9);
-
-        transform-origin: left bottom;
-    }
-
     .footer-container {
         padding: 0 16px;
-    }
-
-    .footer-content {
-        gap: 30px;
-
-        padding: 35px 0 25px;
-    }
-
-    .footer-section h3 {
-        font-size: 16px;
-    }
-
-    .footer-links a,
-    .site-footer .contact-text a {
-        font-size: 13px;
-    }
-
-    .site-footer .contact-info {
-        gap: 10px;
-    }
-
-    .site-footer .contact-icon {
-        width: 32px;
-        height: 32px;
-
-        min-width: 32px;
-    }
-
-    .site-footer .social-icons {
-        gap: 8px;
-    }
-
-    .site-footer .social-icons a {
-        width: 36px;
-        height: 36px;
-
-        min-width: 36px;
-
-        flex-basis: 36px;
-
-        font-size: 14px;
-    }
-}
-
-
-/* =========================================================
-   50. VERY SMALL PHONES
-========================================================= */
-
-@media (max-width: 360px) {
-
-    .hero {
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-
-    .hero-subtitle {
-        font-size: 17px;
-    }
-
-    .hero-features span {
-        font-size: 13px;
-
-        padding: 8px 13px;
-    }
-
-    .hero-buttons .btn {
-        width: 100%;
-
-        min-width: 0;
-    }
-
-    .contact-section {
-        padding: 45px 10px 55px;
-    }
-
-    .contact-heading h2 {
-        font-size: 35px;
-    }
-
-    .contact-form {
-        padding: 20px 13px;
-
-        border-radius: 16px;
-    }
-
-    .contact-form input {
-        font-size: 13px;
-    }
-
-    .contact-form textarea {
-        font-size: 13px;
-    }
-
-    .contact-submit-btn {
-        min-height: 50px;
-    }
-
-    .footer-container {
-        padding: 0 12px;
     }
 
     .footer-bottom p {
         font-size: 11px;
     }
-}
 
+    .notification-card {
+        width: 260px;
 
-/* =========================================================
-   51. LARGE DESKTOP
-========================================================= */
+        min-width: 260px;
 
-@media (min-width: 1400px) {
-
-    .contact-section {
-        padding-top: 120px;
-
-        padding-bottom: 110px;
-    }
-
-    .contact-container {
-        max-width: 1380px;
-    }
-
-    .contact-content {
-        gap: 90px;
-    }
-
-    .contact-form {
-        padding: 42px;
+        padding: 20px;
     }
 }
 
 
 /* =========================================================
-   52. ACCESSIBILITY
+   29. VERY SMALL PHONES
 ========================================================= */
 
-.contact-form input:focus-visible,
-.contact-form textarea:focus-visible,
-.contact-submit-btn:focus-visible,
-.site-footer a:focus-visible,
-.hero a:focus-visible {
-    outline: 2px solid #a78bfa;
+@media (max-width: 360px) {
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .hero-features span {
+        font-size: 12px;
+
+        padding: 7px 10px;
+    }
+
+    .course-title {
+        font-size: 20px;
+    }
+
+    .course-info {
+        padding: 17px;
+    }
+
+    .course-meta span {
+        font-size: 10px;
+    }
+
+    .contact-heading h2 {
+        font-size: 35px;
+    }
+}
+
+
+/* =========================================================
+   30. ACCESSIBILITY
+========================================================= */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #ffffff;
 
     outline-offset: 3px;
 }
 
 
 /* =========================================================
-   53. REDUCED MOTION
+   31. REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2141,37 +3160,1019 @@ a {
         scroll-behavior: auto;
     }
 
-    .hero-logo {
-        animation: none;
-    }
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
 
-    .hero-logo,
-    .hero-social a,
-    .hero-buttons .btn,
-    .hero-features span,
-    .contact-submit-btn,
-    .site-footer .social-icons a,
-    .footer-links a {
-        transition: none;
-    }
-
-    .hero-logo:hover,
-    .hero-social a:hover,
-    .hero-buttons .btn:hover,
-    .hero-features span:hover,
-    .contact-submit-btn:hover,
-    .site-footer .social-icons a:hover,
-    .footer-links a:hover {
-        transform: none;
+        transition: none !important;
     }
 }
 
+/* =========================================================
+   ABOUT / QUICK FACTS SECTION
+   UNIQUE ROYAL INDIGO + VIOLET GLASS DESIGN
+   ONLY THIS SECTION IS CHANGED
+========================================================= */
+
+.about-section,
+.quick-facts-section,
+.about-wrapper {
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 760px;
+
+    padding: 80px 5%;
+
+    box-sizing: border-box;
+
+    /*
+     * UNIQUE BACKGROUND
+     * Deep indigo + violet + subtle blue glow
+     */
+    background:
+        radial-gradient(
+            circle at 12% 20%,
+            rgba(99, 102, 241, 0.45),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 88% 75%,
+            rgba(168, 85, 247, 0.40),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            #17104f 0%,
+            #25105f 45%,
+            #351276 100%
+        );
+
+    overflow: visible !important;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   SOFT BACKGROUND GLOW
+========================================================= */
+
+.about-section::before,
+.quick-facts-section::before,
+.about-wrapper::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    top: -180px;
+    left: -120px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(129, 140, 248, 0.20);
+
+    filter: blur(90px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+.about-section::after,
+.quick-facts-section::after,
+.about-wrapper::after {
+    content: "";
+
+    position: absolute;
+
+    width: 450px;
+    height: 450px;
+
+    right: -180px;
+    bottom: -180px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(192, 132, 252, 0.18);
+
+    filter: blur(100px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   SECTION CONTAINER
+========================================================= */
+
+.about-section > .container,
+.quick-facts-section > .container,
+.about-wrapper > .container {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.about-section .section-title,
+.quick-facts-section .section-title,
+.about-wrapper .section-title {
+    position: relative;
+
+    z-index: 3;
+
+    color: #ffffff !important;
+
+    text-shadow:
+        0 5px 25px rgba(0, 0, 0, 0.30);
+}
+
+
+/* =========================================================
+   MAIN ABOUT CONTAINER
+========================================================= */
+
+.about-container,
+.quick-facts-container,
+.about-inner {
+    width: 100%;
+
+    max-width: 1510px;
+
+    min-height: 620px;
+
+    margin: 0 auto;
+
+    padding: 38px;
+
+    box-sizing: border-box;
+
+    /*
+     * White glass-like main card
+     */
+    background:
+        rgba(255, 255, 255, 0.97);
+
+    border: 1px solid rgba(255, 255, 255, 0.80);
+
+    border-radius: 24px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 42px;
+
+    align-items: center;
+
+    overflow: visible !important;
+
+    position: relative;
+
+    z-index: 2;
+
+    box-shadow:
+        0 35px 90px rgba(8, 4, 40, 0.35),
+        0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   QUICK FACTS CARD
+========================================================= */
+
+.quick-facts,
+.quick-facts-card,
+.about-info {
+    width: 100%;
+
+    min-height: 480px;
+
+    padding: 42px 38px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #faf8ff 100%
+        ) !important;
+
+    border:
+        1px solid rgba(99, 102, 241, 0.12);
+
+    border-radius: 22px;
+
+    color: #171717 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    overflow: visible !important;
+
+    position: relative;
+
+    z-index: 5;
+
+    box-shadow:
+        0 20px 50px rgba(30, 20, 80, 0.13);
+}
+
+
+/* =========================================================
+   QUICK FACTS TOP ACCENT
+========================================================= */
+
+.quick-facts::before,
+.quick-facts-card::before,
+.about-info::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 35px;
+    right: 35px;
+
+    height: 4px;
+
+    border-radius: 0 0 10px 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6366f1,
+            #8b5cf6,
+            #a855f7
+        );
+}
+
+
+/* =========================================================
+   FORCE CONTENT VISIBILITY
+========================================================= */
+
+.quick-facts,
+.quick-facts *,
+.quick-facts-card,
+.quick-facts-card *,
+.about-info,
+.about-info * {
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   QUICK FACTS HEADING
+========================================================= */
+
+.quick-facts h1,
+.quick-facts h2,
+.quick-facts h3,
+.quick-facts h4,
+.quick-facts-card h1,
+.quick-facts-card h2,
+.quick-facts-card h3,
+.quick-facts-card h4,
+.about-info h1,
+.about-info h2,
+.about-info h3,
+.about-info h4 {
+
+    display: block !important;
+
+    color: #5b21b6 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif !important;
+
+    font-size: 30px !important;
+
+    line-height: 1.3 !important;
+
+    font-weight: 800 !important;
+
+    margin: 0 0 28px 0 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    text-shadow: none !important;
+}
+
+
+/* =========================================================
+   PARAGRAPHS
+========================================================= */
+
+.quick-facts p,
+.quick-facts-card p,
+.about-info p {
+
+    display: block !important;
+
+    color: #292929 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif !important;
+
+    font-size: 17px !important;
+
+    line-height: 1.7 !important;
+
+    font-weight: 500 !important;
+
+    margin: 0 0 14px 0 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   LIST
+========================================================= */
+
+.quick-facts ul,
+.quick-facts ol,
+.quick-facts-card ul,
+.quick-facts-card ol,
+.about-info ul,
+.about-info ol {
+
+    display: block !important;
+
+    color: #222222 !important;
+
+    margin: 0 !important;
+
+    padding-left: 24px !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+.quick-facts li,
+.quick-facts-card li,
+.about-info li {
+
+    display: list-item !important;
+
+    color: #333333 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif !important;
+
+    font-size: 17px !important;
+
+    line-height: 1.7 !important;
+
+    font-weight: 500 !important;
+
+    margin-bottom: 10px !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   FACT ROWS
+========================================================= */
+
+.quick-facts .fact,
+.quick-facts-card .fact,
+.about-info .fact {
+
+    width: 100%;
+
+    padding: 18px 0;
+
+    box-sizing: border-box;
+
+    border-bottom:
+        1px solid #e8e4f3;
+
+    color: #222222 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif !important;
+
+    font-size: 17px !important;
+
+    line-height: 1.6 !important;
+
+    font-weight: 500 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    display: block !important;
+}
+
+
+/* =========================================================
+   STRONG / BOLD TEXT
+========================================================= */
+
+.quick-facts strong,
+.quick-facts b,
+.quick-facts-card strong,
+.quick-facts-card b,
+.about-info strong,
+.about-info b {
+
+    color: #171717 !important;
+
+    font-weight: 800 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.quick-facts a:not(.btn),
+.quick-facts-card a:not(.btn),
+.about-info a:not(.btn) {
+
+    color: #6d28d9 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   IMAGE CARD
+========================================================= */
+
+.about-image,
+.about-logo,
+.quick-facts-image {
+
+    width: 100%;
+
+    min-height: 640px;
+
+    padding: 38px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f8f7ff,
+            #eeeaff
+        ) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.80);
+
+    border-radius: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: visible !important;
+
+    position: relative;
+
+    z-index: 4;
+
+    box-shadow:
+        0 25px 60px rgba(40, 20, 90, 0.16);
+}
+
+
+/* =========================================================
+   IMAGE CARD DECORATION
+========================================================= */
+
+.about-image::before,
+.about-logo::before,
+.quick-facts-image::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    top: 25px;
+    right: 25px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(139, 92, 246, 0.10);
+
+    filter: blur(30px);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.about-image img,
+.about-logo img,
+.quick-facts-image img {
+
+    display: block !important;
+
+    width: 100%;
+
+    max-width: 560px;
+
+    height: auto;
+
+    max-height: 560px;
+
+    object-fit: contain;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    position: relative;
+
+    z-index: 2;
+
+    box-shadow:
+        0 20px 45px rgba(30, 20, 70, 0.15);
+}
+
+
+/* =========================================================
+   DEMO BUTTON
+========================================================= */
+
+.quick-facts a,
+.quick-facts button,
+.quick-facts-card a,
+.quick-facts-card button,
+.about-info a,
+.about-info button {
+
+    align-self: flex-start;
+
+    display: inline-flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 28px;
+
+    padding: 15px 28px;
+
+    min-height: 52px;
+
+    box-sizing: border-box;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5b21b6,
+            #8b5cf6,
+            #a855f7
+        ) !important;
+
+    color: #ffffff !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif !important;
+
+    font-size: 16px !important;
+
+    font-weight: 700 !important;
+
+    text-decoration: none !important;
+
+    cursor: pointer;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    box-shadow:
+        0 12px 28px rgba(91, 33, 182, 0.28);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.quick-facts a:hover,
+.quick-facts button:hover,
+.quick-facts-card a:hover,
+.quick-facts-card button:hover,
+.about-info a:hover,
+.about-info button:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 18px 35px rgba(91, 33, 182, 0.38);
+}
+
+
+/* =========================================================
+   ICONS
+========================================================= */
+
+.quick-facts i,
+.quick-facts-card i,
+.about-info i {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    color: #7c3aed !important;
+}
+
+
+/* =========================================================
+   PREVENT GLOBAL CSS FROM HIDING CONTENT
+========================================================= */
+
+.about-section *,
+.quick-facts-section *,
+.about-wrapper *,
+.about-container *,
+.quick-facts-container *,
+.about-inner *,
+.quick-facts *,
+.quick-facts-card *,
+.about-info *,
+.about-image *,
+.about-logo *,
+.quick-facts-image * {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .about-section,
+    .quick-facts-section,
+    .about-wrapper {
+
+        min-height: auto;
+
+        padding: 60px 25px;
+    }
+
+
+    .about-container,
+    .quick-facts-container,
+    .about-inner {
+
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+
+        padding: 25px;
+
+        gap: 30px;
+    }
+
+
+    .quick-facts,
+    .quick-facts-card,
+    .about-info {
+
+        min-height: auto;
+
+        padding: 38px 32px;
+    }
+
+
+    .about-image,
+    .about-logo,
+    .quick-facts-image {
+
+        min-height: 450px;
+    }
+
+
+    .about-image img,
+    .about-logo img,
+    .quick-facts-image img {
+
+        max-width: 450px;
+
+        max-height: 450px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .about-section,
+    .quick-facts-section,
+    .about-wrapper {
+
+        padding: 40px 15px;
+    }
+
+
+    .about-container,
+    .quick-facts-container,
+    .about-inner {
+
+        padding: 15px;
+
+        border-radius: 18px;
+    }
+
+
+    .quick-facts,
+    .quick-facts-card,
+    .about-info {
+
+        padding: 30px 22px;
+
+        border-radius: 18px;
+    }
+
+
+    .quick-facts h1,
+    .quick-facts h2,
+    .quick-facts h3,
+    .quick-facts h4,
+    .quick-facts-card h1,
+    .quick-facts-card h2,
+    .quick-facts-card h3,
+    .quick-facts-card h4,
+    .about-info h1,
+    .about-info h2,
+    .about-info h3,
+    .about-info h4 {
+
+        font-size: 23px !important;
+
+        margin-bottom: 20px !important;
+    }
+
+
+    .quick-facts p,
+    .quick-facts li,
+    .quick-facts-card p,
+    .quick-facts-card li,
+    .about-info p,
+    .about-info li,
+    .quick-facts .fact,
+    .quick-facts-card .fact,
+    .about-info .fact {
+
+        font-size: 15px !important;
+
+        line-height: 1.6 !important;
+    }
+
+
+    .about-image,
+    .about-logo,
+    .quick-facts-image {
+
+        min-height: 320px;
+
+        padding: 20px;
+
+        border-radius: 18px;
+    }
+
+
+    .about-image img,
+    .about-logo img,
+    .quick-facts-image img {
+
+        max-width: 100%;
+
+        max-height: 300px;
+    }
+}
+/* =========================================================
+   ABOUT SECTION
+   PHOTO + QUICK FACTS — SAME ROW
+========================================================= */
+
+.about-cta {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 40px !important;
+    width: 100% !important;
+}
+
+/* Photo/content on left */
+.about-cta > *:first-child {
+    flex: 1 1 50%;
+}
+
+/* Quick Facts on right */
+.about-cta .highlight-box {
+    flex: 1 1 50% !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+
+    padding: 30px !important;
+
+    background: linear-gradient(
+        135deg,
+        #24104f,
+        #3b176d,
+        #5b21b6
+    ) !important;
+
+    border-radius: 22px !important;
+    border: 1px solid rgba(255,255,255,.18) !important;
+
+    box-shadow:
+        0 20px 50px rgba(31,10,70,.35),
+        inset 0 1px 0 rgba(255,255,255,.12) !important;
+
+    color: #fff !important;
+
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+
+/* =========================================================
+   QUICK FACTS TEXT
+========================================================= */
+
+.about-cta .highlight-box h3 {
+    margin: 0 0 20px !important;
+    color: #fff !important;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+}
+
+.about-cta .highlight-box ul {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.about-cta .highlight-box li {
+    position: relative !important;
+    padding: 12px 0 12px 30px !important;
+    color: #f8f5ff !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    border-bottom: 1px solid rgba(255,255,255,.10) !important;
+}
+
+.about-cta .highlight-box li:last-child {
+    border-bottom: none !important;
+}
+
+.about-cta .highlight-box li::before {
+    content: "✓" !important;
+
+    position: absolute !important;
+    left: 0 !important;
+    top: 13px !important;
+
+    width: 21px !important;
+    height: 21px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+
+    background: linear-gradient(
+        135deg,
+        #c084fc,
+        #8b5cf6
+    ) !important;
+
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .about-cta {
+        flex-direction: column !important;
+        gap: 25px !important;
+    }
+
+    .about-cta > *:first-child,
+    .about-cta .highlight-box {
+        flex: none !important;
+        width: 100% !important;
+    }
+
+}
+
 </style>
-<head>
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
+
+
+<!-- =========================================================
+     BOOTSTRAP ICONS
+========================================================= -->
+
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
 <!-- =========================================================
@@ -2202,29 +4203,29 @@ a {
 
             </div>
 
-           <div class="hero-social">
+            <div class="hero-social">
 
-    <a href="https://youtube.com/@aonegs77"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="youtube"
-       aria-label="YouTube">
+                <a href="https://youtube.com/@aonegs77"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="youtube"
+                   aria-label="YouTube">
 
-        <i class="bi bi-youtube"></i>
+                    <i class="bi bi-youtube"></i>
 
-    </a>
+                </a>
 
-    <a href="https://www.instagram.com/atsirshorts/"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="instagram"
-       aria-label="Instagram">
+                <a href="https://www.instagram.com/atsirshorts/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="instagram"
+                   aria-label="Instagram">
 
-        <i class="bi bi-instagram"></i>
+                    <i class="bi bi-instagram"></i>
 
-    </a>
+                </a>
 
-</div>
+            </div>
 
             <div class="hero-buttons">
 
@@ -2261,7 +4262,7 @@ a {
 
             <div class="feature-card">
 
-                <i class="fas fa-chalkboard-teacher feature-icon"></i>
+                <i class="bi bi-person-workspace feature-icon"></i>
 
                 <h3>
                     Expert Faculty
@@ -2275,10 +4276,9 @@ a {
 
             </div>
 
-
             <div class="feature-card">
 
-                <i class="fas fa-book-open feature-icon"></i>
+                <i class="bi bi-book-half feature-icon"></i>
 
                 <h3>
                     Study Materials
@@ -2286,15 +4286,14 @@ a {
 
                 <p>
                     Comprehensive study materials and practice
-                    problems.
+                    problems designed for effective preparation.
                 </p>
 
             </div>
 
-
             <div class="feature-card">
 
-                <i class="fas fa-clipboard-check feature-icon"></i>
+                <i class="bi bi-clipboard-check feature-icon"></i>
 
                 <h3>
                     Regular Tests
@@ -2302,15 +4301,14 @@ a {
 
                 <p>
                     Weekly tests and performance analysis to
-                    track progress.
+                    track your progress.
                 </p>
 
             </div>
 
-
             <div class="feature-card">
 
-                <i class="fas fa-laptop feature-icon"></i>
+                <i class="bi bi-laptop feature-icon"></i>
 
                 <h3>
                     Online Portal
@@ -2318,7 +4316,7 @@ a {
 
                 <p>
                     Access lessons, assignments and tests through
-                    our online portal.
+                    our online learning portal.
                 </p>
 
             </div>
@@ -2384,7 +4382,7 @@ a {
 
             <% else %>
 
-                <p class="text-center">
+                <p style="text-align:center;color:#fff;">
                     No achievements available.
                 </p>
 
@@ -2395,27 +4393,31 @@ a {
 
         <div class="collage">
 
-            <% @events.limit(6).each do |event| %>
+            <% if @events.present? %>
 
-                <div class="event-card">
+                <% @events.limit(6).each do |event| %>
 
-                    <% if event.photo.attached? %>
+                    <div class="event-card">
 
-                        <%= image_tag event.photo,
-                            alt: event.title %>
+                        <% if event.photo.attached? %>
 
-                    <% else %>
+                            <%= image_tag event.photo,
+                                alt: event.title %>
 
-                        <%= image_tag "default-event.jpg",
-                            alt: "No Image" %>
+                        <% else %>
 
-                    <% end %>
+                            <%= image_tag "default-event.jpg",
+                                alt: "No Image" %>
 
-                    <h5>
-                        <%= event.title %>
-                    </h5>
+                        <% end %>
 
-                </div>
+                        <h5>
+                            <%= event.title %>
+                        </h5>
+
+                    </div>
+
+                <% end %>
 
             <% end %>
 
@@ -2493,6 +4495,7 @@ a {
 
 <!-- =========================================================
      NOTIFICATIONS
+     AUTOMATIC RUNNING
 ========================================================= -->
 
 <section class="notifications" id="notifications">
@@ -2501,7 +4504,7 @@ a {
 
         <h2 class="section-title">
 
-            <i class="fas fa-bell"></i>
+            <i class="bi bi-bell-fill"></i>
 
             Latest Notifications
 
@@ -2513,7 +4516,7 @@ a {
 
                 <div class="notification-ticker-container">
 
-                    <div class="notification-ticker">
+                    <div class="notification-ticker" id="notificationTicker">
 
                         <% if @notifications.present? %>
 
@@ -2523,7 +4526,7 @@ a {
 
                                     <h5>
 
-                                        <i class="fas fa-bullhorn text-danger"></i>
+                                        <i class="bi bi-megaphone-fill"></i>
 
                                         <%= notification.title %>
 
@@ -2537,24 +4540,32 @@ a {
                                     </p>
 
                                     <p>
-                                        <strong>📅 Start:</strong>
+
+                                        <strong>
+                                            📅 Start:
+                                        </strong>
 
                                         <%= notification.start_date.strftime(
                                             "%d %b %Y"
                                         ) if notification.start_date.present? %>
+
                                     </p>
 
                                     <p>
-                                        <strong>📅 End:</strong>
+
+                                        <strong>
+                                            📅 End:
+                                        </strong>
 
                                         <%= notification.end_date.strftime(
                                             "%d %b %Y"
                                         ) if notification.end_date.present? %>
+
                                     </p>
 
-                                    <small class="text-muted">
+                                    <small>
 
-                                        <i class="fas fa-calendar-alt"></i>
+                                        <i class="bi bi-calendar-event"></i>
 
                                         Posted:
 
@@ -2570,8 +4581,17 @@ a {
 
                         <% else %>
 
-                            <div class="alert alert-info text-center">
-                                No latest notifications available.
+                            <div class="notification-card">
+
+                                <h5>
+                                    <i class="bi bi-info-circle"></i>
+                                    Notifications
+                                </h5>
+
+                                <p>
+                                    No latest notifications available.
+                                </p>
+
                             </div>
 
                         <% end %>
@@ -2605,37 +4625,50 @@ a {
 
             <div class="gallery-slider">
 
-                <% @galleries.each_with_index do |gallery, index| %>
+                <% if @galleries.present? %>
 
-                    <% if gallery.photos.attached? %>
+                    <% @galleries.each do |gallery| %>
 
-                        <% gallery.photos.each do |photo| %>
+                        <% if gallery.photos.attached? %>
 
-                            <%= image_tag photo,
-                                width: 200,
-                                class: "img-thumbnail",
-                                alt: "Gallery Image" %>
+                            <% gallery.photos.each do |photo| %>
+
+                                <%= image_tag photo,
+                                    class: "img-thumbnail",
+                                    alt: "Gallery Image" %>
+
+                            <% end %>
 
                         <% end %>
 
-                    <% else %>
-
-                        <p>
-                            No photos uploaded.
-                        </p>
-
                     <% end %>
+
+                <% else %>
+
+                    <p style="color:#fff;">
+                        No photos uploaded.
+                    </p>
 
                 <% end %>
 
             </div>
 
-            <button class="gallery-nav gallery-prev">
-                <i class="fas fa-chevron-left"></i>
+            <button
+                type="button"
+                class="gallery-nav gallery-prev"
+                aria-label="Previous">
+
+                <i class="bi bi-chevron-left"></i>
+
             </button>
 
-            <button class="gallery-nav gallery-next">
-                <i class="fas fa-chevron-right"></i>
+            <button
+                type="button"
+                class="gallery-nav gallery-next"
+                aria-label="Next">
+
+                <i class="bi bi-chevron-right"></i>
+
             </button>
 
             <div class="gallery-dots"></div>
@@ -2661,129 +4694,148 @@ a {
 
         <div class="course-grid">
 
-            <% @courses.each do |course| %>
+            <% if @courses.present? %>
 
-                <div class="course-card">
+                <% @courses.each do |course| %>
 
-                    <% if course.respond_to?(:image) &&
-                          course.image.attached? %>
+                    <div class="course-card">
 
-                        <%= image_tag course.image,
-                            class: "course-image",
-                            alt: course.Course_name %>
+                        <% if course.respond_to?(:image) &&
+                              course.image.attached? %>
 
-                    <% else %>
+                            <%= image_tag course.image,
+                                class: "course-image",
+                                alt: course.Course_name %>
 
-                        <div class="course-placeholder">
+                        <% else %>
 
-                            <h3>
+                            <div class="course-placeholder">
+
+                                <h3>
+                                    <%= course.Course_name %>
+                                </h3>
+
+                            </div>
+
+                        <% end %>
+
+
+                        <div class="course-info">
+
+                            <h3 class="course-title">
                                 <%= course.Course_name %>
                             </h3>
 
-                        </div>
 
-                    <% end %>
+                            <div class="course-rating">
 
+                                ⭐ 4.8
 
-                    <div class="course-info">
+                                <span>
+                                    (250 Students)
+                                </span>
 
-                        <h3 class="course-title">
-                            <%= course.Course_name %>
-                        </h3>
-
-
-                        <div class="course-rating">
-
-                            ⭐ 4.8
-
-                            <span>
-                                (250 Students)
-                            </span>
-
-                        </div>
+                            </div>
 
 
-                        <div class="course-meta">
+                            <div class="course-meta">
 
-                            <span>
+                                <span>
 
-                                <i class="fas fa-clock"></i>
+                                    <i class="bi bi-clock"></i>
 
-                                <%= course.duration %>
-
-                            </span>
-
-                            <span>
-
-                                <i class="fas fa-users"></i>
-
-                                Limited Seats
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="course-price-container">
-
-                            <% if course.original_fee.present? &&
-                                  course.original_fee > course.fee %>
-
-                                <span class="original-price">
-
-                                    ₹<%= number_with_delimiter(
-                                        course.original_fee
-                                    ) %>
+                                    <%= course.duration %>
 
                                 </span>
 
-                                <span class="discounted-price">
+                                <span>
 
-                                    ₹<%= number_with_delimiter(
-                                        course.fee
-                                    ) %>
+                                    <i class="bi bi-people"></i>
 
-                                </span>
-
-                                <span class="discount-badge">
-
-                                    <%= course.discount_percentage %>%
-                                    OFF
+                                    Limited Seats
 
                                 </span>
 
-                            <% else %>
-
-                                <span class="discounted-price">
-
-                                    ₹<%= number_with_delimiter(
-                                        course.fee
-                                    ) %>
-
-                                </span>
-
-                            <% end %>
-
-                        </div>
+                            </div>
 
 
-                        <div class="course-buttons">
+                            <div class="course-price-container">
 
-                            <%= link_to "📖 View Course",
-                                course_details_path(course),
-                                class: "btn btn-primary w-100 mb-2" %>
+                                <% if course.original_fee.present? &&
+                                      course.fee.present? &&
+                                      course.original_fee > course.fee %>
 
-                            <%= link_to "📝 Enroll Now",
-                                new_enrollment_path(
-                                    course_id: course.id
-                                ),
-                                class: "btn btn-success w-100" %>
+                                    <span class="original-price">
+
+                                        ₹<%= number_with_delimiter(
+                                            course.original_fee
+                                        ) %>
+
+                                    </span>
+
+                                    <span class="discounted-price">
+
+                                        ₹<%= number_with_delimiter(
+                                            course.fee
+                                        ) %>
+
+                                    </span>
+
+                                    <span class="discount-badge">
+
+                                        <%= course.discount_percentage %>% OFF
+
+                                    </span>
+
+                                <% else %>
+
+                                    <span class="discounted-price">
+
+                                        ₹<%= number_with_delimiter(
+                                            course.fee
+                                        ) %>
+
+                                    </span>
+
+                                <% end %>
+
+                            </div>
+
+
+                            <div class="course-buttons">
+
+                                <%= link_to course_details_path(course),
+                                    class: "btn btn-primary w-100 mb-2" do %>
+
+                                    <i class="bi bi-book"></i>
+                                    &nbsp; View Course
+
+                                <% end %>
+
+
+                                <%= link_to new_enrollment_path(
+                                        course_id: course.id
+                                    ),
+                                    class: "btn btn-success w-100" do %>
+
+                                    <i class="bi bi-pencil-square"></i>
+                                    &nbsp; Enroll Now
+
+                                <% end %>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                <% end %>
+
+            <% else %>
+
+                <p style="color:#fff;text-align:center;">
+                    No courses available.
+                </p>
 
             <% end %>
 
@@ -2820,9 +4872,10 @@ a {
 
                     <% else %>
 
-                        <img src="https://placehold.co/300x300?text=Teacher"
-                             class="teacher-img"
-                             alt="Teacher">
+                        <img
+                            src="https://placehold.co/300x300?text=Teacher"
+                            class="teacher-img"
+                            alt="Teacher">
 
                     <% end %>
 
@@ -2866,9 +4919,10 @@ a {
 
                                 <%= link_to teacher.facebook,
                                     target: "_blank",
-                                    rel: "noopener" do %>
+                                    rel: "noopener noreferrer",
+                                    aria: { label: "Facebook" } do %>
 
-                                    <i class="fab fa-facebook-f"></i>
+                                    <i class="bi bi-facebook"></i>
 
                                 <% end %>
 
@@ -2879,9 +4933,10 @@ a {
 
                                 <%= link_to teacher.instagram,
                                     target: "_blank",
-                                    rel: "noopener" do %>
+                                    rel: "noopener noreferrer",
+                                    aria: { label: "Instagram" } do %>
 
-                                    <i class="fab fa-instagram"></i>
+                                    <i class="bi bi-instagram"></i>
 
                                 <% end %>
 
@@ -2892,9 +4947,10 @@ a {
 
                                 <%= link_to teacher.linkedin,
                                     target: "_blank",
-                                    rel: "noopener" do %>
+                                    rel: "noopener noreferrer",
+                                    aria: { label: "LinkedIn" } do %>
 
-                                    <i class="fab fa-linkedin-in"></i>
+                                    <i class="bi bi-linkedin"></i>
 
                                 <% end %>
 
@@ -2905,7 +4961,7 @@ a {
 
                                 <%= mail_to teacher.gmail do %>
 
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="bi bi-envelope-fill"></i>
 
                                 <% end %>
 
@@ -2951,7 +5007,7 @@ a {
 
             <div class="founder-content">
 
-                <h3 class="founder-title">
+                <h3>
                     AT Sir
                 </h3>
 
@@ -3046,8 +5102,9 @@ a {
 
                 <div class="testimonial-author">
 
-                    <img src="https://via.placeholder.com/60x60?text=Muskan"
-                         alt="Muskan Kumari">
+                    <img
+                        src="https://via.placeholder.com/60x60?text=Muskan"
+                        alt="Muskan Kumari">
 
                     <div class="author-details">
 
@@ -3081,8 +5138,9 @@ a {
 
                 <div class="testimonial-author">
 
-                    <img src="https://via.placeholder.com/60x60?text=Adarsh"
-                         alt="Adarsh Kumar">
+                    <img
+                        src="https://via.placeholder.com/60x60?text=Adarsh"
+                        alt="Adarsh Kumar">
 
                     <div class="author-details">
 
@@ -3106,304 +5164,563 @@ a {
 
 </section>
 
+
 <!-- =========================================================
-     CONTACT SECTION
+     CONTACT
 ========================================================= -->
 
 <section class="contact-section" id="contact">
 
-  <div class="contact-container">
+    <div class="contact-container">
 
-    <!-- =====================================================
-         CONTACT INTRO
-    ====================================================== -->
+        <div class="contact-heading">
 
-    <div class="contact-heading">
+            <span class="contact-eyebrow">
 
-      <span class="contact-eyebrow">
-        <i class="bi bi-headset"></i>
-        We're Here to Help
-      </span>
+                <i class="bi bi-headset"></i>
 
-      <h2>
-        Let's Start a <span>Conversation</span>
-      </h2>
+                We're Here to Help
 
-      <p>
-        Looking for the right course, need guidance about admissions,
-        or simply have a question? Send us a message and our team
-        will get back to you shortly.
-      </p>
+            </span>
 
-    </div>
-
-
-    <!-- =====================================================
-         CONTACT CONTENT
-    ====================================================== -->
-
-    <div class="contact-content">
-
-
-      <!-- ===================================================
-           CONTACT FORM
-      ==================================================== -->
-
-      <div class="contact-form-wrapper">
-
-        <div class="contact-form-header">
-
-          <div class="contact-form-icon">
-            <i class="bi bi-send"></i>
-          </div>
-
-          <div>
-            <h3>Send Us a Message</h3>
+            <h2>
+                Let's Start a <span>Conversation</span>
+            </h2>
 
             <p>
-              Fill in the details below and we'll connect with you.
+                Looking for the right course, need guidance about admissions,
+                or simply have a question? Send us a message and our team
+                will get back to you shortly.
             </p>
-          </div>
 
         </div>
 
 
-        <%= form_with url: contacts_path,
-            method: :post,
-            local: true,
-            class: "contact-form" do |form| %>
+        <div class="contact-content">
 
 
-          <!-- NAME + EMAIL -->
+            <!-- CONTACT FORM -->
 
-          <div class="contact-row">
+            <div class="contact-form-wrapper">
 
-            <div class="contact-field">
+                <div class="contact-form-header">
 
-              <%= form.label :name, "Your Name *" %>
+                    <div class="contact-form-icon">
 
-              <div class="input-wrapper">
+                        <i class="bi bi-send"></i>
 
-                <i class="bi bi-person"></i>
+                    </div>
 
-                <%= form.text_field :name,
-                    placeholder: "e.g. Rahul Kumar",
-                    required: true %>
+                    <div>
 
-              </div>
+                        <h3>
+                            Send Us a Message
+                        </h3>
+
+                        <p>
+                            Fill in the details below and we'll connect with you.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <%= form_with url: contacts_path,
+                    method: :post,
+                    local: true,
+                    class: "contact-form" do |form| %>
+
+
+                    <div class="contact-row">
+
+                        <div class="contact-field">
+
+                            <%= form.label :name, "Your Name *" %>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-person"></i>
+
+                                <%= form.text_field :name,
+                                    placeholder: "e.g. Rahul Kumar",
+                                    required: true %>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-field">
+
+                            <%= form.label :email, "Email ID *" %>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-envelope"></i>
+
+                                <%= form.email_field :email,
+                                    placeholder: "you@example.com",
+                                    required: true %>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-row">
+
+                        <div class="contact-field">
+
+                            <%= form.label :phone, "Mobile Number *" %>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-phone"></i>
+
+                                <%= form.telephone_field :phone,
+                                    placeholder: "Enter your mobile number",
+                                    required: true %>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-field">
+
+                            <%= form.label :subject, "How Can We Help? *" %>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-question-circle"></i>
+
+                                <%= form.text_field :subject,
+                                    placeholder: "Course, admission, enquiry...",
+                                    required: true %>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-field">
+
+                        <%= form.label :message, "Your Message *" %>
+
+                        <div class="textarea-wrapper">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            <%= form.text_area :message,
+                                placeholder: "Write your question or tell us what you need help with...",
+                                rows: 7,
+                                required: true %>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-submit">
+
+                        <%= form.submit "Submit Enquiry",
+                            class: "contact-submit-btn" %>
+
+                    </div>
+
+
+                <% end %>
 
             </div>
 
 
-            <div class="contact-field">
+            <!-- CONTACT VISUAL -->
 
-              <%= form.label :email, "Email ID *" %>
+            <div class="contact-visual">
 
-              <div class="input-wrapper">
+                <div class="contact-online">
 
-                <i class="bi bi-envelope"></i>
+                    <span></span>
 
-                <%= form.email_field :email,
-                    placeholder: "you@example.com",
-                    required: true %>
+                    <div>
 
-              </div>
+                        <strong>
+                            We're Available
+                        </strong>
 
-            </div>
+                    </div>
 
-          </div>
-
-
-          <!-- PHONE + SUBJECT -->
-
-          <div class="contact-row">
-
-            <div class="contact-field">
-
-              <%= form.label :phone, "Mobile Number *" %>
-
-              <div class="input-wrapper">
-
-                <i class="bi bi-phone"></i>
-
-                <%= form.telephone_field :phone,
-                    placeholder: "Enter your mobile number",
-                    required: true %>
-
-              </div>
-
-            </div>
+                </div>
 
 
-            <div class="contact-field">
+                <div class="contact-image-card">
 
-              <%= form.label :subject, "How Can We Help? *" %>
+                    <%= image_tag "logo.jpeg",
+                        class: "contact-image",
+                        alt: "Connect with A One GS Center" %>
 
-              <div class="input-wrapper">
-
-                <i class="bi bi-question-circle"></i>
-
-                <%= form.text_field :subject,
-                    placeholder: "Course, admission, enquiry...",
-                    required: true %>
-
-              </div>
-
-            </div>
-
-          </div>
+                </div>
 
 
-          <!-- MESSAGE -->
+                <div class="contact-highlights">
 
-          <div class="contact-field contact-message-field">
+                    <div class="contact-highlight">
 
-            <%= form.label :message, "Your Message *" %>
+                        <i class="bi bi-mortarboard"></i>
 
-            <div class="textarea-wrapper">
+                        <span>
 
-              <i class="bi bi-pencil-square"></i>
+                            <strong>
+                                Course Guidance
+                            </strong>
 
-              <%= form.text_area :message,
-                  placeholder: "Write your question or tell us what you need help with...",
-                  rows: 7,
-                  required: true %>
+                            Choose the right learning path
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="contact-highlight">
+
+                        <i class="bi bi-info-circle"></i>
+
+                        <span>
+
+                            <strong>
+                                Quick Assistance
+                            </strong>
+
+                            Get answers to your questions
+
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
-
-          </div>
-
-
-          <!-- SUBMIT -->
-
-          <div class="contact-submit">
-
-            <%= form.submit "Submit Enquiry",
-                class: "contact-submit-btn" %>
-
-          </div>
-
-
-        <% end %>
-
-      </div>
-
-
-      <!-- ===================================================
-           CONTACT VISUAL
-      ==================================================== -->
-
-      <div class="contact-visual">
-
-
-        <!-- AVAILABILITY BADGE -->
-
-        <div class="contact-online">
-
-          <span></span>
-
-          <div>
-            <strong>We're Available</strong>
-            <small>Ready to assist you</small>
-          </div>
 
         </div>
-
-
-        <!-- IMAGE CARD -->
-
-        <div class="contact-image-card">
-
-          <%= image_tag "logo.jpeg",
-              class: "contact-image",
-              alt: "Connect with A One GS Center" %>
-
-        </div>
-
-
-        <!-- TRUST MESSAGE -->
-
-    
-
-          
-
-          <div>
-           
-            <span>We'll respond as soon as possible</span>
-          </div>
-
-
-
-
-        <!-- SMALL BENEFITS -->
-
-        <div class="contact-highlights">
-
-          <div class="contact-highlight">
-
-            <i class="bi bi-mortarboard"></i>
-
-            <span>
-              <strong>Course Guidance</strong>
-              Choose the right learning path
-            </span>
-
-          </div>
-
-
-          <div class="contact-highlight">
-
-            <i class="bi bi-info-circle"></i>
-
-            <span>
-              <strong>Quick Assistance</strong>
-              Get answers to your questions
-            </span>
-
-          </div>
-
-        </div>
-
-
-      </div>
 
     </div>
-
-  </div>
 
 </section>
 
 
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
 <script>
 
-/* =========================================================
-   NOTIFICATION TICKER
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    const ticker =
-        document.querySelector(".notification-ticker");
-
-    if (!ticker) {
-        return;
-    }
-
-    ticker.style.willChange = "transform";
-
-});
-
-
-/* =========================================================
-   PREVENT ACCIDENTAL HORIZONTAL OVERFLOW
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
+    /* =====================================================
+       GLOBAL HORIZONTAL OVERFLOW PROTECTION
+    ===================================================== */
 
     document.documentElement.style.overflowX = "hidden";
 
     document.body.style.overflowX = "hidden";
+
+
+    /* =====================================================
+       SMOOTH ANCHOR NAVIGATION
+    ===================================================== */
+
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+
+        link.addEventListener("click", function (event) {
+
+            const targetId = this.getAttribute("href");
+
+            if (!targetId || targetId === "#") {
+                return;
+            }
+
+            const target = document.querySelector(targetId);
+
+            if (!target) {
+                return;
+            }
+
+            event.preventDefault();
+
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        });
+
+    });
+
+
+    /* =====================================================
+       AUTOMATIC NOTIFICATION TICKER
+       
+       The original notification cards are duplicated.
+       This makes the animation loop continuously.
+    ===================================================== */
+
+    const ticker =
+        document.getElementById("notificationTicker");
+
+    if (ticker) {
+
+        const originalCards =
+            Array.from(ticker.children);
+
+        if (originalCards.length > 0) {
+
+            /*
+             * Clone all notification cards.
+             */
+            originalCards.forEach(function (card) {
+
+                const clone =
+                    card.cloneNode(true);
+
+                clone.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                ticker.appendChild(clone);
+
+            });
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NOTIFICATION SPEED CONTROL
+       
+       Adjust this value if required:
+       
+       20s  = fast
+       35s  = normal
+       50s  = slow
+       70s  = very slow
+    ===================================================== */
+
+    if (ticker) {
+
+        ticker.style.animationDuration = "35s";
+
+    }
+
+
+    /* =====================================================
+       PAUSE NOTIFICATION ON TOUCH
+    ===================================================== */
+
+    if (ticker) {
+
+        ticker.addEventListener(
+            "touchstart",
+            function () {
+
+                ticker.style.animationPlayState =
+                    "paused";
+
+            },
+            { passive: true }
+        );
+
+        ticker.addEventListener(
+            "touchend",
+            function () {
+
+                ticker.style.animationPlayState =
+                    "running";
+
+            },
+            { passive: true }
+        );
+
+    }
+
+
+    /* =====================================================
+       GALLERY BUTTONS
+       
+       Keeps the gallery usable on smaller screens.
+    ===================================================== */
+
+    const gallerySlider =
+        document.querySelector(".gallery-slider");
+
+    const galleryPrev =
+        document.querySelector(".gallery-prev");
+
+    const galleryNext =
+        document.querySelector(".gallery-next");
+
+
+    if (
+        gallerySlider &&
+        galleryPrev &&
+        galleryNext
+    ) {
+
+        galleryPrev.addEventListener(
+            "click",
+            function () {
+
+                gallerySlider.scrollBy({
+                    left: -300,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+        galleryNext.addEventListener(
+            "click",
+            function () {
+
+                gallerySlider.scrollBy({
+                    left: 300,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CONTACT FORM BUTTON
+    ===================================================== */
+
+    const contactForm =
+        document.querySelector(".contact-form");
+
+    const submitButton =
+        document.querySelector(".contact-submit-btn");
+
+
+    if (
+        contactForm &&
+        submitButton
+    ) {
+
+        contactForm.addEventListener(
+            "submit",
+            function () {
+
+                submitButton.innerHTML =
+                    '<i class="bi bi-send-fill"></i>&nbsp; Sending...';
+
+                submitButton.style.opacity = "0.85";
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       IMAGE ERROR PROTECTION
+       
+       Prevents broken images from making the layout ugly.
+    ===================================================== */
+
+    document
+        .querySelectorAll("img")
+        .forEach(function (image) {
+
+            image.addEventListener(
+                "error",
+                function () {
+
+                    this.style.opacity = "0.65";
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       INTERSECTION FADE-IN
+       
+       Makes transparent cards appear smoothly while scrolling.
+    ===================================================== */
+
+    const animatedElements =
+        document.querySelectorAll(
+            ".feature-card, " +
+            ".topper-card, " +
+            ".event-card, " +
+            ".course-card, " +
+            ".teacher-card, " +
+            ".testimonial-card, " +
+            ".highlight-box, " +
+            ".notification-card"
+        );
+
+
+    if (
+        "IntersectionObserver" in window
+    ) {
+
+        const observer =
+            new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(function (entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.style.opacity = "1";
+
+                            entry.target.style.transform =
+                                "translateY(0)";
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.08
+                }
+            );
+
+
+        animatedElements.forEach(
+            function (element) {
+
+                element.style.opacity = "0";
+
+                element.style.transform =
+                    "translateY(15px)";
+
+                element.style.transition +=
+                    ", opacity 0.6s ease, transform 0.6s ease";
+
+                observer.observe(element);
+
+            }
+        );
+
+    }
 
 });
 

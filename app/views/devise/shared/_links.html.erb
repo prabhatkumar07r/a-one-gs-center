@@ -1,30 +1,317 @@
-<%- if controller_name != 'sessions' %>
-  <p><%= link_to "Log in", new_user_session_path %></p>
-<% end %>
+<%# =========================================================
+    A ONE GS CENTER
+    DEVISE - SHARED AUTHENTICATION LINKS
+========================================================= %>
 
-<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <p><%= link_to "Sign up", new_user_registration_path %></p>
-<% end %>
+<div class="auth-shared-links">
 
-<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <p><%= link_to "Forgot your password?", new_user_password_path %></p>
-<% end %>
-
-<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <p><%= link_to "Didn't receive confirmation instructions?", new_user_confirmation_path %></p>
-<% end %>
-
-<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-  <p><%= link_to "Didn't receive unlock instructions?", new_user_unlock_path %></p>
-<% end %>
-
-<%- if devise_mapping.omniauthable? %>
-  <% resource_class.omniauth_providers.each do |provider| %>
-    <p>
-      <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}",
-          user_google_oauth2_omniauth_authorize_path,
-          method: :post,
-          form: { data: { turbo: false } } %>
-    </p>
+  <%# LOGIN %>
+  <% if controller_name != "sessions" %>
+    <div class="auth-shared-link">
+      Already have an account?
+      <%= link_to "Log in", new_user_session_path %>
+    </div>
   <% end %>
-<% end %>
+
+
+  <%# SIGN UP %>
+  <% if devise_mapping.registerable? && controller_name != "registrations" %>
+    <div class="auth-shared-link">
+      Don't have an account?
+      <%= link_to "Sign up", new_user_registration_path %>
+    </div>
+  <% end %>
+
+
+  <%# FORGOT PASSWORD %>
+  <% if devise_mapping.recoverable? &&
+        controller_name != "passwords" &&
+        controller_name != "registrations" %>
+
+    <div class="auth-shared-link auth-forgot-link">
+      <%= link_to "Forgot your password?",
+          new_user_password_path %>
+    </div>
+
+  <% end %>
+
+
+  <%# CONFIRMATION %>
+  <% if devise_mapping.confirmable? &&
+        controller_name != "confirmations" %>
+
+    <div class="auth-shared-link">
+      <%= link_to "Didn't receive confirmation instructions?",
+          new_user_confirmation_path %>
+    </div>
+
+  <% end %>
+
+
+  <%# UNLOCK %>
+  <% if devise_mapping.lockable? &&
+        resource_class.unlock_strategy_enabled?(:email) &&
+        controller_name != "unlocks" %>
+
+    <div class="auth-shared-link">
+      <%= link_to "Didn't receive unlock instructions?",
+          new_user_unlock_path %>
+    </div>
+
+  <% end %>
+
+
+  <%# GOOGLE OAUTH %>
+  <% if devise_mapping.omniauthable? %>
+
+    <div class="auth-social-links">
+
+      <div class="auth-divider">
+        <span>OR</span>
+      </div>
+
+      <% resource_class.omniauth_providers.each do |provider| %>
+
+        <%= button_to(
+              "Sign in with #{OmniAuth::Utils.camelize(provider)}",
+              user_google_oauth2_omniauth_authorize_path,
+              method: :post,
+              form: {
+                data: {
+                  turbo: false
+                }
+              },
+              class: "auth-google-btn"
+            ) do %>
+
+          <i class="bi bi-google"></i>
+
+          <span>
+            Sign in with Google
+          </span>
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>
+<style>
+  /* =========================================================
+   DEVISE SHARED LINKS
+========================================================= */
+
+.auth-container .auth-shared-links {
+  width: 100%;
+  margin-top: 24px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   INDIVIDUAL LINK
+========================================================= */
+
+.auth-container .auth-shared-link {
+  margin-top: 12px;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.auth-container .auth-shared-link a {
+  color: #a78bfa;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+
+.auth-container .auth-shared-link a:hover {
+  color: #c4b5fd;
+
+  text-decoration: underline;
+
+  text-shadow:
+    0 0 12px rgba(167, 139, 250, 0.35);
+}
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+.auth-container .auth-forgot-link {
+  margin-top: 16px;
+}
+
+
+.auth-container .auth-forgot-link a {
+  color: #60a5fa;
+}
+
+
+.auth-container .auth-forgot-link a:hover {
+  color: #93c5fd;
+}
+
+
+/* =========================================================
+   SOCIAL AUTH SECTION
+========================================================= */
+
+.auth-container .auth-social-links {
+  width: 100%;
+
+  margin-top: 28px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.auth-container .auth-divider {
+  display: flex;
+
+  align-items: center;
+
+  width: 100%;
+
+  margin: 24px 0;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 1px;
+}
+
+
+.auth-container .auth-divider::before,
+.auth-container .auth-divider::after {
+  content: "";
+
+  flex: 1;
+
+  height: 1px;
+
+  background: rgba(148, 163, 184, 0.12);
+}
+
+
+.auth-container .auth-divider span {
+  padding: 0 14px;
+}
+
+
+/* =========================================================
+   GOOGLE BUTTON
+========================================================= */
+
+.auth-container .auth-google-btn {
+  width: 100%;
+
+  min-height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 12px 18px;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  border-radius: 12px;
+
+  background: #0b0f19;
+
+  color: #e2e8f0;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.auth-container .auth-google-btn:hover {
+  background: #111827;
+
+  border-color: rgba(167, 139, 250, 0.35);
+
+  color: #ffffff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+
+.auth-container .auth-google-btn:active {
+  transform: translateY(0);
+}
+
+
+/* Google icon */
+
+.auth-container .auth-google-btn i {
+  font-size: 18px;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .auth-container .auth-shared-links {
+    margin-top: 20px;
+  }
+
+  .auth-container .auth-shared-link {
+    font-size: 12px;
+  }
+
+  .auth-container .auth-google-btn {
+    min-height: 50px;
+
+    font-size: 13px;
+  }
+
+}
+</style>

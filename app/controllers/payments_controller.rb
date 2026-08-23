@@ -1,3 +1,7 @@
+# app/controllers/payments_controller.rb
+
+require "razorpay"
+
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_enrollment
@@ -5,6 +9,7 @@ class PaymentsController < ApplicationController
   # =========================================================
   # PAYMENT PAGE
   # =========================================================
+
   def show
     @course = @enrollment.course
 
@@ -13,35 +18,73 @@ class PaymentsController < ApplicationController
       return
     end
 
-    @payment =
-      @enrollment.payments
-                 .order(created_at: :desc)
-                 .first
+    # -------------------------------------------------------
+    # Already paid?
+    # -------------------------------------------------------
 
-    # Reuse existing Razorpay order
-    @order_id =
-      @payment&.razorpay_order_id.presence
+    @payment = latest_payment
 
-    # Create order if none exists
-    unless @order_id
-      create_razorpay_order
+    if @payment&.status.to_s == "paid"
+      redirect_to payment_success_path(@enrollment),
+                  notice: "This payment has already been completed."
+      return
     end
 
-  rescue Razorpay::Errors::ServerError,
-         Razorpay::Errors::BadRequestError => e
+    # -------------------------------------------------------
+    # Create / reuse Razorpay order
+    # -------------------------------------------------------
 
-    Rails.logger.error(
-      "Razorpay order creation failed: #{e.message}"
-    )
+    create_razorpay_order
 
-    redirect_to payment_path(@enrollment),
-                alert: "Unable to create payment order. Please try again."
+    # -------------------------------------------------------
+    # Checkout values
+    # -------------------------------------------------------
+
+    @razorpay_key_id =
+      ENV.fetch("RAZORPAY_KEY_ID")
+
+    @razorpay_order_id =
+      @order_id.to_s
+
+    @razorpay_amount =
+      (@payment.amount.to_d * 100).round
+
+    @razorpay_currency =
+      "INR"
+
+    @customer_name =
+      if current_user.respond_to?(:name)
+        current_user.name.to_s
+      else
+        current_user.email.to_s
+      end
+
+    @customer_email =
+      current_user.email.to_s
+
+    @customer_phone =
+      if current_user.respond_to?(:mobile)
+        current_user.mobile.to_s
+      elsif current_user.respond_to?(:phone)
+        current_user.phone.to_s
+      else
+        ""
+      end
+
+  rescue Razorpay::BadRequestError => e
+    log_payment_error("RAZORPAY BAD REQUEST", e)
+
+    redirect_to root_path,
+                alert: "Unable to create Razorpay payment order."
+
+  rescue Razorpay::ServerError => e
+    log_payment_error("RAZORPAY SERVER ERROR", e)
+
+    redirect_to root_path,
+                alert: "Razorpay server error. Please try again."
 
   rescue StandardError => e
-
-    Rails.logger.error(
-      "Payment page error: #{e.class} - #{e.message}"
-    )
+    log_payment_error("PAYMENT SHOW ERROR", e)
 
     redirect_to root_path,
                 alert: "Unable to load payment page."
@@ -49,13 +92,15 @@ class PaymentsController < ApplicationController
 
 
   # =========================================================
-  # CREATE PAYMENT / RAZORPAY ORDER
+  # CREATE PAYMENT ORDER
   # =========================================================
+
   def create
     @course = @enrollment.course
 
     unless @course
-      redirect_to root_path, alert: "Course not found."
+      redirect_to root_path,
+                  alert: "Course not found."
       return
     end
 
@@ -63,53 +108,48 @@ class PaymentsController < ApplicationController
 
     redirect_to payment_path(@enrollment)
 
-  rescue Razorpay::Errors::ServerError,
-         Razorpay::Errors::BadRequestError => e
-
-    Rails.logger.error(
-      "Razorpay order creation failed: #{e.message}"
-    )
+  rescue Razorpay::BadRequestError => e
+    log_payment_error("RAZORPAY CREATE BAD REQUEST", e)
 
     redirect_to payment_path(@enrollment),
-                alert: "Unable to create payment order. Please try again."
+                alert: "Unable to create payment order."
+
+  rescue Razorpay::ServerError => e
+    log_payment_error("RAZORPAY CREATE SERVER ERROR", e)
+
+    redirect_to payment_path(@enrollment),
+                alert: "Razorpay server error. Please try again."
 
   rescue StandardError => e
-
-    Rails.logger.error(
-      "Payment creation error: #{e.class} - #{e.message}"
-    )
+    log_payment_error("PAYMENT CREATE ERROR", e)
 
     redirect_to payment_path(@enrollment),
-                alert: "Something went wrong while creating payment."
+                alert: "Unable to create payment order."
   end
 
 
   # =========================================================
-  # VERIFY RAZORPAY PAYMENT
-  #
-  # No fetch()
-  # No AJAX verification
-  #
-  # Razorpay Checkout sends:
-  #   razorpay_payment_id
-  #   razorpay_order_id
-  #   razorpay_signature
-  #
-  # Rails verifies the signature server-side.
+  # VERIFY PAYMENT
   # =========================================================
+
   def verify
     @course = @enrollment.course
 
-    payment_id = params[:razorpay_payment_id]
-    signature  = params[:razorpay_signature]
-    order_id   = params[:razorpay_order_id]
+    payment_id =
+      params[:razorpay_payment_id].to_s.strip
+
+    checkout_order_id =
+      params[:razorpay_order_id].to_s.strip
+
+    signature =
+      params[:razorpay_signature].to_s.strip
 
     # -------------------------------------------------------
-    # BASIC VALIDATION
+    # Validate checkout response
     # -------------------------------------------------------
 
     if payment_id.blank? ||
-       order_id.blank? ||
+       checkout_order_id.blank? ||
        signature.blank?
 
       redirect_to payment_failed_path(@enrollment),
@@ -117,20 +157,20 @@ class PaymentsController < ApplicationController
       return
     end
 
-
     # -------------------------------------------------------
-    # FIND OUR PAYMENT RECORD
+    # Find our local payment
     # -------------------------------------------------------
 
     payment =
       @enrollment.payments.find_by(
-        razorpay_order_id: order_id
+        razorpay_order_id: checkout_order_id
       )
 
     unless payment
-
       Rails.logger.error(
-        "Payment record not found for Razorpay order #{order_id}"
+        "PAYMENT NOT FOUND: " \
+        "order=#{checkout_order_id}, " \
+        "enrollment=#{@enrollment.id}"
       )
 
       redirect_to payment_failed_path(@enrollment),
@@ -138,41 +178,96 @@ class PaymentsController < ApplicationController
       return
     end
 
+    # -------------------------------------------------------
+    # Prevent duplicate verification
+    # -------------------------------------------------------
+
+    if payment.status.to_s == "paid"
+      redirect_to payment_success_path(@enrollment),
+                  notice: "Payment already verified."
+      return
+    end
 
     begin
+      # -----------------------------------------------------
+      # SERVER-SIDE SIGNATURE VERIFICATION
+      # -----------------------------------------------------
 
-      # -----------------------------------------------------
-      # VERIFY RAZORPAY SIGNATURE
-      # -----------------------------------------------------
+      server_order_id =
+        payment.razorpay_order_id.to_s
 
       Razorpay::Utility.verify_payment_signature(
         {
-          razorpay_order_id: payment.razorpay_order_id,
+          razorpay_order_id: server_order_id,
           razorpay_payment_id: payment_id,
           razorpay_signature: signature
         },
         ENV.fetch("RAZORPAY_KEY_SECRET")
       )
 
+      Rails.logger.info(
+        "RAZORPAY SIGNATURE VERIFIED: " \
+        "payment=#{payment_id}, " \
+        "order=#{server_order_id}"
+      )
 
       # -----------------------------------------------------
-      # PREVENT DUPLICATE PAYMENT PROCESSING
+      # FETCH PAYMENT FROM RAZORPAY
       # -----------------------------------------------------
 
-      if payment.status.to_s == "paid"
+      razorpay_payment =
+        Razorpay::Payment.fetch(payment_id)
 
-        redirect_to payment_success_path(@enrollment),
-                    notice: "Payment already verified."
+      razorpay_status =
+        razorpay_payment.status.to_s
 
+      Rails.logger.info(
+        "RAZORPAY PAYMENT STATUS: " \
+        "#{razorpay_status}"
+      )
+
+      # -----------------------------------------------------
+      # PAYMENT MUST BE CAPTURED
+      # -----------------------------------------------------
+
+      unless razorpay_status == "captured"
+        Rails.logger.warn(
+          "PAYMENT NOT CAPTURED: " \
+          "payment=#{payment_id}, " \
+          "status=#{razorpay_status}"
+        )
+
+        redirect_to payment_failed_path(@enrollment),
+                    alert:
+                      "Payment is not yet captured. " \
+                      "Current status: #{razorpay_status}."
         return
       end
 
+      # -----------------------------------------------------
+      # AMOUNT VALIDATION
+      # -----------------------------------------------------
+
+      expected_amount =
+        (payment.amount.to_d * 100).round
+
+      actual_amount =
+        razorpay_payment.amount.to_i
+
+      if actual_amount != expected_amount
+        Rails.logger.error(
+          "PAYMENT AMOUNT MISMATCH: " \
+          "expected=#{expected_amount}, " \
+          "actual=#{actual_amount}"
+        )
+
+        redirect_to payment_failed_path(@enrollment),
+                    alert: "Payment amount verification failed."
+        return
+      end
 
       # -----------------------------------------------------
-      # SAVE PAYMENT
-      #
-      # Your payments table does NOT contain paid_at.
-      # Therefore paid_at is intentionally NOT saved.
+      # UPDATE PAYMENT
       # -----------------------------------------------------
 
       payment.update!(
@@ -180,7 +275,6 @@ class PaymentsController < ApplicationController
         razorpay_signature: signature,
         status: "paid"
       )
-
 
       # -----------------------------------------------------
       # APPROVE ENROLLMENT
@@ -190,108 +284,48 @@ class PaymentsController < ApplicationController
         status: "approved"
       )
 
-
       # -----------------------------------------------------
-      # UPDATE / CREATE FEE RECORD
+      # UPDATE FEE
       # -----------------------------------------------------
 
-      if @enrollment.respond_to?(:fees)
+      update_enrollment_fee(payment)
 
-        fee =
-          @enrollment.fees
-                     .order(created_at: :desc)
-                     .first
-
-        if fee
-
-          paid_amount =
-            fee.paid_amount.to_d +
-            payment.amount.to_d
-
-          total_fee =
-            fee.total_fee.presence ||
-            @course.fee.to_d
-
-          due_amount =
-            [total_fee - paid_amount, 0].max
-
-          fee.update!(
-            paid_amount: paid_amount,
-            due_amount: due_amount,
-            payment_date: Date.current,
-            payment_mode: "Razorpay",
-            status: due_amount.zero? ? "paid" : "partial"
-          )
-
-        else
-
-          total_fee =
-            @course.fee.to_d
-
-          paid_amount =
-            payment.amount.to_d
-
-          due_amount =
-            [total_fee - paid_amount, 0].max
-
-          @enrollment.fees.create!(
-            total_fee: total_fee,
-            paid_amount: paid_amount,
-            due_amount: due_amount,
-            payment_date: Date.current,
-            payment_mode: "Razorpay",
-            status: due_amount.zero? ? "paid" : "partial"
-          )
-
-        end
-
-      end
-
-
-      # -----------------------------------------------------
-      # SUCCESS
-      # -----------------------------------------------------
+      Rails.logger.info(
+        "PAYMENT SUCCESSFULLY VERIFIED: " \
+        "payment=#{payment_id}, " \
+        "order=#{server_order_id}, " \
+        "enrollment=#{@enrollment.id}"
+      )
 
       redirect_to payment_success_path(@enrollment),
                   notice: "Payment successful!"
 
-
-    rescue Razorpay::Errors::SignatureVerificationError => e
-
-      Rails.logger.error(
-        "Razorpay signature verification failed: #{e.message}"
-      )
+    rescue Razorpay::Error => e
+      log_payment_error("RAZORPAY VERIFICATION ERROR", e)
 
       redirect_to payment_failed_path(@enrollment),
                   alert: "Payment verification failed."
 
-
     rescue ActiveRecord::RecordInvalid => e
-
-      Rails.logger.error(
-        "Payment database error: #{e.message}"
-      )
+      log_payment_error("PAYMENT DATABASE ERROR", e)
 
       redirect_to payment_failed_path(@enrollment),
-                  alert: "Payment was received but could not be recorded."
-
+                  alert:
+                    "Payment was received but could not be recorded."
 
     rescue StandardError => e
-
-      Rails.logger.error(
-        "Payment verification error: #{e.class} - #{e.message}"
-      )
+      log_payment_error("PAYMENT VERIFICATION ERROR", e)
 
       redirect_to payment_failed_path(@enrollment),
                   alert: "Unable to verify payment."
-
     end
   end
 
 
   # =========================================================
-  # PAYMENT SUCCESS PAGE
+  # PAYMENT SUCCESS
   # =========================================================
+
   def success
     @course = @enrollment.course
 
@@ -304,8 +338,9 @@ class PaymentsController < ApplicationController
 
 
   # =========================================================
-  # PAYMENT FAILED PAGE
+  # PAYMENT FAILED
   # =========================================================
+
   def failed
     @course = @enrollment.course
 
@@ -322,6 +357,7 @@ class PaymentsController < ApplicationController
   # =========================================================
   # SET ENROLLMENT
   # =========================================================
+
   def set_enrollment
     @enrollment =
       current_user.enrollments.find(params[:id])
@@ -329,73 +365,199 @@ class PaymentsController < ApplicationController
 
 
   # =========================================================
-  # CREATE RAZORPAY ORDER
+  # LATEST PAYMENT
   # =========================================================
+
+  def latest_payment
+    @enrollment.payments
+               .order(created_at: :desc)
+               .first
+  end
+
+
+  # =========================================================
+  # CREATE / REUSE RAZORPAY ORDER
+  # =========================================================
+
   def create_razorpay_order
+    @course ||= @enrollment.course
 
-    amount =
-      (@course.fee.to_d * 100).round
+    raise "Course not found." unless @course
 
+    # -------------------------------------------------------
+    # Course fee
+    # -------------------------------------------------------
 
-    if amount <= 0
+    amount_rupees =
+      @course.fee.to_d
+
+    amount_paise =
+      (amount_rupees * 100).round
+
+    if amount_paise <= 0
       raise "Course fee must be greater than zero."
     end
 
+    # -------------------------------------------------------
+    # Already paid
+    # -------------------------------------------------------
 
-    # =====================================================
-    # REUSE EXISTING UNPAID ORDER
-    # =====================================================
-
-    existing_payment =
+    paid_payment =
       @enrollment.payments
-                 .where(status: ["created", "pending"])
-                 .where.not(razorpay_order_id: nil)
+                 .where(status: "paid")
                  .order(created_at: :desc)
                  .first
 
-
-    if existing_payment
-
-      @payment =
-        existing_payment
-
-      @order_id =
-        existing_payment.razorpay_order_id
+    if paid_payment
+      @payment = paid_payment
+      @order_id = paid_payment.razorpay_order_id
 
       return
     end
 
+    # -------------------------------------------------------
+    # Existing unpaid payment/order
+    # -------------------------------------------------------
 
-    # =====================================================
-    # CREATE RAZORPAY ORDER
-    # =====================================================
+    existing_payment =
+      @enrollment.payments
+                 .where(
+                   status: %w[created pending]
+                 )
+                 .where.not(
+                   razorpay_order_id: [nil, ""]
+                 )
+                 .order(created_at: :desc)
+                 .first
+
+    if existing_payment
+      @payment = existing_payment
+      @order_id = existing_payment.razorpay_order_id
+
+      Rails.logger.info(
+        "REUSING RAZORPAY ORDER: #{@order_id}"
+      )
+
+      return
+    end
+
+    # -------------------------------------------------------
+    # Create new Razorpay order
+    # -------------------------------------------------------
+
+    receipt =
+      "ENR-#{@enrollment.id}-#{Time.current.to_i}"
+
+    Rails.logger.info(
+      "CREATING RAZORPAY ORDER: " \
+      "enrollment=#{@enrollment.id}, " \
+      "amount_paise=#{amount_paise}"
+    )
 
     razorpay_order =
       Razorpay::Order.create(
-        amount: amount,
+        amount: amount_paise,
         currency: "INR",
-        receipt: "ENR-#{@enrollment.id}-#{Time.current.to_i}",
+        receipt: receipt,
         notes: {
-          enrollment_id: @enrollment.id,
-          user_id: current_user.id,
-          course_id: @course.id
+          enrollment_id: @enrollment.id.to_s,
+          user_id: current_user.id.to_s,
+          course_id: @course.id.to_s
         }
       )
 
-
-    # =====================================================
-    # SAVE PAYMENT
-    # =====================================================
+    # -------------------------------------------------------
+    # Save local payment
+    # -------------------------------------------------------
 
     @payment =
       @enrollment.payments.create!(
-        amount: @course.fee,
+        amount: amount_rupees,
         status: "created",
         razorpay_order_id: razorpay_order.id
       )
 
-
     @order_id =
       razorpay_order.id
+
+    Rails.logger.info(
+      "RAZORPAY ORDER CREATED: #{@order_id}"
+    )
+  end
+
+
+  # =========================================================
+  # UPDATE ENROLLMENT FEE
+  # =========================================================
+
+  def update_enrollment_fee(payment)
+    return unless @enrollment.respond_to?(:fees)
+
+    fee =
+      @enrollment.fees
+                 .order(created_at: :desc)
+                 .first
+
+    payment_amount =
+      payment.amount.to_d
+
+    if fee
+      old_paid =
+        fee.paid_amount.to_d
+
+      paid_amount =
+        old_paid + payment_amount
+
+      total_fee =
+        if fee.total_fee.present?
+          fee.total_fee.to_d
+        else
+          @course.fee.to_d
+        end
+
+      due_amount =
+        [total_fee - paid_amount, 0].max
+
+      fee.update!(
+        paid_amount: paid_amount,
+        due_amount: due_amount,
+        payment_date: Date.current,
+        payment_mode: "Razorpay",
+        status: due_amount.zero? ? "paid" : "partial"
+      )
+    else
+      total_fee =
+        @course.fee.to_d
+
+      paid_amount =
+        payment_amount
+
+      due_amount =
+        [total_fee - paid_amount, 0].max
+
+      @enrollment.fees.create!(
+        total_fee: total_fee,
+        paid_amount: paid_amount,
+        due_amount: due_amount,
+        payment_date: Date.current,
+        payment_mode: "Razorpay",
+        status: due_amount.zero? ? "paid" : "partial"
+      )
+    end
+  end
+
+
+  # =========================================================
+  # ERROR LOGGER
+  # =========================================================
+
+  def log_payment_error(prefix, error)
+    Rails.logger.error(
+      "#{prefix}: #{error.class} - #{error.message}"
+    )
+
+    Rails.logger.error(
+      error.backtrace&.first(15)&.join("\n")
+    )
   end
 end
