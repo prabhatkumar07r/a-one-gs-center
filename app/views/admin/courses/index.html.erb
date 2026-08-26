@@ -1,0 +1,264 @@
+
+<style>
+  /*======== Admin Courses ========*/
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    width: auto;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+  }
+
+  .back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+  }
+
+  .back-btn i {
+    font-size: 15px;
+  }
+</style>
+
+<% content_for :show_layout, true %>
+
+<!-- ================= HEADER ================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+  <h2>📚 Course Management</h2>
+
+  <div class="d-flex justify-content-end">
+    <%= link_to new_admin_course_path,
+        class: "btn btn-outline-secondary back-btn" do %>
+      <i class="bi bi-plus"></i>
+      Add Course
+    <% end %>
+  </div>
+
+</div>
+
+
+<!-- ================= COURSE STATISTICS ================= -->
+
+<div class="row mb-4">
+
+  <!-- Total -->
+  <div class="col-md-4">
+    <div class="card shadow border-start border-primary border-4">
+      <div class="card-body text-center">
+        <h6>Total Courses</h6>
+        <h3><%= @total_courses %></h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active -->
+  <div class="col-md-4">
+    <div class="card shadow border-start border-success border-4">
+      <div class="card-body text-center">
+        <h6>Active</h6>
+        <h3><%= @active_courses %></h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inactive -->
+  <div class="col-md-4">
+    <div class="card shadow border-start border-danger border-4">
+      <div class="card-body text-center">
+        <h6>Inactive</h6>
+        <h3><%= @inactive_courses %></h3>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================= SEARCH / FILTER ================= -->
+
+<%= form_with url: admin_courses_path, method: :get, local: true do %>
+
+  <div class="row">
+
+    <!-- Search -->
+    <div class="col-md-6">
+      <%= text_field_tag :search,
+          params[:search],
+          class: "form-control",
+          placeholder: "Search Course..." %>
+    </div>
+
+    <!-- Status -->
+    <div class="col-md-3">
+      <%= select_tag :status,
+          options_for_select(
+            [
+              ["All Status", ""],
+              ["Active", "Active"],
+              ["Inactive", "Inactive"]
+            ],
+            params[:status]
+          ),
+          class: "form-select" %>
+    </div>
+
+    <!-- Search Button -->
+    <div class="col-md-3">
+      <%= submit_tag "Search",
+          class: "btn btn-primary w-100" %>
+    </div>
+
+  </div>
+
+<% end %>
+
+
+<!-- ================= COURSE COUNT ================= -->
+
+<p class="text-muted mt-3">
+  Total Courses:
+  <strong><%= @courses.count %></strong>
+</p>
+
+
+<!-- ================= COURSE TABLE ================= -->
+
+<div class="table-responsive">
+
+  <table class="table table-bordered table-hover align-middle">
+
+    <thead class="table-dark">
+
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Duration</th>
+        <th>Fees</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <% @courses.each do |course| %>
+
+        <tr>
+
+          <!-- ID -->
+          <td>
+            <%= course.id %>
+          </td>
+
+          <!-- Course Name -->
+          <td>
+            <%= course.Course_name %>
+          </td>
+
+          <!-- Duration -->
+          <td>
+            <%= course.duration %>
+          </td>
+
+          <!-- Fees -->
+          <td>
+            ₹<%= course.fee %>
+          </td>
+
+          <!-- Status -->
+          <td>
+
+            <% if course.status == "Active" %>
+
+              <span class="badge bg-success">
+                Active
+              </span>
+
+            <% else %>
+
+              <span class="badge bg-danger">
+                Inactive
+              </span>
+
+            <% end %>
+
+          </td>
+
+          <!-- Actions -->
+          <td>
+
+            <div class="d-flex gap-1">
+
+              <!-- VIEW -->
+              <%= link_to admin_course_path(course),
+                  class: "btn btn-info btn-sm text-white",
+                  title: "View Course" do %>
+
+                <i class="bi bi-eye-fill"></i>
+
+              <% end %>
+
+
+              <!-- EDIT -->
+              <%= link_to edit_admin_course_path(course),
+                  class: "btn btn-warning btn-sm",
+                  title: "Edit Course" do %>
+
+                <i class="bi bi-pencil-square"></i>
+
+              <% end %>
+
+
+              <!-- PLAYLISTS -->
+              <%= link_to admin_course_playlists_path(course),
+                  class: "btn btn-primary btn-sm",
+                  title: "Manage Playlists" do %>
+
+                <i class="bi bi-collection-play-fill"></i>
+
+              <% end %>
+
+
+              <!-- DELETE -->
+              <%= button_to admin_course_path(course),
+                  method: :delete,
+                  form: {
+                    data: {
+                      turbo_confirm: "Delete this course?"
+                    }
+                  },
+                  class: "btn btn-danger btn-sm",
+                  title: "Delete Course" do %>
+
+                <i class="bi bi-trash-fill"></i>
+
+              <% end %>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+<!-- ================= PAGINATION ================= -->
+
+<div class="d-flex justify-content-center mt-4">
+
+  <%= paginate @courses %>
+
+</div>

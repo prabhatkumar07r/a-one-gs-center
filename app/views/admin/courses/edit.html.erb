@@ -1,0 +1,30 @@
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
+
+<div class="admin-layout">
+
+ 
+
+  <div class="main-content">
+
+
+    <div class="container-fluid py-4">
+      <%= render "layouts/admin_sidebar" %>
+
+      <div class="card shadow-lg">
+
+        <div class="card-header bg-primary text-white">
+          <h2>Edit Course</h2>
+        </div>
+
+        <div class="card-body" >
+          <%= render "form", course: @course %>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

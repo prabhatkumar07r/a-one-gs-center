@@ -1,0 +1,903 @@
+
+<style>
+  /* =========================================================
+     ADMIN COURSE FORM
+     MODERN PURPLE / BLUE ADMIN UI
+  ========================================================= */
+
+  .admin-course-form-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 10px 0 40px;
+  }
+
+  /* ================= HEADER ================= */
+
+  .course-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 22px 25px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ffffff, #f7f5ff);
+    border: 1px solid rgba(108, 92, 231, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  }
+
+  .course-form-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #222;
+  }
+
+  .course-form-subtitle {
+    margin: 5px 0 0;
+    color: #777;
+    font-size: 14px;
+  }
+
+  /* ================= MAIN CARD ================= */
+
+  .course-form-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+  }
+
+  /* ================= SECTION ================= */
+
+  .form-section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 10px;
+  }
+
+  .form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .form-section-title i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #f0ebff;
+    color: #6c3df5;
+    font-size: 17px;
+  }
+
+  /* ================= LABEL ================= */
+
+  .course-form-card .form-label {
+    margin-bottom: 7px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* ================= INPUTS ================= */
+
+  .course-form-card .form-control,
+  .course-form-card .form-select {
+    min-height: 46px;
+    border: 1px solid #dcdcdc;
+    border-radius: 11px;
+    padding: 10px 13px;
+    font-size: 14px;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .course-form-card textarea.form-control {
+    min-height: auto;
+    resize: vertical;
+  }
+
+  .course-form-card .form-control:hover,
+  .course-form-card .form-select:hover {
+    border-color: #b9a5ff;
+  }
+
+  .course-form-card .form-control:focus,
+  .course-form-card .form-select:focus {
+    border-color: #6c3df5;
+    box-shadow: 0 0 0 3px rgba(108, 61, 245, 0.12);
+    outline: none;
+  }
+
+  /* ================= HELP TEXT ================= */
+
+  .form-help {
+    display: block;
+    margin-top: 7px;
+    color: #888;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* ================= CHARACTER COUNTER ================= */
+
+  .character-counter {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+    color: #999;
+    font-size: 11px;
+  }
+
+  /* ================= FEE PREVIEW ================= */
+
+  .fee-preview {
+    display: none;
+    margin-top: 10px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    background: #f5f1ff;
+    border: 1px solid #e4d9ff;
+    color: #5332a8;
+    font-size: 13px;
+  }
+
+  .fee-preview.show {
+    display: block;
+  }
+
+  .fee-preview strong {
+    font-size: 16px;
+  }
+
+  /* ================= STATUS ================= */
+
+  .status-wrapper {
+    position: relative;
+  }
+
+  .status-active {
+    border-color: #198754 !important;
+  }
+
+  .status-inactive {
+    border-color: #dc3545 !important;
+  }
+
+  /* ================= BUTTONS ================= */
+
+  .course-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+  }
+
+  .course-form-actions .btn {
+    min-width: 120px;
+    min-height: 44px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .course-form-actions .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .course-cancel-btn {
+    border: 1px solid #d5d5d5;
+    background: #fff;
+    color: #555;
+  }
+
+  .course-cancel-btn:hover {
+    background: #f5f5f5;
+    color: #222;
+  }
+
+  .course-submit-btn {
+    border: none;
+    background: linear-gradient(135deg, #6c3df5, #4f46e5);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(108, 61, 245, 0.22);
+  }
+
+  .course-submit-btn:hover {
+    color: #fff;
+    box-shadow: 0 9px 22px rgba(108, 61, 245, 0.30);
+  }
+
+  /* ================= VALIDATION ================= */
+
+  .course-form-card .form-control.is-invalid,
+  .course-form-card .form-select.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.08);
+  }
+
+  .field-error {
+    display: none;
+    margin-top: 5px;
+    color: #dc3545;
+    font-size: 12px;
+  }
+
+  .field-error.show {
+    display: block;
+  }
+
+  /* ================= RESPONSIVE ================= */
+
+  @media (max-width: 768px) {
+
+    .admin-course-form-wrapper {
+      padding: 5px 0 25px;
+    }
+
+    .course-form-header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 18px;
+    }
+
+    .course-form-title {
+      font-size: 22px;
+    }
+
+    .course-form-card {
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .course-form-actions {
+      flex-direction: column-reverse;
+    }
+
+    .course-form-actions .btn {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+
+    .course-form-card {
+      padding: 15px;
+    }
+
+    .form-section-title {
+      font-size: 16px;
+    }
+  }
+</style>
+
+
+<% content_for :show_layout, true %>
+
+
+<div class="admin-course-form-wrapper">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="course-form-header">
+
+    <div>
+      <h2 class="course-form-title">
+        <i class="bi bi-book-half"></i>
+        <%= course.persisted? ? "Edit Course" : "Add New Course" %>
+      </h2>
+
+      <p class="course-form-subtitle">
+        <%= course.persisted? ?
+            "Update course information and settings." :
+            "Create a new course for your students." %>
+      </p>
+    </div>
+
+    <%= link_to admin_courses_path,
+        class: "btn btn-outline-secondary back-btn" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      Back to Courses
+
+    <% end %>
+
+  </div>
+
+
+  <!-- ================= FORM ================= -->
+
+  <div class="course-form-card">
+
+    <%= form_with model: [:admin, course],
+        data: {
+          course_form: true
+        } do |f| %>
+
+
+      <!-- ================= BASIC INFORMATION ================= -->
+
+      <div class="form-section">
+
+        <div class="form-section-title">
+          <i class="bi bi-info-circle"></i>
+          Basic Information
+        </div>
+
+
+        <!-- Course Name -->
+
+        <div class="mb-4">
+
+          <%= f.label :Course_name,
+              "Course Name",
+              class: "form-label" %>
+
+          <%= f.text_field :Course_name,
+              class: "form-control",
+              placeholder: "Enter course name",
+              required: true,
+              autocomplete: "off" %>
+
+          <div class="field-error">
+            Course name is required.
+          </div>
+
+        </div>
+
+
+        <!-- Duration -->
+
+        <div class="mb-4">
+
+          <%= f.label :duration,
+              "Duration",
+              class: "form-label" %>
+
+          <%= f.text_field :duration,
+              class: "form-control",
+              placeholder: "Example: 6 Months",
+              required: true %>
+
+        </div>
+
+
+        <!-- Description -->
+
+        <div class="mb-2">
+
+          <%= f.label :description,
+              "Course Description",
+              class: "form-label" %>
+
+          <%= f.text_area :description,
+              class: "form-control js-counter",
+              rows: 5,
+              maxlength: 1000,
+              placeholder: "Describe what this course covers..." %>
+
+          <div class="character-counter">
+            <span data-counter-for="course_description">0 / 1000</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= FEES ================= -->
+
+      <div class="form-section">
+
+        <div class="form-section-title">
+          <i class="bi bi-currency-rupee"></i>
+          Course Fees
+        </div>
+
+
+        <div class="row">
+
+          <!-- Original Fee -->
+
+          <div class="col-md-4 mb-4">
+
+            <%= f.label :original_fee,
+                "Original Fee",
+                class: "form-label" %>
+
+            <%= f.number_field :original_fee,
+                class: "form-control js-fee-input",
+                min: 0,
+                step: 1,
+                placeholder: "₹ 0" %>
+
+          </div>
+
+
+          <!-- Discount -->
+
+          <div class="col-md-4 mb-4">
+
+            <%= f.label :discount_percentage,
+                "Discount (%)",
+                class: "form-label" %>
+
+            <%= f.number_field :discount_percentage,
+                class: "form-control js-fee-input",
+                min: 0,
+                max: 100,
+                step: 1,
+                placeholder: "0" %>
+
+          </div>
+
+
+          <!-- Final Fee -->
+
+          <div class="col-md-4 mb-4">
+
+            <%= f.label :fee,
+                "Final Fee",
+                class: "form-label" %>
+
+            <%= f.number_field :fee,
+                class: "form-control",
+                min: 0,
+                step: 1,
+                placeholder: "₹ 0",
+                id: "course_fee" %>
+
+          </div>
+
+        </div>
+
+
+        <div id="feePreview" class="fee-preview">
+          Discount preview will appear here.
+        </div>
+
+      </div>
+
+
+      <!-- ================= LEARNING ================= -->
+
+      <div class="form-section">
+
+        <div class="form-section-title">
+          <i class="bi bi-lightbulb"></i>
+          Learning Information
+        </div>
+
+
+        <!-- Learning Outcomes -->
+
+        <div class="mb-4">
+
+          <%= f.label :learning_outcomes,
+              "What You'll Learn",
+              class: "form-label" %>
+
+          <%= f.text_area :learning_outcomes,
+              class: "form-control",
+              rows: 6,
+              placeholder: "Enter one learning outcome per line" %>
+
+          <small class="form-help">
+            Enter each learning outcome on a separate line.
+            <br>
+            Example: Ancient Indian History, Modern Indian History,
+            Indian Constitution
+          </small>
+
+        </div>
+
+
+        <!-- Requirements -->
+
+        <div class="mb-3">
+
+          <%= f.label :requirements,
+              "Requirements",
+              class: "form-label" %>
+
+          <%= f.text_area :requirements,
+              class: "form-control",
+              rows: 5,
+              placeholder: "Enter one requirement per line" %>
+
+          <small class="form-help">
+            Enter each requirement on a separate line.
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= COURSE MANAGEMENT ================= -->
+
+      <div class="form-section">
+
+        <div class="form-section-title">
+          <i class="bi bi-gear"></i>
+          Course Management
+        </div>
+
+
+        <!-- Teacher -->
+
+        <div class="mb-4">
+
+          <%= f.label :teacher_id,
+              "Teacher",
+              class: "form-label" %>
+
+          <%= f.collection_select :teacher_id,
+              Teacher.all,
+              :id,
+              :name,
+              { prompt: "Select Teacher" },
+              { class: "form-select" } %>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="mb-3">
+
+          <%= f.label :status,
+              "Course Status",
+              class: "form-label" %>
+
+          <%= f.select :status,
+              ["Active", "Inactive"],
+              {},
+              class: "form-select",
+              id: "course_status" %>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= ACTIONS ================= -->
+
+      <div class="course-form-actions">
+
+        <%= link_to admin_courses_path,
+            class: "btn course-cancel-btn" do %>
+
+          <i class="bi bi-x-lg"></i>
+          Cancel
+
+        <% end %>
+
+
+        <%= f.submit(
+              course.persisted? ? "Update Course" : "Create Course",
+              class: "btn course-submit-btn",
+              data: {
+                submit_button: true
+              }
+            ) %>
+
+      </div>
+
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================================================
+       COURSE FORM
+    ========================================================= */
+
+    const form = document.querySelector("[data-course-form]");
+
+    if (!form) return;
+
+
+    /* =========================================================
+       FEE CALCULATION
+    ========================================================= */
+
+    const originalFee =
+      document.getElementById("course_original_fee");
+
+    const discount =
+      document.getElementById("course_discount_percentage");
+
+    const finalFee =
+      document.getElementById("course_fee");
+
+    const feePreview =
+      document.getElementById("feePreview");
+
+
+    function calculateFee() {
+
+      if (!originalFee || !discount || !finalFee) return;
+
+      const original = parseFloat(originalFee.value) || 0;
+      const discountValue = parseFloat(discount.value) || 0;
+
+      if (original <= 0) {
+        feePreview.classList.remove("show");
+        return;
+      }
+
+      const safeDiscount =
+        Math.min(Math.max(discountValue, 0), 100);
+
+      const discountAmount =
+        original * safeDiscount / 100;
+
+      const calculatedFee =
+        Math.max(original - discountAmount, 0);
+
+      finalFee.value =
+        Math.round(calculatedFee);
+
+      if (safeDiscount > 0) {
+
+        feePreview.innerHTML =
+          "Original Fee: <strong>₹" +
+          original.toLocaleString("en-IN") +
+          "</strong> &nbsp; → &nbsp; " +
+          "Discount: <strong>" +
+          safeDiscount +
+          "%</strong> &nbsp; → &nbsp; " +
+          "Final Fee: <strong>₹" +
+          Math.round(calculatedFee).toLocaleString("en-IN") +
+          "</strong>";
+
+        feePreview.classList.add("show");
+
+      } else {
+
+        feePreview.classList.remove("show");
+
+      }
+
+    }
+
+
+    if (originalFee) {
+      originalFee.addEventListener("input", calculateFee);
+    }
+
+    if (discount) {
+      discount.addEventListener("input", calculateFee);
+    }
+
+    calculateFee();
+
+
+    /* =========================================================
+       CHARACTER COUNTER
+    ========================================================= */
+
+    const description =
+      document.getElementById("course_description");
+
+    const descriptionCounter =
+      document.querySelector(
+        '[data-counter-for="course_description"]'
+      );
+
+
+    function updateDescriptionCounter() {
+
+      if (!description || !descriptionCounter) return;
+
+      descriptionCounter.textContent =
+        description.value.length + " / 1000";
+
+    }
+
+
+    if (description) {
+
+      description.addEventListener(
+        "input",
+        updateDescriptionCounter
+      );
+
+      updateDescriptionCounter();
+
+    }
+
+
+    /* =========================================================
+       STATUS COLOR
+    ========================================================= */
+
+    const status =
+      document.getElementById("course_status");
+
+
+    function updateStatusStyle() {
+
+      if (!status) return;
+
+      status.classList.remove(
+        "status-active",
+        "status-inactive"
+      );
+
+      if (status.value === "Active") {
+
+        status.classList.add("status-active");
+
+      } else if (status.value === "Inactive") {
+
+        status.classList.add("status-inactive");
+
+      }
+
+    }
+
+
+    if (status) {
+
+      status.addEventListener(
+        "change",
+        updateStatusStyle
+      );
+
+      updateStatusStyle();
+
+    }
+
+
+    /* =========================================================
+       BASIC VALIDATION
+    ========================================================= */
+
+    const courseName =
+      document.getElementById("course_Course_name");
+
+    const nameError =
+      courseName ?
+      courseName.parentElement.querySelector(".field-error") :
+      null;
+
+
+    function validateCourseName() {
+
+      if (!courseName) return true;
+
+      const valid =
+        courseName.value.trim().length > 0;
+
+      if (!valid) {
+
+        courseName.classList.add("is-invalid");
+
+        if (nameError) {
+          nameError.classList.add("show");
+        }
+
+      } else {
+
+        courseName.classList.remove("is-invalid");
+
+        if (nameError) {
+          nameError.classList.remove("show");
+        }
+
+      }
+
+      return valid;
+
+    }
+
+
+    if (courseName) {
+
+      courseName.addEventListener(
+        "input",
+        validateCourseName
+      );
+
+      courseName.addEventListener(
+        "blur",
+        validateCourseName
+      );
+
+    }
+
+
+    /* =========================================================
+       SUBMIT BUTTON
+    ========================================================= */
+
+    const submitButton =
+      form.querySelector("[data-submit-button]");
+
+
+    form.addEventListener("submit", function (event) {
+
+      if (!validateCourseName()) {
+
+        event.preventDefault();
+
+        courseName.focus();
+
+        return;
+
+      }
+
+
+      if (submitButton) {
+
+        submitButton.disabled = true;
+
+        submitButton.innerHTML =
+          '<span class="spinner-border spinner-border-sm me-2"></span>' +
+          '<span>Saving...</span>';
+
+      }
+
+    });
+
+
+    /* =========================================================
+       UNSAVED CHANGES
+    ========================================================= */
+
+    let formChanged = false;
+
+    form.querySelectorAll("input, textarea, select").forEach(
+      function (field) {
+
+        field.addEventListener("change", function () {
+          formChanged = true;
+        });
+
+        field.addEventListener("input", function () {
+          formChanged = true;
+        });
+
+      }
+    );
+
+
+    form.addEventListener("submit", function () {
+      formChanged = false;
+    });
+
+
+    window.addEventListener("beforeunload", function (event) {
+
+      if (!formChanged) return;
+
+      event.preventDefault();
+      event.returnValue = "";
+
+    });
+
+  });
+</script>
+

@@ -57,6 +57,12 @@ class User < ApplicationRecord
 
   validates :role, presence: true
 
+  def confirmation_required?
+  return false if teacher? || admin?
+
+  super
+end
+
   private
 
   def set_default_role

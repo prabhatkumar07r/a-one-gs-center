@@ -1,0 +1,353 @@
+<% content_for :show_layout, true %>
+
+<style>
+/* =========================================================
+   STUDENT ENROLLMENTS - INDEX
+========================================================= */
+
+.student-enrollments-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f4f7fb 0%, #eef3ff 100%);
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+.student-enrollments-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.student-enrollments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.student-enrollments-title {
+  margin: 0;
+  color: #172033;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.student-enrollments-subtitle {
+  margin: 7px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.student-enrollment-card {
+  height: 100%;
+  background: #ffffff;
+  border: 1px solid #e7ecf3;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.student-enrollment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.13);
+}
+
+.student-course-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: #e8f1ff;
+  color: #0d6efd;
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+
+.student-course-name {
+  color: #172033;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+
+.student-enrollment-meta {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 15px 0;
+}
+
+.student-enrollment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.student-status-approved {
+  color: #146c43;
+  background: #d1e7dd;
+}
+
+.student-status-pending {
+  color: #856404;
+  background: #fff3cd;
+}
+
+.student-status-other {
+  color: #842029;
+  background: #f8d7da;
+}
+
+.student-enrollment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.student-enrollment-actions a {
+  border-radius: 9px;
+}
+
+.student-empty {
+  background: #ffffff;
+  border: 1px solid #e7ecf3;
+  border-radius: 20px;
+  padding: 60px 25px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+}
+
+.student-empty-icon {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: #e8f1ff;
+  color: #0d6efd;
+  font-size: 32px;
+}
+
+.student-empty h3 {
+  color: #172033;
+  font-weight: 700;
+}
+
+.student-empty p {
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .student-enrollments-page {
+    padding: 25px 14px;
+  }
+
+  .student-enrollments-header {
+    display: block;
+  }
+
+  .student-enrollments-title {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 576px) {
+  .student-enrollment-card {
+    padding: 20px;
+  }
+
+  .student-enrollment-actions {
+    flex-direction: column;
+  }
+
+  .student-enrollment-actions a {
+    width: 100%;
+  }
+}
+</style>
+
+
+<div class="student-enrollments-page">
+
+  <div class="student-enrollments-wrapper">
+
+    <!-- HEADER -->
+
+    <div class="student-enrollments-header">
+
+      <div>
+
+        <h1 class="student-enrollments-title">
+          My Enrollments
+        </h1>
+
+        <p class="student-enrollments-subtitle">
+          View and manage all your course enrollments.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ENROLLMENTS -->
+
+    <% if @enrollments.present? %>
+
+      <div class="row g-4">
+
+        <% @enrollments.each do |enrollment| %>
+
+          <div class="col-md-6 col-lg-4">
+
+            <div class="student-enrollment-card">
+
+              <div class="student-course-icon">
+                <i class="bi bi-book-fill"></i>
+              </div>
+
+
+              <h3 class="student-course-name">
+                <%= enrollment.course.Course_name %>
+              </h3>
+
+
+              <!-- STATUS -->
+
+              <% if enrollment.status == "Approved" %>
+
+                <span class="student-enrollment-status student-status-approved">
+                  <i class="bi bi-check-circle-fill"></i>
+                  Approved
+                </span>
+
+              <% elsif enrollment.status == "Pending" %>
+
+                <span class="student-enrollment-status student-status-pending">
+                  <i class="bi bi-clock-fill"></i>
+                  Pending
+                </span>
+
+              <% else %>
+
+                <span class="student-enrollment-status student-status-other">
+                  <i class="bi bi-x-circle-fill"></i>
+                  <%= enrollment.status %>
+                </span>
+
+              <% end %>
+
+
+              <div class="student-enrollment-meta">
+
+                <div class="mb-2">
+                  <i class="bi bi-calendar3"></i>
+                  Enrolled:
+                  <%= enrollment.created_at.strftime("%d-%m-%Y") %>
+                </div>
+
+                <% if enrollment.course.respond_to?(:duration) &&
+                      enrollment.course.duration.present? %>
+
+                  <div>
+                    <i class="bi bi-clock"></i>
+                    <%= enrollment.course.duration %>
+                  </div>
+
+                <% end %>
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="student-enrollment-actions">
+
+                <%= link_to enrollment_path(enrollment),
+                      class: "btn btn-outline-primary btn-sm" do %>
+
+                  <i class="bi bi-eye"></i>
+                  View
+
+                <% end %>
+
+
+                <% if enrollment.status == "Approved" %>
+
+                  <%= link_to learning_course_path(enrollment.course),
+                        class: "btn btn-success btn-sm" do %>
+
+                    <i class="bi bi-play-fill"></i>
+                    Start Learning
+
+                  <% end %>
+
+
+                <% elsif enrollment.status == "Pending" %>
+
+                  <%= link_to payment_path(enrollment),
+                        class: "btn btn-warning btn-sm" do %>
+
+                    <i class="bi bi-credit-card"></i>
+                    Continue Payment
+
+                  <% end %>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+
+    <% else %>
+
+
+      <!-- EMPTY -->
+
+      <div class="student-empty">
+
+        <div class="student-empty-icon">
+          <i class="bi bi-journal-x"></i>
+        </div>
+
+        <h3>
+          No Enrollments Yet
+        </h3>
+
+        <p>
+          You have not enrolled in any course yet.
+        </p>
+
+        <%= link_to root_path,
+              class: "btn btn-primary mt-3" do %>
+
+          <i class="bi bi-book"></i>
+          Browse Courses
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

@@ -30,6 +30,7 @@ class TeachersController < AdminController
   password_confirmation: params[:password_confirmation],
   role: "teacher"
 )
+  user.skip_confirmation!
 
   if user.save
     @teacher = Teacher.new(teacher_params)

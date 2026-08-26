@@ -1,0 +1,562 @@
+<% content_for :show_layout, true %>
+
+<style>
+/* =========================================================
+   STUDENT ENROLLMENT - NEW
+========================================================= */
+
+.student-enrollment-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f4f7fb 0%, #eef3ff 100%);
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+.student-enrollment-wrapper {
+  width: 100%;
+  max-width: 560px;
+}
+
+.student-enrollment-card {
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 32px;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
+}
+
+/* HEADER */
+
+.student-enrollment-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.student-enrollment-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #e8f1ff;
+  color: #0d6efd;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.student-enrollment-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #172033;
+}
+
+.student-enrollment-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* COURSE */
+
+.student-course-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  margin-bottom: 24px;
+  background: #f8fafc;
+  border: 1px solid #edf0f5;
+  border-radius: 16px;
+}
+
+.student-course-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d6efd;
+  color: #ffffff;
+  border-radius: 14px;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.student-course-details {
+  min-width: 0;
+}
+
+.student-course-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #6b7280;
+}
+
+.student-course-details h3 {
+  margin: 4px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #172033;
+  word-break: break-word;
+}
+
+.student-course-details p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* FORM */
+
+.student-form-group {
+  margin-bottom: 20px;
+}
+
+.student-form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.student-form-label i {
+  color: #0d6efd;
+  margin-right: 5px;
+}
+
+.student-form-control {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border: 1px solid #dfe5ee;
+  border-radius: 11px;
+  background: #f8fafc;
+  color: #172033;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.student-form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+}
+
+.student-status-input {
+  color: #856404;
+  background: #fff8e1;
+  border-color: #ffe69c;
+  font-weight: 600;
+}
+
+/* FEE */
+
+.student-fee-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  margin: 4px 0 22px;
+  border-radius: 13px;
+  background: #f0fdf4;
+  border: 1px solid #d1fae5;
+}
+
+.student-fee-box span {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.student-fee-box strong {
+  color: #198754;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* CONFIRM */
+
+.student-confirm-button {
+  width: 100%;
+  min-height: 56px;
+  border: none;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #198754, #157347);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(25, 135, 84, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.student-confirm-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(25, 135, 84, 0.28);
+}
+
+.student-confirm-button:disabled {
+  cursor: wait;
+}
+
+.student-confirm-button.loading {
+  opacity: 0.75;
+  cursor: wait;
+  transform: none;
+}
+
+/* BACK */
+
+.student-back-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 12px;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.student-back-button:hover {
+  color: #172033;
+  background: #f8fafc;
+}
+
+/* FOOTER */
+
+.student-enrollment-footer {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #edf0f5;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.student-enrollment-footer i {
+  color: #198754;
+  margin-right: 5px;
+}
+
+/* MOBILE */
+
+@media (max-width: 576px) {
+  .student-enrollment-page {
+    padding: 20px 12px;
+    align-items: flex-start;
+  }
+
+  .student-enrollment-card {
+    margin-top: 20px;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .student-enrollment-header h2 {
+    font-size: 20px;
+  }
+
+  .student-enrollment-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 21px;
+  }
+
+  .student-course-box {
+    padding: 14px;
+  }
+
+  .student-course-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 19px;
+  }
+
+  .student-course-details h3 {
+    font-size: 16px;
+  }
+
+  .student-fee-box strong {
+    font-size: 20px;
+  }
+}
+</style>
+
+
+<div class="student-enrollment-page">
+
+  <div class="student-enrollment-wrapper">
+
+    <div class="student-enrollment-card">
+
+      <!-- HEADER -->
+
+      <div class="student-enrollment-header">
+
+        <div class="student-enrollment-icon">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+
+        <div>
+          <h2>
+            Confirm Enrollment
+          </h2>
+
+          <p>
+            Review your enrollment details
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- COURSE -->
+
+      <div class="student-course-box">
+
+        <div class="student-course-icon">
+          <i class="bi bi-book-fill"></i>
+        </div>
+
+        <div class="student-course-details">
+
+          <span class="student-course-label">
+            COURSE
+          </span>
+
+          <h3>
+            <%= @course.Course_name %>
+          </h3>
+
+          <% if @course.respond_to?(:duration) &&
+                @course.duration.present? %>
+
+            <p>
+              <i class="bi bi-clock"></i>
+              <%= @course.duration %>
+            </p>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORM -->
+
+      <%= form_with model: @enrollment,
+                    local: true,
+                    id: "student-enrollment-form" do |f| %>
+
+
+        <!-- STUDENT -->
+
+        <div class="student-form-group">
+
+          <label class="student-form-label">
+            <i class="bi bi-person-fill"></i>
+            Student
+          </label>
+
+          <input
+            type="text"
+            class="student-form-control"
+            value="<%= current_user.name %>"
+            readonly>
+
+        </div>
+
+
+        <!-- COURSE -->
+
+        <div class="student-form-group">
+
+          <label class="student-form-label">
+            <i class="bi bi-book"></i>
+            Selected Course
+          </label>
+
+          <input
+            type="text"
+            class="student-form-control"
+            value="<%= @course.Course_name %>"
+            readonly>
+
+          <%= f.hidden_field :course_id,
+                value: @course.id %>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="student-form-group">
+
+          <label class="student-form-label">
+            <i class="bi bi-info-circle"></i>
+            Enrollment Status
+          </label>
+
+          <input
+            type="text"
+            class="student-form-control student-status-input"
+            value="Pending"
+            readonly>
+
+          <%= f.hidden_field :status,
+                value: "Pending" %>
+
+        </div>
+
+
+        <!-- FEE -->
+
+        <div class="student-fee-box">
+
+          <span>
+            Course Fee
+          </span>
+
+          <strong>
+
+            <% if @course.free? %>
+
+              FREE
+
+            <% else %>
+
+              ₹<%= number_with_precision(
+                    @course.fee,
+                    precision: 2
+                  ) %>
+
+            <% end %>
+
+          </strong>
+
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="submit"
+          class="student-confirm-button"
+          id="student-confirm-button">
+
+          <span id="student-confirm-icon">
+            <i class="bi bi-check-circle-fill"></i>
+          </span>
+
+          <span id="student-confirm-text">
+            Confirm Enrollment
+          </span>
+
+        </button>
+
+
+        <!-- BACK -->
+
+        <%= link_to course_details_path(@course),
+              class: "student-back-button",
+              id: "student-back-button" do %>
+
+          <i class="bi bi-arrow-left"></i>
+
+          Back to Course
+
+        <% end %>
+
+
+      <% end %>
+
+
+      <!-- FOOTER -->
+
+      <div class="student-enrollment-footer">
+
+        <i class="bi bi-shield-check"></i>
+
+        Your enrollment information is secure
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.getElementById(
+    "student-enrollment-form"
+  );
+
+  const button = document.getElementById(
+    "student-confirm-button"
+  );
+
+  const icon = document.getElementById(
+    "student-confirm-icon"
+  );
+
+  const text = document.getElementById(
+    "student-confirm-text"
+  );
+
+  if (!form || !button) {
+    return;
+  }
+
+  let submitted = false;
+
+  form.addEventListener("submit", function (event) {
+
+    if (submitted) {
+      event.preventDefault();
+      return;
+    }
+
+    submitted = true;
+
+    button.disabled = true;
+
+    button.classList.add("loading");
+
+    if (icon) {
+      icon.innerHTML =
+        '<i class="bi bi-arrow-repeat"></i>';
+    }
+
+    if (text) {
+      text.textContent =
+        "Processing Enrollment...";
+    }
+
+  });
+
+});
+</script>

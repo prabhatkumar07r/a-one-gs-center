@@ -2,7 +2,6 @@
 class LearningController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course, only: [:show, :video, :complete_video]
-  before_action :check_enrollment, only: [:show, :video, :complete_video]
   
   
 
@@ -156,14 +155,7 @@ end
       end
   end
 
-  def check_enrollment
-    @enrollment = current_user.enrollments.find_by(course_id: @course.id)
 
-    unless @enrollment&.status == "Approved"
-      redirect_to course_details_path(@course),
-                  alert: "Your enrollment is not approved yet."
-    end
-  end
 
   def generate_certificate(course)
     total = course.videos.count

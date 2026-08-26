@@ -1,0 +1,334 @@
+<% content_for :title, "Edit Video" %>
+
+<style>
+  /* =========================================================
+     ADMIN VIDEO - EDIT PAGE
+     A ONE GS CENTER ADMIN DESIGN
+  ========================================================= */
+
+  .admin-video-edit-page {
+    padding: 10px 0 40px;
+  }
+
+  .video-edit-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+  }
+
+  /* Header */
+  .video-edit-header {
+    background: linear-gradient(
+      135deg,
+      #f59e0b,
+      #d97706
+    );
+    color: #fff;
+    padding: 26px 30px;
+  }
+
+  .video-edit-header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .video-edit-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .video-edit-header h3 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  .video-edit-header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    opacity: .88;
+  }
+
+  /* Course info */
+  .course-info-box {
+    margin: 25px 30px 0;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+  }
+
+  .course-info-label {
+    font-size: 12px;
+    color: #78716c;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+  }
+
+  .course-info-name {
+    margin-top: 3px;
+    color: #92400e;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .playlist-info {
+    margin-top: 5px;
+    color: #57534e;
+    font-size: 14px;
+  }
+
+  /* Body */
+  .video-edit-body {
+    padding: 30px;
+  }
+
+  /* Footer */
+  .video-edit-footer {
+    padding: 20px 30px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .video-edit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .video-edit-actions .btn {
+    min-height: 44px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+  }
+
+  .btn-show-video {
+    background: #0ea5e9;
+    border-color: #0ea5e9;
+    color: #fff;
+  }
+
+  .btn-show-video:hover {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #fff;
+  }
+
+  .btn-back-video {
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+
+    .video-edit-header {
+      padding: 22px 20px;
+    }
+
+    .video-edit-header h3 {
+      font-size: 21px;
+    }
+
+    .course-info-box {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    .video-edit-body {
+      padding: 22px 20px;
+    }
+
+    .video-edit-footer {
+      padding: 18px 20px;
+    }
+
+    .video-edit-actions {
+      flex-direction: column;
+    }
+
+    .video-edit-actions .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+
+<div class="container-fluid admin-video-edit-page">
+
+  <div class="video-edit-card">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="video-edit-header">
+
+      <div class="video-edit-header-content">
+
+        <div class="video-edit-icon">
+          ✏️
+        </div>
+
+        <div>
+
+          <h3>
+            Edit Video
+          </h3>
+
+          <p>
+            Update video information and playlist settings
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COURSE / PLAYLIST INFORMATION
+    ====================================================== -->
+
+    <div class="course-info-box">
+
+      <div class="course-info-label">
+        Course
+      </div>
+
+      <div class="course-info-name">
+        <%= @course.Course_name %>
+      </div>
+
+      <% if @video.playlist.present? %>
+
+        <div class="playlist-info">
+
+          <strong>Playlist:</strong>
+
+          <%= @video.playlist.title %>
+
+        </div>
+
+      <% else %>
+
+        <div class="playlist-info text-danger">
+
+          ⚠ This video is not assigned to a playlist.
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
+
+    <div class="video-edit-body">
+
+      <%= render "form",
+          course: @course,
+          playlist: @video.playlist,
+          video: @video,
+          playlists: @playlists %>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER ACTIONS
+    ====================================================== -->
+
+    <div class="video-edit-footer">
+
+      <div class="video-edit-actions">
+
+        <% if @video.playlist.present? %>
+
+          <%= link_to "👁 Show",
+              admin_course_playlist_video_path(
+                @course,
+                @video.playlist,
+                @video
+              ),
+              class: "btn btn-show-video" %>
+
+
+          <%= link_to "⬅ Back to Videos",
+              admin_course_playlist_videos_path(
+                @course,
+                @video.playlist
+              ),
+              class: "btn btn-outline-secondary btn-back-video" %>
+
+        <% else %>
+
+          <%= link_to "⬅ Back to Playlists",
+              admin_course_playlists_path(@course),
+              class: "btn btn-outline-secondary btn-back-video" %>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("turbo:load", function () {
+
+    /* =======================================================
+       CONFIRM FORM SUBMISSION
+    ======================================================= */
+
+    const form =
+      document.querySelector(".video-edit-card form");
+
+    if (!form) return;
+
+    form.addEventListener("submit", function () {
+
+      const submitButton =
+        form.querySelector(
+          'input[type="submit"], button[type="submit"]'
+        );
+
+      if (!submitButton) return;
+
+      submitButton.style.opacity = "0.7";
+      submitButton.style.pointerEvents = "none";
+
+      if (submitButton.tagName === "INPUT") {
+
+        submitButton.value = "Updating Video...";
+
+      } else {
+
+        submitButton.innerHTML = "Updating Video...";
+
+      }
+
+    });
+
+  });
+</script>

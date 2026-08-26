@@ -1,12 +1,13 @@
 class Demo < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
   validates :name, presence: true
 
   validates :phone,
             presence: true,
             length: { is: 10 },
-            format: { with: /\A[0-9]{10}\z/, message: "must be 10 digits" }
+            format: {
+              with: /\A[0-9]{10}\z/,
+              message: "must be 10 digits"
+            }
 
   validates :email,
             presence: true,

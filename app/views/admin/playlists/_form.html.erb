@@ -1,0 +1,181 @@
+<style>
+  .playlist-card{
+    max-width:850px;
+    margin:auto;
+    border:none;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+  }
+
+  .playlist-header{
+    background:linear-gradient(135deg,#7c3aed,#5b21b6);
+    color:#fff;
+    padding:28px;
+  }
+
+  .playlist-header h2{
+    margin:0;
+    font-weight:700;
+  }
+
+  .playlist-body{
+    padding:30px;
+    background:#fff;
+  }
+
+  .info-box{
+    background:#f8fafc;
+    border-left:4px solid #7c3aed;
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:22px;
+  }
+
+  .form-label{
+    font-weight:600;
+    color:#374151;
+    margin-bottom:8px;
+  }
+
+  .form-control{
+    border-radius:10px;
+    min-height:48px;
+    border:1px solid #d1d5db;
+    transition:.25s;
+  }
+
+  textarea.form-control{
+    min-height:120px;
+  }
+
+  .form-control:focus{
+    border-color:#7c3aed;
+    box-shadow:0 0 0 .2rem rgba(124,58,237,.15);
+  }
+
+  .btn-save{
+    background:#7c3aed;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 24px;
+    font-weight:600;
+  }
+
+  .btn-save:hover{
+    background:#6d28d9;
+    color:#fff;
+  }
+
+  .btn-back{
+    border-radius:10px;
+    padding:12px 22px;
+  }
+
+  .error-box{
+    border-radius:10px;
+  }
+</style>
+
+<div class="container py-4">
+
+  <div class="card playlist-card">
+
+    <div class="playlist-header">
+      <h2>🎵 Add New Playlist</h2>
+      <p class="mb-0 opacity-75">
+        Create playlists for your course modules
+      </p>
+    </div>
+
+    <div class="playlist-body">
+
+      <div class="info-box">
+        <strong>Course:</strong>
+        <%= @course.Course_name %><br>
+
+        <strong>Teacher:</strong>
+        <%= @course.teacher&.name || "Not Assigned" %>
+      </div>
+
+      <%= form_with model: [:admin, @course, @playlist], local: true do |form| %>
+
+        <% if @playlist.errors.any? %>
+          <div class="alert alert-danger error-box">
+            <h6 class="mb-2">
+              <%= pluralize(@playlist.errors.count,"error") %> prevented saving
+            </h6>
+
+            <ul class="mb-0">
+              <% @playlist.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= form.label :title, class:"form-label" %>
+          <%= form.text_field :title,
+              class:"form-control",
+              placeholder:"Indian History" %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :description, class:"form-label" %>
+          <%= form.text_area :description,
+              rows:5,
+              class:"form-control",
+              placeholder:"Write a short description..." %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :position, class:"form-label" %>
+          <%= form.number_field :position,
+              class:"form-control",
+              min:1,
+              placeholder:"1" %>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+
+          <%= link_to "← Back",
+              admin_course_playlists_path(@course),
+              class:"btn btn-outline-secondary btn-back" %>
+
+          <%= form.submit "Save Playlist",
+              class:"btn btn-save" %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("turbo:load", () => {
+
+  const title = document.getElementById("playlist_title");
+  const position = document.getElementById("playlist_position");
+
+  if(title){
+    title.addEventListener("input",()=>{
+      title.value = title.value.replace(/\s{2,}/g," ");
+    });
+  }
+
+  if(position){
+    position.addEventListener("input",()=>{
+      if(position.value < 1){
+        position.value = 1;
+      }
+    });
+  }
+
+});
+</script>

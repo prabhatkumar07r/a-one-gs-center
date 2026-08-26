@@ -1,0 +1,497 @@
+
+<div class="admin-enrollment-edit-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h2>
+        <i class="bi bi-pencil-square"></i>
+        Edit Enrollment
+      </h2>
+
+      <p>
+        Update student, course and enrollment status
+      </p>
+    </div>
+
+    <%= link_to admin_enrollments_path, class: "back-btn" do %>
+      <i class="bi bi-arrow-left"></i>
+      Back to Enrollments
+    <% end %>
+  </div>
+
+
+  <!-- EDIT CARD -->
+  <div class="edit-card">
+
+    <div class="card-header">
+      <div class="header-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div>
+        <h4>Enrollment Details</h4>
+        <p>Modify the enrollment information below.</p>
+      </div>
+    </div>
+
+
+    <%= form_with model: [:admin, @enrollment], local: true do |f| %>
+
+      <% if @enrollment.errors.any? %>
+        <div class="error-box">
+
+          <div class="error-title">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            Please fix the following errors:
+          </div>
+
+          <ul>
+            <% @enrollment.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+
+        </div>
+      <% end %>
+
+
+      <!-- STUDENT -->
+      <div class="form-group">
+
+        <%= f.label :user_id, "Student" %>
+
+        <div class="input-wrapper">
+          <i class="bi bi-person-fill"></i>
+
+          <%= f.collection_select :user_id,
+                User.order(:name),
+                :id,
+                :name,
+                { prompt: "Select Student" },
+                class: "form-select" %>
+        </div>
+
+      </div>
+
+
+      <!-- COURSE -->
+      <div class="form-group">
+
+        <%= f.label :course_id, "Course" %>
+
+        <div class="input-wrapper">
+          <i class="bi bi-book-fill"></i>
+
+          <%= f.collection_select :course_id,
+                Course.order(:Course_name),
+                :id,
+                :Course_name,
+                { prompt: "Select Course" },
+                class: "form-select" %>
+        </div>
+
+      </div>
+
+
+      <!-- STATUS -->
+      <div class="form-group">
+
+        <%= f.label :status, "Enrollment Status" %>
+
+        <div class="input-wrapper">
+          <i class="bi bi-flag-fill"></i>
+
+          <%= f.select :status,
+                ["Pending", "Approved", "Cancelled"],
+                { prompt: "Select Status" },
+                class: "form-select" %>
+        </div>
+
+      </div>
+
+
+      <!-- CURRENT INFORMATION -->
+      <div class="current-info">
+
+        <div class="info-item">
+          <span>
+            <i class="bi bi-calendar-event"></i>
+            Enrolled On
+          </span>
+
+          <strong>
+            <%= @enrollment.created_at.strftime("%d %b %Y, %I:%M %p") %>
+          </strong>
+        </div>
+
+
+        <div class="info-item">
+          <span>
+            <i class="bi bi-hash"></i>
+            Enrollment ID
+          </span>
+
+          <strong>
+            #<%= @enrollment.id %>
+          </strong>
+        </div>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+      <div class="form-actions">
+
+        <%= link_to admin_enrollment_path(@enrollment),
+              class: "cancel-btn" do %>
+
+          <i class="bi bi-x-circle"></i>
+          Cancel
+
+        <% end %>
+
+
+        <%= f.submit "Update Enrollment",
+              class: "update-btn" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<style>
+
+/* =========================================================
+   ADMIN ENROLLMENT EDIT
+========================================================= */
+
+.admin-enrollment-edit-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f6f8fc;
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-header h2 i {
+  color: #0d6efd;
+  margin-right: 8px;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: #7b8494;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 17px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e1e6ef;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 600;
+  transition: .2s ease;
+}
+
+.back-btn:hover {
+  background: #f1f5f9;
+  color: #0d6efd;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.edit-card {
+  max-width: 850px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e5e9f1;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(15, 23, 42, .07);
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 24px 28px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.header-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f1ff;
+  color: #0d6efd;
+  font-size: 22px;
+}
+
+.card-header h4 {
+  margin: 0;
+  color: #172033;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.card-header p {
+  margin: 4px 0 0;
+  color: #8a94a6;
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.edit-card form {
+  padding: 28px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper > i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #0d6efd;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.input-wrapper .form-select {
+  width: 100%;
+  min-height: 48px;
+  padding-left: 43px;
+  border: 1px solid #dce2eb;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #374151;
+  outline: none;
+  transition: .2s ease;
+}
+
+.input-wrapper .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, .08);
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.error-box {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #fff1f1;
+  border: 1px solid #f5c2c7;
+  color: #842029;
+}
+
+.error-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.error-title i {
+  margin-right: 6px;
+}
+
+.error-box ul {
+  margin: 5px 0 0 20px;
+  padding: 0;
+}
+
+
+/* =========================================================
+   CURRENT INFORMATION
+========================================================= */
+
+.current-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 8px;
+  margin-bottom: 25px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #f8faff;
+  border: 1px solid #e8edf5;
+}
+
+.info-item span {
+  display: block;
+  margin-bottom: 5px;
+  color: #8a94a6;
+  font-size: 12px;
+}
+
+.info-item span i {
+  margin-right: 5px;
+  color: #0d6efd;
+}
+
+.info-item strong {
+  color: #172033;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 22px;
+  border-top: 1px solid #edf0f5;
+}
+
+.cancel-btn,
+.update-btn {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: .2s ease;
+}
+
+.cancel-btn {
+  background: #f1f3f5;
+  color: #495057;
+}
+
+.cancel-btn:hover {
+  background: #e2e6ea;
+  color: #212529;
+}
+
+.update-btn {
+  background: #0d6efd;
+  color: #ffffff;
+}
+
+.update-btn:hover {
+  background: #0b5ed7;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(13, 110, 253, .2);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-enrollment-edit-page {
+    padding: 15px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  .page-header h2 {
+    font-size: 23px;
+  }
+
+  .edit-card form {
+    padding: 20px;
+  }
+
+  .card-header {
+    padding: 20px;
+  }
+
+  .current-info {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .update-btn {
+    width: 100%;
+  }
+
+}
+
+</style>
+

@@ -10,7 +10,7 @@ class Course < ApplicationRecord
 
   has_many :attendances
   has_many :videos, dependent: :destroy
-  has_many :batches
+  has_many :batches, dependent: :destroy
   has_many :playlists, dependent: :destroy
 
   # Study Notes

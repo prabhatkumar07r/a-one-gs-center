@@ -1,0 +1,584 @@
+<% content_for :title, "Video Management" %>
+
+<style>
+  /* =========================================================
+     ADMIN VIDEO MANAGEMENT
+  ========================================================= */
+
+  .admin-video-page {
+    padding: 25px;
+  }
+
+  .video-page-header {
+    background: linear-gradient(135deg, #6f42c1, #8e44ad);
+    color: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .video-page-header h2 {
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .video-page-header p {
+    margin: 6px 0 0;
+    opacity: 0.9;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-actions .btn {
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 10px 18px;
+  }
+
+  .video-card {
+    border: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+  }
+
+  .video-card .card-body {
+    padding: 0;
+  }
+
+  .video-table {
+    margin: 0;
+    min-width: 900px;
+  }
+
+  .video-table thead th {
+    padding: 15px;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .video-table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+  }
+
+  .video-title {
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 3px;
+  }
+
+  .video-description {
+    font-size: 0.85rem;
+    color: #6c757d;
+    max-width: 350px;
+  }
+
+  .playlist-badge {
+    max-width: 180px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .video-position {
+    min-width: 35px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .video-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .video-actions .btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .video-empty-state {
+    text-align: center;
+    padding: 70px 25px;
+  }
+
+  .video-empty-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+  }
+
+  .video-empty-state h5 {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .video-empty-state p {
+    color: #6c757d;
+    margin-bottom: 15px;
+  }
+
+  .back-section {
+    margin-top: 20px;
+  }
+
+  .back-section .btn {
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+
+    .admin-video-page {
+      padding: 15px;
+    }
+
+    .video-page-header {
+      padding: 20px;
+    }
+
+    .video-page-header-content {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 15px;
+    }
+
+    .header-actions {
+      width: 100%;
+    }
+
+    .header-actions .btn {
+      width: 100%;
+    }
+
+    .video-table {
+      min-width: 900px;
+    }
+
+    .video-actions {
+      flex-wrap: nowrap;
+    }
+  }
+</style>
+
+
+<div class="container-fluid admin-video-page">
+
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
+  <div class="video-page-header">
+
+    <div class="d-flex justify-content-between align-items-center video-page-header-content">
+
+      <div>
+
+        <% if @playlist.present? %>
+
+          <h2 class="mb-1">
+            🎥 <%= @playlist.title %> Videos
+          </h2>
+
+        <% else %>
+
+          <h2 class="mb-1">
+            🎥 Video Management
+          </h2>
+
+        <% end %>
+
+        <p>
+          Course:
+          <strong>
+            <%= @course.Course_name %>
+          </strong>
+
+          <% if @playlist.present? %>
+
+            <span class="mx-1">|</span>
+
+            Playlist:
+            <strong>
+              <%= @playlist.title %>
+            </strong>
+
+          <% end %>
+        </p>
+
+      </div>
+
+
+      <!-- HEADER ACTION -->
+
+      <div class="header-actions">
+
+        <% if @playlist.present? %>
+
+          <%= link_to(
+                "➕ Add Video",
+                new_admin_course_playlist_video_path(@course, @playlist),
+                class: "btn btn-light"
+              ) %>
+
+        <% else %>
+
+          <%= link_to(
+                "➕ Add Video",
+                new_admin_course_video_path(@course),
+                class: "btn btn-light"
+              ) %>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       VIDEO TABLE
+  ======================================================== -->
+
+  <div class="card video-card">
+
+    <div class="card-body">
+
+      <% if @videos.any? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle video-table">
+
+            <thead class="table-dark">
+
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Position</th>
+                <th>Playlist</th>
+                <th style="min-width:150px;">Actions</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <% @videos.each_with_index do |video, index| %>
+
+                <tr>
+
+                  <!-- NUMBER -->
+
+                  <td>
+                    <strong>
+                      <%= index + 1 %>
+                    </strong>
+                  </td>
+
+
+                  <!-- TITLE -->
+
+                  <td>
+
+                    <div class="video-title">
+                      <%= video.title %>
+                    </div>
+
+                    <% if video.description.present? %>
+
+                      <div class="video-description">
+                        <%= truncate(video.description, length: 60) %>
+                      </div>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <!-- DURATION -->
+
+                  <td>
+                    <%= video.duration.presence || "—" %>
+                  </td>
+
+
+                  <!-- STATUS -->
+
+                  <td>
+
+                    <% if video.active? %>
+
+                      <span class="badge bg-success">
+                        Active
+                      </span>
+
+                    <% else %>
+
+                      <span class="badge bg-secondary">
+                        Inactive
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <!-- POSITION -->
+
+                  <td>
+
+                    <span class="badge bg-primary video-position">
+                      <%= video.position %>
+                    </span>
+
+                  </td>
+
+
+                  <!-- PLAYLIST -->
+
+                  <td>
+
+                    <% if video.playlist.present? %>
+
+                      <span
+                        class="badge bg-info playlist-badge"
+                        title="<%= video.playlist.title %>"
+                      >
+                        <%= video.playlist.title %>
+                      </span>
+
+                    <% else %>
+
+                      <span class="text-muted">
+                        No Playlist
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <!-- ACTIONS -->
+
+                  <td>
+
+                    <% if video.playlist.present? %>
+
+                      <div class="video-actions">
+
+                        <!-- SHOW -->
+
+                        <%= link_to(
+                              admin_course_playlist_video_path(
+                                @course,
+                                video.playlist,
+                                video
+                              ),
+                              class: "btn btn-info text-white",
+                              title: "View Video"
+                            ) do %>
+                          👁
+                        <% end %>
+
+
+                        <!-- EDIT -->
+
+                        <%= link_to(
+                              edit_admin_course_playlist_video_path(
+                                @course,
+                                video.playlist,
+                                video
+                              ),
+                              class: "btn btn-warning",
+                              title: "Edit Video"
+                            ) do %>
+                          ✏
+                        <% end %>
+
+
+                        <!-- DELETE -->
+
+                        <%= link_to(
+                              admin_course_playlist_video_path(
+                                @course,
+                                video.playlist,
+                                video
+                              ),
+                              data: {
+                                turbo_method: :delete,
+                                turbo_confirm: "Are you sure you want to delete this video?"
+                              },
+                              class: "btn btn-danger",
+                              title: "Delete Video"
+                            ) do %>
+                          🗑
+                        <% end %>
+
+                      </div>
+
+                    <% else %>
+
+                      <span class="text-muted small">
+                        No playlist actions
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      <% else %>
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div class="video-empty-state">
+
+          <div class="video-empty-icon">
+            🎥
+          </div>
+
+          <h5>
+            No Videos Added Yet
+          </h5>
+
+          <p>
+            Start by adding your first course video.
+          </p>
+
+
+          <% if @playlist.present? %>
+
+            <%= link_to(
+                  "➕ Add First Video",
+                  new_admin_course_playlist_video_path(@course, @playlist),
+                  class: "btn btn-primary mt-2"
+                ) %>
+
+          <% else %>
+
+            <%= link_to(
+                  "➕ Add First Video",
+                  new_admin_course_video_path(@course),
+                  class: "btn btn-primary mt-2"
+                ) %>
+
+          <% end %>
+
+        </div>
+
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       BACK
+  ======================================================== -->
+
+  <div class="back-section">
+
+    <% if @playlist.present? %>
+
+      <%= link_to(
+            "⬅ Back to Playlists",
+            admin_course_playlists_path(@course),
+            class: "btn btn-outline-secondary"
+          ) %>
+
+    <% else %>
+
+      <%= link_to(
+            "⬅ Back to Courses",
+            admin_courses_path,
+            class: "btn btn-outline-secondary"
+          ) %>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("turbo:load", function () {
+
+    /* =======================================================
+       DELETE BUTTON FEEDBACK
+    ======================================================== */
+
+    const deleteButtons =
+      document.querySelectorAll(
+        '[data-turbo-method="delete"]'
+      );
+
+    deleteButtons.forEach(function (button) {
+
+      button.addEventListener("click", function () {
+
+        button.style.opacity = "0.6";
+        button.style.pointerEvents = "none";
+
+      });
+
+    });
+
+
+    /* =======================================================
+       ACTION BUTTON HOVER
+    ======================================================== */
+
+    const actionButtons =
+      document.querySelectorAll(
+        ".video-actions .btn"
+      );
+
+    actionButtons.forEach(function (button) {
+
+      button.addEventListener("mouseenter", function () {
+        button.style.transform = "translateY(-2px)";
+      });
+
+      button.addEventListener("mouseleave", function () {
+        button.style.transform = "translateY(0)";
+      });
+
+    });
+
+  });
+</script>

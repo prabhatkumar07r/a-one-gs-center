@@ -1,0 +1,550 @@
+<% content_for :title, "Add Video" %>
+
+<style>
+  /* =========================================================
+     ADMIN VIDEO - ADD PAGE
+     A ONE GS CENTER ADMIN DESIGN
+  ========================================================= */
+
+  .admin-video-page {
+    padding: 10px 0 40px;
+  }
+
+  /* Main Card */
+  .video-form-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Header */
+  .video-form-header {
+    background: linear-gradient(
+      135deg,
+      #7c3aed,
+      #5b21b6
+    );
+    color: #ffffff;
+    padding: 26px 30px;
+  }
+
+  .video-form-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .video-header-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .video-form-header h3 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  .video-form-header p {
+    margin: 5px 0 0;
+    opacity: 0.85;
+    font-size: 14px;
+  }
+
+  /* Course Information */
+  .course-info-box {
+    margin: 25px 30px 0;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #f8f7ff;
+    border-left: 4px solid #7c3aed;
+  }
+
+  .course-info-box .label {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+  }
+
+  .course-info-box .course-name {
+    margin-top: 3px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #312e81;
+  }
+
+  /* Form Body */
+  .video-form-body {
+    padding: 30px;
+  }
+
+  /* Form Sections */
+  .form-section {
+    margin-bottom: 28px;
+  }
+
+  .form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  .form-section-title .section-icon {
+    color: #7c3aed;
+    font-size: 19px;
+  }
+
+  /* Labels */
+  .video-form-body .form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+  }
+
+  /* Inputs */
+  .video-form-body .form-control,
+  .video-form-body .form-select {
+    min-height: 48px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    transition: all .2s ease;
+  }
+
+  .video-form-body textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .video-form-body .form-control:focus,
+  .video-form-body .form-select:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 .2rem rgba(124, 58, 237, .13);
+  }
+
+  /* URL preview */
+  .youtube-preview {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    font-size: 14px;
+  }
+
+  .youtube-preview.show {
+    display: block;
+  }
+
+  /* File input */
+  .thumbnail-help {
+    display: block;
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 12px;
+  }
+
+  /* Footer */
+  .video-form-footer {
+    padding: 20px 30px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .video-footer-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .video-footer-buttons .btn {
+    min-height: 46px;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-weight: 600;
+  }
+
+  .btn-save-video {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: #ffffff;
+  }
+
+  .btn-save-video:hover {
+    background: #6d28d9;
+    border-color: #6d28d9;
+    color: #ffffff;
+  }
+
+  .btn-save-video.loading {
+    pointer-events: none;
+    opacity: .75;
+  }
+
+  /* Error box */
+  .video-errors {
+    margin-bottom: 25px;
+    border-radius: 12px;
+  }
+
+  /* Required */
+  .required-star {
+    color: #dc2626;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+
+    .video-form-header {
+      padding: 22px 20px;
+    }
+
+    .video-form-header-content {
+      align-items: flex-start;
+    }
+
+    .video-form-header h3 {
+      font-size: 21px;
+    }
+
+    .course-info-box {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    .video-form-body {
+      padding: 22px 20px;
+    }
+
+    .video-form-footer {
+      padding: 18px 20px;
+    }
+
+    .video-footer-buttons {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .video-footer-buttons .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+
+<div class="container-fluid admin-video-page">
+
+  <div class="video-form-card">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="video-form-header">
+
+      <div class="video-form-header-content">
+
+        <div class="d-flex align-items-center gap-3">
+
+          <div class="video-header-icon">
+            🎥
+          </div>
+
+          <div>
+
+            <h3>
+              Add New Video
+            </h3>
+
+            <p>
+              Add a video to your course playlist
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COURSE INFORMATION
+    ====================================================== -->
+
+    <div class="course-info-box">
+
+      <div class="label">
+        Course
+      </div>
+
+      <div class="course-name">
+        <%= @course.Course_name %>
+      </div>
+
+      <% if @playlist.present? %>
+
+        <div class="mt-2">
+
+          <span class="text-muted small">
+            Playlist:
+          </span>
+
+          <strong>
+            <%= @playlist.title %>
+          </strong>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
+
+    <div class="video-form-body">
+
+      <%= render "form",
+          course: @course,
+          playlist: @playlist,
+          video: @video,
+          playlists: @playlists %>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="video-form-footer">
+
+      <div class="video-footer-buttons">
+
+        <div>
+
+          <% if @playlist.present? %>
+
+            <%= link_to "← Back to Videos",
+                admin_course_playlist_videos_path(
+                  @course,
+                  @playlist
+                ),
+                class: "btn btn-outline-secondary" %>
+
+          <% else %>
+
+            <%= link_to "← Back to Playlists",
+                admin_course_playlists_path(@course),
+                class: "btn btn-outline-secondary" %>
+
+          <% end %>
+
+        </div>
+
+
+        <div>
+
+          <%= link_to "Cancel",
+              admin_course_playlists_path(@course),
+              class: "btn btn-light border" %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("turbo:load", function () {
+
+    /* =======================================================
+       YOUTUBE URL PREVIEW
+    ======================================================= */
+
+    const videoUrlInput =
+      document.getElementById("video_video_url");
+
+    if (videoUrlInput) {
+
+      let preview =
+        document.querySelector(".youtube-preview");
+
+      if (!preview) {
+
+        preview = document.createElement("div");
+
+        preview.className = "youtube-preview";
+
+        videoUrlInput.parentNode.appendChild(preview);
+      }
+
+      function checkYoutubeUrl() {
+
+        const url =
+          videoUrlInput.value.trim();
+
+        if (
+          url.includes("youtube.com") ||
+          url.includes("youtu.be")
+        ) {
+
+          preview.innerHTML =
+            "✓ Valid YouTube URL detected.";
+
+          preview.classList.add("show");
+
+        } else {
+
+          preview.classList.remove("show");
+        }
+      }
+
+      videoUrlInput.addEventListener(
+        "input",
+        checkYoutubeUrl
+      );
+
+      checkYoutubeUrl();
+    }
+
+
+    /* =======================================================
+       FORM SUBMIT LOADING STATE
+    ======================================================= */
+
+    const form =
+      document.querySelector(".video-form-card form");
+
+    if (form) {
+
+      form.addEventListener("submit", function () {
+
+        const submitButton =
+          form.querySelector(
+            'input[type="submit"], button[type="submit"]'
+          );
+
+        if (submitButton) {
+
+          submitButton.classList.add("loading");
+
+          if (submitButton.tagName === "INPUT") {
+
+            submitButton.value =
+              "Saving Video...";
+
+          } else {
+
+            submitButton.innerHTML =
+              "Saving Video...";
+
+          }
+
+        }
+
+      });
+    }
+
+
+    /* =======================================================
+       VIDEO TITLE CLEANUP
+    ======================================================= */
+
+    const titleInput =
+      document.getElementById("video_title");
+
+    if (titleInput) {
+
+      titleInput.addEventListener(
+        "input",
+        function () {
+
+          this.value =
+            this.value.replace(/\s{2,}/g, " ");
+
+        }
+      );
+    }
+
+
+    /* =======================================================
+       POSITION VALIDATION
+    ======================================================= */
+
+    const positionInput =
+      document.getElementById("video_position");
+
+    if (positionInput) {
+
+      positionInput.addEventListener(
+        "input",
+        function () {
+
+          if (
+            this.value !== "" &&
+            parseInt(this.value) < 1
+          ) {
+
+            this.value = 1;
+
+          }
+
+        }
+      );
+    }
+
+
+    /* =======================================================
+       DURATION CLEANUP
+    ======================================================= */
+
+    const durationInput =
+      document.getElementById("video_duration");
+
+    if (durationInput) {
+
+      durationInput.addEventListener(
+        "blur",
+        function () {
+
+          this.value =
+            this.value.trim();
+
+        }
+      );
+    }
+
+  });
+</script>
