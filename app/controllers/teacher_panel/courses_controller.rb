@@ -7,7 +7,11 @@ module TeacherPanel
     layout "teacher"
 
     def index
-      @courses = current_user.teacher.courses
+      if current_user.admin?
+        @courses = Course.all
+      else
+        @courses = current_user.teacher.courses
+      end
     end
 
     def show
@@ -16,14 +20,12 @@ module TeacherPanel
 
     private
 
-    def require_teacher
-      unless current_user.teacher? || current_user.admin?
-        redirect_to root_path, alert: "Access Denied"
-      end
-    end
-
     def set_course
-      @course = current_user.teacher.courses.find(params[:id])
+      if current_user.admin?
+        @course = Course.find(params[:id])
+      else
+        @course = current_user.teacher.courses.find(params[:id])
+      end
     end
   end
 end
