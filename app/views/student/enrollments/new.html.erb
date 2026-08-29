@@ -364,7 +364,7 @@
 
       <!-- FORM -->
 
-      <%= form_with model: @enrollment,
+      <%= form_with model: [:student, @enrollment],
                     local: true,
                     id: "student-enrollment-form" do |f| %>
 
