@@ -1,128 +1,373 @@
+
 <style>
-  .current-course{
-    margin:15px;
-    padding:30px 20px;
-    background:rgba(255,255,255,.12);
-    border-left:4px solid #ffc107;
-    border-radius:10px;
+/* =========================================================
+   TEACHER SIDEBAR
+========================================================= */
+
+.teacher-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #111827;
+  color: #fff;
 }
 
-.current-course small{
-    display:block;
-    color:#d1d5db;
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.5px;
-    margin-bottom:4px;
+/* =========================================================
+   CURRENT COURSE
+========================================================= */
+
+.current-course {
+  margin: 15px;
+  padding: 18px 16px;
+  background: rgba(255, 255, 255, .10);
+  border-left: 4px solid #ffc107;
+  border-radius: 10px;
+  transition: .2s ease;
 }
 
-.current-course h6{
-    color:#fff;
-    font-size:15px;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    gap:8px;
+.current-course:hover {
+  background: rgba(255, 255, 255, .14);
 }
 
-.current-course i{
-    color:#ffc107;
+.current-course small {
+  display: block;
+  margin-bottom: 6px;
+  color: #d1d5db;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.current-course h6 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.current-course i {
+  flex: 0 0 auto;
+  color: #ffc107;
+}
+
+.current-course-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SIDEBAR NAV
+========================================================= */
+
+.teacher-sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 3px 10px;
+  padding: 11px 14px;
+  border-radius: 9px;
+  color: #d1d5db;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.teacher-sidebar .nav-link i {
+  width: 20px;
+  color: #9ca3af;
+  font-size: 17px;
+  text-align: center;
+}
+
+.teacher-sidebar .nav-link:hover {
+  background: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.teacher-sidebar .nav-link:hover i {
+  color: #ffc107;
+}
+
+/* =========================================================
+   ACTIVE LINK
+========================================================= */
+
+.teacher-sidebar .nav-link.active {
+  background: rgba(99,102,241,.20);
+  color: #fff;
+}
+
+.teacher-sidebar .nav-link.active i {
+  color: #818cf8;
+}
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-form {
+  width: calc(100% - 20px);
+  margin-left: 10px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.logout-form:hover {
+  background: rgba(220, 38, 38, .12) !important;
+  color: #f87171 !important;
+}
+
+.logout-form:hover i {
+  color: #f87171 !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  .teacher-sidebar {
+    width: 230px;
+  }
+
+  .teacher-sidebar .nav-link {
+    font-size: 13px;
+  }
 }
 </style>
 
-<div class="admin-sidebar">
+
+<div class="admin-sidebar teacher-sidebar">
+
+  <!-- =====================================================
+       LOGO
+  ====================================================== -->
 
   <div class="sidebar-logo text-center py-4">
-    <%= image_tag "logo.jpeg", width: 70, class: "rounded-circle mb-2" %>
+
+    <%= image_tag "logo.jpeg",
+          width: 70,
+          class: "rounded-circle mb-2",
+          alt: "A One GS Center" %>
 
     <h4>A ONE GS CENTER</h4>
+
     <small>Teacher Panel</small>
+
   </div>
+
 
   <hr>
 
- <ul class="nav flex-column">
 
-  <!-- Dashboard -->
-  <li class="nav-item">
-    <%= link_to teacher_dashboard_path, class: "nav-link" do %>
-      <i class="bi bi-speedometer2"></i>
-      Dashboard
+  <ul class="nav flex-column">
+
+
+    <!-- ===================================================
+         DASHBOARD
+    ==================================================== -->
+
+    <li class="nav-item">
+
+      <%= link_to teacher_dashboard_path,
+            class: "nav-link #{'active' if request.path == teacher_dashboard_path}" do %>
+
+        <i class="bi bi-speedometer2"></i>
+
+        <span>Dashboard</span>
+
+      <% end %>
+
+    </li>
+
+
+    <!-- ===================================================
+         MY COURSES
+    ==================================================== -->
+
+    <li class="nav-item">
+
+      <%= link_to teacher_panel_courses_path,
+            class: "nav-link #{'active' if request.path.start_with?('/teacher_panel/courses') && @course.blank?}" do %>
+
+        <i class="bi bi-book-fill"></i>
+
+        <span>My Courses</span>
+
+      <% end %>
+
+    </li>
+
+
+    <!-- ===================================================
+         COURSE-SPECIFIC MENU
+    ==================================================== -->
+
+    <% if @course.present? %>
+
+
+      <!-- ===============================================
+           CURRENT COURSE
+      ================================================ -->
+
+      <div class="current-course">
+
+        <small>
+          Current Course
+        </small>
+
+        <h6>
+
+          <i class="bi bi-book-fill"></i>
+
+          <span class="current-course-name">
+            <%= @course.Course_name %>
+          </span>
+
+        </h6>
+
+      </div>
+
+
+      <!-- ===============================================
+           STUDENTS
+      ================================================ -->
+
+      <li class="nav-item">
+
+        <%= link_to teacher_panel_course_students_path(@course),
+              class: "nav-link #{'active' if request.path.include?('/students')}" do %>
+
+          <i class="bi bi-people-fill"></i>
+
+          <span>Students</span>
+
+        <% end %>
+
+      </li>
+
+
+      <!-- ===============================================
+           PLAYLISTS
+      ================================================ -->
+
+      <li class="nav-item">
+
+        <%= link_to teacher_panel_course_playlists_path(@course),
+              class: "nav-link #{'active' if request.path.include?('/playlists')}" do %>
+
+          <i class="bi bi-collection-play-fill"></i>
+
+          <span>Playlists</span>
+
+        <% end %>
+
+      </li>
+
+
+      <!-- ===============================================
+           VIDEOS
+      ================================================ -->
+
+      <li class="nav-item">
+
+        <%= link_to teacher_panel_course_videos_path(@course),
+              class: "nav-link #{'active' if request.path.include?('/videos')}" do %>
+
+          <i class="bi bi-camera-video-fill"></i>
+
+          <span>Videos</span>
+
+        <% end %>
+
+      </li>
+
+
+      <!-- ===============================================
+           RESOURCES
+      ================================================ -->
+
+      <li class="nav-item">
+
+        <%= link_to teacher_panel_course_resources_path(@course),
+              class: "nav-link #{'active' if request.path.include?('/resources')}" do %>
+
+          <i class="bi bi-file-earmark-text-fill"></i>
+
+          <span>Resources</span>
+
+        <% end %>
+
+      </li>
+
+
+      <!-- ===============================================
+           ATTENDANCE
+      ================================================ -->
+
+      <li class="nav-item">
+
+        <%= link_to teacher_panel_course_attendances_path(@course),
+              class: "nav-link #{'active' if request.path.include?('/attendances')}" do %>
+
+          <i class="bi bi-calendar-check-fill"></i>
+
+          <span>Attendance</span>
+
+        <% end %>
+
+      </li>
+
+
     <% end %>
-  </li>
 
-  <!-- My Courses -->
-  <li class="nav-item">
-    <%= link_to teacher_panel_courses_path, class: "nav-link" do %>
-      <i class="bi bi-book-fill"></i>
-      My Courses
-    <% end %>
-  </li>
 
-  <% if @course.present? %>
+    <!-- ===================================================
+         PROFILE
+    ==================================================== -->
 
-    <div class="current-course">
-  <small>Current Course</small>
-  <h6 class="mb-0">
-    <i class="bi bi-book-fill"></i>
-    <%= @course.Course_name %>
-  </h6>
+    <li class="nav-item">
+
+      <%= link_to teacher_panel_profile_path,
+            class: "nav-link #{'active' if request.path.start_with?('/teacher_panel/profile')}" do %>
+
+        <i class="bi bi-person-circle"></i>
+
+        <span>My Profile</span>
+
+      <% end %>
+
+    </li>
+
+
+    <!-- ===================================================
+         LOGOUT
+    ==================================================== -->
+
+    <li class="nav-item mt-4">
+
+      <%= button_to destroy_user_session_path,
+            method: :delete,
+            class: "nav-link text-danger logout-form" do %>
+
+        <i class="bi bi-box-arrow-right"></i>
+
+        <span>Logout</span>
+
+      <% end %>
+
+    </li>
+
+
+  </ul>
+
 </div>
 
-    <!-- Students -->
-    <li class="nav-item">
-      <%= link_to teacher_panel_course_students_path(@course), class: "nav-link" do %>
-        <i class="bi bi-people-fill"></i>
-        Students
-      <% end %>
-    </li>
-
-    <!-- Playlists -->
-    <li class="nav-item">
-      <%= link_to teacher_panel_course_playlists_path(@course), class: "nav-link" do %>
-        <i class="bi bi-collection-play-fill"></i>
-        Playlists
-      <% end %>
-    </li>
-
-    <!-- Videos -->
-    <li class="nav-item">
-      <%= link_to teacher_panel_course_videos_path(@course), class: "nav-link" do %>
-        <i class="bi bi-camera-video-fill"></i>
-        Videos
-      <% end %>
-    </li>
-
-    <!-- Resources -->
-    <li class="nav-item">
-      <%= link_to teacher_panel_course_resources_path(@course), class: "nav-link" do %>
-        <i class="bi bi-file-earmark-text-fill"></i>
-        Resources
-      <% end %>
-    </li>
-
-  <% end %>
-
-  <!-- Profile -->
-  <li class="nav-item">
-    <%= link_to teacher_profile_path ,class: "nav-link" do %>
-      <i class="bi bi-person-circle"></i>
-      My Profile
-    <% end %>
-  </li>
-
-  <!-- Logout -->
-  <li class="nav-item mt-4">
-    <%= button_to destroy_user_session_path,
-          method: :delete,
-          class: "nav-link text-danger logout-form" do %>
-
-      <i class="bi bi-box-arrow-right"></i>
-      Logout
-
-    <% end %>
-  </li>
-
-</ul>
-
-</div>

@@ -2,29 +2,48 @@ class Course < ApplicationRecord
   belongs_to :teacher
 
   has_many :enrollments, dependent: :destroy
+
   has_many :students,
            through: :enrollments,
            source: :user
 
   has_one_attached :image
 
-  has_many :attendances
+  # ==========================================
+  # DISCOUNTS
+  # ==========================================
+
+  has_many :course_discounts,
+           dependent: :destroy
+
+  has_many :discounts,
+           through: :course_discounts
+
+  # ==========================================
+  # COURSE CONTENT
+  # ==========================================
+
+  has_many :attendances, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :batches, dependent: :destroy
   has_many :playlists, dependent: :destroy
 
-  # Study Notes
   has_many :notes, through: :playlists
-
-  # Resources
   has_many :resources, through: :playlists
 
   has_many :certificates, dependent: :destroy
 
-  validates :Course_name, :duration, :fee, presence: true
+  # ==========================================
+  # VALIDATIONS
+  # ==========================================
+
+  validates :Course_name,
+            :duration,
+            :fee,
+            presence: true
 
   # ==========================================
-  # FREE / PAID COURSE
+  # FREE / PAID
   # ==========================================
 
   def free?
@@ -35,9 +54,64 @@ class Course < ApplicationRecord
     fee.to_d.positive?
   end
 
-  def discount_percentage
-  return 0 if original_fee.blank? || original_fee.to_f <= 0
+  # ==========================================
+  # ACTIVE DISCOUNT
+  # ==========================================
 
-  (((original_fee - fee) / original_fee.to_f) * 100).round
-end
+  def active_discount
+    discounts
+      .active
+      .order(created_at: :desc)
+      .first
+  end
+
+  # ==========================================
+  # DISCOUNTED FEE
+  # ==========================================
+
+  def discounted_fee
+    discount = active_discount
+
+    return fee.to_d unless discount
+
+    discount.final_amount(fee)
+  end
+
+  # ==========================================
+  # DISCOUNT AMOUNT
+  # ==========================================
+
+  def discount_amount
+    fee.to_d - discounted_fee
+  end
+
+  # ==========================================
+  # DISCOUNT PERCENTAGE
+  # ==========================================
+
+  def discount_percentage
+    return 0 if fee.blank? || fee.to_d <= 0
+
+    ((discount_amount / fee.to_d) * 100).round
+  end
+
+  # ==========================================
+  # HELPER METHODS
+  # ==========================================
+
+  def current_discount_amount
+    discount_amount
+  end
+
+  def final_fee
+    discounted_fee
+  end
+
+  def has_active_discount?
+    active_discount.present?
+  end
+
+  def discounted?
+    has_active_discount? && discounted_fee < fee.to_d
+  end
 end

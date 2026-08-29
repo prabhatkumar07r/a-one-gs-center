@@ -1,0 +1,28 @@
+<div class="teacher-attendance-page">
+
+  <div class="attendance-header">
+
+    <div>
+
+      <h1 class="attendance-title">
+        <i class="bi bi-pencil-square"></i>
+        Edit Attendance
+      </h1>
+
+      <p class="attendance-subtitle">
+        Update the attendance record.
+      </p>
+
+      <div class="course-badge">
+        <i class="bi bi-book-fill"></i>
+        <%= @course.course_name %>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <%= render "form" %>
+
+</div>

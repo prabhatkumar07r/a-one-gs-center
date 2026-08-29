@@ -1,0 +1,185 @@
+<div class="attendance-form-card">
+
+  <%= form_with(
+        model: [
+          :teacher_panel,
+          @course,
+          @attendance
+        ],
+        local: true
+      ) do |form| %>
+
+
+    <% if @attendance.errors.any? %>
+
+      <div class="attendance-errors">
+
+        <strong>
+          Please fix the following errors:
+        </strong>
+
+        <ul>
+          <% @attendance.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+
+      </div>
+
+    <% end %>
+
+
+    <div class="form-group">
+
+      <%= form.label :user_id, "Student" %>
+
+      <%= form.collection_select(
+            :user_id,
+            @students,
+            :id,
+            :name,
+            {
+              prompt: "Select student"
+            },
+            {
+              class: "form-control attendance-input"
+            }
+          ) %>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <%= form.label :date, "Attendance Date" %>
+
+      <%= form.date_field(
+            :date,
+            class: "form-control attendance-input"
+          ) %>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <%= form.label :status, "Status" %>
+
+      <%= form.select(
+            :status,
+            [
+              ["Present", "Present"],
+              ["Absent", "Absent"],
+              ["Leave", "Leave"]
+            ],
+            {
+              prompt: "Select status"
+            },
+            {
+              class: "form-control attendance-input"
+            }
+          ) %>
+
+    </div>
+
+
+    <div class="attendance-form-actions">
+
+      <%= link_to "Cancel",
+            teacher_panel_course_attendances_path(@course),
+            class: "attendance-cancel-btn" %>
+
+
+      <%= form.submit(
+            @attendance.persisted? ?
+              "Update Attendance" :
+              "Save Attendance",
+            class: "attendance-submit-btn",
+            data: {
+              disable_with: "Saving..."
+            }
+          ) %>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<style>
+.attendance-form-card {
+  max-width:700px;
+  margin:30px auto;
+  padding:28px;
+  border:1px solid #edf0f5;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 8px 30px rgba(15,23,42,.07);
+}
+
+.form-group {
+  margin-bottom:20px;
+}
+
+.form-group label {
+  display:block;
+  margin-bottom:7px;
+  color:#172033;
+  font-size:13px;
+  font-weight:700;
+}
+
+.attendance-input {
+  width:100%;
+  min-height:46px;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:0 13px;
+  outline:none;
+}
+
+.attendance-input:focus {
+  border-color:#6366f1;
+  box-shadow:0 0 0 3px rgba(99,102,241,.10);
+}
+
+.attendance-errors {
+  margin-bottom:22px;
+  padding:15px;
+  border-radius:10px;
+  background:#fef2f2;
+  color:#b91c1c;
+}
+
+.attendance-errors ul {
+  margin:8px 0 0;
+}
+
+.attendance-form-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:25px;
+}
+
+.attendance-cancel-btn,
+.attendance-submit-btn {
+  padding:10px 17px;
+  border:0;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:700;
+}
+
+.attendance-cancel-btn {
+  background:#f1f5f9;
+  color:#475569;
+}
+
+.attendance-submit-btn {
+  background:#4f46e5;
+  color:#fff;
+}
+</style>

@@ -227,38 +227,82 @@ Rails.application.routes.draw do
 
   end
 
+# ==================================================
+# TEACHER PANEL
+# ==================================================
+
+namespace :teacher_panel do
 
   # ==================================================
-  # TEACHER PANEL
+  # TEACHER PROFILE
   # ==================================================
 
-  namespace :teacher_panel do
+  resource :profile,
+           only: [:show, :edit, :update],
+           controller: "profile"
 
-    get "profile/show"
 
-    resources :courses,
-              only: [:index, :show] do
+  # ==================================================
+  # TEACHER COURSES
+  # ==================================================
 
-      resources :students,
-                only: [:index]
+  resources :courses,
+            only: [:index, :show] do
 
-      resources :videos
+    # ================= STUDENTS =================
 
-      resources :playlists
+    resources :students,
+              only: [:index]
 
-      resources :resources
 
-      resource :profile,
-               only: [:show, :edit, :update]
+    # ================= VIDEOS =================
 
-    end
+    resources :videos
+
+
+    # ================= PLAYLISTS =================
+
+    resources :playlists
+
+
+    # ================= RESOURCES =================
+
+    resources :resources
+
+
+    # ================= ATTENDANCE =================
+
+   resources :attendances,
+              only: [
+                :index,
+                :new,
+                :create,
+                :show,
+                :edit,
+                :update,
+                :destroy
+              ]
 
   end
 
+end
 
-  get "teacher/profile",
-      to: "teacher_panel/profile#show",
-      as: :teacher_profile
+
+# ==================================================
+# COURSE ATTENDANCE
+# ==================================================
+
+get "/courses/:course_id/attendances",
+    to: "attendances#index",
+    as: :course_attendances
+
+get "/courses/:course_id/attendances/new",
+    to: "attendances#new",
+    as: :new_course_attendance
+
+post "/courses/:course_id/attendances",
+     to: "attendances#create",
+     as: :create_course_attendance
 
 
   # ==================================================

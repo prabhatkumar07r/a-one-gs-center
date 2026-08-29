@@ -1,0 +1,182 @@
+<style>
+.attendance-show-page {
+  min-height:100vh;
+  padding:28px;
+  background:#f5f7fb;
+}
+
+.attendance-show-card {
+  max-width:650px;
+  margin:30px auto;
+  overflow:hidden;
+  border:1px solid #edf0f5;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 10px 35px rgba(15,23,42,.08);
+}
+
+.attendance-show-header {
+  padding:25px;
+  border-bottom:1px solid #edf0f5;
+}
+
+.attendance-show-header h1 {
+  margin:0;
+  color:#172033;
+  font-size:22px;
+  font-weight:800;
+}
+
+.attendance-show-header p {
+  margin:7px 0 0;
+  color:#64748b;
+  font-size:14px;
+}
+
+.attendance-detail {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:18px 25px;
+  border-bottom:1px solid #f0f2f5;
+}
+
+.attendance-detail-label {
+  color:#64748b;
+  font-size:13px;
+  font-weight:600;
+}
+
+.attendance-detail-value {
+  color:#172033;
+  font-size:14px;
+  font-weight:700;
+  text-align:right;
+}
+
+.attendance-show-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  padding:22px 25px;
+}
+
+.show-btn {
+  padding:10px 16px;
+  border-radius:9px;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+}
+
+.show-back {
+  background:#f1f5f9;
+  color:#475569;
+}
+
+.show-edit {
+  background:#4f46e5;
+  color:#fff;
+}
+
+@media(max-width:600px) {
+
+  .attendance-show-page {
+    padding:18px 12px;
+  }
+
+  .attendance-detail {
+    align-items:flex-start;
+    flex-direction:column;
+    gap:5px;
+  }
+
+  .attendance-detail-value {
+    text-align:left;
+  }
+}
+</style>
+
+
+<div class="attendance-show-page">
+
+  <div class="attendance-show-card">
+
+    <div class="attendance-show-header">
+
+      <h1>
+        Attendance Details
+      </h1>
+
+      <p>
+        <%= @course.course_name %>
+      </p>
+
+    </div>
+
+
+    <div class="attendance-detail">
+
+      <span class="attendance-detail-label">
+        Student
+      </span>
+
+      <span class="attendance-detail-value">
+        <%= @attendance.user&.name || "Unknown Student" %>
+      </span>
+
+    </div>
+
+
+    <div class="attendance-detail">
+
+      <span class="attendance-detail-label">
+        Date
+      </span>
+
+      <span class="attendance-detail-value">
+
+        <%= @attendance.date.present? ?
+              @attendance.date.strftime("%d %B %Y") :
+              "—" %>
+
+      </span>
+
+    </div>
+
+
+    <div class="attendance-detail">
+
+      <span class="attendance-detail-label">
+        Status
+      </span>
+
+      <span class="attendance-detail-value">
+
+        <%= @attendance.status %>
+
+      </span>
+
+    </div>
+
+
+    <div class="attendance-show-actions">
+
+      <%= link_to "Back",
+            teacher_panel_course_attendances_path(@course),
+            class: "show-btn show-back" %>
+
+
+      <%= link_to "Edit",
+            edit_teacher_panel_course_attendance_path(
+              @course,
+              @attendance
+            ),
+            class: "show-btn show-edit" %>
+
+    </div>
+
+  </div>
+
+</div>

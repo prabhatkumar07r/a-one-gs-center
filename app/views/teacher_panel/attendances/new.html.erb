@@ -1,0 +1,1147 @@
+<style>
+/* =========================================================
+   TEACHER PANEL - ATTENDANCE
+========================================================= */
+
+.tp-attendance-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #0b1020;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.tp-attendance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.tp-header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tp-page-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(255, 193, 7, .12);
+  color: #ffc107;
+
+  font-size: 24px;
+}
+
+.tp-page-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tp-attendance-header h1 {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.tp-attendance-header p {
+  margin: 6px 0 0;
+
+  color: #9ca3af;
+
+  font-size: 14px;
+}
+
+.tp-attendance-header p i {
+  color: #ffc107;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.tp-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 9px;
+
+  color: #e5e7eb;
+  background: rgba(255,255,255,.05);
+
+  text-decoration: none;
+
+  transition: .2s ease;
+}
+
+.tp-back-btn:hover {
+  color: #ffffff;
+  background: rgba(255,255,255,.10);
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.tp-attendance-card {
+  width: 100%;
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  padding: 30px;
+
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+
+  background: #121827;
+
+  box-shadow: 0 20px 50px rgba(0,0,0,.30);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.tp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding-bottom: 22px;
+  margin-bottom: 25px;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.tp-card-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: #ffc107;
+  background: rgba(255,193,7,.12);
+
+  font-size: 20px;
+}
+
+.tp-card-header h2 {
+  margin: 0;
+
+  font-size: 19px;
+}
+
+.tp-card-header p {
+  margin: 4px 0 0;
+
+  color: #9ca3af;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.tp-error-box {
+  display: flex;
+  gap: 12px;
+
+  margin-bottom: 22px;
+  padding: 15px;
+
+  border-left: 4px solid #dc3545;
+  border-radius: 9px;
+
+  color: #ffb4bd;
+  background: rgba(220,53,69,.10);
+}
+
+.tp-error-icon {
+  color: #dc3545;
+  font-size: 18px;
+}
+
+.tp-error-box strong {
+  color: #ffffff;
+}
+
+.tp-error-box ul {
+  margin: 7px 0 0;
+  padding-left: 18px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.tp-attendance-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.tp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.tp-form-label {
+  color: #dbe1ea;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tp-form-label i {
+  margin-right: 5px;
+  color: #ffc107;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.tp-input-wrapper {
+  position: relative;
+}
+
+.tp-input-icon {
+  position: absolute;
+
+  top: 50%;
+  left: 14px;
+
+  transform: translateY(-50%);
+
+  color: #8d98aa;
+
+  pointer-events: none;
+}
+
+.tp-form-control {
+  width: 100%;
+  min-height: 47px;
+
+  padding: 11px 14px 11px 40px;
+
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 9px;
+
+  outline: none;
+
+  color: #ffffff;
+  background: #0d1423;
+
+  transition: .2s ease;
+}
+
+.tp-form-control:focus {
+  border-color: #ffc107;
+
+  box-shadow:
+    0 0 0 3px rgba(255,193,7,.10);
+}
+
+.tp-form-control option {
+  color: #111827;
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.tp-status-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.tp-status-option {
+  position: relative;
+
+  cursor: pointer;
+}
+
+.tp-status-option input {
+  position: absolute;
+  opacity: 0;
+}
+
+.tp-status-option span {
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 9px;
+
+  color: #cbd5e1;
+  background: rgba(255,255,255,.04);
+
+  transition: .2s ease;
+}
+
+.tp-status-option span i {
+  font-size: 17px;
+}
+
+.tp-status-option input:checked + span {
+  border-color: #ffc107;
+
+  color: #ffc107;
+
+  background: rgba(255,193,7,.10);
+
+  box-shadow:
+    0 0 0 2px rgba(255,193,7,.08);
+}
+
+.present-option input:checked + span {
+  border-color: #22c55e;
+  color: #22c55e;
+  background: rgba(34,197,94,.10);
+}
+
+.absent-option input:checked + span {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239,68,68,.10);
+}
+
+.leave-option input:checked + span {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  background: rgba(245,158,11,.10);
+}
+
+
+/* =========================================================
+   COURSE INFO
+========================================================= */
+
+.tp-course-info {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 15px;
+
+  border-left: 4px solid #ffc107;
+  border-radius: 9px;
+
+  background: rgba(255,193,7,.07);
+}
+
+.tp-course-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  color: #ffc107;
+  background: rgba(255,193,7,.12);
+}
+
+.tp-course-info span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #8f9aaa;
+
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.tp-course-info strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.tp-preview-box {
+  padding: 17px;
+
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.025);
+}
+
+.tp-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 15px;
+
+  color: #ffc107;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tp-preview-content {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 15px;
+}
+
+.tp-preview-content small {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #7f8a9b;
+
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.tp-preview-content strong {
+  color: #e5e7eb;
+
+  font-size: 14px;
+}
+
+.preview-present {
+  color: #22c55e !important;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.tp-form-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 5px;
+  padding-top: 22px;
+
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.tp-submit-btn,
+.tp-cancel-btn {
+  min-height: 45px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 10px 20px;
+
+  border-radius: 9px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.tp-submit-btn {
+  border: 0;
+
+  color: #111827;
+
+  background: #ffc107;
+}
+
+.tp-submit-btn:hover {
+  background: #ffca2c;
+
+  transform: translateY(-1px);
+}
+
+.tp-cancel-btn {
+  border: 1px solid rgba(255,255,255,.12);
+
+  color: #d1d5db;
+
+  background: rgba(255,255,255,.05);
+}
+
+.tp-cancel-btn:hover {
+  color: #ffffff;
+  background: rgba(255,255,255,.10);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .tp-attendance-page {
+    padding: 20px 14px;
+  }
+
+  .tp-attendance-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .tp-back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tp-attendance-card {
+    padding: 20px 16px;
+  }
+
+  .tp-status-options {
+    grid-template-columns: 1fr;
+  }
+
+  .tp-preview-content {
+    grid-template-columns: 1fr;
+  }
+
+  .tp-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .tp-submit-btn,
+  .tp-cancel-btn {
+    width: 100%;
+  }
+
+}
+</style>
+
+<div class="tp-attendance-page">
+
+  <!-- HEADER -->
+  <div class="tp-attendance-header">
+
+    <div class="tp-header-content">
+
+      <div class="tp-page-icon">
+        <i class="bi bi-calendar-check-fill"></i>
+      </div>
+
+      <div>
+        <span class="tp-page-label">Teacher Panel</span>
+
+        <h1>Mark Attendance</h1>
+
+        <% if @course.present? %>
+          <p>
+            <i class="bi bi-book-fill"></i>
+            <%= @course.Course_name %>
+          </p>
+        <% end %>
+      </div>
+
+    </div>
+
+
+    <% if @course.present? %>
+
+      <%= link_to teacher_panel_course_attendances_path(@course),
+            class: "tp-back-btn" do %>
+
+        <i class="bi bi-arrow-left"></i>
+        <span>Back to Attendance</span>
+
+      <% end %>
+
+    <% else %>
+
+      <%= link_to teacher_panel_courses_path,
+            class: "tp-back-btn" do %>
+
+        <i class="bi bi-arrow-left"></i>
+        <span>Back to Courses</span>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+
+  <!-- MAIN CARD -->
+  <div class="tp-attendance-card">
+
+    <div class="tp-card-header">
+
+      <div class="tp-card-icon">
+        <i class="bi bi-person-check-fill"></i>
+      </div>
+
+      <div>
+        <h2>Attendance Details</h2>
+        <p>Select a student and mark their attendance.</p>
+      </div>
+
+    </div>
+
+
+    <!-- ERRORS -->
+
+    <% if @attendance.errors.any? %>
+
+      <div class="tp-error-box">
+
+        <div class="tp-error-icon">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+
+        <div>
+
+          <strong>Please correct the following:</strong>
+
+          <ul>
+            <% @attendance.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+
+    <!-- FORM -->
+
+    <%= form_with model: @attendance,
+          url: teacher_panel_course_attendances_path(@course),
+          method: :post,
+          class: "tp-attendance-form",
+          id: "teacherAttendanceForm" do |form| %>
+
+
+      <!-- STUDENT -->
+
+      <div class="tp-form-group">
+
+        <%= form.label :user_id, class: "tp-form-label" do %>
+
+          <i class="bi bi-person-fill"></i>
+
+          Student
+
+        <% end %>
+
+
+        <div class="tp-input-wrapper">
+
+          <i class="bi bi-person tp-input-icon"></i>
+
+          <%= form.collection_select :user_id,
+                @students,
+                :id,
+                :name,
+                { prompt: "Select Student" },
+                {
+                  class: "tp-form-control tp-student-select",
+                  id: "attendanceStudent",
+                  required: true
+                } %>
+
+        </div>
+
+      </div>
+
+
+      <!-- DATE -->
+
+      <div class="tp-form-group">
+
+        <%= form.label :date, class: "tp-form-label" do %>
+
+          <i class="bi bi-calendar3"></i>
+
+          Attendance Date
+
+        <% end %>
+
+
+        <div class="tp-input-wrapper">
+
+          <i class="bi bi-calendar3 tp-input-icon"></i>
+
+          <%= form.date_field :date,
+                class: "tp-form-control",
+                id: "attendanceDate",
+                required: true %>
+
+        </div>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="tp-form-group">
+
+        <%= form.label :status, class: "tp-form-label" do %>
+
+          <i class="bi bi-check-circle-fill"></i>
+
+          Attendance Status
+
+        <% end %>
+
+
+        <div class="tp-status-options">
+
+          <label class="tp-status-option present-option">
+
+            <%= form.radio_button :status,
+                  "Present",
+                  checked: true %>
+
+            <span>
+              <i class="bi bi-check-circle-fill"></i>
+              Present
+            </span>
+
+          </label>
+
+
+          <label class="tp-status-option absent-option">
+
+            <%= form.radio_button :status,
+                  "Absent" %>
+
+            <span>
+              <i class="bi bi-x-circle-fill"></i>
+              Absent
+            </span>
+
+          </label>
+
+
+          <label class="tp-status-option leave-option">
+
+            <%= form.radio_button :status,
+                  "Leave" %>
+
+            <span>
+              <i class="bi bi-calendar-x-fill"></i>
+              Leave
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- COURSE -->
+
+      <% if @course.present? %>
+
+        <div class="tp-course-info">
+
+          <div class="tp-course-icon">
+
+            <i class="bi bi-book-fill"></i>
+
+          </div>
+
+          <div>
+
+            <span>Current Course</span>
+
+            <strong>
+              <%= @course.Course_name %>
+            </strong>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- PREVIEW -->
+
+      <div class="tp-preview-box" id="attendancePreview">
+
+        <div class="tp-preview-header">
+
+          <i class="bi bi-eye-fill"></i>
+
+          Attendance Preview
+
+        </div>
+
+
+        <div class="tp-preview-content">
+
+          <div>
+            <small>Student</small>
+            <strong id="previewStudent">Not selected</strong>
+          </div>
+
+          <div>
+            <small>Date</small>
+            <strong id="previewDate">
+              <%= @attendance.date&.strftime("%d %b %Y") %>
+            </strong>
+          </div>
+
+          <div>
+            <small>Status</small>
+            <strong id="previewStatus" class="preview-present">
+              Present
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="tp-form-actions">
+
+        <% if @course.present? %>
+
+          <%= link_to teacher_panel_course_attendances_path(@course),
+                class: "tp-cancel-btn" do %>
+
+            <i class="bi bi-x-lg"></i>
+
+            Cancel
+
+          <% end %>
+
+        <% end %>
+
+
+        <%= form.submit "Mark Attendance",
+              class: "tp-submit-btn",
+              id: "attendanceSubmit",
+              data: {
+                disable_with: "Saving..."
+              } %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+<script>
+// =========================================================
+// TEACHER PANEL - ATTENDANCE
+// =========================================================
+
+document.addEventListener("turbo:load", () => {
+
+  const form =
+    document.getElementById("teacherAttendanceForm");
+
+  if (!form) return;
+
+
+  // =======================================================
+  // ELEMENTS
+  // =======================================================
+
+  const studentSelect =
+    document.getElementById("attendanceStudent");
+
+  const dateInput =
+    document.getElementById("attendanceDate");
+
+  const previewStudent =
+    document.getElementById("previewStudent");
+
+  const previewDate =
+    document.getElementById("previewDate");
+
+  const previewStatus =
+    document.getElementById("previewStatus");
+
+  const submitButton =
+    document.getElementById("attendanceSubmit");
+
+
+  // =======================================================
+  // STUDENT PREVIEW
+  // =======================================================
+
+  if (studentSelect) {
+
+    studentSelect.addEventListener("change", () => {
+
+      const selected =
+        studentSelect.options[
+          studentSelect.selectedIndex
+        ];
+
+      if (
+        selected &&
+        selected.value
+      ) {
+
+        previewStudent.textContent =
+          selected.text;
+
+      } else {
+
+        previewStudent.textContent =
+          "Not selected";
+
+      }
+
+    });
+
+  }
+
+
+  // =======================================================
+  // DATE PREVIEW
+  // =======================================================
+
+  if (dateInput) {
+
+    dateInput.addEventListener("change", () => {
+
+      if (!dateInput.value) {
+
+        previewDate.textContent =
+          "Not selected";
+
+        return;
+
+      }
+
+
+      const date =
+        new Date(
+          dateInput.value + "T00:00:00"
+        );
+
+
+      const formatted =
+        date.toLocaleDateString(
+          "en-IN",
+          {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+          }
+        );
+
+
+      previewDate.textContent =
+        formatted;
+
+    });
+
+  }
+
+
+  // =======================================================
+  // STATUS PREVIEW
+  // =======================================================
+
+  const statusInputs =
+    form.querySelectorAll(
+      'input[name="attendance[status]"]'
+    );
+
+
+  statusInputs.forEach((input) => {
+
+    input.addEventListener("change", () => {
+
+      if (!input.checked) return;
+
+
+      previewStatus.textContent =
+        input.value;
+
+
+      previewStatus.classList.remove(
+        "preview-present"
+      );
+
+
+      if (input.value === "Present") {
+
+        previewStatus.style.color =
+          "#22c55e";
+
+      }
+
+      else if (input.value === "Absent") {
+
+        previewStatus.style.color =
+          "#ef4444";
+
+      }
+
+      else if (input.value === "Leave") {
+
+        previewStatus.style.color =
+          "#f59e0b";
+
+      }
+
+    });
+
+  });
+
+
+  // =======================================================
+  // FORM VALIDATION
+  // =======================================================
+
+  form.addEventListener("submit", (event) => {
+
+    let valid = true;
+
+
+    if (
+      studentSelect &&
+      !studentSelect.value
+    ) {
+
+      studentSelect.focus();
+
+      valid = false;
+
+    }
+
+
+    if (
+      dateInput &&
+      !dateInput.value
+    ) {
+
+      if (valid) {
+        dateInput.focus();
+      }
+
+      valid = false;
+
+    }
+
+
+    if (!valid) {
+
+      event.preventDefault();
+
+      return;
+
+    }
+
+
+    // Prevent double submission
+
+    if (submitButton) {
+
+      submitButton.disabled = true;
+
+      submitButton.innerHTML =
+        '<i class="bi bi-hourglass-split"></i> Saving...';
+
+    }
+
+  });
+
+
+  // =======================================================
+  // DEFAULT DATE
+  // =======================================================
+
+  if (
+    dateInput &&
+    !dateInput.value
+  ) {
+
+    const today =
+      new Date()
+        .toISOString()
+        .split("T")[0];
+
+    dateInput.value = today;
+
+  }
+
+});
+
+</script>

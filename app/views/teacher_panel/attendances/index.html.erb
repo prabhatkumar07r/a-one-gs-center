@@ -1,0 +1,877 @@
+<style>
+.teacher-attendance-page {
+  min-height: 100vh;
+  padding: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(99,102,241,.08), transparent 30%),
+    #f5f7fb;
+}
+
+.attendance-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:28px;
+}
+
+.attendance-title {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0;
+  color:#172033;
+  font-size:29px;
+  font-weight:800;
+}
+
+.attendance-title i {
+  color:#4f46e5;
+}
+
+.attendance-subtitle {
+  margin:8px 0 0;
+  color:#6b7280;
+  font-size:14px;
+}
+
+.course-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+  max-width:100%;
+  padding:8px 14px;
+  border:1px solid #e0e7ff;
+  border-radius:25px;
+  background:#eef2ff;
+  color:#4f46e5;
+  font-size:13px;
+  font-weight:700;
+}
+
+.take-attendance-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:46px;
+  padding:0 19px;
+  border:0;
+  border-radius:11px;
+  background:linear-gradient(135deg,#4f46e5,#6366f1);
+  color:#fff !important;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:700;
+  box-shadow:0 7px 18px rgba(79,70,229,.18);
+  transition:.2s ease;
+}
+
+.take-attendance-btn:hover {
+  transform:translateY(-2px);
+}
+
+.attendance-stat {
+  height:100%;
+  overflow:hidden;
+  border:1px solid #edf0f5;
+  border-radius:17px;
+  background:#fff;
+  box-shadow:0 5px 20px rgba(15,23,42,.055);
+  transition:.25s ease;
+}
+
+.attendance-stat:hover {
+  transform:translateY(-4px);
+}
+
+.attendance-stat-body {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:21px;
+}
+
+.stat-label {
+  margin-bottom:5px;
+  color:#6b7280;
+  font-size:13px;
+  font-weight:600;
+}
+
+.stat-number {
+  margin:0;
+  color:#172033;
+  font-size:29px;
+  font-weight:800;
+}
+
+.stat-icon {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:54px;
+  height:54px;
+  border-radius:15px;
+  font-size:23px;
+}
+
+.stat-total .stat-icon {
+  background:#eef2ff;
+  color:#4f46e5;
+}
+
+.stat-present .stat-icon {
+  background:#ecfdf5;
+  color:#059669;
+}
+
+.stat-absent .stat-icon {
+  background:#fef2f2;
+  color:#dc2626;
+}
+
+.stat-leave .stat-icon {
+  background:#fffbeb;
+  color:#d97706;
+}
+
+.attendance-filter-card,
+.attendance-table-card {
+  margin-top:26px;
+  overflow:hidden;
+  border:1px solid #edf0f5;
+  border-radius:17px;
+  background:#fff;
+  box-shadow:0 5px 20px rgba(15,23,42,.055);
+}
+
+.attendance-filter {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:18px;
+}
+
+.attendance-search {
+  position:relative;
+  flex:1;
+}
+
+.attendance-search i {
+  position:absolute;
+  top:50%;
+  left:14px;
+  color:#94a3b8;
+  transform:translateY(-50%);
+}
+
+.attendance-search input,
+.attendance-filter select {
+  width:100%;
+  height:45px;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  background:#fff;
+  color:#172033;
+  outline:none;
+}
+
+.attendance-search input {
+  padding:0 13px 0 40px;
+}
+
+.attendance-filter select {
+  min-width:155px;
+  padding:0 12px;
+}
+
+.filter-btn {
+  height:45px;
+  min-width:110px;
+  border:0;
+  border-radius:10px;
+  background:#172033;
+  color:#fff;
+  font-weight:700;
+}
+
+.attendance-table-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:19px 22px;
+  border-bottom:1px solid #edf0f4;
+}
+
+.attendance-table-title {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0;
+  color:#172033;
+  font-size:17px;
+  font-weight:800;
+}
+
+.attendance-table-title i {
+  color:#4f46e5;
+}
+
+.records-count {
+  padding:6px 10px;
+  border-radius:20px;
+  background:#f1f5f9;
+  color:#64748b;
+  font-size:12px;
+  font-weight:700;
+}
+
+.attendance-table {
+  width:100%;
+  margin:0;
+}
+
+.attendance-table thead th {
+  padding:14px 18px;
+  border:0;
+  background:#f8fafc;
+  color:#64748b;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.attendance-table tbody td {
+  padding:15px 18px;
+  border-color:#f0f2f5;
+  vertical-align:middle;
+}
+
+.attendance-table tbody tr:hover {
+  background:#fafbff;
+}
+
+.student-info {
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.student-avatar {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:40px;
+  border:1px solid #e0e7ff;
+  border-radius:50%;
+  background:#eef2ff;
+  color:#4f46e5;
+  font-size:14px;
+  font-weight:800;
+}
+
+.student-name {
+  color:#172033;
+  font-size:14px;
+  font-weight:700;
+}
+
+.attendance-date {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#475569;
+  font-size:13px;
+  font-weight:600;
+}
+
+.attendance-status {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 11px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.status-present {
+  background:#ecfdf5;
+  color:#047857;
+}
+
+.status-absent {
+  background:#fef2f2;
+  color:#b91c1c;
+}
+
+.status-leave {
+  background:#fffbeb;
+  color:#b45309;
+}
+
+.attendance-actions {
+  display:flex;
+  gap:6px;
+}
+
+.attendance-action {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:9px;
+  text-decoration:none;
+  transition:.18s ease;
+}
+
+.attendance-action:hover {
+  transform:translateY(-2px);
+}
+
+.action-view {
+  background:#eff6ff;
+  color:#2563eb;
+}
+
+.action-edit {
+  background:#fffbeb;
+  color:#d97706;
+}
+
+.action-delete {
+  background:#fef2f2;
+  color:#dc2626;
+}
+
+.attendance-empty {
+  padding:65px 20px;
+  text-align:center;
+  color:#94a3b8;
+}
+
+.attendance-empty-icon {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:72px;
+  height:72px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  background:#f1f5f9;
+  font-size:31px;
+}
+
+.attendance-empty strong {
+  display:block;
+  margin-bottom:5px;
+  color:#475569;
+}
+
+@media(max-width:768px) {
+
+  .teacher-attendance-page {
+    padding:18px 12px;
+  }
+
+  .attendance-header {
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .take-attendance-btn {
+    width:100%;
+  }
+
+  .attendance-filter {
+    flex-direction:column;
+  }
+
+  .attendance-search,
+  .attendance-filter select,
+  .filter-btn {
+    width:100%;
+  }
+
+  .attendance-table {
+    min-width:720px;
+  }
+}
+</style>
+
+
+<div class="teacher-attendance-page">
+
+  <div class="attendance-header">
+
+    <div>
+
+      <h1 class="attendance-title">
+        <i class="bi bi-calendar-check-fill"></i>
+        Attendance Management
+      </h1>
+
+      <p class="attendance-subtitle">
+        Manage attendance for students enrolled in this course.
+      </p>
+
+      <div class="course-badge">
+        <i class="bi bi-book-fill"></i>
+
+        <span>
+          <%= @course.Course_name %>
+        </span>
+      </div>
+
+    </div>
+
+    <%= link_to new_teacher_panel_course_attendance_path(@course),
+          class: "take-attendance-btn" do %>
+
+      <i class="bi bi-plus-circle-fill"></i>
+      Take Attendance
+
+    <% end %>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <div class="col-xl-3 col-md-6">
+      <div class="attendance-stat stat-total">
+        <div class="attendance-stat-body">
+          <div>
+            <div class="stat-label">Total Records</div>
+            <h2 class="stat-number">
+              <%= @total_attendance %>
+            </h2>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-calendar2-check"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+      <div class="attendance-stat stat-present">
+        <div class="attendance-stat-body">
+          <div>
+            <div class="stat-label">Present</div>
+            <h2 class="stat-number">
+              <%= @present %>
+            </h2>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+      <div class="attendance-stat stat-absent">
+        <div class="attendance-stat-body">
+          <div>
+            <div class="stat-label">Absent</div>
+            <h2 class="stat-number">
+              <%= @absent %>
+            </h2>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-x-circle-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+      <div class="attendance-stat stat-leave">
+        <div class="attendance-stat-body">
+          <div>
+            <div class="stat-label">Leave</div>
+            <h2 class="stat-number">
+              <%= @leave %>
+            </h2>
+          </div>
+
+          <div class="stat-icon">
+            <i class="bi bi-clock-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="attendance-filter-card">
+
+    <%= form_with(
+          url: teacher_panel_course_attendances_path(@course),
+          method: :get,
+          local: true,
+          id: "attendance-filter-form"
+        ) do %>
+
+      <div class="attendance-filter">
+
+        <div class="attendance-search">
+
+          <i class="bi bi-search"></i>
+
+          <input
+            type="text"
+            name="search"
+            value="<%= params[:search] %>"
+            placeholder="Search student..."
+            id="attendance-search"
+            autocomplete="off"
+          >
+
+        </div>
+
+
+        <select name="status" id="attendance-status-filter">
+
+          <option value="">All Status</option>
+
+          <option value="Present"
+            <%= "selected" if params[:status] == "Present" %>>
+            Present
+          </option>
+
+          <option value="Absent"
+            <%= "selected" if params[:status] == "Absent" %>>
+            Absent
+          </option>
+
+          <option value="Leave"
+            <%= "selected" if params[:status] == "Leave" %>>
+            Leave
+          </option>
+
+        </select>
+
+
+        <button
+          type="submit"
+          class="filter-btn"
+          id="attendance-search-btn">
+
+          <i class="bi bi-search"></i>
+          Search
+
+        </button>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+
+  <div class="attendance-table-card">
+
+    <div class="attendance-table-header">
+
+      <h3 class="attendance-table-title">
+        <i class="bi bi-list-check"></i>
+        Attendance Records
+      </h3>
+
+      <span class="records-count">
+        <%= @attendances.count %>
+        <%= @attendances.count == 1 ? "record" : "records" %>
+      </span>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+      <table class="table attendance-table">
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <% if @attendances.any? %>
+
+            <% @attendances.each_with_index do |attendance, index| %>
+
+              <tr>
+
+                <td>
+                  <strong><%= index + 1 %></strong>
+                </td>
+
+
+                <td>
+
+                  <div class="student-info">
+
+                    <div class="student-avatar">
+                      <%= attendance.user&.name.to_s.first.upcase %>
+                    </div>
+
+                    <div class="student-name">
+                      <%= attendance.user&.name || "Unknown Student" %>
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <span class="attendance-date">
+
+                    <i class="bi bi-calendar3"></i>
+
+                    <%= attendance.date.present? ?
+                          attendance.date.strftime("%d %b %Y") :
+                          "—" %>
+
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  <% if attendance.status == "Present" %>
+
+                    <span class="attendance-status status-present">
+                      <i class="bi bi-check-circle-fill"></i>
+                      Present
+                    </span>
+
+                  <% elsif attendance.status == "Absent" %>
+
+                    <span class="attendance-status status-absent">
+                      <i class="bi bi-x-circle-fill"></i>
+                      Absent
+                    </span>
+
+                  <% else %>
+
+                    <span class="attendance-status status-leave">
+                      <i class="bi bi-clock-fill"></i>
+                      Leave
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+
+                <td>
+
+                  <div class="attendance-actions">
+
+                    <%= link_to teacher_panel_course_attendance_path(
+                          @course,
+                          attendance
+                        ),
+                        class: "attendance-action action-view",
+                        title: "View" do %>
+
+                      <i class="bi bi-eye-fill"></i>
+
+                    <% end %>
+
+
+                    <%= link_to edit_teacher_panel_course_attendance_path(
+                          @course,
+                          attendance
+                        ),
+                        class: "attendance-action action-edit",
+                        title: "Edit" do %>
+
+                      <i class="bi bi-pencil-fill"></i>
+
+                    <% end %>
+
+
+                    <%= button_to teacher_panel_course_attendance_path(
+                          @course,
+                          attendance
+                        ),
+                        method: :delete,
+                        class: "attendance-action action-delete",
+                        title: "Delete",
+                        form: {
+                          data: {
+                            turbo_confirm: "Delete this attendance record?"
+                          }
+                        } do %>
+
+                      <i class="bi bi-trash-fill"></i>
+
+                    <% end %>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          <% else %>
+
+            <tr>
+
+              <td colspan="5">
+
+                <div class="attendance-empty">
+
+                  <div class="attendance-empty-icon">
+                    <i class="bi bi-calendar-x"></i>
+                  </div>
+
+                  <strong>
+                    No attendance records found
+                  </strong>
+
+                  <span>
+                    No attendance has been recorded yet.
+                  </span>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form =
+    document.getElementById("attendance-filter-form");
+
+  const search =
+    document.getElementById("attendance-search");
+
+  const status =
+    document.getElementById("attendance-status-filter");
+
+  const button =
+    document.getElementById("attendance-search-btn");
+
+
+  if (status && form) {
+
+    status.addEventListener("change", function () {
+      form.submit();
+    });
+
+  }
+
+
+  if (search && form) {
+
+    search.addEventListener("keydown", function (event) {
+
+      if (event.key === "Enter") {
+
+        event.preventDefault();
+
+        form.submit();
+
+      }
+
+    });
+
+  }
+
+
+  if (search) {
+
+    search.addEventListener("keydown", function (event) {
+
+      if (event.key === "Escape") {
+
+        search.value = "";
+
+        search.focus();
+
+      }
+
+    });
+
+  }
+
+
+  if (form && button) {
+
+    form.addEventListener("submit", function () {
+
+      button.disabled = true;
+
+      button.innerHTML =
+        '<i class="bi bi-arrow-repeat"></i> Searching...';
+
+    });
+
+  }
+
+
+  document
+    .querySelectorAll(".attendance-stat")
+    .forEach(function (card, index) {
+
+      card.style.opacity = "0";
+      card.style.transform = "translateY(10px)";
+
+      setTimeout(function () {
+
+        card.style.transition =
+          "opacity .3s ease, transform .3s ease";
+
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+
+      }, index * 70);
+
+    });
+
+});
+</script>

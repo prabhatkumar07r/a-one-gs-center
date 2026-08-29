@@ -1,77 +1,76 @@
 class AttendancesController < AdminController
-    before_action :authenticate_user!
-  before_action :allow_admin_or_teacher
+  before_action :authenticate_user!
+  before_action :require_admin
+  before_action :set_attendance, only: [:show]
 
   def index
+    @attendances = Attendance
+      .includes(:user, :course)
+      .order(date: :desc, created_at: :desc)
 
-    @attendances = Attendance.includes(:user, :course)
+    # COURSE FILTER
+    if params[:course_id].present?
+      @attendances =
+        @attendances.where(course_id: params[:course_id])
+    end
 
+    # STUDENT FILTER
+    if params[:student_id].present?
+      @attendances =
+        @attendances.where(user_id: params[:student_id])
+    end
+
+    # STATUS FILTER
+    if params[:status].present?
+      @attendances =
+        @attendances.where(status: params[:status])
+    end
+
+    # DATE FILTER
+    if params[:date].present?
+      @attendances =
+        @attendances.where(date: params[:date])
+    end
+
+    # SEARCH STUDENT
     if params[:search].present?
-           @attendances = @attendances.joins(:user)
-                             .where("users.name LIKE ?",
-                                    "%#{params[:search]}%")
+      @attendances =
+        @attendances
+          .joins(:user)
+          .where(
+            "users.name ILIKE ?",
+            "%#{params[:search]}%"
+          )
     end
 
-    @total_attendance = Attendance.count
-    @present = Attendance.where(status: "Present").count
-    @absent = Attendance.where(status: "Absent").count
-    @leave = Attendance.where(status: "Leave").count
+    # DROPDOWN DATA
+    @courses = Course.order(:Course_name)
+
+    @students = User
+      .where(role: "student")
+      .order(:name)
+
+    # STATISTICS
+    @total_attendance = @attendances.count
+
+    @present =
+      @attendances.where(status: "Present").count
+
+    @absent =
+      @attendances.where(status: "Absent").count
+
+    @leave =
+      @attendances.where(status: "Leave").count
   end
 
-  def new
-    @attendance = Attendance.new
-  end
   def show
-  @attendance = Attendance.find(params[:id])
-end
-
-def edit
-  @attendance = Attendance.find(params[:id])
-end
-
-def update
-  @attendance = Attendance.find(params[:id])
-
-  if @attendance.update(attendance_params)
-    redirect_to attendances_path,
-    notice: "Attendance Updated Successfully."
-  else
-    render :edit
-  end
-end
-
-def destroy
-  @attendance = Attendance.find(params[:id])
-  @attendance.destroy
-
-  redirect_to attendances_path,
-  notice: "Attendance Deleted Successfully."
-end
-
-  def create
-    @attendance = Attendance.new(attendance_params)
-
-    if @attendance.save
-      redirect_to attendances_path, notice: "Attendance Added Successfully."
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   private
 
-def allow_admin_or_teacher
-  unless current_user.admin? || current_user.teacher?
-    redirect_to root_path, alert: "Access Denied"
-  end
-end
-
-  def attendance_params
-    params.require(:attendance).permit(
-      :user_id,
-      :course_id,
-      :date,
-      :status
-    )
+  def set_attendance
+    @attendance = Attendance
+      .includes(:user, :course)
+      .find(params[:id])
   end
 end

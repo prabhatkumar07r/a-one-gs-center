@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_040844) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_29_155252) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -122,6 +122,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_040844) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "course_discounts", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "discount_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_discounts_on_course_id"
+    t.index ["discount_id"], name: "index_course_discounts_on_discount_id"
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string "Course_name"
     t.string "course_type", default: "paid", null: false
@@ -152,6 +161,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_040844) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "discounts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "discount_type"
+    t.decimal "discount_value"
+    t.date "end_date"
+    t.string "name"
+    t.date "start_date"
+    t.string "status"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "enrollments", force: :cascade do |t|
     t.integer "course_id", null: false
     t.datetime "created_at", null: false
@@ -169,8 +189,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_040844) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fee_payments", force: :cascade do |t|
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.bigint "fee_id", null: false
+    t.text "notes"
+    t.date "payment_date"
+    t.string "payment_mode"
+    t.string "receipt_no"
+    t.string "reference_no"
+    t.datetime "updated_at", null: false
+    t.index ["fee_id"], name: "index_fee_payments_on_fee_id"
+  end
+
   create_table "fees", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.decimal "discount_amount"
+    t.string "discount_name"
     t.decimal "due_amount"
     t.integer "enrollment_id", null: false
     t.decimal "paid_amount"
@@ -180,7 +215,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_040844) do
     t.string "status"
     t.decimal "total_fee"
     t.datetime "updated_at", null: false
-    t.index ["enrollment_id"], name: "index_fees_on_enrollment_id"
+    t.index ["enrollment_id"], name: "index_fees_on_enrollment_id", unique: true
   end
 
   create_table "galleries", force: :cascade do |t|
@@ -363,9 +398,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_040844) do
   add_foreign_key "batches", "teachers"
   add_foreign_key "certificates", "courses"
   add_foreign_key "certificates", "users"
+  add_foreign_key "course_discounts", "courses"
+  add_foreign_key "course_discounts", "discounts"
   add_foreign_key "courses", "teachers"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
+  add_foreign_key "fee_payments", "fees"
   add_foreign_key "fees", "enrollments"
   add_foreign_key "notes", "playlists"
   add_foreign_key "notes", "videos"
