@@ -1,155 +1,688 @@
 
-<style>
-/* =========================================================
-   TEACHER SIDEBAR
-========================================================= */
+ <style>
+  /* =========================================================
+     TEACHER SIDEBAR
+     DARK GLASS / BLUE-VIOLET THEME
+  ========================================================== */
 
-.teacher-sidebar {
-  width: 260px;
-  min-height: 100vh;
-  background: #111827;
-  color: #fff;
-}
-
-/* =========================================================
-   CURRENT COURSE
-========================================================= */
-
-.current-course {
-  margin: 15px;
-  padding: 18px 16px;
-  background: rgba(255, 255, 255, .10);
-  border-left: 4px solid #ffc107;
-  border-radius: 10px;
-  transition: .2s ease;
-}
-
-.current-course:hover {
-  background: rgba(255, 255, 255, .14);
-}
-
-.current-course small {
-  display: block;
-  margin-bottom: 6px;
-  color: #d1d5db;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .6px;
-}
-
-.current-course h6 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.current-course i {
-  flex: 0 0 auto;
-  color: #ffc107;
-}
-
-.current-course-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* =========================================================
-   SIDEBAR NAV
-========================================================= */
-
-.teacher-sidebar .nav-link {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin: 3px 10px;
-  padding: 11px 14px;
-  border-radius: 9px;
-  color: #d1d5db;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: .2s ease;
-}
-
-.teacher-sidebar .nav-link i {
-  width: 20px;
-  color: #9ca3af;
-  font-size: 17px;
-  text-align: center;
-}
-
-.teacher-sidebar .nav-link:hover {
-  background: rgba(255,255,255,.08);
-  color: #fff;
-}
-
-.teacher-sidebar .nav-link:hover i {
-  color: #ffc107;
-}
-
-/* =========================================================
-   ACTIVE LINK
-========================================================= */
-
-.teacher-sidebar .nav-link.active {
-  background: rgba(99,102,241,.20);
-  color: #fff;
-}
-
-.teacher-sidebar .nav-link.active i {
-  color: #818cf8;
-}
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-.logout-form {
-  width: calc(100% - 20px);
-  margin-left: 10px;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-
-.logout-form:hover {
-  background: rgba(220, 38, 38, .12) !important;
-  color: #f87171 !important;
-}
-
-.logout-form:hover i {
-  color: #f87171 !important;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 768px) {
   .teacher-sidebar {
-    width: 230px;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 260px;
+    height: 100dvh;
+    min-height: 100vh;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.92),
+        rgba(30, 27, 75, 0.94)
+      ) !important;
+
+    color: #fff;
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+
+    box-shadow:
+      4px 0 30px rgba(0, 0, 0, 0.20);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+
+    z-index: 3000;
+
+    transform: translateX(0);
+
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
+
+
+  /* =========================================================
+     SCROLLBAR
+  ========================================================== */
+
+  .teacher-sidebar::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .teacher-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .teacher-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+  }
+
+  .teacher-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+
+  /* =========================================================
+     LOGO AREA
+  ========================================================== */
+
+  .teacher-sidebar .sidebar-logo {
+    min-height: 80px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.28),
+        rgba(30, 27, 75, 0.22)
+      );
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     LOGO IMAGE
+  ========================================================== */
+
+  .teacher-sidebar .sidebar-logo img {
+    width: 70px;
+    height: 70px;
+
+    object-fit: cover;
+
+    border: 2px solid rgba(255, 255, 255, 0.16);
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.25);
+  }
+
+
+  /* =========================================================
+     LOGO TITLE
+  ========================================================== */
+
+  .teacher-sidebar .sidebar-logo h4 {
+    margin: 4px 0 0;
+
+    color: #ffffff;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+  }
+
+
+  /* =========================================================
+     LOGO SUBTITLE
+  ========================================================== */
+
+  .teacher-sidebar .sidebar-logo small {
+    margin-top: 2px;
+
+    color: rgba(255, 255, 255, 0.52);
+
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 0.5px;
+  }
+
+
+  /* =========================================================
+     HORIZONTAL DIVIDER
+  ========================================================== */
+
+  .teacher-sidebar hr {
+    margin: 0 12px;
+
+    border: 0;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    opacity: 1;
+  }
+
+
+  /* =========================================================
+     NAVIGATION CONTAINER
+  ========================================================== */
+
+  .teacher-sidebar > .nav {
+    padding: 14px 0 25px;
+
+    margin: 0;
+  }
+
+
+  /* =========================================================
+     NAV ITEM
+  ========================================================== */
+
+  .teacher-sidebar .nav-item {
+    margin: 0;
+  }
+
+
+  /* =========================================================
+     NAV LINK
+  ========================================================== */
 
   .teacher-sidebar .nav-link {
-    font-size: 13px;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    width: calc(100% - 20px);
+
+    min-height: 46px;
+
+    margin: 3px 10px;
+
+    padding: 11px 14px;
+
+    border: 1px solid transparent;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: rgba(255, 255, 255, 0.76);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
-}
+
+
+  /* =========================================================
+     NAV ICON
+  ========================================================== */
+
+  .teacher-sidebar .nav-link i {
+    width: 21px;
+    min-width: 21px;
+
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 17px;
+
+    text-align: center;
+
+    flex-shrink: 0;
+
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+
+  /* =========================================================
+     NAV TEXT
+  ========================================================== */
+
+  .teacher-sidebar .nav-link span {
+    min-width: 0;
+
+    flex: 1;
+  }
+
+
+  /* =========================================================
+     HOVER
+  ========================================================== */
+
+  .teacher-sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.07);
+
+    border-color: rgba(255, 255, 255, 0.08);
+
+    color: #ffffff;
+
+    transform: translateX(2px);
+  }
+
+
+  .teacher-sidebar .nav-link:hover i {
+    color: #c4b5fd;
+
+    transform: translateX(1px);
+  }
+
+
+  /* =========================================================
+     ACTIVE LINK
+  ========================================================== */
+
+  .teacher-sidebar .nav-link.active {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.28),
+        rgba(37, 99, 235, 0.20)
+      );
+
+    border: 1px solid rgba(167, 139, 250, 0.20);
+
+    color: #ffffff;
+
+    box-shadow:
+      inset 3px 0 0 rgba(167, 139, 250, 0.9);
+  }
+
+
+  .teacher-sidebar .nav-link.active i {
+    color: #c4b5fd;
+  }
+
+
+  /* =========================================================
+     CURRENT COURSE SECTION TITLE
+  ========================================================== */
+
+  .teacher-menu-divider {
+    margin: 20px 14px 8px;
+
+    color: rgba(255, 255, 255, 0.42);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.9px;
+  }
+
+
+  /* =========================================================
+     CURRENT COURSE CARD
+  ========================================================== */
+
+  .current-course {
+    margin: 8px 10px 12px;
+
+    padding: 12px;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.065),
+        rgba(255, 255, 255, 0.035)
+      );
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 10px;
+
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.10);
+  }
+
+
+  /* =========================================================
+     CURRENT COURSE LABEL
+  ========================================================== */
+
+  .current-course small {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: rgba(255, 255, 255, 0.48);
+
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+
+  /* =========================================================
+     CURRENT COURSE TITLE
+  ========================================================== */
+
+  .current-course h6 {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.4;
+  }
+
+
+  /* =========================================================
+     CURRENT COURSE ICON
+  ========================================================== */
+
+  .current-course h6 i {
+    width: 18px;
+    min-width: 18px;
+
+    margin-top: 2px;
+
+    color: #a78bfa;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+  }
+
+
+  /* =========================================================
+     CURRENT COURSE NAME
+  ========================================================== */
+
+  .current-course-name {
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =========================================================
+     TEST SERIES LINK
+  ========================================================== */
+
+  .teacher-test-series-link {
+    position: relative;
+  }
+
+
+  /* =========================================================
+     TEST SERIES BADGE
+  ========================================================== */
+
+  .test-series-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: auto;
+
+    padding: 3px 7px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 20px;
+
+    background: rgba(124, 58, 237, 0.18);
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    white-space: nowrap;
+  }
+
+
+  /* =========================================================
+     TEST SERIES ACTIVE BADGE
+  ========================================================== */
+
+  .teacher-sidebar
+  .nav-link.active
+  .test-series-badge {
+    background: rgba(167, 139, 250, 0.18);
+
+    color: #ddd6fe;
+
+    border-color: rgba(167, 139, 250, 0.18);
+  }
+
+
+  /* =========================================================
+     LOGOUT BUTTON
+  ========================================================== */
+
+  .teacher-sidebar .logout-form {
+    display: flex;
+    align-items: center;
+
+    width: calc(100% - 20px);
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    border: 1px solid transparent;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+
+  /* =========================================================
+     LOGOUT HOVER
+  ========================================================== */
+
+  .teacher-sidebar .logout-form:hover {
+    background: rgba(220, 53, 69, 0.12);
+
+    border-color: rgba(220, 53, 69, 0.10);
+
+    color: #ff7b88;
+
+    transform: translateX(2px);
+  }
+
+
+  .teacher-sidebar .logout-form:hover i {
+    color: #ff7b88;
+  }
+
+
+  /* =========================================================
+     LOGOUT ICON
+  ========================================================== */
+
+  .teacher-sidebar .logout-form i {
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+
+  /* =========================================================
+     MOBILE SIDEBAR
+  ========================================================== */
+
+  @media (max-width: 768px) {
+
+    .teacher-sidebar {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 270px;
+      max-width: 85vw;
+
+      height: 100dvh;
+
+      transform: translateX(-100%);
+
+      visibility: visible;
+
+      pointer-events: none;
+
+      z-index: 3000;
+
+      box-shadow:
+        8px 0 35px rgba(0, 0, 0, 0.35);
+    }
+
+
+    /* =======================================================
+       OPEN SIDEBAR
+    ======================================================== */
+
+    .teacher-sidebar.open {
+      transform: translateX(0);
+
+      pointer-events: auto;
+    }
+
+
+    /* =======================================================
+       MOBILE LOGO
+    ======================================================== */
+
+    .teacher-sidebar .sidebar-logo {
+      min-height: 75px;
+
+      padding: 12px !important;
+    }
+
+
+    .teacher-sidebar .sidebar-logo img {
+      width: 58px;
+      height: 58px;
+    }
+
+
+    .teacher-sidebar .sidebar-logo h4 {
+      font-size: 16px;
+    }
+
+
+    .teacher-sidebar .sidebar-logo small {
+      font-size: 10px;
+    }
+
+
+    /* =======================================================
+       MOBILE NAV
+    ======================================================== */
+
+    .teacher-sidebar .nav-link {
+      min-height: 45px;
+
+      padding: 10px 13px;
+
+      font-size: 13.5px;
+    }
+
+
+    .teacher-sidebar .nav-link i {
+      font-size: 16px;
+    }
+  }
+
+
+  /* =========================================================
+     VERY SMALL MOBILE
+  ========================================================== */
+
+  @media (max-width: 480px) {
+
+    .teacher-sidebar {
+      width: 265px;
+
+      max-width: 88vw;
+    }
+
+
+    .teacher-sidebar .nav-link {
+      min-height: 43px;
+
+      margin-left: 8px;
+      margin-right: 8px;
+
+      width: calc(100% - 16px);
+
+      padding: 9px 12px;
+
+      font-size: 13px;
+    }
+
+
+    .current-course {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+
+
+    .teacher-menu-divider {
+      margin-left: 12px;
+    }
+  }
+
+
+  /* =========================================================
+     DESKTOP
+  ========================================================== */
+
+  @media (min-width: 769px) {
+
+    .teacher-sidebar {
+      transform: translateX(0);
+
+      pointer-events: auto;
+
+      visibility: visible;
+    }
+  }
+
+
+  /* =========================================================
+     REDUCED MOTION
+  ========================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .teacher-sidebar,
+    .teacher-sidebar .nav-link,
+    .teacher-sidebar .nav-link i {
+      transition: none !important;
+    }
+  }
+
 </style>
 
+<div class="teacher-sidebar">
 
-<div class="admin-sidebar teacher-sidebar">
-
-  <!-- =====================================================
+  <!-- =======================================================
        LOGO
-  ====================================================== -->
+  ======================================================== -->
 
   <div class="sidebar-logo text-center py-4">
 
@@ -168,12 +701,14 @@
   <hr>
 
 
+  <!-- =======================================================
+       NAVIGATION
+  ======================================================== -->
+
   <ul class="nav flex-column">
 
 
-    <!-- ===================================================
-         DASHBOARD
-    ==================================================== -->
+    <!-- Dashboard -->
 
     <li class="nav-item">
 
@@ -189,9 +724,7 @@
     </li>
 
 
-    <!-- ===================================================
-         MY COURSES
-    ==================================================== -->
+    <!-- My Courses -->
 
     <li class="nav-item">
 
@@ -207,39 +740,61 @@
     </li>
 
 
-    <!-- ===================================================
-         COURSE-SPECIFIC MENU
-    ==================================================== -->
+    <!-- Test Series -->
+
+    <li class="nav-item">
+
+      <%= link_to teacher_panel_test_series_index_path,
+            class: "nav-link teacher-test-series-link #{'active' if request.path.start_with?('/teacher_panel/test_series')}" do %>
+
+        <i class="bi bi-journal-text"></i>
+
+        <span>Test Series</span>
+
+        <span class="test-series-badge">
+          Manage
+        </span>
+
+      <% end %>
+
+    </li>
+
 
     <% if @course.present? %>
 
-
-      <!-- ===============================================
+      <!-- =====================================================
            CURRENT COURSE
-      ================================================ -->
+      ====================================================== -->
 
-      <div class="current-course">
-
-        <small>
-          Current Course
-        </small>
-
-        <h6>
-
-          <i class="bi bi-book-fill"></i>
-
-          <span class="current-course-name">
-            <%= @course.Course_name %>
-          </span>
-
-        </h6>
-
-      </div>
+      <li class="teacher-menu-divider">
+        Current Course
+      </li>
 
 
-      <!-- ===============================================
+      <li>
+
+        <div class="current-course">
+
+          <small>Current Course</small>
+
+          <h6>
+
+            <i class="bi bi-book-fill"></i>
+
+            <span class="current-course-name">
+              <%= @course.Course_name %>
+            </span>
+
+          </h6>
+
+        </div>
+
+      </li>
+
+
+      <!-- =====================================================
            STUDENTS
-      ================================================ -->
+      ====================================================== -->
 
       <li class="nav-item">
 
@@ -255,9 +810,9 @@
       </li>
 
 
-      <!-- ===============================================
+      <!-- =====================================================
            PLAYLISTS
-      ================================================ -->
+      ====================================================== -->
 
       <li class="nav-item">
 
@@ -273,9 +828,9 @@
       </li>
 
 
-      <!-- ===============================================
+      <!-- =====================================================
            VIDEOS
-      ================================================ -->
+      ====================================================== -->
 
       <li class="nav-item">
 
@@ -291,9 +846,27 @@
       </li>
 
 
-      <!-- ===============================================
+      <!-- =====================================================
+           QUIZZES
+      ====================================================== -->
+
+      <li class="nav-item">
+
+        <%= link_to teacher_panel_course_quizzes_path(@course),
+              class: "nav-link #{'active' if request.path.include?('/quizzes')}" do %>
+
+          <i class="bi bi-clipboard-check-fill"></i>
+
+          <span>Quizzes</span>
+
+        <% end %>
+
+      </li>
+
+
+      <!-- =====================================================
            RESOURCES
-      ================================================ -->
+      ====================================================== -->
 
       <li class="nav-item">
 
@@ -309,9 +882,9 @@
       </li>
 
 
-      <!-- ===============================================
+      <!-- =====================================================
            ATTENDANCE
-      ================================================ -->
+      ====================================================== -->
 
       <li class="nav-item">
 
@@ -326,13 +899,12 @@
 
       </li>
 
-
     <% end %>
 
 
-    <!-- ===================================================
+    <!-- =====================================================
          PROFILE
-    ==================================================== -->
+    ====================================================== -->
 
     <li class="nav-item">
 
@@ -348,9 +920,9 @@
     </li>
 
 
-    <!-- ===================================================
+    <!-- =====================================================
          LOGOUT
-    ==================================================== -->
+    ====================================================== -->
 
     <li class="nav-item mt-4">
 
@@ -370,4 +942,3 @@
   </ul>
 
 </div>
-

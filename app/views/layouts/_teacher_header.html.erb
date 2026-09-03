@@ -1,176 +1,666 @@
 <style>
-.teacher-navbar{
-    position:fixed;
-    top:0;
-    left:270px;
-    width:calc(100% - 270px);
-    height:75px;
+  /* =========================================================
+     TEACHER NAVBAR
+  ========================================================== */
 
-    background:#245187;
+  .teacher-navbar {
+    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    width: auto;
+    height: 75px;
 
-    padding:0 30px;
+    background: #245187;
 
-    box-shadow:0 3px 15px rgba(0,0,0,.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    z-index:1050;
-}
+    padding: 0 30px;
 
-/* DO NOT style .admin-main or .admin-content here */
+    box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
 
-.teacher-navbar-left{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
+    /* IMPORTANT:
+       Navbar must be above mobile sidebar */
+    z-index: 3000;
 
-.page-title{
-    font-size:24px;
-    font-weight:700;
-    color:#fff;
-    margin-bottom:0;
-}
+    box-sizing: border-box;
+  }
 
-.welcome-text{
-    color:#eef7ee;
-    font-size:14px;
-}
 
-.teacher-navbar-right{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
+  /* =========================================================
+     LEFT SIDE
+  ========================================================== */
 
-.header-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
+  .teacher-navbar-left {
+    display: flex;
+    align-items: center;
 
-    background:rgba(255,255,255,.15);
+    gap: 18px;
 
-    color:#fff;
+    min-width: 0;
+  }
 
-    padding:10px 18px;
 
-    border-radius:50px;
-}
+  /* =========================================================
+     PAGE TITLE
+  ========================================================== */
 
-.header-icon{
-    width:45px;
-    height:45px;
+  .page-title {
+    font-size: 24px;
+    font-weight: 700;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    color: #fff;
 
-    border-radius:50%;
+    margin: 0;
 
-    background:rgba(255,255,255,.15);
+    white-space: nowrap;
+  }
 
-    color:#fff;
 
-    transition:.3s;
-}
+  /* =========================================================
+     WELCOME TEXT
+  ========================================================== */
 
-.header-icon:hover{
-    background:#fff;
-    color:#45BA38;
-}
+  .welcome-text {
+    color: #eef7ee;
 
-.profile-btn{
-    color:#fff;
-    font-size:38px;
-}
+    font-size: 14px;
+  }
 
-.profile-btn:hover{
-    color:#fff;
-}
 
-.menu-btn{
-    border:none;
-    background:none;
-    color:#fff;
-    font-size:28px;
-}
+  /* =========================================================
+     RIGHT SIDE
+  ========================================================== */
+
+  .teacher-navbar-right {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+  }
+
+
+  /* =========================================================
+     DATE ITEM
+  ========================================================== */
+
+  .header-item {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    background: rgba(255, 255, 255, .15);
+
+    color: #fff;
+
+    padding: 10px 18px;
+
+    border-radius: 50px;
+  }
+
+
+  /* =========================================================
+     HEADER ICON
+  ========================================================== */
+
+  .header-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .15);
+
+    color: #fff;
+
+    transition: .3s;
+  }
+
+
+  .header-icon:hover {
+    background: #fff;
+
+    color: #45BA38;
+  }
+
+
+  /* =========================================================
+     HAMBURGER BUTTON
+  ========================================================== */
+
+  .menu-btn {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+
+    color: #fff;
+
+    font-size: 30px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    position: relative;
+
+    z-index: 3100;
+  }
+
+
+  .menu-btn:hover {
+    color: #fff;
+
+    background: rgba(255, 255, 255, .10);
+
+    border-radius: 8px;
+  }
+
+
+  /* =========================================================
+     MOBILE
+  ========================================================== */
+
+  @media (max-width: 768px) {
+
+    .teacher-navbar {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      width: 100%;
+
+      height: 65px;
+
+      padding: 0 12px;
+
+      /*
+       * IMPORTANT:
+       * Navbar must be above sidebar.
+       */
+      z-index: 3000;
+    }
+
+
+    /* =======================================================
+       HAMBURGER
+    ======================================================== */
+
+    .menu-btn {
+      display: flex !important;
+
+      visibility: visible !important;
+
+      opacity: 1 !important;
+
+      width: 44px;
+      height: 44px;
+
+      color: #fff !important;
+
+      background: transparent !important;
+
+      cursor: pointer !important;
+
+      flex-shrink: 0;
+
+      position: relative;
+
+      /*
+       * Higher than navbar contents.
+       */
+      z-index: 3100;
+    }
+
+
+    /* =======================================================
+       LEFT SECTION
+    ======================================================== */
+
+    .teacher-navbar-left {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      min-width: 0;
+    }
+
+
+    /* =======================================================
+       PAGE TITLE
+    ======================================================== */
+
+    .page-title {
+      font-size: 18px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+
+    /* =======================================================
+       WELCOME
+    ======================================================== */
+
+    .welcome-text {
+      display: block;
+
+      font-size: 11px;
+
+      max-width: 160px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+
+    /* =======================================================
+       RIGHT SIDE
+    ======================================================== */
+
+    .teacher-navbar-right {
+      gap: 5px;
+    }
+
+
+    /* Hide date on mobile */
+
+    .header-item {
+      display: none;
+    }
+
+
+    /* Notification */
+
+    .header-icon {
+      width: 38px;
+      height: 38px;
+    }
+
+  }
+
 </style>
+
+
+<!-- =========================================================
+     TEACHER NAVBAR
+========================================================== -->
 
 <nav class="teacher-navbar">
 
+
+  <!-- =======================================================
+       LEFT SIDE
+  ======================================================== -->
+
   <div class="teacher-navbar-left">
 
-    <button class="menu-btn d-lg-none"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#sidebar">
-      <i class="bi bi-list"></i>
-    </button>
+
+    <!-- =====================================================
+         MOBILE MENU BUTTON
+    ====================================================== -->
+
+    <button
+      type="button"
+      class="menu-btn"
+      id="teacherMenuBtn"
+      aria-label="Open teacher menu"
+      aria-expanded="false">☰</button>
+
+
+    <!-- =====================================================
+         TITLE + WELCOME
+    ====================================================== -->
 
     <div>
-      <h4 class="page-title mb-0">
-        <%= content_for?(:page_title) ? yield(:page_title) : "Teacher Dashboard" %>
+
+      <h4 class="page-title">
+
+        <%= content_for?(:page_title) ?
+              yield(:page_title) :
+              "Teacher Dashboard" %>
+
       </h4>
 
+
       <small class="welcome-text">
+
         Welcome,
-        <strong><%= current_user.name.presence || current_user.email %></strong>
+
+        <strong>
+          <%= current_user.name.presence || current_user.email %>
+        </strong>
+
       </small>
+
     </div>
 
   </div>
 
+
+  <!-- =======================================================
+       RIGHT SIDE
+  ======================================================== -->
+
   <div class="teacher-navbar-right">
 
+
+    <!-- DATE -->
+
     <div class="header-item">
+
       <i class="bi bi-calendar-event"></i>
-      <span><%= Date.today.strftime("%d %b %Y") %></span>
+
+      <span>
+        <%= Date.today.strftime("%d %b %Y") %>
+      </span>
+
     </div>
+
+
+    <!-- NOTIFICATION -->
 
     <div class="header-icon">
+
       <i class="bi bi-bell-fill"></i>
+
     </div>
-
-   <%#  <div class="dropdown">
-
-      <a href="#"
-         class="profile-btn text-decoration-none"
-         data-bs-toggle="dropdown">
-        <i class="bi bi-person-circle"></i>
-      </a> %>
-
-     <%# <%# <%# <%#  <ul class="dropdown-menu dropdown-menu-end shadow">
-
-        <li>
-          <h6 class="dropdown-header">
-            <%= current_user.name.presence || current_user.email %>
-       <%#    </h6>
-        </li>
-
-        <li><hr class="dropdown-divider"></li>
-
-        <li>
-          <%= link_to edit_user_registration_path,
-              class:"dropdown-item" do %>
-         <%#    <i class="bi bi-person me-2"></i>
-            My Profile
-          <% end %>
-        <%# </li>  %>
-
-       <%#  <li>
-          <%= button_to destroy_user_session_path,
-              method: :delete,
-              class:"dropdown-item text-danger border-0 bg-transparent w-100 text-start" do %>
-           <%#  <i class="bi bi-box-arrow-right me-2"></i>
-            Logout %>
-    <%#       <% end %>
-        <%# </li> %>
-
-      <%# </ul>  %>
-    <%# </div> %>
 
   </div>
 
 </nav>
+
+
+<!-- =========================================================
+     TEACHER MENU JAVASCRIPT
+========================================================== -->
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  /* =====================================================
+     PREVENT DUPLICATE INITIALIZATION
+  ===================================================== */
+
+  if (window.teacherHeaderInitialized) {
+    return;
+  }
+
+  window.teacherHeaderInitialized = true;
+
+
+  /* =====================================================
+     CLOSE SIDEBAR
+  ===================================================== */
+
+  function closeSidebar() {
+
+    const sidebar =
+      document.querySelector(
+        ".teacher-sidebar"
+      );
+
+    const button =
+      document.getElementById(
+        "teacherMenuBtn"
+      );
+
+
+    if (sidebar) {
+
+      sidebar.classList.remove(
+        "open"
+      );
+
+    }
+
+
+    if (button) {
+
+      button.classList.remove(
+        "active"
+      );
+
+
+      button.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+
+      button.setAttribute(
+        "aria-label",
+        "Open teacher menu"
+      );
+
+
+      button.textContent = "☰";
+
+    }
+
+  }
+
+
+  /* =====================================================
+     MENU BUTTON
+  ===================================================== */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const button =
+        event.target.closest(
+          "#teacherMenuBtn"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+
+      const sidebar =
+        document.querySelector(
+          ".teacher-sidebar"
+        );
+
+
+      if (!sidebar) {
+
+        console.error(
+          "Teacher sidebar not found."
+        );
+
+        return;
+
+      }
+
+
+      const isOpen =
+        sidebar.classList.contains(
+          "open"
+        );
+
+
+      if (isOpen) {
+
+        closeSidebar();
+
+      } else {
+
+        sidebar.classList.add(
+          "open"
+        );
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        button.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+
+        button.setAttribute(
+          "aria-label",
+          "Close teacher menu"
+        );
+
+
+        button.textContent = "×";
+
+
+        console.log(
+          "Teacher sidebar: OPEN"
+        );
+
+      }
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     CLICK OUTSIDE SIDEBAR
+  ===================================================== */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const sidebar =
+        event.target.closest(
+          ".teacher-sidebar"
+        );
+
+
+      const button =
+        event.target.closest(
+          "#teacherMenuBtn"
+        );
+
+
+      /*
+       * Do not close when clicking
+       * inside sidebar or menu button.
+       */
+
+      if (sidebar || button) {
+        return;
+      }
+
+
+      closeSidebar();
+
+    }
+  );
+
+
+  /* =====================================================
+     SIDEBAR LINKS
+  ===================================================== */
+
+  document.addEventListener(
+    "click",
+    function (event) {
+
+      const link =
+        event.target.closest(
+          ".teacher-sidebar a"
+        );
+
+
+      if (!link) {
+        return;
+      }
+
+
+      if (window.innerWidth <= 768) {
+
+        closeSidebar();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     ESCAPE KEY
+  ===================================================== */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (event.key !== "Escape") {
+        return;
+      }
+
+
+      closeSidebar();
+
+    }
+  );
+
+
+  /* =====================================================
+     RESIZE
+  ===================================================== */
+
+  window.addEventListener(
+    "resize",
+    function () {
+
+      if (window.innerWidth > 768) {
+
+        closeSidebar();
+
+      }
+
+    }
+  );
+
+})();
+
+</script>

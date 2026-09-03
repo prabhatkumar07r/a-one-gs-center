@@ -1,0 +1,239 @@
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
+
+<style>
+.ts-payment-failed-page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 15px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(239, 68, 68, .10),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(124, 58, 237, .10),
+      transparent 35%
+    ),
+    #f8f9ff;
+}
+
+.ts-failed-card {
+  width: 100%;
+  max-width: 600px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 24px;
+
+  padding: 45px 35px;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 50px rgba(79, 70, 229, .08);
+}
+
+.ts-failed-icon {
+  width: 82px;
+  height: 82px;
+
+  margin: 0 auto 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  font-size: 38px;
+}
+
+.ts-failed-card h1 {
+  color: #1e1b4b;
+
+  font-size: 32px;
+
+  font-weight: 900;
+
+  margin-bottom: 10px;
+}
+
+.ts-failed-card p {
+  color: #64748b;
+
+  line-height: 1.7;
+
+  margin-bottom: 25px;
+}
+
+.ts-failed-series {
+  padding: 18px;
+
+  margin-bottom: 25px;
+
+  border-radius: 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+}
+
+.ts-failed-series small {
+  display: block;
+
+  color: #64748b;
+
+  margin-bottom: 5px;
+}
+
+.ts-failed-series strong {
+  color: #312e81;
+
+  font-size: 20px;
+}
+
+.ts-failed-actions {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.ts-failed-btn {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 13px 15px;
+
+  border-radius: 11px;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+.ts-retry-btn {
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #6d28d9
+    );
+
+  color: #ffffff !important;
+}
+
+.ts-retry-btn:hover {
+  color: #ffffff !important;
+}
+
+.ts-back-btn {
+  background: #f1f5f9;
+
+  color: #475569;
+}
+
+.ts-back-btn:hover {
+  background: #e2e8f0;
+
+  color: #334155;
+}
+
+@media (max-width: 600px) {
+
+  .ts-failed-card {
+    padding: 35px 22px;
+  }
+
+  .ts-failed-card h1 {
+    font-size: 27px;
+  }
+
+  .ts-failed-actions {
+    grid-template-columns: 1fr;
+  }
+
+}
+</style>
+
+
+<div class="ts-payment-failed-page">
+
+  <div class="ts-failed-card">
+
+    <div class="ts-failed-icon">
+      <i class="fas fa-times"></i>
+    </div>
+
+
+    <h1>
+      Payment Failed
+    </h1>
+
+
+    <p>
+      We could not verify your payment.
+      Your Test Series access has not been activated.
+    </p>
+
+
+    <div class="ts-failed-series">
+
+      <small>
+        Test Series
+      </small>
+
+      <strong>
+        <%= @test_series.title %>
+      </strong>
+
+    </div>
+
+
+    <div class="ts-failed-actions">
+
+      <%= link_to test_series_path(@test_series),
+                  class: "ts-failed-btn ts-retry-btn" do %>
+
+        <i class="fas fa-redo"></i>
+
+        Try Again
+
+      <% end %>
+
+
+      <%= link_to test_series_index_path,
+                  class: "ts-failed-btn ts-back-btn" do %>
+
+        <i class="fas fa-arrow-left"></i>
+
+        Test Series
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

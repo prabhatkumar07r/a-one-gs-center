@@ -1,150 +1,326 @@
-
 class LearningController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course, only: [:show, :video, :complete_video]
-  
-  
 
+  # =========================================================
+  # COURSE LIST
+  # =========================================================
 
   def index
     @courses = Course.where(status: "Active")
   end
-def show
-  @course = Course.find(params[:id])
 
-  @playlists = @course.playlists
-                      .includes(:videos)
 
-  @notes = Note.joins(:playlist)
-               .where(playlists: { course_id: @course.id })
+  # =========================================================
+  # COURSE LEARNING PAGE
+  # =========================================================
 
-  @resources = Resource.joins(:playlist)
-                             .where(playlists: { course_id: @course.id })
-end
+  def show
+    @course = Course.find(params[:id])
 
- def video
-  @video = @course.videos.find(params[:id])
+    # =======================================================
+    # PLAYLISTS
+    # =======================================================
 
-  @playlist = @video.playlist
+    @playlists = @course.playlists
+                        .includes(
+                          :videos,
+                          :notes,
+                          :resources
+                        )
+                        .order(:position)
 
-  @playlists = @course.playlists
-                      .includes(:videos, :resources, :notes)
-                      .order(:position)
 
-  @unlocked_playlist_ids = unlocked_playlists
+    # =======================================================
+    # STUDY NOTES
+    # =======================================================
 
-  # Study Notes
-  @notes = @playlist.notes.order(created_at: :desc)
+    @notes = Note.joins(:playlist)
+                 .where(
+                   playlists: {
+                     course_id: @course.id
+                   }
+                 )
 
-  # Resources
-  @resources = @playlist.resources.order(created_at: :desc)
-  # ===============================
-# Overall Course Progress
-# ===============================
 
-@total_videos = @course.videos.count
+    # =======================================================
+    # RESOURCES
+    # =======================================================
 
-@completed_videos =
-  current_user.video_progresses
-              .joins(:video)
-              .where(
-                videos: {
-                  course_id: @course.id
-                },
-                completed: true
-              )
-              .count
+    @resources = Resource.joins(:playlist)
+                         .where(
+                           playlists: {
+                             course_id: @course.id
+                           }
+                         )
 
-@course_progress =
-  if @total_videos.zero?
-    0
-  else
-    ((@completed_videos.to_f / @total_videos) * 100).round
+
+    # =======================================================
+    # QUIZZES
+    # =======================================================
+
+    @quizzes = @course.quizzes
+                      .where(status: "Active")
+                      .includes(:questions)
+                      .order(created_at: :desc)
+
+
+    # =======================================================
+    # COURSE PROGRESS
+    # =======================================================
+
+    @total_videos = @course.videos.count
+
+    @completed_videos =
+      current_user.video_progresses
+                  .joins(:video)
+                  .where(
+                    videos: {
+                      course_id: @course.id
+                    },
+                    completed: true
+                  )
+                  .count
+
+
+    @progress =
+      if @total_videos.zero?
+        0
+      else
+        ((@completed_videos.to_f / @total_videos) * 100).round
+      end
+
+
+    # Your view uses @progress
+    @course_progress = @progress
+
+
+    # =======================================================
+    # CERTIFICATE
+    # =======================================================
+
     @certificate = Certificate.find_by(
-  user: current_user,
-  course: @course
-)
+      user: current_user,
+      course: @course
+    )
   end
 
 
-  videos = @course.videos.order(:position)
+  # =========================================================
+  # VIDEO
+  # =========================================================
 
-  current_index = videos.index(@video)
+  def video
+    @video = @course.videos.find(params[:id])
 
-  @previous_video =
-    current_index&.positive? ? videos[current_index - 1] : nil
+    @playlist = @video.playlist
 
-  @next_video =
-    current_index && current_index < videos.size - 1 ?
-      videos[current_index + 1] :
-      nil
-end
- def complete_video
-  @video = @course.videos.find(params[:id])
 
-  progress = current_user.video_progresses.find_or_initialize_by(video: @video)
+    # =======================================================
+    # PLAYLISTS
+    # =======================================================
 
-  progress.completed = true
-  progress.last_watched_at = Time.current
-  progress.save
+    @playlists = @course.playlists
+                        .includes(
+                          :videos,
+                          :resources,
+                          :notes
+                        )
+                        .order(:position)
 
-  generate_certificate(@course)
 
-  # Current playlist videos
-  playlist_videos = @video.playlist.videos.order(:position).to_a
+    # =======================================================
+    # UNLOCKED PLAYLISTS
+    # =======================================================
 
-  current_index = playlist_videos.index(@video)
+    @unlocked_playlist_ids = unlocked_playlists
 
-  # Next video inside current playlist
-  if current_index && current_index < playlist_videos.size - 1
 
-    next_video = playlist_videos[current_index + 1]
+    # =======================================================
+    # STUDY NOTES
+    # =======================================================
 
-    redirect_to learning_video_path(@course, next_video),
-                notice: "✅ Video completed!"
+    @notes = @playlist.notes
+                      .order(created_at: :desc)
 
-    return
+
+    # =======================================================
+    # RESOURCES
+    # =======================================================
+
+    @resources = @playlist.resources
+                         .order(created_at: :desc)
+
+
+    # =======================================================
+    # OVERALL COURSE PROGRESS
+    # =======================================================
+
+    @total_videos = @course.videos.count
+
+    @completed_videos =
+      current_user.video_progresses
+                  .joins(:video)
+                  .where(
+                    videos: {
+                      course_id: @course.id
+                    },
+                    completed: true
+                  )
+                  .count
+
+
+    @course_progress =
+      if @total_videos.zero?
+        0
+      else
+        ((@completed_videos.to_f / @total_videos) * 100).round
+      end
+
+
+    # =======================================================
+    # CERTIFICATE
+    # =======================================================
+
+    @certificate = Certificate.find_by(
+      user: current_user,
+      course: @course
+    )
+
+
+    # =======================================================
+    # PREVIOUS / NEXT VIDEO
+    # =======================================================
+
+    videos = @course.videos
+                    .order(:position)
+                    .to_a
+
+    current_index = videos.index(@video)
+
+
+    @previous_video =
+      if current_index&.positive?
+        videos[current_index - 1]
+      else
+        nil
+      end
+
+
+    @next_video =
+      if current_index && current_index < videos.size - 1
+        videos[current_index + 1]
+      else
+        nil
+      end
   end
 
-  # Current playlist finished
-  next_playlist = @course.playlists
-                         .where("position > ?", @video.playlist.position)
-                         .order(:position)
-                         .first
 
-  if next_playlist.present? && next_playlist.videos.any?
+  # =========================================================
+  # COMPLETE VIDEO
+  # =========================================================
 
-    redirect_to learning_video_path(
-      @course,
-      next_playlist.videos.order(:position).first
-    ),
-    notice: "🎉 Playlist completed! Starting next playlist."
+  def complete_video
+    @video = @course.videos.find(params[:id])
 
-  else
 
-    redirect_to learning_course_path(@course),
-                notice: "🎉 Congratulations! Course Completed."
+    # =======================================================
+    # SAVE VIDEO PROGRESS
+    # =======================================================
 
+    progress =
+      current_user.video_progresses
+                  .find_or_initialize_by(video: @video)
+
+    progress.completed = true
+    progress.last_watched_at = Time.current
+    progress.save!
+
+
+    # =======================================================
+    # GENERATE CERTIFICATE
+    # =======================================================
+
+    generate_certificate(@course)
+
+
+    # =======================================================
+    # CURRENT PLAYLIST VIDEOS
+    # =======================================================
+
+    playlist_videos =
+      @video.playlist.videos
+            .order(:position)
+            .to_a
+
+    current_index = playlist_videos.index(@video)
+
+
+    # =======================================================
+    # NEXT VIDEO IN SAME PLAYLIST
+    # =======================================================
+
+    if current_index &&
+       current_index < playlist_videos.size - 1
+
+      next_video = playlist_videos[current_index + 1]
+
+      redirect_to learning_video_path(
+        @course,
+        next_video
+      ),
+      notice: "✅ Video completed!"
+
+      return
+    end
+
+
+    # =======================================================
+    # CURRENT PLAYLIST COMPLETED
+    # =======================================================
+
+    next_playlist =
+      @course.playlists
+             .where(
+               "position > ?",
+               @video.playlist.position
+             )
+             .order(:position)
+             .first
+
+
+    # =======================================================
+    # START NEXT PLAYLIST
+    # =======================================================
+
+    if next_playlist.present? &&
+       next_playlist.videos.any?
+
+      redirect_to learning_video_path(
+        @course,
+        next_playlist.videos.order(:position).first
+      ),
+      notice: "🎉 Playlist completed! Starting next playlist."
+
+    else
+
+      redirect_to learning_course_path(@course),
+                  notice: "🎉 Congratulations! Course Completed."
+
+    end
   end
-end
-
-    private
 
 
+  # =========================================================
+  # PRIVATE
+  # =========================================================
+
+  private
 
 
-    def check_playlist_access
-  @video = @course.videos.find(params[:id])
-
-  playlist = @video.playlist
-
-  unlocked_ids = unlocked_playlists
-
-  unless unlocked_ids.include?(playlist.id)
-    redirect_to learning_course_path(@course),
-                alert: "Complete previous playlist first."
-  end
-end
+  # =========================================================
+  # SET COURSE
+  # =========================================================
 
   def set_course
     @course =
@@ -156,54 +332,100 @@ end
   end
 
 
+  # =========================================================
+  # PLAYLIST ACCESS
+  # =========================================================
 
-  def generate_certificate(course)
-    total = course.videos.count
+  def check_playlist_access
+    @video = @course.videos.find(params[:id])
 
-    completed =
-      current_user.video_progresses
-                  .joins(:video)
-                  .where(
-                    videos: { course_id: course.id },
-                    completed: true
-                  )
-                  .count
+    playlist = @video.playlist
 
-    return unless total.positive?
-    return unless completed == total
+    unlocked_ids = unlocked_playlists
 
-    Certificate.find_or_create_by(
-      user: current_user,
-      course: course
-    ) do |certificate|
-      certificate.issued_on = Date.current
+    unless unlocked_ids.include?(playlist.id)
+
+      redirect_to learning_course_path(@course),
+                  alert: "Complete previous playlist first."
+
     end
   end
 
-  # ===============================
-  # Unlock Playlists One by One
-  # ===============================
- def unlocked_playlists
-  unlocked = []
 
-  @playlists.each do |playlist|
+  # =========================================================
+  # GENERATE CERTIFICATE
+  # =========================================================
 
-    unlocked << playlist.id
+  def generate_certificate(course)
 
-    total = playlist.videos.count
+    total = course.videos.count
+
 
     completed =
       current_user.video_progresses
                   .joins(:video)
                   .where(
-                    videos: { playlist_id: playlist.id },
+                    videos: {
+                      course_id: course.id
+                    },
                     completed: true
                   )
                   .count
 
-    break unless completed == total
+
+    return unless total.positive?
+
+    return unless completed == total
+
+
+    Certificate.find_or_create_by!(
+      user: current_user,
+      course: course
+    ) do |certificate|
+
+      certificate.issued_on = Date.current
+
+    end
   end
 
-  unlocked
-end
+
+  # =========================================================
+  # UNLOCK PLAYLISTS ONE BY ONE
+  # =========================================================
+
+  def unlocked_playlists
+
+    unlocked = []
+
+
+    @playlists.each do |playlist|
+
+      # First playlist is always unlocked
+      unlocked << playlist.id
+
+
+      total = playlist.videos.count
+
+
+      completed =
+        current_user.video_progresses
+                    .joins(:video)
+                    .where(
+                      videos: {
+                        playlist_id: playlist.id
+                      },
+                      completed: true
+                    )
+                    .count
+
+
+      # Stop unlocking after the first incomplete playlist
+      break unless completed == total
+
+    end
+
+
+    unlocked
+  end
+
 end

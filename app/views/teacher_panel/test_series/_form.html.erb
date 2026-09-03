@@ -1,0 +1,2006 @@
+<%# ============================================================
+    TEACHER PANEL - TEST SERIES CREATE / EDIT FORM
+============================================================ %>
+
+<style>
+  /* ==========================================================
+     TEST SERIES FORM
+  ========================================================== */
+
+  .ts-form-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 10px 0 50px;
+  }
+
+  /* ==========================================================
+     HEADER
+  ========================================================== */
+
+  .ts-form-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .ts-form-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  .ts-form-breadcrumb a {
+    color: #a78bfa;
+    text-decoration: none;
+    transition: .2s ease;
+  }
+
+  .ts-form-breadcrumb a:hover {
+    color: #c4b5fd;
+  }
+
+  .ts-form-title {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+  }
+
+  .ts-form-subtitle {
+    margin: 7px 0 0;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
+  .ts-form-header-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(124, 58, 237, .25),
+      rgba(79, 70, 229, .20)
+    );
+    border: 1px solid rgba(167, 139, 250, .25);
+    color: #c4b5fd;
+    font-size: 23px;
+  }
+
+  /* ==========================================================
+     ALERT
+  ========================================================== */
+
+  .ts-error-box {
+    padding: 17px 19px;
+    margin-bottom: 24px;
+    border-radius: 14px;
+    background: rgba(239, 68, 68, .09);
+    border: 1px solid rgba(239, 68, 68, .25);
+    color: #fecaca;
+  }
+
+  .ts-error-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .ts-error-box ul {
+    margin: 0;
+    padding-left: 28px;
+    color: #fca5a5;
+    font-size: 13px;
+  }
+
+  /* ==========================================================
+     MAIN CARD
+  ========================================================== */
+
+  .ts-form-card {
+    overflow: hidden;
+    border-radius: 20px;
+    background: #111827;
+    border: 1px solid rgba(148, 163, 184, .12);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .18);
+  }
+
+  .ts-form-card-header {
+    padding: 21px 25px;
+    border-bottom: 1px solid rgba(148, 163, 184, .10);
+    background: rgba(255, 255, 255, .015);
+  }
+
+  .ts-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: #f8fafc;
+    font-size: 17px;
+    font-weight: 750;
+  }
+
+  .ts-section-title i {
+    color: #a78bfa;
+  }
+
+  .ts-section-description {
+    margin: 5px 0 0 29px;
+    color: #64748b;
+    font-size: 12px;
+  }
+
+  .ts-form-body {
+    padding: 28px 25px;
+  }
+
+  /* ==========================================================
+     FORM SECTIONS
+  ========================================================== */
+
+  .ts-form-section {
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, .09);
+  }
+
+  .ts-form-section:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .ts-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .ts-section-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(124, 58, 237, .14);
+    border: 1px solid rgba(167, 139, 250, .16);
+    color: #c4b5fd;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .ts-section-heading h3 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 16px;
+    font-weight: 750;
+  }
+
+  .ts-section-heading p {
+    margin: 2px 0 0;
+    color: #64748b;
+    font-size: 12px;
+  }
+
+  /* ==========================================================
+     FORM GROUP
+  ========================================================== */
+
+  .ts-field {
+    margin-bottom: 20px;
+  }
+
+  .ts-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .ts-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .ts-required {
+    color: #f87171;
+  }
+
+  .ts-input,
+  .ts-textarea,
+  .ts-select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 11px;
+    outline: none;
+    color: #f8fafc;
+    background: #0b1220;
+    border: 1px solid rgba(148, 163, 184, .16);
+    font-size: 14px;
+    transition:
+      border-color .2s ease,
+      box-shadow .2s ease,
+      background .2s ease;
+  }
+
+  .ts-input::placeholder,
+  .ts-textarea::placeholder {
+    color: #475569;
+  }
+
+  .ts-input:hover,
+  .ts-textarea:hover,
+  .ts-select:hover {
+    border-color: rgba(167, 139, 250, .28);
+  }
+
+  .ts-input:focus,
+  .ts-textarea:focus,
+  .ts-select:focus {
+    border-color: #8b5cf6;
+    background: #0d1525;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, .12);
+  }
+
+  .ts-textarea {
+    min-height: 125px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .ts-select option {
+    background: #111827;
+    color: #f8fafc;
+  }
+
+  .ts-help {
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* ==========================================================
+     INPUT WITH ICON
+  ========================================================== */
+
+  .ts-input-wrapper {
+    position: relative;
+  }
+
+  .ts-input-wrapper > i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+  }
+
+  .ts-input-wrapper .ts-input {
+    padding-left: 40px;
+  }
+
+  /* ==========================================================
+     PRICE INPUT
+  ========================================================== */
+
+  .ts-price-wrapper {
+    position: relative;
+  }
+
+  .ts-price-symbol {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-weight: 700;
+    pointer-events: none;
+  }
+
+  .ts-price-wrapper .ts-input {
+    padding-left: 32px;
+  }
+
+  /* ==========================================================
+     DISCOUNT PREVIEW
+  ========================================================== */
+
+  .ts-price-preview {
+    display: none;
+    margin-top: 15px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, .07);
+    border: 1px solid rgba(16, 185, 129, .18);
+  }
+
+  .ts-price-preview.active {
+    display: block;
+  }
+
+  .ts-price-preview-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 5px;
+    color: #94a3b8;
+    font-size: 12px;
+  }
+
+  .ts-price-preview-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .ts-price-preview strong {
+    color: #34d399;
+    font-size: 14px;
+  }
+
+  /* ==========================================================
+     REGISTRATION TOGGLE
+  ========================================================== */
+
+  .ts-toggle-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 18px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, .025);
+    border: 1px solid rgba(148, 163, 184, .10);
+  }
+
+  .ts-toggle-content strong {
+    display: block;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .ts-toggle-content span {
+    display: block;
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 11px;
+  }
+
+  .ts-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  .ts-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .ts-slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    border-radius: 50px;
+    background: #334155;
+    transition: .25s ease;
+  }
+
+  .ts-slider::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: #f8fafc;
+    transition: .25s ease;
+  }
+
+  .ts-switch input:checked + .ts-slider {
+    background: #7c3aed;
+  }
+
+  .ts-switch input:checked + .ts-slider::before {
+    transform: translateX(22px);
+  }
+
+  /* ==========================================================
+     IMAGE UPLOAD
+  ========================================================== */
+
+  .ts-upload-area {
+    position: relative;
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 15px;
+    border: 1px dashed rgba(167, 139, 250, .28);
+    background: rgba(124, 58, 237, .025);
+    transition: .2s ease;
+  }
+
+  .ts-upload-area:hover,
+  .ts-upload-area.dragover {
+    border-color: #8b5cf6;
+    background: rgba(124, 58, 237, .07);
+  }
+
+  .ts-upload-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: rgba(124, 58, 237, .13);
+    color: #a78bfa;
+    font-size: 20px;
+  }
+
+  .ts-upload-title {
+    margin-bottom: 4px;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .ts-upload-help {
+    color: #64748b;
+    font-size: 11px;
+  }
+
+  .ts-file-input {
+    margin-top: 15px;
+    width: 100%;
+    color: #94a3b8;
+    font-size: 12px;
+  }
+
+  .ts-file-input::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 8px;
+    color: #ddd6fe;
+    background: rgba(124, 58, 237, .18);
+    cursor: pointer;
+    font-weight: 650;
+  }
+
+  /* ==========================================================
+     CURRENT IMAGE
+  ========================================================== */
+
+  .ts-current-image {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, .025);
+    border: 1px solid rgba(148, 163, 184, .10);
+  }
+
+  .ts-current-image-label {
+    margin-bottom: 9px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  .ts-current-image img {
+    display: block;
+    width: 180px;
+    height: 105px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, .14);
+  }
+
+  /* ==========================================================
+     LIVE PREVIEW
+  ========================================================== */
+
+  .ts-live-preview {
+    position: sticky;
+    top: 20px;
+    padding: 18px;
+    border-radius: 17px;
+    background: #0b1220;
+    border: 1px solid rgba(148, 163, 184, .11);
+  }
+
+  .ts-preview-label {
+    margin-bottom: 12px;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .ts-preview-card {
+    overflow: hidden;
+    border-radius: 13px;
+    background: #111827;
+    border: 1px solid rgba(148, 163, 184, .11);
+  }
+
+  .ts-preview-image {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(124, 58, 237, .30),
+        rgba(30, 41, 59, .75)
+      );
+    color: #c4b5fd;
+    font-size: 32px;
+    overflow: hidden;
+  }
+
+  .ts-preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  .ts-preview-content {
+    padding: 15px;
+  }
+
+  .ts-preview-status {
+    display: inline-flex;
+    padding: 4px 8px;
+    margin-bottom: 9px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, .10);
+    color: #6ee7b7;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .ts-preview-title {
+    margin-bottom: 5px;
+    color: #f8fafc;
+    font-size: 15px;
+    font-weight: 750;
+    word-break: break-word;
+  }
+
+  .ts-preview-exam {
+    color: #64748b;
+    font-size: 11px;
+  }
+
+  .ts-preview-price {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-top: 13px;
+  }
+
+  .ts-preview-price strong {
+    color: #f8fafc;
+    font-size: 18px;
+  }
+
+  .ts-preview-price del {
+    color: #64748b;
+    font-size: 11px;
+  }
+
+  /* ==========================================================
+     FORM FOOTER
+  ========================================================== */
+
+  .ts-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px 25px;
+    background: rgba(255, 255, 255, .018);
+    border-top: 1px solid rgba(148, 163, 184, .10);
+  }
+
+  .ts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 43px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease,
+      background .2s ease;
+  }
+
+  .ts-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .ts-btn-secondary {
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, .04);
+    border-color: rgba(148, 163, 184, .14);
+  }
+
+  .ts-btn-secondary:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, .07);
+  }
+
+  .ts-btn-primary {
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+    box-shadow: 0 8px 22px rgba(99, 102, 241, .20);
+  }
+
+  .ts-btn-primary:hover {
+    color: #fff;
+    box-shadow: 0 11px 27px rgba(99, 102, 241, .30);
+  }
+
+  .ts-btn-primary.loading {
+    opacity: .7;
+    pointer-events: none;
+  }
+
+  /* ==========================================================
+     RESPONSIVE
+  ========================================================== */
+
+  @media (max-width: 991px) {
+    .ts-form-page {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .ts-live-preview {
+      position: static;
+      margin-top: 24px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ts-form-header {
+      align-items: center;
+    }
+
+    .ts-form-title {
+      font-size: 24px;
+    }
+
+    .ts-form-header-icon {
+      width: 48px;
+      height: 48px;
+      font-size: 19px;
+    }
+
+    .ts-form-body {
+      padding: 21px 17px;
+    }
+
+    .ts-form-card-header {
+      padding: 18px;
+    }
+
+    .ts-form-footer {
+      padding: 17px;
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .ts-btn {
+      width: 100%;
+    }
+
+    .ts-toggle-box {
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ts-form-title {
+      font-size: 21px;
+    }
+
+    .ts-section-heading {
+      align-items: flex-start;
+    }
+
+    .ts-section-number {
+      flex-shrink: 0;
+    }
+  }
+</style>
+
+
+<div class="ts-form-page">
+
+  <!-- ========================================================
+       HEADER
+  ========================================================= -->
+
+  <div class="ts-form-header">
+
+    <div>
+
+      <div class="ts-form-breadcrumb">
+
+        <%= link_to "Test Series",
+              teacher_panel_test_series_index_path %>
+
+        <i class="fas fa-chevron-right"
+           style="font-size: 9px;"></i>
+
+        <span>
+          <%= @test_series.persisted? ? "Edit" : "Create" %>
+        </span>
+
+      </div>
+
+      <h1 class="ts-form-title">
+        <%= @test_series.persisted? ?
+              "Edit Test Series" :
+              "Create Test Series" %>
+      </h1>
+
+      <p class="ts-form-subtitle">
+        <%= @test_series.persisted? ?
+              "Update the information, pricing and settings of your Test Series." :
+              "Create a new Test Series and make it available for your students." %>
+      </p>
+
+    </div>
+
+    <div class="ts-form-header-icon">
+      <i class="fas fa-layer-group"></i>
+    </div>
+
+  </div>
+
+
+  <!-- ========================================================
+       ERRORS
+  ========================================================= -->
+
+  <% if @test_series.errors.any? %>
+
+    <div class="ts-error-box">
+
+      <div class="ts-error-title">
+
+        <i class="fas fa-exclamation-triangle"></i>
+
+        <span>
+          Please fix the following
+          <%= pluralize(@test_series.errors.count, "error") %>.
+        </span>
+
+      </div>
+
+      <ul>
+        <% @test_series.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- ========================================================
+       MAIN
+  ========================================================= -->
+
+  <%= form_with(
+        model: [:teacher_panel, @test_series],
+        local: true,
+        html: {
+          multipart: true,
+          id: "testSeriesForm"
+        }
+      ) do |form| %>
+
+    <div class="ts-form-card">
+
+      <div class="ts-form-card-header">
+
+        <h2 class="ts-section-title">
+          <i class="fas fa-pen-to-square"></i>
+          Test Series Details
+        </h2>
+
+        <p class="ts-section-description">
+          Configure the basic information students will see.
+        </p>
+
+      </div>
+
+
+      <div class="ts-form-body">
+
+        <div class="row g-4">
+
+          <!-- ==================================================
+               LEFT
+          =================================================== -->
+
+          <div class="col-lg-8">
+
+            <!-- =================================================
+                 SECTION 1
+            ================================================== -->
+
+            <div class="ts-form-section">
+
+              <div class="ts-section-heading">
+
+                <div class="ts-section-number">
+                  01
+                </div>
+
+                <div>
+                  <h3>Basic Information</h3>
+                  <p>Tell students what this Test Series is about.</p>
+                </div>
+
+              </div>
+
+
+              <!-- TITLE -->
+
+              <div class="ts-field">
+
+                <%= form.label :title,
+                      class: "ts-label" do %>
+
+                  Test Series Title
+                  <span class="ts-required">*</span>
+
+                <% end %>
+
+                <%= form.text_field :title,
+                      class: "ts-input",
+                      id: "testSeriesTitle",
+                      placeholder: "e.g. BPSC General Studies Test Series",
+                      autocomplete: "off",
+                      required: true %>
+
+              </div>
+
+
+              <!-- DESCRIPTION -->
+
+              <div class="ts-field">
+
+                <%= form.label :description,
+                      "Description",
+                      class: "ts-label" %>
+
+                <%= form.text_area :description,
+                      class: "ts-textarea",
+                      id: "testSeriesDescription",
+                      placeholder: "Write a short description of this Test Series..." %>
+
+                <div class="ts-help">
+                  Give students a clear idea about the contents and purpose of this Test Series.
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 2
+            ================================================== -->
+
+            <div class="ts-form-section">
+
+              <div class="ts-section-heading">
+
+                <div class="ts-section-number">
+                  02
+                </div>
+
+                <div>
+                  <h3>Exam Information</h3>
+                  <p>Specify the exam and learning details.</p>
+                </div>
+
+              </div>
+
+
+              <div class="row g-3">
+
+                <!-- EXAM -->
+
+                <div class="col-md-6">
+
+                  <div class="ts-field">
+
+                    <%= form.label :exam_name,
+                          "Exam Name",
+                          class: "ts-label" %>
+
+                    <div class="ts-input-wrapper">
+
+                      <i class="fas fa-graduation-cap"></i>
+
+                      <%= form.text_field :exam_name,
+                            class: "ts-input",
+                            id: "examName",
+                            placeholder: "e.g. BPSC" %>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- MODE -->
+
+                <div class="col-md-6">
+
+                  <div class="ts-field">
+
+                    <%= form.label :mode,
+                          "Mode",
+                          class: "ts-label" %>
+
+                    <div class="ts-input-wrapper">
+
+                      <i class="fas fa-laptop"></i>
+
+                      <%= form.text_field :mode,
+                            class: "ts-input",
+                            id: "testMode",
+                            placeholder: "e.g. Online" %>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- LANGUAGE -->
+
+                <div class="col-md-6">
+
+                  <div class="ts-field">
+
+                    <%= form.label :language,
+                          "Language",
+                          class: "ts-label" %>
+
+                    <div class="ts-input-wrapper">
+
+                      <i class="fas fa-language"></i>
+
+                      <%= form.text_field :language,
+                            class: "ts-input",
+                            id: "testLanguage",
+                            placeholder: "e.g. Hindi & English" %>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="col-md-6">
+
+                  <div class="ts-field">
+
+                    <%= form.label :status,
+                          "Status",
+                          class: "ts-label" %>
+
+                    <%= form.select :status,
+                          [
+                            ["Active", "Active"],
+                            ["Inactive", "Inactive"]
+                          ],
+                          {},
+                          class: "ts-select",
+                          id: "testStatus" %>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+                                                                 <!-- =================================================
+     SECTION 3 - PRICING
+================================================== -->
+
+<div class="ts-form-section">
+
+  <div class="ts-section-heading">
+
+    <div class="ts-section-number">
+      03
+    </div>
+
+    <div>
+      <h3>Pricing</h3>
+      <p>Enter the original and selling price. Discount is calculated automatically.</p>
+    </div>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    <!-- ORIGINAL PRICE -->
+
+    <div class="col-md-4">
+
+      <div class="ts-field">
+
+        <%= form.label :original_price,
+              "Original Price",
+              class: "ts-label" %>
+
+        <div class="ts-price-wrapper">
+
+          <span class="ts-price-symbol">₹</span>
+
+          <%= form.number_field :original_price,
+                class: "ts-input",
+                id: "originalPrice",
+                min: 0,
+                step: "0.01",
+                placeholder: "1000" %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- SELLING PRICE -->
+
+    <div class="col-md-4">
+
+      <div class="ts-field">
+
+        <%= form.label :price,
+              "Selling Price",
+              class: "ts-label" %>
+
+        <div class="ts-price-wrapper">
+
+          <span class="ts-price-symbol">₹</span>
+
+          <%= form.number_field :price,
+                class: "ts-input",
+                id: "sellingPrice",
+                min: 0,
+                step: "0.01",
+                placeholder: "750" %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- AUTOMATIC DISCOUNT -->
+
+    <div class="col-md-4">
+
+      <div class="ts-field">
+
+        <%= form.label :discount,
+              "Discount (%)",
+              class: "ts-label" %>
+
+        <div class="ts-input-wrapper">
+
+          <i class="fas fa-percent"></i>
+
+          <%= form.number_field :discount,
+                class: "ts-input",
+                id: "discountPercent",
+                readonly: true,
+                step: "1" %>
+
+        </div>
+
+        <div class="ts-help">
+          Automatically calculated from Original Price and Selling Price.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRICE PREVIEW -->
+
+  <div class="ts-price-preview"
+       id="pricePreview">
+
+    <div class="ts-price-preview-row">
+
+      <span>Original Price</span>
+
+      <strong id="previewOriginal">
+        ₹0
+      </strong>
+
+    </div>
+
+
+    <div class="ts-price-preview-row">
+
+      <span>Discount</span>
+
+      <strong id="previewDiscount">
+        0%
+      </strong>
+
+    </div>
+
+
+    <div class="ts-price-preview-row">
+
+      <span>Selling Price</span>
+
+      <strong id="previewSelling">
+        ₹0
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+            <!-- =================================================
+                 SECTION 4
+            ================================================== -->
+
+            <div class="ts-form-section">
+
+              <div class="ts-section-heading">
+
+                <div class="ts-section-number">
+                  04
+                </div>
+
+                <div>
+                  <h3>Registration</h3>
+                  <p>Control whether students can purchase this series.</p>
+                </div>
+
+              </div>
+
+
+              <div class="ts-toggle-box">
+
+                <div class="ts-toggle-content">
+
+                  <strong>
+                    Registration Ended
+                  </strong>
+
+                  <span>
+                    Enable this when you no longer want to accept new purchases.
+                  </span>
+
+                </div>
+
+
+                <label class="ts-switch">
+
+                  <%= form.check_box :registration_ended %>
+
+                  <span class="ts-slider"></span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECTION 5
+            ================================================== -->
+
+            <div class="ts-form-section">
+
+              <div class="ts-section-heading">
+
+                <div class="ts-section-number">
+                  05
+                </div>
+
+                <div>
+                  <h3>Test Series Image</h3>
+                  <p>Upload an image that represents this Test Series.</p>
+                </div>
+
+              </div>
+
+
+              <div class="ts-upload-area"
+                   id="uploadArea">
+
+                <div class="ts-upload-icon">
+
+                  <i class="fas fa-cloud-arrow-up"></i>
+
+                </div>
+
+                <div class="ts-upload-title">
+                  Upload Test Series Image
+                </div>
+
+                <div class="ts-upload-help">
+                  PNG, JPG or WEBP recommended
+                </div>
+
+                <%= form.file_field :image,
+                      class: "ts-file-input",
+                      id: "testSeriesImage",
+                      accept: "image/png,image/jpeg,image/webp" %>
+
+              </div>
+
+
+              <% if @test_series.image.attached? %>
+
+                <div class="ts-current-image">
+
+                  <div class="ts-current-image-label">
+                    Current Image
+                  </div>
+
+                  <%= image_tag @test_series.image,
+                        id: "currentTestSeriesImage" %>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+
+          <!-- ==================================================
+               RIGHT - LIVE PREVIEW
+          =================================================== -->
+
+          <div class="col-lg-4">
+
+            <div class="ts-live-preview">
+
+              <div class="ts-preview-label">
+                Live Preview
+              </div>
+
+
+              <div class="ts-preview-card">
+
+                <div class="ts-preview-image"
+                     id="previewImageContainer">
+
+                  <i class="fas fa-layer-group"
+                     id="previewImageIcon"></i>
+
+                  <img id="previewImage"
+                       src=""
+                       alt="Preview">
+
+                </div>
+
+
+                <div class="ts-preview-content">
+
+                  <span class="ts-preview-status"
+                        id="previewStatus">
+                    Active
+                  </span>
+
+
+                  <div class="ts-preview-title"
+                       id="previewTitle">
+
+                    Test Series Title
+
+                  </div>
+
+
+                  <div class="ts-preview-exam"
+                       id="previewExam">
+
+                    Exam Name
+
+                  </div>
+
+
+                  <div class="ts-preview-price">
+
+                    <strong id="previewCardPrice">
+                      ₹0
+                    </strong>
+
+                    <del id="previewCardOriginal">
+                      ₹0
+                    </del>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           FOOTER
+      ======================================================= -->
+
+      <div class="ts-form-footer">
+
+        <%= link_to teacher_panel_test_series_index_path,
+              class: "ts-btn ts-btn-secondary" do %>
+
+          <i class="fas fa-arrow-left"></i>
+          Cancel
+
+        <% end %>
+
+
+        <%= form.submit(
+              @test_series.persisted? ?
+                "Update Test Series" :
+                "Create Test Series",
+              class: "ts-btn ts-btn-primary",
+              id: "testSeriesSubmit"
+            ) %>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    /* ========================================================
+       ELEMENTS
+    ======================================================== */
+
+    const form = document.getElementById("testSeriesForm");
+
+    if (!form) return;
+
+    const titleInput =
+      document.getElementById("testSeriesTitle");
+
+    const examInput =
+      document.getElementById("examName");
+
+    const statusInput =
+      document.getElementById("testStatus");
+
+    const originalPriceInput =
+      document.getElementById("originalPrice");
+
+    const sellingPriceInput =
+      document.getElementById("sellingPrice");
+
+    const discountInput =
+      document.getElementById("discountPercent");
+
+    const imageInput =
+      document.getElementById("testSeriesImage");
+
+    const uploadArea =
+      document.getElementById("uploadArea");
+
+
+    /* ========================================================
+       LIVE TITLE
+    ======================================================== */
+
+    if (titleInput) {
+
+      titleInput.addEventListener("input", function () {
+
+        const preview =
+          document.getElementById("previewTitle");
+
+        if (!preview) return;
+
+        preview.textContent =
+          this.value.trim() ||
+          "Test Series Title";
+
+      });
+
+    }
+
+
+    /* ========================================================
+       LIVE EXAM
+    ======================================================== */
+
+    if (examInput) {
+
+      examInput.addEventListener("input", function () {
+
+        const preview =
+          document.getElementById("previewExam");
+
+        if (!preview) return;
+
+        preview.textContent =
+          this.value.trim() ||
+          "Exam Name";
+
+      });
+
+    }
+
+
+    /* ========================================================
+       LIVE STATUS
+    ======================================================== */
+
+    if (statusInput) {
+
+      statusInput.addEventListener("change", function () {
+
+        const preview =
+          document.getElementById("previewStatus");
+
+        if (!preview) return;
+
+        preview.textContent =
+          this.options[this.selectedIndex].text;
+
+      });
+
+    }
+
+
+    /* ========================================================
+       PRICE PREVIEW
+    ======================================================== */
+  /* ========================================================
+   AUTOMATIC DISCOUNT CALCULATION
+======================================================== */
+
+const originalPriceInput =
+  document.getElementById("originalPrice");
+
+const sellingPriceInput =
+  document.getElementById("sellingPrice");
+
+const discountInput =
+  document.getElementById("discountPercent");
+
+
+function calculateDiscount() {
+
+  const original =
+    parseFloat(originalPriceInput?.value) || 0;
+
+  const selling =
+    parseFloat(sellingPriceInput?.value) || 0;
+
+  let discount = 0;
+
+
+  /*
+   * Calculate discount only when:
+   * Original price is greater than 0
+   * Selling price is greater than or equal to 0
+   */
+
+  if (original > 0 && selling >= 0) {
+
+    discount =
+      ((original - selling) / original) * 100;
+
+  }
+
+
+  /*
+   * Don't allow negative discount.
+   * If selling price is greater than original price,
+   * discount becomes 0.
+   */
+
+  if (discount < 0) {
+    discount = 0;
+  }
+
+
+  /*
+   * Don't allow more than 100%.
+   */
+
+  if (discount > 100) {
+    discount = 100;
+  }
+
+
+  /*
+   * Round to 2 decimal places.
+   */
+
+  discount =
+    Math.round(discount);
+
+
+  /*
+   * Put calculated value into Rails form field.
+   */
+
+  if (discountInput) {
+
+    discountInput.value =
+      discount;
+
+  }
+
+
+  updatePricePreview(
+    original,
+    selling,
+    discount
+  );
+
+}
+
+
+/* ========================================================
+   PRICE PREVIEW
+======================================================== */
+
+function updatePricePreview(
+  original,
+  selling,
+  discount
+) {
+
+  const preview =
+    document.getElementById("pricePreview");
+
+  if (
+    original > 0 ||
+    selling > 0
+  ) {
+
+    preview?.classList.add("active");
+
+  } else {
+
+    preview?.classList.remove("active");
+
+  }
+
+
+  const originalText =
+    document.getElementById("previewOriginal");
+
+  const discountText =
+    document.getElementById("previewDiscount");
+
+  const sellingText =
+    document.getElementById("previewSelling");
+
+  const cardPrice =
+    document.getElementById("previewCardPrice");
+
+  const cardOriginal =
+    document.getElementById("previewCardOriginal");
+
+
+  if (originalText) {
+
+    originalText.textContent =
+      "₹" + original.toLocaleString("en-IN");
+
+  }
+
+
+  if (discountText) {
+
+    discountText.textContent =
+      discount + "%";
+
+  }
+
+
+  if (sellingText) {
+
+    sellingText.textContent =
+      "₹" + selling.toLocaleString("en-IN");
+
+  }
+
+
+  if (cardPrice) {
+
+    cardPrice.textContent =
+      "₹" + selling.toLocaleString("en-IN");
+
+  }
+
+
+  if (cardOriginal) {
+
+    if (
+      original > 0 &&
+      original > selling
+    ) {
+
+      cardOriginal.textContent =
+        "₹" + original.toLocaleString("en-IN");
+
+      cardOriginal.style.display =
+        "inline";
+
+    } else {
+
+      cardOriginal.style.display =
+        "none";
+
+    }
+
+  }
+
+}
+
+
+/* ========================================================
+   LISTEN FOR PRICE CHANGES
+======================================================== */
+
+if (originalPriceInput) {
+
+  originalPriceInput.addEventListener(
+    "input",
+    calculateDiscount
+  );
+
+}
+
+
+if (sellingPriceInput) {
+
+  sellingPriceInput.addEventListener(
+    "input",
+    calculateDiscount
+  );
+
+}
+
+
+/* ========================================================
+   INITIAL CALCULATION
+   Important for EDIT page
+======================================================== */
+
+calculateDiscount();
+
+
+    /* ========================================================
+       IMAGE PREVIEW
+    ======================================================== */
+
+    if (imageInput) {
+
+      imageInput.addEventListener("change", function () {
+
+        const file =
+          this.files && this.files[0];
+
+        if (!file) return;
+
+
+        if (!file.type.startsWith("image/")) {
+
+          alert("Please select a valid image file.");
+
+          this.value = "";
+
+          return;
+
+        }
+
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload = function (event) {
+
+          const previewImage =
+            document.getElementById("previewImage");
+
+          const previewIcon =
+            document.getElementById("previewImageIcon");
+
+          if (!previewImage) return;
+
+
+          previewImage.src =
+            event.target.result;
+
+          previewImage.style.display =
+            "block";
+
+          if (previewIcon) {
+
+            previewIcon.style.display =
+              "none";
+
+          }
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+      });
+
+    }
+
+
+    /* ========================================================
+       DRAG & DROP IMAGE
+    ======================================================== */
+
+    if (uploadArea && imageInput) {
+
+      [
+        "dragenter",
+        "dragover"
+      ].forEach(function (eventName) {
+
+        uploadArea.addEventListener(
+          eventName,
+          function (event) {
+
+            event.preventDefault();
+
+            uploadArea.classList.add(
+              "dragover"
+            );
+
+          }
+        );
+
+      });
+
+
+      [
+        "dragleave",
+        "drop"
+      ].forEach(function (eventName) {
+
+        uploadArea.addEventListener(
+          eventName,
+          function (event) {
+
+            event.preventDefault();
+
+            uploadArea.classList.remove(
+              "dragover"
+            );
+
+          }
+        );
+
+      });
+
+
+      uploadArea.addEventListener(
+        "drop",
+        function (event) {
+
+          const files =
+            event.dataTransfer.files;
+
+          if (!files || !files.length) return;
+
+          const file = files[0];
+
+          if (!file.type.startsWith("image/")) {
+
+            alert("Please drop a valid image file.");
+
+            return;
+
+          }
+
+
+          try {
+
+            const dataTransfer =
+              new DataTransfer();
+
+            dataTransfer.items.add(file);
+
+            imageInput.files =
+              dataTransfer.files;
+
+            imageInput.dispatchEvent(
+              new Event("change", {
+                bubbles: true
+              })
+            );
+
+          } catch (error) {
+
+            console.error(
+              "Unable to set dropped file:",
+              error
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* ========================================================
+       SUBMIT BUTTON
+    ======================================================== */
+
+    form.addEventListener("submit", function () {
+
+      const submitButton =
+        document.getElementById(
+          "testSeriesSubmit"
+        );
+
+      if (!submitButton) return;
+
+
+      submitButton.classList.add(
+        "loading"
+      );
+
+      submitButton.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> ' +
+        (
+          <%= @test_series.persisted? ? "'Updating...'" : "'Creating...'" %>
+        );
+
+    });
+
+
+    /* ========================================================
+       PREVENT NEGATIVE PRICES
+    ======================================================== */
+
+    [
+      originalPriceInput,
+      sellingPriceInput,
+      discountInput
+    ].forEach(function (input) {
+
+      if (!input) return;
+
+      input.addEventListener(
+        "input",
+        function () {
+
+          if (parseFloat(this.value) < 0) {
+            this.value = 0;
+          }
+
+        }
+      );
+
+    });
+
+
+    /* ========================================================
+       DISCOUNT LIMIT
+    ======================================================== */
+
+    if (discountInput) {
+
+      discountInput.addEventListener(
+        "input",
+        function () {
+
+          let value =
+            parseFloat(this.value);
+
+          if (isNaN(value)) return;
+
+          if (value > 100) {
+            this.value = 100;
+          }
+
+          if (value < 0) {
+            this.value = 0;
+          }
+
+        }
+      );
+
+    }
+
+  });
+</script>

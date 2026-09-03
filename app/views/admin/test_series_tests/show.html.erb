@@ -1,0 +1,633 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — TEST SHOW PAGE
+   ========================================================= */
+
+/* =========================================================
+   INFO GRID
+   ========================================================= */
+
+.admin-ts-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+
+  margin-bottom: 28px;
+}
+
+.admin-ts-info-card {
+  padding: 18px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
+}
+
+.admin-ts-info-card span {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #7b8194;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-ts-info-card strong {
+  display: block;
+
+  color: #292938;
+
+  font-size: 17px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   QUESTION LIST
+   ========================================================= */
+
+.admin-ts-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  width: 100%;
+}
+
+/* =========================================================
+   QUESTION CARD
+   ========================================================= */
+
+.admin-ts-question-card {
+  overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+
+  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-ts-question-card:hover {
+  border-color: #d9d6ff;
+  box-shadow: 0 7px 20px rgba(25, 25, 50, 0.06);
+}
+
+/* =========================================================
+   QUESTION TOP
+   ========================================================= */
+
+.admin-ts-question-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 18px;
+
+  background: #fafaff;
+  border-bottom: 1px solid #eef0f4;
+}
+
+.admin-ts-question-top strong {
+  color: #4f46e5;
+
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.admin-ts-question-top span {
+  padding: 5px 9px;
+
+  color: #6b7280;
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+
+  font-size: 11px;
+  font-weight: 650;
+}
+
+/* =========================================================
+   QUESTION TEXT
+   ========================================================= */
+
+.admin-ts-question-text {
+  padding: 18px 18px 7px;
+
+  color: #252536;
+
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* =========================================================
+   HINDI QUESTION
+   ========================================================= */
+
+.admin-ts-question-hindi {
+  padding: 2px 18px 16px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.admin-ts-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+
+  padding: 0 18px 17px;
+}
+
+.admin-ts-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-height: 46px;
+  padding: 9px 11px;
+
+  color: #4b5563;
+  background: #fafafa;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  font-size: 13px;
+  line-height: 1.45;
+
+  word-break: break-word;
+}
+
+.admin-ts-option > strong {
+  flex: 0 0 auto;
+
+  color: #6366f1;
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.admin-ts-option > span:not(.admin-ts-correct) {
+  min-width: 0;
+}
+
+/* =========================================================
+   CORRECT OPTION
+   ========================================================= */
+
+.admin-ts-option.correct {
+  color: #166534;
+
+  background: #f6fff8;
+  border-color: #bbebc4;
+}
+
+.admin-ts-option.correct > strong {
+  color: #15803d;
+}
+
+.admin-ts-correct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: auto;
+  padding: 4px 7px;
+
+  color: #15803d;
+  background: #ecfdf3;
+
+  border: 1px solid #bbebc4;
+  border-radius: 5px;
+
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   QUESTION ACTIONS
+   ========================================================= */
+
+.admin-ts-question-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+
+  padding: 12px 18px;
+
+  background: #fafbfc;
+  border-top: 1px solid #eef0f4;
+}
+
+.admin-ts-question-actions form {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-ts-question-actions .admin-ts-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 33px;
+  padding: 6px 10px;
+
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* View */
+
+.admin-ts-question-actions .admin-ts-action.view {
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.admin-ts-question-actions .admin-ts-action.view:hover {
+  color: #1d4ed8;
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+/* Edit */
+
+.admin-ts-question-actions .admin-ts-action.edit {
+  color: #4f46e5;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+}
+
+.admin-ts-question-actions .admin-ts-action.edit:hover {
+  color: #4338ca;
+  background: #ede9fe;
+  border-color: #c4b5fd;
+}
+
+/* Delete */
+
+.admin-ts-question-actions .admin-ts-action.delete {
+  color: #dc2626;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+
+  cursor: pointer;
+}
+
+.admin-ts-question-actions .admin-ts-action.delete:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+  .admin-ts-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-ts-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .admin-ts-info-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .admin-ts-info-card {
+    padding: 14px;
+  }
+
+  .admin-ts-info-card strong {
+    font-size: 15px;
+  }
+
+  .admin-ts-question-top {
+    padding: 12px 14px;
+  }
+
+  .admin-ts-question-text {
+    padding: 15px 14px 6px;
+
+    font-size: 14px;
+  }
+
+  .admin-ts-question-hindi {
+    padding: 2px 14px 14px;
+
+    font-size: 13px;
+  }
+
+  .admin-ts-options {
+    padding: 0 14px 14px;
+  }
+
+  .admin-ts-option {
+    min-height: 44px;
+    padding: 8px 10px;
+
+    font-size: 12px;
+  }
+
+  .admin-ts-question-actions {
+    justify-content: stretch;
+
+    padding: 10px 14px;
+  }
+
+  .admin-ts-question-actions .admin-ts-action {
+    flex: 1;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+  .admin-ts-question-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-ts-question-actions .admin-ts-action {
+    width: 100%;
+  }
+
+  .admin-ts-correct {
+    padding: 3px 5px;
+    font-size: 9px;
+  }
+}
+</style>
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= link_to @test_series.title,
+                    admin_test_series_path(@test_series) %>
+        /
+        <%= @test_series_test.title %>
+      </div>
+
+      <h1>
+        <%= @test_series_test.title %>
+      </h1>
+
+      <p>
+        <%= @test_series_test.description.presence ||
+            "No description available." %>
+      </p>
+
+    </div>
+
+    <div class="admin-ts-header-actions">
+
+      <%= link_to edit_admin_test_series_test_path(
+                    @test_series,
+                    @test_series_test
+                  ),
+                  class: "admin-ts-btn admin-ts-btn-primary" do %>
+        <i class="fas fa-edit"></i>
+        Edit Test
+      <% end %>
+
+      <%= link_to admin_test_series_path(@test_series),
+                  class: "admin-ts-btn admin-ts-btn-light" do %>
+        Back
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <div class="admin-ts-info-grid">
+
+    <div class="admin-ts-info-card">
+      <span>Test Number</span>
+      <strong>
+        <%= @test_series_test.test_number %>
+      </strong>
+    </div>
+
+    <div class="admin-ts-info-card">
+      <span>Duration</span>
+      <strong>
+        <%= @test_series_test.duration %> Minutes
+      </strong>
+    </div>
+
+    <div class="admin-ts-info-card">
+      <span>Questions</span>
+      <strong>
+        <%= @questions.count %>
+      </strong>
+    </div>
+
+    <div class="admin-ts-info-card">
+      <span>Status</span>
+      <strong>
+        <%= @test_series_test.status %>
+      </strong>
+    </div>
+
+  </div>
+
+
+  <div class="admin-ts-section-header">
+
+    <div>
+      <h2>Questions</h2>
+      <p>
+        <%= @questions.count %> question(s)
+      </p>
+    </div>
+
+    <%= link_to new_admin_test_series_test_question_path(
+                  @test_series,
+                  @test_series_test
+                ),
+                class: "admin-ts-btn admin-ts-btn-primary" do %>
+      <i class="fas fa-plus"></i>
+      Add Question
+    <% end %>
+
+  </div>
+
+
+  <div class="admin-ts-question-list">
+
+    <% if @questions.any? %>
+
+      <% @questions.each_with_index do |question, index| %>
+
+        <div class="admin-ts-question-card">
+
+          <div class="admin-ts-question-top">
+
+            <strong>
+              Q<%= index + 1 %>.
+            </strong>
+
+            <span>
+              <%= question.marks %> Mark
+            </span>
+
+          </div>
+
+          <div class="admin-ts-question-text">
+
+            <%= question.question_text %>
+
+          </div>
+
+          <% if question.question_text_hindi.present? %>
+
+            <div class="admin-ts-question-hindi">
+
+              <%= question.question_text_hindi %>
+
+            </div>
+
+          <% end %>
+
+
+          <div class="admin-ts-options">
+
+            <% question.test_series_options
+                      .order(position: :asc)
+                      .each_with_index do |option, option_index| %>
+
+              <div class="
+                admin-ts-option
+                <%= "correct" if option.is_correct? %>
+              ">
+
+                <strong>
+                  <%= ("A".ord + option_index).chr %>.
+                </strong>
+
+                <span>
+                  <%= option.option_text %>
+                </span>
+
+                <% if option.is_correct? %>
+                  <span class="admin-ts-correct">
+                    Correct
+                  </span>
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+
+          <div class="admin-ts-question-actions">
+
+            <%= link_to "View",
+                        admin_test_series_test_question_path(
+                          @test_series,
+                          @test_series_test,
+                          question
+                        ),
+                        class: "admin-ts-action view" %>
+
+            <%= link_to "Edit",
+                        edit_admin_test_series_test_question_path(
+                          @test_series,
+                          @test_series_test,
+                          question
+                        ),
+                        class: "admin-ts-action edit" %>
+
+            <%= button_to "Delete",
+                          admin_test_series_test_question_path(
+                            @test_series,
+                            @test_series_test,
+                            question
+                          ),
+                          method: :delete,
+                          class: "admin-ts-action delete",
+                          form: {
+                            data: {
+                              turbo_confirm:
+                                "Delete this question?"
+                            }
+                          } %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    <% else %>
+
+      <div class="admin-ts-empty">
+        <i class="fas fa-question-circle"></i>
+        <h3>No Questions</h3>
+        <p>Add the first question.</p>
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

@@ -1,0 +1,2009 @@
+<style>
+  /* ============================================================
+     PAGE
+  ============================================================ */
+
+  .tsq-page {
+    padding: 28px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+
+  /* ============================================================
+     BREADCRUMB
+  ============================================================ */
+
+  .tsq-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-size: 13px;
+  }
+
+  .tsq-breadcrumb-link {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .tsq-breadcrumb-link:hover {
+    text-decoration: underline;
+  }
+
+  .tsq-breadcrumb-separator {
+    color: #9ca3af;
+  }
+
+  .tsq-breadcrumb-current {
+    color: #6b7280;
+  }
+
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+
+  .tsq-header {
+    margin-bottom: 24px;
+  }
+
+  .tsq-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    padding: 24px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+      135deg,
+      #111827,
+      #1f2937
+    );
+
+    color: #fff;
+
+    box-shadow:
+      0 12px 30px rgba(15, 23, 42, 0.14);
+  }
+
+  .tsq-header-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .tsq-icon-box {
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    font-size: 24px;
+  }
+
+  .tsq-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+
+    color: #a5b4fc;
+
+    margin-bottom: 5px;
+  }
+
+  .tsq-title {
+    margin: 0;
+
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .tsq-subtitle {
+    margin: 6px 0 0;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+  }
+
+  .tsq-dot {
+    margin: 0 5px;
+    color: #818cf8;
+  }
+
+
+  /* ============================================================
+     HEADER ACTIONS
+  ============================================================ */
+
+  .tsq-header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tsq-btn {
+    min-height: 42px;
+
+    padding: 10px 16px;
+
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    border: 1px solid transparent;
+
+    transition: all 0.2s ease;
+
+    cursor: pointer;
+  }
+
+  .tsq-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .tsq-btn-primary {
+    background: #6366f1;
+    color: #fff;
+    border-color: #6366f1;
+  }
+
+  .tsq-btn-primary:hover {
+    background: #4f46e5;
+    color: #fff;
+  }
+
+  .tsq-btn-secondary {
+    background: rgba(255, 255, 255, 0.10);
+
+    color: #fff;
+
+    border-color:
+      rgba(255, 255, 255, 0.18);
+  }
+
+  .tsq-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+
+
+  /* ============================================================
+     TEST INFORMATION
+  ============================================================ */
+
+  .tsq-test-info {
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+  }
+
+  .tsq-test-info-item {
+    padding: 18px;
+
+    border:
+      1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    background: #fff;
+
+    box-shadow:
+      0 5px 18px rgba(15, 23, 42, 0.05);
+  }
+
+  .tsq-info-label {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    margin-bottom: 8px;
+  }
+
+  .tsq-info-label i {
+    color: #6366f1;
+  }
+
+  .tsq-info-value {
+    display: block;
+
+    font-size: 21px;
+
+    color: #111827;
+  }
+
+  .tsq-status-badge {
+    display: inline-flex;
+
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    font-size: 13px;
+  }
+
+
+  /* ============================================================
+     DESCRIPTION
+  ============================================================ */
+
+  .tsq-description-card {
+    display: flex;
+
+    gap: 14px;
+
+    padding: 18px;
+
+    margin-bottom: 24px;
+
+    border:
+      1px solid #e0e7ff;
+
+    border-radius: 14px;
+
+    background: #f8faff;
+  }
+
+  .tsq-description-icon {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e0e7ff;
+
+    color: #4f46e5;
+  }
+
+  .tsq-description-card h3 {
+    margin: 0 0 5px;
+
+    font-size: 15px;
+
+    color: #111827;
+  }
+
+  .tsq-description-card p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+  }
+
+
+  /* ============================================================
+     TOOLBAR
+  ============================================================ */
+
+  .tsq-toolbar {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 18px;
+  }
+
+  .tsq-toolbar > div:first-child {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .tsq-section-title {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 22px;
+
+    font-weight: 800;
+  }
+
+  .tsq-section-subtitle {
+    margin: 4px 0 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+  }
+
+
+  /* ============================================================
+     LANGUAGE SELECTOR
+  ============================================================ */
+
+  .tsq-language-wrapper {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+  }
+
+  .tsq-language-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+  }
+
+  .tsq-language-label i {
+    color: #6366f1;
+  }
+
+  .tsq-language-buttons {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px;
+
+    border:
+      1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    background: #f9fafb;
+  }
+
+  .tsq-language-btn {
+    border: 0;
+
+    padding: 7px 13px;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+  }
+
+  .tsq-language-btn:hover {
+    color: #4f46e5;
+
+    background: #eef2ff;
+  }
+
+  .tsq-language-btn.active {
+    background: #6366f1;
+
+    color: #fff;
+
+    box-shadow:
+      0 2px 6px
+      rgba(99, 102, 241, 0.25);
+  }
+
+
+  /* ============================================================
+     SEARCH
+  ============================================================ */
+
+  .tsq-search-wrapper {
+    position: relative;
+
+    width: 310px;
+  }
+
+  .tsq-search-wrapper > i {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform:
+      translateY(-50%);
+
+    color: #9ca3af;
+
+    pointer-events: none;
+  }
+
+  .tsq-search {
+    width: 100%;
+
+    height: 43px;
+
+    padding:
+      0 14px 0 38px;
+
+    border:
+      1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #fff;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    transition:
+      all 0.2s ease;
+
+    box-sizing: border-box;
+  }
+
+  .tsq-search:focus {
+    border-color: #6366f1;
+
+    box-shadow:
+      0 0 0 3px
+      rgba(99, 102, 241, 0.12);
+  }
+
+
+  /* ============================================================
+     QUESTION CARD
+  ============================================================ */
+
+  .tsq-question-card {
+    background: #fff;
+
+    border:
+      1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    margin-bottom: 18px;
+
+    padding: 20px;
+
+    box-shadow:
+      0 5px 18px
+      rgba(15, 23, 42, 0.045);
+
+    transition:
+      all 0.2s ease;
+  }
+
+  .tsq-question-card:hover {
+    border-color: #c7d2fe;
+
+    box-shadow:
+      0 9px 25px
+      rgba(15, 23, 42, 0.07);
+  }
+
+
+  /* ============================================================
+     QUESTION HEADER
+  ============================================================ */
+
+  .tsq-question-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-bottom: 16px;
+  }
+
+
+  /* ============================================================
+     QUESTION NUMBER
+  ============================================================ */
+
+  .tsq-question-number {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    font-size: 14px;
+
+    font-weight: 800;
+  }
+
+
+  /* ============================================================
+     QUESTION CONTENT BOX
+  ============================================================ */
+
+  .tsq-question-heading {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 14px 16px;
+
+    border:
+      1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    background: #fafafa;
+  }
+
+
+  /* ============================================================
+     QUESTION META
+  ============================================================ */
+
+  .tsq-question-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+  }
+
+  .tsq-meta-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    background: #f3f4f6;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    font-weight: 700;
+  }
+
+  .tsq-meta-badge i {
+    color: #6366f1;
+  }
+
+
+  /* ============================================================
+     QUESTION TEXT
+  ============================================================ */
+
+  .tsq-question-text {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 16px;
+
+    line-height: 1.6;
+
+    font-weight: 700;
+
+    white-space: pre-wrap;
+  }
+
+
+  /* ============================================================
+     QUESTION ACTIONS
+  ============================================================ */
+
+  .tsq-question-actions {
+    display: flex;
+
+    gap: 6px;
+
+    flex-shrink: 0;
+  }
+
+  .tsq-action-btn {
+    width: 36px;
+    height: 36px;
+
+    border:
+      1px solid #e5e7eb;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-decoration: none;
+
+    background: #fff;
+
+    cursor: pointer;
+
+    transition:
+      all 0.2s ease;
+  }
+
+  .tsq-action-btn:hover {
+    transform:
+      translateY(-1px);
+  }
+
+  .tsq-view-btn {
+    color: #2563eb;
+  }
+
+  .tsq-view-btn:hover {
+    background: #eff6ff;
+
+    border-color: #bfdbfe;
+  }
+
+  .tsq-edit-btn {
+    color: #d97706;
+  }
+
+  .tsq-edit-btn:hover {
+    background: #fffbeb;
+
+    border-color: #fde68a;
+  }
+
+  .tsq-delete-btn {
+    color: #dc2626;
+  }
+
+  .tsq-delete-btn:hover {
+    background: #fef2f2;
+
+    border-color: #fecaca;
+  }
+
+
+  /* ============================================================
+     OPTIONS
+  ============================================================ */
+
+  .tsq-options {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 10px;
+
+    margin-top: 4px;
+  }
+
+  .tsq-option {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 48px;
+
+    padding: 9px 12px;
+
+    border:
+      1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    background: #fafafa;
+  }
+
+  .tsq-option-correct {
+    border-color: #86efac;
+
+    background: #f0fdf4;
+  }
+
+  .tsq-option-letter {
+    width: 30px;
+    height: 30px;
+
+    min-width: 30px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f3f4f6;
+
+    color: #4b5563;
+
+    font-size: 12px;
+
+    font-weight: 800;
+  }
+
+  .tsq-option-correct
+  .tsq-option-letter {
+    background: #dcfce7;
+
+    color: #15803d;
+  }
+
+  .tsq-option-text {
+    flex: 1;
+
+    color: #374151;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    white-space: pre-wrap;
+  }
+
+  .tsq-correct-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    color: #15803d;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+  }
+
+
+  /* ============================================================
+     EXPLANATION
+  ============================================================ */
+
+  .tsq-explanation {
+    display: flex;
+
+    gap: 11px;
+
+    margin:
+      16px 0 0;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #fffbeb;
+
+    border:
+      1px solid #fde68a;
+  }
+
+  .tsq-explanation-icon {
+    color: #d97706;
+
+    padding-top: 2px;
+  }
+
+  .tsq-explanation strong {
+    display: block;
+
+    color: #92400e;
+
+    font-size: 12px;
+
+    margin-bottom: 4px;
+  }
+
+  .tsq-explanation p {
+    margin: 0;
+
+    color: #78350f;
+
+    font-size: 13px;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+  }
+
+
+  /* ============================================================
+     NO OPTIONS
+  ============================================================ */
+
+  .tsq-no-options {
+    margin:
+      16px 0 0;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #fff7ed;
+
+    color: #c2410c;
+
+    font-size: 13px;
+  }
+
+
+  /* ============================================================
+     EMPTY STATE
+  ============================================================ */
+
+  .tsq-empty-state,
+  .tsq-no-search-results {
+    text-align: center;
+
+    padding: 65px 25px;
+
+    background: #fff;
+
+    border:
+      1px dashed #d1d5db;
+
+    border-radius: 16px;
+  }
+
+  .tsq-empty-icon {
+    width: 64px;
+    height: 64px;
+
+    margin:
+      0 auto 18px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eef2ff;
+
+    color: #6366f1;
+
+    font-size: 25px;
+  }
+
+  .tsq-empty-state h2,
+  .tsq-no-search-results h3 {
+    margin:
+      0 0 7px;
+
+    color: #111827;
+
+    font-size: 20px;
+  }
+
+  .tsq-empty-state p,
+  .tsq-no-search-results p {
+    max-width: 520px;
+
+    margin:
+      0 auto 22px;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+
+  @media (max-width: 1100px) {
+
+    .tsq-search-wrapper {
+      width: 280px;
+    }
+
+  }
+
+
+  @media (max-width: 1000px) {
+
+    .tsq-test-info {
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+
+    .tsq-options {
+      grid-template-columns: 1fr;
+    }
+
+    .tsq-header-main {
+      align-items: flex-start;
+
+      flex-direction: column;
+    }
+
+    .tsq-header-actions {
+      width: 100%;
+    }
+
+  }
+
+
+  @media (max-width: 800px) {
+
+    .tsq-toolbar {
+      align-items: stretch;
+
+      flex-direction: column;
+    }
+
+    .tsq-toolbar > div {
+      width: 100%;
+    }
+
+    .tsq-language-wrapper {
+      justify-content: space-between;
+    }
+
+    .tsq-search-wrapper {
+      width: 100%;
+    }
+
+  }
+
+
+  @media (max-width: 700px) {
+
+    .tsq-page {
+      padding: 16px;
+    }
+
+    .tsq-title {
+      font-size: 21px;
+    }
+
+    .tsq-test-info {
+      grid-template-columns: 1fr;
+    }
+
+    .tsq-question-header {
+      flex-wrap: wrap;
+    }
+
+    .tsq-question-heading {
+      width: 100%;
+    }
+
+    .tsq-question-actions {
+      width: 100%;
+
+      justify-content: flex-end;
+    }
+
+    .tsq-header-actions {
+      flex-direction: column;
+    }
+
+    .tsq-header-actions .tsq-btn {
+      width: 100%;
+    }
+
+  }
+
+
+  @media (max-width: 480px) {
+
+    .tsq-header-main {
+      padding: 18px;
+    }
+
+    .tsq-header-info {
+      align-items: flex-start;
+    }
+
+    .tsq-icon-box {
+      width: 46px;
+      height: 46px;
+
+      min-width: 46px;
+
+      font-size: 19px;
+    }
+
+    .tsq-question-card {
+      padding: 15px;
+    }
+
+    .tsq-question-header {
+      gap: 10px;
+    }
+
+    .tsq-question-heading {
+      padding: 12px;
+    }
+
+    .tsq-options {
+      grid-template-columns: 1fr;
+    }
+
+    .tsq-explanation {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .tsq-language-wrapper {
+      align-items: stretch;
+
+      flex-direction: column;
+    }
+
+    .tsq-language-buttons {
+      width: 100%;
+    }
+
+    .tsq-language-btn {
+      flex: 1;
+    }
+
+  }
+</style>
+
+
+<div class="tsq-page">
+
+  <!-- ==========================================================
+       BREADCRUMB
+  =========================================================== -->
+
+  <div class="tsq-breadcrumb">
+
+    <%= link_to "Test Series",
+        teacher_panel_test_series_index_path,
+        class: "tsq-breadcrumb-link" %>
+
+    <span class="tsq-breadcrumb-separator">/</span>
+
+    <%= link_to @test_series.title,
+        teacher_panel_test_series_path(@test_series),
+        class: "tsq-breadcrumb-link" %>
+
+    <span class="tsq-breadcrumb-separator">/</span>
+
+    <span class="tsq-breadcrumb-current">
+      <%= @test.title %>
+    </span>
+
+  </div>
+
+
+  <!-- ==========================================================
+       HEADER
+  =========================================================== -->
+
+  <div class="tsq-header">
+
+    <div class="tsq-header-main">
+
+      <div class="tsq-header-info">
+
+        <div class="tsq-icon-box">
+          <i class="fas fa-clipboard-list"></i>
+        </div>
+
+        <div>
+
+          <div class="tsq-eyebrow">
+            TEST SERIES
+          </div>
+
+          <h1 class="tsq-title">
+            <%= @test.title %>
+          </h1>
+
+          <p class="tsq-subtitle">
+
+            <%= @test_series.title %>
+
+            <% if @test.test_number.present? %>
+
+              <span class="tsq-dot">•</span>
+
+              Test <%= @test.test_number %>
+
+            <% end %>
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="tsq-header-actions">
+
+        <%= link_to teacher_panel_test_series_test_path(
+              @test_series,
+              @test
+            ),
+            class: "tsq-btn tsq-btn-secondary" do %>
+
+          <i class="fas fa-arrow-left"></i>
+
+          <span>
+            Back to Test
+          </span>
+
+        <% end %>
+
+
+        <%= link_to new_teacher_panel_test_series_test_question_path(
+              @test_series,
+              @test
+            ),
+            class: "tsq-btn tsq-btn-primary" do %>
+
+          <i class="fas fa-plus"></i>
+
+          <span>
+            Add Question
+          </span>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       TEST INFORMATION
+  =========================================================== -->
+
+  <div class="tsq-test-info">
+
+    <div class="tsq-test-info-item">
+
+      <span class="tsq-info-label">
+
+        <i class="fas fa-layer-group"></i>
+
+        Questions
+
+      </span>
+
+      <strong class="tsq-info-value">
+
+        <%= @questions.count %>
+
+      </strong>
+
+    </div>
+
+
+    <div class="tsq-test-info-item">
+
+      <span class="tsq-info-label">
+
+        <i class="fas fa-star"></i>
+
+        Total Marks
+
+      </span>
+
+      <strong class="tsq-info-value">
+
+        <%= @questions.sum {
+              |question| question.marks.to_f
+            } %>
+
+      </strong>
+
+    </div>
+
+
+    <div class="tsq-test-info-item">
+
+      <span class="tsq-info-label">
+
+        <i class="fas fa-clock"></i>
+
+        Duration
+
+      </span>
+
+      <strong class="tsq-info-value">
+
+        <% if @test.duration.present? %>
+
+          <%= @test.duration %> min
+
+        <% else %>
+
+          —
+
+        <% end %>
+
+      </strong>
+
+    </div>
+
+
+    <div class="tsq-test-info-item">
+
+      <span class="tsq-info-label">
+
+        <i class="fas fa-check-circle"></i>
+
+        Status
+
+      </span>
+
+      <strong class="tsq-status-badge">
+
+        <%= @test.status.presence || "Draft" %>
+
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       DESCRIPTION
+  =========================================================== -->
+
+  <% if @test.description.present? %>
+
+    <div class="tsq-description-card">
+
+      <div class="tsq-description-icon">
+
+        <i class="fas fa-info-circle"></i>
+
+      </div>
+
+      <div>
+
+        <h3>
+          Test Description
+        </h3>
+
+        <p>
+          <%= @test.description %>
+        </p>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- ==========================================================
+       QUESTION TOOLBAR
+  =========================================================== -->
+
+  <div class="tsq-toolbar">
+
+    <div>
+
+      <h2 class="tsq-section-title">
+        Questions
+      </h2>
+
+      <p class="tsq-section-subtitle">
+        Manage questions and answer options for this test.
+      </p>
+
+    </div>
+
+
+    <!-- ========================================================
+         LANGUAGE
+    ========================================================= -->
+
+    <div class="tsq-language-wrapper">
+
+      <div class="tsq-language-label">
+
+        <i class="fas fa-language"></i>
+
+        Language
+
+      </div>
+
+
+      <div class="tsq-language-buttons">
+
+        <button
+          type="button"
+          class="tsq-language-btn active"
+          data-language="en">
+
+          English
+
+        </button>
+
+
+        <button
+          type="button"
+          class="tsq-language-btn"
+          data-language="hi">
+
+          हिंदी
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================
+         SEARCH
+    ========================================================= -->
+
+    <div class="tsq-search-wrapper">
+
+      <i class="fas fa-search"></i>
+
+      <input
+        type="search"
+        id="questionSearch"
+        class="tsq-search"
+        placeholder="Search questions..."
+        autocomplete="off"
+      >
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       QUESTIONS
+  =========================================================== -->
+
+  <div id="questionsContainer">
+
+    <% if @questions.any? %>
+
+      <% @questions.each_with_index do |question, index| %>
+
+        <% searchable_question_text =
+             [
+               question.question_text,
+               question.question_text_hindi
+             ].compact.join(" ").downcase %>
+
+
+        <div
+          class="tsq-question-card"
+          data-question-card
+          data-question-text="<%= searchable_question_text %>"
+        >
+
+
+          <!-- ==================================================
+               QUESTION HEADER
+          =================================================== -->
+
+          <div class="tsq-question-header">
+
+
+            <!-- QUESTION NUMBER -->
+
+            <div class="tsq-question-number">
+
+              <%= question.position.presence ||
+                  index + 1 %>
+
+            </div>
+
+
+            <!-- QUESTION BOX -->
+
+            <div class="tsq-question-heading">
+
+              <div class="tsq-question-meta">
+
+                <span class="tsq-meta-badge">
+
+                  <i class="fas fa-list"></i>
+
+                  <%= question.question_type.to_s.humanize.presence ||
+                      "Multiple Choice" %>
+
+                </span>
+
+
+                <span class="tsq-meta-badge">
+
+                  <i class="fas fa-star"></i>
+
+                  <%= question.marks || 0 %>
+
+                  <%= question.marks.to_f == 1 ?
+                      "Mark" :
+                      "Marks" %>
+
+                </span>
+
+              </div>
+
+
+              <!-- ENGLISH -->
+
+              <h3
+                class="tsq-question-text"
+                data-language-content="en">
+
+                <%= question.question_text %>
+
+              </h3>
+
+
+              <!-- HINDI -->
+
+              <h3
+                class="tsq-question-text"
+                data-language-content="hi"
+                style="display: none;">
+
+                <%= question.question_text_hindi.presence ||
+                    question.question_text %>
+
+              </h3>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIONS
+            ================================================== -->
+
+            <div class="tsq-question-actions">
+
+
+              <!-- VIEW -->
+
+              <%= link_to teacher_panel_test_series_test_question_path(
+                    @test_series,
+                    @test,
+                    question
+                  ),
+                  class: "tsq-action-btn tsq-view-btn",
+                  title: "View Question" do %>
+
+                <i class="fas fa-eye"></i>
+
+              <% end %>
+
+
+              <!-- EDIT -->
+
+              <%= link_to edit_teacher_panel_test_series_test_question_path(
+                    @test_series,
+                    @test,
+                    question
+                  ),
+                  class: "tsq-action-btn tsq-edit-btn",
+                  title: "Edit Question" do %>
+
+                <i class="fas fa-edit"></i>
+
+              <% end %>
+
+
+              <!-- DELETE -->
+
+              <%= button_to teacher_panel_test_series_test_question_path(
+                    @test_series,
+                    @test,
+                    question
+                  ),
+                  method: :delete,
+                  class: "tsq-action-btn tsq-delete-btn",
+                  title: "Delete Question",
+                  form: {
+                    data: {
+                      turbo_confirm:
+                        "Are you sure you want to delete this question?"
+                    }
+                  } do %>
+
+                <i class="fas fa-trash"></i>
+
+              <% end %>
+
+
+            </div>
+
+          </div>
+
+
+          <!-- ==================================================
+               OPTIONS
+          =================================================== -->
+
+          <% options =
+               question
+                 .test_series_options
+                 .sort_by { |option|
+                   option.position.to_i
+                 } %>
+
+
+          <% if options.any? %>
+
+            <div class="tsq-options">
+
+              <% options.each_with_index do |option, option_index| %>
+
+                <div
+                  class="
+                    tsq-option
+                    <%= "tsq-option-correct" if option.is_correct %>
+                  "
+                >
+
+                  <!-- LETTER -->
+
+                  <div class="tsq-option-letter">
+
+                    <%= ("A".ord + option_index).chr %>
+
+                  </div>
+
+
+                  <!-- OPTION TEXT -->
+
+                  <div class="tsq-option-text">
+
+
+                    <!-- ENGLISH -->
+
+                    <span
+                      data-language-content="en">
+
+                      <%= option.option_text %>
+
+                    </span>
+
+
+                    <!-- HINDI -->
+
+                    <span
+                      data-language-content="hi"
+                      style="display: none;">
+
+                      <%= option.option_text_hindi.presence ||
+                          option.option_text %>
+
+                    </span>
+
+                  </div>
+
+
+                  <!-- CORRECT -->
+
+                  <% if option.is_correct %>
+
+                    <div class="tsq-correct-label">
+
+                      <i class="fas fa-check-circle"></i>
+
+                      Correct
+
+                    </div>
+
+                  <% end %>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          <% else %>
+
+            <div class="tsq-no-options">
+
+              <i class="fas fa-exclamation-circle"></i>
+
+              No answer options added.
+
+            </div>
+
+          <% end %>
+
+
+          <!-- ==================================================
+               EXPLANATION
+          =================================================== -->
+
+          <% if question.explanation.present? %>
+
+            <div class="tsq-explanation">
+
+              <div class="tsq-explanation-icon">
+
+                <i class="fas fa-lightbulb"></i>
+
+              </div>
+
+              <div>
+
+                <strong>
+                  Explanation
+                </strong>
+
+                <p>
+                  <%= question.explanation %>
+                </p>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ======================================================
+           NO SEARCH RESULTS
+      ======================================================= -->
+
+      <div
+        id="noSearchResults"
+        class="tsq-no-search-results"
+        style="display: none;"
+      >
+
+        <div class="tsq-empty-icon">
+
+          <i class="fas fa-search"></i>
+
+        </div>
+
+        <h3>
+          No questions found
+        </h3>
+
+        <p>
+          Try a different search term.
+        </p>
+
+      </div>
+
+
+    <% else %>
+
+
+      <!-- ======================================================
+           EMPTY STATE
+      ======================================================= -->
+
+      <div class="tsq-empty-state">
+
+        <div class="tsq-empty-icon">
+
+          <i class="fas fa-clipboard-question"></i>
+
+        </div>
+
+        <h2>
+          No Questions Yet
+        </h2>
+
+        <p>
+          This test does not have any questions yet.
+          Start building your test by adding the first question.
+        </p>
+
+
+        <%= link_to new_teacher_panel_test_series_test_question_path(
+              @test_series,
+              @test
+            ),
+            class: "tsq-btn tsq-btn-primary" do %>
+
+          <i class="fas fa-plus"></i>
+
+          Add First Question
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script>
+  (function () {
+
+    "use strict";
+
+
+    /* ============================================================
+       INITIALIZE QUESTION PAGE
+    ============================================================ */
+
+    function initializeQuestionPage() {
+
+
+      /* ========================================================
+         LANGUAGE BUTTONS
+      ======================================================== */
+
+      const languageButtons =
+        document.querySelectorAll(
+          ".tsq-language-btn"
+        );
+
+
+      const languageContent =
+        document.querySelectorAll(
+          "[data-language-content]"
+        );
+
+
+      languageButtons.forEach(
+        function (button) {
+
+          button.addEventListener(
+            "click",
+            function () {
+
+              const language =
+                button.dataset.language;
+
+
+              /* ----------------------------------------------
+                 ACTIVE BUTTON
+              ---------------------------------------------- */
+
+              languageButtons.forEach(
+                function (btn) {
+
+                  btn.classList.toggle(
+                    "active",
+                    btn.dataset.language === language
+                  );
+
+                }
+              );
+
+
+              /* ----------------------------------------------
+                 SHOW LANGUAGE
+              ---------------------------------------------- */
+
+              languageContent.forEach(
+                function (element) {
+
+                  const elementLanguage =
+                    element.dataset.languageContent;
+
+
+                  if (
+                    elementLanguage === language
+                  ) {
+
+                    element.style.display = "";
+
+                  } else {
+
+                    element.style.display = "none";
+
+                  }
+
+                }
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+      /* ========================================================
+         SEARCH
+      ======================================================== */
+
+      const searchInput =
+        document.getElementById(
+          "questionSearch"
+        );
+
+
+      const questionCards =
+        document.querySelectorAll(
+          "[data-question-card]"
+        );
+
+
+      const noSearchResults =
+        document.getElementById(
+          "noSearchResults"
+        );
+
+
+      if (!searchInput) {
+        return;
+      }
+
+
+      function performSearch() {
+
+        const searchTerm =
+          searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+        let visibleCount = 0;
+
+
+        questionCards.forEach(
+          function (card) {
+
+            const questionText =
+              card.dataset.questionText || "";
+
+
+            const matches =
+              questionText.includes(
+                searchTerm
+              );
+
+
+            if (matches) {
+
+              card.style.display = "";
+
+              visibleCount++;
+
+            } else {
+
+              card.style.display = "none";
+
+            }
+
+          }
+        );
+
+
+        if (noSearchResults) {
+
+          noSearchResults.style.display =
+            visibleCount === 0
+              ? "block"
+              : "none";
+
+        }
+
+      }
+
+
+      searchInput.addEventListener(
+        "input",
+        performSearch
+      );
+
+    }
+
+
+    /* ============================================================
+       DOM READY
+    ============================================================ */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuestionPage
+    );
+
+
+    /* ============================================================
+       TURBO
+    ============================================================ */
+
+    document.addEventListener(
+      "turbo:load",
+      initializeQuestionPage
+    );
+
+
+  })();
+</script>

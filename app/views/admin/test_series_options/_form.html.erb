@@ -1,0 +1,294 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — OPTION FORM
+   ========================================================= */
+
+.admin-ts-form {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* =========================================================
+   ERROR BOX
+   ========================================================= */
+
+.admin-ts-errors {
+  margin-bottom: 22px;
+  padding: 15px 18px;
+
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 10px;
+
+  color: #991b1b;
+}
+
+.admin-ts-errors strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.admin-ts-errors ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.admin-ts-errors li {
+  margin-bottom: 3px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.admin-ts-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+
+  padding: 24px;
+
+  background: #ffffff;
+  border: 1px solid #e6e8ef;
+  border-radius: 13px;
+
+  box-shadow: 0 4px 16px rgba(25, 25, 50, 0.04);
+}
+
+.admin-ts-field {
+  min-width: 0;
+}
+
+.admin-ts-field.full {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.admin-ts-field label {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #303044;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.admin-ts-input {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+
+  color: #252536;
+  background: #ffffff;
+
+  border: 1px solid #dfe2ea;
+  border-radius: 8px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.admin-ts-input:hover {
+  border-color: #c9cdd8;
+}
+
+.admin-ts-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+}
+
+.admin-ts-input::placeholder {
+  color: #a1a6b5;
+}
+
+/* Number input */
+
+.admin-ts-input[type="number"] {
+  appearance: textfield;
+}
+
+.admin-ts-input[type="number"]::-webkit-inner-spin-button,
+.admin-ts-input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* Select */
+
+select.admin-ts-input {
+  cursor: pointer;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.admin-ts-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .admin-ts-form-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+    padding: 18px;
+  }
+
+  .admin-ts-field.full {
+    grid-column: auto;
+  }
+
+  .admin-ts-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-ts-form-actions .admin-ts-btn {
+    width: 100%;
+  }
+}
+</style>
+
+<%= form_with(
+      model: @option,
+      url: @option.persisted? ?
+        admin_test_series_test_question_option_path(
+          @test_series,
+          @test,
+          @question,
+          @option
+        ) :
+        admin_test_series_test_question_options_path(
+          @test_series,
+          @test,
+          @question
+        ),
+      method: @option.persisted? ? :patch : :post,
+      local: true,
+      class: "admin-ts-form"
+    ) do |form| %>
+
+
+  <% if @option.errors.any? %>
+
+    <div class="admin-ts-errors">
+
+      <strong>
+        <%= pluralize(
+              @option.errors.count,
+              "error"
+            ) %> prevented saving:
+      </strong>
+
+      <ul>
+        <% @option.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <div class="admin-ts-form-grid">
+
+    <div class="admin-ts-field">
+
+      <%= form.label :position, "Position" %>
+
+      <%= form.number_field :position,
+            class: "admin-ts-input",
+            min: 1,
+            required: true %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :is_correct,
+                    "Correct Answer" %>
+
+      <%= form.select :is_correct,
+            [
+              ["Correct", true],
+              ["Incorrect", false]
+            ],
+            {},
+            class: "admin-ts-input" %>
+
+    </div>
+
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :option_text,
+                    "Option (English)" %>
+
+      <%= form.text_field :option_text,
+            class: "admin-ts-input",
+            required: true,
+            placeholder: "Enter option in English" %>
+
+    </div>
+
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :option_text_hindi,
+                    "Option (Hindi)" %>
+
+      <%= form.text_field :option_text_hindi,
+            class: "admin-ts-input",
+            placeholder: "हिंदी विकल्प" %>
+
+    </div>
+
+  </div>
+
+
+  <div class="admin-ts-form-actions">
+
+    <%= form.submit(
+          @option.persisted? ?
+            "Update Option" :
+            "Create Option",
+          class: "admin-ts-btn admin-ts-btn-primary"
+        ) %>
+
+    <%= link_to "Cancel",
+                admin_test_series_test_question_path(
+                  @test_series,
+                  @test,
+                  @question
+                ),
+                class: "admin-ts-btn admin-ts-btn-light" %>
+
+  </div>
+
+<% end %>

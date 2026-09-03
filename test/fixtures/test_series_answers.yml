@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  test_series_attempt: one
+  test_series_question: one
+  test_series_option: one
+  is_correct: false
+  marks_obtained: 1
+
+two:
+  test_series_attempt: two
+  test_series_question: two
+  test_series_option: two
+  is_correct: false
+  marks_obtained: 1

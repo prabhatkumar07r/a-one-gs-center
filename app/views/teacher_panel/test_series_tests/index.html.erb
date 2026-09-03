@@ -1,0 +1,575 @@
+<style>
+  .ts-tests-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ts-tests-header {
+    margin-bottom: 28px;
+  }
+
+  .ts-tests-header h2 {
+    color: #1e1b4b;
+    font-weight: 800;
+  }
+
+  .ts-tests-header p {
+    color: #64748b;
+  }
+
+  .ts-test-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, .07);
+  }
+
+  .ts-test-card-header {
+    padding: 20px 24px;
+    background: #f8f7ff;
+    border-bottom: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .ts-test-card-header h5 {
+    margin: 0;
+    color: #312e81;
+    font-weight: 800;
+  }
+
+  .ts-test-card-body {
+    padding: 24px;
+  }
+
+  .ts-test-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 18px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    margin-bottom: 14px;
+
+    transition: .2s ease;
+  }
+
+  .ts-test-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .ts-test-row:hover {
+    border-color: #c4b5fd;
+    box-shadow: 0 5px 18px rgba(79, 70, 229, .08);
+    transform: translateY(-1px);
+  }
+
+  .ts-test-number {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #ede9fe;
+    color: #6d28d9;
+
+    font-weight: 800;
+    font-size: 17px;
+  }
+
+  .ts-test-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ts-test-info h5 {
+    margin: 0 0 6px;
+
+    color: #1e293b;
+    font-weight: 750;
+  }
+
+  .ts-test-description {
+    color: #64748b;
+    font-size: 13px;
+
+    margin-bottom: 8px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ts-test-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  .ts-test-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .ts-test-meta i {
+    color: #6d28d9;
+  }
+
+  .ts-status {
+    padding: 6px 10px;
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .ts-status.active {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .ts-status.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .ts-test-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .ts-action-btn {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+  }
+
+  .ts-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #64748b;
+  }
+
+  .ts-empty-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 18px;
+
+    background: #ede9fe;
+    color: #6d28d9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+  }
+
+  @media (max-width: 768px) {
+
+    .ts-test-card-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ts-test-row {
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .ts-test-info {
+      width: calc(100% - 70px);
+    }
+
+    .ts-test-actions {
+      width: 100%;
+      margin-left: 66px;
+    }
+
+    .ts-test-actions .btn {
+      flex: 1;
+    }
+
+  }
+
+  @media (max-width: 500px) {
+
+    .ts-test-card-body {
+      padding: 15px;
+    }
+
+    .ts-test-row {
+      padding: 14px;
+      gap: 12px;
+    }
+
+    .ts-test-number {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+    }
+
+    .ts-test-info {
+      width: calc(100% - 54px);
+    }
+
+    .ts-test-actions {
+      margin-left: 0;
+    }
+
+  }
+</style>
+
+
+<div class="container-fluid py-4">
+
+  <div class="ts-tests-page">
+
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <div class="ts-tests-header">
+
+      <div class="text-muted small mb-2">
+
+        Teacher Panel /
+
+        Test Series /
+
+        <%= @test_series.title %> /
+
+        Tests
+
+      </div>
+
+
+      <div class="d-flex justify-content-between
+                  align-items-center
+                  flex-wrap gap-3">
+
+        <div>
+
+          <h2 class="mb-1">
+            Test Series Tests
+          </h2>
+
+          <p class="mb-0">
+            Manage all tests included in
+            <strong>
+              <%= @test_series.title %>
+            </strong>
+          </p>
+
+        </div>
+
+
+        <div class="d-flex gap-2">
+
+          <%= link_to teacher_panel_test_series_path,
+                class: "btn btn-outline-secondary" do %>
+
+            <i class="fas fa-arrow-left me-1"></i>
+
+            Back to Test Series
+
+          <% end %>
+
+
+          <%= link_to new_teacher_panel_test_series_test_series_test_path(
+                @test_series
+              ),
+              class: "btn btn-primary" do %>
+
+            <i class="fas fa-plus me-1"></i>
+
+            Add Test
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         TEST CARD
+    ================================================== -->
+
+    <div class="ts-test-card">
+
+
+      <div class="ts-test-card-header">
+
+        <h5>
+
+          <i class="fas fa-file-alt me-2"></i>
+
+          Tests
+
+        </h5>
+
+
+        <span class="badge bg-primary">
+
+          <%= @test_series_tests.count %>
+
+          <%= @test_series_tests.count == 1 ? "Test" : "Tests" %>
+
+        </span>
+
+      </div>
+
+
+      <div class="ts-test-card-body">
+
+
+        <% if @test_series_tests.any? %>
+
+
+          <% @test_series_tests.each do |test| %>
+
+            <div class="ts-test-row">
+
+
+              <!-- TEST NUMBER -->
+
+              <div class="ts-test-number">
+
+                <%= test.test_number %>
+
+              </div>
+
+
+              <!-- TEST INFORMATION -->
+
+              <div class="ts-test-info">
+
+
+                <h5>
+
+                  <%= test.title %>
+
+                </h5>
+
+
+                <% if test.description.present? %>
+
+                  <div class="ts-test-description">
+
+                    <%= test.description %>
+
+                  </div>
+
+                <% end %>
+
+
+                <div class="ts-test-meta">
+
+
+                  <span>
+
+                    <i class="fas fa-question-circle"></i>
+
+                    <%= test.question_count %>
+
+                    <%= test.question_count == 1 ?
+                        "Question" :
+                        "Questions" %>
+
+                  </span>
+
+
+                  <span>
+
+                    <i class="fas fa-star"></i>
+
+                    <%= test.calculated_total_marks %>
+
+                    Marks
+
+                  </span>
+
+
+                  <% if test.duration.present? %>
+
+                    <span>
+
+                      <i class="fas fa-clock"></i>
+
+                      <%= test.duration %>
+
+                      Minutes
+
+                    </span>
+
+                  <% end %>
+
+
+                </div>
+
+              </div>
+
+
+              <!-- STATUS -->
+
+              <div>
+
+                <% if test.status.to_s.downcase == "active" %>
+
+                  <span class="ts-status active">
+
+                    Active
+
+                  </span>
+
+                <% else %>
+
+                  <span class="ts-status inactive">
+
+                    <%= test.status %>
+
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="ts-test-actions">
+
+
+                <%= link_to teacher_panel_test_series_test_series_test_path(
+                      @test_series,
+                      test
+                    ),
+                    class: "btn btn-sm btn-outline-primary ts-action-btn",
+                    title: "View Test" do %>
+
+                  <i class="fas fa-eye"></i>
+
+                <% end %>
+
+
+                <%= link_to edit_teacher_panel_test_series_test_series_test_path(
+                      @test_series,
+                      test
+                    ),
+                    class: "btn btn-sm btn-outline-secondary ts-action-btn",
+                    title: "Edit Test" do %>
+
+                  <i class="fas fa-edit"></i>
+
+                <% end %>
+
+
+                <%= button_to teacher_panel_test_series_test_series_test_path(
+                      @test_series,
+                      test
+                    ),
+                    method: :delete,
+                    class: "btn btn-sm btn-outline-danger ts-action-btn",
+                    title: "Delete Test",
+                    data: {
+                      turbo_confirm:
+                        "Delete '#{test.title}'? All questions and options inside this test will also be deleted."
+                    } do %>
+
+                  <i class="fas fa-trash"></i>
+
+                <% end %>
+
+
+              </div>
+
+
+            </div>
+
+          <% end %>
+
+
+        <% else %>
+
+
+          <!-- EMPTY -->
+
+          <div class="ts-empty">
+
+
+            <div class="ts-empty-icon">
+
+              <i class="fas fa-file-circle-question"></i>
+
+            </div>
+
+
+            <h5 class="fw-bold mb-2">
+
+              No Tests Added Yet
+
+            </h5>
+
+
+            <p class="mb-4">
+
+              Create the first test for this Test Series.
+
+            </p>
+
+
+            <%= link_to new_teacher_panel_test_series_test_series_test_path(
+                  @test_series
+                ),
+                class: "btn btn-primary" do %>
+
+              <i class="fas fa-plus me-1"></i>
+
+              Create First Test
+
+            <% end %>
+
+
+          </div>
+
+
+        <% end %>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,453 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — QUESTIONS PAGE
+   ========================================================= */
+
+.admin-ts-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+/* =========================================================
+   QUESTION CARD
+   ========================================================= */
+
+.admin-ts-question-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 15px rgba(25, 25, 50, 0.04);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-ts-question-card:hover {
+  border-color: #d9d7ff;
+  box-shadow: 0 8px 22px rgba(45, 45, 90, 0.07);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   QUESTION HEADER
+   ========================================================= */
+
+.admin-ts-question-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding: 15px 20px;
+
+  background: #fafaff;
+  border-bottom: 1px solid #eef0f5;
+}
+
+.admin-ts-question-top strong {
+  color: #29293b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-ts-question-top span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+  padding: 5px 10px;
+
+  color: #4f46e5;
+  background: #f1f0ff;
+  border: 1px solid #ddd9ff;
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   QUESTION TEXT
+   ========================================================= */
+
+.admin-ts-question-text {
+  padding: 18px 20px 15px;
+
+  color: #202033;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.65;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.admin-ts-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+
+  gap: 10px;
+
+  padding: 0 20px 18px;
+}
+
+.admin-ts-option {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  gap: 9px;
+
+  min-height: 44px;
+  height: auto;
+  padding: 9px 12px;
+
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+
+  color: #4b5563;
+
+  font-size: 13px;
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+.admin-ts-option > strong {
+  flex: 0 0 auto;
+  color: #6366f1;
+  font-size: 13px;
+}
+
+.admin-ts-option > span:not(.admin-ts-correct) {
+  min-width: 0;
+}
+
+/* Correct option */
+
+.admin-ts-option.correct {
+  background: #fbfffc;
+  border-color: #b7e4c7;
+}
+
+.admin-ts-option.correct > strong {
+  color: #15803d;
+}
+
+/* =========================================================
+   CORRECT BADGE
+   ========================================================= */
+
+.admin-ts-option .admin-ts-correct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: auto;
+  flex-shrink: 0;
+
+  min-height: 24px;
+  padding: 4px 8px;
+
+  color: #15803d;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   QUESTION ACTIONS
+   ========================================================= */
+
+.admin-ts-question-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+
+  padding: 13px 20px;
+
+  background: #fafafa;
+  border-top: 1px solid #eef0f5;
+}
+
+.admin-ts-question-actions form {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-ts-question-actions .admin-ts-action {
+  min-height: 34px;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.admin-ts-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+  margin-top: 22px;
+  padding: 35px;
+
+  background: #ffffff;
+  border: 1px dashed #dfe2eb;
+  border-radius: 13px;
+
+  text-align: center;
+}
+
+.admin-ts-empty i {
+  margin-bottom: 12px;
+
+  color: #9ca3af;
+  font-size: 30px;
+}
+
+.admin-ts-empty h3 {
+  margin: 0 0 6px;
+
+  color: #303044;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.admin-ts-empty p {
+  margin: 0;
+
+  color: #73798c;
+  font-size: 13px;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 750px) {
+
+  .admin-ts-options {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-ts-question-actions {
+    justify-content: flex-start;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .admin-ts-question-top {
+    padding: 13px 15px;
+  }
+
+  .admin-ts-question-text {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .admin-ts-options {
+    padding: 0 15px 15px;
+  }
+
+  .admin-ts-option {
+    min-height: 42px;
+    padding: 8px 10px;
+  }
+
+  .admin-ts-question-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 12px 15px;
+  }
+
+  .admin-ts-question-actions .admin-ts-action {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .admin-ts-question-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-ts-option {
+    font-size: 12px;
+  }
+
+  .admin-ts-option .admin-ts-correct {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+}
+</style>
+
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= @test_series.title %> /
+        <%= @test.title %> /
+        Questions
+      </div>
+
+      <h1>Questions</h1>
+
+      <p>
+        Manage questions for this test.
+      </p>
+
+    </div>
+
+    <%= link_to new_admin_test_series_test_question_path(
+                  @test_series,
+                  @test
+                ),
+                class: "admin-ts-btn admin-ts-btn-primary" do %>
+      <i class="fas fa-plus"></i>
+      Add Question
+    <% end %>
+
+  </div>
+
+
+  <% if @questions.any? %>
+
+    <div class="admin-ts-question-list">
+
+      <% @questions.each_with_index do |question, index| %>
+
+        <div class="admin-ts-question-card">
+
+          <div class="admin-ts-question-top">
+
+            <strong>
+              Question <%= index + 1 %>
+            </strong>
+
+            <span>
+              <%= question.marks %> Mark
+            </span>
+
+          </div>
+
+          <div class="admin-ts-question-text">
+            <%= question.question_text %>
+          </div>
+
+          <div class="admin-ts-options">
+
+            <% question.test_series_options
+                      .order(position: :asc)
+                      .each_with_index do |option, option_index| %>
+
+              <div class="
+                admin-ts-option
+                <%= "correct" if option.is_correct? %>
+              ">
+
+                <strong>
+                  <%= ("A".ord + option_index).chr %>.
+                </strong>
+
+                <span>
+                  <%= option.option_text %>
+                </span>
+
+                <% if option.is_correct? %>
+                  <span class="admin-ts-correct">
+                    Correct
+                  </span>
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+          <div class="admin-ts-question-actions">
+
+            <%= link_to "View",
+                        admin_test_series_test_question_path(
+                          @test_series,
+                          @test,
+                          question
+                        ),
+                        class: "admin-ts-action view" %>
+
+            <%= link_to "Edit",
+                        edit_admin_test_series_test_question_path(
+                          @test_series,
+                          @test,
+                          question
+                        ),
+                        class: "admin-ts-action edit" %>
+
+            <%= button_to "Delete",
+                          admin_test_series_test_question_path(
+                            @test_series,
+                            @test,
+                            question
+                          ),
+                          method: :delete,
+                          class: "admin-ts-action delete",
+                          form: {
+                            data: {
+                              turbo_confirm:
+                                "Delete this question?"
+                            }
+                          } %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="admin-ts-empty">
+      <i class="fas fa-question-circle"></i>
+
+      <h3>No Questions</h3>
+
+      <p>
+        Add questions to this test.
+      </p>
+
+    </div>
+
+  <% end %>
+
+</div>

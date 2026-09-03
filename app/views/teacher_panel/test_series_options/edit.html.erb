@@ -1,0 +1,390 @@
+<style>
+  .option-page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .option-header {
+    margin-bottom: 25px;
+  }
+
+  .option-breadcrumb {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .option-breadcrumb span {
+    color: #6f42c1;
+    font-weight: 600;
+  }
+
+  .option-card {
+    background: #fff;
+    border: 1px solid #e8e2ff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(111, 66, 193, 0.08);
+    overflow: hidden;
+  }
+
+  .option-card-header {
+    padding: 22px 25px;
+    background: #f7f4ff;
+    border-bottom: 1px solid #e8e2ff;
+  }
+
+  .option-card-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .option-card-header p {
+    margin: 5px 0 0;
+    color: #777;
+    font-size: 14px;
+  }
+
+  .option-card-body {
+    padding: 30px 25px;
+  }
+
+  .question-preview {
+    background: #faf9ff;
+    border: 1px solid #e7e1ff;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 25px;
+  }
+
+  .question-preview-label {
+    color: #6f42c1;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .question-preview-text {
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .form-label-custom {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .option-input,
+  .position-input {
+    width: 100%;
+    border: 1px solid #ddd6f7;
+    border-radius: 10px;
+    padding: 12px 15px;
+    outline: none;
+    transition: .2s;
+  }
+
+  .option-input {
+    min-height: 52px;
+  }
+
+  .position-input {
+    height: 48px;
+  }
+
+  .option-input:focus,
+  .position-input:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, .12);
+  }
+
+  .correct-box {
+    background: #f7f5ff;
+    border: 1px solid #e5defb;
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .correct-box label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #444;
+  }
+
+  .correct-checkbox {
+    width: 19px;
+    height: 19px;
+    accent-color: #6f42c1;
+  }
+
+  .correct-help {
+    margin-left: 29px;
+    margin-top: 5px;
+    color: #777;
+    font-size: 12px;
+  }
+
+  .error-box {
+    background: #fff1f1;
+    border: 1px solid #f1c5c5;
+    color: #b42318;
+    border-radius: 10px;
+    padding: 13px 15px;
+    margin-bottom: 20px;
+  }
+
+  .option-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-purple {
+    background: #6f42c1;
+    border-color: #6f42c1;
+    color: #fff;
+  }
+
+  .btn-purple:hover {
+    background: #5d35a8;
+    border-color: #5d35a8;
+    color: #fff;
+  }
+
+  .option-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: #eee8ff;
+    color: #6f42c1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 576px) {
+    .option-card-body {
+      padding: 20px 16px;
+    }
+
+    .option-card-header {
+      padding: 18px 16px;
+    }
+
+    .option-actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .option-actions a,
+    .option-actions button {
+      width: 100%;
+    }
+  }
+</style>
+
+
+<div class="container-fluid py-4">
+
+  <div class="option-page">
+
+    <!-- HEADER -->
+
+    <div class="option-header">
+
+      <div class="option-breadcrumb">
+        Teacher Panel /
+        Test Series /
+        <%= @test_series.title %> /
+        <%= @test.title %> /
+        <%= @question.question_text.truncate(40) %> /
+        <span>Edit Option</span>
+      </div>
+
+      <h2 class="fw-bold mb-1">
+        Edit Answer Option
+      </h2>
+
+      <p class="text-muted mb-0">
+        Update this answer option.
+      </p>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="option-card">
+
+      <div class="option-card-header">
+
+        <div class="option-icon">
+          <i class="fas fa-pen"></i>
+        </div>
+
+        <h4>
+          Edit Option
+        </h4>
+
+        <p>
+          Modify the option text, position, or correct-answer status.
+        </p>
+
+      </div>
+
+
+      <div class="option-card-body">
+
+
+        <!-- QUESTION -->
+
+        <div class="question-preview">
+
+          <div class="question-preview-label">
+            Question
+          </div>
+
+          <div class="question-preview-text">
+            <%= @question.question_text %>
+          </div>
+
+        </div>
+
+
+        <!-- ERRORS -->
+
+        <% if @option.errors.any? %>
+
+          <div class="error-box">
+
+            <strong>
+              Please fix the following:
+            </strong>
+
+            <ul class="mb-0 mt-2">
+
+              <% @option.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+
+            </ul>
+
+          </div>
+
+        <% end %>
+
+
+        <!-- FORM -->
+
+        <%= form_with model: @option,
+              url: teacher_panel_test_series_test_question_option_path(
+                @test_series,
+                @test,
+                @question,
+                @option
+              ),
+              method: :patch,
+              local: true do |form| %>
+
+
+          <!-- OPTION TEXT -->
+
+          <div class="mb-4">
+
+            <%= form.label :option_text,
+                  "Option Text",
+                  class: "form-label-custom" %>
+
+            <%= form.text_field :option_text,
+                  class: "option-input",
+                  placeholder: "Enter answer option...",
+                  autocomplete: "off" %>
+
+          </div>
+
+
+          <!-- POSITION -->
+
+          <div class="mb-4">
+
+            <%= form.label :position,
+                  "Position",
+                  class: "form-label-custom" %>
+
+            <%= form.number_field :position,
+                  class: "position-input",
+                  min: 1 %>
+
+            <div class="form-text">
+              Controls the display order of this option.
+            </div>
+
+          </div>
+
+
+          <!-- CORRECT -->
+
+          <div class="correct-box">
+
+            <%= form.label :is_correct do %>
+
+              <%= form.check_box :is_correct,
+                    class: "correct-checkbox" %>
+
+              <span>
+                This is the correct answer
+              </span>
+
+            <% end %>
+
+            <div class="correct-help">
+              Selecting this will automatically make other options incorrect.
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="option-actions">
+
+            <%= link_to teacher_panel_test_series_test_question_path(
+                  @test_series,
+                  @test,
+                  @question
+                ),
+                class: "btn btn-outline-secondary" do %>
+
+              <i class="fas fa-arrow-left me-1"></i>
+              Cancel
+
+            <% end %>
+
+
+            <%= form.submit "Update Option",
+                  class: "btn btn-purple px-4" %>
+
+          </div>
+
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

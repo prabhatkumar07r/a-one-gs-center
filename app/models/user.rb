@@ -15,13 +15,20 @@ class User < ApplicationRecord
 
   has_one :teacher
   has_one_attached :image
+  has_many :quiz_attempts,
+         dependent: :destroy
 
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments
   has_many :video_progresses, dependent: :destroy
   has_many :certificates, dependent: :destroy
   has_many :notes, dependent: :destroy
-
+  has_many :test_series_purchases, dependent: :destroy
+  has_many :purchased_test_series,
+         through: :test_series_purchases,
+         source: :test_series
+  has_many :test_series_attempts, dependent: :destroy
+has_many :test_series_answers, through: :test_series_attempts
   # ================= GOOGLE LOGIN =================
 
   def self.from_omniauth(auth)

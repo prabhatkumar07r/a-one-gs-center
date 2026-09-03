@@ -1,164 +1,1945 @@
 <% content_for :show_layout, true %>
 
-<div class="container my-5">
+<div class="course-details-page">
 
-  <div class="card shadow">
+  <!-- =========================================================
+       BACK BUTTON
+  ========================================================== -->
+ <div class="course-back-wrapper">
+  <%= link_to root_path(anchor: "course"),
+      class: "course-back-btn",
+      id: "courseBackBtn" do %>
 
-    <div class="card-body">
+<span class="back-arrow">←</span>
+<span>Back</span>
 
-      <h1 class="mb-3">
-        <%= @course.Course_name %>
-      </h1>
-
-      <hr>
-      <div class="card border-0 shadow-sm mb-4">
-  <div class="card-body">
-
-    <h3 class="mb-3">
-      📖 About This Course
-    </h3>
-
-    <p class="text-muted">
-      <%= @course.description %>
-    </p>
-
-  </div>
-</div>
-           <div class="card border-0 shadow-sm mb-4">
-  <div class="card-body">
-
-    <h3 class="mb-3">
-      📦 Course Information
-    </h3>
-
-    <div class="row">
-
-      <div class="col-md-4 mb-3">
-        <strong>⏱ Duration</strong><br>
-        <%= @course.duration %>
-      </div>
-
-      <div class="col-md-4 mb-3">
-        <strong>🎥 Videos</strong><br>
-        <%= @videos.count %> Lessons
-      </div>
-
-      <div class="col-md-4 mb-3">
-        <strong>👨‍🏫 Teacher</strong><br>
-        <%= @course.teacher&.name || "Not Assigned" %>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-      <!-- ========================= -->
-      <!-- Course Playlist -->
-      <!-- ========================= -->
-
-      <h4>📖 Course Playlist</h4>
-
-      <% if @videos.any? %>
-
-        <% if user_signed_in? && @enrollment&.status == "Approved" %>
-
-          <div class="list-group">
-
-            <% @videos.each_with_index do |video, index| %>
-
-              <div class="list-group-item">
-
-                <h6>
-                  <%= index + 1 %>. 🎥 <%= video.title %>
-                </h6>
-
-                <p class="mb-1">
-                  <%= video.description %>
-                </p>
-
-                <small class="text-muted">
-                  Duration: <%= video.duration %>
-                </small>
-
-              </div>
-
-            <% end %>
-
-          </div>
-
-        <% else %>
-
-          <div class="alert alert-secondary">
-
-            <div class="alert alert-info">
-
-  <h5>
-    🔒 Course Content
-  </h5>
-
-  <p>
-    After your enrollment is approved, you'll get access to:
-  </p>
-
-  <ul class="mb-0">
-    <li>🎥 HD Video Lectures</li>
-    <li>📄 Downloadable PDF Notes</li>
-    <li>📝 Practice Material</li>
-    <li>📚 Complete Course Playlist</li>
-  </ul>
+<% end %>
 
 </div>
 
-          </div>
 
-        <% end %>
 
-      <% else %>
+  <!-- =========================================================
+       MAIN COURSE CONTAINER
+  ========================================================== -->
+  <div class="course-main-container">
 
-        <div class="alert alert-warning">
-          No videos available for this course.
+    <!-- =======================================================
+         LEFT SIDE
+    ======================================================== -->
+    <section class="course-left">
+
+      <!-- BRAND BADGE -->
+      <div class="brand-badge">
+        🎓 A ONE GS CENTER
+      </div>
+
+
+      <!-- COURSE HERO -->
+      <div class="course-hero">
+
+        <div class="course-icon">
+          🎓
         </div>
 
-      <% end %>
+        <h1>
+          <%= @course.Course_name %>
+        </h1>
 
-      <br>
+        <p>
+          Learn. Practice. Grow.
+        </p>
 
-      <!-- ========================= -->
-      <!-- Enroll / Start Learning -->
-      <!-- ========================= -->
+      </div>
 
-      <% if user_signed_in? %>
 
-        <% if @enrollment&.status == "Approved" %>
+      <!-- =====================================================
+           COURSE INFORMATION
+      ====================================================== -->
+      <div class="course-info-grid">
 
-          <%= link_to "▶ Start Learning",
-              learning_course_path(@course),
-              class: "btn btn-success" %>
+        <!-- Duration -->
+        <div class="info-card">
+          <div class="info-icon">
+            ⏱️
+          </div>
 
-        <% elsif @enrollment.present? %>
+          <div class="info-content">
+            <span>Duration</span>
+            <strong>
+              <%= @course.duration %>
+            </strong>
+          </div>
+        </div>
 
-          <button class="btn btn-warning">
-            ⏳ Waiting for Approval
-          </button>
+
+        <!-- Lessons -->
+        <div class="info-card">
+          <div class="info-icon">
+            🎥
+          </div>
+
+          <div class="info-content">
+            <span>Lessons</span>
+            <strong>
+              <%= @videos.count %>
+            </strong>
+          </div>
+        </div>
+
+
+        <!-- Teacher -->
+        <div class="info-card">
+          <div class="info-icon">
+            👨‍🏫
+          </div>
+
+          <div class="info-content">
+            <span>Teacher</span>
+            <strong>
+              <%= @course.teacher&.name || "Not Assigned" %>
+            </strong>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           ABOUT COURSE
+      ====================================================== -->
+      <div class="content-card">
+
+        <div class="section-heading">
+          <span>📖</span>
+          <h2>About This Course</h2>
+        </div>
+
+        <p class="course-description">
+          <%= @course.description.presence ||
+              "This course provides complete learning material with practical lessons and guided learning." %>
+        </p>
+
+      </div>
+
+
+      <!-- =====================================================
+           COURSE CONTENT
+      ====================================================== -->
+      <div class="content-card">
+
+        <div class="section-heading">
+          <span>📚</span>
+          <h2>Course Content</h2>
+        </div>
+
+
+        <% if @videos.any? %>
+
+          <% if user_signed_in? && @enrollment&.status == "Approved" %>
+
+            <div class="video-list">
+
+              <% @videos.each_with_index do |video, index| %>
+
+                <div class="video-item">
+
+                  <div class="video-number">
+                    <%= index + 1 %>
+                  </div>
+
+                  <div class="video-details">
+
+                    <h4>
+                      <%= video.title %>
+                    </h4>
+
+                    <% if video.description.present? %>
+                      <p>
+                        <%= video.description %>
+                      </p>
+                    <% end %>
+
+                    <% if video.duration.present? %>
+                      <small>
+                        ⏱ <%= video.duration %>
+                      </small>
+                    <% end %>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          <% else %>
+
+            <div class="locked-content">
+
+              <div class="lock-icon">
+                🔒
+              </div>
+
+              <div>
+                <h3>
+                  Course Content Locked
+                </h3>
+
+                <p>
+                  Enroll in this course to get access to complete
+                  learning material.
+                </p>
+
+                <ul>
+                  <li>🎥 HD Video Lectures</li>
+                  <li>📄 Downloadable PDF Notes</li>
+                  <li>📝 Practice Material</li>
+                  <li>📚 Complete Course Playlist</li>
+                </ul>
+              </div>
+
+            </div>
+
+          <% end %>
 
         <% else %>
 
-          <%= link_to "📝 Enroll Now",
-              new_enrollment_path(course_id: @course.id),
-              class: "btn btn-primary" %>
+          <div class="no-content">
+            <span>📂</span>
+            <p>
+              Course content will be available soon.
+            </p>
+          </div>
 
         <% end %>
 
-      <% else %>
+      </div>
 
-        <%= link_to "🔐 Login to Enroll",
-            new_user_session_path,
-            class: "btn btn-warning" %>
+    </section>
+
+
+    <!-- =======================================================
+         RIGHT SIDE — PAYMENT
+    ======================================================== -->
+    <aside class="course-right">
+
+      <div class="payment-card">
+
+        <!-- PAYMENT HEADER -->
+        <div class="payment-header">
+
+          <span>
+            COURSE PRICE
+          </span>
+
+          <div class="secure-payment">
+            🔒 Secure Payment
+          </div>
+
+        </div>
+
+
+        <!-- ===================================================
+             PRICE CALCULATION
+        ==================================================== -->
+
+        <% course_fee = @course.fee.to_d %>
+
+        <% discount =
+             if @enrollment&.fee.present?
+               @enrollment.fee.discount_amount.to_d
+             else
+               @course.current_discount_amount.to_d
+             end
+        %>
+
+        <% final_amount =
+             if @enrollment&.fee.present?
+               @enrollment.fee.total_fee.to_d -
+                 @enrollment.fee.discount_amount.to_d
+             else
+               @course.final_fee.to_d
+             end
+        %>
+
+        <% final_amount = 0.to_d if final_amount < 0 %>
+
+
+        <!-- ORIGINAL PRICE -->
+        <% if discount > 0 %>
+
+          <div class="original-price">
+            ₹<%= number_with_delimiter(course_fee.to_i) %>
+          </div>
+
+          <div class="discount-badge">
+            Save ₹<%= number_with_delimiter(discount.to_i) %>
+          </div>
+
+        <% end %>
+
+
+        <!-- FINAL PRICE -->
+        <div class="final-price">
+          ₹<%= number_with_delimiter(final_amount.to_i) %>
+        </div>
+
+
+        <!-- DISCOUNT INFORMATION -->
+        <% if discount > 0 %>
+
+          <div class="discount-box">
+
+            <div class="discount-icon">
+              🎉
+            </div>
+
+            <div>
+
+              <strong>
+                <%= @course.active_discount&.name ||
+                    @enrollment&.fee&.discount_name ||
+                    "Special Offer" %>
+              </strong>
+
+              <p>
+                You save ₹<%= number_with_delimiter(discount.to_i) %>
+                on this course.
+              </p>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+
+        <!-- ===================================================
+             PAYMENT SUMMARY
+        ==================================================== -->
+        <div class="payment-summary">
+
+          <div class="summary-row">
+            <span>Course Fee</span>
+            <strong>
+              ₹<%= number_with_delimiter(course_fee.to_i) %>
+            </strong>
+          </div>
+
+
+          <% if discount > 0 %>
+
+            <div class="summary-row discount-row">
+              <span>Discount</span>
+              <strong>
+                - ₹<%= number_with_delimiter(discount.to_i) %>
+              </strong>
+            </div>
+
+          <% end %>
+
+
+          <div class="summary-divider"></div>
+
+
+          <div class="summary-row payable-row">
+
+            <span>
+              Payable Amount
+            </span>
+
+            <strong>
+              ₹<%= number_with_delimiter(final_amount.to_i) %>
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===================================================
+             ACTION BUTTON
+        ==================================================== -->
+
+       <!-- ===================================================
+     ACTION BUTTON
+=================================================== -->
+
+<div class="payment-action">
+
+  <% if user_signed_in? %>
+
+    <% if @enrollment&.status == "Approved" %>
+
+      <%= link_to learning_course_path(@course),
+          class: "payment-btn success-btn" do %>
+
+        <span>▶</span>
+        Start Learning
 
       <% end %>
 
-    </div>
+
+    <% elsif @course.free? %>
+
+      <!-- FREE COURSE -->
+            <%= button_to enroll_free_course_path(@course),
+    method: :post,
+    class: "payment-btn free-btn" do %>
+
+  <span>🎓</span>
+  Enroll for Free
+
+<% end %>
+
+
+    <% elsif @enrollment.present? %>
+
+      <!-- PAID COURSE WITH EXISTING ENROLLMENT -->
+
+      <%= link_to payment_path(@enrollment),
+          class: "payment-btn pay-btn" do %>
+
+        <span>💳</span>
+        Pay ₹<%= number_with_delimiter(final_amount.to_i) %>
+
+      <% end %>
+
+      <div class="pending-note">
+        <span>⏳</span>
+        Enrollment is waiting for payment/approval
+      </div>
+
+
+    <% else %>
+
+      <!-- PAID COURSE WITHOUT ENROLLMENT -->
+
+      <%= link_to new_enrollment_path(course_id: @course.id),
+          class: "payment-btn pay-btn" do %>
+
+        <span>📝</span>
+        Enroll Now
+
+      <% end %>
+
+    <% end %>
+
+  <% else %>
+
+    <%= link_to new_user_session_path,
+        class: "payment-btn login-btn" do %>
+
+      <span>🔐</span>
+      Login to Enroll
+
+    <% end %>
+
+  <% end %>
+
+</div>
+        <!-- ===================================================
+             SECURITY
+        ==================================================== -->
+        <div class="payment-security">
+
+          <div>
+            🔒 Secure & Safe
+          </div>
+
+          <div>
+            ⚡ Fast Payment
+          </div>
+
+          <div>
+            🛡️ Trusted Checkout
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           RIGHT SIDE EXTRA CARD
+      ====================================================== -->
+      <div class="support-card">
+
+        <div class="support-icon">
+          💬
+        </div>
+
+        <div>
+
+          <h3>
+            Need Help?
+          </h3>
+
+          <p>
+            Contact A One GS Center for course-related assistance.
+          </p>
+
+        </div>
+
+      </div>
+
+    </aside>
+
   </div>
 
 </div>
+
+
+<!-- ===========================================================
+     CSS
+=========================================================== -->
+
+<style>
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.course-details-page {
+  min-height: 100vh;
+  padding: 30px 5%;
+  color: #ffffff;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(123, 47, 247, 0.28),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(0, 198, 255, 0.16),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(126, 34, 206, 0.25),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #09001a 0%,
+      #16052d 45%,
+      #080014 100%
+    );
+
+  position: relative;
+}
+
+
+/* ============================================================
+   BACK BUTTON
+============================================================ */
+
+.course-back-wrapper {
+  width: 100%;
+  padding-top: 110px;       /* prevents header overlap */
+  padding-left: 30px;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 5;
+}
+
+.course-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 24px;
+
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #111827,
+    #172554
+  );
+
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.course-back-btn:hover {
+  transform: translateX(-4px);
+
+  background: linear-gradient(
+    135deg,
+    #1e293b,
+    #312e81
+  );
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.45),
+    0 0 20px rgba(124,58,237,0.25);
+}
+
+.course-back-btn:active {
+  transform: translateX(-1px) scale(0.98);
+}
+
+.back-arrow {
+  font-size: 24px;
+  line-height: 1;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .course-back-wrapper {
+    padding-top: 90px;
+    padding-left: 18px;
+    margin-bottom: 20px;
+  }
+
+  .course-back-btn {
+    padding: 12px 18px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+
+  .back-arrow {
+    font-size: 21px;
+  }
+}
+
+
+/* ============================================================
+   MAIN CONTAINER
+============================================================ */
+
+.course-main-container {
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.65fr)
+    minmax(350px, 0.75fr);
+
+  gap: 28px;
+
+  padding: 28px;
+
+  border-radius: 28px;
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(38, 17, 74, 0.96),
+      rgba(17, 8, 38, 0.97)
+    );
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+
+  backdrop-filter: blur(18px);
+}
+
+
+/* ============================================================
+   LEFT
+============================================================ */
+
+.course-left {
+  min-width: 0;
+}
+
+
+/* ============================================================
+   BRAND BADGE
+============================================================ */
+
+.brand-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 12px 18px;
+
+  border-radius: 30px;
+
+  background:
+    rgba(5, 2, 20, 0.75);
+
+  border:
+    1px solid rgba(255,255,255,0.10);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  letter-spacing: .3px;
+
+  margin-bottom: 25px;
+}
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.course-hero {
+
+  min-height: 330px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  border-radius: 26px;
+
+  border:
+    1px solid rgba(168,85,247,.45);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(124,58,237,.35),
+      transparent 60%
+    ),
+    linear-gradient(
+      145deg,
+      #32186b,
+      #1b0c3b
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 20px 50px rgba(0,0,0,.25);
+}
+
+
+.course-icon {
+
+  font-size: 70px;
+
+  margin-bottom: 20px;
+
+  filter:
+    drop-shadow(0 8px 12px rgba(0,0,0,.4));
+}
+
+
+.course-hero h1 {
+
+  margin: 0;
+
+  max-width: 850px;
+
+  font-size: clamp(30px, 4vw, 48px);
+
+  line-height: 1.15;
+
+  font-weight: 900;
+
+  color: #ffffff;
+
+  text-shadow:
+    0 4px 20px rgba(0,0,0,.35);
+}
+
+
+.course-hero p {
+
+  margin-top: 15px;
+
+  color: #c4b5fd;
+
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   INFORMATION GRID
+============================================================ */
+
+.course-info-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 14px;
+
+  margin-top: 18px;
+}
+
+
+.info-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.07),
+      rgba(255,255,255,.025)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease;
+}
+
+
+.info-card:hover {
+
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(168,85,247,.5);
+}
+
+
+.info-icon {
+
+  width: 48px;
+
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    rgba(124,58,237,.20);
+
+  font-size: 24px;
+}
+
+
+.info-content {
+
+  min-width: 0;
+}
+
+
+.info-content span {
+
+  display: block;
+
+  color: #a99bbd;
+
+  font-size: 13px;
+
+  margin-bottom: 5px;
+}
+
+
+.info-content strong {
+
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   CONTENT CARD
+============================================================ */
+
+.content-card {
+
+  margin-top: 20px;
+
+  padding: 26px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(255,255,255,.025)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.09);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+
+.section-heading {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 15px;
+}
+
+
+.section-heading span {
+
+  font-size: 27px;
+}
+
+
+.section-heading h2 {
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+
+.course-description {
+
+  margin: 0;
+
+  color: #c8bdd5;
+
+  line-height: 1.8;
+
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   VIDEO LIST
+============================================================ */
+
+.video-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.video-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 15px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(0,0,0,.20);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+}
+
+
+.video-number {
+
+  min-width: 40px;
+
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #2563eb
+    );
+
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+
+.video-details h4 {
+
+  margin: 0 0 5px;
+
+  color: #ffffff;
+
+  font-size: 15px;
+}
+
+
+.video-details p {
+
+  margin: 0 0 5px;
+
+  color: #aaa0b9;
+
+  font-size: 13px;
+}
+
+
+.video-details small {
+
+  color: #8e829e;
+}
+
+
+/* ============================================================
+   LOCKED CONTENT
+============================================================ */
+
+.locked-content {
+
+  display: flex;
+
+  gap: 20px;
+
+  padding: 22px;
+
+  border-radius: 17px;
+
+  background:
+    rgba(124,58,237,.08);
+
+  border:
+    1px solid rgba(168,85,247,.18);
+}
+
+
+.lock-icon {
+
+  font-size: 38px;
+}
+
+
+.locked-content h3 {
+
+  margin: 0 0 8px;
+
+  color: #ffffff;
+}
+
+
+.locked-content p {
+
+  color: #aaa0b9;
+
+  margin-bottom: 12px;
+}
+
+
+.locked-content ul {
+
+  margin: 0;
+
+  padding-left: 20px;
+
+  color: #c9bdd5;
+
+  line-height: 1.9;
+}
+
+
+/* ============================================================
+   NO CONTENT
+============================================================ */
+
+.no-content {
+
+  text-align: center;
+
+  padding: 30px;
+
+  color: #aaa0b9;
+}
+
+
+.no-content span {
+
+  display: block;
+
+  font-size: 40px;
+
+  margin-bottom: 10px;
+}
+
+
+/* ============================================================
+   RIGHT SIDE
+============================================================ */
+
+.course-right {
+
+  position: sticky;
+
+  top: 25px;
+
+  align-self: start;
+}
+
+
+/* ============================================================
+   PAYMENT CARD
+============================================================ */
+
+.payment-card {
+
+  padding: 28px;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #2d1555,
+      #160827
+    );
+
+  border:
+    1px solid rgba(168,85,247,.40);
+
+  box-shadow:
+    0 25px 55px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+
+/* ============================================================
+   PAYMENT HEADER
+============================================================ */
+
+.payment-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 22px;
+}
+
+
+.payment-header > span {
+
+  color: #c4b5fd;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.2px;
+}
+
+
+.secure-payment {
+
+  color: #86efac;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   ORIGINAL PRICE
+============================================================ */
+
+.original-price {
+
+  display: inline-block;
+
+  color: #81768e;
+
+  text-decoration: line-through;
+
+  font-size: 17px;
+
+  margin-right: 8px;
+}
+
+
+.discount-badge {
+
+  display: inline-block;
+
+  padding: 6px 10px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(34,197,94,.18);
+
+  color: #86efac;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   FINAL PRICE
+============================================================ */
+
+.final-price {
+
+  margin-top: 8px;
+
+  color: #ffffff;
+
+  font-size: 52px;
+
+  line-height: 1;
+
+  font-weight: 900;
+
+  letter-spacing: -2px;
+}
+
+
+/* ============================================================
+   DISCOUNT BOX
+============================================================ */
+
+.discount-box {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 22px;
+
+  padding: 15px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(34,197,94,.14),
+      rgba(16,185,129,.05)
+    );
+
+  border:
+    1px solid rgba(74,222,128,.20);
+}
+
+
+.discount-icon {
+
+  font-size: 27px;
+}
+
+
+.discount-box strong {
+
+  color: #86efac;
+
+  font-size: 14px;
+}
+
+
+.discount-box p {
+
+  margin: 4px 0 0;
+
+  color: #b9b0c2;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   PAYMENT SUMMARY
+============================================================ */
+
+.payment-summary {
+
+  margin-top: 25px;
+
+  padding: 18px 0;
+
+  border-top:
+    1px solid rgba(255,255,255,.10);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.10);
+}
+
+
+.summary-row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 8px 0;
+
+  color: #aaa0b9;
+
+  font-size: 14px;
+}
+
+
+.summary-row strong {
+
+  color: #ffffff;
+}
+
+
+.discount-row strong {
+
+  color: #4ade80;
+}
+
+
+.summary-divider {
+
+  height: 1px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  margin: 8px 0;
+}
+
+
+.payable-row {
+
+  font-size: 16px;
+
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+
+.payable-row strong {
+
+  color: #ffffff;
+
+  font-size: 20px;
+}
+
+
+/* ============================================================
+   PAYMENT BUTTON
+============================================================ */
+
+.payment-action {
+
+  margin-top: 22px;
+}
+
+
+.payment-btn {
+
+  width: 100%;
+
+  min-height: 56px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border: none;
+
+  border-radius: 15px;
+
+  text-decoration: none;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+
+.payment-btn:hover {
+
+  transform: translateY(-3px);
+
+  text-decoration: none;
+}
+
+
+/* Pay */
+.pay-btn {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #2563eb
+    );
+
+  box-shadow:
+    0 12px 28px rgba(79,70,229,.35);
+}
+
+
+.pay-btn:hover {
+
+  color: #ffffff;
+
+  box-shadow:
+    0 18px 38px rgba(79,70,229,.48);
+}
+
+
+/* Success */
+.success-btn {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #059669,
+      #16a34a
+    );
+}
+
+
+.success-btn:hover {
+
+  color: #ffffff;
+}
+
+
+/* Pending */
+.pending-btn {
+
+  color: #facc15;
+
+  background:
+    rgba(234,179,8,.12);
+
+  border:
+    1px solid rgba(234,179,8,.30);
+
+  cursor: default;
+}
+
+
+/* Free */
+.free-btn {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #059669,
+      #10b981
+    );
+}
+
+
+.free-btn:hover {
+
+  color: #ffffff;
+}
+
+
+/* Login */
+.login-btn {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+}
+
+
+.login-btn:hover {
+
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   PENDING NOTE
+============================================================ */
+
+.pending-note {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: 12px;
+
+  color: #c4b5fd;
+
+  font-size: 12px;
+
+  text-align: center;
+}
+
+
+/* ============================================================
+   SECURITY
+============================================================ */
+
+.payment-security {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 7px;
+
+  margin-top: 20px;
+
+  color: #8f829d;
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+
+.payment-security div {
+
+  padding: 8px 4px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(255,255,255,.03);
+}
+
+
+/* ============================================================
+   SUPPORT CARD
+============================================================ */
+
+.support-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-top: 18px;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,.045);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+}
+
+
+.support-icon {
+
+  font-size: 28px;
+}
+
+
+.support-card h3 {
+
+  margin: 0 0 4px;
+
+  color: #ffffff;
+
+  font-size: 15px;
+}
+
+
+.support-card p {
+
+  margin: 0;
+
+  color: #9f93aa;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+============================================================ */
+
+@media (max-width: 1050px) {
+
+  .course-main-container {
+
+    grid-template-columns: 1fr;
+  }
+
+  .course-right {
+
+    position: static;
+  }
+
+  .course-info-grid {
+
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .course-details-page {
+
+    padding: 20px 12px;
+  }
+
+
+  .course-main-container {
+
+    padding: 15px;
+
+    border-radius: 20px;
+
+    gap: 18px;
+  }
+
+
+  .course-hero {
+
+    min-height: 260px;
+
+    padding: 25px 15px;
+
+    border-radius: 20px;
+  }
+
+
+  .course-icon {
+
+    font-size: 55px;
+  }
+
+
+  .course-hero h1 {
+
+    font-size: 30px;
+  }
+
+
+  .course-info-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .content-card {
+
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+
+
+  .section-heading h2 {
+
+    font-size: 20px;
+  }
+
+
+  .payment-card {
+
+    padding: 22px;
+
+    border-radius: 20px;
+  }
+
+
+  .final-price {
+
+    font-size: 44px;
+  }
+
+
+  .payment-security {
+
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 430px) {
+
+  .brand-badge {
+
+    font-size: 12px;
+
+    padding: 10px 14px;
+  }
+
+
+  .course-hero h1 {
+
+    font-size: 25px;
+  }
+
+
+  .course-description {
+
+    font-size: 14px;
+  }
+
+
+  .locked-content {
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+}
+
+
+/* ============================================================
+   ANIMATION
+============================================================ */
+
+@keyframes courseFadeIn {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(15px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+
+}
+
+
+.course-main-container {
+
+  animation:
+    courseFadeIn .55s ease both;
+}
+
+</style>
+
+
+<!-- ===========================================================
+     JAVASCRIPT
+=========================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  /*
+   * Add small hover animation to information cards
+   */
+  const infoCards =
+    document.querySelectorAll(".info-card");
+
+  infoCards.forEach(function (card) {
+
+    card.addEventListener("mouseenter", function () {
+      card.style.transform = "translateY(-4px)";
+    });
+
+    card.addEventListener("mouseleave", function () {
+      card.style.transform = "";
+    });
+
+  });
+
+
+  /*
+   * Payment button loading state
+   */
+  const paymentButtons =
+    document.querySelectorAll(
+      ".pay-btn, .free-btn, .login-btn"
+    );
+
+  paymentButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      /*
+       * Prevent double click
+       */
+      if (button.dataset.clicked === "true") {
+        return;
+      }
+
+      button.dataset.clicked = "true";
+
+      const originalHTML =
+        button.innerHTML;
+
+      button.innerHTML =
+        "<span>⏳</span> Please wait...";
+
+      /*
+       * Restore if browser does not navigate
+       */
+      setTimeout(function () {
+
+        if (document.body.contains(button)) {
+
+          button.innerHTML =
+            originalHTML;
+
+          button.dataset.clicked =
+            "false";
+        }
+
+      }, 5000);
+
+    });
+
+  });
+
+});
+
+
+/*
+ * BACK BUTTON
+ *
+document.addEventListener("DOMContentLoaded", function () {
+  const backBtn = document.getElementById("courseBackBtn");
+
+  if (backBtn) {
+    backBtn.addEventListener("click", function () {
+      if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+      } else {
+        window.location.href = "/";
+      }
+    });
+  }
+});
+
+
+</script>

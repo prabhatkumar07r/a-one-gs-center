@@ -1,0 +1,34 @@
+<div class="container-fluid py-4">
+
+  <!-- BREADCRUMB -->
+
+  <div class="mb-4">
+
+    <div class="text-muted small mb-2">
+
+      Teacher Panel /
+      Test Series /
+      <%= @test_series.title %> /
+      <%= @test_series_test.title %> /
+      <span class="text-primary">
+        Edit
+      </span>
+
+    </div>
+
+    <h2 class="fw-bold mb-1">
+      Edit Test
+    </h2>
+
+    <p class="text-muted mb-0">
+      Update the test details and settings.
+    </p>
+
+  </div>
+
+
+  <!-- FORM -->
+
+  <%= render "form" %>
+
+</div>

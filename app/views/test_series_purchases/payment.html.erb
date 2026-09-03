@@ -1,0 +1,953 @@
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
+
+<style>
+/* =========================================================
+   TEST SERIES PAYMENT PAGE
+========================================================= */
+
+.ts-payment-page {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, .12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(37, 99, 235, .10),
+      transparent 35%
+    ),
+    #f8f9ff;
+
+  color: #1f2937;
+
+  padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.ts-payment-topbar {
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  padding: 18px 35px;
+}
+
+.ts-payment-topbar-inner {
+  max-width: 1100px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.ts-payment-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: #4f46e5;
+
+  font-size: 21px;
+
+  font-weight: 800;
+}
+
+.ts-payment-brand-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+
+  color: #ffffff;
+}
+
+.ts-payment-back {
+  border: none;
+
+  background: #f3f4f6;
+
+  color: #374151;
+
+  padding: 10px 18px;
+
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition: .2s ease;
+}
+
+.ts-payment-back:hover {
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+  transform: translateX(-2px);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.ts-payment-container {
+  max-width: 1100px;
+
+  margin: auto;
+
+  padding: 50px 25px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.ts-payment-heading {
+  text-align: center;
+
+  margin-bottom: 35px;
+}
+
+.ts-payment-heading h1 {
+  color: #1e1b4b;
+
+  font-size: 34px;
+
+  font-weight: 900;
+
+  margin-bottom: 8px;
+}
+
+.ts-payment-heading p {
+  color: #64748b;
+
+  margin: 0;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.ts-payment-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(320px, .8fr);
+
+  gap: 30px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.ts-payment-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 22px;
+
+  padding: 32px;
+
+  box-shadow:
+    0 12px 35px rgba(79, 70, 229, .08);
+}
+
+
+/* =========================================================
+   SERIES INFO
+========================================================= */
+
+.ts-series-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding-bottom: 25px;
+
+  margin-bottom: 25px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ts-series-icon {
+  width: 65px;
+  height: 65px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ede9fe,
+      #dbeafe
+    );
+
+  color: #6d28d9;
+
+  font-size: 28px;
+}
+
+.ts-series-info h2 {
+  margin: 0 0 5px;
+
+  color: #1e1b4b;
+
+  font-size: 23px;
+
+  font-weight: 850;
+}
+
+.ts-series-info p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.ts-payment-features {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 14px;
+
+  margin-bottom: 25px;
+}
+
+.ts-payment-feature {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+
+  color: #475569;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.ts-payment-feature i {
+  color: #16a34a;
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+.ts-payment-security {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px;
+
+  border-radius: 12px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #166534;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+.ts-payment-security i {
+  font-size: 19px;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
+.ts-payment-summary {
+  background: #ffffff;
+
+  border: 1px solid #ddd6fe;
+
+  border-radius: 22px;
+
+  padding: 28px;
+
+  box-shadow:
+    0 12px 35px rgba(79, 70, 229, .10);
+
+  position: sticky;
+
+  top: 25px;
+}
+
+.ts-summary-title {
+  color: #312e81;
+
+  font-size: 18px;
+
+  font-weight: 850;
+
+  margin-bottom: 22px;
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.ts-price-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 15px;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+.ts-price-row strong {
+  color: #334155;
+
+  font-size: 15px;
+}
+
+.ts-total-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding-top: 20px;
+
+  margin-top: 20px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.ts-total-label {
+  color: #1e293b;
+
+  font-size: 16px;
+
+  font-weight: 800;
+}
+
+.ts-total-price {
+  color: #312e81;
+
+  font-size: 30px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   PAY BUTTON
+========================================================= */
+
+.ts-pay-btn {
+  width: 100%;
+
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 15px 20px;
+
+  margin-top: 25px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #6d28d9,
+      #ec4899
+    );
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(109, 40, 217, .25);
+
+  transition: .2s ease;
+}
+
+.ts-pay-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(109, 40, 217, .35);
+}
+
+.ts-pay-btn:disabled {
+  opacity: .7;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   RAZORPAY NOTE
+========================================================= */
+
+.ts-razorpay-note {
+  text-align: center;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+
+  margin-top: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .ts-payment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-payment-summary {
+    position: static;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .ts-payment-topbar {
+    padding: 15px 18px;
+  }
+
+  .ts-payment-topbar-inner {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .ts-payment-container {
+    padding: 30px 15px;
+  }
+
+  .ts-payment-heading h1 {
+    font-size: 28px;
+  }
+
+  .ts-payment-card {
+    padding: 22px;
+  }
+
+  .ts-payment-summary {
+    padding: 22px;
+  }
+
+  .ts-payment-features {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-series-info h2 {
+    font-size: 20px;
+  }
+
+}
+</style>
+
+
+<div class="ts-payment-page">
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <div class="ts-payment-topbar">
+
+    <div class="ts-payment-topbar-inner">
+
+      <div class="ts-payment-brand">
+
+        <div class="ts-payment-brand-icon">
+          <i class="fas fa-credit-card"></i>
+        </div>
+
+        <span>
+          Test Series Payment
+        </span>
+
+      </div>
+
+
+      <%= link_to "← Back",
+                  test_series_path(@test_series),
+                  class: "ts-payment-back" %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       CONTENT
+  ====================================================== -->
+
+  <div class="ts-payment-container">
+
+
+    <div class="ts-payment-heading">
+
+      <h1>
+        Complete Your Purchase
+      </h1>
+
+      <p>
+        Secure payment to unlock this Test Series.
+      </p>
+
+    </div>
+
+
+    <div class="ts-payment-grid">
+
+
+      <!-- =================================================
+           LEFT INFORMATION
+      ================================================== -->
+
+      <div class="ts-payment-card">
+
+
+        <div class="ts-series-info">
+
+          <div class="ts-series-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+
+
+          <div>
+
+            <h2>
+              <%= @test_series.title %>
+            </h2>
+
+            <p>
+              One-time purchase • Instant access
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="ts-payment-features">
+
+          <div class="ts-payment-feature">
+
+            <i class="fas fa-check-circle"></i>
+
+            <span>
+              Complete Test Series Access
+            </span>
+
+          </div>
+
+
+          <div class="ts-payment-feature">
+
+            <i class="fas fa-check-circle"></i>
+
+            <span>
+              Unlimited Test Attempts
+            </span>
+
+          </div>
+
+
+          <div class="ts-payment-feature">
+
+            <i class="fas fa-check-circle"></i>
+
+            <span>
+              Performance Tracking
+            </span>
+
+          </div>
+
+
+          <div class="ts-payment-feature">
+
+            <i class="fas fa-check-circle"></i>
+
+            <span>
+              Instant Activation
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="ts-payment-security">
+
+          <i class="fas fa-shield-alt"></i>
+
+          <span>
+            Your payment is processed securely through
+            Razorpay. We do not store your card or banking
+            information.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           RIGHT SUMMARY
+      ================================================== -->
+
+      <aside class="ts-payment-summary">
+
+
+        <div class="ts-summary-title">
+          Order Summary
+        </div>
+
+
+        <div class="ts-price-row">
+
+          <span>
+            Test Series
+          </span>
+
+          <strong>
+            ₹<%= number_with_precision(
+              @purchase.amount,
+              precision: 2
+            ) %>
+          </strong>
+
+        </div>
+
+
+        <div class="ts-price-row">
+
+          <span>
+            Payment Type
+          </span>
+
+          <strong>
+            One Time
+          </strong>
+
+        </div>
+
+
+        <div class="ts-total-row">
+
+          <span class="ts-total-label">
+            Total
+          </span>
+
+          <span class="ts-total-price">
+
+            ₹<%= number_with_precision(
+              @purchase.amount,
+              precision: 2
+            ) %>
+
+          </span>
+
+        </div>
+
+
+        <!-- =================================================
+             RAZORPAY BUTTON
+        ================================================== -->
+
+        <button
+          type="button"
+          id="tsPayButton"
+          class="ts-pay-btn">
+
+          <i class="fas fa-lock"></i>
+
+          Pay ₹<%= number_with_precision(
+            @purchase.amount,
+            precision: 2
+          ) %>
+
+        </button>
+
+
+        <div class="ts-razorpay-note">
+
+          <i class="fas fa-shield-alt"></i>
+
+          Secure payment powered by Razorpay
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     RAZORPAY CHECKOUT
+========================================================= -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const payButton =
+    document.getElementById("tsPayButton");
+
+  if (!payButton) return;
+
+
+  payButton.addEventListener("click", function () {
+
+    payButton.disabled = true;
+
+    payButton.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> Opening Payment...';
+
+
+    const options = {
+
+      key: "<%= ENV["RAZORPAY_KEY_ID"] %>",
+
+      amount: <%= (@purchase.amount.to_d * 100).to_i %>,
+
+      currency: "INR",
+
+      name: "A One GS Center",
+
+      description: "<%= j @test_series.title %>",
+
+      order_id: "<%= @purchase.razorpay_order_id %>",
+
+
+      handler: function (response) {
+
+        const form =
+          document.createElement("form");
+
+        form.method = "POST";
+
+        form.action =
+          "<%= verify_test_series_payment_path(@purchase) %>";
+
+
+        const csrfToken =
+          document.querySelector(
+            'meta[name="csrf-token"]'
+          );
+
+
+        function addHiddenInput(name, value) {
+
+          const input =
+            document.createElement("input");
+
+          input.type = "hidden";
+
+          input.name = name;
+
+          input.value = value;
+
+          form.appendChild(input);
+        }
+
+
+        if (csrfToken) {
+
+          addHiddenInput(
+            "authenticity_token",
+            csrfToken.content
+          );
+
+        }
+
+
+        addHiddenInput(
+          "razorpay_payment_id",
+          response.razorpay_payment_id
+        );
+
+
+        addHiddenInput(
+          "razorpay_order_id",
+          response.razorpay_order_id
+        );
+
+
+        addHiddenInput(
+          "razorpay_signature",
+          response.razorpay_signature
+        );
+
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+      },
+
+
+      prefill: {
+
+        name: "<%= j current_user.respond_to?(:name) ? current_user.name.to_s : "" %>",
+
+        email: "<%= j current_user.email.to_s %>"
+
+      },
+
+
+      theme: {
+
+        color: "#6d28d9"
+
+      },
+
+
+      modal: {
+
+        ondismiss: function () {
+
+          payButton.disabled = false;
+
+          payButton.innerHTML =
+            '<i class="fas fa-lock"></i> Pay ₹<%= number_with_precision(@purchase.amount, precision: 2) %>';
+
+        }
+
+      }
+
+    };
+
+
+    const razorpay =
+      new Razorpay(options);
+
+
+    razorpay.on(
+      "payment.failed",
+      function () {
+
+        window.location.href =
+          "<%= test_series_payment_failed_path(@purchase) %>";
+
+      }
+    );
+
+
+    razorpay.open();
+
+  });
+
+});
+</script>

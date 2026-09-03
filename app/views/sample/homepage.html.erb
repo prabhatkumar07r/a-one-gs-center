@@ -4759,47 +4759,35 @@ textarea:focus-visible {
                             </div>
 
 
-                            <div class="course-price-container">
+                        <div class="course-price-container">
 
-                                <% if course.original_fee.present? &&
-                                      course.fee.present? &&
-                                      course.original_fee > course.fee %>
+                        <% if course.original_fee.present? &&
+                           course.fee.present? &&
+                            course.original_fee > course.fee %>
 
-                                    <span class="original-price">
+                         <span class="original-price">
+                       ₹<%= number_with_delimiter(course.original_fee) %>
+                        </span>
 
-                                        ₹<%= number_with_delimiter(
-                                            course.original_fee
-                                        ) %>
+                           <span class="discounted-price">
+                                ₹<%= number_with_delimiter(course.fee) %>
+                              </span>
 
-                                    </span>
+                      <% if course.discount_percentage.present? %>
+                         <span class="discount-badge">
+                      <%= number_with_precision(course.discount_percentage, precision: 0) %>% OFF
+                    </span>
+                  <% end %>
 
-                                    <span class="discounted-price">
+               <% else %>
 
-                                        ₹<%= number_with_delimiter(
-                                            course.fee
-                                        ) %>
+               <span class="discounted-price">
+               ₹<%= number_with_delimiter(course.fee) %>
+               </span>
 
-                                    </span>
+              <% end %>
 
-                                    <span class="discount-badge">
-
-                                        <%= course.discount_percentage %>% OFF
-
-                                    </span>
-
-                                <% else %>
-
-                                    <span class="discounted-price">
-
-                                        ₹<%= number_with_delimiter(
-                                            course.fee
-                                        ) %>
-
-                                    </span>
-
-                                <% end %>
-
-                            </div>
+                  </div>
 
 
                             <div class="course-buttons">

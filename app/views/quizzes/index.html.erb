@@ -1,0 +1,664 @@
+<div class="quiz-page">
+
+  <div class="quiz-header">
+    <div>
+      <span class="quiz-badge">QUIZ CENTER</span>
+
+      <h1>
+        <%= @course.Course_name %>
+      </h1>
+
+      <p>
+        Test your knowledge and track your learning progress.
+      </p>
+    </div>
+
+    <%= link_to "← Back to Course",
+        course_details_path(@course),
+        class: "back-btn" %>
+  </div>
+
+
+  <% if @quizzes.any? %>
+
+    <div class="quiz-grid">
+
+      <% @quizzes.each_with_index do |quiz, index| %>
+
+        <div class="quiz-card">
+
+          <div class="quiz-number">
+            <%= index + 1 %>
+          </div>
+
+          <div class="quiz-content">
+
+            <div class="quiz-status">
+              <span>● Active</span>
+            </div>
+
+            <h2>
+              <%= quiz.title %>
+            </h2>
+
+            <% if quiz.description.present? %>
+              <p class="quiz-description">
+                <%= quiz.description %>
+              </p>
+            <% else %>
+              <p class="quiz-description">
+                Test your knowledge with this quiz.
+              </p>
+            <% end %>
+
+
+            <div class="quiz-info">
+
+              <div class="info-item">
+                <span class="info-icon">⏱</span>
+
+                <div>
+                  <small>Time Limit</small>
+                  <strong>
+                    <%= quiz.time_limit %> minutes
+                  </strong>
+                </div>
+              </div>
+
+
+              <div class="info-item">
+                <span class="info-icon">📝</span>
+
+                <div>
+                  <small>Questions</small>
+                  <strong>
+                    <%= quiz.questions.count %>
+                  </strong>
+                </div>
+              </div>
+
+
+              <div class="info-item">
+                <span class="info-icon">🎯</span>
+
+                <div>
+                  <small>Passing</small>
+                  <strong>
+                    <%= quiz.passing_percentage.to_i %>%
+                  </strong>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="quiz-footer">
+
+           <span class="question-count">
+                 <%= quiz.questions.count %>
+              <%= quiz.questions.count == 1 ? "Question" : "Questions" %>
+                 </span>
+
+               <%= button_to start_course_quiz_path(@course, quiz),
+                method: :post,
+                class: "quiz-btn" do %>
+
+                Start Quiz →
+
+                <% end %>
+
+              </div>
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="empty-quiz">
+
+      <div class="empty-icon">
+        📝
+      </div>
+
+      <h2>No quizzes available</h2>
+
+      <p>
+        There are currently no active quizzes for this course.
+        Please check again later.
+      </p>
+
+      <%= link_to "← Back to Course",
+          course_details_path(@course),
+          class: "quiz-btn" %>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<style>
+
+  /* =====================================================
+     QUIZ PAGE
+  ===================================================== */
+
+  .quiz-page {
+    min-height: 100vh;
+    padding: 45px;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(99, 102, 241, 0.18),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at bottom left,
+        rgba(139, 92, 246, 0.12),
+        transparent 35%
+      ),
+      #0b1020;
+
+    color: #f8fafc;
+  }
+
+
+  /* =====================================================
+     HEADER
+  ===================================================== */
+
+  .quiz-header {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+  }
+
+
+  .quiz-badge {
+    display: inline-block;
+
+    padding: 7px 14px;
+
+    border-radius: 30px;
+
+    background: rgba(99, 102, 241, 0.15);
+
+    border: 1px solid rgba(129, 140, 248, 0.3);
+
+    color: #a5b4fc;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+  }
+
+
+  .quiz-header h1 {
+    margin: 12px 0 8px;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    color: #ffffff;
+  }
+
+
+  .quiz-header p {
+    margin: 0;
+
+    color: #94a3b8;
+
+    font-size: 15px;
+  }
+
+
+  /* =====================================================
+     BACK BUTTON
+  ===================================================== */
+
+  .back-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.06);
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    color: #e2e8f0;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+  }
+
+
+  .back-btn:hover {
+    transform: translateY(-2px);
+
+    background: rgba(99,102,241,0.18);
+
+    border-color: rgba(129,140,248,0.45);
+
+    color: #ffffff;
+  }
+
+
+  /* =====================================================
+     QUIZ GRID
+  ===================================================== */
+
+  .quiz-grid {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(auto-fit, minmax(340px, 1fr));
+
+    gap: 25px;
+  }
+
+
+  /* =====================================================
+     QUIZ CARD
+  ===================================================== */
+
+  .quiz-card {
+    position: relative;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background: rgba(18, 23, 34, 0.9);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 18px;
+
+    box-shadow:
+      0 20px 45px rgba(0,0,0,0.25);
+
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+
+  .quiz-card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+      rgba(129,140,248,0.4);
+
+    box-shadow:
+      0 25px 55px rgba(0,0,0,0.35);
+  }
+
+
+  /* =====================================================
+     NUMBER
+  ===================================================== */
+
+  .quiz-number {
+    min-width: 65px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    padding-top: 28px;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(99,102,241,0.25),
+        rgba(139,92,246,0.08)
+      );
+
+    color: #a5b4fc;
+
+    font-size: 22px;
+
+    font-weight: 800;
+  }
+
+
+  /* =====================================================
+     CONTENT
+  ===================================================== */
+
+  .quiz-content {
+    flex: 1;
+
+    padding: 25px;
+  }
+
+
+  .quiz-status {
+    margin-bottom: 10px;
+  }
+
+
+  .quiz-status span {
+    color: #86efac;
+
+    font-size: 12px;
+
+    font-weight: 700;
+  }
+
+
+  .quiz-content h2 {
+    margin: 0 0 10px;
+
+    color: #ffffff;
+
+    font-size: 21px;
+
+    font-weight: 750;
+  }
+
+
+  .quiz-description {
+    min-height: 45px;
+
+    margin-bottom: 22px;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+
+  /* =====================================================
+     INFO
+  ===================================================== */
+
+  .quiz-info {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+  }
+
+
+  .info-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+
+  .info-icon {
+    font-size: 17px;
+  }
+
+
+  .info-item small {
+    display: block;
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    margin-bottom: 2px;
+  }
+
+
+  .info-item strong {
+    display: block;
+
+    color: #e2e8f0;
+
+    font-size: 12px;
+  }
+
+
+  /* =====================================================
+     FOOTER
+  ===================================================== */
+
+  .quiz-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 18px;
+
+    border-top:
+      1px solid rgba(255,255,255,0.07);
+  }
+
+
+  .question-count {
+    color: #64748b;
+
+    font-size: 13px;
+  }
+
+
+  /* =====================================================
+     QUIZ BUTTON
+  ===================================================== */
+
+  .quiz-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 10px 18px;
+
+    border-radius: 9px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+      );
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    box-shadow:
+      0 8px 20px rgba(99,102,241,0.25);
+
+    transition: all 0.25s ease;
+  }
+
+
+  .quiz-btn:hover {
+    transform: translateY(-2px);
+
+    color: #ffffff;
+
+    box-shadow:
+      0 12px 25px rgba(99,102,241,0.35);
+  }
+
+
+  /* =====================================================
+     EMPTY STATE
+  ===================================================== */
+
+  .empty-quiz {
+    max-width: 650px;
+
+    margin: 80px auto;
+
+    padding: 60px 30px;
+
+    text-align: center;
+
+    background: rgba(18,23,34,0.9);
+
+    border:
+      1px solid rgba(255,255,255,0.08);
+
+    border-radius: 20px;
+
+    box-shadow:
+      0 20px 50px rgba(0,0,0,0.3);
+  }
+
+
+  .empty-icon {
+    font-size: 55px;
+
+    margin-bottom: 20px;
+  }
+
+
+  .empty-quiz h2 {
+    margin-bottom: 10px;
+
+    color: #ffffff;
+  }
+
+
+  .empty-quiz p {
+    margin-bottom: 25px;
+
+    color: #94a3b8;
+
+    line-height: 1.6;
+  }
+
+
+  /* =====================================================
+     RESPONSIVE
+  ===================================================== */
+
+  @media (max-width: 768px) {
+
+    .quiz-page {
+      padding: 25px 15px;
+    }
+
+
+    .quiz-header {
+      flex-direction: column;
+
+      align-items: flex-start;
+    }
+
+
+    .quiz-header h1 {
+      font-size: 27px;
+    }
+
+
+    .back-btn {
+      width: 100%;
+    }
+
+
+    .quiz-grid {
+      grid-template-columns: 1fr;
+    }
+
+
+    .quiz-info {
+      grid-template-columns: 1fr;
+    }
+
+
+    .quiz-footer {
+      flex-direction: column;
+
+      align-items: stretch;
+    }
+
+
+    .quiz-btn {
+      width: 100%;
+    }
+
+  }
+
+</style>
+
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const cards =
+      document.querySelectorAll(".quiz-card");
+
+
+    cards.forEach(function (card) {
+
+      card.addEventListener("mouseenter", function () {
+
+        card.style.transform =
+          "translateY(-5px)";
+
+      });
+
+
+      card.addEventListener("mouseleave", function () {
+
+        card.style.transform =
+          "translateY(0)";
+
+      });
+
+    });
+
+
+  });
+
+</script>

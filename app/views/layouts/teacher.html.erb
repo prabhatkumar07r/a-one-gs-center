@@ -12,53 +12,201 @@
 
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
-  <!-- Bootstrap Icons -->
+
+  <!-- =====================================================
+       BOOTSTRAP ICONS
+  ====================================================== -->
+
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <!-- Font Awesome -->
+
+  <!-- =====================================================
+       FONT AWESOME
+  ====================================================== -->
+
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+
   <%= javascript_importmap_tags %>
+
+
+  <!-- =====================================================
+       BOOTSTRAP JAVASCRIPT
+  ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
+
+  <!-- =====================================================
+       TEACHER LAYOUT INTERNAL CSS
+  ====================================================== -->
+
+  <style>
+
+    /* =====================================================
+       BODY
+    ====================================================== */
+
+    .teacher-body {
+      margin: 0;
+      padding: 0;
+
+      min-height: 100vh;
+
+      background: #f5f7fb;
+    }
+
+
+    /* =====================================================
+       WRAPPER
+    ====================================================== */
+
+    .teacher-wrapper {
+      width: 100%;
+
+      min-height: 100vh;
+
+      position: relative;
+    }
+
+
+    /* =====================================================
+       MAIN AREA
+    ====================================================== */
+
+    .teacher-main {
+      margin-left: 260px;
+
+      width: calc(100% - 260px);
+
+      min-height: 100vh;
+
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ====================================================== */
+
+    .teacher-content {
+      width: 100%;
+
+      min-height: 100vh;
+
+      padding: 90px 25px 25px;
+
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 768px) {
+
+      .teacher-main {
+        margin-left: 0;
+
+        width: 100%;
+      }
+
+
+      .teacher-content {
+        padding: 85px 15px 20px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
-<body class="admin-body">
 
-  <div class="admin-wrapper">
+<body class="teacher-body">
+
+  <div class="teacher-wrapper">
+
+
+    <!-- ===================================================
+         TEACHER SIDEBAR
+    ==================================================== -->
 
     <%= render "layouts/teacher_sidebar" %>
 
-    <div class="admin-main">
+
+    <!-- ===================================================
+         TEACHER MAIN
+    ==================================================== -->
+
+    <div class="teacher-main">
+
+
+      <!-- =================================================
+           TEACHER HEADER
+      ================================================== -->
 
       <%= render "layouts/teacher_header" %>
 
-      <main class="admin-content">
+
+      <!-- =================================================
+           PAGE CONTENT
+      ================================================== -->
+
+      <main class="teacher-content">
+
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+        ================================================== -->
 
         <% if notice %>
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+          <div class="alert alert-success alert-dismissible fade show"
+               role="alert">
+
             <%= notice %>
 
             <button type="button"
                     class="btn-close"
-                    data-bs-dismiss="alert"></button>
+                    data-bs-dismiss="alert">
+            </button>
+
           </div>
+
         <% end %>
 
+
+        <!-- =================================================
+             ERROR MESSAGE
+        ================================================== -->
+
         <% if alert %>
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+          <div class="alert alert-danger alert-dismissible fade show"
+               role="alert">
+
             <%= alert %>
 
             <button type="button"
                     class="btn-close"
-                    data-bs-dismiss="alert"></button>
+                    data-bs-dismiss="alert">
+            </button>
+
           </div>
+
         <% end %>
 
+
+        <!-- =================================================
+             PAGE VIEW
+        ================================================== -->
+
         <%= yield %>
+
 
       </main>
 

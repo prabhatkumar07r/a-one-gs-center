@@ -1,0 +1,647 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — QUESTION SHOW / DETAIL PAGE
+   ========================================================= */
+
+/* =========================================================
+   QUESTION DETAIL CARD
+   ========================================================= */
+
+.admin-ts-detail-card {
+  width: 100%;
+  margin-bottom: 24px;
+  padding: 24px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 16px rgba(25, 25, 50, 0.04);
+}
+
+.admin-ts-detail-label {
+  margin-bottom: 8px;
+
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-ts-detail-question {
+  margin-bottom: 22px;
+
+  color: #202033;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.7;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-ts-detail-question.hindi {
+  color: #374151;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   QUESTION META
+   ========================================================= */
+
+.admin-ts-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding-top: 17px;
+
+  border-top: 1px solid #eef0f4;
+}
+
+.admin-ts-detail-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 7px 11px;
+
+  color: #6b7280;
+  background: #f8f9fc;
+
+  border: 1px solid #e7e9ef;
+  border-radius: 7px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-ts-detail-meta strong {
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+/* =========================================================
+   OPTIONS SECTION
+   ========================================================= */
+
+.admin-ts-options-large {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+/* =========================================================
+   OPTION CARD
+   ========================================================= */
+
+.admin-ts-option-large {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 13px;
+
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 13px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow: 0 2px 8px rgba(25, 25, 50, 0.025);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.admin-ts-option-large:hover {
+  border-color: #d7d4ff;
+  box-shadow: 0 5px 14px rgba(25, 25, 50, 0.05);
+}
+
+/* =========================================================
+   CORRECT OPTION
+   ========================================================= */
+
+.admin-ts-option-large.correct {
+  background: #f8fff9;
+  border-color: #bbebc4;
+}
+
+/* =========================================================
+   OPTION LETTER
+   ========================================================= */
+
+.admin-ts-option-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  color: #4f46e5;
+  background: #f2f1ff;
+
+  border: 1px solid #ddd9ff;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-ts-option-large.correct .admin-ts-option-letter {
+  color: #15803d;
+  background: #ecfdf3;
+  border-color: #bbebc4;
+}
+
+/* =========================================================
+   OPTION CONTENT
+   ========================================================= */
+
+.admin-ts-option-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-ts-option-content strong {
+  color: #292938;
+
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+.admin-ts-option-content span {
+  color: #6b7280;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+/* =========================================================
+   CORRECT BADGE
+   ========================================================= */
+
+.admin-ts-correct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 65px;
+  padding: 6px 9px;
+
+  color: #15803d;
+  background: #ecfdf3;
+
+  border: 1px solid #bbebc4;
+  border-radius: 6px;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   OPTION ACTIONS
+   ========================================================= */
+
+.admin-ts-option-large .admin-ts-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+  padding: 7px 10px;
+
+  border-radius: 7px;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Edit */
+
+.admin-ts-option-large .admin-ts-action.edit {
+  color: #4f46e5;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+}
+
+.admin-ts-option-large .admin-ts-action.edit:hover {
+  color: #4338ca;
+  background: #ede9fe;
+  border-color: #c4b5fd;
+}
+
+/* Delete */
+
+.admin-ts-option-large .admin-ts-action.delete {
+  color: #dc2626;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+
+  cursor: pointer;
+}
+
+.admin-ts-option-large .admin-ts-action.delete:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+/* =========================================================
+   BUTTON_TO FORM RESET
+   ========================================================= */
+
+.admin-ts-option-large form {
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================
+   EXPLANATION CARD
+   ========================================================= */
+
+.admin-ts-detail-card h2 {
+  margin: 0 0 20px;
+
+  color: #202033;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.admin-ts-detail-card p {
+  margin: 0 0 20px;
+
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.75;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.admin-ts-detail-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   EXPLANATION SEPARATION
+   ========================================================= */
+
+.admin-ts-detail-card .admin-ts-detail-label + p {
+  margin-top: 0;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-ts-option-large {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+  }
+
+  .admin-ts-option-large .admin-ts-correct {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .admin-ts-option-large .admin-ts-action.edit {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .admin-ts-option-large .admin-ts-action.delete {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .admin-ts-detail-card {
+    padding: 18px;
+    border-radius: 11px;
+  }
+
+  .admin-ts-detail-question {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .admin-ts-detail-question.hindi {
+    font-size: 14px;
+  }
+
+  .admin-ts-detail-meta {
+    gap: 7px;
+  }
+
+  .admin-ts-detail-meta span {
+    font-size: 11px;
+  }
+
+  .admin-ts-option-large {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 10px;
+
+    padding: 12px;
+  }
+
+  .admin-ts-option-letter {
+    width: 34px;
+    height: 34px;
+  }
+
+  .admin-ts-option-content {
+    grid-column: 2;
+  }
+
+  .admin-ts-option-large .admin-ts-correct {
+    grid-column: 2;
+    justify-self: start;
+    grid-row: auto;
+  }
+
+  .admin-ts-option-large .admin-ts-action.edit {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .admin-ts-option-large .admin-ts-action.delete {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .admin-ts-detail-card {
+    padding: 15px;
+  }
+
+  .admin-ts-option-large {
+    padding: 10px;
+  }
+
+  .admin-ts-option-content strong {
+    font-size: 13px;
+  }
+
+  .admin-ts-option-content span {
+    font-size: 12px;
+  }
+}
+</style>
+
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= @test_series.title %> /
+        <%= @test.title %> /
+        Question
+      </div>
+
+      <h1>Question</h1>
+
+    </div>
+
+    <div class="admin-ts-header-actions">
+
+      <%= link_to edit_admin_test_series_test_question_path(
+                    @test_series,
+                    @test,
+                    @question
+                  ),
+                  class: "admin-ts-btn admin-ts-btn-primary" do %>
+        <i class="fas fa-edit"></i>
+        Edit Question
+      <% end %>
+
+      <%= link_to admin_test_series_test_path(
+                    @test_series,
+                    @test
+                  ),
+                  class: "admin-ts-btn admin-ts-btn-light" do %>
+        Back
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <div class="admin-ts-detail-card">
+
+    <div class="admin-ts-detail-label">
+      English Question
+    </div>
+
+    <div class="admin-ts-detail-question">
+      <%= @question.question_text %>
+    </div>
+
+
+    <% if @question.question_text_hindi.present? %>
+
+      <div class="admin-ts-detail-label">
+        Hindi Question
+      </div>
+
+      <div class="admin-ts-detail-question hindi">
+        <%= @question.question_text_hindi %>
+      </div>
+
+    <% end %>
+
+
+    <div class="admin-ts-detail-meta">
+
+      <span>
+        Marks:
+        <strong>
+          <%= @question.marks %>
+        </strong>
+      </span>
+
+      <span>
+        Position:
+        <strong>
+          <%= @question.position %>
+        </strong>
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="admin-ts-section-header">
+
+    <div>
+      <h2>Options</h2>
+      <p>
+        Select the correct option.
+      </p>
+    </div>
+
+    <%= link_to new_admin_test_series_test_question_option_path(
+                  @test_series,
+                  @test,
+                  @question
+                ),
+                class: "admin-ts-btn admin-ts-btn-primary" do %>
+      <i class="fas fa-plus"></i>
+      Add Option
+    <% end %>
+
+  </div>
+
+
+  <div class="admin-ts-options-large">
+
+    <% @options.each_with_index do |option, index| %>
+
+      <div class="
+        admin-ts-option-large
+        <%= "correct" if option.is_correct? %>
+      ">
+
+        <div class="admin-ts-option-letter">
+          <%= ("A".ord + index).chr %>
+        </div>
+
+        <div class="admin-ts-option-content">
+
+          <strong>
+            <%= option.option_text %>
+          </strong>
+
+          <% if option.option_text_hindi.present? %>
+
+            <span>
+              <%= option.option_text_hindi %>
+            </span>
+
+          <% end %>
+
+        </div>
+
+        <% if option.is_correct? %>
+
+          <span class="admin-ts-correct">
+            Correct
+          </span>
+
+        <% end %>
+
+        <%= link_to edit_admin_test_series_test_question_option_path(
+                      @test_series,
+                      @test,
+                      @question,
+                      option
+                    ),
+                    class: "admin-ts-action edit" do %>
+          Edit
+        <% end %>
+
+        <%= button_to admin_test_series_test_question_option_path(
+                        @test_series,
+                        @test,
+                        @question,
+                        option
+                      ),
+                      method: :delete,
+                      class: "admin-ts-action delete",
+                      form: {
+                        data: {
+                          turbo_confirm:
+                            "Delete this option?"
+                        }
+                      } do %>
+          Delete
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+
+  <% if @question.explanation.present? ||
+        @question.explanation_hindi.present? %>
+
+    <div class="admin-ts-detail-card">
+
+      <h2>Explanation</h2>
+
+      <% if @question.explanation.present? %>
+
+        <div class="admin-ts-detail-label">
+          English
+        </div>
+
+        <p>
+          <%= @question.explanation %>
+        </p>
+
+      <% end %>
+
+
+      <% if @question.explanation_hindi.present? %>
+
+        <div class="admin-ts-detail-label">
+          Hindi
+        </div>
+
+        <p>
+          <%= @question.explanation_hindi %>
+        </p>
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>

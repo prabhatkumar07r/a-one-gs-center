@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  exam_name: MyString
+  mode: MyString
+  language: MyString
+  price: 9.99
+  original_price: 9.99
+  discount: 1
+  status: MyString
+  registration_ended: false
+
+two:
+  title: MyString
+  description: MyText
+  exam_name: MyString
+  mode: MyString
+  language: MyString
+  price: 9.99
+  original_price: 9.99
+  discount: 1
+  status: MyString
+  registration_ended: false

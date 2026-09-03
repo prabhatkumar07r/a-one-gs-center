@@ -1,0 +1,54 @@
+<div class="container-fluid py-4">
+
+  <div class="mb-4">
+
+    <!-- BREADCRUMB -->
+
+    <div class="text-muted small mb-2">
+
+      Teacher Panel /
+      Test Series /
+      <%= @test_series.title %> /
+      <span class="text-primary">
+        New Test
+      </span>
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+      <div>
+
+        <h2 class="fw-bold mb-1">
+          Create New Test
+        </h2>
+
+        <p class="text-muted mb-0">
+          Add a new test to this test series.
+        </p>
+
+      </div>
+
+
+      <%= link_to teacher_panel_test_series_path(@test_series),
+            class: "btn btn-outline-secondary" do %>
+
+        <i class="fas fa-arrow-left me-1"></i>
+
+        Back to Test Series
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- FORM -->
+
+  <%= render "form" %>
+
+</div>

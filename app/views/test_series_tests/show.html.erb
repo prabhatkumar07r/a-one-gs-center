@@ -1,0 +1,2012 @@
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
+
+<%
+  questions =
+    @questions
+
+  total_questions =
+    @total_questions
+
+  current_question =
+    @question
+
+  current_index =
+    @current_question_index
+
+  current_number =
+    @current_number
+
+  answered_question_ids =
+    @answered_question_ids
+
+  answered_count =
+    @answered_count
+
+  selected_option_id =
+    @selected_option_id
+
+  duration_minutes =
+    @test.duration.to_i
+
+  duration_seconds =
+    duration_minutes * 60
+%>
+
+<style>
+
+  /* =========================================================
+     TEST PAGE
+  ========================================================== */
+
+  .ts-test-page {
+    min-height: 100vh;
+    background: #f5f7fb;
+    color: #1f2937;
+  }
+
+  /* =========================================================
+     HEADER
+  ========================================================== */
+
+  .ts-test-header {
+    height: 72px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .ts-test-brand {
+    min-width: 0;
+  }
+
+  .ts-test-brand h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ts-test-brand p {
+    margin: 3px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ts-test-timer {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #f3f4f6;
+    padding: 9px 15px;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    flex-shrink: 0;
+  }
+
+  .ts-test-timer i {
+    color: #4f46e5;
+  }
+
+  .ts-test-timer.warning {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
+  .ts-test-timer.warning i {
+    color: #ea580c;
+  }
+
+  .ts-test-timer.danger {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  .ts-test-timer.danger i {
+    color: #dc2626;
+  }
+
+  /* =========================================================
+     MAIN CONTAINER
+  ========================================================== */
+
+  .ts-test-container {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 28px;
+  }
+
+  /* =========================================================
+     PROGRESS
+  ========================================================== */
+
+  .ts-progress-wrapper {
+    margin-bottom: 22px;
+  }
+
+  .ts-progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .ts-progress-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .ts-progress-count {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .ts-progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .ts-progress-fill {
+    height: 100%;
+    background: #4f46e5;
+    border-radius: inherit;
+    transition: width 0.3s ease;
+  }
+
+  /* =========================================================
+     GRID
+  ========================================================== */
+
+  .ts-test-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* =========================================================
+     QUESTION CARD
+  ========================================================== */
+
+  .ts-question-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+  }
+
+  .ts-question-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .ts-question-number {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .ts-question-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  .ts-question-mark i {
+    color: #f59e0b;
+  }
+
+  /* =========================================================
+     QUESTION BODY
+  ========================================================== */
+
+  .ts-question-body {
+    padding: 30px 28px;
+  }
+
+  .ts-question-language-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+  }
+
+  .ts-question-language {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+  }
+
+  .ts-language-label {
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  .ts-language-btn {
+    border: 0;
+    background: transparent;
+    color: #4b5563;
+    padding: 6px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .ts-language-btn:hover {
+    color: #111827;
+    background: #ffffff;
+  }
+
+  .ts-language-btn.active {
+    background: #4f46e5;
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgba(79, 70, 229, 0.2);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  .ts-question-text {
+    margin: 0 0 28px;
+    font-size: 22px;
+    line-height: 1.65;
+    font-weight: 650;
+    color: #111827;
+  }
+
+  /* =========================================================
+     OPTIONS
+  ========================================================== */
+
+  .ts-options {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .ts-option {
+    position: relative;
+  }
+
+  .ts-option-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ts-option-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 18px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .ts-option-label:hover {
+    border-color: #818cf8;
+    background: #f8f8ff;
+  }
+
+  .ts-option-input:checked + .ts-option-label {
+    border-color: #4f46e5;
+    background: #eef2ff;
+  }
+
+  .ts-option-letter {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  .ts-option-input:checked + .ts-option-label .ts-option-letter {
+    background: #4f46e5;
+    color: #ffffff;
+  }
+
+  .ts-option-text-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ts-option-text {
+    display: block;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #374151;
+  }
+
+  .ts-option-input:checked + .ts-option-label .ts-option-text {
+    color: #111827;
+    font-weight: 600;
+  }
+
+  .ts-option-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ts-option-input:checked + .ts-option-label .ts-option-check {
+    border-color: #4f46e5;
+    background: #4f46e5;
+  }
+
+  .ts-option-input:checked + .ts-option-label .ts-option-check::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffffff;
+  }
+
+  /* =========================================================
+     ACTIONS
+  ========================================================== */
+
+  .ts-question-actions {
+    padding: 20px 28px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .ts-prev-btn,
+  .ts-save-next-btn,
+  .ts-finish-btn {
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .ts-prev-btn {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  .ts-prev-btn:hover {
+    background: #e5e7eb;
+    color: #111827;
+  }
+
+  .ts-save-next-btn {
+    background: #4f46e5;
+    color: #ffffff;
+  }
+
+  .ts-save-next-btn:hover {
+    background: #4338ca;
+    color: #ffffff;
+  }
+
+  .ts-finish-btn {
+    background: #dc2626;
+    color: #ffffff;
+  }
+
+  .ts-finish-btn:hover {
+    background: #b91c1c;
+    color: #ffffff;
+  }
+
+  .ts-prev-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* =========================================================
+     SIDEBAR
+  ========================================================== */
+
+  .ts-test-sidebar {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+    position: sticky;
+    top: 96px;
+  }
+
+  .ts-sidebar-title {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .ts-palette-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .ts-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  .ts-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .ts-legend-dot.current {
+    background: #4f46e5;
+  }
+
+  .ts-legend-dot.answered {
+    background: #16a34a;
+  }
+
+  .ts-legend-dot.unanswered {
+    background: #e5e7eb;
+    border: 1px solid #d1d5db;
+  }
+
+  .ts-question-palette {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .ts-palette-btn {
+    height: 40px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .ts-palette-btn:hover {
+    border-color: #818cf8;
+    color: #4f46e5;
+  }
+
+  .ts-palette-btn.current {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #ffffff;
+  }
+
+  .ts-palette-btn.answered {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+  }
+
+  .ts-palette-btn.current.answered {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #ffffff;
+  }
+
+  .ts-sidebar-stats {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .ts-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+    font-size: 13px;
+  }
+
+  .ts-stat-label {
+    color: #6b7280;
+  }
+
+  .ts-stat-value {
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .ts-sidebar-finish {
+    width: 100%;
+    margin-top: 18px;
+  }
+
+  /* =========================================================
+     EMPTY STATE
+  ========================================================== */
+
+  .ts-empty-test {
+    max-width: 650px;
+    margin: 70px auto;
+    padding: 45px 30px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .ts-empty-test i {
+    font-size: 44px;
+    color: #9ca3af;
+    margin-bottom: 15px;
+  }
+
+  .ts-empty-test h3 {
+    margin: 0 0 8px;
+    font-size: 21px;
+    color: #111827;
+  }
+
+  .ts-empty-test p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  /* =========================================================
+     SUBMITTING OVERLAY
+  ========================================================== */
+
+  .ts-submitting-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.6);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+
+  .ts-submitting-overlay.show {
+    display: flex;
+  }
+
+  .ts-submitting-box {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 30px 38px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .ts-submitting-spinner {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #4f46e5;
+    border-radius: 50%;
+    animation: ts-spin 0.8s linear infinite;
+    margin: 0 auto 15px;
+  }
+
+  .ts-submitting-box p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  @keyframes ts-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE
+  ========================================================== */
+
+  @media (max-width: 1050px) {
+
+    .ts-test-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ts-test-sidebar {
+      position: static;
+    }
+
+  }
+
+  @media (max-width: 700px) {
+
+    .ts-test-header {
+      height: auto;
+      min-height: 68px;
+      padding: 12px 16px;
+      gap: 12px;
+    }
+
+    .ts-test-brand h1 {
+      font-size: 16px;
+    }
+
+    .ts-test-brand p {
+      font-size: 11px;
+    }
+
+    .ts-test-timer {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    .ts-test-container {
+      padding: 16px;
+    }
+
+    .ts-question-header {
+      padding: 16px;
+    }
+
+    .ts-question-body {
+      padding: 22px 17px;
+    }
+
+    .ts-question-text {
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .ts-question-actions {
+      padding: 16px;
+      flex-wrap: wrap;
+    }
+
+    .ts-question-actions > * {
+      flex: 1;
+    }
+
+    .ts-language-label {
+      display: none;
+    }
+
+  }
+
+  @media (max-width: 450px) {
+
+    .ts-test-header {
+      align-items: flex-start;
+    }
+
+    .ts-test-timer {
+      font-size: 12px;
+    }
+
+    .ts-option-label {
+      padding: 13px;
+      gap: 10px;
+    }
+
+    .ts-option-letter {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+    }
+
+    .ts-option-text {
+      font-size: 14px;
+    }
+
+    .ts-question-palette {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+  }
+
+</style>
+
+
+<div class="ts-test-page">
+
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
+  <header class="ts-test-header">
+
+    <div class="ts-test-brand">
+
+      <h1>
+        <%= @test.title %>
+      </h1>
+
+      <p>
+        <%= @test_series.title %>
+      </p>
+
+    </div>
+
+    <div
+      class="ts-test-timer"
+      id="tsTestTimer"
+      data-duration="<%= duration_seconds %>"
+      data-test-id="<%= @test.id %>"
+    >
+
+      <i class="fas fa-clock"></i>
+
+      <span id="tsTimerText">
+        <%= format("%02d:%02d", duration_seconds / 60, duration_seconds % 60) %>
+      </span>
+
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       MAIN
+  ======================================================== -->
+
+  <main class="ts-test-container">
+
+    <% if questions.empty? %>
+
+      <div class="ts-empty-test">
+
+        <i class="fas fa-file-circle-question"></i>
+
+        <h3>
+          No Questions Available
+        </h3>
+
+        <p>
+          This test does not have any questions yet.
+        </p>
+
+      </div>
+
+    <% else %>
+
+      <!-- ===================================================
+           PROGRESS
+      ==================================================== -->
+
+      <div class="ts-progress-wrapper">
+
+        <div class="ts-progress-top">
+
+          <div class="ts-progress-label">
+            Test Progress
+          </div>
+
+          <div class="ts-progress-count">
+            <%= answered_count %> / <%= total_questions %> Answered
+          </div>
+
+        </div>
+
+        <div class="ts-progress-bar">
+
+          <%
+            progress_percentage =
+              if total_questions.to_i > 0
+                (answered_count.to_f / total_questions.to_f) * 100
+              else
+                0
+              end
+          %>
+
+          <div
+            class="ts-progress-fill"
+            style="width: <%= progress_percentage %>%"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           TEST GRID
+      ==================================================== -->
+
+      <div class="ts-test-grid">
+
+
+        <!-- =================================================
+             QUESTION CARD
+        ================================================== -->
+
+        <section class="ts-question-card">
+
+
+          <!-- ===============================================
+               QUESTION HEADER
+          ================================================ -->
+
+          <div class="ts-question-header">
+
+            <div class="ts-question-number">
+              Question <%= current_number %>
+            </div>
+
+            <div class="ts-question-mark">
+
+              <i class="fas fa-star"></i>
+
+              <%= current_question.marks %>
+
+              Mark<%= current_question.marks.to_f == 1 ? "" : "s" %>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               QUESTION BODY
+          ================================================ -->
+
+          <div class="ts-question-body">
+
+
+            <!-- =============================================
+                 LANGUAGE SELECTOR
+            ============================================== -->
+
+            <div class="ts-question-language-wrapper">
+
+              <div class="ts-question-language">
+
+                <span class="ts-language-label">
+                  Question Language
+                </span>
+
+                <button
+                  type="button"
+                  class="ts-language-btn active"
+                  data-language="en"
+                >
+                  English
+                </button>
+
+                <button
+                  type="button"
+                  class="ts-language-btn"
+                  data-language="hi"
+                >
+                  हिंदी
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 QUESTION TEXT
+            ============================================== -->
+
+            <h2 class="ts-question-text">
+
+              <span
+                data-language-content="en"
+              >
+                <%= current_question.question_text %>
+              </span>
+
+              <span
+                data-language-content="hi"
+                hidden
+              >
+                <%= current_question.question_text_hindi.presence || current_question.question_text %>
+              </span>
+
+            </h2>
+
+
+            <!-- =============================================
+                 OPTIONS
+            ============================================== -->
+
+            <div class="ts-options">
+
+              <% current_question.test_series_options.order(position: :asc).each_with_index do |option, index| %>
+
+                <%
+                  option_letter =
+                    ("A".ord + index).chr
+                %>
+
+                <div class="ts-option">
+
+                  <input
+                    type="radio"
+                    name="question_option"
+                    id="option_<%= option.id %>"
+                    value="<%= option.id %>"
+                    class="ts-option-input"
+                    <%= "checked" if selected_option_id.to_i == option.id %>
+                  >
+
+                  <label
+                    for="option_<%= option.id %>"
+                    class="ts-option-label"
+                  >
+
+                    <span class="ts-option-letter">
+                      <%= option_letter %>
+                    </span>
+
+
+                    <span class="ts-option-text-wrapper">
+
+                      <!-- English option -->
+
+                      <span
+                        class="ts-option-text"
+                        data-language-content="en"
+                      >
+                        <%= option.option_text %>
+                      </span>
+
+
+                      <!-- Hindi option -->
+
+                      <span
+                        class="ts-option-text"
+                        data-language-content="hi"
+                        hidden
+                      >
+                        <%= option.option_text_hindi.presence || option.option_text %>
+                      </span>
+
+                    </span>
+
+
+                    <span class="ts-option-check"></span>
+
+                  </label>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               QUESTION ACTIONS
+          ================================================ -->
+
+          <div class="ts-question-actions">
+
+
+            <!-- Previous -->
+
+            <% if current_index > 0 %>
+
+              <a
+                href="<%= test_series_test_series_test_path(
+                  @test_series,
+                  @test,
+                  question: current_index
+                ) %>"
+                class="ts-prev-btn"
+                data-navigation-link
+              >
+
+                <i class="fas fa-arrow-left"></i>
+
+                Previous
+
+              </a>
+
+            <% else %>
+
+              <span class="ts-prev-btn disabled">
+
+                <i class="fas fa-arrow-left"></i>
+
+                Previous
+
+              </span>
+
+            <% end %>
+
+
+            <!-- Save & Next -->
+
+            <form
+              action="<%= test_series_test_series_test_path(
+                @test_series,
+                @test,
+                current_question
+              ) %>"
+              method="post"
+              id="tsAnswerForm"
+              style="margin: 0;"
+            >
+
+              <%= hidden_field_tag :authenticity_token,
+                                   form_authenticity_token %>
+
+              <%= hidden_field_tag :option_id,
+                                   selected_option_id,
+                                   id: "selectedOptionId" %>
+
+              <button
+                type="submit"
+                class="ts-save-next-btn"
+                id="tsSaveNextBtn"
+              >
+
+                <% if current_index == total_questions - 1 %>
+
+                  <i class="fas fa-check"></i>
+
+                  Save & Finish
+
+                <% else %>
+
+                  Save & Next
+
+                  <i class="fas fa-arrow-right"></i>
+
+                <% end %>
+
+              </button>
+
+            </form>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="ts-test-sidebar">
+
+          <h3 class="ts-sidebar-title">
+            Questions
+          </h3>
+
+
+          <!-- ===============================================
+               LEGEND
+          ================================================ -->
+
+          <div class="ts-palette-legend">
+
+            <div class="ts-legend-item">
+
+              <span class="ts-legend-dot current"></span>
+
+              Current
+
+            </div>
+
+            <div class="ts-legend-item">
+
+              <span class="ts-legend-dot answered"></span>
+
+              Answered
+
+            </div>
+
+            <div class="ts-legend-item">
+
+              <span class="ts-legend-dot unanswered"></span>
+
+              Unanswered
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               QUESTION PALETTE
+          ================================================ -->
+
+          <div class="ts-question-palette">
+
+            <% questions.each_with_index do |question, index| %>
+
+              <%
+                question_number =
+                  index + 1
+
+                is_current =
+                  index == current_index
+
+                is_answered =
+                  answered_question_ids.include?(question.id)
+
+                palette_classes = [
+                  "ts-palette-btn",
+                  ("current" if is_current),
+                  ("answered" if is_answered)
+                ].compact.join(" ")
+              %>
+
+              <a
+                href="<%= test_series_test_series_test_path(
+                  @test_series,
+                  @test,
+                  question: question_number
+                ) %>"
+                class="<%= palette_classes %>"
+                data-navigation-link
+              >
+                <%= question_number %>
+              </a>
+
+            <% end %>
+
+          </div>
+
+
+          <!-- ===============================================
+               STATS
+          ================================================ -->
+
+          <div class="ts-sidebar-stats">
+
+            <div class="ts-stat-row">
+
+              <span class="ts-stat-label">
+                Total Questions
+              </span>
+
+              <span class="ts-stat-value">
+                <%= total_questions %>
+              </span>
+
+            </div>
+
+
+            <div class="ts-stat-row">
+
+              <span class="ts-stat-label">
+                Answered
+              </span>
+
+              <span class="ts-stat-value">
+                <%= answered_count %>
+              </span>
+
+            </div>
+
+
+            <div class="ts-stat-row">
+
+              <span class="ts-stat-label">
+                Remaining
+              </span>
+
+              <span class="ts-stat-value">
+                <%= total_questions - answered_count %>
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               FINISH
+          ================================================ -->
+
+          <form
+            action="<%= test_series_test_series_test_result_path(
+              @test_series,
+              @test
+            ) %>"
+            method="post"
+            id="tsFinishForm"
+          >
+
+            <%= hidden_field_tag :authenticity_token,
+                                 form_authenticity_token %>
+
+            <button
+              type="submit"
+              class="ts-finish-btn ts-sidebar-finish"
+              id="tsFinishBtn"
+            >
+
+              <i class="fas fa-flag-checkered"></i>
+
+              Finish Test
+
+            </button>
+
+          </form>
+
+        </aside>
+
+      </div>
+
+    <% end %>
+
+  </main>
+
+</div>
+
+
+<!-- =========================================================
+     SUBMITTING OVERLAY
+========================================================== -->
+
+<div
+  class="ts-submitting-overlay"
+  id="tsSubmittingOverlay"
+>
+
+  <div class="ts-submitting-box">
+
+    <div class="ts-submitting-spinner"></div>
+
+    <p>
+      Saving your answer...
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* ========================================================
+     ELEMENTS
+  ========================================================= */
+
+  const timerElement =
+    document.getElementById("tsTestTimer");
+
+  const timerText =
+    document.getElementById("tsTimerText");
+
+  const answerForm =
+    document.getElementById("tsAnswerForm");
+
+  const finishForm =
+    document.getElementById("tsFinishForm");
+
+  const selectedOptionInput =
+    document.getElementById("selectedOptionId");
+
+  const submittingOverlay =
+    document.getElementById("tsSubmittingOverlay");
+
+  const saveNextButton =
+    document.getElementById("tsSaveNextBtn");
+
+  const finishButton =
+    document.getElementById("tsFinishBtn");
+
+  const optionInputs =
+    document.querySelectorAll(".ts-option-input");
+
+  const navigationLinks =
+    document.querySelectorAll("[data-navigation-link]");
+
+
+  /* ========================================================
+     QUESTION LANGUAGE
+     
+     IMPORTANT:
+     Only elements having [data-language-content]
+     are changed.
+     
+     Buttons / timer / sidebar / progress remain English.
+  ========================================================= */
+
+  const languageButtons =
+    document.querySelectorAll(".ts-language-btn");
+
+  const languageContents =
+    document.querySelectorAll("[data-language-content]");
+
+  const testId =
+    timerElement
+      ? timerElement.dataset.testId
+      : "unknown";
+
+  const languageStorageKey =
+    "test_series_question_language_" + testId;
+
+
+  function applyQuestionLanguage(language) {
+
+    const selectedLanguage =
+      language === "hi"
+        ? "hi"
+        : "en";
+
+
+    /* -----------------------------------------------
+       Change only question/option content
+    ------------------------------------------------ */
+
+    languageContents.forEach(function (element) {
+
+      element.hidden =
+        element.dataset.languageContent !== selectedLanguage;
+
+    });
+
+
+    /* -----------------------------------------------
+       Update language selector
+    ------------------------------------------------ */
+
+    languageButtons.forEach(function (button) {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.language === selectedLanguage
+      );
+
+    });
+
+
+    /* -----------------------------------------------
+       Remember language for this test
+    ------------------------------------------------ */
+
+    try {
+
+      sessionStorage.setItem(
+        languageStorageKey,
+        selectedLanguage
+      );
+
+    } catch (error) {
+
+      /* Ignore storage errors */
+
+    }
+
+  }
+
+
+  /* ========================================================
+     LANGUAGE BUTTON EVENTS
+  ========================================================= */
+
+  languageButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      const language =
+        button.dataset.language;
+
+      applyQuestionLanguage(language);
+
+    });
+
+  });
+
+
+  /* ========================================================
+     RESTORE PREVIOUS LANGUAGE
+     
+     Example:
+     
+     Question 1 -> Hindi
+     Question 2 -> Hindi
+     Question 3 -> Hindi
+     
+     The page reloads between questions, but
+     sessionStorage remembers the selection.
+  ========================================================= */
+
+  let savedLanguage = "en";
+
+  try {
+
+    savedLanguage =
+      sessionStorage.getItem(
+        languageStorageKey
+      ) || "en";
+
+  } catch (error) {
+
+    savedLanguage = "en";
+
+  }
+
+  applyQuestionLanguage(savedLanguage);
+
+
+  /* ========================================================
+     OPTION SELECTION
+  ========================================================= */
+
+  optionInputs.forEach(function (input) {
+
+    input.addEventListener("change", function () {
+
+      if (selectedOptionInput) {
+
+        selectedOptionInput.value =
+          input.value;
+
+      }
+
+    });
+
+  });
+
+
+  /* ========================================================
+     SUBMITTING OVERLAY
+  ========================================================= */
+
+  function showSubmittingOverlay(message) {
+
+    if (!submittingOverlay) {
+      return;
+    }
+
+    const messageElement =
+      submittingOverlay.querySelector("p");
+
+    if (messageElement && message) {
+
+      messageElement.textContent =
+        message;
+
+    }
+
+    submittingOverlay.classList.add("show");
+
+  }
+
+
+  /* ========================================================
+     ANSWER FORM
+  ========================================================= */
+
+  if (answerForm) {
+
+    answerForm.addEventListener("submit", function (event) {
+
+      const selectedOption =
+        selectedOptionInput
+          ? selectedOptionInput.value
+          : "";
+
+
+      if (!selectedOption) {
+
+        event.preventDefault();
+
+        alert(
+          "Please select an option before continuing."
+        );
+
+        return;
+
+      }
+
+
+      showSubmittingOverlay(
+        "Saving your answer..."
+      );
+
+
+      if (saveNextButton) {
+
+        saveNextButton.disabled =
+          true;
+
+        saveNextButton.style.opacity =
+          "0.7";
+
+        saveNextButton.style.pointerEvents =
+          "none";
+
+      }
+
+    });
+
+  }
+
+
+  /* ========================================================
+     FINISH FORM
+  ========================================================= */
+
+  if (finishForm) {
+
+    finishForm.addEventListener("submit", function (event) {
+
+      const confirmed =
+        confirm(
+          "Are you sure you want to finish the test?"
+        );
+
+
+      if (!confirmed) {
+
+        event.preventDefault();
+
+        return;
+
+      }
+
+
+      showSubmittingOverlay(
+        "Finishing your test..."
+      );
+
+
+      if (finishButton) {
+
+        finishButton.disabled =
+          true;
+
+        finishButton.style.opacity =
+          "0.7";
+
+        finishButton.style.pointerEvents =
+          "none";
+
+      }
+
+    });
+
+  }
+
+
+  /* ========================================================
+     NAVIGATION LINKS
+     
+     If current answer is not selected, warn before
+     moving to another question.
+  ========================================================= */
+
+  navigationLinks.forEach(function (link) {
+
+    link.addEventListener("click", function (event) {
+
+      const selectedOption =
+        selectedOptionInput
+          ? selectedOptionInput.value
+          : "";
+
+
+      /*
+       * If an answer is already saved, navigation
+       * can continue normally.
+       */
+
+      const alreadyAnswered =
+        <%= selected_option_id.present? ? "true" : "false" %>;
+
+
+      if (alreadyAnswered) {
+        return;
+      }
+
+
+      if (!selectedOption) {
+
+        const continueNavigation =
+          confirm(
+            "You have not selected an answer for this question. Continue?"
+          );
+
+
+        if (!continueNavigation) {
+
+          event.preventDefault();
+
+        }
+
+      }
+
+    });
+
+  });
+
+
+  /* ========================================================
+     BEFORE UNLOAD
+  ========================================================= */
+
+  let allowPageUnload =
+    false;
+
+
+  if (answerForm) {
+
+    answerForm.addEventListener("submit", function () {
+
+      allowPageUnload =
+        true;
+
+    });
+
+  }
+
+
+  if (finishForm) {
+
+    finishForm.addEventListener("submit", function () {
+
+      allowPageUnload =
+        true;
+
+    });
+
+  }
+
+
+  window.addEventListener(
+    "beforeunload",
+    function (event) {
+
+      if (allowPageUnload) {
+        return;
+      }
+
+
+      /*
+       * Do not show warning if the question has
+       * already been answered.
+       */
+
+      const alreadyAnswered =
+        <%= selected_option_id.present? ? "true" : "false" %>;
+
+
+      if (alreadyAnswered) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+      event.returnValue = "";
+
+    }
+  );
+
+
+  /* ========================================================
+     TIMER
+  ========================================================= */
+
+  if (timerElement && timerText) {
+
+    const duration =
+      parseInt(
+        timerElement.dataset.duration || "0",
+        10
+      );
+
+
+    const testId =
+      timerElement.dataset.testId;
+
+
+    const timerStorageKey =
+      "test_series_timer_" + testId;
+
+
+    let remainingSeconds =
+      duration;
+
+
+    /*
+     * Restore timer if already started.
+     */
+
+    try {
+
+      const storedTimer =
+        sessionStorage.getItem(
+          timerStorageKey
+        );
+
+
+      if (storedTimer) {
+
+        const parsedTimer =
+          parseInt(
+            storedTimer,
+            10
+          );
+
+
+        if (
+          !isNaN(parsedTimer) &&
+          parsedTimer > 0 &&
+          parsedTimer <= duration
+        ) {
+
+          remainingSeconds =
+            parsedTimer;
+
+        }
+
+      } else {
+
+        sessionStorage.setItem(
+          timerStorageKey,
+          remainingSeconds
+        );
+
+      }
+
+    } catch (error) {
+
+      remainingSeconds =
+        duration;
+
+    }
+
+
+    function updateTimer() {
+
+      const minutes =
+        Math.floor(
+          remainingSeconds / 60
+        );
+
+      const seconds =
+        remainingSeconds % 60;
+
+
+      timerText.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+
+      /*
+       * Warning under 5 minutes
+       */
+
+      if (
+        remainingSeconds <= 300 &&
+        remainingSeconds > 60
+      ) {
+
+        timerElement.classList.add(
+          "warning"
+        );
+
+      }
+
+
+      /*
+       * Danger under 1 minute
+       */
+
+      if (remainingSeconds <= 60) {
+
+        timerElement.classList.remove(
+          "warning"
+        );
+
+        timerElement.classList.add(
+          "danger"
+        );
+
+      }
+
+
+      /*
+       * Save timer
+       */
+
+      try {
+
+        sessionStorage.setItem(
+          timerStorageKey,
+          remainingSeconds
+        );
+
+      } catch (error) {
+
+        /* Ignore storage errors */
+
+      }
+
+    }
+
+
+    updateTimer();
+
+
+    const timerInterval =
+      setInterval(function () {
+
+        remainingSeconds -= 1;
+
+
+        if (remainingSeconds <= 0) {
+
+          remainingSeconds =
+            0;
+
+          updateTimer();
+
+          clearInterval(
+            timerInterval
+          );
+
+
+          /*
+           * Clear stored timer
+           */
+
+          try {
+
+            sessionStorage.removeItem(
+              timerStorageKey
+            );
+
+          } catch (error) {
+
+            /* Ignore */
+
+          }
+
+
+          /*
+           * Automatically submit
+           */
+
+          if (answerForm) {
+
+            const selectedOption =
+              selectedOptionInput
+                ? selectedOptionInput.value
+                : "";
+
+
+            if (selectedOption) {
+
+              allowPageUnload =
+                true;
+
+              showSubmittingOverlay(
+                "Time is up. Submitting your answer..."
+              );
+
+              answerForm.submit();
+
+            } else if (finishForm) {
+
+              allowPageUnload =
+                true;
+
+              showSubmittingOverlay(
+                "Time is up. Finishing your test..."
+              );
+
+              finishForm.submit();
+
+            }
+
+          }
+
+          return;
+
+        }
+
+
+        updateTimer();
+
+      }, 1000);
+
+
+    /*
+     * Clear timer after normal finish
+     */
+
+    if (finishForm) {
+
+      finishForm.addEventListener(
+        "submit",
+        function () {
+
+          try {
+
+            sessionStorage.removeItem(
+              timerStorageKey
+            );
+
+          } catch (error) {
+
+            /* Ignore */
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+
+});
+
+</script>

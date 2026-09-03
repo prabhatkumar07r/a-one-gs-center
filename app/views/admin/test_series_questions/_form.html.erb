@@ -1,0 +1,1217 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — QUESTION CREATE / EDIT FORM
+   ========================================================= */
+
+.admin-ts-form {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* =========================================================
+   ERROR BOX
+   ========================================================= */
+
+.admin-ts-errors {
+  margin-bottom: 22px;
+  padding: 15px 18px;
+
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 10px;
+
+  color: #991b1b;
+}
+
+.admin-ts-errors strong {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-ts-errors ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.admin-ts-errors li {
+  margin-bottom: 3px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   MAIN FORM GRID
+   ========================================================= */
+
+.admin-ts-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+
+  padding: 24px;
+
+  background: #ffffff;
+  border: 1px solid #e6e8ef;
+  border-radius: 13px;
+
+  box-shadow: 0 4px 16px rgba(25, 25, 50, 0.04);
+}
+
+.admin-ts-field {
+  min-width: 0;
+}
+
+.admin-ts-field.full {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.admin-ts-field label,
+.admin-ts-option-fields label {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #303044;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.admin-ts-input {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+
+  color: #252536;
+  background: #ffffff;
+
+  border: 1px solid #dfe2ea;
+  border-radius: 8px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-ts-input:hover {
+  border-color: #c9cdd8;
+}
+
+.admin-ts-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+}
+
+.admin-ts-input::placeholder {
+  color: #a1a6b5;
+}
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.admin-ts-textarea {
+  min-height: 125px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   OPTIONS SECTION
+   ========================================================= */
+
+.admin-ts-section-header.form-section {
+  margin-top: 28px;
+  margin-bottom: 15px;
+}
+
+.admin-ts-section-header.form-section h2 {
+  margin: 0 0 5px;
+
+  color: #202033;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.admin-ts-section-header.form-section p {
+  margin: 0;
+
+  color: #7b8194;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   OPTION CONTAINER
+   ========================================================= */
+
+#adminOptionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =========================================================
+   OPTION FORM CARD
+   ========================================================= */
+
+.admin-ts-option-form {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 15px;
+
+  padding: 16px;
+
+  background: #ffffff;
+  border: 1px solid #e3e5ec;
+  border-radius: 11px;
+
+  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-ts-option-form:hover {
+  border-color: #d8d6ff;
+  box-shadow: 0 6px 18px rgba(45, 45, 90, 0.06);
+}
+
+/* =========================================================
+   OPTION LABEL
+   ========================================================= */
+
+.admin-ts-option-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+  padding: 8px 10px;
+
+  color: #4f46e5;
+  background: #f2f1ff;
+  border: 1px solid #ddd9ff;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   OPTION FIELDS
+   ========================================================= */
+
+.admin-ts-option-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.admin-ts-option-fields > div {
+  min-width: 0;
+}
+
+.admin-ts-option-fields .admin-ts-input {
+  min-height: 40px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   CORRECT ANSWER
+   ========================================================= */
+
+.admin-ts-option-correct {
+  white-space: nowrap;
+}
+
+.admin-ts-option-correct label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin: 0;
+
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.admin-ts-option-correct input[type="radio"] {
+  width: 17px;
+  height: 17px;
+
+  margin: 0;
+
+  accent-color: #6366f1;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   REMOVE BUTTON
+   ========================================================= */
+
+.admin-ts-remove-option {
+  min-height: 36px;
+  padding: 7px 11px;
+
+  color: #dc2626;
+  background: #ffffff;
+
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-ts-remove-option:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+/* =========================================================
+   ADD OPTION BUTTON
+   ========================================================= */
+
+#adminAddOption {
+  margin-top: 14px;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.admin-ts-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+/* =========================================================
+   HIDDEN DESTROY FIELD
+   ========================================================= */
+
+.admin-option-destroy {
+  display: none !important;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-ts-option-form {
+    grid-template-columns: 60px minmax(0, 1fr);
+  }
+
+  .admin-ts-option-fields {
+    grid-column: 2;
+  }
+
+  .admin-ts-option-correct {
+    grid-column: 2;
+  }
+
+  .admin-ts-remove-option {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .admin-ts-form-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+    padding: 18px;
+  }
+
+  .admin-ts-field.full {
+    grid-column: auto;
+  }
+
+  .admin-ts-option-form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .admin-ts-option-number {
+    justify-self: flex-start;
+    min-width: 70px;
+  }
+
+  .admin-ts-option-fields {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+
+  .admin-ts-option-correct {
+    grid-column: auto;
+  }
+
+  .admin-ts-remove-option {
+    grid-column: auto;
+    justify-self: flex-start;
+  }
+
+  .admin-ts-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-ts-form-actions .admin-ts-btn {
+    width: 100%;
+  }
+
+  #adminAddOption {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .admin-ts-form-grid {
+    padding: 14px;
+  }
+
+  .admin-ts-input {
+    font-size: 13px;
+  }
+
+  .admin-ts-option-form {
+    padding: 12px;
+  }
+}
+</style>
+
+<%= form_with(
+      model: @question,
+      url: @question.persisted? ?
+        admin_test_series_test_question_path(
+          @test_series,
+          @test,
+          @question
+        ) :
+        admin_test_series_test_questions_path(
+          @test_series,
+          @test
+        ),
+      method: @question.persisted? ? :patch : :post,
+      local: true,
+      class: "admin-ts-form",
+      id: "adminQuestionForm"
+    ) do |form| %>
+
+
+  <% if @question.errors.any? %>
+
+    <div class="admin-ts-errors">
+
+      <strong>
+        <%= pluralize(
+              @question.errors.count,
+              "error"
+            ) %> prevented saving:
+      </strong>
+
+      <ul>
+        <% @question.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <div class="admin-ts-form-grid">
+
+    <!-- QUESTION ENGLISH -->
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :question_text,
+                    "Question (English)" %>
+
+      <%= form.text_area :question_text,
+            class: "admin-ts-input admin-ts-textarea",
+            rows: 5,
+            required: true,
+            placeholder: "Enter question in English" %>
+
+    </div>
+
+
+    <!-- QUESTION HINDI -->
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :question_text_hindi,
+                    "Question (Hindi)" %>
+
+      <%= form.text_area :question_text_hindi,
+            class: "admin-ts-input admin-ts-textarea",
+            rows: 5,
+            placeholder: "हिंदी में प्रश्न लिखें" %>
+
+    </div>
+
+
+    <!-- MARKS -->
+
+    <div class="admin-ts-field">
+
+      <%= form.label :marks, "Marks" %>
+
+      <%= form.number_field :marks,
+            class: "admin-ts-input",
+            step: "0.01",
+            min: 0,
+            required: true %>
+
+    </div>
+
+
+    <!-- POSITION -->
+
+    <div class="admin-ts-field">
+
+      <%= form.label :position, "Question Position" %>
+
+      <%= form.number_field :position,
+            class: "admin-ts-input",
+            min: 1,
+            required: true %>
+
+    </div>
+
+
+    <!-- QUESTION TYPE -->
+
+    <div class="admin-ts-field">
+
+      <%= form.label :question_type,
+                    "Question Type" %>
+
+      <%= form.text_field :question_type,
+            class: "admin-ts-input",
+            placeholder: "MCQ" %>
+
+    </div>
+
+
+    <!-- EXPLANATION ENGLISH -->
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :explanation,
+                    "Explanation (English)" %>
+
+      <%= form.text_area :explanation,
+            class: "admin-ts-input admin-ts-textarea",
+            rows: 5 %>
+
+    </div>
+
+
+    <!-- EXPLANATION HINDI -->
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :explanation_hindi,
+                    "Explanation (Hindi)" %>
+
+      <%= form.text_area :explanation_hindi,
+            class: "admin-ts-input admin-ts-textarea",
+            rows: 5 %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       OPTIONS
+  ====================================================== -->
+
+  <div class="admin-ts-section-header form-section">
+
+    <div>
+
+      <h2>Options</h2>
+
+      <p>
+        Add the answer options and mark exactly one as correct.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div id="adminOptionsContainer">
+
+    <%= form.fields_for :test_series_options do |option_form| %>
+
+      <% option = option_form.object %>
+
+      <div
+        class="admin-ts-option-form"
+        data-admin-option-row
+        <%= 'style="display:none;"' if option.marked_for_destruction? %>
+      >
+
+        <%= option_form.hidden_field :id %>
+
+        <%= option_form.hidden_field :position,
+              class: "admin-option-position" %>
+
+        <%= option_form.hidden_field :_destroy,
+              value: "0",
+              class: "admin-option-destroy" %>
+
+
+        <div class="admin-ts-option-number">
+          Option
+        </div>
+
+
+        <div class="admin-ts-option-fields">
+
+          <div>
+
+            <%= option_form.label :option_text,
+                                  "English" %>
+
+            <%= option_form.text_field :option_text,
+                  class: "admin-ts-input",
+                  required: true %>
+
+          </div>
+
+
+          <div>
+
+            <%= option_form.label :option_text_hindi,
+                                  "Hindi" %>
+
+            <%= option_form.text_field :option_text_hindi,
+                  class: "admin-ts-input" %>
+
+          </div>
+
+        </div>
+
+
+        <div class="admin-ts-option-correct">
+
+          <label>
+
+            <%= option_form.radio_button(
+                  :is_correct,
+                  true,
+                  class: "admin-correct-radio",
+                  checked: option.is_correct?
+                ) %>
+
+            Correct Answer
+
+          </label>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="admin-ts-remove-option"
+          data-remove-admin-option>
+          Remove
+        </button>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+
+  <!-- ADD OPTION -->
+
+  <button
+    type="button"
+    id="adminAddOption"
+    class="admin-ts-btn admin-ts-btn-light">
+
+    <i class="fas fa-plus"></i>
+    Add Option
+
+  </button>
+
+
+  <!-- FORM ACTIONS -->
+
+  <div class="admin-ts-form-actions">
+
+    <%= form.submit(
+          @question.persisted? ?
+            "Update Question" :
+            "Create Question",
+          class: "admin-ts-btn admin-ts-btn-primary"
+        ) %>
+
+    <%= link_to "Cancel",
+                admin_test_series_test_path(
+                  @test_series,
+                  @test
+                ),
+                class: "admin-ts-btn admin-ts-btn-light" %>
+
+  </div>
+
+<% end %>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const container =
+    document.getElementById("adminOptionsContainer");
+
+  const addButton =
+    document.getElementById("adminAddOption");
+
+  const form =
+    document.getElementById("adminQuestionForm");
+
+  if (!container || !addButton || !form) {
+    return;
+  }
+
+
+  /*
+   * Use a unique index for every nested option.
+   * This prevents collisions after removing and adding options.
+   */
+  let nextIndex =
+    container.querySelectorAll(
+      "[data-admin-option-row]"
+    ).length;
+
+
+  /* =======================================================
+     GET ACTIVE OPTIONS
+  ======================================================== */
+
+  function getActiveRows() {
+
+    return Array.from(
+      container.querySelectorAll(
+        "[data-admin-option-row]"
+      )
+    ).filter(function (row) {
+
+      return row.style.display !== "none";
+
+    });
+
+  }
+
+
+  /* =======================================================
+     UPDATE POSITIONS
+  ======================================================== */
+
+  function updatePositions() {
+
+    const rows = getActiveRows();
+
+    rows.forEach(function (row, index) {
+
+      const positionField =
+        row.querySelector(
+          ".admin-option-position"
+        );
+
+      if (positionField) {
+        positionField.value = index + 1;
+      }
+
+    });
+
+  }
+
+
+  /* =======================================================
+     KEEP EXACTLY ONE CORRECT OPTION
+  ======================================================== */
+
+  function enforceSingleCorrect(selectedRadio) {
+
+    const radios =
+      container.querySelectorAll(
+        'input[type="radio"][data-correct-option]'
+      );
+
+    radios.forEach(function (radio) {
+
+      if (radio !== selectedRadio) {
+        radio.checked = false;
+      }
+
+    });
+
+  }
+
+
+  /* =======================================================
+     ADD OPTION
+  ======================================================== */
+
+  addButton.addEventListener(
+    "click",
+    function () {
+
+      const index = nextIndex++;
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "admin-ts-option-form";
+
+      row.setAttribute(
+        "data-admin-option-row",
+        ""
+      );
+
+
+      row.innerHTML = `
+
+        <input
+          type="hidden"
+          name="test_series_question[test_series_options_attributes][${index}][position]"
+          value=""
+          class="admin-option-position">
+
+        <input
+          type="hidden"
+          name="test_series_question[test_series_options_attributes][${index}][_destroy]"
+          value="0"
+          class="admin-option-destroy">
+
+        <div class="admin-ts-option-number">
+          Option
+        </div>
+
+        <div class="admin-ts-option-fields">
+
+          <div>
+
+            <label for="admin_option_${index}_english">
+              English
+            </label>
+
+            <input
+              type="text"
+              id="admin_option_${index}_english"
+              name="test_series_question[test_series_options_attributes][${index}][option_text]"
+              class="admin-ts-input"
+              required>
+
+          </div>
+
+          <div>
+
+            <label for="admin_option_${index}_hindi">
+              Hindi
+            </label>
+
+            <input
+              type="text"
+              id="admin_option_${index}_hindi"
+              name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
+              class="admin-ts-input">
+
+          </div>
+
+        </div>
+
+        <div class="admin-ts-option-correct">
+
+          <label>
+
+            <input
+              type="radio"
+              name="admin_correct_option"
+              value="${index}"
+              class="admin-dynamic-correct-radio"
+              data-correct-option>
+
+            Correct Answer
+
+          </label>
+
+        </div>
+
+        <button
+          type="button"
+          class="admin-ts-remove-option"
+          data-remove-admin-option>
+
+          Remove
+
+        </button>
+      `;
+
+
+      container.appendChild(row);
+
+      updatePositions();
+
+    }
+  );
+
+
+  /* =======================================================
+     REMOVE OPTION
+  ======================================================== */
+
+  container.addEventListener(
+    "click",
+    function (event) {
+
+      const removeButton =
+        event.target.closest(
+          "[data-remove-admin-option]"
+        );
+
+      if (!removeButton) {
+        return;
+      }
+
+
+      const row =
+        removeButton.closest(
+          "[data-admin-option-row]"
+        );
+
+      if (!row) {
+        return;
+      }
+
+
+      const activeRows =
+        getActiveRows();
+
+
+      /*
+       * Prevent removing if only 2 options remain.
+       */
+      if (activeRows.length <= 2) {
+
+        alert(
+          "A question must have at least 2 options."
+        );
+
+        return;
+
+      }
+
+
+      const destroyField =
+        row.querySelector(
+          ".admin-option-destroy"
+        );
+
+
+      if (destroyField) {
+
+        /*
+         * Existing database option.
+         * Mark it for destruction rather than
+         * removing it from the submitted params.
+         */
+        destroyField.value = "1";
+
+        row.style.display = "none";
+
+
+      } else {
+
+        /*
+         * Newly added option.
+         * It does not exist in DB, so simply remove it.
+         */
+        row.remove();
+
+      }
+
+
+      updatePositions();
+
+    }
+  );
+
+
+  /* =======================================================
+     CORRECT ANSWER
+  ======================================================== */
+
+  container.addEventListener(
+    "change",
+    function (event) {
+
+      if (
+        !event.target.matches(
+          ".admin-correct-radio, .admin-dynamic-correct-radio"
+        )
+      ) {
+        return;
+      }
+
+
+      const selected =
+        event.target;
+
+
+      /*
+       * Persisted Rails radio buttons and dynamically
+       * created radio buttons need to be synchronized.
+       */
+      container
+        .querySelectorAll(
+          ".admin-correct-radio, .admin-dynamic-correct-radio"
+        )
+        .forEach(function (radio) {
+
+          if (radio !== selected) {
+            radio.checked = false;
+          }
+
+        });
+
+
+      /*
+       * IMPORTANT:
+       * Rails needs is_correct=true on the selected
+       * nested option.
+       */
+      if (
+        selected.classList.contains(
+          "admin-dynamic-correct-radio"
+        )
+      ) {
+
+        const index =
+          selected.value;
+
+        /*
+         * Find the dynamically-created option row.
+         */
+        const row =
+          selected.closest(
+            "[data-admin-option-row]"
+          );
+
+        if (row) {
+
+          /*
+           * Add the actual Rails nested is_correct field.
+           */
+          let correctField =
+            row.querySelector(
+              ".admin-dynamic-is-correct"
+            );
+
+          if (!correctField) {
+
+            correctField =
+              document.createElement(
+                "input"
+              );
+
+            correctField.type = "hidden";
+
+            correctField.name =
+              `test_series_question[test_series_options_attributes][${index}][is_correct]`;
+
+            correctField.value = "true";
+
+            correctField.className =
+              "admin-dynamic-is-correct";
+
+            row.appendChild(correctField);
+
+          } else {
+
+            correctField.value = "true";
+
+          }
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     BEFORE SUBMIT
+  ======================================================== */
+
+  form.addEventListener(
+    "submit",
+    function (event) {
+
+      const activeRows =
+        getActiveRows();
+
+
+      /*
+       * Minimum 2 options.
+       */
+      if (activeRows.length < 2) {
+
+        event.preventDefault();
+
+        alert(
+          "A question must have at least 2 options."
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Reset all active options to false.
+       *
+       * Then set exactly one selected option to true.
+       */
+      activeRows.forEach(function (row) {
+
+        let correctField =
+          row.querySelector(
+            ".admin-option-is-correct"
+          );
+
+        /*
+         * Persisted Rails radio buttons already
+         * generate the is_correct parameter.
+         *
+         * For dynamically created options, create
+         * the hidden Rails field here.
+         */
+        const radio =
+          row.querySelector(
+            ".admin-correct-radio:checked, .admin-dynamic-correct-radio:checked"
+          );
+
+        if (
+          radio &&
+          radio.classList.contains(
+            "admin-dynamic-correct-radio"
+          )
+        ) {
+
+          if (!row.querySelector(".admin-dynamic-is-correct")) {
+
+            const hidden =
+              document.createElement("input");
+
+            hidden.type = "hidden";
+
+            hidden.name =
+              radio.name.replace(
+                "admin_correct_option",
+                `test_series_question[test_series_options_attributes][${radio.value}][is_correct]`
+              );
+
+            hidden.value = "true";
+
+            hidden.className =
+              "admin-dynamic-is-correct";
+
+            row.appendChild(hidden);
+
+          }
+
+        }
+
+      });
+
+
+      /*
+       * Make sure there is exactly one correct answer.
+       */
+      const checked =
+        container.querySelectorAll(
+          ".admin-correct-radio:checked, .admin-dynamic-correct-radio:checked"
+        );
+
+      if (checked.length !== 1) {
+
+        event.preventDefault();
+
+        alert(
+          "Please select exactly one correct answer."
+        );
+
+        return;
+
+      }
+
+    }
+  );
+
+
+  updatePositions();
+
+});
+</script>

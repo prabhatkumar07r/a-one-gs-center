@@ -1,0 +1,1129 @@
+<% content_for :show_layout, true %>
+
+<style>
+/* =========================================================
+   A ONE GS CENTER
+   QUIZ RESULT PAGE
+   Light + Transparent Glass Theme
+========================================================= */
+
+.quiz-result-page {
+  min-height: 100vh;
+  padding: 40px 20px 70px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(59, 130, 246, 0.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(16, 185, 129, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #eef4f8 50%,
+      #f8fafc
+    );
+
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.result-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.result-back {
+  margin-bottom: 22px;
+}
+
+.result-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 17px;
+
+  text-decoration: none;
+
+  color: #334155;
+
+  background: rgba(255, 255, 255, 0.55);
+
+  border: 1px solid rgba(148, 163, 184, 0.30);
+
+  border-radius: 10px;
+
+  backdrop-filter: blur(12px);
+
+  transition: all .2s ease;
+}
+
+.result-back a:hover {
+  background: rgba(255, 255, 255, 0.85);
+
+  transform: translateX(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   MAIN RESULT CARD
+========================================================= */
+
+.result-card {
+
+  background: rgba(255, 255, 255, 0.58);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.75);
+
+  border-radius: 24px;
+
+  padding: 40px;
+
+  backdrop-filter: blur(18px);
+
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.result-header {
+  text-align: center;
+
+  padding-bottom: 30px;
+
+  border-bottom:
+    1px solid rgba(148, 163, 184, 0.20);
+}
+
+.result-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 32px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  border:
+    1px solid rgba(148, 163, 184, 0.25);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.result-header h1 {
+  margin: 0;
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+  color: #0f172a;
+}
+
+.result-header p {
+  margin: 9px 0 0;
+
+  color: #64748b;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.result-status {
+  margin: 28px auto;
+
+  width: fit-content;
+
+  padding: 9px 20px;
+
+  border-radius: 30px;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+}
+
+.result-status.passed {
+  color: #166534;
+
+  background: rgba(220, 252, 231, 0.75);
+
+  border:
+    1px solid rgba(34, 197, 94, 0.30);
+}
+
+.result-status.failed {
+  color: #b91c1c;
+
+  background: rgba(254, 226, 226, 0.75);
+
+  border:
+    1px solid rgba(239, 68, 68, 0.30);
+}
+
+
+/* =========================================================
+   SCORE SECTION
+========================================================= */
+
+.score-section {
+
+  display: flex;
+
+  justify-content: center;
+
+  margin: 30px 0;
+}
+
+.score-circle {
+
+  width: 190px;
+  height: 190px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(255, 255, 255, 0.62);
+
+  border:
+    10px solid rgba(59, 130, 246, 0.12);
+
+  box-shadow:
+    inset 0 0 30px rgba(15, 23, 42, 0.04),
+    0 15px 35px rgba(15, 23, 42, 0.08);
+}
+
+.score-percentage {
+
+  font-size: 43px;
+
+  line-height: 1;
+
+  font-weight: 900;
+
+  color: #0f172a;
+}
+
+.score-label {
+
+  margin-top: 8px;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   STAT GRID
+========================================================= */
+
+.result-stats {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 15px;
+
+  margin-top: 30px;
+}
+
+.result-stat {
+
+  padding: 20px;
+
+  text-align: center;
+
+  background:
+    rgba(255, 255, 255, 0.48);
+
+  border:
+    1px solid rgba(148, 163, 184, 0.20);
+
+  border-radius: 15px;
+
+  backdrop-filter: blur(10px);
+
+  transition: all .2s ease;
+}
+
+.result-stat:hover {
+
+  transform: translateY(-3px);
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.07);
+}
+
+.result-stat strong {
+
+  display: block;
+
+  font-size: 23px;
+
+  font-weight: 800;
+
+  color: #0f172a;
+}
+
+.result-stat span {
+
+  display: block;
+
+  margin-top: 5px;
+
+  font-size: 12px;
+
+  color: #64748b;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+}
+
+
+/* =========================================================
+   ANSWERS SECTION
+========================================================= */
+
+.answers-section {
+
+  margin-top: 40px;
+}
+
+.answers-title {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.answers-title h2 {
+
+  margin: 0;
+
+  font-size: 21px;
+
+  color: #0f172a;
+}
+
+.answers-title span {
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   ANSWER CARD
+========================================================= */
+
+.answer-card {
+
+  margin-bottom: 14px;
+
+  padding: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.48);
+
+  border:
+    1px solid rgba(148, 163, 184, 0.20);
+
+  border-radius: 15px;
+
+  transition: all .2s ease;
+}
+
+.answer-card:hover {
+
+  background:
+    rgba(255, 255, 255, 0.70);
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   ANSWER HEADER
+========================================================= */
+
+.answer-top {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 15px;
+
+  margin-bottom: 12px;
+}
+
+.answer-number {
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  color: #64748b;
+}
+
+.answer-mark {
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.answer-mark.correct {
+
+  color: #166534;
+
+  background: rgba(220, 252, 231, 0.75);
+}
+
+.answer-mark.wrong {
+
+  color: #b91c1c;
+
+  background: rgba(254, 226, 226, 0.75);
+}
+
+
+/* =========================================================
+   QUESTION TEXT
+========================================================= */
+
+.answer-question {
+
+  margin-bottom: 14px;
+
+  font-size: 16px;
+
+  line-height: 1.5;
+
+  font-weight: 700;
+
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   SELECTED ANSWER
+========================================================= */
+
+.answer-selected {
+
+  padding: 12px 14px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  background: rgba(241, 245, 249, 0.70);
+
+  color: #475569;
+}
+
+.answer-selected strong {
+
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   CORRECT ANSWER
+========================================================= */
+
+.correct-answer {
+
+  margin-top: 8px;
+
+  padding: 12px 14px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(220, 252, 231, 0.55);
+
+  color: #166534;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.result-actions {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+
+  margin-top: 35px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid rgba(148, 163, 184, 0.20);
+}
+
+.result-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 12px 22px;
+
+  border-radius: 10px;
+
+  border: 1px solid transparent;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all .2s ease;
+}
+
+.result-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.10);
+}
+
+.btn-course {
+
+  background:
+    rgba(255, 255, 255, 0.65);
+
+  border-color:
+    rgba(148, 163, 184, 0.30);
+
+  color: #334155;
+}
+
+.btn-course:hover {
+
+  background: #ffffff;
+}
+
+.btn-quizzes {
+
+  background:
+    rgba(59, 130, 246, 0.90);
+
+  color: white;
+
+  border-color:
+    rgba(59, 130, 246, 0.20);
+}
+
+.btn-quizzes:hover {
+
+  background:
+    rgba(37, 99, 235, 0.95);
+}
+
+
+/* =========================================================
+   EMPTY ANSWER
+========================================================= */
+
+.not-answered {
+
+  color: #b45309;
+
+  background:
+    rgba(254, 243, 199, 0.65);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width: 850px) {
+
+  .result-card {
+    padding: 28px 22px;
+  }
+
+  .result-stats {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+@media(max-width: 600px) {
+
+  .quiz-result-page {
+    padding: 25px 12px 50px;
+  }
+
+  .result-card {
+    padding: 22px 15px;
+
+    border-radius: 18px;
+  }
+
+  .result-header h1 {
+    font-size: 24px;
+  }
+
+  .score-circle {
+    width: 155px;
+    height: 155px;
+  }
+
+  .score-percentage {
+    font-size: 35px;
+  }
+
+  .result-stats {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+  }
+
+  .result-stat {
+    padding: 15px 8px;
+  }
+
+  .result-stat strong {
+    font-size: 19px;
+  }
+
+  .answer-top {
+    flex-direction: column;
+  }
+
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .result-btn {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+  .result-back,
+  .result-actions {
+    display: none !important;
+  }
+
+  .quiz-result-page {
+    background: white;
+  }
+
+  .result-card {
+    box-shadow: none;
+
+    background: white;
+
+    border: 1px solid #ddd;
+  }
+}
+</style>
+
+
+<div class="quiz-result-page">
+
+  <div class="result-container">
+
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <div class="result-back">
+
+      <%= link_to course_quizzes_path(@course) do %>
+        ← Back to Quizzes
+      <% end %>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESULT CARD
+    ====================================================== -->
+
+    <div class="result-card">
+
+
+      <!-- =====================================================
+           HEADER
+      ====================================================== -->
+
+      <div class="result-header">
+
+        <div class="result-icon">
+
+          <% if @attempt.passed? %>
+            🎉
+          <% else %>
+            📋
+          <% end %>
+
+        </div>
+
+
+        <h1>
+          <%= @quiz.title %>
+        </h1>
+
+
+        <p>
+          Quiz Result
+        </p>
+
+
+        <% if @attempt.passed? %>
+
+          <div class="result-status passed">
+            ✓ Passed
+          </div>
+
+        <% else %>
+
+          <div class="result-status failed">
+            ✕ Failed
+          </div>
+
+        <% end %>
+
+      </div>
+
+
+      <!-- =====================================================
+           SCORE
+      ====================================================== -->
+
+      <div class="score-section">
+
+        <div class="score-circle">
+
+          <div class="score-percentage">
+
+            <%= @attempt.percentage.to_f.round(2) %>%
+
+          </div>
+
+          <div class="score-label">
+
+            Your Score
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           STATISTICS
+      ====================================================== -->
+
+      <div class="result-stats">
+
+
+        <div class="result-stat">
+
+          <strong>
+            <%= @attempt.score.to_f %>
+          </strong>
+
+          <span>
+            Score
+          </span>
+
+        </div>
+
+
+        <div class="result-stat">
+
+          <strong>
+            <%= @attempt.total_marks.to_f %>
+          </strong>
+
+          <span>
+            Total Marks
+          </span>
+
+        </div>
+
+
+        <div class="result-stat">
+
+          <strong>
+            <%= @quiz.questions.count %>
+          </strong>
+
+          <span>
+            Questions
+          </span>
+
+        </div>
+
+
+        <div class="result-stat">
+
+          <strong>
+            <%= @quiz.passing_percentage.to_f.round(0) %>%
+          </strong>
+
+          <span>
+            Pass Mark
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- =====================================================
+           ANSWERS
+      ====================================================== -->
+
+      <div class="answers-section">
+
+
+        <div class="answers-title">
+
+          <h2>
+            Answer Review
+          </h2>
+
+          <span>
+            <%= @answers.count %> answers
+          </span>
+
+        </div>
+
+
+        <% @answers.each_with_index do |answer, index| %>
+
+          <% correct = answer.is_correct? %>
+
+
+          <div class="answer-card">
+
+
+            <!-- ANSWER TOP -->
+
+            <div class="answer-top">
+
+              <span class="answer-number">
+
+                Question <%= index + 1 %>
+
+              </span>
+
+
+              <% if correct %>
+
+                <span class="answer-mark correct">
+
+                  ✓ Correct
+
+                </span>
+
+              <% else %>
+
+                <span class="answer-mark wrong">
+
+                  ✕ Incorrect
+
+                </span>
+
+              <% end %>
+
+            </div>
+
+
+            <!-- QUESTION -->
+
+            <div class="answer-question">
+
+              <%= answer.question.question_text %>
+
+            </div>
+
+
+            <!-- SELECTED ANSWER -->
+
+            <% if answer.option.present? %>
+
+              <div class="answer-selected">
+
+                <strong>
+                  Your Answer:
+                </strong>
+
+                <%= answer.option.option_text %>
+
+              </div>
+
+            <% else %>
+
+              <div class="answer-selected not-answered">
+
+                <strong>
+                  Your Answer:
+                </strong>
+
+                Not answered
+
+              </div>
+
+            <% end %>
+
+
+            <!-- CORRECT ANSWER -->
+
+            <% unless correct %>
+
+              <% correct_option =
+                   answer.question.options.find_by(is_correct: true) %>
+
+              <% if correct_option.present? %>
+
+                <div class="correct-answer">
+
+                  <strong>
+                    Correct Answer:
+                  </strong>
+
+                  <%= correct_option.option_text %>
+
+                </div>
+
+              <% end %>
+
+            <% end %>
+
+
+          </div>
+
+        <% end %>
+
+
+      </div>
+
+
+      <!-- =====================================================
+           ACTION BUTTONS
+      ====================================================== -->
+
+      <div class="result-actions">
+
+
+        <%= link_to course_quizzes_path(@course),
+                    class: "result-btn btn-quizzes" do %>
+
+          📝 View All Quizzes
+
+        <% end %>
+
+
+        <%= link_to course_details_path(@course),
+                    class: "result-btn btn-course" do %>
+
+          ← Back to Course
+
+        <% end %>
+
+
+        <button
+          type="button"
+          class="result-btn btn-course"
+          id="printResult">
+
+          🖨 Print Result
+
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =====================================================
+     PRINT RESULT
+  ====================================================== */
+
+  const printButton =
+    document.getElementById("printResult");
+
+  if (printButton) {
+
+    printButton.addEventListener("click", function () {
+
+      window.print();
+
+    });
+
+  }
+
+
+  /* =====================================================
+     ANIMATE SCORE
+  ====================================================== */
+
+  const score =
+    document.querySelector(".score-percentage");
+
+  if (score) {
+
+    score.style.opacity = "0";
+
+    score.style.transform = "scale(.8)";
+
+    score.style.transition =
+      "all .6s ease";
+
+    setTimeout(function () {
+
+      score.style.opacity = "1";
+
+      score.style.transform =
+        "scale(1)";
+
+    }, 150);
+
+  }
+
+
+  /* =====================================================
+     ANSWER CARD ANIMATION
+  ====================================================== */
+
+  const cards =
+    document.querySelectorAll(".answer-card");
+
+  cards.forEach(function (card, index) {
+
+    card.style.opacity = "0";
+
+    card.style.transform =
+      "translateY(10px)";
+
+    card.style.transition =
+      "all .35s ease";
+
+    setTimeout(function () {
+
+      card.style.opacity = "1";
+
+      card.style.transform =
+        "translateY(0)";
+
+    }, 100 + (index * 60));
+
+  });
+
+});
+</script>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_29_155252) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_02_080607) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -255,6 +255,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_29_155252) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "options", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_correct", default: false, null: false
+    t.string "option_text", null: false
+    t.integer "position", default: 1, null: false
+    t.bigint "question_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id", "position"], name: "index_options_on_question_id_and_position", unique: true
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
   create_table "payments", force: :cascade do |t|
     t.decimal "amount"
     t.datetime "created_at", null: false
@@ -277,6 +288,64 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_29_155252) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_playlists_on_course_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "marks", precision: 8, scale: 2, default: "1.0", null: false
+    t.integer "position", default: 1, null: false
+    t.text "question_text", null: false
+    t.string "question_type", default: "multiple_choice", null: false
+    t.bigint "quiz_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id", "position"], name: "index_questions_on_quiz_id_and_position", unique: true
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quiz_answers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_correct"
+    t.decimal "marks_obtained"
+    t.bigint "option_id", null: false
+    t.bigint "question_id", null: false
+    t.bigint "quiz_attempt_id", null: false
+    t.text "selected_text"
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_quiz_answers_on_option_id"
+    t.index ["question_id"], name: "index_quiz_answers_on_question_id"
+    t.index ["quiz_attempt_id"], name: "index_quiz_answers_on_quiz_attempt_id"
+  end
+
+  create_table "quiz_attempts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "percentage"
+    t.bigint "quiz_id", null: false
+    t.decimal "score"
+    t.datetime "started_at"
+    t.string "status"
+    t.datetime "submitted_at"
+    t.decimal "total_marks"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["quiz_id"], name: "index_quiz_attempts_on_quiz_id"
+    t.index ["user_id"], name: "index_quiz_attempts_on_user_id"
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.decimal "passing_percentage", precision: 5, scale: 2, default: "40.0", null: false
+    t.string "status", default: "Active", null: false
+    t.bigint "test_series_id"
+    t.integer "time_limit", default: 30, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "video_id"
+    t.index ["course_id", "title"], name: "index_quizzes_on_course_id_and_title", unique: true
+    t.index ["course_id"], name: "index_quizzes_on_course_id"
+    t.index ["test_series_id"], name: "index_quizzes_on_test_series_id"
+    t.index ["video_id"], name: "index_quizzes_on_video_id"
   end
 
   create_table "rename_to_column_courses", force: :cascade do |t|
@@ -329,6 +398,106 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_29_155252) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_teachers_on_user_id"
+  end
+
+  create_table "test_series", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.integer "discount"
+    t.string "exam_name"
+    t.string "language"
+    t.string "mode"
+    t.decimal "original_price"
+    t.decimal "price"
+    t.boolean "registration_ended"
+    t.string "status"
+    t.string "title"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "test_series_answers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_correct"
+    t.integer "marks_obtained"
+    t.bigint "test_series_attempt_id", null: false
+    t.bigint "test_series_option_id", null: false
+    t.bigint "test_series_question_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_series_attempt_id"], name: "index_test_series_answers_on_test_series_attempt_id"
+    t.index ["test_series_option_id"], name: "index_test_series_answers_on_test_series_option_id"
+    t.index ["test_series_question_id"], name: "index_test_series_answers_on_test_series_question_id"
+  end
+
+  create_table "test_series_attempts", force: :cascade do |t|
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.integer "score"
+    t.datetime "started_at"
+    t.string "status"
+    t.datetime "submitted_at"
+    t.bigint "test_series_test_id", null: false
+    t.integer "total_marks"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["test_series_test_id"], name: "index_test_series_attempts_on_test_series_test_id"
+    t.index ["user_id"], name: "index_test_series_attempts_on_user_id"
+  end
+
+  create_table "test_series_options", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_correct", default: false, null: false
+    t.string "option_text", null: false
+    t.text "option_text_hindi"
+    t.integer "position", default: 1, null: false
+    t.bigint "test_series_question_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_series_question_id", "position"], name: "idx_on_test_series_question_id_position_60752186c7", unique: true
+    t.index ["test_series_question_id"], name: "index_test_series_options_on_test_series_question_id"
+  end
+
+  create_table "test_series_purchases", force: :cascade do |t|
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.string "payment_status"
+    t.string "razorpay_order_id"
+    t.string "razorpay_payment_id"
+    t.string "razorpay_signature"
+    t.string "status"
+    t.bigint "test_series_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["test_series_id"], name: "index_test_series_purchases_on_test_series_id"
+    t.index ["user_id"], name: "index_test_series_purchases_on_user_id"
+  end
+
+  create_table "test_series_questions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "explanation"
+    t.text "explanation_hindi"
+    t.decimal "marks", precision: 8, scale: 2, default: "1.0", null: false
+    t.integer "position", default: 1, null: false
+    t.text "question_text", null: false
+    t.text "question_text_hindi"
+    t.string "question_type", default: "multiple_choice", null: false
+    t.bigint "test_series_test_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_series_test_id", "position"], name: "idx_on_test_series_test_id_position_7f565c91f0", unique: true
+    t.index ["test_series_test_id"], name: "index_test_series_questions_on_test_series_test_id"
+  end
+
+  create_table "test_series_tests", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.integer "duration", default: 30
+    t.string "status", default: "Active"
+    t.integer "test_number", null: false
+    t.bigint "test_series_id", null: false
+    t.string "title", null: false
+    t.decimal "total_marks", precision: 8, scale: 2, default: "0.0"
+    t.integer "total_questions", default: 0
+    t.datetime "updated_at", null: false
+    t.index ["test_series_id", "test_number"], name: "index_test_series_tests_on_test_series_id_and_test_number", unique: true
+    t.index ["test_series_id"], name: "index_test_series_tests_on_test_series_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -407,10 +576,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_29_155252) do
   add_foreign_key "fees", "enrollments"
   add_foreign_key "notes", "playlists"
   add_foreign_key "notes", "videos"
+  add_foreign_key "options", "questions"
   add_foreign_key "payments", "enrollments"
   add_foreign_key "playlists", "courses"
+  add_foreign_key "questions", "quizzes"
+  add_foreign_key "quiz_answers", "options"
+  add_foreign_key "quiz_answers", "questions"
+  add_foreign_key "quiz_answers", "quiz_attempts"
+  add_foreign_key "quiz_attempts", "quizzes"
+  add_foreign_key "quiz_attempts", "users"
+  add_foreign_key "quizzes", "courses"
+  add_foreign_key "quizzes", "test_series"
+  add_foreign_key "quizzes", "videos"
   add_foreign_key "resources", "playlists"
   add_foreign_key "teachers", "users"
+  add_foreign_key "test_series_answers", "test_series_attempts"
+  add_foreign_key "test_series_answers", "test_series_options"
+  add_foreign_key "test_series_answers", "test_series_questions"
+  add_foreign_key "test_series_attempts", "test_series_tests"
+  add_foreign_key "test_series_attempts", "users"
+  add_foreign_key "test_series_options", "test_series_questions"
+  add_foreign_key "test_series_purchases", "test_series"
+  add_foreign_key "test_series_purchases", "users"
+  add_foreign_key "test_series_questions", "test_series_tests"
+  add_foreign_key "test_series_tests", "test_series"
   add_foreign_key "video_progresses", "users"
   add_foreign_key "video_progresses", "videos"
   add_foreign_key "videos", "courses"

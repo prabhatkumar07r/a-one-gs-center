@@ -1,0 +1,1411 @@
+<% content_for :show_layout, true %>
+
+<style>
+/* =========================================================
+   TEST SERIES INDEX PAGE
+========================================================= */
+
+.test-series-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #18213d;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.ts-hero {
+  background:
+    radial-gradient(
+      circle at 78% 35%,
+      rgba(124, 58, 237, .08),
+      transparent 30%
+    ),
+    #f1efff;
+
+  min-height: 350px;
+  padding: 35px 6% 25px;
+}
+
+.ts-hero-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+
+  align-items: center;
+  gap: 40px;
+}
+
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.ts-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 30px;
+
+  font-size: 15px;
+  color: #64748b;
+}
+
+.ts-breadcrumb a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.ts-breadcrumb a:hover {
+  color: #111cae;
+}
+
+.ts-breadcrumb i {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.ts-breadcrumb strong {
+  color: #111827;
+}
+
+
+/* =========================================================
+   HERO TEXT
+========================================================= */
+
+.ts-hero-content h1 {
+  margin: 0 0 14px;
+
+  font-size: 30px;
+  line-height: 1.25;
+
+  font-weight: 800;
+
+  color: #17213f;
+}
+
+.ts-hero-content p {
+  max-width: 760px;
+
+  margin: 0;
+
+  font-size: 23px;
+  line-height: 1.45;
+
+  color: #17213f;
+}
+
+
+/* =========================================================
+   HERO ILLUSTRATION
+========================================================= */
+
+.ts-hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 280px;
+}
+
+.ts-hero-illustration {
+  width: 280px;
+  height: 280px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #e0dcff 0%,
+      #e9e6ff 55%,
+      transparent 56%
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+}
+
+.ts-hero-illustration-main {
+  width: 155px;
+  min-height: 185px;
+
+  background: #ffffff;
+
+  border: 3px solid #28316c;
+
+  border-radius: 8px;
+
+  padding: 15px;
+
+  transform: rotate(-7deg);
+
+  box-shadow:
+    20px 18px 0 rgba(109, 40, 217, .12);
+}
+
+.ts-paper-line {
+  height: 7px;
+
+  margin-bottom: 9px;
+
+  border-radius: 4px;
+
+  background: #a5a9db;
+}
+
+.ts-paper-line.short {
+  width: 65%;
+}
+
+.ts-paper-line.medium {
+  width: 82%;
+}
+
+.ts-check {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 10px;
+
+  color: #5961a3;
+
+  font-size: 11px;
+}
+
+.ts-check span {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid #5961a3;
+
+  border-radius: 3px;
+}
+
+
+/* decorative circles */
+
+.ts-decoration {
+  position: absolute;
+
+  border: 2px solid #8187c9;
+
+  border-radius: 50%;
+
+  opacity: .75;
+}
+
+.ts-decoration.one {
+  width: 35px;
+  height: 35px;
+
+  top: 25px;
+  left: 25px;
+}
+
+.ts-decoration.two {
+  width: 24px;
+  height: 24px;
+
+  right: 20px;
+  top: 65px;
+}
+
+.ts-decoration.three {
+  width: 30px;
+  height: 30px;
+
+  bottom: 35px;
+  left: 40px;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER BOX
+========================================================= */
+
+.ts-filter-wrapper {
+  max-width: 1350px;
+
+  margin: 40px auto 0;
+
+  padding: 0 25px;
+}
+
+.ts-filter-box {
+  background: #ffffff;
+
+  border: 1px solid #eeeeee;
+
+  border-radius: 24px;
+
+  padding: 20px;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, .05);
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.ts-search-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  background: #fafafa;
+
+  border: 1px solid #eeeeee;
+
+  border-radius: 25px;
+
+  padding: 0 18px;
+
+  height: 52px;
+}
+
+.ts-search-row i {
+  color: #94a3b8;
+}
+
+.ts-search-row input {
+  flex: 1;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-size: 15px;
+
+  color: #334155;
+}
+
+.ts-search-count {
+  background: #ffffff;
+
+  padding: 8px 15px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.05);
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   FILTER ROW
+========================================================= */
+
+.ts-filter-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-top: 18px;
+
+  margin-top: 15px;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+.ts-filter-tabs {
+  display: flex;
+
+  gap: 10px;
+}
+
+.ts-filter-tab {
+  border: none;
+
+  background: #fafafa;
+
+  color: #334155;
+
+  padding: 13px 22px;
+
+  border-radius: 25px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.ts-filter-tab:hover {
+  background: #eeeeff;
+  color: #111cae;
+}
+
+.ts-filter-tab.active {
+  background: #080d9f;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 18px rgba(8, 13, 159, .20);
+}
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+.ts-language-select {
+  min-width: 270px;
+
+  position: relative;
+}
+
+.ts-language-select select {
+  width: 100%;
+
+  appearance: none;
+
+  border: none;
+
+  outline: none;
+
+  background: #fafafa;
+
+  border-radius: 25px;
+
+  padding: 13px 45px 13px 20px;
+
+  font-size: 15px;
+
+  color: #334155;
+
+  cursor: pointer;
+}
+
+.ts-language-select i {
+  position: absolute;
+
+  right: 18px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #080d9f;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   RESULT TITLE
+========================================================= */
+
+.ts-result-wrapper {
+  max-width: 1350px;
+
+  margin: 0 auto;
+
+  padding: 65px 25px 80px;
+}
+
+.ts-result-title {
+  margin-bottom: 30px;
+
+  color: #111111;
+
+  font-size: 30px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   TEST SERIES GRID
+========================================================= */
+
+.ts-series-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 25px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.ts-series-card {
+  background: #ffffff;
+
+  border: 1px solid #e7eaf0;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 6px 20px rgba(15, 23, 42, .05);
+
+  transition: .25s ease;
+}
+
+.ts-series-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 15px 35px rgba(15, 23, 42, .10);
+}
+
+
+/* =========================================================
+   CARD IMAGE
+========================================================= */
+
+.ts-card-image {
+  height: 180px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #f5f3ff
+    );
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.ts-card-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.ts-card-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 55px;
+
+  color: #6d28d9;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.ts-card-badge {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  padding: 6px 11px;
+
+  border-radius: 8px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.ts-card-badge.free {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.ts-card-badge.premium {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.ts-card-body {
+  padding: 22px;
+}
+
+.ts-card-exam {
+  color: #6d28d9;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  margin-bottom: 7px;
+}
+
+.ts-card-body h3 {
+  margin: 0 0 10px;
+
+  color: #17213f;
+
+  font-size: 19px;
+
+  line-height: 1.35;
+
+  font-weight: 800;
+}
+
+.ts-card-description {
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  min-height: 42px;
+
+  margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   CARD META
+========================================================= */
+
+.ts-card-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 18px;
+}
+
+.ts-card-meta span {
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+
+  color: #64748b;
+
+  padding: 6px 9px;
+
+  border-radius: 7px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.ts-card-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding-top: 17px;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+.ts-card-price {
+  color: #312e81;
+
+  font-size: 21px;
+
+  font-weight: 900;
+}
+
+.ts-card-price.free {
+  color: #15803d;
+}
+
+.ts-original-price {
+  color: #94a3b8;
+
+  text-decoration: line-through;
+
+  font-size: 12px;
+
+  margin-left: 5px;
+}
+
+.ts-discount-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 6px;
+
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.ts-view-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 10px 15px;
+
+  border-radius: 10px;
+
+  background: #080d9f;
+
+  color: #ffffff !important;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  transition: .2s ease;
+}
+
+.ts-view-btn:hover {
+  background: #171fc5;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.ts-empty {
+  padding: 70px 20px;
+
+  text-align: center;
+
+  color: #64748b;
+}
+
+.ts-empty i {
+  color: #cbd5e1;
+
+  margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.ts-pagination {
+  margin-top: 45px;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+
+/* =========================================================
+   FLOATING SUPPORT
+========================================================= */
+
+.ts-support {
+  position: fixed;
+
+  right: 22px;
+  bottom: 22px;
+
+  width: 72px;
+  height: 72px;
+
+  border-radius: 50%;
+
+  background: #4285f4;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+
+  box-shadow:
+    0 8px 25px rgba(66, 133, 244, .35);
+
+  z-index: 100;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .ts-series-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ts-hero-inner {
+    grid-template-columns: 1fr .7fr;
+  }
+
+  .ts-hero-content p {
+    font-size: 20px;
+  }
+
+}
+
+@media (max-width: 800px) {
+
+  .ts-hero {
+    padding: 30px 20px;
+  }
+
+  .ts-hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .ts-hero-visual {
+    display: none;
+  }
+
+  .ts-filter-row {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .ts-filter-tabs {
+    overflow-x: auto;
+  }
+
+  .ts-language-select {
+    width: 100%;
+  }
+
+  .ts-series-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .ts-hero-content h1 {
+    font-size: 25px;
+  }
+
+  .ts-hero-content p {
+    font-size: 18px;
+  }
+
+  .ts-filter-wrapper {
+    padding: 0 12px;
+  }
+
+  .ts-filter-box {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .ts-search-row {
+    height: 48px;
+  }
+
+  .ts-search-count {
+    display: none;
+  }
+
+  .ts-filter-tab {
+    padding: 11px 16px;
+    white-space: nowrap;
+  }
+
+  .ts-result-wrapper {
+    padding: 45px 15px;
+  }
+
+  .ts-result-title {
+    font-size: 23px;
+  }
+
+  .ts-support {
+    width: 58px;
+    height: 58px;
+
+    font-size: 24px;
+
+    right: 15px;
+    bottom: 15px;
+  }
+
+}
+</style>
+
+
+<div class="test-series-page">
+
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
+  <section class="ts-hero">
+
+    <div class="ts-hero-inner">
+
+      <div class="ts-hero-content">
+
+        <div class="ts-breadcrumb">
+
+          <%= link_to homepage_path do %>
+            <i class="fas fa-home"></i>
+            Home
+          <% end %>
+
+          <i class="fas fa-chevron-right"></i>
+
+          <strong>Test Series</strong>
+
+        </div>
+
+
+        <h1>
+          The Most Trusted Online And Offline Test Series Platform
+        </h1>
+
+        <p>
+          Boost your exam preparation with Test Series for
+          UPSC, UP-PSC, BPSC, Banking, SSC, RRB & All other
+          Govt. Exams
+        </p>
+
+      </div>
+
+
+      <!-- Illustration -->
+
+      <div class="ts-hero-visual">
+
+        <div class="ts-hero-illustration">
+
+          <div class="ts-decoration one"></div>
+          <div class="ts-decoration two"></div>
+          <div class="ts-decoration three"></div>
+
+          <div class="ts-hero-illustration-main">
+
+            <div class="ts-check">
+              <span></span>
+              Test Series
+            </div>
+
+            <div class="ts-paper-line medium"></div>
+            <div class="ts-paper-line short"></div>
+
+            <div class="ts-check">
+              <span></span>
+              Mock Test
+            </div>
+
+            <div class="ts-paper-line medium"></div>
+            <div class="ts-paper-line short"></div>
+
+            <div class="ts-check">
+              <span></span>
+              Practice
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SEARCH + FILTERS
+  ====================================================== -->
+
+  <div class="ts-filter-wrapper">
+
+    <div class="ts-filter-box">
+
+      <div class="ts-search-row">
+
+        <i class="fas fa-search"></i>
+
+        <input
+          type="text"
+          id="tsSearch"
+          placeholder="Search test series by name or language">
+
+        <span class="ts-search-count">
+          <%= @test_series.count > 20 ? 20 : @test_series.count %>
+          shown
+        </span>
+
+      </div>
+
+
+      <div class="ts-filter-row">
+
+        <div class="ts-filter-tabs">
+
+          <button
+            type="button"
+            class="ts-filter-tab active"
+            data-mode="all">
+            All Test Series
+          </button>
+
+          <button
+            type="button"
+            class="ts-filter-tab"
+            data-mode="Online">
+            Online Test Series
+          </button>
+
+          <button
+            type="button"
+            class="ts-filter-tab"
+            data-mode="Offline">
+            Offline Test Series
+          </button>
+
+        </div>
+
+
+        <div class="ts-language-select">
+
+          <select id="tsLanguageFilter">
+
+            <option value="all">
+              English/Hindi
+            </option>
+
+            <option value="English">
+              English
+            </option>
+
+            <option value="Hindi">
+              Hindi
+            </option>
+
+          </select>
+
+          <i class="fas fa-chevron-down"></i>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       RESULTS
+  ====================================================== -->
+
+  <section class="ts-result-wrapper">
+
+    <h2 class="ts-result-title">
+
+      Total Test Series
+      <strong><%= @test_series.count %></strong>,
+
+      Test Series available on this page is
+      <strong><%= [@test_series.count, 20].min %></strong>
+
+    </h2>
+
+
+    <% if @test_series.any? %>
+
+      <div class="ts-series-grid" id="tsSeriesGrid">
+
+        <% @test_series.limit(20).each do |test_series| %>
+
+          <article
+            class="ts-series-card"
+            data-title="<%= test_series.title.to_s.downcase %>"
+            data-language="<%= test_series.language.to_s.downcase %>"
+            data-mode="<%= test_series.mode.to_s %>">
+
+
+            <!-- IMAGE -->
+
+            <div class="ts-card-image">
+
+              <% if test_series.image.attached? %>
+
+                <%= image_tag test_series.image %>
+
+              <% else %>
+
+                <div class="ts-card-placeholder">
+
+                  <i class="fas fa-file-alt"></i>
+
+                </div>
+
+              <% end %>
+
+
+              <% if test_series.free? %>
+
+                <span class="ts-card-badge free">
+                  Free
+                </span>
+
+              <% else %>
+
+                <span class="ts-card-badge premium">
+                  Premium
+                </span>
+
+              <% end %>
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div class="ts-card-body">
+
+              <div class="ts-card-exam">
+
+                <%= test_series.exam_name %>
+
+              </div>
+
+
+              <h3>
+
+                <%= test_series.title %>
+
+              </h3>
+
+
+              <% if test_series.description.present? %>
+
+                <p class="ts-card-description">
+
+                  <%= truncate(
+                        test_series.description,
+                        length: 100
+                      ) %>
+
+                </p>
+
+              <% else %>
+
+                <p class="ts-card-description">
+
+                  Practice with carefully designed mock tests
+                  and improve your exam preparation.
+
+                </p>
+
+              <% end %>
+
+
+              <div class="ts-card-meta">
+
+                <span>
+                  <i class="fas fa-laptop"></i>
+                  <%= test_series.mode %>
+                </span>
+
+                <span>
+                  <i class="fas fa-language"></i>
+                  <%= test_series.language %>
+                </span>
+
+                <span>
+                  <i class="fas fa-layer-group"></i>
+                  <%= test_series.test_series_tests.count %>
+
+                  Tests
+                </span>
+
+
+                 <span>
+                   <i class="fas fa-question-circle"></i>
+                 <%= test_series.test_series_tests.sum { |test| test.test_series_questions.size } %>
+                Questions
+              </span>
+
+              </div>
+
+
+              <!-- FOOTER -->
+
+              <div class="ts-card-footer">
+
+                <div>
+
+                  <% if test_series.free? %>
+
+                 <span class="ts-card-price free">
+                  FREE
+                </span>
+
+              <% else %>
+
+              <span class="ts-card-price">
+                  ₹<%= test_series.price %>
+               </span>
+
+               <% if test_series.original_price.present? &&
+                   test_series.original_price.to_d >
+                   test_series.price.to_d %>
+
+              <span class="ts-original-price">
+               ₹<%= test_series.original_price %>
+             </span>
+
+        <% discount_percentage =
+         (
+           (
+             test_series.original_price.to_d -
+             test_series.price.to_d
+           ) /
+           test_series.original_price.to_d *
+           100
+         ).round %>
+
+    <span class="ts-discount-badge">
+      <%= discount_percentage %>% OFF
+    </span>
+
+  <% end %>
+
+<% end %>
+
+                <%= link_to test_series_path(test_series),
+                            class: "ts-view-btn" do %>
+
+                  View Series
+
+                  <i class="fas fa-arrow-right"></i>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+
+    <% else %>
+
+      <div class="ts-empty">
+
+        <i class="fas fa-clipboard-list fa-3x"></i>
+
+        <h3>
+          No Test Series Available
+        </h3>
+
+        <p>
+          Test series will appear here when they are added.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+
+  <!-- =====================================================
+       SUPPORT
+  ====================================================== -->
+
+  <div class="ts-support">
+
+    <i class="fas fa-headset"></i>
+
+  </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const searchInput =
+    document.getElementById("tsSearch");
+
+  const languageFilter =
+    document.getElementById("tsLanguageFilter");
+
+  const tabs =
+    document.querySelectorAll(".ts-filter-tab");
+
+  const cards =
+    document.querySelectorAll(".ts-series-card");
+
+
+  let selectedMode = "all";
+
+
+  function filterSeries() {
+
+    const search =
+      searchInput.value.toLowerCase().trim();
+
+    const language =
+      languageFilter.value.toLowerCase();
+
+
+    cards.forEach(function (card) {
+
+      const title =
+        card.dataset.title || "";
+
+      const cardLanguage =
+        card.dataset.language || "";
+
+      const mode =
+        card.dataset.mode || "";
+
+
+      const matchesSearch =
+        title.includes(search) ||
+        cardLanguage.includes(search);
+
+
+      const matchesLanguage =
+        language === "all" ||
+        cardLanguage.includes(language);
+
+
+      const matchesMode =
+        selectedMode === "all" ||
+        mode === selectedMode;
+
+
+      if (
+        matchesSearch &&
+        matchesLanguage &&
+        matchesMode
+      ) {
+
+        card.style.display = "";
+
+      } else {
+
+        card.style.display = "none";
+
+      }
+
+    });
+
+  }
+
+
+  searchInput.addEventListener(
+    "input",
+    filterSeries
+  );
+
+
+  languageFilter.addEventListener(
+    "change",
+    filterSeries
+  );
+
+
+  tabs.forEach(function (tab) {
+
+    tab.addEventListener(
+      "click",
+      function () {
+
+        tabs.forEach(function (item) {
+          item.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        selectedMode =
+          tab.dataset.mode || "all";
+
+        filterSeries();
+
+      }
+    );
+
+  });
+
+});
+</script>

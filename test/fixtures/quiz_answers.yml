@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quiz_attempt: one
+  question: one
+  option: one
+  marks_obtained: 9.99
+
+two:
+  quiz_attempt: two
+  question: two
+  option: two
+  marks_obtained: 9.99

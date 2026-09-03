@@ -1,0 +1,346 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — OPTIONS PAGE
+   ========================================================= */
+
+.admin-ts-options-large {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+/* =========================================================
+   OPTION CARD
+   ========================================================= */
+
+.admin-ts-option-large {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 14px;
+
+  padding: 15px 18px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-ts-option-large:hover {
+  border-color: #d9d7ff;
+  box-shadow: 0 7px 20px rgba(45, 45, 90, 0.07);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   OPTION LETTER
+   ========================================================= */
+
+.admin-ts-option-letter {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  color: #4f46e5;
+  background: #f1f0ff;
+  border: 1px solid #ddd9ff;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+/* =========================================================
+   OPTION CONTENT
+   ========================================================= */
+
+.admin-ts-option-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-ts-option-content strong {
+  color: #202033;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.45;
+
+  overflow-wrap: anywhere;
+}
+
+.admin-ts-option-content span {
+  color: #7b8195;
+  font-size: 12px;
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   CORRECT OPTION
+   ========================================================= */
+
+.admin-ts-option-large.correct {
+  border-color: #b7e4c7;
+  background: #fbfffc;
+}
+
+.admin-ts-option-large.correct .admin-ts-option-letter {
+  color: #15803d;
+  background: #ecfdf3;
+  border-color: #bbf7d0;
+}
+
+.admin-ts-correct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  color: #15803d;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.admin-ts-option-large .admin-ts-action {
+  white-space: nowrap;
+}
+
+.admin-ts-option-large form {
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.admin-ts-options-large:empty::before {
+  content: "No options have been created yet.";
+
+  display: block;
+  padding: 40px;
+
+  color: #73798c;
+  background: #ffffff;
+  border: 1px dashed #dfe2eb;
+  border-radius: 12px;
+
+  font-size: 14px;
+  text-align: center;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+  .admin-ts-option-large {
+    grid-template-columns: 46px minmax(0, 1fr) auto;
+  }
+
+  .admin-ts-correct {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .admin-ts-option-large .admin-ts-action.edit {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .admin-ts-option-large .admin-ts-action.delete {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-ts-options-large {
+    gap: 10px;
+  }
+
+  .admin-ts-option-large {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 11px;
+    padding: 13px;
+  }
+
+  .admin-ts-option-letter {
+    width: 38px;
+    height: 38px;
+  }
+
+  .admin-ts-option-content strong {
+    font-size: 13px;
+  }
+
+  .admin-ts-option-content span {
+    font-size: 11px;
+  }
+
+  .admin-ts-correct {
+    grid-column: 2;
+    grid-row: auto;
+    justify-self: start;
+    margin-top: 2px;
+  }
+
+  .admin-ts-option-large .admin-ts-action.edit {
+    grid-column: 1 / 2;
+    justify-self: stretch;
+  }
+
+  .admin-ts-option-large .admin-ts-action.delete {
+    grid-column: 2;
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-ts-option-large {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .admin-ts-option-letter {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .admin-ts-option-large .admin-ts-action {
+    min-height: 34px;
+    padding: 7px 9px;
+  }
+}
+</style>
+
+
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= @test_series.title %> /
+        <%= @test.title %> /
+        Question /
+        Options
+      </div>
+
+      <h1>Options</h1>
+
+      <p>
+        Manage answer options.
+      </p>
+
+    </div>
+
+    <%= link_to new_admin_test_series_test_question_option_path(
+                  @test_series,
+                  @test,
+                  @question
+                ),
+                class: "admin-ts-btn admin-ts-btn-primary" do %>
+      <i class="fas fa-plus"></i>
+      Add Option
+    <% end %>
+
+  </div>
+
+
+  <div class="admin-ts-options-large">
+
+    <% @options.each_with_index do |option, index| %>
+
+      <div class="
+        admin-ts-option-large
+        <%= "correct" if option.is_correct? %>
+      ">
+
+        <div class="admin-ts-option-letter">
+          <%= ("A".ord + index).chr %>
+        </div>
+
+        <div class="admin-ts-option-content">
+
+          <strong>
+            <%= option.option_text %>
+          </strong>
+
+          <% if option.option_text_hindi.present? %>
+
+            <span>
+              <%= option.option_text_hindi %>
+            </span>
+
+          <% end %>
+
+        </div>
+
+        <% if option.is_correct? %>
+          <span class="admin-ts-correct">
+            Correct
+          </span>
+        <% end %>
+
+        <%= link_to "Edit",
+                    edit_admin_test_series_test_question_option_path(
+                      @test_series,
+                      @test,
+                      @question,
+                      option
+                    ),
+                    class: "admin-ts-action edit" %>
+
+        <%= button_to "Delete",
+                      admin_test_series_test_question_option_path(
+                        @test_series,
+                        @test,
+                        @question,
+                        option
+                      ),
+                      method: :delete,
+                      class: "admin-ts-action delete",
+                      form: {
+                        data: {
+                          turbo_confirm:
+                            "Delete this option?"
+                        }
+                      } %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

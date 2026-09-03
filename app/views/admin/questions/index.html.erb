@@ -1,0 +1,1703 @@
+<div class="admin-questions-page">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb-text">
+        Admin Panel
+        <span>/</span>
+        Courses
+        <span>/</span>
+        Quizzes
+        <span>/</span>
+        Questions
+      </div>
+
+      <h1 class="page-title">
+        <i class="fas fa-circle-question"></i>
+        Quiz Questions
+      </h1>
+
+      <p class="page-subtitle">
+        Manage questions and answer options for
+        <strong><%= @quiz.title %></strong>
+      </p>
+
+      <div class="course-info">
+
+        <span>
+          <i class="fas fa-graduation-cap"></i>
+          <%= @course.Course_name %>
+        </span>
+
+        <% if @quiz.video.present? %>
+
+          <span>
+            <i class="fas fa-video"></i>
+            <%= @quiz.video.title %>
+          </span>
+
+        <% else %>
+
+          <span>
+            <i class="fas fa-book"></i>
+            Course Quiz
+          </span>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- HEADER ACTIONS -->
+
+    <div class="header-actions">
+
+      <%= link_to admin_course_quiz_path(
+                    @course,
+                    @quiz
+                  ),
+                  class: "btn-glass secondary" do %>
+
+        <i class="fas fa-arrow-left"></i>
+        Back to Quiz
+
+      <% end %>
+
+
+      <%= link_to new_admin_course_quiz_question_path(
+                    @course,
+                    @quiz
+                  ),
+                  class: "btn-glass primary" do %>
+
+        <i class="fas fa-plus"></i>
+        Add Question
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       STAT CARDS
+  ========================================================== -->
+
+  <div class="stats-grid">
+
+    <!-- TOTAL QUESTIONS -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon purple">
+        <i class="fas fa-circle-question"></i>
+      </div>
+
+      <div>
+
+        <span class="stat-label">
+          Total Questions
+        </span>
+
+        <strong class="stat-value">
+          <%= @questions.count %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- TOTAL MARKS -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon blue">
+        <i class="fas fa-star"></i>
+      </div>
+
+      <div>
+
+        <span class="stat-label">
+          Total Marks
+        </span>
+
+        <strong class="stat-value">
+          <%= @questions.sum { |question| question.marks.to_f } %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- OPTIONS -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon green">
+        <i class="fas fa-list-check"></i>
+      </div>
+
+      <div>
+
+        <span class="stat-label">
+          Answer Options
+        </span>
+
+        <strong class="stat-value">
+          <%= @questions.sum { |question| question.options.size } %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- QUIZ TIME -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon orange">
+        <i class="fas fa-clock"></i>
+      </div>
+
+      <div>
+
+        <span class="stat-label">
+          Time Limit
+        </span>
+
+        <strong class="stat-value">
+
+          <%= @quiz.time_limit %>
+
+          <small>min</small>
+
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       QUESTIONS
+  ========================================================== -->
+
+  <% if @questions.any? %>
+
+    <div class="questions-container">
+
+      <div class="questions-header">
+
+        <div>
+
+          <h3>
+            <i class="fas fa-list-check"></i>
+            Questions
+          </h3>
+
+          <p>
+            Review and manage all questions in this quiz.
+          </p>
+
+        </div>
+
+        <span class="question-count">
+
+          <%= @questions.count %>
+
+          <%= @questions.count == 1 ? "Question" : "Questions" %>
+
+        </span>
+
+      </div>
+
+
+      <div class="questions-list">
+
+        <% @questions.each_with_index do |question, index| %>
+
+          <!-- =================================================
+               QUESTION CARD
+          ================================================== -->
+
+          <div class="question-card">
+
+            <!-- QUESTION TOP -->
+
+            <div class="question-top">
+
+              <div class="question-number">
+
+                Q<%= index + 1 %>
+
+              </div>
+
+
+              <div class="question-content">
+
+                <div class="question-meta">
+
+                  <span class="position-badge">
+
+                    <i class="fas fa-grip-lines"></i>
+
+                    Position
+                    <%= question.position %>
+
+                  </span>
+
+
+                  <span class="marks-badge">
+
+                    <i class="fas fa-star"></i>
+
+                    <%= question.marks %>
+
+                    <%= question.marks.to_f == 1 ? "Mark" : "Marks" %>
+
+                  </span>
+
+                </div>
+
+
+                <h4 class="question-text">
+
+                  <%= question.question_text %>
+
+                </h4>
+
+              </div>
+
+
+              <!-- QUESTION ACTIONS -->
+
+              <div class="question-actions">
+
+                <%= link_to admin_course_quiz_question_path(
+                              @course,
+                              @quiz,
+                              question
+                            ),
+                            class: "action-btn view",
+                            title: "View Question" do %>
+
+                  <i class="fas fa-eye"></i>
+
+                <% end %>
+
+
+                <%= link_to edit_admin_course_quiz_question_path(
+                              @course,
+                              @quiz,
+                              question
+                            ),
+                            class: "action-btn edit",
+                            title: "Edit Question" do %>
+
+                  <i class="fas fa-pen"></i>
+
+                <% end %>
+
+
+                <%= button_to admin_course_quiz_question_path(
+                                @course,
+                                @quiz,
+                                question
+                              ),
+                              method: :delete,
+                              class: "action-btn delete",
+                              form: {
+                                data: {
+                                  turbo_confirm:
+                                    "Are you sure you want to delete this question?"
+                                }
+                              },
+                              title: "Delete Question" do %>
+
+                  <i class="fas fa-trash"></i>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 OPTIONS
+            ================================================== -->
+
+            <div class="options-area">
+
+              <div class="options-title">
+
+                <i class="fas fa-list-ul"></i>
+
+                Answer Options
+
+              </div>
+
+
+              <% if question.options.any? %>
+
+                <div class="options-grid">
+
+                  <% question.options
+                            .sort_by { |option| option.position.to_i }
+                            .each_with_index do |option, option_index| %>
+
+
+                    <div class="answer-option
+                      <%= "correct" if option.is_correct? %>">
+
+
+                      <!-- OPTION LETTER -->
+
+                      <div class="option-letter">
+
+                        <%= ('A'.ord + option_index).chr %>
+
+                      </div>
+
+
+                      <!-- OPTION TEXT -->
+
+                      <div class="option-text">
+
+                        <%= option.option_text %>
+
+                      </div>
+
+
+                      <!-- CORRECT STATUS -->
+
+                      <% if option.is_correct? %>
+
+                        <div class="correct-badge">
+
+                          <i class="fas fa-check"></i>
+
+                          Correct
+
+                        </div>
+
+                      <% else %>
+
+                        <div class="incorrect-badge">
+
+                          <i class="far fa-circle"></i>
+
+                          Option
+
+                        </div>
+
+                      <% end %>
+
+
+                    </div>
+
+                  <% end %>
+
+                </div>
+
+              <% else %>
+
+                <div class="no-options">
+
+                  <i class="fas fa-triangle-exclamation"></i>
+
+                  No answer options have been added.
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+
+            <!-- QUESTION FOOTER -->
+
+            <div class="question-footer">
+
+              <span>
+
+                <i class="fas fa-layer-group"></i>
+
+                Question <%= index + 1 %>
+
+              </span>
+
+
+              <span>
+
+                <i class="fas fa-circle-check"></i>
+
+                <%= question.options.count { |option| option.is_correct? } %>
+
+                Correct Answer
+
+              </span>
+
+
+              <span>
+
+                <i class="fas fa-list"></i>
+
+                <%= question.options.count %>
+
+                Options
+
+              </span>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+  <% else %>
+
+    <!-- =========================================================
+         EMPTY STATE
+    ========================================================== -->
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+
+        <i class="fas fa-circle-question"></i>
+
+      </div>
+
+      <h3>
+        No Questions Yet
+      </h3>
+
+      <p>
+
+        This quiz does not have any questions.
+        Add your first question to start building the quiz.
+
+      </p>
+
+
+      <%= link_to new_admin_course_quiz_question_path(
+                    @course,
+                    @quiz
+                  ),
+                  class: "btn-glass primary large" do %>
+
+        <i class="fas fa-plus"></i>
+
+        Add First Question
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<!-- =========================================================
+     DESIGN
+========================================================== -->
+
+<style>
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.admin-questions-page {
+
+  min-height: 100vh;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(63, 82, 251, 0.08),
+      rgba(139, 92, 246, 0.06),
+      rgba(255, 255, 255, 0.80)
+    );
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.page-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 25px;
+
+  margin-bottom: 30px;
+
+}
+
+
+.breadcrumb-text {
+
+  color: #7b8191;
+
+  font-size: 13px;
+
+  margin-bottom: 8px;
+
+}
+
+
+.breadcrumb-text span {
+
+  margin: 0 6px;
+
+  color: #b2b7c3;
+
+}
+
+
+.page-title {
+
+  margin: 0;
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+  color: #252a3a;
+
+}
+
+
+.page-title i {
+
+  color: #3f52fb;
+
+  margin-right: 8px;
+
+}
+
+
+.page-subtitle {
+
+  color: #73798a;
+
+  margin: 7px 0;
+
+}
+
+
+.page-subtitle strong {
+
+  color: #3f52fb;
+
+}
+
+
+.course-info {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  margin-top: 12px;
+
+  color: #666d80;
+
+  font-size: 13px;
+
+}
+
+
+.course-info i {
+
+  color: #3f52fb;
+
+  margin-right: 5px;
+
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.header-actions {
+
+  display: flex;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+}
+
+
+.btn-glass {
+
+  border: 1px solid rgba(255,255,255,0.7);
+
+  border-radius: 12px;
+
+  padding: 11px 18px;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  transition: all .2s ease;
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+}
+
+
+.btn-glass.primary {
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3f52fb,
+      #6d5dfc
+    );
+
+  box-shadow:
+    0 8px 20px rgba(63,82,251,.20);
+
+}
+
+
+.btn-glass.primary:hover {
+
+  color: #fff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(63,82,251,.28);
+
+}
+
+
+.btn-glass.secondary {
+
+  color: #4d5364;
+
+  background:
+    rgba(255,255,255,.62);
+
+  border-color:
+    rgba(110,118,140,.18);
+
+}
+
+
+.btn-glass.secondary:hover {
+
+  color: #3f52fb;
+
+  background:
+    rgba(255,255,255,.90);
+
+  transform: translateY(-2px);
+
+}
+
+
+.btn-glass.large {
+
+  padding: 13px 24px;
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 25px;
+
+}
+
+
+.stat-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  border: 1px solid
+    rgba(255,255,255,.72);
+
+  background:
+    rgba(255,255,255,.58);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 8px 25px rgba(46,55,90,.07);
+
+  transition: all .2s ease;
+
+}
+
+
+.stat-card:hover {
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 30px rgba(46,55,90,.11);
+
+}
+
+
+.stat-icon {
+
+  width: 50px;
+
+  height: 50px;
+
+  min-width: 50px;
+
+  border-radius: 15px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 20px;
+
+}
+
+
+.stat-icon.purple {
+
+  background:
+    rgba(124,58,237,.12);
+
+  color:
+    #7c3aed;
+
+}
+
+
+.stat-icon.blue {
+
+  background:
+    rgba(63,82,251,.12);
+
+  color:
+    #3f52fb;
+
+}
+
+
+.stat-icon.green {
+
+  background:
+    rgba(25,135,84,.12);
+
+  color:
+    #198754;
+
+}
+
+
+.stat-icon.orange {
+
+  background:
+    rgba(245,158,11,.13);
+
+  color:
+    #f59e0b;
+
+}
+
+
+.stat-label {
+
+  display: block;
+
+  color: #7a8090;
+
+  font-size: 12px;
+
+  margin-bottom: 3px;
+
+}
+
+
+.stat-value {
+
+  color: #262b3a;
+
+  font-size: 23px;
+
+}
+
+
+.stat-value small {
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  color: #7b8190;
+
+}
+
+
+/* =========================================================
+   QUESTIONS CONTAINER
+========================================================= */
+
+.questions-container {
+
+  border-radius: 22px;
+
+  background:
+    rgba(255,255,255,.55);
+
+  border:
+    1px solid rgba(255,255,255,.78);
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  box-shadow:
+    0 10px 35px rgba(45,55,90,.08);
+
+  overflow: hidden;
+
+}
+
+
+.questions-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 22px 25px;
+
+  border-bottom:
+    1px solid rgba(100,110,130,.10);
+
+}
+
+
+.questions-header h3 {
+
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 750;
+
+  color: #292e3d;
+
+}
+
+
+.questions-header h3 i {
+
+  color: #3f52fb;
+
+  margin-right: 8px;
+
+}
+
+
+.questions-header p {
+
+  margin: 5px 0 0;
+
+  color: #7b8190;
+
+  font-size: 13px;
+
+}
+
+
+.question-count {
+
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(63,82,251,.10);
+
+  color:
+    #3f52fb;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+
+/* =========================================================
+   QUESTION LIST
+========================================================= */
+
+.questions-list {
+
+  padding: 20px;
+
+}
+
+
+.question-card {
+
+  margin-bottom: 18px;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255,255,255,.70);
+
+  border:
+    1px solid rgba(255,255,255,.85);
+
+  box-shadow:
+    0 5px 20px rgba(45,55,90,.06);
+
+  transition: all .2s ease;
+
+}
+
+
+.question-card:last-child {
+
+  margin-bottom: 0;
+
+}
+
+
+.question-card:hover {
+
+  box-shadow:
+    0 10px 30px rgba(45,55,90,.10);
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+/* =========================================================
+   QUESTION TOP
+========================================================= */
+
+.question-top {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 16px;
+
+  padding: 20px;
+
+}
+
+
+.question-number {
+
+  min-width: 48px;
+
+  height: 48px;
+
+  border-radius: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3f52fb,
+      #7c3aed
+    );
+
+  color: white;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 15px rgba(63,82,251,.20);
+
+}
+
+
+.question-content {
+
+  flex: 1;
+
+  min-width: 0;
+
+}
+
+
+.question-meta {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 8px;
+
+}
+
+
+.position-badge,
+.marks-badge {
+
+  padding: 5px 9px;
+
+  border-radius: 8px;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+}
+
+
+.position-badge {
+
+  color: #697080;
+
+  background:
+    rgba(100,110,130,.08);
+
+}
+
+
+.marks-badge {
+
+  color: #b77900;
+
+  background:
+    rgba(245,158,11,.11);
+
+}
+
+
+.position-badge i,
+.marks-badge i {
+
+  margin-right: 4px;
+
+}
+
+
+.question-text {
+
+  margin: 0;
+
+  color: #292e3d;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.question-actions {
+
+  display: flex;
+
+  gap: 7px;
+
+}
+
+
+.action-btn {
+
+  width: 36px;
+
+  height: 36px;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid transparent;
+
+  background: rgba(255,255,255,.65);
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: all .18s ease;
+
+}
+
+
+.action-btn.view {
+
+  color: #3f52fb;
+
+  border-color:
+    rgba(63,82,251,.14);
+
+}
+
+
+.action-btn.edit {
+
+  color: #d99100;
+
+  border-color:
+    rgba(245,158,11,.16);
+
+}
+
+
+.action-btn.delete {
+
+  color: #dc3545;
+
+  border-color:
+    rgba(220,53,69,.14);
+
+}
+
+
+.action-btn:hover {
+
+  transform: translateY(-2px);
+
+  background: white;
+
+  box-shadow:
+    0 5px 12px rgba(40,50,80,.09);
+
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options-area {
+
+  padding:
+    0 20px 18px 84px;
+
+}
+
+
+.options-title {
+
+  color: #72798a;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+
+  margin-bottom: 10px;
+
+}
+
+
+.options-title i {
+
+  color: #3f52fb;
+
+  margin-right: 5px;
+
+}
+
+
+.options-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 10px;
+
+}
+
+
+.answer-option {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(245,247,252,.78);
+
+  border:
+    1px solid rgba(100,110,130,.09);
+
+}
+
+
+.answer-option.correct {
+
+  background:
+    rgba(25,135,84,.07);
+
+  border-color:
+    rgba(25,135,84,.25);
+
+}
+
+
+.option-letter {
+
+  width: 30px;
+
+  height: 30px;
+
+  min-width: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background:
+    rgba(63,82,251,.10);
+
+  color:
+    #3f52fb;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+}
+
+
+.answer-option.correct .option-letter {
+
+  background:
+    rgba(25,135,84,.14);
+
+  color:
+    #198754;
+
+}
+
+
+.option-text {
+
+  flex: 1;
+
+  min-width: 0;
+
+  color: #424858;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  word-break: break-word;
+
+}
+
+
+.correct-badge {
+
+  color: #198754;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+}
+
+
+.incorrect-badge {
+
+  color: #999fad;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   QUESTION FOOTER
+========================================================= */
+
+.question-footer {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  padding:
+    11px 20px;
+
+  background:
+    rgba(248,249,252,.72);
+
+  border-top:
+    1px solid rgba(100,110,130,.08);
+
+  color: #858b9a;
+
+  font-size: 11px;
+
+}
+
+
+.question-footer i {
+
+  margin-right: 4px;
+
+  color: #3f52fb;
+
+}
+
+
+/* =========================================================
+   NO OPTIONS
+========================================================= */
+
+.no-options {
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(245,158,11,.08);
+
+  color: #9a7000;
+
+  font-size: 13px;
+
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+
+  text-align: center;
+
+  padding: 70px 30px;
+
+  border-radius: 22px;
+
+  background:
+    rgba(255,255,255,.60);
+
+  border:
+    1px solid rgba(255,255,255,.80);
+
+  backdrop-filter:
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
+
+  box-shadow:
+    0 10px 35px rgba(45,55,90,.07);
+
+}
+
+
+.empty-icon {
+
+  width: 85px;
+
+  height: 85px;
+
+  margin:
+    0 auto 20px;
+
+  border-radius: 25px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(63,82,251,.10);
+
+  color:
+    #3f52fb;
+
+  font-size: 34px;
+
+}
+
+
+.empty-state h3 {
+
+  color: #292e3d;
+
+  font-weight: 750;
+
+}
+
+
+.empty-state p {
+
+  max-width: 500px;
+
+  margin:
+    8px auto 25px;
+
+  color: #7b8190;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .stats-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .admin-questions-page {
+
+    padding: 18px;
+
+  }
+
+
+  .page-header {
+
+    flex-direction: column;
+
+  }
+
+
+  .header-actions {
+
+    width: 100%;
+
+  }
+
+
+  .btn-glass {
+
+    flex: 1;
+
+    justify-content: center;
+
+  }
+
+
+  .stats-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .question-top {
+
+    flex-wrap: wrap;
+
+  }
+
+
+  .question-actions {
+
+    width: 100%;
+
+    justify-content: flex-end;
+
+  }
+
+
+  .options-area {
+
+    padding-left: 20px;
+
+  }
+
+
+  .options-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .page-title {
+
+    font-size: 24px;
+
+  }
+
+
+  .questions-header {
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    flex-direction: column;
+
+  }
+
+
+  .question-top {
+
+    padding: 15px;
+
+  }
+
+
+  .question-number {
+
+    min-width: 42px;
+
+    height: 42px;
+
+  }
+
+
+  .question-text {
+
+    font-size: 15px;
+
+  }
+
+}
+
+</style>

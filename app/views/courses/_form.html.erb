@@ -1,100 +1,174 @@
-
 <%= form_with model: course do |f| %>
 
-  <!-- All form fields -->
-
+  <!-- Course Name -->
   <div class="mb-3">
     <%= f.label :Course_name, "Course Name" %>
     <%= f.text_field :Course_name, class: "form-control" %>
   </div>
 
+  <!-- Duration -->
   <div class="mb-3">
     <%= f.label :duration %>
     <%= f.text_field :duration, class: "form-control" %>
   </div>
 
-  <div class="mb-3">
-    <%= f.label :fee, "Fee" %>
-    <%= f.number_field :fee, class: "form-control" %>
-  </div>
-
+  <!-- Original Fee -->
   <div class="mb-3">
     <%= f.label :original_fee, "Original Fee" %>
-    <%= f.number_field :original_fee, class: "form-control" %>
+    <%= f.number_field :original_fee,
+        class: "form-control",
+        id: "original_fee",
+        min: 0,
+        step: 1 %>
   </div>
 
+  <!-- Final Fee -->
+  <div class="mb-3">
+    <%= f.label :fee, "Final Fee" %>
+    <%= f.number_field :fee,
+        class: "form-control",
+        id: "final_fee",
+        min: 0,
+        step: 1 %>
+  </div>
+
+  <!-- Discount Percentage -->
   <div class="mb-3">
     <%= f.label :discount_percentage, "Discount Percentage (%)" %>
-    <%= f.number_field :discount_percentage, class: "form-control" %>
+
+    <%= f.number_field :discount_percentage,
+        class: "form-control",
+        id: "discount_percentage",
+        readonly: true,
+        step: 0.01 %>
+
+    <small class="text-muted">
+      Automatically calculated from Original Fee and Final Fee.
+    </small>
   </div>
- <div class="mb-3">
-  <%= f.label :description, class: "form-label" %>
 
-  <%= f.text_area :description,
-      class: "form-control",
-      rows: 5 %>
-</div>
-
-
+  <!-- Description -->
   <div class="mb-3">
-  <%= f.label :learning_outcomes, "What You'll Learn" %>
+    <%= f.label :description, class: "form-label" %>
 
-  <%= f.text_area :learning_outcomes,
-      class: "form-control",
-      rows: 6,
-      placeholder: "Enter one learning outcome per line" %>
+    <%= f.text_area :description,
+        class: "form-control",
+        rows: 5 %>
+  </div>
 
-  <small class="text-muted">
-    Example:
-    Ancient Indian History
-    Modern Indian History
-    Indian Constitution
-  </small>
-</div>
+  <!-- Learning Outcomes -->
+  <div class="mb-3">
+    <%= f.label :learning_outcomes, "What You'll Learn" %>
 
-<div class="mb-3">
-  <%= f.label :requirements, "Requirements" %>
+    <%= f.text_area :learning_outcomes,
+        class: "form-control",
+        rows: 6,
+        placeholder: "Enter one learning outcome per line" %>
 
-  <%= f.text_area :requirements,
-      class: "form-control",
-      rows: 4,
-      placeholder: "Enter one requirement per line" %>
+    <small class="text-muted">
+      Example:<br>
+      Ancient Indian History<br>
+      Modern Indian History<br>
+      Indian Constitution
+    </small>
+  </div>
 
-  <small class="text-muted">
-    Example:
-    Basic knowledge of History
-    Notebook & Pen
-    Internet Connection
-  </small>
-</div>
+  <!-- Requirements -->
+  <div class="mb-3">
+    <%= f.label :requirements, "Requirements" %>
 
-<div class="mb-3">
-  <%= f.label :teacher_id, "Teacher" %>
+    <%= f.text_area :requirements,
+        class: "form-control",
+        rows: 4,
+        placeholder: "Enter one requirement per line" %>
 
-  <%= f.collection_select :teacher_id,
-                          Teacher.all,
-                          :id,
-                          :name,
-                          { prompt: "Select Teacher" },
-                          { class: "form-select" } %>
-</div>
+    <small class="text-muted">
+      Example:<br>
+      Basic knowledge of History<br>
+      Notebook & Pen<br>
+      Internet Connection
+    </small>
+  </div>
 
+  <!-- Teacher -->
+  <div class="mb-3">
+    <%= f.label :teacher_id, "Teacher" %>
+
+    <%= f.collection_select :teacher_id,
+                            Teacher.all,
+                            :id,
+                            :name,
+                            { prompt: "Select Teacher" },
+                            { class: "form-select" } %>
+  </div>
+
+  <!-- Status -->
   <div class="mb-3">
     <%= f.label :status %>
+
     <%= f.select :status,
         ["Active", "Inactive"],
         {},
         class: "form-select" %>
   </div>
 
+  <!-- Buttons -->
   <div class="d-flex justify-content-end">
-    <%= link_to "Cancel", courses_path, class: "btn btn-secondary me-2" %>
+    <%= link_to "Cancel",
+        courses_path,
+        class: "btn btn-secondary me-2" %>
+
     <%= f.submit class: "btn btn-primary" %>
   </div>
 
 <% end %>
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
 
+    const originalFee = document.getElementById("original_fee");
+    const finalFee = document.getElementById("final_fee");
+    const discountPercentage = document.getElementById("discount_percentage");
 
+    function calculateDiscount() {
 
+      const original = parseFloat(originalFee.value);
+      const final = parseFloat(finalFee.value);
+
+      if (
+        !isNaN(original) &&
+        !isNaN(final) &&
+        original > 0 &&
+        final >= 0
+      ) {
+
+        let discount = ((original - final) / original) * 100;
+
+        // Prevent negative discount
+        if (discount < 0) {
+          discount = 0;
+        }
+
+        // Prevent discount above 100%
+        if (discount > 100) {
+          discount = 100;
+        }
+
+        discountPercentage.value = discount.toFixed(2);
+
+      } else {
+
+        discountPercentage.value = "";
+
+      }
+    }
+
+    originalFee.addEventListener("input", calculateDiscount);
+    finalFee.addEventListener("input", calculateDiscount);
+
+    // Calculate automatically when editing an existing course
+    calculateDiscount();
+
+  });
+</script>

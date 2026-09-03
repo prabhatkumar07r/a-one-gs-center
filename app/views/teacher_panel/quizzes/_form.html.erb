@@ -1,0 +1,335 @@
+<div class="card border-0 shadow-sm rounded-4">
+  <div class="card-body p-4">
+
+    <div class="mb-4">
+      <h3 class="fw-bold mb-1">
+        <%= @quiz.new_record? ? "➕ Create Quiz" : "✏️ Edit Quiz" %>
+      </h3>
+
+      <p class="text-muted mb-0">
+        Create a quiz for this course or for a specific video.
+      </p>
+    </div>
+
+    <%= form_with model: [:teacher, @course, @quiz] do |f| %>
+
+      <% if @quiz.errors.any? %>
+        <div class="alert alert-danger">
+          <h6 class="fw-bold">
+            Please fix the following errors:
+          </h6>
+
+          <ul class="mb-0">
+            <% @quiz.errors.full_messages.each do |error| %>
+              <li><%= error %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+
+      <!-- Course -->
+      <div class="mb-4">
+
+        <label class="form-label fw-bold">
+          Course
+        </label>
+
+        <div class="form-control bg-light">
+          🎓 <%= @course.Course_name %>
+        </div>
+
+      </div>
+
+
+      <!-- Quiz Type -->
+      <div class="mb-4">
+
+        <label class="form-label fw-bold">
+          Quiz Type
+        </label>
+
+        <div class="row g-3">
+
+          <!-- Course Quiz -->
+          <div class="col-md-6">
+
+            <label class="quiz-type-card w-100">
+
+              <%= radio_button_tag :quiz_type,
+                  "course",
+                  @quiz.video_id.blank?,
+                  id: "course_quiz",
+                  class: "quiz-type-radio" %>
+
+              <div class="quiz-type-content">
+
+                <div class="fs-2">
+                  🎓
+                </div>
+
+                <h5 class="fw-bold mb-1">
+                  Course Quiz
+                </h5>
+
+                <small class="text-muted">
+                  Quiz for the complete course
+                </small>
+
+              </div>
+
+            </label>
+
+          </div>
+
+
+          <!-- Video Quiz -->
+          <div class="col-md-6">
+
+            <label class="quiz-type-card w-100">
+
+              <%= radio_button_tag :quiz_type,
+                  "video",
+                  @quiz.video_id.present?,
+                  id: "video_quiz",
+                  class: "quiz-type-radio" %>
+
+              <div class="quiz-type-content">
+
+                <div class="fs-2">
+                  🎥
+                </div>
+
+                <h5 class="fw-bold mb-1">
+                  Video Quiz
+                </h5>
+
+                <small class="text-muted">
+                  Quiz for a specific lesson
+                </small>
+
+              </div>
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Video Selection -->
+
+      <div class="mb-4"
+           id="video-selection"
+           style="<%= @quiz.video_id.present? ? '' : 'display:none;' %>">
+
+        <%= f.label :video_id,
+            "Select Video",
+            class: "form-label fw-bold" %>
+
+        <%= f.collection_select :video_id,
+            @course.videos.order(:position),
+            :id,
+            :title,
+            {
+              include_blank: "Select a video"
+            },
+            {
+              class: "form-select",
+              id: "quiz_video_id"
+            } %>
+
+      </div>
+
+
+      <!-- Quiz Title -->
+
+      <div class="mb-4">
+
+        <%= f.label :title,
+            "Quiz Title",
+            class: "form-label fw-bold" %>
+
+        <%= f.text_field :title,
+            class: "form-control form-control-lg",
+            placeholder: "Example: Introduction to Java Quiz",
+            required: true %>
+
+      </div>
+
+
+      <!-- Description -->
+
+      <div class="mb-4">
+
+        <%= f.label :description,
+            class: "form-label fw-bold" %>
+
+        <%= f.text_area :description,
+            rows: 4,
+            class: "form-control",
+            placeholder: "Enter quiz instructions or description..." %>
+
+      </div>
+
+
+      <!-- Quiz Settings -->
+
+      <div class="row">
+
+        <div class="col-md-4 mb-3">
+
+          <%= f.label :time_limit,
+              "Time Limit (minutes)",
+              class: "form-label fw-bold" %>
+
+          <%= f.number_field :time_limit,
+              min: 1,
+              class: "form-control",
+              placeholder: "30" %>
+
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+
+          <%= f.label :passing_percentage,
+              "Passing Percentage",
+              class: "form-label fw-bold" %>
+
+          <%= f.number_field :passing_percentage,
+              min: 0,
+              max: 100,
+              class: "form-control",
+              placeholder: "40" %>
+
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+
+          <%= f.label :status,
+              class: "form-label fw-bold" %>
+
+          <%= f.select :status,
+              [
+                ["Active", "Active"],
+                ["Inactive", "Inactive"]
+              ],
+              {},
+              class: "form-select" %>
+
+        </div>
+
+      </div>
+
+
+      <!-- Buttons -->
+
+      <div class="d-flex gap-2 mt-4">
+
+        <%= f.submit "💾 Save Quiz",
+            class: "btn btn-primary btn-lg px-4" %>
+
+        <%= link_to "Cancel",
+            teacher_course_quizzes_path(@course),
+            class: "btn btn-outline-secondary btn-lg" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
+
+
+<style>
+
+.quiz-type-card {
+  display: block;
+  cursor: pointer;
+}
+
+.quiz-type-radio {
+  display: none;
+}
+
+.quiz-type-content {
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  transition: all .2s ease;
+  background: #fff;
+}
+
+.quiz-type-card:hover .quiz-type-content {
+  border-color: #3f52fb;
+  transform: translateY(-2px);
+}
+
+.quiz-type-radio:checked + .quiz-type-content {
+  border-color: #3f52fb;
+  background: rgba(63, 82, 251, .08);
+  box-shadow: 0 8px 25px rgba(63, 82, 251, .12);
+}
+
+</style>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const courseQuiz =
+    document.getElementById("course_quiz");
+
+  const videoQuiz =
+    document.getElementById("video_quiz");
+
+  const videoSelection =
+    document.getElementById("video-selection");
+
+  const videoSelect =
+    document.getElementById("quiz_video_id");
+
+
+  function updateQuizType() {
+
+    if (videoQuiz.checked) {
+
+      videoSelection.style.display = "block";
+
+      videoSelect.required = true;
+
+    } else {
+
+      videoSelection.style.display = "none";
+
+      videoSelect.required = false;
+
+      videoSelect.value = "";
+
+    }
+
+  }
+
+
+  courseQuiz.addEventListener(
+    "change",
+    updateQuizType
+  );
+
+  videoQuiz.addEventListener(
+    "change",
+    updateQuizType
+  );
+
+
+  updateQuizType();
+
+});
+
+</script>

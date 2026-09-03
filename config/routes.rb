@@ -13,18 +13,67 @@ Rails.application.routes.draw do
   get "/sample/homepage",
       to: "sample#homepage"
 
+
+  # ==================================================
+  # TEST SERIES - PUBLIC
+  # ==================================================
+
+  resources :test_series,
+            only: [:index, :show]
+
+
+  # ==================================================
+  # TEST SERIES PURCHASE
+  # ==================================================
+
+  post "/test_series/:test_series_id/purchase",
+       to: "test_series_purchases#create",
+       as: :purchase_test_series
+
+
+  # ==================================================
+  # TEST SERIES PAYMENT
+  # ==================================================
+
+  get "/test_series_purchases/:id/payment",
+      to: "test_series_purchases#payment",
+      as: :test_series_payment
+
+  post "/test_series_purchases/:id/verify",
+       to: "test_series_purchases#verify",
+       as: :verify_test_series_payment
+
+  get "/test_series_purchases/:id/payment/success",
+      to: "test_series_purchases#success",
+      as: :test_series_payment_success
+
+  get "/test_series_purchases/:id/payment/failed",
+      to: "test_series_purchases#failed",
+      as: :test_series_payment_failed
+
+
+  # ==================================================
+  # EVENTS
+  # ==================================================
+
   resources :events
 
 
   # ==================================================
-  # AUTHENTICATION (DEVISE)
+  # AUTHENTICATION - DEVISE
   # ==================================================
 
-  devise_for :users, controllers: {
-    sessions: "users/sessions",
-    registrations: "users/registrations",
-    omniauth_callbacks: "users/omniauth_callbacks"
-  }
+  devise_for :users,
+             controllers: {
+               sessions: "users/sessions",
+               registrations: "users/registrations",
+               omniauth_callbacks: "users/omniauth_callbacks"
+             }
+
+
+  # ==================================================
+  # DEBUG / STORAGE / CLOUDINARY
+  # ==================================================
 
   get "/debug_env",
       to: "sample#debug_env"
@@ -62,13 +111,39 @@ Rails.application.routes.draw do
 
   namespace :admin do
 
-    # ================= ADMIN PROFILE =================
+    # ==================================================
+    # ADMIN TEST SERIES
+    # ==================================================
+
+    resources :test_series do
+
+      resources :test_series_tests,
+                as: :tests do
+
+        resources :test_series_questions,
+                  as: :questions do
+
+          resources :test_series_options,
+                    as: :options
+
+        end
+
+      end
+
+    end
+
+
+    # ==================================================
+    # ADMIN PROFILE
+    # ==================================================
 
     resource :profile,
              only: [:show, :edit, :update]
 
 
-    # ================= ADMIN SETTINGS =================
+    # ==================================================
+    # ADMIN SETTINGS
+    # ==================================================
 
     get "settings",
         to: "settings#index"
@@ -102,19 +177,30 @@ Rails.application.routes.draw do
           as: :update_settings_password
 
 
-    # ================= ADMIN COURSES =================
+    # ==================================================
+    # ADMIN COURSES
+    # ==================================================
 
     resources :courses do
+
+      resources :quizzes do
+        resources :questions
+      end
 
       resources :playlists do
         resources :videos
         resources :course_resources
       end
 
+      resources :students,
+                only: [:index]
+
     end
 
 
-    # ================= ADMIN ENROLLMENTS =================
+    # ==================================================
+    # ADMIN ENROLLMENTS
+    # ==================================================
 
     resources :enrollments
 
@@ -128,6 +214,34 @@ Rails.application.routes.draw do
   get "/courses/:id/details",
       to: "courses#details",
       as: :course_details
+
+  post "/courses/:id/enroll_free",
+       to: "courses#enroll_free",
+       as: :enroll_free_course
+
+
+  # ==================================================
+  # STUDENT QUIZ
+  # ==================================================
+
+  resources :courses,
+            only: [] do
+
+    resources :quizzes,
+              only: [:index, :show] do
+
+      member do
+        post :start
+        post :submit
+      end
+
+      get "attempts/:attempt_id/result",
+          to: "quizzes#result",
+          as: :result
+
+    end
+
+  end
 
 
   # ==================================================
@@ -157,12 +271,16 @@ Rails.application.routes.draw do
 
   namespace :student do
 
-    # ================= STUDENT ENROLLMENTS =================
+    # ==================================================
+    # STUDENT ENROLLMENTS
+    # ==================================================
 
     resources :enrollments
 
 
-    # ================= STUDENT PROFILE =================
+    # ==================================================
+    # STUDENT PROFILE
+    # ==================================================
 
     get "profile",
         to: "profile#show",
@@ -210,11 +328,43 @@ Rails.application.routes.draw do
 
 
   # ==================================================
+  # STUDENT TEST SERIES
+  # ==================================================
+
+  resources :test_series,
+            only: [] do
+
+    resources :test_series_tests,
+              only: [:show],
+              controller: "test_series_tests" do
+
+      member do
+        post :answer
+        post :finish
+      end
+
+      resources :results,
+                controller: "test_series_results",
+                only: [:show]
+
+    end
+
+  end
+
+
+  # ==================================================
   # STUDY NOTES
   # ==================================================
 
   resources :study_notes,
-            only: [:index, :new, :create, :edit, :update, :destroy] do
+            only: [
+              :index,
+              :new,
+              :create,
+              :edit,
+              :update,
+              :destroy
+            ] do
 
     collection do
       get :playlists
@@ -227,82 +377,136 @@ Rails.application.routes.draw do
 
   end
 
-# ==================================================
-# TEACHER PANEL
-# ==================================================
-
-namespace :teacher_panel do
 
   # ==================================================
-  # TEACHER PROFILE
+  # TEACHER PANEL
   # ==================================================
 
-  resource :profile,
-           only: [:show, :edit, :update],
-           controller: "profile"
+  namespace :teacher_panel do
+
+    # ==================================================
+    # TEACHER PROFILE
+    # ==================================================
+
+    resource :profile,
+             only: [:show, :edit, :update],
+             controller: "profile"
 
 
-  # ==================================================
-  # TEACHER COURSES
-  # ==================================================
+    # ==================================================
+    # TEACHER COURSES
+    # ==================================================
 
-  resources :courses,
-            only: [:index, :show] do
+    resources :courses,
+              only: [:index, :show] do
 
-    # ================= STUDENTS =================
+      # ==================================================
+      # QUIZZES
+      # ==================================================
 
-    resources :students,
-              only: [:index]
-
-
-    # ================= VIDEOS =================
-
-    resources :videos
+      resources :quizzes do
+        resources :questions
+      end
 
 
-    # ================= PLAYLISTS =================
+      # ==================================================
+      # STUDENTS
+      # ==================================================
 
-    resources :playlists
-
-
-    # ================= RESOURCES =================
-
-    resources :resources
+      resources :students,
+                only: [:index]
 
 
-    # ================= ATTENDANCE =================
+      # ==================================================
+      # VIDEOS
+      # ==================================================
 
-   resources :attendances,
-              only: [
-                :index,
-                :new,
-                :create,
-                :show,
-                :edit,
-                :update,
-                :destroy
-              ]
+      resources :videos
+
+
+      # ==================================================
+      # PLAYLISTS
+      # ==================================================
+
+      resources :playlists
+
+
+      # ==================================================
+      # RESOURCES
+      # ==================================================
+
+      resources :resources
+
+
+      # ==================================================
+      # ATTENDANCE
+      # ==================================================
+
+      resources :attendances,
+                only: [
+                  :index,
+                  :new,
+                  :create,
+                  :show,
+                  :edit,
+                  :update,
+                  :destroy
+                ]
+
+    end
+
+
+    # ==================================================
+    # TEACHER TEST SERIES
+    # ==================================================
+
+    resources :test_series do
+
+      # ==================================================
+      # TESTS
+      # ==================================================
+
+      resources :test_series_tests,
+                as: :tests do
+
+        # ==================================================
+        # QUESTIONS
+        # ==================================================
+
+        resources :test_series_questions,
+                  as: :questions do
+
+          # ==================================================
+          # OPTIONS
+          # ==================================================
+
+          resources :test_series_options,
+                    as: :options
+
+        end
+
+      end
+
+    end
 
   end
 
-end
 
+  # ==================================================
+  # COURSE ATTENDANCE
+  # ==================================================
 
-# ==================================================
-# COURSE ATTENDANCE
-# ==================================================
+  get "/courses/:course_id/attendances",
+      to: "attendances#index",
+      as: :course_attendances
 
-get "/courses/:course_id/attendances",
-    to: "attendances#index",
-    as: :course_attendances
+  get "/courses/:course_id/attendances/new",
+      to: "attendances#new",
+      as: :new_course_attendance
 
-get "/courses/:course_id/attendances/new",
-    to: "attendances#new",
-    as: :new_course_attendance
-
-post "/courses/:course_id/attendances",
-     to: "attendances#create",
-     as: :create_course_attendance
+  post "/courses/:course_id/attendances",
+       to: "attendances#create",
+       as: :create_course_attendance
 
 
   # ==================================================
@@ -331,7 +535,7 @@ post "/courses/:course_id/attendances",
 
 
   # ==================================================
-  # PAYMENTS / RAZORPAY
+  # COURSE PAYMENTS / RAZORPAY
   # ==================================================
 
   get "/payments/:id",
@@ -395,7 +599,12 @@ post "/courses/:course_id/attendances",
   # ==================================================
 
   resources :password_resets,
-            only: [:new, :create, :edit, :update]
+            only: [
+              :new,
+              :create,
+              :edit,
+              :update
+            ]
 
 
   # ==================================================

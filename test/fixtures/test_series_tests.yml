@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  test_series: one
+  title: MyString
+  description: MyText
+  test_number: 1
+  duration: 1
+  total_questions: 1
+  total_marks: 9.99
+  status: MyString
+
+two:
+  test_series: two
+  title: MyString
+  description: MyText
+  test_number: 1
+  duration: 1
+  total_questions: 1
+  total_marks: 9.99
+  status: MyString

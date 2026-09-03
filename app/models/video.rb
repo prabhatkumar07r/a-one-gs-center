@@ -1,6 +1,7 @@
 class Video < ApplicationRecord
   belongs_to :course
   belongs_to :playlist
+  has_many :quizzes, dependent: :destroy
 
   has_many :notes, dependent: :destroy
 

@@ -1,0 +1,33 @@
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= link_to @test_series.title,
+                    admin_test_series_path(@test_series) %>
+        /
+        <%= link_to @test.title,
+                    admin_test_series_test_path(
+                      @test_series,
+                      @test
+                    ) %>
+        /
+        New Question
+      </div>
+
+      <h1>Add Question</h1>
+
+      <p>
+        Create a new question for
+        <strong><%= @test.title %></strong>.
+      </p>
+
+    </div>
+
+  </div>
+
+  <%= render "form" %>
+
+</div>

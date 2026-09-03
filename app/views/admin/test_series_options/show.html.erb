@@ -1,0 +1,351 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — OPTION SHOW PAGE
+   ========================================================= */
+
+.admin-ts-page {
+  width: 100%;
+  padding: 28px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.admin-ts-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.admin-ts-breadcrumb {
+  margin-bottom: 8px;
+  color: #7c83a1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin-ts-header h1 {
+  margin: 0;
+  color: #181827;
+  font-size: 28px;
+  font-weight: 750;
+}
+
+.admin-ts-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   OPTION CARD
+   ========================================================= */
+
+.admin-ts-page > .admin-ts-option-large {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+
+  width: 100%;
+  max-width: 900px;
+
+  padding: 20px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+
+  box-shadow: 0 5px 18px rgba(25, 25, 50, 0.05);
+}
+
+/* =========================================================
+   OPTION POSITION
+   ========================================================= */
+
+.admin-ts-page > .admin-ts-option-large
+  .admin-ts-option-letter {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: #4f46e5;
+  background: #f1f0ff;
+  border: 1px solid #ddd9ff;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+/* =========================================================
+   OPTION CONTENT
+   ========================================================= */
+
+.admin-ts-page > .admin-ts-option-large
+  .admin-ts-option-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.admin-ts-page > .admin-ts-option-large
+  .admin-ts-option-content strong {
+  color: #202033;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+.admin-ts-page > .admin-ts-option-large
+  .admin-ts-option-content span {
+  color: #777e92;
+  font-size: 13px;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   CORRECT ANSWER
+   ========================================================= */
+
+.admin-ts-page > .admin-ts-option-large.correct {
+  background: #fbfffc;
+  border-color: #b7e4c7;
+}
+
+.admin-ts-page > .admin-ts-option-large.correct
+  .admin-ts-option-letter {
+  color: #15803d;
+  background: #ecfdf3;
+  border-color: #bbf7d0;
+}
+
+.admin-ts-page > .admin-ts-option-large
+  .admin-ts-correct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 30px;
+  padding: 6px 11px;
+
+  border-radius: 20px;
+
+  color: #15803d;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   INCORRECT ANSWER
+   ========================================================= */
+
+.admin-ts-page > .admin-ts-option-large
+  .admin-ts-option-content + span:not(.admin-ts-correct) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 30px;
+  padding: 6px 11px;
+
+  border-radius: 20px;
+
+  color: #6b7280;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 750px) {
+
+  .admin-ts-page {
+    padding: 20px;
+  }
+
+  .admin-ts-header {
+    flex-direction: column;
+  }
+
+  .admin-ts-header-actions {
+    width: 100%;
+  }
+
+  .admin-ts-header-actions .admin-ts-btn {
+    flex: 1;
+  }
+
+  .admin-ts-page > .admin-ts-option-large {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 13px;
+    padding: 16px;
+  }
+
+  .admin-ts-page > .admin-ts-option-large
+    .admin-ts-option-letter {
+    width: 44px;
+    height: 44px;
+  }
+
+  .admin-ts-page > .admin-ts-option-large
+    .admin-ts-correct,
+  .admin-ts-page > .admin-ts-option-large
+    .admin-ts-option-content + span:not(.admin-ts-correct) {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .admin-ts-page {
+    padding: 16px;
+  }
+
+  .admin-ts-header h1 {
+    font-size: 24px;
+  }
+
+  .admin-ts-header-actions {
+    flex-direction: column;
+  }
+
+  .admin-ts-header-actions .admin-ts-btn {
+    width: 100%;
+  }
+
+  .admin-ts-page > .admin-ts-option-large {
+    grid-template-columns: 40px minmax(0, 1fr);
+    padding: 14px;
+  }
+
+  .admin-ts-page > .admin-ts-option-large
+    .admin-ts-option-letter {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .admin-ts-page > .admin-ts-option-large
+    .admin-ts-option-content strong {
+    font-size: 14px;
+  }
+
+  .admin-ts-page > .admin-ts-option-large
+    .admin-ts-option-content span {
+    font-size: 12px;
+  }
+}
+</style>
+
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= @test_series.title %> /
+        <%= @test.title %> /
+        Question /
+        Option
+      </div>
+
+      <h1>Option</h1>
+
+    </div>
+
+    <div class="admin-ts-header-actions">
+
+      <%= link_to edit_admin_test_series_test_question_option_path(
+                    @test_series,
+                    @test,
+                    @question,
+                    @option
+                  ),
+                  class: "admin-ts-btn admin-ts-btn-primary" do %>
+        <i class="fas fa-edit"></i>
+        Edit
+      <% end %>
+
+      <%= link_to admin_test_series_test_question_path(
+                    @test_series,
+                    @test,
+                    @question
+                  ),
+                  class: "admin-ts-btn admin-ts-btn-light" do %>
+        Back
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <div class="
+    admin-ts-option-large
+    <%= "correct" if @option.is_correct? %>
+  ">
+
+    <div class="admin-ts-option-letter">
+      <%= @option.position %>
+    </div>
+
+    <div class="admin-ts-option-content">
+
+      <strong>
+        <%= @option.option_text %>
+      </strong>
+
+      <% if @option.option_text_hindi.present? %>
+
+        <span>
+          <%= @option.option_text_hindi %>
+        </span>
+
+      <% end %>
+
+    </div>
+
+    <% if @option.is_correct? %>
+
+      <span class="admin-ts-correct">
+        Correct Answer
+      </span>
+
+    <% else %>
+
+      <span>
+        Incorrect
+      </span>
+
+    <% end %>
+
+  </div>
+
+</div>

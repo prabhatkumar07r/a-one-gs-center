@@ -1,0 +1,434 @@
+<style>
+  .ts-test-page {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .ts-test-card {
+    background: #fff;
+    border: 1px solid #e7e1ff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(111, 66, 193, .08);
+    overflow: hidden;
+  }
+
+  .ts-test-header {
+    background: #f7f4ff;
+    padding: 24px;
+    border-bottom: 1px solid #e7e1ff;
+  }
+
+  .ts-test-header h3 {
+    margin: 0;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .ts-test-header p {
+    margin: 5px 0 0;
+    color: #777;
+  }
+
+  .ts-test-body {
+    padding: 28px;
+  }
+
+  .ts-form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 7px;
+  }
+
+  .ts-form-control,
+  .ts-form-select {
+    border-radius: 10px;
+    border: 1px solid #ddd6f7;
+    padding: 12px 14px;
+  }
+
+  .ts-form-control:focus,
+  .ts-form-select:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, .12);
+  }
+
+  .ts-description {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .ts-help {
+    color: #777;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  .ts-form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+    padding-top: 22px;
+  }
+
+  .btn-purple {
+    background: #6f42c1;
+    border-color: #6f42c1;
+    color: #fff;
+  }
+
+  .btn-purple:hover {
+    background: #5d35a8;
+    border-color: #5d35a8;
+    color: #fff;
+  }
+
+  .ts-error-box {
+    background: #fff1f1;
+    border: 1px solid #f0c5c5;
+    color: #a61b1b;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 22px;
+  }
+
+  .ts-status-box {
+    margin-top: 22px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #faf9ff;
+    border: 1px solid #e6e0fa;
+  }
+
+  .ts-status-box > strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .ts-info-value {
+    font-weight: 700;
+    color: #333;
+  }
+
+  @media (max-width: 600px) {
+
+    .ts-test-body {
+      padding: 18px;
+    }
+
+    .ts-form-actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .ts-form-actions a,
+    .ts-form-actions input,
+    .ts-form-actions button {
+      width: 100%;
+    }
+  }
+</style>
+
+
+<div class="ts-test-page">
+
+  <div class="ts-test-card">
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <div class="ts-test-header">
+
+      <h3>
+
+        <i class="fas fa-file-circle-question text-primary me-2"></i>
+
+        <%= @test_series_test.persisted? ? "Edit Test" : "Create Test" %>
+
+      </h3>
+
+      <p>
+
+        <%= @test_series_test.persisted? ?
+              "Update the test details and settings." :
+              "Create a new test inside this test series." %>
+
+      </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         BODY
+    ================================================== -->
+
+    <div class="ts-test-body">
+
+
+      <!-- ==================================================
+           ERRORS
+      ================================================== -->
+
+      <% if @test_series_test.errors.any? %>
+
+        <div class="ts-error-box">
+
+          <strong>
+            Please fix the following errors:
+          </strong>
+
+          <ul class="mb-0 mt-2">
+
+            <% @test_series_test.errors.full_messages.each do |message| %>
+
+              <li>
+                <%= message %>
+              </li>
+
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ==================================================
+           FORM
+      ================================================== -->
+
+      <%= form_with(
+            model: @test_series_test,
+            url: @test_series_test.persisted? ?
+              teacher_panel_test_series_test_path(
+                @test_series,
+                @test_series_test
+              ) :
+              teacher_panel_test_series_tests_path(
+                @test_series
+              ),
+            method: @test_series_test.persisted? ? :patch : :post,
+            local: true
+          ) do |form| %>
+
+
+        <!-- ==================================================
+             TITLE
+        ================================================== -->
+
+        <div class="mb-4">
+
+          <%= form.label :title,
+                "Test Title",
+                class: "ts-form-label" %>
+
+          <%= form.text_field :title,
+                class: "form-control ts-form-control",
+                placeholder: "Example: General Studies Mock Test 1" %>
+
+        </div>
+
+
+        <!-- ==================================================
+             DESCRIPTION
+        ================================================== -->
+
+        <div class="mb-4">
+
+          <%= form.label :description,
+                "Description",
+                class: "ts-form-label" %>
+
+          <%= form.text_area :description,
+                class: "form-control ts-form-control ts-description",
+                placeholder: "Enter a short description about this test..." %>
+
+        </div>
+
+
+        <!-- ==================================================
+             TEST NUMBER / DURATION / STATUS
+        ================================================== -->
+
+        <div class="row g-3">
+
+
+          <!-- TEST NUMBER -->
+
+          <div class="col-md-4">
+
+            <%= form.label :test_number,
+                  "Test Number",
+                  class: "ts-form-label" %>
+
+            <%= form.number_field :test_number,
+                  min: 1,
+                  class: "form-control ts-form-control",
+                  placeholder: "1" %>
+
+            <div class="ts-help">
+
+              Example: Test 1, Test 2, Test 3...
+
+            </div>
+
+          </div>
+
+
+          <!-- DURATION -->
+
+          <div class="col-md-4">
+
+            <%= form.label :duration,
+                  "Duration (Minutes)",
+                  class: "ts-form-label" %>
+
+            <%= form.number_field :duration,
+                  min: 1,
+                  class: "form-control ts-form-control",
+                  placeholder: "30" %>
+
+            <div class="ts-help">
+
+              Time allowed for completing this test.
+
+            </div>
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <div class="col-md-4">
+
+            <%= form.label :status,
+                  "Status",
+                  class: "ts-form-label" %>
+
+            <%= form.select :status,
+                  [
+                    ["Active", "Active"],
+                    ["Inactive", "Inactive"]
+                  ],
+                  {},
+                  class: "form-select ts-form-select" %>
+
+            <div class="ts-help">
+
+              Inactive tests won't be available to students.
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             CURRENT TEST INFORMATION
+        ================================================== -->
+
+        <% if @test_series_test.persisted? %>
+
+          <div class="ts-status-box">
+
+            <strong>
+
+              <i class="fas fa-chart-simple me-1"></i>
+
+              Current Test Information
+
+            </strong>
+
+
+            <div class="text-muted small">
+
+              Questions:
+
+              <strong class="d-inline ts-info-value">
+
+                <%= @test_series_test.test_series_questions.size %>
+
+              </strong>
+
+
+              &nbsp; • &nbsp;
+
+
+              Total Marks:
+
+              <strong class="d-inline ts-info-value">
+
+                <%= @test_series_test.calculated_total_marks.to_f %>
+
+              </strong>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+
+        <!-- ==================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="ts-form-actions">
+
+
+          <!-- CANCEL -->
+
+          <% if @test_series_test.persisted? %>
+
+            <%= link_to teacher_panel_test_series_test_path(
+                  @test_series,
+                  @test_series_test
+                ),
+                class: "btn btn-outline-secondary" do %>
+
+              <i class="fas fa-arrow-left me-1"></i>
+
+              Cancel
+
+            <% end %>
+
+          <% else %>
+
+            <%= link_to teacher_panel_test_series_path(@test_series),
+                class: "btn btn-outline-secondary" do %>
+
+              <i class="fas fa-arrow-left me-1"></i>
+
+              Cancel
+
+            <% end %>
+
+          <% end %>
+
+
+          <!-- SUBMIT -->
+
+          <%= form.submit(
+                @test_series_test.persisted? ?
+                  "Update Test" :
+                  "Create Test",
+                class: "btn btn-purple px-4"
+              ) %>
+
+
+        </div>
+
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

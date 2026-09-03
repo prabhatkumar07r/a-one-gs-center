@@ -1,0 +1,1300 @@
+<%
+  # ==========================================================
+  # FORM URL / METHOD
+  # ==========================================================
+
+  form_url =
+    if @question.persisted?
+      teacher_panel_test_series_test_question_path(
+        @test_series,
+        @test,
+        @question
+      )
+    else
+      teacher_panel_test_series_test_questions_path(
+        @test_series,
+        @test
+      )
+    end
+
+  form_method =
+    @question.persisted? ? :patch : :post
+%>
+
+
+<div class="question-form-wrapper">
+
+  <div class="question-form-card">
+
+    <%= form_with(
+          model: @question,
+          url: form_url,
+          method: form_method,
+          local: true,
+          id: "questionForm"
+        ) do |form| %>
+
+
+      <!-- =====================================================
+           VALIDATION ERRORS
+      ====================================================== -->
+
+      <% if @question.errors.any? %>
+
+        <div class="alert alert-danger mb-4">
+
+          <div class="fw-bold mb-2">
+            Please fix the following errors:
+          </div>
+
+          <ul class="mb-0">
+
+            <% @question.errors.full_messages.each do |message| %>
+
+              <li>
+                <%= message %>
+              </li>
+
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- =====================================================
+           QUESTION
+      ====================================================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+
+          <i class="fas fa-circle-question"></i>
+
+          Question
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+          <!-- =================================================
+               ENGLISH QUESTION
+          ================================================== -->
+
+          <div class="col-lg-6">
+
+            <%= form.label :question_text, class: "ts-label" do %>
+
+              Question (English)
+
+              <span class="required">*</span>
+
+            <% end %>
+
+
+            <%= form.text_area :question_text,
+                  rows: 5,
+                  class: "form-control ts-input",
+                  placeholder: "Enter question in English...",
+                  required: true %>
+
+          </div>
+
+
+          <!-- =================================================
+               HINDI QUESTION
+          ================================================== -->
+
+          <div class="col-lg-6">
+
+            <%= form.label :question_text_hindi,
+                  class: "ts-label" do %>
+
+              प्रश्न (हिंदी)
+
+            <% end %>
+
+
+            <%= form.text_area :question_text_hindi,
+                  rows: 5,
+                  class: "form-control ts-input hindi-input",
+                  placeholder: "हिंदी में प्रश्न लिखें..." %>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           EXPLANATION
+      ====================================================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+
+          <i class="fas fa-lightbulb"></i>
+
+          Explanation
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+          <!-- =================================================
+               ENGLISH EXPLANATION
+          ================================================== -->
+
+          <div class="col-lg-6">
+
+            <%= form.label :explanation,
+                  class: "ts-label" do %>
+
+              Explanation (English)
+
+            <% end %>
+
+
+            <%= form.text_area :explanation,
+                  rows: 4,
+                  class: "form-control ts-input",
+                  placeholder: "Explain the correct answer..." %>
+
+          </div>
+
+
+          <!-- =================================================
+               HINDI EXPLANATION
+          ================================================== -->
+
+          <div class="col-lg-6">
+
+            <%= form.label :explanation_hindi,
+                  class: "ts-label" do %>
+
+              व्याख्या (हिंदी)
+
+            <% end %>
+
+
+            <%= form.text_area :explanation_hindi,
+                  rows: 4,
+                  class: "form-control ts-input hindi-input",
+                  placeholder: "सही उत्तर की व्याख्या लिखें..." %>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           QUESTION SETTINGS
+      ====================================================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+
+          <i class="fas fa-sliders"></i>
+
+          Question Settings
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+          <!-- =================================================
+               QUESTION TYPE
+          ================================================== -->
+
+          <div class="col-md-4">
+
+            <%= form.label :question_type,
+                  "Question Type",
+                  class: "ts-label" %>
+
+
+            <%= form.select :question_type,
+
+                  [
+                    ["Multiple Choice", "multiple_choice"],
+                    ["Single Choice", "single_choice"]
+                  ],
+
+                  {},
+
+                  class: "form-select ts-input" %>
+
+          </div>
+
+
+          <!-- =================================================
+               MARKS
+          ================================================== -->
+
+          <div class="col-md-4">
+
+            <%= form.label :marks,
+                  "Marks",
+                  class: "ts-label" %>
+
+
+            <%= form.number_field :marks,
+                  min: 0,
+                  step: 0.5,
+                  class: "form-control ts-input",
+                  required: true %>
+
+          </div>
+
+
+          <!-- =================================================
+               POSITION
+          ================================================== -->
+
+          <div class="col-md-4">
+
+            <%= form.label :position,
+                  "Question Position",
+                  class: "ts-label" %>
+
+
+            <%= form.number_field :position,
+                  min: 1,
+                  step: 1,
+                  class: "form-control ts-input",
+                  required: true %>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           OPTIONS
+      ====================================================== -->
+
+      <div class="form-section">
+
+
+        <!-- ===================================================
+             OPTIONS HEADER
+        ==================================================== -->
+
+        <div class="section-title d-flex justify-content-between align-items-center">
+
+          <div>
+
+            <i class="fas fa-list-check"></i>
+
+            Answer Options
+
+          </div>
+
+
+          <button
+            type="button"
+            class="btn btn-primary add-option-btn"
+            id="addOptionBtn">
+
+            <i class="fas fa-plus me-1"></i>
+
+            Add Option
+
+          </button>
+
+        </div>
+
+
+        <!-- ===================================================
+             OPTIONS CONTAINER
+        ==================================================== -->
+
+        <div
+          id="optionsContainer"
+          data-next-index="<%= @question.test_series_options.size %>">
+
+
+          <%= form.fields_for :test_series_options do |option_form| %>
+
+            <% option = option_form.object %>
+
+            <% next unless option.present? %>
+
+
+            <!-- ===============================================
+                 OPTION CARD
+            ================================================= -->
+
+            <div
+              class="option-card"
+              data-option-row>
+
+
+              <!-- =============================================
+                   EXISTING OPTION ID
+              ============================================== -->
+
+              <%= option_form.hidden_field :id %>
+
+
+              <!-- =============================================
+                   DESTROY FLAG
+
+                   Existing option:
+                   0 = keep
+                   1 = delete
+              ============================================== -->
+
+              <%= option_form.hidden_field :_destroy,
+                    value: "0",
+                    class: "destroy-option-field" %>
+
+
+              <!-- =============================================
+                   POSITION
+              ============================================== -->
+
+              <%= option_form.hidden_field :position,
+                    class: "option-position-field" %>
+
+
+              <!-- =============================================
+                   CORRECT ANSWER
+              ============================================== -->
+
+              <%= option_form.hidden_field :is_correct,
+                    value: option.is_correct ? "true" : "false",
+                    class: "is-correct-field" %>
+
+
+              <!-- =============================================
+                   OPTION HEADER
+              ============================================== -->
+
+              <div class="option-header">
+
+
+                <div class="option-number">
+
+                  Option
+
+                  <span class="option-number-value">
+
+                    <%= option_form.index.to_i + 1 %>
+
+                  </span>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger remove-option-btn">
+
+                  <i class="fas fa-trash"></i>
+
+                </button>
+
+
+              </div>
+
+
+              <!-- =============================================
+                   OPTION FIELDS
+              ============================================== -->
+
+              <div class="row g-3">
+
+
+                <!-- ===========================================
+                     ENGLISH
+                ============================================ -->
+
+                <div class="col-lg-5">
+
+                  <%= option_form.label :option_text,
+                        "Option (English)",
+                        class: "ts-label" %>
+
+
+                  <%= option_form.text_field :option_text,
+                        class: "form-control ts-input",
+                        placeholder: "Enter option..." %>
+
+                </div>
+
+
+                <!-- ===========================================
+                     HINDI
+                ============================================ -->
+
+                <div class="col-lg-5">
+
+                  <%= option_form.label :option_text_hindi,
+                        "विकल्प (हिंदी)",
+                        class: "ts-label" %>
+
+
+                  <%= option_form.text_field :option_text_hindi,
+                        class: "form-control ts-input hindi-input",
+                        placeholder: "हिंदी में विकल्प..." %>
+
+                </div>
+
+
+                <!-- ===========================================
+                     CORRECT ANSWER
+                ============================================ -->
+
+                <div class="col-lg-2">
+
+
+                  <label class="ts-label">
+
+                    Correct Answer
+
+                  </label>
+
+
+                  <div class="correct-answer-wrapper">
+
+
+                    <label class="correct-radio-label">
+
+
+                      <input
+                        type="radio"
+                        name="correct_answer_selector"
+                        class="correct-answer-radio"
+                        value="<%= option_form.index %>"
+                        <%= "checked" if option.is_correct %>>
+
+
+                      <span>
+
+                        Correct
+
+                      </span>
+
+
+                    </label>
+
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          <% end %>
+
+
+        </div>
+
+
+        <!-- ===================================================
+             HELP TEXT
+        ==================================================== -->
+
+        <div class="option-help-text">
+
+          <i class="fas fa-circle-info me-1"></i>
+
+          Select exactly one correct answer.
+
+        </div>
+
+
+      </div>
+
+
+      <!-- =====================================================
+           ACTIONS
+      ====================================================== -->
+
+      <div class="form-actions">
+
+
+        <%= link_to(
+              teacher_panel_test_series_test_path(
+                @test_series,
+                @test
+              ),
+              class: "btn btn-light cancel-btn"
+            ) do %>
+
+
+          <i class="fas fa-arrow-left me-1"></i>
+
+          Cancel
+
+
+        <% end %>
+
+
+        <%= form.submit(
+              @question.persisted? ? "Update Question" : "Save Question",
+              class: "btn btn-primary save-question-btn",
+              id: "saveQuestionBtn"
+            ) %>
+
+
+      </div>
+
+
+    <% end %>
+
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     CSS
+============================================================= -->
+
+<style>
+
+.question-form-wrapper {
+  width: 100%;
+}
+
+.question-form-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.form-section {
+  padding: 25px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.form-section:first-child {
+  padding-top: 0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 22px;
+  color: #212529;
+}
+
+.section-title i {
+  margin-right: 8px;
+}
+
+.ts-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #343a40;
+}
+
+.required {
+  color: #dc3545;
+}
+
+.ts-input {
+  border-radius: 10px;
+  border: 1px solid #dfe3e8;
+  padding: 11px 13px;
+  transition: all 0.2s ease;
+}
+
+.ts-input:focus {
+  border-color: #6f42c1;
+  box-shadow: 0 0 0 3px rgba(111,66,193,0.1);
+}
+
+.hindi-input {
+  font-family: "Noto Sans Devanagari",
+               "Nirmala UI",
+               sans-serif;
+}
+
+.option-card {
+  background: #f8f9fa;
+  border: 1px solid #e4e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.option-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.option-number {
+  font-weight: 700;
+  color: #495057;
+}
+
+.add-option-btn {
+  border-radius: 9px;
+}
+
+.correct-answer-wrapper {
+  min-height: 43px;
+  display: flex;
+  align-items: center;
+}
+
+.correct-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.correct-answer-radio {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.option-help-text {
+  margin-top: 10px;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 25px;
+}
+
+.cancel-btn,
+.save-question-btn {
+  border-radius: 10px;
+  padding: 11px 20px;
+}
+
+.save-question-btn {
+  min-width: 160px;
+}
+
+@media (max-width: 768px) {
+
+  .question-form-card {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .cancel-btn,
+  .save-question-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+}
+
+</style>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+  /* ============================================================
+     ELEMENTS
+  ============================================================ */
+
+  const form =
+    document.getElementById("questionForm");
+
+
+  const optionsContainer =
+    document.getElementById("optionsContainer");
+
+
+  const addOptionBtn =
+    document.getElementById("addOptionBtn");
+
+
+  if (!form || !optionsContainer || !addOptionBtn) {
+    return;
+  }
+
+
+  /* ============================================================
+     GET ACTIVE OPTION ROWS
+  ============================================================ */
+
+  function getActiveRows() {
+
+    return Array.from(
+      optionsContainer.querySelectorAll("[data-option-row]")
+    ).filter(function (row) {
+
+      return row.style.display !== "none";
+
+    });
+
+  }
+
+
+  /* ============================================================
+     UPDATE OPTION NUMBERS / POSITIONS
+  ============================================================ */
+
+  function updateOptionNumbers() {
+
+    const rows =
+      getActiveRows();
+
+
+    rows.forEach(function (row, index) {
+
+
+      const number =
+        row.querySelector(".option-number-value");
+
+
+      const position =
+        row.querySelector(".option-position-field");
+
+
+      if (number) {
+
+        number.textContent =
+          index + 1;
+
+      }
+
+
+      if (position) {
+
+        position.value =
+          index + 1;
+
+      }
+
+    });
+
+  }
+
+
+  /* ============================================================
+     SET CORRECT ANSWER
+  ============================================================ */
+
+  function setCorrectAnswer(selectedRadio) {
+
+
+    const rows =
+      getActiveRows();
+
+
+    rows.forEach(function (row) {
+
+
+      const hidden =
+        row.querySelector(".is-correct-field");
+
+
+      const radio =
+        row.querySelector(".correct-answer-radio");
+
+
+      if (!hidden || !radio) {
+        return;
+      }
+
+
+      if (radio === selectedRadio) {
+
+        hidden.value = "true";
+
+      } else {
+
+        hidden.value = "false";
+
+        radio.checked = false;
+
+      }
+
+    });
+
+  }
+
+
+  /* ============================================================
+     RADIO EVENTS
+  ============================================================ */
+
+  optionsContainer.addEventListener(
+    "change",
+    function (event) {
+
+
+      if (
+        event.target.classList.contains(
+          "correct-answer-radio"
+        )
+      ) {
+
+        setCorrectAnswer(
+          event.target
+        );
+
+      }
+
+    }
+  );
+
+
+  /* ============================================================
+     REMOVE OPTION
+  ============================================================ */
+
+  optionsContainer.addEventListener(
+    "click",
+    function (event) {
+
+
+      const removeButton =
+        event.target.closest(
+          ".remove-option-btn"
+        );
+
+
+      if (!removeButton) {
+        return;
+      }
+
+
+      const rows =
+        getActiveRows();
+
+
+      /* --------------------------------------------------------
+         MINIMUM TWO OPTIONS
+      --------------------------------------------------------- */
+
+      if (rows.length <= 2) {
+
+        alert(
+          "At least two options are required."
+        );
+
+        return;
+
+      }
+
+
+      const row =
+        removeButton.closest(
+          "[data-option-row]"
+        );
+
+
+      if (!row) {
+        return;
+      }
+
+
+      /* --------------------------------------------------------
+         CHECK WHETHER DATABASE OPTION
+      --------------------------------------------------------- */
+
+      const idField =
+        row.querySelector(
+          'input[name*="[id]"]'
+        );
+
+
+      const destroyField =
+        row.querySelector(
+          'input[name*="_destroy"]'
+        );
+
+
+      if (
+        idField &&
+        idField.value &&
+        destroyField
+      ) {
+
+
+        /*
+         * Existing database option.
+         *
+         * Do NOT remove the DOM element.
+         *
+         * Mark it for destruction so Rails
+         * deletes the record during update.
+         */
+
+        destroyField.value = "1";
+
+        row.style.display = "none";
+
+
+      } else {
+
+
+        /*
+         * Newly added option.
+         *
+         * It does not exist in the database,
+         * so simply remove it from DOM.
+         */
+
+        row.remove();
+
+      }
+
+
+      updateOptionNumbers();
+
+
+      /* --------------------------------------------------------
+         IF REMOVED OPTION WAS CORRECT
+      --------------------------------------------------------- */
+
+      if (
+        row.style.display === "none" &&
+        row.querySelector(".is-correct-field") &&
+        row.querySelector(".is-correct-field").value === "true"
+      ) {
+
+        row.querySelector(
+          ".is-correct-field"
+        ).value = "false";
+
+      }
+
+    }
+  );
+
+
+  /* ============================================================
+     ADD OPTION
+  ============================================================ */
+
+  addOptionBtn.addEventListener(
+    "click",
+    function () {
+
+
+      const index =
+        parseInt(
+          optionsContainer.dataset.nextIndex || "0",
+          10
+        );
+
+
+      const html = `
+
+        <div
+          class="option-card"
+          data-option-row>
+
+
+          <!-- DESTROY -->
+
+          <input
+            type="hidden"
+            name="test_series_question[test_series_options_attributes][${index}][_destroy]"
+            value="0"
+            class="destroy-option-field">
+
+
+          <!-- POSITION -->
+
+          <input
+            type="hidden"
+            name="test_series_question[test_series_options_attributes][${index}][position]"
+            value="${index + 1}"
+            class="option-position-field">
+
+
+          <!-- CORRECT -->
+
+          <input
+            type="hidden"
+            name="test_series_question[test_series_options_attributes][${index}][is_correct]"
+            value="false"
+            class="is-correct-field">
+
+
+          <!-- HEADER -->
+
+          <div class="option-header">
+
+            <div class="option-number">
+
+              Option
+
+              <span class="option-number-value"></span>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger remove-option-btn">
+
+              <i class="fas fa-trash"></i>
+
+            </button>
+
+          </div>
+
+
+          <!-- FIELDS -->
+
+          <div class="row g-3">
+
+
+            <!-- ENGLISH -->
+
+            <div class="col-lg-5">
+
+              <label class="ts-label">
+
+                Option (English)
+
+              </label>
+
+
+              <input
+                type="text"
+                name="test_series_question[test_series_options_attributes][${index}][option_text]"
+                class="form-control ts-input"
+                placeholder="Enter option...">
+
+            </div>
+
+
+            <!-- HINDI -->
+
+            <div class="col-lg-5">
+
+              <label class="ts-label">
+
+                विकल्प (हिंदी)
+
+              </label>
+
+
+              <input
+                type="text"
+                name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
+                class="form-control ts-input hindi-input"
+                placeholder="हिंदी में विकल्प...">
+
+            </div>
+
+
+            <!-- CORRECT -->
+
+            <div class="col-lg-2">
+
+              <label class="ts-label">
+
+                Correct Answer
+
+              </label>
+
+
+              <div class="correct-answer-wrapper">
+
+                <label class="correct-radio-label">
+
+
+                  <input
+                    type="radio"
+                    name="correct_answer_selector"
+                    class="correct-answer-radio"
+                    value="${index}">
+
+
+                  <span>
+
+                    Correct
+
+                  </span>
+
+
+                </label>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+      `;
+
+
+      optionsContainer.insertAdjacentHTML(
+        "beforeend",
+        html
+      );
+
+
+      optionsContainer.dataset.nextIndex =
+        index + 1;
+
+
+      updateOptionNumbers();
+
+    }
+  );
+
+
+  /* ============================================================
+     FORM VALIDATION
+  ============================================================ */
+
+  form.addEventListener(
+    "submit",
+    function (event) {
+
+
+      const rows =
+        getActiveRows();
+
+
+      /* --------------------------------------------------------
+         MINIMUM TWO OPTIONS
+      --------------------------------------------------------- */
+
+      if (rows.length < 2) {
+
+        event.preventDefault();
+
+        alert(
+          "At least two options are required."
+        );
+
+        return;
+
+      }
+
+
+      /* --------------------------------------------------------
+         EXACTLY ONE CORRECT ANSWER
+      --------------------------------------------------------- */
+
+      const correctRows =
+        rows.filter(function (row) {
+
+
+          const hidden =
+            row.querySelector(
+              ".is-correct-field"
+            );
+
+
+          return (
+            hidden &&
+            hidden.value === "true"
+          );
+
+        });
+
+
+      if (correctRows.length !== 1) {
+
+        event.preventDefault();
+
+        alert(
+          "Please select exactly one correct answer."
+        );
+
+        return;
+
+      }
+
+
+    }
+  );
+
+
+  /* ============================================================
+     INITIAL STATE
+  ============================================================ */
+
+  updateOptionNumbers();
+
+
+  /*
+   * Existing database option already contains
+   * is_correct = true.
+   *
+   * Find that radio and synchronize all
+   * hidden is_correct fields.
+   */
+
+  const checkedRadio =
+    optionsContainer.querySelector(
+      ".correct-answer-radio:checked"
+    );
+
+
+  if (checkedRadio) {
+
+    setCorrectAnswer(
+      checkedRadio
+    );
+
+  }
+
+
+});
+</script>

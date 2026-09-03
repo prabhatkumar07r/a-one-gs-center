@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quiz: one
+  user: one
+  score: 9.99
+  total_marks: 9.99
+  percentage: 9.99
+  status: MyString
+  started_at: 2026-08-30 13:42:46
+  submitted_at: 2026-08-30 13:42:46
+
+two:
+  quiz: two
+  user: two
+  score: 9.99
+  total_marks: 9.99
+  percentage: 9.99
+  status: MyString
+  started_at: 2026-08-30 13:42:46
+  submitted_at: 2026-08-30 13:42:46

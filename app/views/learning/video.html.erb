@@ -1,722 +1,969 @@
-<% content_for :show_layout, true %>
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
 
-<div class="container-fluid mt-4">
+<style>
+/* =========================================================
+   VIDEO LEARNING PAGE
+   Purple / Transparent Theme
+========================================================= */
 
-  <div class="row">
+.learning-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(139, 92, 246, 0.28), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.20), transparent 35%),
+    linear-gradient(135deg, #f5f3ff, #fdf2f8);
 
-    <!-- Sidebar -->
-<div class="col-lg-3 col-md-4">
-
-  <div class="card shadow border-0 sticky-top"
-       style="top:80px;">
+  display: flex;
+  overflow: hidden;
+}
 
 
-    <div class="card-header bg-dark text-white">
+.quiz-section {
+  margin-top: 40px;
+}
 
-      <h5 class="mb-0">
-        📚 Course Content
+
+/* ================= QUIZ HEADER ================= */
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px 25px;
+
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.75);
+
+  border: 1px solid rgba(99,102,241,0.15);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+
+.quiz-header h3 {
+  color: #3f52fb;
+}
+
+
+.quiz-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: linear-gradient(
+    135deg,
+    #3f52fb,
+    #fc466b
+  );
+
+  color: white;
+
+  font-size: 23px;
+}
+
+
+/* ================= QUIZ CARD ================= */
+
+.quiz-card {
+
+  background: rgba(255,255,255,0.88);
+
+  border-radius: 20px;
+
+  padding: 25px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid rgba(99,102,241,0.15);
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.08);
+
+  transition: all .25s ease;
+}
+
+
+.quiz-card:hover {
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.12);
+}
+
+
+.quiz-card-content {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 25px;
+}
+
+
+.quiz-info h4 {
+
+  color: #252b42;
+
+}
+
+
+.quiz-meta {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+.quiz-meta span {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+.quiz-meta i {
+
+  color: #3f52fb;
+}
+
+
+/* ================= START BUTTON ================= */
+
+.quiz-start-btn {
+
+  min-width: 160px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3f52fb,
+      #fc466b
+    );
+
+  box-shadow:
+    0 8px 20px rgba(63,82,251,.25);
+
+  transition: all .25s ease;
+}
+
+
+.quiz-start-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(63,82,251,.35);
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .quiz-header {
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+  }
+
+
+  .quiz-card-content {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+  }
+
+
+  .quiz-action {
+
+    width: 100%;
+
+  }
+
+
+  .quiz-start-btn {
+
+    width: 100%;
+
+  }
+
+}
+
+
+/* =========================================================
+   FIXED SIDEBAR
+========================================================= */
+
+.learning-sidebar {
+  width: 320px;
+  height: 100vh;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  overflow-y: auto;
+
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-right: 1px solid rgba(139, 92, 246, 0.18);
+
+  box-shadow: 8px 0 30px rgba(139, 92, 246, 0.10);
+
+  z-index: 1000;
+}
+
+
+/* Sidebar scrollbar */
+
+.learning-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.learning-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.35);
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   SIDEBAR HEADER
+========================================================= */
+
+.sidebar-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 10;
+
+  padding: 20px;
+
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(15px);
+
+  border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.sidebar-header h5 {
+  margin: 0;
+
+  color: #6d28d9;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PLAYLIST
+========================================================= */
+
+.playlist-title {
+  padding: 15px 18px;
+
+  background: rgba(139, 92, 246, 0.07);
+
+  border-bottom: 1px solid rgba(139, 92, 246, 0.10);
+}
+
+.playlist-title strong {
+  color: #5b21b6;
+}
+
+
+/* =========================================================
+   VIDEO ITEMS
+========================================================= */
+
+.video-item {
+  display: block;
+
+  padding: 13px 18px;
+
+  text-decoration: none;
+
+  color: #374151;
+
+  background: rgba(255, 255, 255, 0.45);
+
+  border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+
+  transition: all .2s ease;
+}
+
+.video-item:hover {
+  background: rgba(139, 92, 246, 0.10);
+
+  color: #6d28d9;
+
+  padding-left: 23px;
+}
+
+.video-item.active {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(139, 92, 246, 0.18),
+      rgba(236, 72, 153, 0.08)
+    );
+
+  color: #6d28d9;
+
+  border-left: 4px solid #7c3aed;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.learning-main {
+  margin-left: 320px;
+
+  width: calc(100% - 320px);
+
+  height: 100vh;
+
+  overflow-y: auto;
+
+  padding: 30px;
+}
+
+
+/* Main scrollbar */
+
+.learning-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.learning-main::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.30);
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   GLASS CARDS
+========================================================= */
+
+.learning-card {
+  background: rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(139, 92, 246, 0.15);
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 35px rgba(139, 92, 246, 0.10);
+}
+
+
+/* =========================================================
+   COURSE HEADER
+========================================================= */
+
+.course-title {
+  color: #5b21b6;
+
+  font-weight: 800;
+}
+
+.course-description {
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.course-progress {
+  height: 12px;
+
+  border-radius: 20px;
+
+  background: rgba(139, 92, 246, 0.10);
+}
+
+.course-progress .progress-bar {
+  background:
+    linear-gradient(
+      90deg,
+      #7c3aed,
+      #ec4899
+    );
+
+  border-radius: 20px;
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.video-wrapper {
+  background: #000;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.video-info span {
+  margin-right: 20px;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   ACCORDION
+========================================================= */
+
+.learning-page .accordion-item {
+  border: 1px solid rgba(139, 92, 246, 0.12);
+
+  border-radius: 14px !important;
+
+  overflow: hidden;
+
+  margin-bottom: 12px;
+
+  background: rgba(255,255,255,.65);
+}
+
+.learning-page .accordion-button {
+  background: rgba(255,255,255,.65);
+
+  color: #4c1d95;
+
+  box-shadow: none;
+}
+
+.learning-page .accordion-button:not(.collapsed) {
+  background: rgba(139, 92, 246, .08);
+
+  color: #6d28d9;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn-purple {
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #ec4899
+    );
+
+  color: white;
+
+  border: none;
+
+  border-radius: 10px;
+
+  padding: 10px 20px;
+}
+
+.btn-purple:hover {
+  color: white;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(124,58,237,.25);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .learning-sidebar {
+    width: 270px;
+  }
+
+  .learning-main {
+    margin-left: 270px;
+
+    width: calc(100% - 270px);
+
+    padding: 20px;
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  .learning-page {
+    display: block;
+
+    overflow: auto;
+  }
+
+  .learning-sidebar {
+    position: relative;
+
+    width: 100%;
+
+    height: auto;
+
+    max-height: 400px;
+  }
+
+  .learning-main {
+    margin-left: 0;
+
+    width: 100%;
+
+    height: auto;
+
+    overflow: visible;
+
+    padding: 15px;
+  }
+
+}
+</style>
+
+
+<div class="learning-page">
+
+
+  <!-- =====================================================
+       FIXED SIDEBAR
+  ====================================================== -->
+
+  <aside class="learning-sidebar">
+
+    <div class="sidebar-header">
+
+      <h5>
+        <i class="fas fa-book-open me-2"></i>
+        Course Content
       </h5>
 
+      <small class="text-muted">
+        <%= @course.Course_name %>
+      </small>
+
     </div>
 
-    <div class="card-body p-0">
 
-      <div class="accordion accordion-flush" id="playlistAccordion">
+    <% @playlists.each_with_index do |playlist, index| %>
 
-        <% @playlists.each_with_index do |playlist,index| %>
+      <%
+        playlist_total = playlist.videos.count
 
-          <%
-            playlist_total = playlist.videos.count
+        playlist_completed =
+          current_user.video_progresses
+            .joins(:video)
+            .where(
+              videos: {
+                playlist_id: playlist.id
+              },
+              video_progresses: {
+                completed: true
+              }
+            )
+            .count
 
-            playlist_completed =
-                 current_user.video_progresses
-              .joins(:video)
-              .where(
-                videos: {
-                  playlist_id: playlist.id
-                },
-                video_progresses: {
-                  completed: true
-                }
-              )
-              .count
+        playlist_progress =
+          playlist_total.zero? ? 0 :
+          ((playlist_completed.to_f / playlist_total) * 100).round
+      %>
 
-            progress_percent =
-              playlist_total.zero? ? 0 :
-              ((playlist_completed.to_f / playlist_total) * 100).round
-          %>
 
-          <div class="accordion-item">
+      <!-- Playlist -->
 
-            <h2 class="accordion-header">
+      <div class="playlist-title">
 
-              <button class="accordion-button <%= index == 0 ? '' : 'collapsed' %>"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#playlist<%= playlist.id %>">
+        <div class="d-flex justify-content-between align-items-center">
 
-                <div class="w-100">
+          <strong>
+            <i class="fas fa-folder-open me-2"></i>
+            <%= playlist.title %>
+          </strong>
 
-                  <strong>
-                    📁 <%= playlist.title %>
-                  </strong>
+          <small>
+            <%= playlist_progress %>%
+          </small>
 
-                  <div class="progress mt-2"
-                       style="height:6px;">
+        </div>
 
-                    <div class="progress-bar bg-success"
-                         style="width:<%= progress_percent %>%">
 
-                    </div>
+        <div class="progress mt-2"
+             style="height:5px;">
 
-                  </div>
-
-                  <small class="text-muted">
-
-                    <%= playlist_completed %> /
-                    <%= playlist_total %> Completed
-
-                  </small>
-
-                </div>
-
-              </button>
-
-            </h2>
-
-            <div id="playlist<%= playlist.id %>"
-                 class="accordion-collapse collapse <%= index == 0 ? 'show' : '' %>"
-                 data-bs-parent="#playlistAccordion">
-
-              <div class="list-group list-group-flush">
-
-                <% playlist.videos.order(:position).each do |video| %>
-
-                  <% progress =
-                      current_user.video_progresses.find_by(video: video) %>
-
-                  <%= link_to learning_video_path(@course, video),
-                      class: "list-group-item list-group-item-action #{'active' if video == @video}" do %>
-
-                    <div class="d-flex justify-content-between">
-
-                      <span>
-
-                        <strong>
-                          <%= video.position %>.
-                        </strong>
-
-                        <%= video.title %>
-
-                      </span>
-
-                      <% if progress&.completed? %>
-
-                        <span class="badge bg-success">
-
-                          <i class="fas fa-check"></i>
-
-                        </span>
-
-                      <% else %>
-
-                        <span class="badge bg-secondary">
-
-                          <i class="fas fa-play"></i>
-
-                        </span>
-
-                      <% end %>
-
-                    </div>
-
-                  <% end %>
-
-                <% end %>
-
-              </div>
-
-            </div>
-
+          <div class="progress-bar"
+               style="width:<%= playlist_progress %>%">
           </div>
-
-        <% end %>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-    <!-- Video Area -->
-    <div class="col-lg-9 col-md-8">
-
-      <div class="card border-0 shadow-lg rounded-4">
-
-        <div class="card-body">
-
-         <div class="mb-4">
-          <div class="card border-0 shadow-sm mb-4">
-
-  <div class="card-body">
-
-    <div class="d-flex justify-content-between align-items-center">
-
-      <div>
-
-        <h5 class="fw-bold mb-1">
-
-          🎓 Course Progress
-
-        </h5>
-
-        <small class="text-muted">
-
-          Completed
-          <strong><%= @completed_videos %></strong>
-          of
-          <strong><%= @total_videos %></strong>
-          videos
-
-        </small>
-
-      </div>
-
-      <span class="badge bg-success fs-5">
-
-        <%= @course_progress %>%
-
-      </span>
-
-    </div>
-
-    <div class="progress mt-3"
-         style="height:12px;">
-
-      <div class="progress-bar bg-success"
-
-           role="progressbar"
-
-           style="width:<%= @course_progress %>%">
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-<% if @course_progress == 100 && @certificate.present? %>
-
-<div class="card border-0 shadow-lg mb-4">
-
-  <div class="card-body text-center py-5">
-
-    <i class="fas fa-award fa-4x text-warning mb-3"></i>
-
-    <h2 class="fw-bold text-success">
-
-      Congratulations!
-
-    </h2>
-
-    <p class="lead">
-
-      You have successfully completed this course.
-
-    </p>
-
-    <p class="text-muted">
-
-      Your certificate is ready.
-
-    </p>
-
-    <%= link_to certificates_path,
-        class: "btn btn-success btn-lg" do %>
-
-      <i class="fas fa-download"></i>
-
-      Download Certificate
-
-    <% end %>
-
-  </div>
-
-</div>
-
-<% end %>
-<div class="card border-0 shadow-sm mb-4">
-
-  <div class="card-body">
-
-    <div class="row align-items-center">
-
-      <div class="col-md-9">
-
-        <h3 class="fw-bold text-primary mb-2">
-          <%= @course.Course_name %>
-        </h3>
-
-        <p class="text-muted mb-3">
-
-          Welcome back! Continue your learning journey.
-
-        </p>
-
-        <div class="d-flex flex-wrap gap-4">
-
-          <span>
-
-            <i class="fas fa-folder-open text-primary"></i>
-
-            <strong>
-              <%= @playlists.count %>
-            </strong>
-
-            Playlists
-
-          </span>
-
-          <span>
-
-            <i class="fas fa-play-circle text-danger"></i>
-
-            <strong>
-              <%= @total_videos %>
-            </strong>
-
-            Videos
-
-          </span>
-
-          <span>
-
-            <i class="fas fa-book text-warning"></i>
-
-            <strong>
-              <%= @notes.count %>
-            </strong>
-
-            Notes
-
-          </span>
-
-          <span>
-
-            <i class="fas fa-folder text-success"></i>
-
-            <strong>
-              <%= @resources.count %>
-            </strong>
-
-            Resources
-
-          </span>
 
         </div>
 
       </div>
 
-      <div class="col-md-3 text-center">
 
-        <% if @course.image.attached? %>
+      <!-- Videos -->
 
-          <%= image_tag @course.image,
-              class: "img-fluid rounded shadow",
-              style: "max-height:140px;" %>
+      <% playlist.videos.order(:position).each do |video| %>
 
-        <% else %>
+        <%
+          progress =
+            current_user.video_progresses.find_by(
+              video: video
+            )
+        %>
 
-          <i class="fas fa-graduation-cap fa-5x text-primary"></i>
 
-        <% end %>
+        <%= link_to learning_video_path(@course, video),
+            class: "video-item #{'active' if video == @video}" do %>
 
-      </div>
 
-    </div>
+          <div class="d-flex justify-content-between align-items-center">
 
-  </div>
+            <div>
 
-</div>
+              <strong>
+                <%= video.position %>.
+              </strong>
 
-  <h2 class="fw-bold mb-2">
-
-  <%= @video.title %>
-
-</h2>
-<% if @course_progress == 100 %>
-
-<div class="alert alert-success shadow-sm">
-
-  <i class="fas fa-check-circle"></i>
-
-  Congratulations!
-
-  You completed
-
-  <strong>
-
-    <%= @course.Course_name %>
-
-  </strong>
-
-</div>
-
-<% end %>
-
-<div class="d-flex flex-wrap gap-4 text-muted mb-3">
-
-  <span>
-    <i class="fas fa-folder text-primary"></i>
-    <strong>Playlist:</strong>
-    <%= @playlist.title %>
-  </span>
-
-  <span>
-    <i class="fas fa-clock text-success"></i>
-    <strong>Duration:</strong>
-    <%= @video.duration %>
-  </span>
-
-  <span>
-    <i class="fas fa-play-circle text-danger"></i>
-    <strong>Lesson:</strong>
-    <%= @video.position %>
-  </span>
-
-  <span>
-    <i class="fas fa-calendar-alt text-warning"></i>
-    <strong>Published:</strong>
-    <%= @video.created_at.strftime("%d %b %Y") %>
-  </span>
-
-</div>
-
-<p class="lead">
-  <%= @video.description %>
-</p>
-  
-
-          <% if @video.video_url.present? %>
-
-            <div class="ratio ratio-16x9 rounded overflow-hidden shadow mb-4">
-
-  <iframe
-      id="youtube-player"
-      src="https://www.youtube.com/embed/<%= @video.youtube_id %>?enablejsapi=1"
-      title="<%= @video.title %>"
-      allowfullscreen>
-  </iframe>
-
-</div>
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<script>
-
-let player;
-
-function onYouTubeIframeAPIReady() {
-  player = new YT.Player("youtube-player");
-}
-
-setInterval(function () {
-
-  if (!player || typeof player.getDuration !== "function") return;
-
-  let current = player.getCurrentTime();
-  let duration = player.getDuration();
-
-  if (duration > 0 && (current / duration) >= 0.90) {
-
-    const btn = document.getElementById("completeBtn");
-
-    if(btn){
-      btn.disabled = false;
-    }
-
-  }
-
-},1000);
-
-</script>
+              <%= video.title %>
 
             </div>
 
-          <% else %>
 
-            <div class="alert alert-warning">
-              Video not available.
-            </div>
+            <% if progress&.completed? %>
 
-          <% end %>
+              <i class="fas fa-check-circle text-success"></i>
 
-          <hr>
-          <div class="card border-0 bg-light shadow-sm mb-4">
+            <% else %>
 
-  <div class="card-body">
+              <i class="fas fa-play-circle text-muted"></i>
 
-    <div class="row align-items-center">
-
-      <div class="col-md-8">
-
-        <h5 class="mb-1">
-
-          Continue Learning
-
-        </h5>
-
-        <small class="text-muted">
-
-          Lesson <%= @video.position %> of <%= @total_videos %>
-
-        </small>
-
-      </div>
-
-      <div class="col-md-4 text-end">
-
-        <% if @next_video.present? %>
-
-          <%= link_to learning_video_path(@course,@next_video),
-              class:"btn btn-primary" do %>
-
-            Next Lesson
-
-            <i class="fas fa-arrow-right"></i>
-
-          <% end %>
-
-        <% end %>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-          <!-- Study Notes -->
-<!-- ================= Study Notes ================= -->
-<div class="accordion mt-5 mb-4" id="learningAccordion">
-
-  <div class="accordion-item shadow-sm">
-
-    <h2 class="accordion-header">
-
-      <button class="accordion-button"
-
-              type="button"
-
-              data-bs-toggle="collapse"
-
-              data-bs-target="#studyNotes">
-
-        <i class="fas fa-book-open text-danger me-2"></i>
-
-        <strong>Study Notes</strong>
-
-        <span class="badge bg-danger ms-3">
-          <%= @notes.count %>
-        </span>
-
-      </button>
-
-    </h2>
-
-    <div id="studyNotes"
-
-         class="accordion-collapse collapse show"
-
-         data-bs-parent="#learningAccordion">
-
-      <div class="accordion-body">
-
-        <% if @notes.any? %>
-
-          <% @notes.each do |note| %>
-
-            <div class="card border-0 shadow-sm mb-3">
-
-              <div class="card-body">
-
-                <div class="row align-items-center">
-
-                  <div class="col-md-8">
-
-                    <h5><%= note.title %></h5>
-
-                    <p class="text-muted">
-
-                      <%= truncate(note.description, length: 120) %>
-
-                    </p>
-
-                  </div>
-
-                  <div class="col-md-4 text-end">
-
-                    <%= link_to rails_blob_path(note.pdf_file),
-
-                        target: "_blank",
-
-                        class: "btn btn-outline-danger btn-sm" do %>
-
-                      <i class="fas fa-eye"></i>
-
-                      View
-
-                    <% end %>
-
-                    <%= link_to rails_blob_path(
-                          note.pdf_file,
-                          disposition: "attachment"
-                        ),
-                        class: "btn btn-danger btn-sm" do %>
-
-                      <i class="fas fa-download"></i>
-
-                      Download
-
-                    <% end %>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          <% end %>
-
-        <% else %>
-
-          <div class="alert alert-info">
-
-            No Study Notes Available.
+            <% end %>
 
           </div>
 
+
         <% end %>
+
+      <% end %>
+
+
+    <% end %>
+
+  </aside>
+
+
+
+  <!-- =====================================================
+       SCROLLABLE MAIN CONTENT
+  ====================================================== -->
+
+  <main class="learning-main">
+
+
+    <!-- Course Progress -->
+
+    <div class="learning-card mb-4">
+
+      <div class="p-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+          <div>
+
+            <h5 class="fw-bold mb-1">
+              📈 Course Progress
+            </h5>
+
+            <small class="text-muted">
+
+              Completed
+              <strong><%= @completed_videos %></strong>
+              of
+              <strong><%= @total_videos %></strong>
+              videos
+
+            </small>
+
+          </div>
+
+
+          <span class="badge bg-success fs-6">
+
+            <%= @course_progress %>%
+
+          </span>
+
+        </div>
+
+
+        <div class="progress course-progress mt-3">
+
+          <div class="progress-bar"
+               style="width:<%= @course_progress %>%">
+
+          </div>
+
+        </div>
 
       </div>
 
     </div>
 
-  </div>
 
-<============= Resources ================= -->
 
-<!-- ================= Resources ================= -->
+    <!-- Course Information -->
 
-  <div class="accordion-item shadow-sm">
+    <div class="learning-card mb-4">
 
-    <h2 class="accordion-header">
+      <div class="p-4">
 
-      <button class="accordion-button collapsed"
+        <div class="row align-items-center">
 
-              type="button"
+          <div class="col-md-9">
 
-              data-bs-toggle="collapse"
+            <h2 class="course-title">
 
-              data-bs-target="#resources">
+              🎓 <%= @course.Course_name %>
 
-        <i class="fas fa-folder-open text-success me-2"></i>
+            </h2>
 
-        <strong>Learning Resources</strong>
+            <p class="course-description">
 
-        <span class="badge bg-success ms-3">
-          <%= @resources.count %>
-        </span>
+              Welcome back! Continue your learning journey.
 
-      </button>
+            </p>
 
-    </h2>
 
-    <div id="resources"
+            <div class="d-flex flex-wrap gap-4">
 
-         class="accordion-collapse collapse"
+              <span>
+                <i class="fas fa-folder text-primary"></i>
+                <strong><%= @playlists.count %></strong>
+                Playlists
+              </span>
 
-         data-bs-parent="#learningAccordion">
+              <span>
+                <i class="fas fa-play-circle text-danger"></i>
+                <strong><%= @total_videos %></strong>
+                Videos
+              </span>
 
-      <div class="accordion-body">
+              <span>
+                <i class="fas fa-book text-warning"></i>
+                <strong><%= @notes.count %></strong>
+                Notes
+              </span>
 
-        <% if @resources.any? %>
-
-          <% @resources.each do |resource| %>
-
-            <div class="card border-0 shadow-sm mb-3">
-
-              <div class="card-body">
-
-                <div class="row align-items-center">
-
-                  <div class="col-md-8">
-
-                    <h5>
-                      <%= resource.title %>
-                    </h5>
-
-                    <p class="text-muted">
-
-                      <%= truncate(resource.description, length: 120) %>
-
-                    </p>
-
-                    <span class="badge bg-success">
-
-                      <%= resource.resource_type.titleize %>
-
-                    </span>
-
-                  </div>
-
-                  <div class="col-md-4 text-end">
-
-                    <%= link_to rails_blob_path(resource.file),
-
-                        target: "_blank",
-
-                        class: "btn btn-outline-success btn-sm" do %>
-
-                      <i class="fas fa-eye"></i>
-
-                      View
-
-                    <% end %>
-
-                    <%= link_to rails_blob_path(
-                          resource.file,
-                          disposition: "attachment"
-                        ),
-                        class: "btn btn-success btn-sm" do %>
-
-                      <i class="fas fa-download"></i>
-
-                      Download
-
-                    <% end %>
-
-                  </div>
-
-                </div>
-
-              </div>
+              <span>
+                <i class="fas fa-folder text-success"></i>
+                <strong><%= @resources.count %></strong>
+                Resources
+              </span>
 
             </div>
 
-          <% end %>
+          </div>
+
+
+          <div class="col-md-3 text-center">
+
+            <% if @course.image.attached? %>
+
+              <%= image_tag @course.image,
+                  class: "img-fluid rounded-4 shadow",
+                  style: "max-height:140px;" %>
+
+            <% else %>
+
+              <i class="fas fa-graduation-cap fa-5x text-primary"></i>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Video Title -->
+
+    <div class="learning-card mb-4">
+
+      <div class="p-4">
+
+        <h2 class="fw-bold">
+
+          <%= @video.title %>
+
+        </h2>
+
+
+        <div class="video-info mb-3">
+
+          <span>
+            <i class="fas fa-folder text-primary"></i>
+            <strong>Playlist:</strong>
+            <%= @playlist.title %>
+          </span>
+
+
+          <span>
+            <i class="fas fa-clock text-success"></i>
+            <strong>Duration:</strong>
+            <%= @video.duration %>
+          </span>
+
+
+          <span>
+            <i class="fas fa-play-circle text-danger"></i>
+            <strong>Lesson:</strong>
+            <%= @video.position %>
+          </span>
+
+
+          <span>
+            <i class="fas fa-calendar text-warning"></i>
+            <strong>Published:</strong>
+            <%= @video.created_at.strftime("%d %b %Y") %>
+          </span>
+
+        </div>
+
+
+        <% if @video.description.present? %>
+
+          <p class="lead text-muted">
+
+            <%= @video.description %>
+
+          </p>
+
+        <% end %>
+
+
+        <!-- YouTube -->
+
+        <% if @video.video_url.present? %>
+
+          <div class="ratio ratio-16x9 video-wrapper">
+
+            <iframe
+              id="youtube-player"
+              src="https://www.youtube.com/embed/<%= @video.youtube_id %>?enablejsapi=1"
+              title="<%= @video.title %>"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+
+          </div>
+
+
+          <script src="https://www.youtube.com/iframe_api"></script>
+
+          <script>
+
+            let player;
+
+            function onYouTubeIframeAPIReady() {
+
+              player = new YT.Player("youtube-player");
+
+            }
+
+
+            setInterval(function () {
+
+              if (
+                !player ||
+                typeof player.getDuration !== "function"
+              ) return;
+
+
+              const current = player.getCurrentTime();
+
+              const duration = player.getDuration();
+
+
+              if (
+                duration > 0 &&
+                (current / duration) >= 0.90
+              ) {
+
+                const btn =
+                  document.getElementById("completeBtn");
+
+                if (btn) {
+
+                  btn.disabled = false;
+
+                }
+
+              }
+
+            }, 1000);
+
+          </script>
 
         <% else %>
 
           <div class="alert alert-warning">
 
-            No Resources Available.
+            Video not available.
 
           </div>
 
@@ -726,68 +973,423 @@ setInterval(function () {
 
     </div>
 
-  </div>
 
-</div>
-  
 
-          <!-- Previous / Next -->
+    <!-- Previous / Next -->
 
-          <div class="card border-0 shadow-sm mt-4">
+    <div class="learning-card mb-4">
 
-  <div class="card-body">
+      <div class="p-3">
 
-    <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between">
 
-            <% if @previous_video.present? %>
+          <% if @previous_video.present? %>
 
-              <%= link_to "⬅ Previous",
-                  learning_video_path(@course, @previous_video),
-                  class: "btn btn-outline-primary" %>
+            <%= link_to learning_video_path(
+                  @course,
+                  @previous_video
+                ),
+                class: "btn btn-outline-primary" do %>
 
-            <% else %>
-
-              <span></span>
+              ⬅ Previous
 
             <% end %>
 
-            <% if @next_video.present? %>
+          <% else %>
 
-              <%= link_to "Next ➜",
-                  learning_video_path(@course, @next_video),
-                  class: "btn btn-primary" %>
+            <span></span>
+
+          <% end %>
+
+
+          <% if @next_video.present? %>
+
+            <%= link_to learning_video_path(
+                  @course,
+                  @next_video
+                ),
+                class: "btn btn-purple" do %>
+
+              Next ➜
+
+            <% end %>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Study Notes -->
+
+    <div class="accordion mb-4"
+         id="learningAccordion">
+
+
+      <div class="accordion-item">
+
+        <h2 class="accordion-header">
+
+          <button class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#studyNotes">
+
+            <i class="fas fa-book-open text-danger me-2"></i>
+
+            <strong>Study Notes</strong>
+
+            <span class="badge bg-danger ms-3">
+
+              <%= @notes.count %>
+
+            </span>
+
+          </button>
+
+        </h2>
+
+
+        <div id="studyNotes"
+             class="accordion-collapse collapse show">
+
+          <div class="accordion-body">
+
+            <% if @notes.any? %>
+
+              <% @notes.each do |note| %>
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                  <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                      <div class="col-md-8">
+
+                        <h5>
+                          <%= note.title %>
+                        </h5>
+
+                        <p class="text-muted">
+
+                          <%= truncate(
+                            note.description,
+                            length: 120
+                          ) %>
+
+                        </p>
+
+                      </div>
+
+
+                      <div class="col-md-4 text-end">
+
+                        <% if note.pdf_file.attached? %>
+
+                          <%= link_to rails_blob_path(
+                                note.pdf_file
+                              ),
+                              target: "_blank",
+                              class: "btn btn-outline-danger btn-sm" do %>
+
+                            <i class="fas fa-eye"></i>
+                            View
+
+                          <% end %>
+
+
+                          <%= link_to rails_blob_path(
+                                note.pdf_file,
+                                disposition: "attachment"
+                              ),
+                              class: "btn btn-danger btn-sm" do %>
+
+                            <i class="fas fa-download"></i>
+                            Download
+
+                          <% end %>
+
+                        <% end %>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+            <% else %>
+
+              <div class="alert alert-info">
+
+                No Study Notes Available.
+
+              </div>
 
             <% end %>
 
           </div>
+
         </div>
 
-          <hr>
+      </div>
+      <!-- ================= QUIZ SECTION ================= -->
 
-          <!-- Mark as Completed -->
+<div class="quiz-section mt-5 mb-5">
 
-          <% progress = current_user.video_progresses.find_by(video: @video) %>
+  <div class="quiz-header mb-4">
 
-          <div class="text-center mt-4">
+    <div>
+      <h3 class="fw-bold mb-1">
+        🧠 Test Your Knowledge
+      </h3>
 
-            <% if @course_progress = 100 %>
+      <p class="text-muted mb-0">
+        Complete the quiz to check your understanding of this course.
+      </p>
+    </div>
 
-<%= button_to "✔ Mark as Completed",
-      complete_learning_video_path(@course, @video),
-      method: :post,
-      id: "completeBtn",
-      class: "btn btn-success btn-lg",
-      disabled: true %>
+    <div class="quiz-icon">
+      <i class="fas fa-brain"></i>
+    </div>
 
-<% else %>
+  </div>
 
-<button class="btn btn-success btn-lg" disabled>
 
-  ✓ Course Completed
+  <% if @course.quizzes.where(status: "Active").any? %>
 
-</button>
+    <% @course.quizzes
+              .where(status: "Active")
+              .order(created_at: :desc)
+              .each do |quiz| %>
 
-<% end %>
+      <div class="quiz-card">
+
+        <div class="quiz-card-content">
+
+          <div class="quiz-info">
+
+            <h4 class="fw-bold mb-2">
+              <%= quiz.title %>
+            </h4>
+
+            <% if quiz.description.present? %>
+
+              <p class="text-muted mb-3">
+                <%= quiz.description %>
+              </p>
+
+            <% end %>
+
+
+            <div class="quiz-meta">
+
+              <span>
+                <i class="fas fa-question-circle"></i>
+
+                <strong>
+                  <%= quiz.questions.count %>
+                </strong>
+
+                Questions
+              </span>
+
+
+              <% if quiz.respond_to?(:duration) && quiz.duration.present? %>
+
+                <span>
+                  <i class="fas fa-clock"></i>
+
+                  <strong>
+                    <%= quiz.duration %>
+                  </strong>
+
+                  Minutes
+                </span>
+
+              <% end %>
+
+
+              <% if quiz.respond_to?(:passing_percentage) &&
+                    quiz.passing_percentage.present? %>
+
+                <span>
+                  <i class="fas fa-trophy"></i>
+
+                  Pass:
+                  <strong>
+                    <%= quiz.passing_percentage %>%
+                  </strong>
+
+                </span>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+
+          <div class="quiz-action">
+
+            <%= button_to start_course_quiz_path(@course, quiz),
+                method: :post,
+                class: "btn btn-primary btn-lg quiz-start-btn" do %>
+
+              <i class="fas fa-play me-2"></i>
+
+              Start Quiz
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  <% else %>
+
+    <div class="alert alert-info">
+
+      <i class="fas fa-info-circle me-2"></i>
+
+      No quiz is available for this course yet.
+
+    </div>
+
+  <% end %>
+
+</div>
+
+<!-- ================= END QUIZ SECTION ================= -->
+
+
+
+      <!-- Resources -->
+
+      <div class="accordion-item">
+
+        <h2 class="accordion-header">
+
+          <button class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#resources">
+
+            <i class="fas fa-folder-open text-success me-2"></i>
+
+            <strong>Learning Resources</strong>
+
+            <span class="badge bg-success ms-3">
+
+              <%= @resources.count %>
+
+            </span>
+
+          </button>
+
+        </h2>
+
+
+        <div id="resources"
+             class="accordion-collapse collapse">
+
+          <div class="accordion-body">
+
+            <% if @resources.any? %>
+
+              <% @resources.each do |resource| %>
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                  <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                      <div class="col-md-8">
+
+                        <h5>
+                          <%= resource.title %>
+                        </h5>
+
+                        <p class="text-muted">
+
+                          <%= truncate(
+                            resource.description,
+                            length: 120
+                          ) %>
+
+                        </p>
+
+                        <span class="badge bg-success">
+
+                          <%= resource.resource_type.titleize %>
+
+                        </span>
+
+                      </div>
+
+
+                      <div class="col-md-4 text-end">
+
+                        <% if resource.file.attached? %>
+
+                          <%= link_to rails_blob_path(
+                                resource.file
+                              ),
+                              target: "_blank",
+                              class: "btn btn-outline-success btn-sm" do %>
+
+                            <i class="fas fa-eye"></i>
+                            View
+
+                          <% end %>
+
+
+                          <%= link_to rails_blob_path(
+                                resource.file,
+                                disposition: "attachment"
+                              ),
+                              class: "btn btn-success btn-sm" do %>
+
+                            <i class="fas fa-download"></i>
+                            Download
+
+                          <% end %>
+
+                        <% end %>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+            <% else %>
+
+              <div class="alert alert-warning">
+
+                No Resources Available.
+
+              </div>
+
+            <% end %>
+
           </div>
 
         </div>
@@ -796,6 +1398,968 @@ setInterval(function () {
 
     </div>
 
-  </div>
+
+
+    <!-- Mark Complete -->
+
+    <div class="learning-card mb-5">
+
+      <div class="p-4 text-center">
+
+        <%= button_to "✔ Mark as Completed",
+            complete_learning_video_path(
+              @course,
+              @video
+            ),
+            method: :post,
+            id: "completeBtn",
+            class: "btn btn-success btn-lg",
+            disabled: false %>
+
+      </div>
+
+    </div>
+
+
+  </main>
 
 </div>
+<style>
+  <style>
+/* =========================================================
+   LEARNING / VIDEO PAGE
+   LIGHT PURPLE + BLUE + PINK DESIGN
+========================================================= */
+
+:root {
+  --primary: #6d28d9;
+  --primary2: #4f46e5;
+  --blue: #2563eb;
+  --pink: #ec4899;
+  --text: #1f2937;
+  --muted: #64748b;
+  --border: #e9d5ff;
+  --light-purple: #f5f3ff;
+  --light-blue: #eff6ff;
+  --white: #ffffff;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.learning-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(236, 72, 153, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(79, 70, 229, 0.14),
+      transparent 40%
+    ),
+    #f8f7ff;
+
+  color: var(--text);
+}
+
+
+/* =========================================================
+   FIXED SIDEBAR
+========================================================= */
+
+.learning-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 378px;
+  height: 100vh;
+
+  background: #ffffff;
+
+  border-right: 1px solid #e5e7eb;
+
+  z-index: 1000;
+
+  overflow-y: auto;
+
+  box-shadow:
+    8px 0 30px rgba(79, 70, 229, 0.08);
+}
+
+
+/* Sidebar scrollbar */
+
+.learning-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.learning-sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #6d28d9,
+    #ec4899
+  );
+
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   SIDEBAR HEADER
+========================================================= */
+
+.sidebar-header {
+  padding: 24px 20px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eee;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 5;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+
+  color: #6d28d9;
+
+  font-size: 27px;
+
+  font-weight: 800;
+}
+
+.sidebar-course-name {
+  margin-top: 5px;
+
+  color: #64748b;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   SIDEBAR PROGRESS
+========================================================= */
+
+.sidebar-progress {
+  padding: 18px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f5f3ff,
+      #fff1f8
+    );
+
+  border-bottom: 1px solid #eadcff;
+}
+
+.sidebar-progress-title {
+  display: flex;
+  justify-content: space-between;
+
+  font-weight: 700;
+
+  color: #4c1d95;
+
+  margin-bottom: 8px;
+}
+
+.sidebar-progress-bar {
+  height: 7px;
+
+  background: #e5e7eb;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+.sidebar-progress-fill {
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed,
+      #ec4899
+    );
+
+  border-radius: 20px;
+
+  transition: width 0.4s ease;
+}
+
+
+/* =========================================================
+   PLAYLIST
+========================================================= */
+
+.playlist-section {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.playlist-header {
+  padding: 18px 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #fce7f3
+    );
+
+  color: #4c1d95;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  border-left: 4px solid #7c3aed;
+}
+
+.playlist-header:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #ede9fe,
+      #fbcfe8
+    );
+}
+
+
+/* =========================================================
+   VIDEO ITEMS
+========================================================= */
+
+.video-item {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 17px 15px;
+
+  text-decoration: none;
+
+  color: #334155;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  transition: all 0.2s ease;
+}
+
+.video-item:hover {
+  background: #f5f3ff;
+
+  color: #5b21b6;
+
+  padding-left: 20px;
+}
+
+
+/* Active video */
+
+.video-item.active {
+  color: #ffffff !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #6d28d9,
+      #9333ea
+    );
+
+  border-left: 5px solid #ec4899;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 5px 18px rgba(109, 40, 217, 0.25);
+}
+
+
+/* Completed badge */
+
+.video-completed {
+  background: #16a34a;
+
+  color: #ffffff;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+}
+
+
+/* Pending badge */
+
+.video-pending {
+  background: #e2e8f0;
+
+  color: #475569;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.learning-main {
+  margin-left: 378px;
+
+  height: 100vh;
+
+  overflow-y: auto;
+
+  padding: 35px 45px 70px;
+}
+
+
+/* Main scrollbar */
+
+.learning-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.learning-main::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      #6d28d9,
+      #ec4899
+    );
+
+  border-radius: 20px;
+}
+
+
+/* =========================================================
+   VIDEO HEADER CARD
+========================================================= */
+
+.video-header-card {
+  background: #ffffff;
+
+  border: 1px solid #eadcff;
+
+  border-radius: 20px;
+
+  padding: 30px;
+
+  margin-bottom: 25px;
+
+  box-shadow:
+    0 10px 35px rgba(79, 70, 229, 0.08);
+}
+
+.video-title {
+  color: #1e1b4b;
+
+  font-size: 34px;
+
+  font-weight: 800;
+
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   VIDEO META
+========================================================= */
+
+.video-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+}
+
+.video-meta-item {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  background: #f5f3ff;
+
+  color: #4c1d95;
+
+  border: 1px solid #ddd6fe;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   COMPLETE BUTTON
+========================================================= */
+
+.complete-button {
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed,
+      #ec4899
+    );
+
+  color: #ffffff !important;
+
+  border: none;
+
+  padding: 13px 24px;
+
+  border-radius: 12px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(109, 40, 217, 0.25);
+
+  transition: all 0.2s ease;
+}
+
+.complete-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(109, 40, 217, 0.35);
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.learning-tabs {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  margin-bottom: 25px;
+}
+
+.learning-tab {
+  padding: 16px 22px;
+
+  color: #64748b;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.learning-tab.active {
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #fce7f3
+    );
+
+  color: #6d28d9;
+
+  border-bottom: 3px solid #7c3aed;
+}
+
+
+/* =========================================================
+   CONTENT CARD
+========================================================= */
+
+.content-card {
+  background: #ffffff;
+
+  border: 1px solid #eee5ff;
+
+  border-radius: 20px;
+
+  padding: 30px;
+
+  margin-bottom: 25px;
+
+  box-shadow:
+    0 8px 25px rgba(79, 70, 229, 0.07);
+}
+
+.content-card h3 {
+  color: #4c1d95;
+
+  font-weight: 800;
+
+  margin-bottom: 20px;
+}
+
+.content-card p {
+  color: #475569;
+
+  font-size: 17px;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   VIDEO PLAYER
+========================================================= */
+
+.video-player-wrapper {
+  background: #ffffff;
+
+  padding: 15px;
+
+  border-radius: 18px;
+
+  border: 1px solid #ddd6fe;
+
+  box-shadow:
+    0 10px 30px rgba(79, 70, 229, 0.12);
+
+  margin-bottom: 30px;
+}
+
+.video-player-wrapper iframe {
+  width: 100%;
+
+  border-radius: 12px;
+
+  display: block;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.lesson-navigation {
+  background: #ffffff;
+
+  border: 1px solid #eee5ff;
+
+  border-radius: 18px;
+
+  padding: 22px;
+
+  margin-bottom: 30px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  box-shadow:
+    0 8px 25px rgba(79, 70, 229, 0.07);
+}
+
+.btn-previous {
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #4f46e5
+    );
+
+  color: #ffffff !important;
+
+  border: none;
+
+  border-radius: 11px;
+
+  padding: 12px 22px;
+
+  font-weight: 700;
+}
+
+.btn-next {
+  background:
+    linear-gradient(
+      135deg,
+      #9333ea,
+      #ec4899
+    );
+
+  color: #ffffff !important;
+
+  border: none;
+
+  border-radius: 11px;
+
+  padding: 12px 22px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   STUDY NOTES
+========================================================= */
+
+.study-notes {
+  background: #ffffff;
+
+  border: 1px solid #e9d5ff;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin-bottom: 30px;
+
+  box-shadow:
+    0 8px 25px rgba(109, 40, 217, 0.08);
+}
+
+.study-notes-header {
+  padding: 20px 25px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #fce7f3
+    );
+
+  color: #6d28d9;
+
+  font-size: 21px;
+
+  font-weight: 800;
+}
+
+.study-note-item {
+  background: #ffffff;
+
+  margin: 18px;
+
+  padding: 22px;
+
+  border-radius: 15px;
+
+  border: 1px solid #ede9fe;
+
+  box-shadow:
+    0 5px 15px rgba(79, 70, 229, 0.06);
+}
+
+.study-note-item h5 {
+  color: #1e1b4b;
+
+  font-weight: 800;
+}
+
+.study-note-item p {
+  color: #64748b;
+}
+
+
+/* =========================================================
+   RESOURCE SECTION
+========================================================= */
+
+.resources-section {
+  background: #ffffff;
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin-bottom: 30px;
+}
+
+.resources-header {
+  background:
+    linear-gradient(
+      135deg,
+      #dcfce7,
+      #dbeafe
+    );
+
+  color: #166534;
+
+  padding: 20px 25px;
+
+  font-weight: 800;
+
+  font-size: 21px;
+}
+
+
+/* =========================================================
+   QUIZ SECTION
+========================================================= */
+
+.quiz-section {
+  margin-top: 35px;
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  border: 1px solid #ddd6fe;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 30px rgba(109, 40, 217, 0.10);
+}
+
+
+/* Quiz title */
+
+.quiz-header {
+  padding: 25px 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d28d9,
+      #4f46e5,
+      #ec4899
+    );
+
+  color: #ffffff;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+.quiz-header h3 {
+  color: #ffffff;
+
+  margin: 0;
+
+  font-size: 27px;
+
+  font-weight: 800;
+}
+
+.quiz-header p {
+  color: rgba(255,255,255,.9);
+
+  margin: 6px 0 0;
+}
+
+
+/* Quiz content */
+
+.quiz-body {
+  padding: 28px;
+
+  background: #ffffff;
+}
+
+
+/* Quiz card */
+
+.quiz-card {
+  background:
+    linear-gradient(
+      135deg,
+      #faf5ff,
+      #eff6ff
+    );
+
+  border: 1px solid #ddd6fe;
+
+  border-radius: 16px;
+
+  padding: 22px;
+
+  margin-bottom: 15px;
+}
+
+.quiz-card h5 {
+  color: #312e81;
+
+  font-weight: 800;
+}
+
+.quiz-card p {
+  color: #475569;
+}
+
+
+/* Start quiz */
+
+.start-quiz-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed,
+      #ec4899
+    );
+
+  color: #ffffff !important;
+
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 13px 25px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 20px rgba(109, 40, 217, 0.25);
+
+  transition: all .2s ease;
+}
+
+.start-quiz-btn:hover {
+  transform: translateY(-2px);
+
+  color: #ffffff !important;
+}
+
+
+/* No quiz */
+
+.no-quiz {
+  background: #e0f2fe;
+
+  color: #075985;
+
+  border: 1px solid #7dd3fc;
+
+  border-radius: 12px;
+
+  padding: 18px 20px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .learning-sidebar {
+    width: 300px;
+  }
+
+  .learning-main {
+    margin-left: 300px;
+
+    padding: 25px;
+  }
+
+  .video-title {
+    font-size: 28px;
+  }
+}
+
+
+@media (max-width: 767px) {
+
+  .learning-sidebar {
+    position: relative;
+
+    width: 100%;
+
+    height: auto;
+
+    max-height: 450px;
+  }
+
+  .learning-main {
+    margin-left: 0;
+
+    height: auto;
+
+    overflow: visible;
+
+    padding: 20px 15px;
+  }
+
+  .video-header-card {
+    padding: 20px;
+  }
+
+  .video-title {
+    font-size: 24px;
+  }
+
+  .lesson-navigation {
+    flex-direction: column;
+  }
+
+  .btn-previous,
+  .btn-next {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .quiz-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+}
+</style>
+</style>

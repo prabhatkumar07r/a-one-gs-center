@@ -1,0 +1,573 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES FORM
+========================================================= */
+
+.admin-ts-form {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.admin-ts-errors {
+  margin-bottom: 20px;
+  padding: 15px 18px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+
+  color: #991b1b;
+
+  font-size: 14px;
+}
+
+.admin-ts-errors strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.admin-ts-errors ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.admin-ts-form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+
+  padding: 24px;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.18);
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.admin-ts-field {
+  min-width: 0;
+}
+
+.admin-ts-field.full {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.admin-ts-field label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.admin-ts-input {
+  display: block;
+
+  width: 100%;
+
+  min-height: 42px;
+
+  padding: 9px 12px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-ts-input:focus {
+  border-color: #7c3aed;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, 0.10);
+}
+
+.admin-ts-input::placeholder {
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+select.admin-ts-input {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.admin-ts-textarea {
+  min-height: 140px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.admin-ts-checkbox {
+  width: 18px;
+  height: 18px;
+
+  margin-top: 8px;
+
+  accent-color: #7c3aed;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   CURRENT IMAGE
+========================================================= */
+
+.admin-ts-current-image {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 12px;
+
+  padding: 10px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 8px;
+}
+
+.admin-ts-current-image img {
+  width: 70px;
+  height: 50px;
+
+  object-fit: cover;
+
+  border-radius: 6px;
+
+  border: 1px solid #e2e8f0;
+}
+
+.admin-ts-current-image span {
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.admin-ts-form-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+
+/* =========================================================
+   LIGHT BUTTON
+========================================================= */
+
+.admin-ts-btn-light {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  color: #475569;
+
+  box-shadow:
+    0 3px 10px rgba(15, 23, 42, 0.08);
+}
+
+.admin-ts-btn-light:hover {
+  background: #f8fafc;
+
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-ts-form-grid {
+    grid-template-columns: 1fr;
+
+    padding: 18px;
+
+    gap: 15px;
+  }
+
+  .admin-ts-field.full {
+    grid-column: auto;
+  }
+
+  .admin-ts-form-actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .admin-ts-form-actions .admin-ts-btn {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .admin-ts-form-grid {
+    padding: 14px;
+  }
+
+  .admin-ts-input {
+    font-size: 13px;
+  }
+
+}
+</style>
+
+
+<%= form_with(
+      model: [:admin, @test_series],
+      local: true,
+      html: {
+        multipart: true,
+        class: "admin-ts-form"
+      }
+    ) do |form| %>
+
+
+  <% if @test_series.errors.any? %>
+
+    <div class="admin-ts-errors">
+
+      <strong>
+        <%= pluralize(
+              @test_series.errors.count,
+              "error"
+            ) %> prevented saving:
+      </strong>
+
+      <ul>
+        <% @test_series.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <div class="admin-ts-form-grid">
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :title, "Test Series Title" %>
+
+      <%= form.text_field :title,
+            class: "admin-ts-input",
+            placeholder: "Enter test series title",
+            required: true %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :exam_name, "Exam Name" %>
+
+      <%= form.text_field :exam_name,
+            class: "admin-ts-input",
+            placeholder: "SSC / BPSC / UPSC" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :language, "Language" %>
+
+      <%= form.select :language,
+            [
+              ["English", "English"],
+              ["Hindi", "Hindi"],
+              ["English/Hindi", "English/Hindi"]
+            ],
+            { include_blank: "Select Language" },
+            class: "admin-ts-input" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :mode, "Mode" %>
+
+      <%= form.select :mode,
+            [
+              ["Online", "Online"],
+              ["Offline", "Offline"]
+            ],
+            { include_blank: "Select Mode" },
+            class: "admin-ts-input" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :status, "Status" %>
+
+      <%= form.select :status,
+            [
+              ["Active", "Active"],
+              ["Inactive", "Inactive"]
+            ],
+            {},
+            class: "admin-ts-input" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :original_price, "Original Price" %>
+
+      <%= form.number_field :original_price,
+            class: "admin-ts-input",
+            step: "0.01",
+            min: 0,
+            id: "adminOriginalPrice" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :price, "Selling Price" %>
+
+      <%= form.number_field :price,
+            class: "admin-ts-input",
+            step: "0.01",
+            min: 0,
+            id: "adminSellingPrice" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :discount, "Discount (%)" %>
+
+      <%= form.number_field :discount,
+            class: "admin-ts-input",
+            step: "1",
+            min: 0,
+            readonly: true,
+            id: "adminDiscount" %>
+
+    </div>
+
+
+    <div class="admin-ts-field">
+
+      <%= form.label :registration_ended,
+                    "Registration Ended" %>
+
+      <%= form.check_box :registration_ended,
+            class: "admin-ts-checkbox" %>
+
+    </div>
+
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :description, "Description" %>
+
+      <%= form.text_area :description,
+            class: "admin-ts-input admin-ts-textarea",
+            rows: 6,
+            placeholder: "Enter test series description" %>
+
+    </div>
+
+
+    <div class="admin-ts-field full">
+
+      <%= form.label :image, "Test Series Image" %>
+
+      <%= form.file_field :image,
+            class: "admin-ts-input",
+            accept: "image/*" %>
+
+
+      <% if @test_series.image.attached? %>
+
+        <div class="admin-ts-current-image">
+
+          <%= image_tag @test_series.image,
+                alt: @test_series.title %>
+
+          <span>
+            Current image
+          </span>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <div class="admin-ts-form-actions">
+
+    <%= form.submit(
+          @test_series.persisted? ?
+            "Update Test Series" :
+            "Create Test Series",
+          class: "admin-ts-btn admin-ts-btn-primary"
+        ) %>
+
+    <%= link_to "Cancel",
+                @test_series.persisted? ?
+                  admin_test_series_path(@test_series) :
+                  admin_test_series_index_path,
+                class: "admin-ts-btn admin-ts-btn-light" %>
+
+  </div>
+
+<% end %>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const original =
+    document.getElementById("adminOriginalPrice");
+
+  const selling =
+    document.getElementById("adminSellingPrice");
+
+  const discount =
+    document.getElementById("adminDiscount");
+
+  function calculateDiscount() {
+
+    if (!original || !selling || !discount) {
+      return;
+    }
+
+    const originalValue =
+      parseFloat(original.value) || 0;
+
+    const sellingValue =
+      parseFloat(selling.value) || 0;
+
+    if (
+      originalValue > 0 &&
+      sellingValue >= 0 &&
+      sellingValue <= originalValue
+    ) {
+
+      discount.value =
+        Math.round(
+          ((originalValue - sellingValue) /
+            originalValue) * 100
+        );
+
+    } else {
+
+      discount.value = 0;
+
+    }
+  }
+
+  original?.addEventListener(
+    "input",
+    calculateDiscount
+  );
+
+  selling?.addEventListener(
+    "input",
+    calculateDiscount
+  );
+
+  calculateDiscount();
+
+});
+</script>

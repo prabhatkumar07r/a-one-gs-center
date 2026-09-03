@@ -1,0 +1,1552 @@
+<div class="admin-question-show">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
+  <div class="question-header">
+
+    <div>
+
+      <div class="breadcrumb">
+
+        <span>Admin Panel</span>
+        <i class="fas fa-chevron-right"></i>
+
+        <span>Courses</span>
+        <i class="fas fa-chevron-right"></i>
+
+        <span>Quizzes</span>
+        <i class="fas fa-chevron-right"></i>
+
+        <span>Question</span>
+
+      </div>
+
+
+      <h1>
+        <i class="fas fa-circle-question"></i>
+        Question Details
+      </h1>
+
+
+      <p>
+        Review question, marks and answer options.
+      </p>
+
+    </div>
+
+
+    <div class="header-buttons">
+
+      <%= link_to admin_course_quiz_questions_path(
+                    @course,
+                    @quiz
+                  ),
+                  class: "glass-btn secondary" do %>
+
+        <i class="fas fa-arrow-left"></i>
+        All Questions
+
+      <% end %>
+
+
+      <%= link_to edit_admin_course_quiz_question_path(
+                    @course,
+                    @quiz,
+                    @question
+                  ),
+                  class: "glass-btn primary" do %>
+
+        <i class="fas fa-pen"></i>
+        Edit Question
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       QUIZ INFORMATION
+  ========================================================== -->
+
+  <div class="info-grid">
+
+    <div class="info-card">
+
+      <div class="info-icon purple">
+
+        <i class="fas fa-book-open"></i>
+
+      </div>
+
+      <div>
+
+        <span>Course</span>
+
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <div class="info-icon blue">
+
+        <i class="fas fa-clipboard-question"></i>
+
+      </div>
+
+      <div>
+
+        <span>Quiz</span>
+
+        <strong>
+          <%= @quiz.title %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <div class="info-icon orange">
+
+        <i class="fas fa-star"></i>
+
+      </div>
+
+      <div>
+
+        <span>Marks</span>
+
+        <strong>
+
+          <%= @question.marks %>
+
+          <%= @question.marks.to_f == 1 ? "Mark" : "Marks" %>
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="info-card">
+
+      <div class="info-icon green">
+
+        <i class="fas fa-list-ol"></i>
+
+      </div>
+
+      <div>
+
+        <span>Position</span>
+
+        <strong>
+          Question <%= @question.position %>
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MAIN QUESTION
+  ========================================================== -->
+
+  <div class="question-main-card">
+
+    <div class="card-heading">
+
+      <div class="heading-icon">
+
+        <i class="fas fa-pen"></i>
+
+      </div>
+
+      <div>
+
+        <h2>
+          Question
+        </h2>
+
+        <span>
+          Question <%= @question.position %>
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="question-body">
+
+      <div class="question-number">
+
+        Q<%= @question.position %>
+
+      </div>
+
+
+      <div class="question-text">
+
+        <%= simple_format(@question.question_text) %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       ANSWER OPTIONS
+  ========================================================== -->
+
+  <div class="options-card">
+
+    <div class="options-header">
+
+      <div>
+
+        <h2>
+
+          <i class="fas fa-list-check"></i>
+
+          Answer Options
+
+        </h2>
+
+        <p>
+          Review all available answers and the selected correct answer.
+        </p>
+
+      </div>
+
+
+      <div class="option-count">
+
+        <%= @options.count %>
+
+        <span>
+          <%= @options.count == 1 ? "Option" : "Options" %>
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="options-list">
+
+      <% @options.each_with_index do |option, index| %>
+
+        <div class="answer-row
+                    <%= "correct-answer" if option.is_correct? %>">
+
+          <!-- OPTION LETTER -->
+
+          <div class="option-letter">
+
+            <%= ('A'.ord + index).chr %>
+
+          </div>
+
+
+          <!-- OPTION CONTENT -->
+
+          <div class="option-content">
+
+            <div class="option-label">
+
+              Option
+              <%= ('A'.ord + index).chr %>
+
+            </div>
+
+            <div class="option-text">
+
+              <%= option.option_text %>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <% if option.is_correct? %>
+
+            <div class="answer-status correct">
+
+              <i class="fas fa-circle-check"></i>
+
+              Correct Answer
+
+            </div>
+
+          <% else %>
+
+            <div class="answer-status normal">
+
+              <i class="far fa-circle"></i>
+
+              Answer Option
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       QUESTION STATUS
+  ========================================================== -->
+
+  <div class="verification-card">
+
+    <div class="verification-icon">
+
+      <i class="fas fa-shield-check"></i>
+
+    </div>
+
+
+    <div class="verification-content">
+
+      <h3>
+        Question Verification
+      </h3>
+
+      <% correct_count =
+           @options.count { |option| option.is_correct? } %>
+
+
+      <% if correct_count == 1 %>
+
+        <p class="success-text">
+
+          <i class="fas fa-check-circle"></i>
+
+          This question has exactly one correct answer.
+
+        </p>
+
+      <% elsif correct_count == 0 %>
+
+        <p class="warning-text">
+
+          <i class="fas fa-triangle-exclamation"></i>
+
+          This question currently has no correct answer.
+
+        </p>
+
+      <% else %>
+
+        <p class="danger-text">
+
+          <i class="fas fa-circle-exclamation"></i>
+
+          This question has
+          <%= correct_count %>
+          correct answers. Only one should be selected.
+
+        </p>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       ACTIONS
+  ========================================================== -->
+
+  <div class="bottom-actions">
+
+    <%= link_to admin_course_quiz_questions_path(
+                  @course,
+                  @quiz
+                ),
+                class: "bottom-btn secondary" do %>
+
+      <i class="fas fa-arrow-left"></i>
+
+      Back to Questions
+
+    <% end %>
+
+
+    <div class="right-actions">
+
+      <%= link_to edit_admin_course_quiz_question_path(
+                    @course,
+                    @quiz,
+                    @question
+                  ),
+                  class: "bottom-btn edit" do %>
+
+        <i class="fas fa-pen"></i>
+
+        Edit
+
+      <% end %>
+
+
+      <%= button_to admin_course_quiz_question_path(
+                      @course,
+                      @quiz,
+                      @question
+                    ),
+                    method: :delete,
+                    class: "bottom-btn delete",
+                    form: {
+                      data: {
+                        turbo_confirm:
+                          "Are you sure you want to delete this question?"
+                      }
+                    } do %>
+
+        <i class="fas fa-trash"></i>
+
+        Delete
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     DESIGN
+========================================================== -->
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.admin-question-show {
+
+  min-height: 100vh;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(63,82,251,.07),
+      rgba(124,58,237,.05),
+      rgba(255,255,255,.82)
+    );
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.question-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 25px;
+
+  margin-bottom: 28px;
+
+}
+
+
+.breadcrumb {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #858b9a;
+
+  font-size: 12px;
+
+  margin-bottom: 10px;
+
+}
+
+
+.breadcrumb i {
+
+  font-size: 9px;
+
+  color: #b5bac5;
+
+}
+
+
+.question-header h1 {
+
+  margin: 0;
+
+  color: #272c3c;
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+}
+
+
+.question-header h1 i {
+
+  color: #3f52fb;
+
+  margin-right: 8px;
+
+}
+
+
+.question-header p {
+
+  color: #7c8291;
+
+  margin: 7px 0 0;
+
+}
+
+
+.header-buttons {
+
+  display: flex;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.glass-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 11px 17px;
+
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 650;
+
+  transition: .2s ease;
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+}
+
+
+.glass-btn.primary {
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3f52fb,
+      #7157e8
+    );
+
+  box-shadow:
+    0 8px 20px rgba(63,82,251,.18);
+
+}
+
+
+.glass-btn.primary:hover {
+
+  color: white;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(63,82,251,.25);
+
+}
+
+
+.glass-btn.secondary {
+
+  color: #555b6b;
+
+  background:
+    rgba(255,255,255,.62);
+
+  border:
+    1px solid rgba(100,110,130,.14);
+
+}
+
+
+.glass-btn.secondary:hover {
+
+  color: #3f52fb;
+
+  background:
+    rgba(255,255,255,.9);
+
+}
+
+
+/* =========================================================
+   INFO GRID
+========================================================= */
+
+.info-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 15px;
+
+  margin-bottom: 22px;
+
+}
+
+
+.info-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 17px;
+
+  border-radius: 17px;
+
+  background:
+    rgba(255,255,255,.62);
+
+  border:
+    1px solid rgba(255,255,255,.82);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 7px 25px rgba(45,55,90,.06);
+
+}
+
+
+.info-icon {
+
+  width: 45px;
+
+  height: 45px;
+
+  min-width: 45px;
+
+  border-radius: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+
+.info-icon.purple {
+
+  background:
+    rgba(124,58,237,.11);
+
+  color:
+    #7c3aed;
+
+}
+
+
+.info-icon.blue {
+
+  background:
+    rgba(63,82,251,.11);
+
+  color:
+    #3f52fb;
+
+}
+
+
+.info-icon.orange {
+
+  background:
+    rgba(245,158,11,.12);
+
+  color:
+    #f59e0b;
+
+}
+
+
+.info-icon.green {
+
+  background:
+    rgba(25,135,84,.11);
+
+  color:
+    #198754;
+
+}
+
+
+.info-card span {
+
+  display: block;
+
+  color: #858b9a;
+
+  font-size: 11px;
+
+  margin-bottom: 3px;
+
+}
+
+
+.info-card strong {
+
+  display: block;
+
+  color: #303545;
+
+  font-size: 13px;
+
+}
+
+
+/* =========================================================
+   QUESTION MAIN
+========================================================= */
+
+.question-main-card {
+
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.66);
+
+  border:
+    1px solid rgba(255,255,255,.85);
+
+  backdrop-filter:
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
+
+  box-shadow:
+    0 9px 30px rgba(45,55,90,.07);
+
+  overflow: hidden;
+
+}
+
+
+.card-heading {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 20px 23px;
+
+  border-bottom:
+    1px solid rgba(100,110,130,.09);
+
+}
+
+
+.heading-icon {
+
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.10);
+
+}
+
+
+.card-heading h2 {
+
+  margin: 0;
+
+  font-size: 18px;
+
+  font-weight: 750;
+
+  color: #292e3d;
+
+}
+
+
+.card-heading span {
+
+  color: #888e9c;
+
+  font-size: 11px;
+
+}
+
+
+.question-body {
+
+  display: flex;
+
+  gap: 18px;
+
+  padding: 28px 25px;
+
+}
+
+
+.question-number {
+
+  width: 54px;
+
+  height: 54px;
+
+  min-width: 54px;
+
+  border-radius: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: white;
+
+  font-weight: 800;
+
+  font-size: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3f52fb,
+      #7c3aed
+    );
+
+  box-shadow:
+    0 8px 18px rgba(63,82,251,.20);
+
+}
+
+
+.question-text {
+
+  color: #292e3d;
+
+  font-size: 18px;
+
+  font-weight: 650;
+
+  line-height: 1.65;
+
+  flex: 1;
+
+}
+
+
+.question-text p {
+
+  margin: 0;
+
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options-card {
+
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.65);
+
+  border:
+    1px solid rgba(255,255,255,.85);
+
+  backdrop-filter:
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
+
+  box-shadow:
+    0 9px 30px rgba(45,55,90,.07);
+
+  overflow: hidden;
+
+}
+
+
+.options-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 20px 23px;
+
+  border-bottom:
+    1px solid rgba(100,110,130,.09);
+
+}
+
+
+.options-header h2 {
+
+  margin: 0;
+
+  color: #292e3d;
+
+  font-size: 18px;
+
+  font-weight: 750;
+
+}
+
+
+.options-header h2 i {
+
+  color: #3f52fb;
+
+  margin-right: 7px;
+
+}
+
+
+.options-header p {
+
+  margin: 5px 0 0;
+
+  color: #858b9a;
+
+  font-size: 12px;
+
+}
+
+
+.option-count {
+
+  padding: 8px 13px;
+
+  border-radius: 20px;
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.09);
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+}
+
+
+.option-count span {
+
+  font-weight: 500;
+
+}
+
+
+/* =========================================================
+   OPTIONS LIST
+========================================================= */
+
+.options-list {
+
+  padding: 20px;
+
+}
+
+
+.answer-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px;
+
+  margin-bottom: 10px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(247,248,252,.75);
+
+  border:
+    1px solid rgba(100,110,130,.08);
+
+  transition: .2s ease;
+
+}
+
+
+.answer-row:last-child {
+
+  margin-bottom: 0;
+
+}
+
+
+.answer-row:hover {
+
+  transform:
+    translateX(2px);
+
+  background:
+    rgba(255,255,255,.9);
+
+}
+
+
+.answer-row.correct-answer {
+
+  background:
+    rgba(25,135,84,.065);
+
+  border-color:
+    rgba(25,135,84,.25);
+
+}
+
+
+.option-letter {
+
+  width: 38px;
+
+  height: 38px;
+
+  min-width: 38px;
+
+  border-radius: 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.10);
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+}
+
+
+.correct-answer .option-letter {
+
+  color: #198754;
+
+  background:
+    rgba(25,135,84,.13);
+
+}
+
+
+.option-content {
+
+  flex: 1;
+
+  min-width: 0;
+
+}
+
+
+.option-label {
+
+  color: #8a909d;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: .4px;
+
+  font-weight: 700;
+
+  margin-bottom: 3px;
+
+}
+
+
+.option-text {
+
+  color: #414756;
+
+  font-size: 14px;
+
+  line-height: 1.45;
+
+  word-break: break-word;
+
+}
+
+
+.answer-status {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+}
+
+
+.answer-status.correct {
+
+  color: #198754;
+
+}
+
+
+.answer-status.normal {
+
+  color: #9298a5;
+
+}
+
+
+/* =========================================================
+   VERIFICATION
+========================================================= */
+
+.verification-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px 20px;
+
+  margin-bottom: 22px;
+
+  border-radius: 17px;
+
+  background:
+    rgba(255,255,255,.60);
+
+  border:
+    1px solid rgba(255,255,255,.8);
+
+  backdrop-filter:
+    blur(12px);
+
+}
+
+
+.verification-icon {
+
+  width: 45px;
+
+  height: 45px;
+
+  min-width: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.10);
+
+}
+
+
+.verification-content h3 {
+
+  margin: 0 0 5px;
+
+  color: #303545;
+
+  font-size: 14px;
+
+}
+
+
+.verification-content p {
+
+  margin: 0;
+
+  font-size: 12px;
+
+}
+
+
+.success-text {
+
+  color: #198754;
+
+}
+
+
+.warning-text {
+
+  color: #b77900;
+
+}
+
+
+.danger-text {
+
+  color: #dc3545;
+
+}
+
+
+/* =========================================================
+   BOTTOM ACTIONS
+========================================================= */
+
+.bottom-actions {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+}
+
+
+.right-actions {
+
+  display: flex;
+
+  gap: 10px;
+
+}
+
+
+.bottom-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 11px 17px;
+
+  border-radius: 11px;
+
+  border: 1px solid transparent;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+
+}
+
+
+.bottom-btn.secondary {
+
+  color: #555b6b;
+
+  background:
+    rgba(255,255,255,.65);
+
+  border-color:
+    rgba(100,110,130,.14);
+
+}
+
+
+.bottom-btn.edit {
+
+  color: #b77900;
+
+  background:
+    rgba(245,158,11,.10);
+
+  border-color:
+    rgba(245,158,11,.18);
+
+}
+
+
+.bottom-btn.delete {
+
+  color: #dc3545;
+
+  background:
+    rgba(220,53,69,.08);
+
+  border-color:
+    rgba(220,53,69,.16);
+
+}
+
+
+.bottom-btn:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(45,55,90,.08);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .info-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .admin-question-show {
+
+    padding: 18px;
+
+  }
+
+
+  .question-header {
+
+    flex-direction: column;
+
+  }
+
+
+  .header-buttons {
+
+    width: 100%;
+
+  }
+
+
+  .glass-btn {
+
+    flex: 1;
+
+    justify-content: center;
+
+  }
+
+
+  .info-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .question-body {
+
+    padding: 20px;
+
+  }
+
+
+  .answer-row {
+
+    flex-wrap: wrap;
+
+  }
+
+
+  .answer-status {
+
+    width: 100%;
+
+    padding-left: 52px;
+
+  }
+
+
+  .bottom-actions {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .right-actions {
+
+    width: 100%;
+
+  }
+
+
+  .bottom-btn {
+
+    flex: 1;
+
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .question-header h1 {
+
+    font-size: 24px;
+
+  }
+
+
+  .question-body {
+
+    flex-direction: column;
+
+  }
+
+
+  .question-text {
+
+    font-size: 16px;
+
+  }
+
+
+  .options-header {
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    flex-direction: column;
+
+  }
+
+}
+
+</style>

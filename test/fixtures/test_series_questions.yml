@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  test_series_test: one
+  question_text: MyText
+  question_type: MyString
+  marks: 9.99
+  position: 1
+
+two:
+  test_series_test: two
+  question_text: MyText
+  question_type: MyString
+  marks: 9.99
+  position: 1

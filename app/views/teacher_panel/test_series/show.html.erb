@@ -1,0 +1,507 @@
+<div class="container-fluid py-4">
+
+  <!-- ==================================================
+       HEADER
+  ================================================== -->
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+    <div>
+      <div class="text-muted small mb-1">
+        Teacher Panel / Test Series
+      </div>
+
+      <h2 class="fw-bold mb-1">
+        <%= @test_series.title %>
+      </h2>
+
+      <div class="text-muted">
+        <%= @test_series.exam_name %>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+
+      <%= link_to teacher_panel_test_series_index_path,
+          class: "btn btn-outline-secondary" do %>
+
+        <i class="fas fa-arrow-left me-1"></i>
+        Back
+
+      <% end %>
+
+      <%= link_to edit_teacher_panel_test_series_path(@test_series),
+          class: "btn btn-primary" do %>
+
+        <i class="fas fa-edit me-1"></i>
+        Edit Series
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       SERIES INFORMATION
+  ================================================== -->
+
+  <div class="row g-4 mb-4">
+
+    <!-- INFORMATION -->
+
+    <div class="col-lg-8">
+
+      <div class="card border-0 shadow-sm h-100">
+
+        <div class="card-body p-4">
+
+          <h5 class="fw-bold mb-3">
+
+            <i class="fas fa-layer-group me-2 text-primary"></i>
+
+            Test Series Information
+
+          </h5>
+
+
+          <p class="text-muted mb-4">
+
+            <%= @test_series.description.presence ||
+                "No description added." %>
+
+          </p>
+
+
+          <div class="row g-3">
+
+            <!-- EXAM -->
+
+            <div class="col-md-4">
+
+              <div class="series-info-box">
+
+                <small>
+                  Exam
+                </small>
+
+                <strong>
+                  <%= @test_series.exam_name %>
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- MODE -->
+
+            <div class="col-md-4">
+
+              <div class="series-info-box">
+
+                <small>
+                  Mode
+                </small>
+
+                <strong>
+                  <%= @test_series.mode %>
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- LANGUAGE -->
+
+            <div class="col-md-4">
+
+              <div class="series-info-box">
+
+                <small>
+                  Language
+                </small>
+
+                <strong>
+                  <%= @test_series.language %>
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         PRICE
+    ================================================== -->
+                 <!-- ==================================================
+     PRICE
+================================================== -->
+
+<div class="col-lg-4">
+
+  <div class="card border-0 shadow-sm h-100">
+
+    <div class="card-body p-4">
+
+      <h6 class="text-muted mb-2">
+        Price
+      </h6>
+
+      <!-- SELLING PRICE -->
+
+      <h2 class="fw-bold text-primary mb-1">
+
+        ₹<%= number_with_precision(
+              @test_series.price,
+              precision: 2
+            ) %>
+
+      </h2>
+
+
+      <!-- ORIGINAL PRICE -->
+
+      <% if @test_series.original_price.present? &&
+            @test_series.price.present? &&
+            @test_series.original_price.to_f > @test_series.price.to_f %>
+
+        <div class="text-muted text-decoration-line-through">
+
+          ₹<%= number_with_precision(
+                @test_series.original_price,
+                precision: 2
+              ) %>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- DISCOUNT -->
+
+      <% if @test_series.discount.to_f > 0 %>
+
+        <div class="mt-3">
+
+          <span class="badge bg-danger fs-6 px-3 py-2">
+
+            <i class="fas fa-tag me-1"></i>
+
+            <%= number_with_precision(
+                  @test_series.discount,
+                  precision: 2,
+                  strip_insignificant_zeros: true
+                ) %>% OFF
+
+          </span>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- STATUS -->
+
+      <div class="mt-3">
+
+        <% if @test_series.status == "Active" %>
+
+          <span class="badge bg-success">
+            Active
+          </span>
+
+        <% else %>
+
+          <span class="badge bg-secondary">
+            <%= @test_series.status %>
+          </span>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- ==================================================
+       TESTS
+  ================================================== -->
+
+  <div class="card border-0 shadow-sm">
+
+    <!-- HEADER -->
+
+    <div class="card-header bg-white border-0 p-4">
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <div>
+
+          <h5 class="fw-bold mb-1">
+
+            <i class="fas fa-file-alt text-primary me-2"></i>
+
+            Tests
+
+          </h5>
+
+          <small class="text-muted">
+            Manage tests included in this test series.
+          </small>
+
+        </div>
+
+
+        <!-- ADD TEST -->
+
+        <%= link_to new_teacher_panel_test_series_test_path(
+              @test_series
+            ),
+            class: "btn btn-primary" do %>
+
+          <i class="fas fa-plus me-1"></i>
+          Add Test
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- TEST BODY -->
+
+    <div class="card-body p-4">
+
+      <% tests =
+           @test_series
+             .test_series_tests
+             .includes(:test_series_questions)
+             .order(test_number: :asc)
+      %>
+
+
+      <% if tests.any? %>
+
+        <div class="row g-4">
+
+          <% tests.each do |test| %>
+
+            <div class="col-xl-4 col-lg-6">
+
+              <div class="test-card h-100">
+
+                <!-- ==================================================
+                     TEST HEADER
+                ================================================== -->
+
+                <div class="d-flex justify-content-between align-items-start mb-3">
+
+                  <div class="test-number">
+
+                    Test <%= test.test_number %>
+
+                  </div>
+
+
+                  <% if test.status == "Active" %>
+
+                    <span class="badge bg-success">
+                      Active
+                    </span>
+
+                  <% else %>
+
+                    <span class="badge bg-secondary">
+                      <%= test.status %>
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+
+                <!-- ==================================================
+                     TITLE
+                ================================================== -->
+
+                <h5 class="fw-bold">
+
+                  <%= test.title %>
+
+                </h5>
+
+
+                <!-- ==================================================
+                     DESCRIPTION
+                ================================================== -->
+
+                <p class="text-muted small">
+
+                  <%= test.description.presence ||
+                      "No description." %>
+
+                </p>
+
+
+                <!-- ==================================================
+                     TEST STATS
+                ================================================== -->
+
+                <div class="test-stats">
+
+                  <!-- QUESTIONS -->
+
+                  <div>
+
+                    <i class="fas fa-question-circle"></i>
+
+                    <span>
+                      <%= test.test_series_questions.size %>
+                    </span>
+
+                    Questions
+
+                  </div>
+
+
+                  <!-- DURATION -->
+
+                  <div>
+
+                    <i class="fas fa-clock"></i>
+
+                    <span>
+                      <%= test.duration %>
+                    </span>
+
+                    Min
+
+                  </div>
+
+
+                  <!-- MARKS -->
+
+                  <div>
+
+                    <i class="fas fa-star"></i>
+
+                    <span>
+                      <%= test.calculated_total_marks.to_f %>
+                    </span>
+
+                    Marks
+
+                  </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div class="d-flex gap-2 mt-4">
+
+                  <!-- MANAGE TEST -->
+
+                  <%= link_to teacher_panel_test_series_test_path(
+                        @test_series,
+                        test
+                      ),
+                      class: "btn btn-primary btn-sm flex-grow-1" do %>
+
+                    <i class="fas fa-eye me-1"></i>
+
+                    Manage Test
+
+                  <% end %>
+
+
+                  <!-- EDIT TEST -->
+
+                  <%= link_to edit_teacher_panel_test_series_test_path(
+                        @test_series,
+                        test
+                      ),
+                      class: "btn btn-outline-primary btn-sm" do %>
+
+                    <i class="fas fa-edit"></i>
+
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+
+      <% else %>
+
+        <!-- ==================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div class="text-center py-5">
+
+          <div class="empty-icon mb-3">
+
+            <i class="fas fa-file-circle-plus"></i>
+
+          </div>
+
+
+          <h5 class="fw-bold">
+            No Tests Added
+          </h5>
+
+
+          <p class="text-muted">
+
+            Start by creating the first test
+            for this series.
+
+          </p>
+
+
+          <!-- CREATE FIRST TEST -->
+
+          <%= link_to new_teacher_panel_test_series_test_path(
+                @test_series
+              ),
+              class: "btn btn-primary" do %>
+
+            <i class="fas fa-plus me-1"></i>
+
+            Create First Test
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

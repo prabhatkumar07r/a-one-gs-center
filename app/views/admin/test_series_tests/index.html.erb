@@ -1,0 +1,467 @@
+<style>
+  /* =========================================================
+   ADMIN TEST SERIES — TESTS INDEX
+   ========================================================= */
+
+.admin-ts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* =========================================================
+   TEST CARD
+   ========================================================= */
+
+.admin-ts-list-item {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+
+  padding: 18px 20px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+
+  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-ts-list-item:hover {
+  transform: translateY(-1px);
+  border-color: #d9d6ff;
+  box-shadow: 0 7px 20px rgba(25, 25, 50, 0.07);
+}
+
+/* =========================================================
+   TEST NUMBER
+   ========================================================= */
+
+.admin-ts-list-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  color: #4f46e5;
+  background: #f2f1ff;
+
+  border: 1px solid #ddd9ff;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   TEST CONTENT
+   ========================================================= */
+
+.admin-ts-list-content {
+  min-width: 0;
+}
+
+.admin-ts-list-content h3 {
+  margin: 0 0 6px;
+
+  color: #202033;
+
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+
+  word-break: break-word;
+}
+
+.admin-ts-list-content p {
+  margin: 0 0 12px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+  line-height: 1.55;
+
+  word-break: break-word;
+}
+
+/* =========================================================
+   META INFORMATION
+   ========================================================= */
+
+.admin-ts-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-ts-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 9px;
+
+  color: #6b7280;
+  background: #f8f9fc;
+
+  border: 1px solid #e7e9ef;
+  border-radius: 6px;
+
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-ts-meta span i {
+  color: #6366f1;
+  font-size: 11px;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.admin-ts-list-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+
+  white-space: nowrap;
+}
+
+.admin-ts-list-actions form {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-ts-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+  padding: 7px 11px;
+
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* View */
+
+.admin-ts-action.view {
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.admin-ts-action.view:hover {
+  color: #1d4ed8;
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+/* Edit */
+
+.admin-ts-action.edit {
+  color: #4f46e5;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+}
+
+.admin-ts-action.edit:hover {
+  color: #4338ca;
+  background: #ede9fe;
+  border-color: #c4b5fd;
+}
+
+/* Delete */
+
+.admin-ts-action.delete {
+  color: #dc2626;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+
+  cursor: pointer;
+}
+
+.admin-ts-action.delete:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.admin-ts-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 240px;
+  padding: 35px 20px;
+
+  background: #ffffff;
+  border: 1px dashed #d9dce5;
+  border-radius: 13px;
+
+  text-align: center;
+}
+
+.admin-ts-empty i {
+  margin-bottom: 13px;
+
+  color: #a5a9b8;
+  font-size: 34px;
+}
+
+.admin-ts-empty h3 {
+  margin: 0 0 6px;
+
+  color: #303044;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.admin-ts-empty p {
+  margin: 0;
+
+  color: #7b8194;
+  font-size: 13px;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-ts-list-item {
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .admin-ts-list-actions {
+    grid-column: 2;
+
+    justify-content: flex-start;
+    padding-top: 2px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .admin-ts-list-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+
+    padding: 15px;
+  }
+
+  .admin-ts-list-number {
+    width: 42px;
+    height: 42px;
+
+    font-size: 13px;
+  }
+
+  .admin-ts-list-content h3 {
+    font-size: 15px;
+  }
+
+  .admin-ts-list-content p {
+    font-size: 12px;
+  }
+
+  .admin-ts-list-actions {
+    grid-column: auto;
+
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+  }
+
+  .admin-ts-list-actions form {
+    width: 100%;
+  }
+
+  .admin-ts-list-actions .admin-ts-action {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+  .admin-ts-meta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-ts-meta span {
+    width: fit-content;
+  }
+
+  .admin-ts-list-actions {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="admin-ts-page">
+
+  <div class="admin-ts-header">
+
+    <div>
+
+      <div class="admin-ts-breadcrumb">
+        <%= link_to "Test Series",
+                    admin_test_series_index_path %>
+        /
+        <%= @test_series.title %>
+        / Tests
+      </div>
+
+      <h1>Tests</h1>
+
+      <p>
+        Manage tests in this Test Series.
+      </p>
+
+    </div>
+
+    <%= link_to new_admin_test_series_test_path(@test_series),
+                class: "admin-ts-btn admin-ts-btn-primary" do %>
+      <i class="fas fa-plus"></i>
+      Add Test
+    <% end %>
+
+  </div>
+
+
+  <div class="admin-ts-list">
+
+    <% if @test_series_tests.any? %>
+
+      <% @test_series_tests.each do |test| %>
+
+        <div class="admin-ts-list-item">
+
+          <div class="admin-ts-list-number">
+            <%= test.test_number %>
+          </div>
+
+          <div class="admin-ts-list-content">
+
+            <h3>
+              <%= test.title %>
+            </h3>
+
+            <p>
+              <%= test.description.presence ||
+                  "No description." %>
+            </p>
+
+            <div class="admin-ts-meta">
+
+              <span>
+                <i class="fas fa-question-circle"></i>
+                <%= test.test_series_questions.size %>
+                Questions
+              </span>
+
+              <span>
+                <i class="fas fa-clock"></i>
+                <%= test.duration %> Minutes
+              </span>
+
+              <span>
+                Status: <%= test.status %>
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="admin-ts-list-actions">
+
+            <%= link_to "View",
+                        admin_test_series_test_path(
+                          @test_series,
+                          test
+                        ),
+                        class: "admin-ts-action view" %>
+
+            <%= link_to "Edit",
+                        edit_admin_test_series_test_path(
+                          @test_series,
+                          test
+                        ),
+                        class: "admin-ts-action edit" %>
+
+            <%= button_to "Delete",
+                          admin_test_series_test_path(
+                            @test_series,
+                            test
+                          ),
+                          method: :delete,
+                          class: "admin-ts-action delete",
+                          form: {
+                            data: {
+                              turbo_confirm:
+                                "Delete this test?"
+                            }
+                          } %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    <% else %>
+
+      <div class="admin-ts-empty">
+        <i class="fas fa-file-alt"></i>
+        <h3>No Tests</h3>
+        <p>Create the first test for this series.</p>
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

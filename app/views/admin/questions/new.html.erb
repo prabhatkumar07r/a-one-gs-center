@@ -1,0 +1,1481 @@
+<div class="admin-question-page">
+
+  <!-- ==================================================
+       HEADER
+  ================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+        Admin Panel
+        <i class="fas fa-chevron-right"></i>
+        Courses
+        <i class="fas fa-chevron-right"></i>
+        Quizzes
+        <i class="fas fa-chevron-right"></i>
+        Add Question
+      </div>
+
+      <h1>
+        <i class="fas fa-circle-question"></i>
+        Add Question
+      </h1>
+
+      <p>
+        Create a new question for
+        <strong><%= @quiz.title %></strong>
+      </p>
+
+    </div>
+
+    <%= link_to admin_course_quiz_path(@course, @quiz),
+                class: "back-btn" do %>
+
+      <i class="fas fa-arrow-left"></i>
+      Back to Quiz
+
+    <% end %>
+
+  </div>
+
+
+  <!-- ==================================================
+       QUIZ INFO
+  ================================================== -->
+
+  <div class="quiz-info">
+
+    <div class="info-item">
+
+      <div class="info-icon course-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+
+      <div>
+        <small>Course</small>
+
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="info-item">
+
+      <div class="info-icon quiz-icon">
+        <i class="fas fa-clipboard-question"></i>
+      </div>
+
+      <div>
+        <small>Quiz</small>
+
+        <strong>
+          <%= @quiz.title %>
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       FORM
+  ================================================== -->
+
+  <%= form_with model: [
+                    :admin,
+                    @course,
+                    @quiz,
+                    @question
+                  ],
+                  local: true,
+                  id: "questionForm" do |form| %>
+
+
+    <!-- ==================================================
+         ERRORS
+    ================================================== -->
+
+    <% if @question.errors.any? %>
+
+      <div class="error-box">
+
+        <div class="error-icon">
+          <i class="fas fa-circle-exclamation"></i>
+        </div>
+
+        <div>
+
+          <strong>
+            Please fix the following errors:
+          </strong>
+
+          <ul>
+
+            <% @question.errors.full_messages.each do |message| %>
+
+              <li>
+                <%= message %>
+              </li>
+
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+
+    <!-- ==================================================
+         QUESTION DETAILS
+    ================================================== -->
+
+    <div class="form-card">
+
+      <div class="card-header">
+
+        <div class="header-icon">
+          <i class="fas fa-pen"></i>
+        </div>
+
+        <div>
+
+          <h2>
+            Question Details
+          </h2>
+
+          <p>
+            Enter the question and basic settings.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="card-body">
+
+
+        <!-- QUESTION -->
+
+        <div class="form-group">
+
+          <%= form.label :question_text,
+                         "Question",
+                         class: "form-label" %>
+
+          <%= form.text_area :question_text,
+                             rows: 5,
+                             class: "form-control question-field",
+                             placeholder:
+                             "Enter your question here..." %>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- MARKS -->
+
+          <div class="form-group">
+
+            <%= form.label :marks,
+                           "Marks",
+                           class: "form-label" %>
+
+            <%= form.number_field :marks,
+                                  min: 0.5,
+                                  step: 0.5,
+                                  value: @question.marks || 1,
+                                  class: "form-control" %>
+
+          </div>
+
+
+          <!-- POSITION -->
+
+          <div class="form-group">
+
+            <%= form.label :position,
+                           "Question Position",
+                           class: "form-label" %>
+
+            <%= form.number_field :position,
+                                  min: 1,
+                                  step: 1,
+                                  value:
+                                  @question.position ||
+                                  (
+                                    @quiz.questions
+                                        .maximum(:position)
+                                        .to_i + 1
+                                  ),
+                                  class: "form-control" %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         OPTIONS
+    ================================================== -->
+
+    <div class="form-card">
+
+      <div class="card-header options-header">
+
+        <div class="header-icon green">
+          <i class="fas fa-list-check"></i>
+        </div>
+
+        <div>
+
+          <h2>
+            Answer Options
+          </h2>
+
+          <p>
+            Add four options and select exactly one correct answer.
+          </p>
+
+        </div>
+
+        <span class="option-count">
+          4 Options
+        </span>
+
+      </div>
+
+
+      <div class="card-body">
+
+
+        <div class="instruction">
+
+          <i class="fas fa-circle-info"></i>
+
+          <span>
+            Select exactly one option as the correct answer.
+          </span>
+
+        </div>
+
+
+        <!-- ==================================================
+             NESTED OPTIONS
+        ================================================== -->
+
+        <%= form.fields_for :options do |option_form| %>
+
+          <% index = option_form.index %>
+
+          <div class="option-row"
+               data-option-index="<%= index %>">
+
+
+            <!-- LETTER -->
+
+            <div class="option-letter">
+
+              <%= ('A'.ord + index).chr %>
+
+            </div>
+
+
+            <!-- TEXT -->
+
+            <div class="option-main">
+
+              <%= option_form.label :option_text,
+                                    "Option #{('A'.ord + index).chr}",
+                                    class: "form-label" %>
+
+              <%= option_form.text_field :option_text,
+                                         class: "form-control",
+                                         placeholder:
+                                         "Enter option #{('A'.ord + index).chr}" %>
+
+
+              <%= option_form.hidden_field :position,
+                                           value: index + 1 %>
+
+            </div>
+
+
+            <!-- CORRECT -->
+
+               <div class="correct-option-area">
+
+              <input type="radio"
+                    name="correct_option"
+                     value="<%= index %>"
+                    id="correct_option_<%= index %>"
+                   class="correct-radio">
+
+                  <label for="correct_option_<%= index %>"
+                  class="correct-label">
+
+                      <span class="radio-circle"></span>
+
+                     <span>Correct Answer</span>
+
+                          </label>
+
+                      <%= option_form.hidden_field :is_correct,
+                               value: false,
+                               class: "correct-hidden" %>
+
+                 </div>
+
+          </div>
+
+        <% end %>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         ACTIONS
+    ================================================== -->
+
+    <div class="actions">
+
+      <%= link_to admin_course_quiz_path(
+                    @course,
+                    @quiz
+                  ),
+                  class: "cancel-btn" do %>
+
+        <i class="fas fa-xmark"></i>
+        Cancel
+
+      <% end %>
+
+
+      <%= form.submit "Create Question",
+                      class: "save-btn",
+                      id: "createQuestionBtn" %>
+
+    </div>
+
+
+  <% end %>
+
+</div>
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const radios =
+    document.querySelectorAll(".correct-radio");
+
+  const hiddenFields =
+    document.querySelectorAll(".correct-hidden");
+
+  const optionRows =
+    document.querySelectorAll(".option-row");
+
+
+  radios.forEach(function (radio) {
+
+    radio.addEventListener("change", function () {
+
+      /*
+       * Reset all options
+       */
+
+      hiddenFields.forEach(function (hidden) {
+
+        hidden.value = "false";
+
+      });
+
+
+      optionRows.forEach(function (row) {
+
+        row.classList.remove(
+          "correct-selected"
+        );
+
+      });
+
+
+      /*
+       * Selected option
+       */
+
+      const index =
+        radio.value;
+
+
+      const selectedRow =
+        document.querySelector(
+          '.option-row[data-option-index="' +
+          index +
+          '"]'
+        );
+
+
+      if (selectedRow) {
+
+        selectedRow.classList.add(
+          "correct-selected"
+        );
+
+
+        const hidden =
+          selectedRow.querySelector(
+            ".correct-hidden"
+          );
+
+
+        if (hidden) {
+
+          hidden.value = "true";
+
+        }
+
+      }
+
+    });
+
+  });
+
+
+  /*
+   * ==================================================
+   * FORM VALIDATION
+   * ==================================================
+   */
+
+  const form =
+    document.getElementById(
+      "questionForm"
+    );
+
+
+  if (form) {
+
+    form.addEventListener(
+      "submit",
+      function (event) {
+
+        const selected =
+          document.querySelector(
+            ".correct-radio:checked"
+          );
+
+
+        if (!selected) {
+
+          event.preventDefault();
+
+          alert(
+            "Please select exactly one correct answer."
+          );
+
+          return false;
+
+        }
+
+
+        /*
+         * Ensure only selected option is true
+         */
+
+        hiddenFields.forEach(
+          function (hidden) {
+
+            hidden.value = "false";
+
+          }
+        );
+
+
+        const selectedRow =
+          selected.closest(
+            ".option-row"
+          );
+
+
+        if (selectedRow) {
+
+          const selectedHidden =
+            selectedRow.querySelector(
+              ".correct-hidden"
+            );
+
+
+          if (selectedHidden) {
+
+            selectedHidden.value =
+              "true";
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+});
+
+</script>
+
+
+<!-- ==================================================
+     CSS
+================================================== -->
+
+<style>
+
+.admin-question-page {
+
+  min-height: 100vh;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(63,82,251,.045),
+      rgba(124,58,237,.035),
+      rgba(255,255,255,.92)
+    );
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.page-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+
+}
+
+
+.breadcrumb {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #9298a5;
+
+  font-size: 12px;
+
+  margin-bottom: 9px;
+
+}
+
+
+.breadcrumb i {
+
+  font-size: 8px;
+
+}
+
+
+.page-header h1 {
+
+  margin: 0;
+
+  color: #292e3d;
+
+  font-size: 29px;
+
+  font-weight: 800;
+
+}
+
+
+.page-header h1 i {
+
+  color: #3f52fb;
+
+  margin-right: 8px;
+
+}
+
+
+.page-header p {
+
+  margin: 7px 0 0;
+
+  color: #858b98;
+
+  font-size: 13px;
+
+}
+
+
+/* ==================================================
+   BACK BUTTON
+================================================== */
+
+.back-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 11px 17px;
+
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  color: #5e6472;
+
+  background:
+    rgba(255,255,255,.68);
+
+  border:
+    1px solid rgba(80,90,110,.13);
+
+  backdrop-filter:
+    blur(12px);
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition: .2s ease;
+
+}
+
+
+.back-btn:hover {
+
+  color: #3f52fb;
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+/* ==================================================
+   QUIZ INFO
+================================================== */
+
+.quiz-info {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 14px;
+
+  margin-bottom: 20px;
+
+}
+
+
+.info-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(255,255,255,.64);
+
+  border:
+    1px solid rgba(255,255,255,.85);
+
+  backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 7px 25px rgba(40,50,80,.055);
+
+}
+
+
+.info-icon {
+
+  width: 43px;
+
+  height: 43px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+}
+
+
+.course-icon {
+
+  color: #7c3aed;
+
+  background:
+    rgba(124,58,237,.10);
+
+}
+
+
+.quiz-icon {
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.10);
+
+}
+
+
+.info-item small {
+
+  display: block;
+
+  color: #9298a5;
+
+  font-size: 10px;
+
+  margin-bottom: 3px;
+
+}
+
+
+.info-item strong {
+
+  color: #303545;
+
+  font-size: 13px;
+
+}
+
+
+/* ==================================================
+   FORM CARD
+================================================== */
+
+.form-card {
+
+  margin-bottom: 20px;
+
+  overflow: hidden;
+
+  border-radius: 19px;
+
+  background:
+    rgba(255,255,255,.67);
+
+  border:
+    1px solid rgba(255,255,255,.86);
+
+  backdrop-filter:
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
+
+  box-shadow:
+    0 9px 30px rgba(40,50,80,.065);
+
+}
+
+
+.card-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 19px 22px;
+
+  border-bottom:
+    1px solid rgba(80,90,110,.08);
+
+}
+
+
+.header-icon {
+
+  width: 40px;
+
+  height: 40px;
+
+  min-width: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 11px;
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.10);
+
+}
+
+
+.header-icon.green {
+
+  color: #198754;
+
+  background:
+    rgba(25,135,84,.10);
+
+}
+
+
+.card-header h2 {
+
+  margin: 0;
+
+  color: #292e3d;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+}
+
+
+.card-header p {
+
+  margin: 3px 0 0;
+
+  color: #8c929f;
+
+  font-size: 11px;
+
+}
+
+
+.card-body {
+
+  padding: 23px;
+
+}
+
+
+/* ==================================================
+   FORM
+================================================== */
+
+.form-group {
+
+  margin-bottom: 19px;
+
+}
+
+
+.form-label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #373c4a;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+
+.form-control {
+
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border:
+    1px solid #dfe2e8;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255,255,255,.80);
+
+  color: #303545;
+
+  font-size: 14px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition: .2s ease;
+
+}
+
+
+.form-control:focus {
+
+  border-color: #3f52fb;
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 3px rgba(63,82,251,.10);
+
+}
+
+
+.question-field {
+
+  resize: vertical;
+
+  min-height: 125px;
+
+  line-height: 1.55;
+
+}
+
+
+.form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 18px;
+
+}
+
+
+/* ==================================================
+   OPTIONS
+================================================== */
+
+.options-header {
+
+  position: relative;
+
+}
+
+
+.option-count {
+
+  margin-left: auto;
+
+  padding: 7px 12px;
+
+  border-radius: 20px;
+
+  color: #198754;
+
+  background:
+    rgba(25,135,84,.09);
+
+  font-size: 11px;
+
+  font-weight: 750;
+
+}
+
+
+.instruction {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 12px 14px;
+
+  margin-bottom: 16px;
+
+  border-radius: 11px;
+
+  color: #5f6675;
+
+  background:
+    rgba(63,82,251,.055);
+
+  border:
+    1px solid rgba(63,82,251,.09);
+
+  font-size: 12px;
+
+}
+
+
+.instruction i {
+
+  color: #3f52fb;
+
+}
+
+
+/* ==================================================
+   OPTION ROW
+================================================== */
+
+.option-row {
+
+  display: grid;
+
+  grid-template-columns:
+    44px 1fr 190px;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 15px;
+
+  margin-bottom: 12px;
+
+  border:
+    1px solid #e1e4e9;
+
+  border-radius: 15px;
+
+  background:
+    rgba(249,250,252,.72);
+
+  transition: .2s ease;
+
+}
+
+
+.option-row:last-child {
+
+  margin-bottom: 0;
+
+}
+
+
+.option-row:hover {
+
+  border-color:
+    rgba(63,82,251,.32);
+
+  box-shadow:
+    0 5px 18px rgba(63,82,251,.06);
+
+}
+
+
+.option-row.correct-selected {
+
+  border-color:
+    rgba(25,135,84,.45);
+
+  background:
+    rgba(25,135,84,.055);
+
+}
+
+
+.option-letter {
+
+  width: 40px;
+
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 11px;
+
+  color: #3f52fb;
+
+  background:
+    rgba(63,82,251,.10);
+
+  font-weight: 800;
+
+}
+
+
+.correct-selected .option-letter {
+
+  color: #198754;
+
+  background:
+    rgba(25,135,84,.13);
+
+}
+
+
+.option-main {
+
+  min-width: 0;
+
+}
+
+
+.correct-option-area {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+}
+
+.correct-radio {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.correct-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  color: #707684;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  user-select: none;
+  transition: .2s ease;
+}
+
+.correct-label:hover {
+  color: #198754;
+  background: rgba(25,135,84,.07);
+}
+
+.radio-circle {
+  width: 19px;
+  height: 19px;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+  border: 2px solid #b8bdc6;
+  border-radius: 50%;
+  transition: .2s ease;
+  box-sizing: border-box;
+}
+
+.correct-radio:checked + .correct-label {
+  color: #198754;
+  background: rgba(25,135,84,.08);
+}
+
+.correct-radio:checked + .correct-label .radio-circle {
+  border-color: #198754;
+}
+
+.correct-radio:checked + .correct-label .radio-circle::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  left: 3px;
+  top: 3px;
+  border-radius: 50%;
+  background: #198754;
+}
+/* ==================================================
+   ERROR
+================================================== */
+
+.error-box {
+
+  display: flex;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  margin-bottom: 20px;
+
+  border-radius: 14px;
+
+  color: #842029;
+
+  background:
+    rgba(220,53,69,.07);
+
+  border:
+    1px solid rgba(220,53,69,.17);
+
+}
+
+
+.error-icon {
+
+  color: #dc3545;
+
+  font-size: 20px;
+
+}
+
+
+.error-box strong {
+
+  font-size: 13px;
+
+}
+
+
+.error-box ul {
+
+  margin: 5px 0 0;
+
+  padding-left: 18px;
+
+  font-size: 12px;
+
+}
+
+
+/* ==================================================
+   ACTIONS
+================================================== */
+
+.actions {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding-bottom: 25px;
+
+}
+
+
+.cancel-btn,
+.save-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 46px;
+
+  padding: 0 21px;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  text-decoration: none;
+
+  border: 0;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+
+}
+
+
+.cancel-btn {
+
+  color: #626875;
+
+  background:
+    rgba(255,255,255,.72);
+
+  border:
+    1px solid rgba(80,90,110,.13);
+
+}
+
+
+.save-btn {
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #198754,
+      #20a464
+    );
+
+  box-shadow:
+    0 8px 20px rgba(25,135,84,.18);
+
+}
+
+
+.cancel-btn:hover,
+.save-btn:hover {
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.save-btn:hover {
+
+  box-shadow:
+    0 11px 25px rgba(25,135,84,.25);
+
+}
+
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 900px) {
+
+  .quiz-info {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .option-row {
+
+    grid-template-columns:
+      44px 1fr;
+
+  }
+
+
+  .correct-option-area {
+
+    grid-column: 2;
+
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .admin-question-page {
+
+    padding: 17px;
+
+  }
+
+
+  .page-header {
+
+    flex-direction: column;
+
+  }
+
+
+  .back-btn {
+
+    width: 100%;
+
+  }
+
+
+  .form-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 0;
+
+  }
+
+
+  .option-row {
+
+    grid-template-columns:
+      40px 1fr;
+
+    padding: 12px;
+
+  }
+
+
+  .correct-option-area {
+
+    grid-column: 1 / -1;
+
+  }
+
+
+  .actions {
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+
+  }
+
+
+  .cancel-btn,
+  .save-btn {
+
+    width: 100%;
+
+  }
+
+}
+
+</style>

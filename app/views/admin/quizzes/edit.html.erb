@@ -1,0 +1,566 @@
+<% content_for :show_layout, true %>
+
+<style>
+  .admin-edit-quiz-page {
+    min-height: 100vh;
+    padding: 30px;
+    background: linear-gradient(135deg, #3f52fb 0%, #fc466b 100%);
+  }
+
+  .edit-quiz-container {
+    max-width: 1050px;
+    margin: 0 auto;
+  }
+
+  .edit-quiz-card {
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.28);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 15px 45px rgba(0,0,0,.18);
+  }
+
+  .edit-quiz-header {
+    margin-bottom: 25px;
+  }
+
+  .edit-quiz-header h2 {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .edit-quiz-header p {
+    color: rgba(255,255,255,.75);
+    margin: 0;
+  }
+
+  .course-highlight {
+    color: #ffe082;
+    font-weight: 800;
+  }
+
+  .form-section {
+    margin-bottom: 30px;
+  }
+
+  .section-title {
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+  }
+
+  .quiz-label {
+    display: block;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .required-star {
+    color: #ffe082;
+  }
+
+  .quiz-input,
+  .quiz-select,
+  .quiz-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.3);
+    background: rgba(255,255,255,.94);
+    color: #212529;
+    outline: none;
+  }
+
+  .quiz-input:focus,
+  .quiz-select:focus,
+  .quiz-textarea:focus {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 0 4px rgba(255,255,255,.15);
+  }
+
+  .quiz-textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .video-selection-box {
+    margin-top: 18px;
+    padding: 20px;
+    border-radius: 17px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+
+  .video-selection-box.hidden {
+    display: none;
+  }
+
+  .quiz-type-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 15px;
+  }
+
+  .quiz-type-option input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .quiz-type-label {
+    display: block;
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 17px;
+    border: 1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.1);
+  }
+
+  .quiz-type-option input:checked + .quiz-type-label {
+    background: rgba(255,255,255,.25);
+    border-color: #fff;
+  }
+
+  .quiz-type-icon {
+    display: block;
+    color: #ffe082;
+    font-size: 27px;
+    margin-bottom: 8px;
+  }
+
+  .quiz-type-title {
+    display: block;
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .quiz-type-description {
+    display: block;
+    color: rgba(255,255,255,.7);
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+  .status-box {
+    display: flex;
+    gap: 12px;
+  }
+
+  .status-option {
+    flex: 1;
+  }
+
+  .status-option input {
+    display: none;
+  }
+
+  .status-label {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    padding: 13px;
+    border-radius: 13px;
+    color: #fff;
+    font-weight: 700;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.22);
+  }
+
+  .status-option input:checked + .status-label {
+    background: rgba(255,255,255,.25);
+    border-color: #fff;
+  }
+
+  .quiz-errors {
+    background: rgba(220,53,69,.2);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 15px;
+    padding: 16px;
+    color: #fff;
+    margin-bottom: 25px;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255,255,255,.2);
+  }
+
+  .btn-quiz {
+    border-radius: 13px;
+    padding: 12px 22px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .btn-back {
+    color: #fff;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.3);
+  }
+
+  .btn-update {
+    color: #3f52fb;
+    background: #fff;
+    border: none;
+  }
+
+  @media(max-width:767px) {
+    .admin-edit-quiz-page {
+      padding: 15px;
+    }
+
+    .edit-quiz-card {
+      padding: 20px;
+    }
+
+    .quiz-type-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .status-box,
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn-quiz {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+
+<div class="admin-edit-quiz-page">
+
+  <div class="edit-quiz-container">
+
+    <div class="edit-quiz-card">
+
+      <div class="edit-quiz-header">
+
+        <h2>
+          <i class="fas fa-pen-to-square me-2"></i>
+          Edit Quiz
+        </h2>
+
+        <p>
+          Update quiz for
+          <span class="course-highlight">
+            <%= @course.Course_name %>
+          </span>
+        </p>
+
+      </div>
+
+
+      <% if @quiz.errors.any? %>
+
+        <div class="quiz-errors">
+
+          <strong>
+            Please fix the following errors:
+          </strong>
+
+          <ul class="mb-0">
+
+            <% @quiz.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      <% end %>
+
+
+      <%= form_with model: [:admin, @course, @quiz],
+                    local: true do |f| %>
+
+        <div class="form-section">
+
+          <div class="section-title">
+            <i class="fas fa-circle-info me-2"></i>
+            Basic Information
+          </div>
+
+          <div class="mb-4">
+
+            <%= f.label :title, class: "quiz-label" do %>
+              Quiz Title
+              <span class="required-star">*</span>
+            <% end %>
+
+            <%= f.text_field :title,
+                             class: "quiz-input",
+                             required: true %>
+
+          </div>
+
+
+          <div>
+
+            <%= f.label :description,
+                        "Description",
+                        class: "quiz-label" %>
+
+            <%= f.text_area :description,
+                            class: "quiz-textarea" %>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+          <div class="section-title">
+            <i class="fas fa-layer-group me-2"></i>
+            Quiz Type
+          </div>
+
+
+          <div class="quiz-type-wrapper">
+
+            <div class="quiz-type-option">
+
+              <%= radio_button_tag :quiz_type,
+                                   "course",
+                                   @quiz.video_id.blank?,
+                                   id: "course_level_quiz" %>
+
+              <label for="course_level_quiz"
+                     class="quiz-type-label">
+
+                <span class="quiz-type-icon">
+                  <i class="fas fa-graduation-cap"></i>
+                </span>
+
+                <span class="quiz-type-title">
+                  Course Level Quiz
+                </span>
+
+                <span class="quiz-type-description">
+                  Quiz covers the entire course.
+                </span>
+
+              </label>
+
+            </div>
+
+
+            <div class="quiz-type-option">
+
+              <%= radio_button_tag :quiz_type,
+                                   "video",
+                                   @quiz.video_id.present?,
+                                   id: "video_level_quiz" %>
+
+              <label for="video_level_quiz"
+                     class="quiz-type-label">
+
+                <span class="quiz-type-icon">
+                  <i class="fas fa-video"></i>
+                </span>
+
+                <span class="quiz-type-title">
+                  Video-wise Quiz
+                </span>
+
+                <span class="quiz-type-description">
+                  Quiz belongs to one video.
+                </span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <div id="videoSelectionBox"
+               class="video-selection-box <%= 'hidden' if @quiz.video_id.blank? %>">
+
+            <%= f.label :video_id,
+                        "Select Video",
+                        class: "quiz-label" %>
+
+            <%= f.collection_select :video_id,
+                                    @videos,
+                                    :id,
+                                    :title,
+                                    {
+                                      include_blank: "Select a video..."
+                                    },
+                                    {
+                                      class: "quiz-select",
+                                      id: "quiz_video_id"
+                                    } %>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+          <div class="section-title">
+            <i class="fas fa-sliders me-2"></i>
+            Quiz Settings
+          </div>
+
+
+          <div class="row g-4">
+
+            <div class="col-md-6">
+
+              <%= f.label :time_limit,
+                          class: "quiz-label" do %>
+
+                Time Limit
+                <span class="required-star">*</span>
+
+              <% end %>
+
+              <%= f.number_field :time_limit,
+                                 class: "quiz-input",
+                                 min: 1,
+                                 required: true %>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+              <%= f.label :passing_percentage,
+                          class: "quiz-label" do %>
+
+                Passing Percentage
+                <span class="required-star">*</span>
+
+              <% end %>
+
+              <%= f.number_field :passing_percentage,
+                                 class: "quiz-input",
+                                 min: 0,
+                                 max: 100,
+                                 required: true %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+          <div class="section-title">
+            <i class="fas fa-toggle-on me-2"></i>
+            Status
+          </div>
+
+
+          <div class="status-box">
+
+            <div class="status-option">
+
+              <%= f.radio_button :status, "Active" %>
+
+              <%= f.label :status_active,
+                          "Active",
+                          class: "status-label" %>
+
+            </div>
+
+
+            <div class="status-option">
+
+              <%= f.radio_button :status, "Inactive" %>
+
+              <%= f.label :status_inactive,
+                          "Inactive",
+                          class: "status-label" %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <%= link_to admin_course_quiz_path(@course, @quiz),
+                      class: "btn-quiz btn-back" do %>
+
+            <i class="fas fa-arrow-left me-2"></i>
+            Cancel
+
+          <% end %>
+
+
+          <%= f.button type: "submit",
+                       class: "btn-quiz btn-update" do %>
+
+            <i class="fas fa-save me-2"></i>
+            Update Quiz
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const courseRadio = document.getElementById("course_level_quiz");
+  const videoRadio = document.getElementById("video_level_quiz");
+  const videoBox = document.getElementById("videoSelectionBox");
+  const videoSelect = document.getElementById("quiz_video_id");
+
+  function updateQuizType() {
+
+    if (videoRadio && videoRadio.checked) {
+
+      videoBox.classList.remove("hidden");
+
+      if (videoSelect) {
+        videoSelect.required = true;
+      }
+
+    } else {
+
+      videoBox.classList.add("hidden");
+
+      if (videoSelect) {
+        videoSelect.required = false;
+      }
+
+    }
+  }
+
+  courseRadio?.addEventListener("change", updateQuizType);
+  videoRadio?.addEventListener("change", updateQuizType);
+
+  updateQuizType();
+
+});
+</script>

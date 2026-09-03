@@ -1,0 +1,754 @@
+<style>
+  /* ==================================================
+     TEST DETAIL PAGE
+  ================================================== */
+
+  .ts-test-page {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .ts-breadcrumb {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+  }
+
+  .ts-page-title {
+    font-weight: 700;
+    color: #2f2348;
+    margin-bottom: 4px;
+  }
+
+  .ts-subtitle {
+    color: #777;
+    font-size: 14px;
+  }
+
+  /* ==================================================
+     BUTTONS
+  ================================================== */
+
+  .ts-btn-primary {
+    background: #6f42c1;
+    border-color: #6f42c1;
+    color: #fff;
+    border-radius: 9px;
+    font-weight: 600;
+    padding: 9px 16px;
+    text-decoration: none;
+  }
+
+  .ts-btn-primary:hover {
+    background: #5d35a8;
+    border-color: #5d35a8;
+    color: #fff;
+  }
+
+  .ts-btn-outline {
+    border: 1px solid #ddd;
+    color: #555;
+    background: #fff;
+    border-radius: 9px;
+    padding: 9px 16px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .ts-btn-outline:hover {
+    background: #f7f5ff;
+    color: #6f42c1;
+    border-color: #d9cefa;
+  }
+
+  .ts-small-btn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  /* ==================================================
+     CARDS
+  ================================================== */
+
+  .ts-card {
+    background: #fff;
+    border: 1px solid #ece8f5;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(70, 50, 110, 0.06);
+  }
+
+  .ts-card-header {
+    padding: 20px;
+    border-bottom: 1px solid #eeeaf5;
+  }
+
+  .ts-card-body {
+    padding: 20px;
+  }
+
+  .ts-section-title {
+    color: #2f2348;
+    font-weight: 700;
+  }
+
+  /* ==================================================
+     TEST INFORMATION
+  ================================================== */
+
+  .test-detail-box {
+    background: #f7f5ff;
+    border: 1px solid #e7e1ff;
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .test-detail-box small {
+    display: block;
+    color: #777;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .test-detail-box strong {
+    color: #333;
+    font-size: 18px;
+  }
+
+  /* ==================================================
+     STATUS
+  ================================================== */
+
+  .ts-status-box {
+    background: #faf9ff;
+    border: 1px solid #ece8f5;
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .ts-status-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eaf8ef;
+    color: #198754;
+    border: 1px solid #ccebd8;
+    border-radius: 30px;
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .ts-status-inactive {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f1f1;
+    color: #666;
+    border-radius: 30px;
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ==================================================
+     QUESTION CARD
+  ================================================== */
+
+  .question-card {
+    padding: 20px;
+    border: 1px solid #e8e5f2;
+    border-radius: 14px;
+    background: #fff;
+    transition: 0.2s ease;
+  }
+
+  .question-card:hover {
+    border-color: #d9cefa;
+    box-shadow: 0 4px 15px rgba(111, 66, 193, 0.07);
+  }
+
+  .question-number {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 10px;
+    background: #f0eaff;
+    color: #6f42c1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .question-text {
+    color: #2f2348;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .question-meta {
+    font-size: 13px;
+    color: #777;
+  }
+
+  .question-meta i {
+    color: #6f42c1;
+  }
+
+  /* ==================================================
+     OPTIONS
+  ================================================== */
+
+  .options-list {
+    margin-left: 55px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+  }
+
+  .option-row {
+    padding: 8px 0;
+    color: #555;
+    font-size: 14px;
+  }
+
+  .correct-option {
+    color: #198754;
+    font-weight: 600;
+  }
+
+  .correct-label {
+    display: inline-block;
+    margin-left: 7px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: #eaf8ef;
+    color: #198754;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* ==================================================
+     EMPTY STATE
+  ================================================== */
+
+  .empty-question-state {
+    padding: 55px 20px;
+    text-align: center;
+  }
+
+  .empty-question-icon {
+    font-size: 42px;
+    color: #6f42c1;
+    margin-bottom: 15px;
+  }
+
+  .empty-question-state h5 {
+    color: #2f2348;
+    font-weight: 700;
+  }
+
+  /* ==================================================
+     MOBILE
+  ================================================== */
+
+  @media (max-width: 768px) {
+
+    .ts-card-body,
+    .ts-card-header {
+      padding: 16px;
+    }
+
+    .question-card {
+      padding: 15px;
+    }
+
+    .options-list {
+      margin-left: 0;
+    }
+
+    .question-actions {
+      width: 100%;
+    }
+
+    .question-actions a {
+      flex: 1;
+    }
+
+  }
+</style>
+
+
+<div class="container-fluid py-4 ts-test-page">
+
+  <!-- ==================================================
+       HEADER
+  ================================================== -->
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+    <div>
+
+      <div class="ts-breadcrumb">
+        Teacher Panel /
+        Test Series /
+        <%= @test_series.title %>
+      </div>
+
+      <h2 class="ts-page-title">
+        <%= @test_series_test.title %>
+      </h2>
+
+      <div class="ts-subtitle">
+        Test <%= @test_series_test.test_number %>
+      </div>
+
+    </div>
+
+
+    <div class="d-flex gap-2 flex-wrap">
+
+      <%= link_to teacher_panel_test_series_path(@test_series),
+          class: "ts-btn-outline" do %>
+
+        <i class="fas fa-arrow-left me-1"></i>
+        Back to Series
+
+      <% end %>
+
+
+      <%= link_to edit_teacher_panel_test_series_test_path(
+            @test_series,
+            @test_series_test
+          ),
+          class: "ts-btn-primary" do %>
+
+        <i class="fas fa-edit me-1"></i>
+        Edit Test
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       TEST INFORMATION
+  ================================================== -->
+
+  <div class="row g-4 mb-4">
+
+    <!-- LEFT -->
+
+    <div class="col-lg-8">
+
+      <div class="ts-card h-100">
+
+        <div class="ts-card-body">
+
+          <h5 class="ts-section-title mb-3">
+
+            <i class="fas fa-file-alt me-2"
+               style="color:#6f42c1;"></i>
+
+            Test Information
+
+          </h5>
+
+
+          <p class="text-muted mb-4">
+
+            <%= @test_series_test.description.presence ||
+                "No description added." %>
+
+          </p>
+
+
+          <div class="row g-3">
+
+            <!-- QUESTIONS -->
+
+            <div class="col-md-4">
+
+              <div class="test-detail-box">
+
+                <small>
+                  Questions
+                </small>
+
+                <strong>
+                  <%= @test_series_test.question_count %>
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- MARKS -->
+
+            <div class="col-md-4">
+
+              <div class="test-detail-box">
+
+                <small>
+                  Total Marks
+                </small>
+
+                <strong>
+                  <%= @test_series_test.calculated_total_marks %>
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- DURATION -->
+
+            <div class="col-md-4">
+
+              <div class="test-detail-box">
+
+                <small>
+                  Duration
+                </small>
+
+                <strong>
+                  <%= @test_series_test.duration %>
+                  Minutes
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <div class="col-lg-4">
+
+      <div class="ts-card h-100">
+
+        <div class="ts-card-body">
+
+          <h6 class="text-muted mb-3">
+            Test Status
+          </h6>
+
+
+          <% if @test_series_test.status == "Active" %>
+
+            <span class="ts-status-active">
+
+              <i class="fas fa-circle"
+                 style="font-size:7px;"></i>
+
+              Active
+
+            </span>
+
+          <% else %>
+
+            <span class="ts-status-inactive">
+
+              <i class="fas fa-circle"
+                 style="font-size:7px;"></i>
+
+              <%= @test_series_test.status %>
+
+            </span>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       QUESTIONS
+  ================================================== -->
+
+  <div class="ts-card">
+
+    <!-- HEADER -->
+
+    <div class="ts-card-header">
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <div>
+
+          <h5 class="ts-section-title mb-1">
+
+            <i class="fas fa-question-circle me-2"
+               style="color:#6f42c1;"></i>
+
+            Questions
+
+          </h5>
+
+          <small class="text-muted">
+
+            Manage questions and answer options for this test.
+
+          </small>
+
+        </div>
+
+
+        <!-- ADD QUESTION -->
+
+        <%= link_to new_teacher_panel_test_series_test_question_path(
+              @test_series,
+              @test_series_test
+            ),
+            class: "ts-btn-primary" do %>
+
+          <i class="fas fa-plus me-1"></i>
+          Add Question
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- BODY -->
+
+    <div class="ts-card-body">
+
+      <% if @questions.present? %>
+
+
+        <% @questions.each_with_index do |question, index| %>
+
+          <div class="question-card mb-3">
+
+            <!-- QUESTION HEADER -->
+
+            <div class="d-flex justify-content-between align-items-start gap-3">
+
+              <div class="d-flex gap-3 flex-grow-1">
+
+                <!-- NUMBER -->
+
+                <div class="question-number">
+
+                  <%= index + 1 %>
+
+                </div>
+
+
+                <!-- QUESTION -->
+
+                <div class="flex-grow-1">
+
+                  <h6 class="question-text mb-2">
+
+                    <%= question.question_text %>
+
+                  </h6>
+
+
+                  <div class="question-meta">
+
+                    <span class="me-3">
+
+                      <i class="fas fa-star me-1"></i>
+
+                      <%= question.marks %>
+                      Marks
+
+                    </span>
+
+
+                    <span>
+
+                      <i class="fas fa-list me-1"></i>
+
+                      <%= question.question_type.to_s.humanize %>
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- ACTIONS -->
+
+              <div class="d-flex gap-2 question-actions">
+
+                <!-- VIEW -->
+
+                <%= link_to teacher_panel_test_series_test_question_path(
+                      @test_series,
+                      @test_series_test,
+                      question
+                    ),
+                    class: "btn btn-sm btn-primary ts-small-btn",
+                    title: "View Question" do %>
+
+                  <i class="fas fa-eye"></i>
+
+                <% end %>
+
+
+                <!-- EDIT -->
+
+                <%= link_to edit_teacher_panel_test_series_test_question_path(
+                      @test_series,
+                      @test_series_test,
+                      question
+                    ),
+                    class: "btn btn-sm btn-outline-primary ts-small-btn",
+                    title: "Edit Question" do %>
+
+                  <i class="fas fa-edit"></i>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 OPTIONS
+            ================================================== -->
+
+            <% options = question.test_series_options
+                                 .order(position: :asc) %>
+
+
+            <% if options.any? %>
+
+              <div class="options-list mt-3">
+
+                <% options.each do |option| %>
+
+                  <div class="option-row">
+
+                    <% if option.is_correct? %>
+
+                      <span class="correct-option">
+
+                        <i class="fas fa-check-circle me-1"></i>
+
+                        <%= option.option_text %>
+
+                        <span class="correct-label">
+                          Correct Answer
+                        </span>
+
+                      </span>
+
+                    <% else %>
+
+                      <span>
+
+                        <i class="far fa-circle me-1 text-muted"></i>
+
+                        <%= option.option_text %>
+
+                      </span>
+
+                    <% end %>
+
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            <% else %>
+
+              <div class="options-list mt-3">
+
+                <small class="text-muted">
+
+                  <i class="fas fa-info-circle me-1"></i>
+
+                  No answer options added yet.
+
+                </small>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        <% end %>
+
+
+      <% else %>
+
+        <!-- ==================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div class="empty-question-state">
+
+          <div class="empty-question-icon">
+
+            <i class="fas fa-circle-question"></i>
+
+          </div>
+
+
+          <h5>
+            No Questions Yet
+          </h5>
+
+
+          <p class="text-muted mb-4">
+
+            Add questions to make this test available
+            to students.
+
+          </p>
+
+
+          <%= link_to new_teacher_panel_test_series_test_question_path(
+                @test_series,
+                @test_series_test
+              ),
+              class: "ts-btn-primary" do %>
+
+            <i class="fas fa-plus me-1"></i>
+
+            Add First Question
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
