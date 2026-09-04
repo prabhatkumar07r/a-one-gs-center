@@ -69,10 +69,10 @@ class TestSeriesController < ApplicationController
 
     @languages =
       TestSeries.active
-                 .where.not(language: [nil, ""])
-                 .distinct
-                 .order(:language)
-                 .pluck(:language)
+                .where.not(language: [nil, ""])
+                .distinct
+                .order(:language)
+                .pluck(:language)
   end
 
 
@@ -81,12 +81,10 @@ class TestSeriesController < ApplicationController
   # ==================================================
 
   def show
-
     @test_series =
       TestSeries
         .active
         .find(params[:id])
-
 
     # ------------------------------------------
     # TESTS IN THIS SERIES
@@ -101,7 +99,6 @@ class TestSeriesController < ApplicationController
         )
         .order(test_number: :asc)
 
-
     # ------------------------------------------
     # CURRENT USER PURCHASE
     # ------------------------------------------
@@ -114,7 +111,34 @@ class TestSeriesController < ApplicationController
           payment_status: "paid",
           status: "Active"
         )
-
   end
+
+
+  # ==================================================
+  # INSTRUCTIONS
+  # ==================================================
+
+  def instructions
+  @test_series = TestSeries.active.find(params[:id])
+
+  @test =
+    if params[:test_id].present?
+      @test_series
+        .test_series_tests
+        .active
+        .find(params[:test_id])
+    else
+      @test_series
+        .test_series_tests
+        .active
+        .order(test_number: :asc)
+        .first
+    end
+
+  if @test.nil?
+    redirect_to test_series_path(@test_series),
+                alert: "No active test is available in this series."
+  end
+end
 
 end

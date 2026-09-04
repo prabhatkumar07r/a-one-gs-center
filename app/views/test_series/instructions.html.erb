@@ -1,0 +1,816 @@
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: #f5f7fb;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1f2937;
+  }
+
+  .instructions-page {
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .instructions-wrapper {
+    max-width: 1150px;
+    margin: 0 auto;
+  }
+
+  /* =========================
+     TOP HEADER
+  ========================= */
+
+  .instructions-header {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 30px;
+    margin-bottom: 22px;
+    box-shadow: 0 5px 25px rgba(15, 23, 42, 0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .test-title-area h1 {
+    margin: 0 0 7px;
+    font-size: 25px;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .test-title-area p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .back-series-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    padding: 11px 18px;
+    border-radius: 9px;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .back-series-btn:hover {
+    background: #f9fafb;
+  }
+
+  /* =========================
+     MAIN CARD
+  ========================= */
+
+  .instructions-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 35px rgba(15, 23, 42, 0.08);
+  }
+
+  .instructions-grid {
+    display: grid;
+    grid-template-columns: 38% 62%;
+    min-height: 620px;
+  }
+
+  /* =========================
+     LEFT PANEL
+  ========================= */
+
+  .instructions-visual {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      145deg,
+      #4c1d95 0%,
+      #6d28d9 45%,
+      #7c3aed 100%
+    );
+    color: #ffffff;
+    padding: 50px 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .visual-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .visual-circle.one {
+    width: 260px;
+    height: 260px;
+    top: -80px;
+    right: -80px;
+  }
+
+  .visual-circle.two {
+    width: 190px;
+    height: 190px;
+    bottom: -65px;
+    left: -65px;
+  }
+
+  .visual-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .visual-icon {
+    width: 82px;
+    height: 82px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 28px;
+  }
+
+  .visual-content h2 {
+    font-size: 31px;
+    line-height: 1.2;
+    margin: 0 0 15px;
+    font-weight: 800;
+  }
+
+  .visual-content p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0 0 35px;
+  }
+
+  .visual-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .visual-stat {
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+  }
+
+  .visual-stat strong {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .visual-stat span {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* =========================
+     RIGHT PANEL
+  ========================= */
+
+  .instructions-content {
+    padding: 40px 45px;
+  }
+
+  .content-heading {
+    margin-bottom: 28px;
+  }
+
+  .content-heading h2 {
+    margin: 0 0 8px;
+    font-size: 25px;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .content-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  /* =========================
+     TEST INFO
+  ========================= */
+
+  .test-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .info-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 11px;
+    padding: 15px;
+    background: #fafafa;
+  }
+
+  .info-box .label {
+    display: block;
+    color: #6b7280;
+    font-size: 11px;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .info-box strong {
+    color: #111827;
+    font-size: 18px;
+  }
+
+  /* =========================
+     INSTRUCTIONS
+  ========================= */
+
+  .instruction-section {
+    margin-bottom: 27px;
+  }
+
+  .instruction-section h3 {
+    margin: 0 0 15px;
+    font-size: 17px;
+    color: #111827;
+  }
+
+  .instruction-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .instruction-list li {
+    position: relative;
+    padding-left: 31px;
+    margin-bottom: 13px;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .instruction-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ede9fe;
+    color: #6d28d9;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* =========================
+     LANGUAGE
+  ========================= */
+
+  .language-section {
+    margin-bottom: 25px;
+  }
+
+  .language-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  .language-select {
+    width: 100%;
+    height: 45px;
+    padding: 0 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #374151;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .language-select:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  }
+
+  /* =========================
+     DECLARATION
+  ========================= */
+
+  .declaration-box {
+    padding: 16px;
+    border-radius: 10px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 22px;
+  }
+
+  .declaration-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    cursor: pointer;
+  }
+
+  .declaration-label input {
+    width: 17px;
+    height: 17px;
+    margin-top: 2px;
+    accent-color: #6d28d9;
+    flex-shrink: 0;
+  }
+
+  .declaration-label span {
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  /* =========================
+     START BUTTON
+  ========================= */
+
+  .start-test-btn {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(
+      135deg,
+      #6d28d9,
+      #7c3aed
+    );
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s ease;
+  }
+
+  .start-test-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(109, 40, 217, 0.25);
+  }
+
+  .start-test-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* =========================
+     RESPONSIVE
+  ========================= */
+
+  @media (max-width: 900px) {
+    .instructions-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .instructions-visual {
+      min-height: 400px;
+    }
+
+    .test-info-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .instructions-page {
+      padding: 15px;
+    }
+
+    .instructions-header {
+      padding: 18px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .instructions-content {
+      padding: 25px 20px;
+    }
+
+    .instructions-visual {
+      padding: 35px 25px;
+    }
+
+    .visual-content h2 {
+      font-size: 25px;
+    }
+
+    .test-info-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .visual-stats {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<div class="instructions-page">
+
+  <div class="instructions-wrapper">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="instructions-header">
+
+      <div class="test-title-area">
+
+        <h1>
+          <%= @test.title %>
+        </h1>
+
+        <p>
+          <%= @test_series.title %>
+          <% if @test_series.exam_name.present? %>
+            · <%= @test_series.exam_name %>
+          <% end %>
+        </p>
+
+      </div>
+
+      <%= link_to test_series_path(@test_series),
+          class: "back-series-btn" do %>
+
+        <i class="fas fa-arrow-left"></i>
+        Back to Series
+
+      <% end %>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN CARD
+    ========================== -->
+
+    <div class="instructions-card">
+
+      <div class="instructions-grid">
+
+
+        <!-- =========================
+             LEFT VISUAL
+        ========================== -->
+
+        <div class="instructions-visual">
+
+          <div class="visual-circle one"></div>
+          <div class="visual-circle two"></div>
+
+          <div class="visual-content">
+
+            <div class="visual-icon">
+              <i class="fas fa-clipboard-check"></i>
+            </div>
+
+            <h2>
+              Read the instructions carefully
+            </h2>
+
+            <p>
+              Make sure you understand the test rules before
+              starting. Once you begin the test, the timer will
+              start automatically.
+            </p>
+
+
+            <div class="visual-stats">
+
+              <div class="visual-stat">
+                <strong>
+                  <%= @test.question_count %>
+                </strong>
+                <span>Questions</span>
+              </div>
+
+              <div class="visual-stat">
+                <strong>
+                  <%= @test.duration %> min
+                </strong>
+                <span>Duration</span>
+              </div>
+
+              <div class="visual-stat">
+                <strong>
+                  <%= @test.calculated_total_marks %>
+                </strong>
+                <span>Total Marks</span>
+              </div>
+
+              <div class="visual-stat">
+                <strong>
+                  <%= @test.test_series_questions.first&.marks || 0 %>
+                </strong>
+                <span>Marks / Question</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             RIGHT CONTENT
+        ========================== -->
+
+        <div class="instructions-content">
+
+          <div class="content-heading">
+
+            <h2>
+              Test Instructions
+            </h2>
+
+            <p>
+              Please read all instructions before starting the test.
+            </p>
+
+          </div>
+
+
+          <!-- TEST INFORMATION -->
+
+          <div class="test-info-grid">
+
+            <div class="info-box">
+
+              <span class="label">
+                Questions
+              </span>
+
+              <strong>
+                <%= @test.question_count %>
+              </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+              <span class="label">
+                Time
+              </span>
+
+              <strong>
+                <%= @test.duration %> min
+              </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+              <span class="label">
+                Total Marks
+              </span>
+
+              <strong>
+                <%= @test.calculated_total_marks %>
+              </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+              <span class="label">
+                Language
+              </span>
+
+              <strong>
+                <%= @test_series.language.presence || "English" %>
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- INSTRUCTIONS -->
+
+          <div class="instruction-section">
+
+            <h3>
+              General Instructions
+            </h3>
+
+            <ul class="instruction-list">
+
+              <li>
+                The test contains
+                <strong><%= @test.question_count %></strong>
+                questions.
+              </li>
+
+              <li>
+                The total duration of the test is
+                <strong><%= @test.duration %> minutes</strong>.
+              </li>
+
+              <li>
+                The timer will start as soon as you start the test.
+              </li>
+
+              <li>
+                You can navigate between questions using the
+                question palette.
+              </li>
+
+              <li>
+                You can bookmark questions that you want to review
+                later.
+              </li>
+
+              <li>
+                Your answers are saved when you click
+                <strong>Save & Next</strong>.
+              </li>
+
+              <li>
+                The test will be automatically submitted when the
+                allotted time expires.
+              </li>
+
+              <li>
+                Once the test is submitted, you cannot change your
+                answers.
+              </li>
+
+            </ul>
+
+          </div>
+
+
+          <!-- LANGUAGE -->
+
+          <div class="language-section">
+
+            <label for="test-language">
+              Select Test Language
+            </label>
+
+            <select
+              id="test-language"
+              class="language-select">
+
+              <option value="en"
+                <%= "selected" if @language == "en" %>>
+                English
+              </option>
+
+              <option value="hi"
+                <%= "selected" if @language == "hi" %>>
+                हिन्दी
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- DECLARATION -->
+
+          <div class="declaration-box">
+
+            <label class="declaration-label">
+
+              <input
+                type="checkbox"
+                id="instructionDeclaration">
+
+              <span>
+                I have read and understood all the instructions.
+                I agree to follow the test rules and understand that
+                the test will begin immediately after clicking the
+                start button.
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <!-- START -->
+
+          <%= link_to test_series_test_series_test_path(
+                @test_series,
+                @test,
+                language: @language
+              ),
+              class: "start-test-btn",
+              id: "startTestBtn",
+              style: "pointer-events: none; opacity: 0.5;" do %>
+
+            I am ready to Start
+
+            <i class="fas fa-arrow-right"></i>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const checkbox =
+      document.getElementById("instructionDeclaration");
+
+    const startButton =
+      document.getElementById("startTestBtn");
+
+    const languageSelect =
+      document.getElementById("test-language");
+
+
+    function updateStartButton() {
+
+      if (checkbox.checked) {
+
+        startButton.style.pointerEvents = "auto";
+        startButton.style.opacity = "1";
+
+      } else {
+
+        startButton.style.pointerEvents = "none";
+        startButton.style.opacity = "0.5";
+
+      }
+
+    }
+
+
+    checkbox.addEventListener(
+      "change",
+      updateStartButton
+    );
+
+
+    languageSelect.addEventListener(
+      "change",
+      function () {
+
+        const url =
+          new URL(startButton.href);
+
+        url.searchParams.set(
+          "language",
+          this.value
+        );
+
+        startButton.href =
+          url.toString();
+
+      }
+    );
+
+
+    updateStartButton();
+
+  });
+</script>

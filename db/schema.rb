@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_02_080607) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_04_071240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -428,6 +428,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_080607) do
     t.index ["test_series_question_id"], name: "index_test_series_answers_on_test_series_question_id"
   end
 
+  create_table "test_series_attempt_questions", force: :cascade do |t|
+    t.boolean "bookmarked"
+    t.datetime "created_at", null: false
+    t.bigint "test_series_attempt_id", null: false
+    t.bigint "test_series_question_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_series_attempt_id"], name: "index_test_series_attempt_questions_on_test_series_attempt_id"
+    t.index ["test_series_question_id"], name: "index_test_series_attempt_questions_on_test_series_question_id"
+  end
+
   create_table "test_series_attempts", force: :cascade do |t|
     t.datetime "completed_at"
     t.datetime "created_at", null: false
@@ -593,6 +603,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_080607) do
   add_foreign_key "test_series_answers", "test_series_attempts"
   add_foreign_key "test_series_answers", "test_series_options"
   add_foreign_key "test_series_answers", "test_series_questions"
+  add_foreign_key "test_series_attempt_questions", "test_series_attempts"
+  add_foreign_key "test_series_attempt_questions", "test_series_questions"
   add_foreign_key "test_series_attempts", "test_series_tests"
   add_foreign_key "test_series_attempts", "users"
   add_foreign_key "test_series_options", "test_series_questions"

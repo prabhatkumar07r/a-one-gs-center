@@ -59,52 +59,34 @@ module Admin
     # =========================================================
     # CREATE
     # =========================================================
+def create
+  @playlists = @course.playlists.order(:position)
 
-    def create
+  if video_params[:playlist_id].present?
+    @playlist = @course.playlists.find(video_params[:playlist_id])
 
-      @playlists = @course.playlists.order(:position)
+    @video = @playlist.videos.new(video_params)
+    @video.course = @course
+  else
+    @video = @course.videos.new(video_params)
+  end
 
-      if video_params[:playlist_id].present?
-
-        @playlist = @course.playlists.find(
-          video_params[:playlist_id]
-        )
-
-        @video = @playlist.videos.new(video_params)
-
-      else
-
-        @video = @course.videos.new(video_params)
-
-      end
-
-
-      if @video.save
-
-        if @video.playlist.present?
-
-          redirect_to admin_course_playlist_video_path(
-            @course,
-            @video.playlist,
-            @video
-          ),
-          notice: "Video added successfully."
-
-        else
-
-          redirect_to admin_course_playlists_path(@course),
-            notice: "Video added successfully, but no playlist was assigned."
-
-        end
-
-      else
-
-        render :new,
-               status: :unprocessable_entity
-
-      end
+  if @video.save
+    if @video.playlist.present?
+      redirect_to admin_course_playlist_video_path(
+        @course,
+        @video.playlist,
+        @video
+      ), notice: "Video added successfully."
+    else
+      redirect_to admin_course_playlists_path(
+        @course
+      ), notice: "Video added successfully, but no playlist was assigned."
     end
-
+  else
+    render :new, status: :unprocessable_entity
+  end
+end
 
     # =========================================================
     # EDIT

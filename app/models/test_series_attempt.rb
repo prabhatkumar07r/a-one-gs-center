@@ -10,6 +10,8 @@ class TestSeriesAttempt < ApplicationRecord
   has_many :test_series_answers,
            dependent: :destroy
 
+  has_many :test_series_attempt_questions,
+           dependent: :destroy
 
   # =========================================================
   # SCOPES
@@ -22,7 +24,6 @@ class TestSeriesAttempt < ApplicationRecord
   scope :completed, -> {
     where(status: "Completed")
   }
-
 
   # =========================================================
   # HELPERS

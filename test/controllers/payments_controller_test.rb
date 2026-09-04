@@ -1,39 +1,34 @@
+
 require "test_helper"
 
 class PaymentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @payment = payments(:one)
-    @user = users(:admin)
+    @user = users(:one)
     sign_in @user
   end
 
   test "should show payment" do
-    get payment_url(@payment)
-    assert_response :success
+    get payment_url(@payment.enrollment)
+
+    assert_redirected_to learning_course_path(@payment.enrollment.course)
   end
 
   test "should create payment" do
-    post payments_url, params: {
-      payment: {
-        enrollment_id: @payment.enrollment_id,
-        amount: @payment.amount,
-        razorpay_order_id: @payment.razorpay_order_id,
-        razorpay_payment_id: @payment.razorpay_payment_id,
-        razorpay_signature: @payment.razorpay_signature,
-        status: @payment.status
-      }
-    }
+    post create_payment_url(@payment.enrollment)
 
-    assert_response :success
+    assert_response :redirect
   end
 
   test "should get success" do
-    get success_payment_url(@payment)
+    get payment_success_url(@payment.enrollment)
+
     assert_response :success
   end
 
   test "should get failed" do
-    get failed_payment_url(@payment)
+    get payment_failed_url(@payment.enrollment)
+
     assert_response :success
   end
 end

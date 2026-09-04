@@ -1,7 +1,5 @@
 require "test_helper"
 
-class TestSeriesTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class TestSeriesTestModelTest < ActiveSupport::TestCase
+  # Add model tests here
 end

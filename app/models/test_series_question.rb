@@ -8,19 +8,21 @@ class TestSeriesQuestion < ApplicationRecord
 
   has_many :test_series_options,
            dependent: :destroy
-has_many :test_series_answers,
-         dependent: :destroy         
 
+  has_many :test_series_answers,
+           dependent: :destroy
 
- accepts_nested_attributes_for :test_series_options,
+  has_many :test_series_attempt_questions,
+           dependent: :destroy
+
+  accepts_nested_attributes_for :test_series_options,
                                 allow_destroy: true
 
   # ==================================================
   # VALIDATIONS
   # ==================================================
+
   validates :question_text, presence: true
-  validates :question_text,
-            presence: true
 
   validates :question_type,
             presence: true
@@ -36,7 +38,6 @@ has_many :test_series_answers,
               greater_than: 0
             }
 
-
   # ==================================================
   # SCOPES
   # ==================================================
@@ -44,7 +45,6 @@ has_many :test_series_answers,
   scope :ordered, -> {
     order(position: :asc)
   }
-
 
   # ==================================================
   # HELPERS
@@ -54,7 +54,6 @@ has_many :test_series_answers,
     test_series_options.find_by(is_correct: true)
   end
 
-  
   # ==========================================
   # LANGUAGE HELPERS
   # ==========================================

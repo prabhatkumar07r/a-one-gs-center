@@ -5,95 +5,112 @@ class TestSeriesPurchasesController < ApplicationController
   # ==================================================
   # CREATE TEST SERIES PURCHASE
   # ==================================================
+def create
 
-  def create
+  # ==========================================
+  # FREE TEST SERIES
+  # ==========================================
 
-    # ------------------------------------------
-    # FREE TEST SERIES
-    # ------------------------------------------
+  if @test_series.free?
 
-    if @test_series.free?
-      purchase = current_user.test_series_purchases.find_or_initialize_by(
+    purchase =
+      current_user.test_series_purchases.find_or_initialize_by(
         test_series: @test_series
       )
 
-      purchase.amount = 0
-      purchase.payment_status = "paid"
-      purchase.status = "Active"
+    purchase.amount = 0
+    purchase.payment_status = "paid"
+    purchase.status = "Active"
 
-      if purchase.save
-        redirect_to test_series_path(@test_series),
-                    notice: "Test Series access granted."
-      else
-        redirect_to test_series_path(@test_series),
-                    alert: purchase.errors.full_messages.to_sentence
-      end
-
-      return
-    end
-
-    # ------------------------------------------
-    # ALREADY PURCHASED
-    # ------------------------------------------
-
-    existing_purchase =
-      current_user.test_series_purchases.find_by(
-        test_series: @test_series,
-        payment_status: "paid",
-        status: "Active"
-      )
-
-    if existing_purchase
+    if purchase.save
       redirect_to test_series_path(@test_series),
-                  notice: "You already have access to this Test Series."
-      return
-    end
-
-    # ------------------------------------------
-    # EXISTING PENDING PURCHASE
-    # ------------------------------------------
-
-    existing_purchase =
-      current_user.test_series_purchases
-                  .where(
-                    test_series: @test_series,
-                    payment_status: "pending",
-                    status: "Pending"
-                  )
-                  .order(created_at: :desc)
-                  .first
-
-    if existing_purchase.present? &&
-       existing_purchase.razorpay_order_id.present?
-
+                  notice: "Test Series access granted."
+    else
       redirect_to test_series_path(@test_series),
-                  notice: "A payment is already pending for this Test Series."
-      return
+                  alert: purchase.errors.full_messages.to_sentence
     end
 
-    # ------------------------------------------
-    # CREATE RAZORPAY ORDER
-    # ------------------------------------------
+    return
+  end
 
-    amount = @test_series.price.to_d
 
-    if amount <= 0
-      redirect_to test_series_path(@test_series),
-                  alert: "Invalid Test Series price."
-      return
-    end
+  # ==========================================
+  # ALREADY PURCHASED
+  # ==========================================
 
-    razorpay_order = Razorpay::Order.create(
+  existing_purchase =
+    current_user.test_series_purchases.find_by(
+      test_series: @test_series,
+      payment_status: "paid",
+      status: "Active"
+    )
+
+  if existing_purchase.present?
+
+    redirect_to test_series_path(@test_series),
+                notice: "You already have access to this Test Series."
+
+    return
+  end
+
+
+  # ==========================================
+  # EXISTING PENDING PURCHASE
+  # ==========================================
+
+  existing_purchase =
+    current_user.test_series_purchases
+                .where(
+                  test_series: @test_series,
+                  payment_status: "pending",
+                  status: "Pending"
+                )
+                .order(created_at: :desc)
+                .first
+
+  if existing_purchase.present? &&
+     existing_purchase.razorpay_order_id.present?
+
+    redirect_to test_series_payment_path(existing_purchase),
+                notice: "Continue your pending payment."
+
+    return
+  end
+
+
+  # ==========================================
+  # VALIDATE PRICE
+  # ==========================================
+
+  amount = @test_series.price.to_d
+
+  if amount <= 0
+
+    redirect_to test_series_path(@test_series),
+                alert: "Invalid Test Series price."
+
+    return
+  end
+
+
+  # ==========================================
+  # CREATE RAZORPAY ORDER
+  # ==========================================
+
+  razorpay_order =
+    Razorpay::Order.create(
       amount: (amount * 100).to_i,
       currency: "INR",
       receipt: "test_series_#{@test_series.id}_#{current_user.id}_#{Time.current.to_i}"
     )
 
-    # ------------------------------------------
-    # CREATE PURCHASE RECORD
-    # ------------------------------------------
 
-    purchase = current_user.test_series_purchases.create!(
+  # ==========================================
+  # CREATE PURCHASE
+  # ==========================================
+
+  purchase =
+    current_user.test_series_purchases.create!(
       test_series: @test_series,
       amount: amount,
       payment_status: "pending",
@@ -101,41 +118,41 @@ class TestSeriesPurchasesController < ApplicationController
       razorpay_order_id: razorpay_order.id
     )
 
-    # ------------------------------------------
-    # REDIRECT TO PAYMENT PAGE
-    # ------------------------------------------
 
-    redirect_to test_series_payment_path(purchase)
+  # ==========================================
+  # GO TO PAYMENT PAGE
+  # ==========================================
 
-  rescue Razorpay::Error => e
+  redirect_to test_series_payment_path(purchase)
 
-    Rails.logger.error(
-      "TEST SERIES RAZORPAY ERROR: #{e.message}"
-    )
+rescue Razorpay::Error => e
 
-    redirect_to test_series_path(@test_series),
-                alert: "Unable to create payment. Please try again."
+  Rails.logger.error(
+    "TEST SERIES RAZORPAY ERROR: #{e.message}"
+  )
 
-  rescue ActiveRecord::RecordInvalid => e
+  redirect_to test_series_path(@test_series),
+              alert: "Unable to create payment. Please try again."
 
-    Rails.logger.error(
-      "TEST SERIES PURCHASE ERROR: #{e.message}"
-    )
+rescue ActiveRecord::RecordInvalid => e
 
-    redirect_to test_series_path(@test_series),
-                alert: "Unable to create purchase. Please try again."
+  Rails.logger.error(
+    "TEST SERIES PURCHASE ERROR: #{e.message}"
+  )
 
-  rescue StandardError => e
+  redirect_to test_series_path(@test_series),
+              alert: "Unable to create purchase. Please try again."
 
-    Rails.logger.error(
-      "TEST SERIES PURCHASE ERROR: #{e.class} - #{e.message}"
-    )
+rescue StandardError => e
 
-    redirect_to test_series_path(@test_series),
-                alert: "Something went wrong. Please try again."
-  end
+  Rails.logger.error(
+    "TEST SERIES PURCHASE ERROR: #{e.class} - #{e.message}"
+  )
 
+  redirect_to test_series_path(@test_series),
+              alert: "Something went wrong. Please try again."
 
+end
   # ==================================================
   # PAYMENT PAGE
   # ==================================================

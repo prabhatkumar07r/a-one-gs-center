@@ -3,10 +3,10 @@ class TestSeriesTestsController < ApplicationController
   before_action :set_test_series
   before_action :set_test
   before_action :set_language
-  before_action :set_attempt, only: [:show, :answer, :finish]
+  before_action :set_attempt, only: [:show, :answer, :finish, :bookmark]
 
   # =========================================================
-  # SHOW TEST / QUESTION
+  # SHOW EXAM QUESTION
   # =========================================================
 
   def show
@@ -23,28 +23,72 @@ class TestSeriesTestsController < ApplicationController
       return
     end
 
-    # -------------------------------------------------------
+    # =======================================================
+    # EXAM TIMER
+    # =======================================================
+
+    duration_seconds =
+      @test.duration.to_i * 60
+
+    elapsed_seconds =
+      if @attempt.started_at.present?
+        (Time.current - @attempt.started_at).to_i
+      else
+        0
+      end
+
+    @remaining_seconds =
+      [duration_seconds - elapsed_seconds, 0].max
+
+    # =======================================================
+    # TIME EXPIRED
+    # =======================================================
+
+    if @remaining_seconds <= 0
+      complete_expired_attempt!
+
+      redirect_to test_series_test_series_test_result_path(
+        @test_series,
+        @test,
+        @attempt
+      ),
+      alert: "Time is over. Your test has been submitted."
+
+      return
+    end
+
+    # =======================================================
     # ANSWERED QUESTIONS
-    # -------------------------------------------------------
+    # =======================================================
 
     @answered_question_ids =
       @attempt
         .test_series_answers
         .pluck(:test_series_question_id)
 
-    # -------------------------------------------------------
-    # CURRENT QUESTION
-    # -------------------------------------------------------
 
-    question_number = params[:question].to_i
+
+
+        @bookmarked_question_ids =
+  @attempt
+    .test_series_attempt_questions
+    .where(bookmarked: true)
+    .pluck(:test_series_question_id)
+
+    # =======================================================
+    # CURRENT QUESTION
+    # =======================================================
+
+    question_number =
+      params[:question].to_i
 
     if question_number > 0 &&
        question_number <= @questions.length
 
-      @current_question_index = question_number - 1
+      @current_question_index =
+        question_number - 1
 
     else
-
       unanswered_index =
         @questions.index do |question|
           !@answered_question_ids.include?(question.id)
@@ -56,15 +100,14 @@ class TestSeriesTestsController < ApplicationController
         else
           @questions.length - 1
         end
-
     end
 
     @question =
       @questions[@current_question_index]
 
-    # -------------------------------------------------------
+    # =======================================================
     # CURRENT ANSWER
-    # -------------------------------------------------------
+    # =======================================================
 
     @current_answer =
       @attempt
@@ -76,32 +119,36 @@ class TestSeriesTestsController < ApplicationController
     @selected_option_id =
       @current_answer&.test_series_option_id
 
-    # -------------------------------------------------------
+    # =======================================================
     # CORRECT OPTION
-    # -------------------------------------------------------
+    # =======================================================
 
     @correct_option =
       @question
         .test_series_options
         .find(&:is_correct?)
 
-    # -------------------------------------------------------
-    # PREVIOUS / NEXT
-    # -------------------------------------------------------
+    # =======================================================
+    # PREVIOUS QUESTION
+    # =======================================================
 
     @previous_question =
       if @current_question_index > 0
         @questions[@current_question_index - 1]
       end
 
+    # =======================================================
+    # NEXT QUESTION
+    # =======================================================
+
     @next_question =
       if @current_question_index < @questions.length - 1
         @questions[@current_question_index + 1]
       end
 
-    # -------------------------------------------------------
-    # COUNTS
-    # -------------------------------------------------------
+    # =======================================================
+    # PROGRESS
+    # =======================================================
 
     @answered_count =
       @answered_question_ids.length
@@ -115,10 +162,6 @@ class TestSeriesTestsController < ApplicationController
     @ready_to_finish =
       @answered_count >= @total_questions
 
-    # -------------------------------------------------------
-    # ANSWER DISPLAY
-    # -------------------------------------------------------
-
     @show_answer =
       params[:show_answer].to_s == "true"
   end
@@ -130,18 +173,35 @@ class TestSeriesTestsController < ApplicationController
 
   def answer
 
-    # -------------------------------------------------------
+    # =======================================================
+    # CHECK TIME BEFORE SAVING
+    # =======================================================
+
+    if exam_time_expired?
+      complete_expired_attempt!
+
+      redirect_to test_series_test_series_test_result_path(
+        @test_series,
+        @test,
+        @attempt
+      ),
+      alert: "Time is over. Your test has been submitted."
+
+      return
+    end
+
+    # =======================================================
     # FIND QUESTION
-    # -------------------------------------------------------
+    # =======================================================
 
     question =
       @test
         .test_series_questions
         .find(params[:question_id])
 
-    # -------------------------------------------------------
-    # FIND OPTION BELONGING TO QUESTION
-    # -------------------------------------------------------
+    # =======================================================
+    # FIND SELECTED OPTION
+    # =======================================================
 
     option =
       question
@@ -161,9 +221,9 @@ class TestSeriesTestsController < ApplicationController
       return
     end
 
-    # -------------------------------------------------------
-    # CALCULATE RESULT
-    # -------------------------------------------------------
+    # =======================================================
+    # CHECK ANSWER
+    # =======================================================
 
     is_correct =
       option.is_correct?
@@ -175,9 +235,9 @@ class TestSeriesTestsController < ApplicationController
         0
       end
 
-    # -------------------------------------------------------
+    # =======================================================
     # CREATE / UPDATE ANSWER
-    # -------------------------------------------------------
+    # =======================================================
 
     answer =
       @attempt
@@ -209,7 +269,7 @@ class TestSeriesTestsController < ApplicationController
     end
 
     # =======================================================
-    # DETERMINE CURRENT QUESTION NUMBER
+    # QUESTIONS
     # =======================================================
 
     questions =
@@ -225,23 +285,17 @@ class TestSeriesTestsController < ApplicationController
 
     # =======================================================
     # LAST QUESTION
-    #
-    # Save & Finish should actually finish the test.
     # =======================================================
 
     if current_index == questions.length - 1
 
-      @attempt.update!(
-        status: "Completed",
-        completed_at: Time.current
-      )
-
-      redirect_to test_series_test_series_test_result_path(
+      redirect_to test_series_test_series_test_path(
         @test_series,
         @test,
-        @attempt
+        question: current_index + 1,
+        language: @language
       ),
-      notice: "Test completed successfully."
+      notice: "Answer saved. You can submit the test now."
 
       return
     end
@@ -268,9 +322,9 @@ class TestSeriesTestsController < ApplicationController
 
   def finish
 
-    # -------------------------------------------------------
+    # =======================================================
     # ALREADY COMPLETED
-    # -------------------------------------------------------
+    # =======================================================
 
     if @attempt.status == "Completed"
 
@@ -283,36 +337,27 @@ class TestSeriesTestsController < ApplicationController
       return
     end
 
-    # -------------------------------------------------------
-    # CHECK WHETHER ALL QUESTIONS ARE ANSWERED
-    # -------------------------------------------------------
+    # =======================================================
+    # CHECK TIME
+    # =======================================================
 
-    total_questions =
-      @test
-        .test_series_questions
-        .count
+    if exam_time_expired?
 
-    answered_questions =
-      @attempt
-        .test_series_answers
-        .count
+      complete_expired_attempt!
 
-    if answered_questions < total_questions
-
-      redirect_to test_series_test_series_test_path(
+      redirect_to test_series_test_series_test_result_path(
         @test_series,
         @test,
-        question: 1,
-        language: @language
+        @attempt
       ),
-      alert: "Please answer all questions before finishing the test."
+      alert: "Time is over. Your test has been submitted."
 
       return
     end
 
-    # -------------------------------------------------------
-    # COMPLETE ATTEMPT
-    # -------------------------------------------------------
+    # =======================================================
+    # COMPLETE TEST
+    # =======================================================
 
     @attempt.update!(
       status: "Completed",
@@ -326,7 +371,44 @@ class TestSeriesTestsController < ApplicationController
     ),
     notice: "Test completed successfully."
   end
+  def bookmark
+  if exam_time_expired?
+    complete_expired_attempt!
 
+    redirect_to test_series_test_series_test_result_path(
+      @test_series,
+      @test,
+      @attempt
+    ),
+    alert: "Time is over. Your test has been submitted."
+
+    return
+  end
+
+  question =
+    @test
+      .test_series_questions
+      .find(params[:question_id])
+
+  attempt_question =
+    @attempt
+      .test_series_attempt_questions
+      .find_or_initialize_by(
+        test_series_question: question
+      )
+
+  attempt_question.bookmarked =
+    !attempt_question.bookmarked?
+
+  attempt_question.save!
+
+  redirect_to test_series_test_series_test_path(
+    @test_series,
+    @test,
+    question: question_number_for(question),
+    language: @language
+  )
+end
 
   private
 
@@ -336,12 +418,10 @@ class TestSeriesTestsController < ApplicationController
   # =========================================================
 
   def set_test_series
-
     @test_series =
       TestSeries
         .active
         .find(params[:test_series_id])
-
   end
 
 
@@ -350,30 +430,26 @@ class TestSeriesTestsController < ApplicationController
   # =========================================================
 
   def set_test
-
     @test =
       @test_series
         .test_series_tests
         .active
         .find(params[:id])
-
   end
 
 
   # =========================================================
-  # SET LANGUAGE
+  # LANGUAGE
   # =========================================================
 
   def set_language
-
     @language =
       params[:language].presence_in(%w[en hi]) || "en"
-
   end
 
 
   # =========================================================
-  # SET / CREATE ATTEMPT
+  # SET / REUSE CURRENT ATTEMPT
   # =========================================================
 
   def set_attempt
@@ -381,18 +457,50 @@ class TestSeriesTestsController < ApplicationController
     @attempt =
       current_user
         .test_series_attempts
-        .find_or_create_by!(
-          test_series_test: @test
-        ) do |attempt|
+        .where(test_series_test: @test)
+        .in_progress
+        .order(created_at: :desc)
+        .first
 
-      attempt.status =
-        "In Progress"
+    @attempt ||=
+      current_user
+        .test_series_attempts
+        .create!(
+          test_series_test: @test,
+          status: "In Progress",
+          started_at: Time.current
+        )
+  end
 
-      attempt.started_at =
-        Time.current
 
-    end
+  # =========================================================
+  # CHECK EXAM TIME
+  # =========================================================
 
+  def exam_time_expired?
+
+    return false unless @attempt.started_at.present?
+
+    duration_seconds =
+      @test.duration.to_i * 60
+
+    elapsed_seconds =
+      (Time.current - @attempt.started_at).to_i
+
+    elapsed_seconds >= duration_seconds
+  end
+
+
+  # =========================================================
+  # COMPLETE EXPIRED ATTEMPT
+  # =========================================================
+
+  def complete_expired_attempt!
+
+    @attempt.update!(
+      status: "Completed",
+      completed_at: Time.current
+    )
   end
 
 
@@ -414,7 +522,6 @@ class TestSeriesTestsController < ApplicationController
       end
 
     index ? index + 1 : 1
-
   end
 
 end

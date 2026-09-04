@@ -3,15 +3,18 @@ one:
   email: john@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, "password123") %>
   role: student
+  confirmed_at: 2026-09-01 10:00:00
 
 two:
   name: Jane Doe
   email: jane@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, "password123") %>
   role: teacher
+  confirmed_at: 2026-09-01 10:00:00
 
 admin:
   name: Admin User
   email: admin@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, "password123") %>
   role: admin
+  confirmed_at: 2026-09-01 10:00:00

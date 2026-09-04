@@ -8,7 +8,7 @@ one:
   duration: 1
   total_questions: 1
   total_marks: 9.99
-  status: MyString
+  status: Active
 
 two:
   test_series: two
@@ -18,4 +18,4 @@ two:
   duration: 1
   total_questions: 1
   total_marks: 9.99
-  status: MyString
+  status: Active

@@ -15,11 +15,36 @@ Rails.application.routes.draw do
 
 
   # ==================================================
-  # TEST SERIES - PUBLIC
+  # TEST SERIES - STUDENT
   # ==================================================
 
   resources :test_series,
-            only: [:index, :show]
+            only: [:index, :show] do
+
+    # Instructions page
+    member do
+      get :instructions
+    end
+
+    # Individual test
+    resources :test_series_tests,
+              only: [:show],
+              controller: "test_series_tests" do
+
+      # Answer / Submit actions
+      member do
+        post :answer
+        post :finish
+        post :bookmark
+      end
+
+      # Result
+      resources :results,
+                controller: "test_series_results",
+                only: [:show]
+
+    end
+  end
 
 
   # ==================================================
@@ -328,31 +353,6 @@ Rails.application.routes.draw do
 
 
   # ==================================================
-  # STUDENT TEST SERIES
-  # ==================================================
-
-  resources :test_series,
-            only: [] do
-
-    resources :test_series_tests,
-              only: [:show],
-              controller: "test_series_tests" do
-
-      member do
-        post :answer
-        post :finish
-      end
-
-      resources :results,
-                controller: "test_series_results",
-                only: [:show]
-
-    end
-
-  end
-
-
-  # ==================================================
   # STUDY NOTES
   # ==================================================
 
@@ -462,23 +462,11 @@ Rails.application.routes.draw do
 
     resources :test_series do
 
-      # ==================================================
-      # TESTS
-      # ==================================================
-
       resources :test_series_tests,
                 as: :tests do
 
-        # ==================================================
-        # QUESTIONS
-        # ==================================================
-
         resources :test_series_questions,
                   as: :questions do
-
-          # ==================================================
-          # OPTIONS
-          # ==================================================
 
           resources :test_series_options,
                     as: :options
@@ -555,8 +543,8 @@ Rails.application.routes.draw do
       as: :payment_success
 
   get "/payments/:id/failed",
-      to: "payments#failed",
-      as: :payment_failed
+       to: "payments#failed",
+       as: :payment_failed
 
 
   # ==================================================

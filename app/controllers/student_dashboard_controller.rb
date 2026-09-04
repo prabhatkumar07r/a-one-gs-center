@@ -24,7 +24,8 @@ class StudentDashboardController < ApplicationController
                               .where(completed: true)
                               .count
 
-      percent = total.zero? ? 0 : ((completed.to_f / total) * 100).round
+      percent =
+        total.zero? ? 0 : ((completed.to_f / total) * 100).round
 
       @course_progress[course.id] = {
         total: total,
@@ -34,10 +35,40 @@ class StudentDashboardController < ApplicationController
     end
 
     @resources = Resource.joins(:playlist)
-                         .joins("INNER JOIN enrollments ON enrollments.course_id = playlists.course_id")
+                         .joins(
+                           "INNER JOIN enrollments ON enrollments.course_id = playlists.course_id"
+                         )
                          .where(enrollments: { user_id: current_user.id })
                          .limit(5)
 
-    @notifications = Notification.order(created_at: :desc).limit(5)
+    @notifications =
+      Notification
+        .order(created_at: :desc)
+        .limit(5)
+
+    # ==========================================
+    # TEST SERIES PURCHASES
+    # ==========================================
+
+    @test_series_purchases =
+      current_user
+        .test_series_purchases
+        .where(
+          payment_status: "paid",
+          status: "Active"
+        )
+        .includes(test_series: :test_series_tests)
+
+    # ==========================================
+    # TEST PERFORMANCE
+    # ==========================================
+
+    @test_attempts =
+      current_user
+        .test_series_attempts
+        .completed
+        .includes(:test_series_test)
+        .order(completed_at: :desc)
+        .limit(10)
   end
 end

@@ -1,25 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  description: MyText
-  exam_name: MyString
-  mode: MyString
-  language: MyString
-  price: 9.99
-  original_price: 9.99
-  discount: 1
-  status: MyString
+  title: My Test Series
+  description: Test series description
+  exam_name: General Studies
+  mode: Online
+  language: English
+  price: 999.00
+  original_price: 1499.00
+  discount: 500
+  status: Active
   registration_ended: false
 
 two:
-  title: MyString
-  description: MyText
-  exam_name: MyString
-  mode: MyString
-  language: MyString
-  price: 9.99
-  original_price: 9.99
-  discount: 1
-  status: MyString
+  title: Another Test Series
+  description: Another test series description
+  exam_name: Competitive Exam
+  mode: Online
+  language: Hindi
+  price: 799.00
+  original_price: 999.00
+  discount: 200
+  status: Active
   registration_ended: false

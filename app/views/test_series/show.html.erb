@@ -1,7 +1,7 @@
-<% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
 <style>
+
 /* =========================================================
    TEST SERIES DETAIL PAGE
 ========================================================= */
@@ -28,6 +28,7 @@
 
 /* =========================================================
    TOP BAR
+   GLOBAL HEADER = 82px
 ========================================================= */
 
 .ts-detail-topbar {
@@ -37,11 +38,19 @@
 
   padding: 18px 35px;
 
+  /*
+     Global header is fixed at 82px.
+     Keep Test Series bar below it.
+  */
+  margin-top: 82px;
+
   position: sticky;
 
-  top: 0;
+  top: 82px;
 
   z-index: 100;
+
+  box-sizing: border-box;
 }
 
 .ts-detail-topbar-inner {
@@ -58,44 +67,36 @@
   gap: 20px;
 }
 
+
+/* =========================================================
+   TEST SERIES HEADER BRAND
+========================================================= */
+
 .ts-detail-brand {
   display: flex;
-
   align-items: center;
-
   gap: 12px;
 
   color: #4f46e5;
 
   font-size: 21px;
-
   font-weight: 800;
 }
 
-.ts-detail-brand-icon {
-  width: 42px;
+.ts-detail-brand-logo {
+  width: 46px;
+  height: 46px;
 
-  height: 42px;
+  display: block;
 
-  display: flex;
+  object-fit: contain;
 
-  align-items: center;
+  border-radius: 10px;
 
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #4f46e5,
-      #7c3aed
-    );
-
-  color: #ffffff;
+  background: #ffffff;
 
   box-shadow:
-    0 6px 16px rgba(79, 70, 229, .25);
+    0 5px 15px rgba(79, 70, 229, .15);
 }
 
 
@@ -104,27 +105,48 @@
 ========================================================= */
 
 .ts-back-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
   border: none;
 
   background: #f3f4f6;
 
-  color: #374151;
+  color: #374151 !important;
 
   padding: 10px 18px;
 
   border-radius: 10px;
 
+  font-family: "Poppins", sans-serif;
+
+  font-size: 13px;
+
   font-weight: 700;
 
-  transition: .2s ease;
+  text-decoration: none !important;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
 
   cursor: pointer;
+}
+
+.ts-back-btn i {
+  font-size: 12px;
 }
 
 .ts-back-btn:hover {
   background: #ede9fe;
 
-  color: #6d28d9;
+  color: #6d28d9 !important;
 
   transform: translateX(-2px);
 }
@@ -140,6 +162,8 @@
   margin: auto;
 
   padding: 45px 25px 70px;
+
+  box-sizing: border-box;
 }
 
 
@@ -493,19 +517,6 @@
 
 
 /* =========================================================
-   TEST DESCRIPTION
-========================================================= */
-
-.ts-test-description {
-  color: #94a3b8;
-
-  font-size: 12px;
-
-  margin-top: 4px;
-}
-
-
-/* =========================================================
    TEST STATUS
 ========================================================= */
 
@@ -591,7 +602,7 @@
 
   position: sticky;
 
-  top: 90px;
+  top: 170px;
 }
 
 
@@ -788,6 +799,25 @@
 
 
 /* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 601px) and (max-width: 850px) {
+
+  .ts-detail-topbar {
+    margin-top: 74px;
+
+    top: 74px;
+  }
+
+  .ts-action-card {
+    top: 150px;
+  }
+
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -804,10 +834,18 @@
 }
 
 
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 600px) {
 
   .ts-detail-topbar {
     padding: 15px 18px;
+
+    margin-top: 68px;
+
+    top: 68px;
   }
 
   .ts-detail-topbar-inner {
@@ -864,11 +902,61 @@
     flex-direction: column;
   }
 
+  .ts-back-btn {
+    width: 100%;
+  }
+
 }
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .ts-detail-topbar {
+    padding: 13px 14px;
+  }
+
+  .ts-detail-brand {
+    font-size: 18px;
+  }
+
+  .ts-detail-brand-icon {
+    width: 38px;
+
+    height: 38px;
+  }
+
+  .ts-detail-container {
+    padding-left: 12px;
+
+    padding-right: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .ts-back-btn,
+  .ts-test-start,
+  .ts-start-btn {
+    transition: none !important;
+  }
+
+}
+
 </style>
 
 
 <div class="test-series-detail-page">
+
 
   <!-- =====================================================
        TOP BAR
@@ -879,11 +967,9 @@
     <div class="ts-detail-topbar-inner">
 
       <div class="ts-detail-brand">
-
-        <div class="ts-detail-brand-icon">
-          <i class="fas fa-file-alt"></i>
-        </div>
-
+         <%= image_tag "logo.jpeg",
+      alt: "A One GS Center",
+      class: "ts-detail-brand-logo" %>
         <span>
           Test Series
         </span>
@@ -891,14 +977,18 @@
       </div>
 
 
-      <button
-        type="button"
-        class="ts-back-btn"
-        id="tsBackBtn">
+      <!-- BACK BUTTON -->
 
-        ← Back
+      <%= link_to(
+        test_series_index_path,
+        class: "ts-back-btn"
+      ) do %>
 
-      </button>
+        <i class="fas fa-arrow-left"></i>
+
+        Back to Test Series
+
+      <% end %>
 
     </div>
 
@@ -953,17 +1043,13 @@
                   @test_series.free? %>
 
               <span class="ts-detail-badge free">
-
                 Free
-
               </span>
 
             <% else %>
 
               <span class="ts-detail-badge premium">
-
                 Premium
-
               </span>
 
             <% end %>
@@ -980,7 +1066,8 @@
             </h1>
 
 
-            <% if @test_series.description.present? %>
+            <% if @test_series.respond_to?(:description) &&
+                  @test_series.description.present? %>
 
               <p class="ts-description">
 
@@ -1148,9 +1235,7 @@
                 <div class="ts-test-info">
 
                   <h5>
-
                     <%= test.title %>
-
                   </h5>
 
 
@@ -1176,34 +1261,22 @@
                     <% end %>
 
 
-                    <% if test.total_marks.present? &&
-                          test.total_marks.to_f > 0 %>
+                    <!-- CALCULATED MARKS -->
+
+                    <% if test.respond_to?(:calculated_total_marks) &&
+                          test.calculated_total_marks.to_f > 0 %>
 
                       &nbsp; • &nbsp;
 
                       <i class="fas fa-star"></i>
 
-                      <%= test.total_marks %>
+                      <%= test.calculated_total_marks %>
 
                       Marks
 
                     <% end %>
 
                   </small>
-
-
-                  <% if test.description.present? %>
-
-                    <small class="ts-test-description">
-
-                      <%= truncate(
-                        test.description,
-                        length: 100
-                      ) %>
-
-                    </small>
-
-                  <% end %>
 
 
                   <!-- ATTEMPT STATUS -->
@@ -1249,6 +1322,7 @@
 
                       <% end %>
 
+
                     <% end %>
 
                   <% end %>
@@ -1260,21 +1334,11 @@
                      START / CONTINUE
                 ================================================== -->
 
-                <%= link_to(
-                  test_series_test_series_test_path(
-                    @test_series,
-                    test
-                  ),
-                  class: "ts-test-start"
-                ) do %>
+                <%
+                  existing_attempt = nil
 
-
-                  <% existing_attempt = nil %>
-
-
-                  <% if current_user.respond_to?(:test_series_attempts) %>
-
-                    <% existing_attempt =
+                  if current_user.respond_to?(:test_series_attempts)
+                    existing_attempt =
                       current_user
                         .test_series_attempts
                         .where(
@@ -1284,10 +1348,18 @@
                         .order(
                           created_at: :desc
                         )
-                        .first %>
+                        .first
+                  end
+                %>
 
-                  <% end %>
 
+                <%= link_to(
+                  instructions_test_series_path(
+                    @test_series,
+                    test_id: test.id
+                  ),
+                  class: "ts-test-start"
+                ) do %>
 
                   <% if existing_attempt.present? %>
 
@@ -1302,7 +1374,6 @@
                     Start Test
 
                   <% end %>
-
 
                 <% end %>
 
@@ -1438,9 +1509,7 @@
             <i class="fas fa-check-circle"></i>
 
             <span>
-
               Instant access
-
             </span>
 
           </div>
@@ -1451,9 +1520,7 @@
             <i class="fas fa-check-circle"></i>
 
             <span>
-
               Track your performance
-
             </span>
 
           </div>
@@ -1463,55 +1530,86 @@
 
 
         <!-- =================================================
-             FREE TEST SERIES
+             FREE / PAID TEST SERIES ACTION
         ================================================== -->
-
         <% if @test_series.respond_to?(:free?) &&
-              @test_series.free? %>
+      @test_series.free? %>
+
+  <!-- FREE TEST SERIES -->
+
+  <% free_purchase =
+       current_user.test_series_purchases.find_by(
+         test_series: @test_series,
+         payment_status: "paid",
+         status: "Active"
+       ) %>
+
+  <% if free_purchase.present? %>
+
+    <!-- ALREADY ENROLLED -->
+
+    <div class="ts-purchased-box">
+      <i class="fas fa-check-circle"></i>
+      You are enrolled in this test series.
+    </div>
+
+    <% first_test = @quizzes.first %>
+
+    <% if first_test.present? %>
+
+      <%= link_to(
+        instructions_test_series_path(
+          @test_series,
+          test_id: first_test.id
+        ),
+        class: "ts-start-btn"
+      ) do %>
+
+        <i class="fas fa-play"></i>
+
+        Start Test Series
+
+      <% end %>
+
+    <% else %>
+
+      <div class="ts-start-btn disabled">
+
+        <i class="fas fa-lock"></i>
+
+        No Test Available
+
+      </div>
+
+    <% end %>
+
+  <% else %>
+
+    <!-- NOT ENROLLED -->
+
+    <div class="ts-action-note">
+      Enroll for free and get instant access to all tests.
+    </div>
+
+    <%= button_to(
+      purchase_test_series_path(@test_series),
+      method: :post,
+      class: "ts-start-btn"
+    ) do %>
+
+      <i class="fas fa-user-plus"></i>
+
+      Enroll Now
+
+    <% end %>
+
+  <% end %>
 
 
-          <% first_test = @quizzes.first %>
+<% else %>
 
 
-          <% if first_test.present? %>
-
-
-            <%= link_to(
-              test_series_test_series_test_path(
-                @test_series,
-                first_test
-              ),
-              class: "ts-start-btn"
-            ) do %>
-
-              <i class="fas fa-play"></i>
-
-              Start Test Series
-
-            <% end %>
-
-
-          <% else %>
-
-
-            <div class="ts-start-btn disabled">
-
-              <i class="fas fa-lock"></i>
-
-              No Test Available
-
-            </div>
-
-
-          <% end %>
-
-
-        <!-- =================================================
-             PAID TEST SERIES
-        ================================================== -->
-
-        <% else %>
-
+          <!-- PAID TEST SERIES -->
 
           <% if @purchase.present? %>
 
@@ -1531,7 +1629,6 @@
 
             <% if first_test.present? %>
 
-
               <%= link_to(
                 test_series_test_series_test_path(
                   @test_series,
@@ -1549,7 +1646,6 @@
 
             <% else %>
 
-
               <div class="ts-start-btn disabled">
 
                 <i class="fas fa-lock"></i>
@@ -1558,7 +1654,6 @@
 
               </div>
 
-
             <% end %>
 
 
@@ -1566,9 +1661,7 @@
 
 
             <%= button_to(
-              purchase_test_series_path(
-                @test_series
-              ),
+              purchase_test_series_path(@test_series),
               method: :post,
               class: "ts-start-btn"
             ) do %>
@@ -1582,9 +1675,7 @@
 
           <% end %>
 
-
         <% end %>
-
 
       </aside>
 
@@ -1593,22 +1684,3 @@
   </div>
 
 </div>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const backBtn =
-    document.getElementById("tsBackBtn");
-
-  if (!backBtn) return;
-
-
-  backBtn.addEventListener("click", function () {
-
-    window.location.href = "/test_series";
-
-  });
-
-});
-</script>

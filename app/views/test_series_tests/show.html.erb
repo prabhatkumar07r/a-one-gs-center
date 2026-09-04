@@ -1,805 +1,922 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
-<%
-  questions =
-    @questions
-
-  total_questions =
-    @total_questions
-
-  current_question =
-    @question
-
-  current_index =
-    @current_question_index
-
-  current_number =
-    @current_number
-
-  answered_question_ids =
-    @answered_question_ids
-
-  answered_count =
-    @answered_count
-
-  selected_option_id =
-    @selected_option_id
-
-  duration_minutes =
-    @test.duration.to_i
-
-  duration_seconds =
-    duration_minutes * 60
-%>
-
 <style>
-
   /* =========================================================
-     TEST PAGE
+     EXAM PAGE
   ========================================================== */
 
-  .ts-test-page {
-    min-height: 100vh;
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
     background: #f5f7fb;
+    font-family: Arial, Helvetica, sans-serif;
     color: #1f2937;
   }
 
+  .exam-page {
+    min-height: 100vh;
+    background: #f5f7fb;
+  }
+
   /* =========================================================
-     HEADER
+     TOP HEADER
   ========================================================== */
 
-  .ts-test-header {
-    height: 72px;
+  .exam-header {
+    height: 68px;
     background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 28px;
+
+    padding: 0 24px;
+
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
   }
 
-  .ts-test-brand {
+  .exam-header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     min-width: 0;
   }
 
-  .ts-test-brand h1 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-    color: #111827;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .exam-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
 
-  .ts-test-brand p {
-    margin: 3px 0 0;
-    font-size: 13px;
-    color: #6b7280;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    background: linear-gradient(135deg, #6d28d9, #4f46e5);
 
-  .ts-test-timer {
     display: flex;
     align-items: center;
-    gap: 9px;
-    background: #f3f4f6;
-    padding: 9px 15px;
-    border-radius: 9px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #111827;
+    justify-content: center;
+
+    color: white;
+    font-size: 18px;
+
     flex-shrink: 0;
   }
 
-  .ts-test-timer i {
-    color: #4f46e5;
+  .exam-title-wrapper {
+    min-width: 0;
   }
 
-  .ts-test-timer.warning {
-    background: #fff7ed;
-    color: #c2410c;
+  .exam-series-name {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 2px;
   }
 
-  .ts-test-timer.warning i {
-    color: #ea580c;
-  }
+  .exam-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111827;
 
-  .ts-test-timer.danger {
-    background: #fef2f2;
-    color: #dc2626;
-  }
-
-  .ts-test-timer.danger i {
-    color: #dc2626;
-  }
-
-  /* =========================================================
-     MAIN CONTAINER
-  ========================================================== */
-
-  .ts-test-container {
-    max-width: 1450px;
-    margin: 0 auto;
-    padding: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* =========================================================
-     PROGRESS
+     TIMER
   ========================================================== */
 
-  .ts-progress-wrapper {
-    margin-bottom: 22px;
-  }
-
-  .ts-progress-top {
+  .exam-header-right {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    gap: 12px;
   }
 
-  .ts-progress-label {
+  .timer-box {
+    min-width: 130px;
+    height: 42px;
+
+    border-radius: 8px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    color: #c2410c;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .timer-box i {
+    font-size: 17px;
+  }
+
+  .timer-box.warning {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #dc2626;
+  }
+
+  .quit-btn {
+    height: 42px;
+    padding: 0 17px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #374151;
+
     font-size: 14px;
     font-weight: 600;
-    color: #374151;
+
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    cursor: pointer;
   }
 
-  .ts-progress-count {
-    font-size: 13px;
-    color: #6b7280;
-  }
-
-  .ts-progress-bar {
-    height: 8px;
-    background: #e5e7eb;
-    border-radius: 999px;
-    overflow: hidden;
-  }
-
-  .ts-progress-fill {
-    height: 100%;
-    background: #4f46e5;
-    border-radius: inherit;
-    transition: width 0.3s ease;
+  .quit-btn:hover {
+    background: #f9fafb;
+    color: #111827;
   }
 
   /* =========================================================
-     GRID
+     MAIN LAYOUT
   ========================================================== */
 
-  .ts-test-grid {
+  .exam-content {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
-    gap: 24px;
-    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 20px;
+
+    padding: 20px;
+    max-width: 1600px;
+    margin: auto;
   }
 
   /* =========================================================
-     QUESTION CARD
+     LEFT QUESTION AREA
   ========================================================== */
 
-  .ts-question-card {
+  .question-panel {
     background: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
-  }
+    border-radius: 12px;
 
-  .ts-question-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid #e5e7eb;
+    min-height: calc(100vh - 108px);
+
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+    flex-direction: column;
   }
 
-  .ts-question-number {
+  .question-top {
+    padding: 18px 22px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .question-number {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .question-number-badge {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 8px;
+    background: #ede9fe;
+    color: #6d28d9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
+    font-size: 15px;
+  }
+
+  .question-number-text {
     font-size: 15px;
     font-weight: 700;
     color: #111827;
   }
 
-  .ts-question-mark {
-    display: inline-flex;
+  .question-meta {
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #6b7280;
+    gap: 12px;
   }
 
-  .ts-question-mark i {
-    color: #f59e0b;
+  .marks-badge {
+    padding: 7px 11px;
+
+    border-radius: 7px;
+
+    background: #f0fdf4;
+    color: #15803d;
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .question-timer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #6b7280;
+    font-size: 13px;
+  }
+
+  /* =========================================================
+     BOOKMARK
+  ========================================================== */
+
+  .bookmark-form {
+    margin: 0;
+    padding: 0;
+  }
+
+  .bookmark-btn {
+    width: 38px;
+    height: 38px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #6b7280;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+  }
+
+  .bookmark-btn:hover,
+  .bookmark-btn.active {
+    color: #6d28d9;
+    background: #f5f3ff;
+    border-color: #c4b5fd;
   }
 
   /* =========================================================
      QUESTION BODY
   ========================================================== */
 
-  .ts-question-body {
-    padding: 30px 28px;
+  .question-body {
+    padding: 28px 30px;
+    flex: 1;
   }
 
-  .ts-question-language-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 18px;
-  }
-
-  .ts-question-language {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 4px;
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    border-radius: 9px;
-  }
-
-  .ts-language-label {
-    padding: 0 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #6b7280;
-  }
-
-  .ts-language-btn {
-    border: 0;
-    background: transparent;
-    color: #4b5563;
-    padding: 6px 11px;
-    border-radius: 6px;
-    font-size: 12px;
+  .question-label {
+    font-size: 13px;
     font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    color: #6b7280;
+    margin-bottom: 12px;
+
+    text-transform: uppercase;
+    letter-spacing: .4px;
   }
 
-  .ts-language-btn:hover {
-    color: #111827;
-    background: #ffffff;
-  }
-
-  .ts-language-btn.active {
-    background: #4f46e5;
-    color: #ffffff;
-    box-shadow: 0 2px 5px rgba(79, 70, 229, 0.2);
-  }
-
-  [hidden] {
-    display: none !important;
-  }
-
-  .ts-question-text {
-    margin: 0 0 28px;
-    font-size: 22px;
+  .question-text {
+    font-size: 20px;
     line-height: 1.65;
-    font-weight: 650;
+
+    font-weight: 600;
     color: #111827;
+
+    margin-bottom: 28px;
   }
 
   /* =========================================================
      OPTIONS
   ========================================================== */
 
-  .ts-options {
+  .options-list {
     display: flex;
     flex-direction: column;
     gap: 13px;
   }
 
-  .ts-option {
+  .option-label {
     position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 62px;
+
+    border: 1px solid #dfe3ea;
+    border-radius: 10px;
+
+    padding: 10px 15px;
+
+    cursor: pointer;
+
+    transition: all .15s ease;
+
+    background: #ffffff;
   }
 
-  .ts-option-input {
+  .option-label:hover {
+    border-color: #a78bfa;
+    background: #faf9ff;
+  }
+
+  .option-radio {
     position: absolute;
     opacity: 0;
     pointer-events: none;
   }
 
-  .ts-option-label {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    width: 100%;
-    padding: 16px 18px;
-    background: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 11px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
+  .option-letter {
+    width: 38px;
+    height: 38px;
 
-  .ts-option-label:hover {
-    border-color: #818cf8;
-    background: #f8f8ff;
-  }
-
-  .ts-option-input:checked + .ts-option-label {
-    border-color: #4f46e5;
-    background: #eef2ff;
-  }
-
-  .ts-option-letter {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    border-radius: 50%;
-    background: #f3f4f6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
-    color: #374151;
-  }
-
-  .ts-option-input:checked + .ts-option-label .ts-option-letter {
-    background: #4f46e5;
-    color: #ffffff;
-  }
-
-  .ts-option-text-wrapper {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .ts-option-text {
-    display: block;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #374151;
-  }
-
-  .ts-option-input:checked + .ts-option-label .ts-option-text {
-    color: #111827;
-    font-weight: 600;
-  }
-
-  .ts-option-check {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #d1d5db;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: #f3f4f6;
+    color: #4b5563;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
+    font-size: 14px;
+
+    margin-right: 13px;
   }
 
-  .ts-option-input:checked + .ts-option-label .ts-option-check {
-    border-color: #4f46e5;
-    background: #4f46e5;
+  .option-text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #374151;
   }
 
-  .ts-option-input:checked + .ts-option-label .ts-option-check::after {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #ffffff;
+  .option-radio:checked + .option-letter {
+    background: #6d28d9;
+    color: white;
+  }
+
+  .option-label:has(.option-radio:checked) {
+    border-color: #7c3aed;
+    background: #f5f3ff;
   }
 
   /* =========================================================
-     ACTIONS
+     QUESTION FOOTER
   ========================================================== */
 
-  .ts-question-actions {
-    padding: 20px 28px;
+  .question-footer {
     border-top: 1px solid #e5e7eb;
+
+    padding: 15px 20px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+
+    background: #ffffff;
+    border-radius: 0 0 12px 12px;
   }
 
-  .ts-prev-btn,
-  .ts-save-next-btn,
-  .ts-finish-btn {
-    border: 0;
-    border-radius: 9px;
-    padding: 11px 18px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
+  .previous-btn {
+    min-width: 110px;
+    height: 43px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #374151;
+
     text-decoration: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .previous-btn:hover {
+    background: #f9fafb;
+  }
+
+  .previous-btn.disabled {
+    opacity: .45;
+    pointer-events: none;
+  }
+
+  .save-next-btn {
+    min-width: 145px;
+    height: 43px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #6d28d9;
+    color: white;
+
+    cursor: pointer;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: all 0.2s ease;
+
+    font-size: 14px;
+    font-weight: 700;
   }
 
-  .ts-prev-btn {
-    background: #f3f4f6;
-    color: #374151;
-  }
-
-  .ts-prev-btn:hover {
-    background: #e5e7eb;
-    color: #111827;
-  }
-
-  .ts-save-next-btn {
-    background: #4f46e5;
-    color: #ffffff;
-  }
-
-  .ts-save-next-btn:hover {
-    background: #4338ca;
-    color: #ffffff;
-  }
-
-  .ts-finish-btn {
-    background: #dc2626;
-    color: #ffffff;
-  }
-
-  .ts-finish-btn:hover {
-    background: #b91c1c;
-    color: #ffffff;
-  }
-
-  .ts-prev-btn.disabled {
-    opacity: 0.5;
-    pointer-events: none;
+  .save-next-btn:hover {
+    background: #5b21b6;
   }
 
   /* =========================================================
-     SIDEBAR
+     RIGHT SIDEBAR
   ========================================================== */
 
-  .ts-test-sidebar {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+  .exam-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
     position: sticky;
-    top: 96px;
+    top: 88px;
+
+    height: calc(100vh - 108px);
   }
 
-  .ts-sidebar-title {
-    margin: 0 0 16px;
-    font-size: 16px;
-    font-weight: 700;
+  .sidebar-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    overflow: hidden;
+  }
+
+  /* =========================================================
+     PROGRESS
+  ========================================================== */
+
+  .progress-card {
+    padding: 17px;
+  }
+
+  .progress-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+  }
+
+  .progress-title strong {
+    font-size: 14px;
     color: #111827;
   }
 
-  .ts-palette-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 18px;
+  .progress-percent {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6d28d9;
   }
 
-  .ts-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .progress-track {
+    width: 100%;
+    height: 7px;
+
+    background: #ede9fe;
+    border-radius: 20px;
+
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #7c3aed;
+
+    border-radius: 20px;
+
+    transition: width .2s ease;
+  }
+
+  .progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    margin-top: 13px;
+
+    text-align: center;
+  }
+
+  .progress-stat {
+    border-right: 1px solid #e5e7eb;
+  }
+
+  .progress-stat:last-child {
+    border-right: 0;
+  }
+
+  .progress-stat strong {
+    display: block;
+
+    font-size: 16px;
+    color: #111827;
+  }
+
+  .progress-stat span {
     font-size: 11px;
     color: #6b7280;
   }
 
-  .ts-legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+  /* =========================================================
+     QUESTION PALETTE
+  ========================================================== */
+
+  .palette-card {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
   }
 
-  .ts-legend-dot.current {
-    background: #4f46e5;
+  .palette-header {
+    padding: 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #111827;
   }
 
-  .ts-legend-dot.answered {
-    background: #16a34a;
+  .palette-legend {
+    padding: 12px 15px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+    border-bottom: 1px solid #e5e7eb;
   }
 
-  .ts-legend-dot.unanswered {
-    background: #e5e7eb;
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  .legend-dot {
+    width: 15px;
+    height: 15px;
+
+    border-radius: 4px;
+
+    flex-shrink: 0;
+  }
+
+  .legend-answered {
+    background: #22c55e;
+  }
+
+  .legend-current {
+    background: #7c3aed;
+  }
+
+  .legend-unanswered {
+    background: #f3f4f6;
     border: 1px solid #d1d5db;
   }
 
-  .ts-question-palette {
+  .legend-bookmarked {
+    background: #f59e0b;
+  }
+
+  .question-palette {
+    padding: 14px;
+
+    overflow-y: auto;
+
+    flex: 1;
+  }
+
+  .palette-section-title {
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #9ca3af;
+
+    margin-bottom: 10px;
+
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .palette-grid {
     display: grid;
+
     grid-template-columns: repeat(5, 1fr);
+
     gap: 8px;
   }
 
-  .ts-palette-btn {
-    height: 40px;
+  .palette-number {
+    height: 36px;
+    width: 100%;
+
+    border-radius: 7px;
+
     border: 1px solid #d1d5db;
+
     background: #ffffff;
-    border-radius: 8px;
-    color: #374151;
-    font-size: 13px;
-    font-weight: 700;
+
+    color: #4b5563;
+
     text-decoration: none;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    position: relative;
+
+    transition: all .12s ease;
   }
 
-  .ts-palette-btn:hover {
-    border-color: #818cf8;
-    color: #4f46e5;
+  .palette-number:hover {
+    border-color: #8b5cf6;
+    background: #f5f3ff;
   }
 
-  .ts-palette-btn.current {
-    background: #4f46e5;
-    border-color: #4f46e5;
-    color: #ffffff;
-  }
-
-  .ts-palette-btn.answered {
+  .palette-number.answered {
     background: #dcfce7;
     border-color: #86efac;
-    color: #166534;
+    color: #15803d;
   }
 
-  .ts-palette-btn.current.answered {
-    background: #4f46e5;
-    border-color: #4f46e5;
-    color: #ffffff;
+  .palette-number.current {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: white;
   }
 
-  .ts-sidebar-stats {
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid #e5e7eb;
+  .palette-number.bookmarked {
+    border-color: #f59e0b;
   }
 
-  .ts-stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 9px;
-    font-size: 13px;
+  .palette-number.bookmarked::after {
+    content: "";
+
+    position: absolute;
+
+    top: 2px;
+    right: 3px;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #f59e0b;
   }
 
-  .ts-stat-label {
-    color: #6b7280;
+  /* =========================================================
+     SUBMIT CARD
+  ========================================================== */
+
+  .submit-card {
+    padding: 15px;
   }
 
-  .ts-stat-value {
-    font-weight: 700;
-    color: #111827;
-  }
-
-  .ts-sidebar-finish {
+  .paper-link {
     width: 100%;
-    margin-top: 18px;
-  }
+    height: 40px;
 
-  /* =========================================================
-     EMPTY STATE
-  ========================================================== */
+    border: 1px solid #ddd6fe;
+    border-radius: 8px;
 
-  .ts-empty-test {
-    max-width: 650px;
-    margin: 70px auto;
-    padding: 45px 30px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    text-align: center;
-  }
+    background: #faf5ff;
 
-  .ts-empty-test i {
-    font-size: 44px;
-    color: #9ca3af;
-    margin-bottom: 15px;
-  }
+    color: #6d28d9;
 
-  .ts-empty-test h3 {
-    margin: 0 0 8px;
-    font-size: 21px;
-    color: #111827;
-  }
-
-  .ts-empty-test p {
-    margin: 0;
-    color: #6b7280;
-    font-size: 14px;
-  }
-
-  /* =========================================================
-     SUBMITTING OVERLAY
-  ========================================================== */
-
-  .ts-submitting-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(17, 24, 39, 0.6);
-    z-index: 9999;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(3px);
+    gap: 7px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    margin-bottom: 10px;
   }
 
-  .ts-submitting-overlay.show {
-    display: flex;
-  }
+  .submit-test-btn {
+    width: 100%;
+    height: 45px;
 
-  .ts-submitting-box {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 30px 38px;
-    text-align: center;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-  }
+    border: 0;
+    border-radius: 8px;
 
-  .ts-submitting-spinner {
-    width: 38px;
-    height: 38px;
-    border: 4px solid #e5e7eb;
-    border-top-color: #4f46e5;
-    border-radius: 50%;
-    animation: ts-spin 0.8s linear infinite;
-    margin: 0 auto 15px;
-  }
+    background: #16a34a;
+    color: white;
 
-  .ts-submitting-box p {
-    margin: 0;
+    cursor: pointer;
+
     font-size: 14px;
-    font-weight: 600;
-    color: #374151;
+    font-weight: 800;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
-  @keyframes ts-spin {
-    to {
-      transform: rotate(360deg);
-    }
+  .submit-test-btn:hover {
+    background: #15803d;
   }
 
   /* =========================================================
      RESPONSIVE
   ========================================================== */
 
-  @media (max-width: 1050px) {
+  @media (max-width: 1000px) {
 
-    .ts-test-grid {
-      grid-template-columns: minmax(0, 1fr);
+    .exam-content {
+      grid-template-columns: 1fr;
     }
 
-    .ts-test-sidebar {
+    .exam-sidebar {
       position: static;
-    }
-
-  }
-
-  @media (max-width: 700px) {
-
-    .ts-test-header {
       height: auto;
-      min-height: 68px;
-      padding: 12px 16px;
-      gap: 12px;
     }
 
-    .ts-test-brand h1 {
-      font-size: 16px;
+    .palette-card {
+      max-height: 500px;
     }
-
-    .ts-test-brand p {
-      font-size: 11px;
-    }
-
-    .ts-test-timer {
-      padding: 8px 10px;
-      font-size: 13px;
-    }
-
-    .ts-test-container {
-      padding: 16px;
-    }
-
-    .ts-question-header {
-      padding: 16px;
-    }
-
-    .ts-question-body {
-      padding: 22px 17px;
-    }
-
-    .ts-question-text {
-      font-size: 19px;
-      line-height: 1.55;
-    }
-
-    .ts-question-actions {
-      padding: 16px;
-      flex-wrap: wrap;
-    }
-
-    .ts-question-actions > * {
-      flex: 1;
-    }
-
-    .ts-language-label {
-      display: none;
-    }
-
   }
 
-  @media (max-width: 450px) {
+  @media (max-width: 650px) {
 
-    .ts-test-header {
-      align-items: flex-start;
-    }
-
-    .ts-test-timer {
-      font-size: 12px;
-    }
-
-    .ts-option-label {
-      padding: 13px;
+    .exam-header {
+      height: auto;
+      min-height: 65px;
+      padding: 10px 13px;
       gap: 10px;
     }
 
-    .ts-option-letter {
-      width: 32px;
-      height: 32px;
-      min-width: 32px;
+    .exam-header-right {
+      gap: 6px;
     }
 
-    .ts-option-text {
-      font-size: 14px;
+    .timer-box {
+      min-width: auto;
+      padding: 0 9px;
     }
 
-    .ts-question-palette {
-      grid-template-columns: repeat(5, 1fr);
+    .timer-box span {
+      display: none;
     }
 
+    .quit-btn {
+      padding: 0 10px;
+    }
+
+    .quit-btn span {
+      display: none;
+    }
+
+    .exam-content {
+      padding: 10px;
+    }
+
+    .question-body {
+      padding: 20px 15px;
+    }
+
+    .question-text {
+      font-size: 17px;
+    }
+
+    .question-footer {
+      padding: 12px;
+    }
+
+    .previous-btn,
+    .save-next-btn {
+      min-width: 0;
+      padding: 0 12px;
+    }
+
+    .question-top {
+      padding: 14px;
+    }
+
+    .question-meta {
+      gap: 7px;
+    }
+
+    .marks-badge {
+      display: none;
+    }
   }
-
 </style>
 
 
-<div class="ts-test-page">
+<div class="exam-page">
 
   <!-- =======================================================
        HEADER
   ======================================================== -->
 
-  <header class="ts-test-header">
+  <header class="exam-header">
 
-    <div class="ts-test-brand">
+    <div class="exam-header-left">
 
-      <h1>
-        <%= @test.title %>
-      </h1>
+      <div class="exam-logo">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
 
-      <p>
-        <%= @test_series.title %>
-      </p>
+      <div class="exam-title-wrapper">
+
+        <div class="exam-series-name">
+          <%= @test_series.title %>
+        </div>
+
+        <div class="exam-title">
+          <%= @test.title %>
+        </div>
+
+      </div>
 
     </div>
 
-    <div
-      class="ts-test-timer"
-      id="tsTestTimer"
-      data-duration="<%= duration_seconds %>"
-      data-test-id="<%= @test.id %>"
-    >
 
-      <i class="fas fa-clock"></i>
+    <div class="exam-header-right">
 
-      <span id="tsTimerText">
-        <%= format("%02d:%02d", duration_seconds / 60, duration_seconds % 60) %>
-      </span>
+      <div class="timer-box" id="examTimer">
+
+        <i class="fas fa-clock"></i>
+
+        <span id="timerText">
+          Loading...
+        </span>
+
+      </div>
+
+
+      <%= link_to(
+        test_series_path(@test_series),
+        class: "quit-btn",
+        id: "quitTestBtn"
+      ) do %>
+
+        <i class="fas fa-sign-out-alt"></i>
+
+        <span>
+          Quit
+        </span>
+
+      <% end %>
 
     </div>
 
@@ -807,1196 +924,780 @@
 
 
   <!-- =======================================================
-       MAIN
+       MAIN CONTENT
   ======================================================== -->
 
-  <main class="ts-test-container">
+  <main class="exam-content">
 
-    <% if questions.empty? %>
 
-      <div class="ts-empty-test">
+    <!-- =====================================================
+         LEFT QUESTION PANEL
+    ====================================================== -->
 
-        <i class="fas fa-file-circle-question"></i>
+    <section class="question-panel">
 
-        <h3>
-          No Questions Available
-        </h3>
 
-        <p>
-          This test does not have any questions yet.
-        </p>
+      <!-- QUESTION HEADER -->
 
-      </div>
+      <div class="question-top">
 
-    <% else %>
+        <div class="question-number">
 
-      <!-- ===================================================
-           PROGRESS
-      ==================================================== -->
-
-      <div class="ts-progress-wrapper">
-
-        <div class="ts-progress-top">
-
-          <div class="ts-progress-label">
-            Test Progress
+          <div class="question-number-badge">
+            <%= @current_number %>
           </div>
 
-          <div class="ts-progress-count">
-            <%= answered_count %> / <%= total_questions %> Answered
+          <div class="question-number-text">
+
+            Question
+            <%= @current_number %>
+            of
+            <%= @total_questions %>
+
           </div>
 
         </div>
 
-        <div class="ts-progress-bar">
 
-          <%
-            progress_percentage =
-              if total_questions.to_i > 0
-                (answered_count.to_f / total_questions.to_f) * 100
-              else
-                0
-              end
-          %>
+        <div class="question-meta">
 
-          <div
-            class="ts-progress-fill"
-            style="width: <%= progress_percentage %>%"
-          ></div>
+          <div class="marks-badge">
 
-        </div>
-
-      </div>
-
-
-      <!-- ===================================================
-           TEST GRID
-      ==================================================== -->
-
-      <div class="ts-test-grid">
-
-
-        <!-- =================================================
-             QUESTION CARD
-        ================================================== -->
-
-        <section class="ts-question-card">
-
-
-          <!-- ===============================================
-               QUESTION HEADER
-          ================================================ -->
-
-          <div class="ts-question-header">
-
-            <div class="ts-question-number">
-              Question <%= current_number %>
-            </div>
-
-            <div class="ts-question-mark">
-
-              <i class="fas fa-star"></i>
-
-              <%= current_question.marks %>
-
-              Mark<%= current_question.marks.to_f == 1 ? "" : "s" %>
-
-            </div>
+            +<%= @question.marks %>
+            Marks
 
           </div>
 
 
-          <!-- ===============================================
-               QUESTION BODY
-          ================================================ -->
+          <div class="question-timer">
 
-          <div class="ts-question-body">
+            <i class="far fa-clock"></i>
 
-
-            <!-- =============================================
-                 LANGUAGE SELECTOR
-            ============================================== -->
-
-            <div class="ts-question-language-wrapper">
-
-              <div class="ts-question-language">
-
-                <span class="ts-language-label">
-                  Question Language
-                </span>
-
-                <button
-                  type="button"
-                  class="ts-language-btn active"
-                  data-language="en"
-                >
-                  English
-                </button>
-
-                <button
-                  type="button"
-                  class="ts-language-btn"
-                  data-language="hi"
-                >
-                  हिंदी
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <!-- =============================================
-                 QUESTION TEXT
-            ============================================== -->
-
-            <h2 class="ts-question-text">
-
-              <span
-                data-language-content="en"
-              >
-                <%= current_question.question_text %>
-              </span>
-
-              <span
-                data-language-content="hi"
-                hidden
-              >
-                <%= current_question.question_text_hindi.presence || current_question.question_text %>
-              </span>
-
-            </h2>
-
-
-            <!-- =============================================
-                 OPTIONS
-            ============================================== -->
-
-            <div class="ts-options">
-
-              <% current_question.test_series_options.order(position: :asc).each_with_index do |option, index| %>
-
-                <%
-                  option_letter =
-                    ("A".ord + index).chr
-                %>
-
-                <div class="ts-option">
-
-                  <input
-                    type="radio"
-                    name="question_option"
-                    id="option_<%= option.id %>"
-                    value="<%= option.id %>"
-                    class="ts-option-input"
-                    <%= "checked" if selected_option_id.to_i == option.id %>
-                  >
-
-                  <label
-                    for="option_<%= option.id %>"
-                    class="ts-option-label"
-                  >
-
-                    <span class="ts-option-letter">
-                      <%= option_letter %>
-                    </span>
-
-
-                    <span class="ts-option-text-wrapper">
-
-                      <!-- English option -->
-
-                      <span
-                        class="ts-option-text"
-                        data-language-content="en"
-                      >
-                        <%= option.option_text %>
-                      </span>
-
-
-                      <!-- Hindi option -->
-
-                      <span
-                        class="ts-option-text"
-                        data-language-content="hi"
-                        hidden
-                      >
-                        <%= option.option_text_hindi.presence || option.option_text %>
-                      </span>
-
-                    </span>
-
-
-                    <span class="ts-option-check"></span>
-
-                  </label>
-
-                </div>
-
-              <% end %>
-
-            </div>
+            <span id="questionTimer">
+              00:00
+            </span>
 
           </div>
 
 
-          <!-- ===============================================
-               QUESTION ACTIONS
-          ================================================ -->
+          <!-- BOOKMARK -->
 
-          <div class="ts-question-actions">
-
-
-            <!-- Previous -->
-
-            <% if current_index > 0 %>
-
-              <a
-                href="<%= test_series_test_series_test_path(
-                  @test_series,
-                  @test,
-                  question: current_index
-                ) %>"
-                class="ts-prev-btn"
-                data-navigation-link
-              >
-
-                <i class="fas fa-arrow-left"></i>
-
-                Previous
-
-              </a>
-
-            <% else %>
-
-              <span class="ts-prev-btn disabled">
-
-                <i class="fas fa-arrow-left"></i>
-
-                Previous
-
-              </span>
-
-            <% end %>
-
-
-            <!-- Save & Next -->
-
-            <form
-              action="<%= test_series_test_series_test_path(
-                @test_series,
-                @test,
-                current_question
-              ) %>"
-              method="post"
-              id="tsAnswerForm"
-              style="margin: 0;"
-            >
-
-              <%= hidden_field_tag :authenticity_token,
-                                   form_authenticity_token %>
-
-              <%= hidden_field_tag :option_id,
-                                   selected_option_id,
-                                   id: "selectedOptionId" %>
-
-              <button
-                type="submit"
-                class="ts-save-next-btn"
-                id="tsSaveNextBtn"
-              >
-
-                <% if current_index == total_questions - 1 %>
-
-                  <i class="fas fa-check"></i>
-
-                  Save & Finish
-
-                <% else %>
-
-                  Save & Next
-
-                  <i class="fas fa-arrow-right"></i>
-
-                <% end %>
-
-              </button>
-
-            </form>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
-
-        <aside class="ts-test-sidebar">
-
-          <h3 class="ts-sidebar-title">
-            Questions
-          </h3>
-
-
-          <!-- ===============================================
-               LEGEND
-          ================================================ -->
-
-          <div class="ts-palette-legend">
-
-            <div class="ts-legend-item">
-
-              <span class="ts-legend-dot current"></span>
-
-              Current
-
-            </div>
-
-            <div class="ts-legend-item">
-
-              <span class="ts-legend-dot answered"></span>
-
-              Answered
-
-            </div>
-
-            <div class="ts-legend-item">
-
-              <span class="ts-legend-dot unanswered"></span>
-
-              Unanswered
-
-            </div>
-
-          </div>
-
-
-          <!-- ===============================================
-               QUESTION PALETTE
-          ================================================ -->
-
-          <div class="ts-question-palette">
-
-            <% questions.each_with_index do |question, index| %>
-
-              <%
-                question_number =
-                  index + 1
-
-                is_current =
-                  index == current_index
-
-                is_answered =
-                  answered_question_ids.include?(question.id)
-
-                palette_classes = [
-                  "ts-palette-btn",
-                  ("current" if is_current),
-                  ("answered" if is_answered)
-                ].compact.join(" ")
-              %>
-
-              <a
-                href="<%= test_series_test_series_test_path(
-                  @test_series,
-                  @test,
-                  question: question_number
-                ) %>"
-                class="<%= palette_classes %>"
-                data-navigation-link
-              >
-                <%= question_number %>
-              </a>
-
-            <% end %>
-
-          </div>
-
-
-          <!-- ===============================================
-               STATS
-          ================================================ -->
-
-          <div class="ts-sidebar-stats">
-
-            <div class="ts-stat-row">
-
-              <span class="ts-stat-label">
-                Total Questions
-              </span>
-
-              <span class="ts-stat-value">
-                <%= total_questions %>
-              </span>
-
-            </div>
-
-
-            <div class="ts-stat-row">
-
-              <span class="ts-stat-label">
-                Answered
-              </span>
-
-              <span class="ts-stat-value">
-                <%= answered_count %>
-              </span>
-
-            </div>
-
-
-            <div class="ts-stat-row">
-
-              <span class="ts-stat-label">
-                Remaining
-              </span>
-
-              <span class="ts-stat-value">
-                <%= total_questions - answered_count %>
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <!-- ===============================================
-               FINISH
-          ================================================ -->
-
-          <form
-            action="<%= test_series_test_series_test_result_path(
+          <%= form_with(
+            url: bookmark_test_series_test_series_test_path(
               @test_series,
               @test
-            ) %>"
-            method="post"
-            id="tsFinishForm"
-          >
+            ),
+            method: :post,
+            local: true,
+            class: "bookmark-form"
+          ) do %>
 
-            <%= hidden_field_tag :authenticity_token,
-                                 form_authenticity_token %>
+            <%= hidden_field_tag(
+              :question_id,
+              @question.id
+            ) %>
+
+            <%= hidden_field_tag(
+              :language,
+              @language
+            ) %>
 
             <button
               type="submit"
-              class="ts-finish-btn ts-sidebar-finish"
-              id="tsFinishBtn"
-            >
+              class="bookmark-btn <%= 'active' if @bookmarked_question_ids.include?(@question.id) %>"
+              title="<%= @bookmarked_question_ids.include?(@question.id) ? 'Remove bookmark' : 'Bookmark question' %>">
 
-              <i class="fas fa-flag-checkered"></i>
-
-              Finish Test
+              <i class="<%= @bookmarked_question_ids.include?(@question.id) ? 'fas' : 'far' %> fa-bookmark"></i>
 
             </button>
 
-          </form>
+          <% end %>
 
-        </aside>
+        </div>
 
       </div>
 
-    <% end %>
+
+      <!-- ===================================================
+           QUESTION BODY
+      ==================================================== -->
+
+      <div class="question-body">
+
+        <div class="question-label">
+
+          Question
+          <%= @current_number %>
+
+        </div>
+
+
+        <div class="question-text">
+
+          <%= simple_format(
+            @question.question_for(@language)
+          ) %>
+
+        </div>
+
+
+        <!-- ANSWER FORM -->
+
+        <%= form_with(
+          url: answer_test_series_test_series_test_path(
+            @test_series,
+            @test
+          ),
+          method: :post,
+          local: true,
+          id: "answerForm"
+        ) do %>
+
+          <%= hidden_field_tag(
+            :question_id,
+            @question.id
+          ) %>
+
+          <%= hidden_field_tag(
+            :language,
+            @language
+          ) %>
+
+
+          <div class="options-list">
+
+            <% @question
+                 .test_series_options
+                 .sort_by(&:position)
+                 .each_with_index do |option, index| %>
+
+              <% letter = ("A".ord + index).chr %>
+
+              <label class="option-label">
+
+                <%= radio_button_tag(
+                  :option_id,
+                  option.id,
+                  @selected_option_id.to_i == option.id,
+                  class: "option-radio"
+                ) %>
+
+                <span class="option-letter">
+                  <%= letter %>
+                </span>
+
+                <span class="option-text">
+                  <%= option.text_for(@language) %>
+                </span>
+
+              </label>
+
+            <% end %>
+
+          </div>
+
+
+          <!-- QUESTION FOOTER -->
+
+          <div class="question-footer">
+
+            <% if @previous_question %>
+
+              <%= link_to(
+                test_series_test_series_test_path(
+                  @test_series,
+                  @test,
+                  question: @current_number - 1,
+                  language: @language
+                ),
+                class: "previous-btn"
+              ) do %>
+
+                <i class="fas fa-arrow-left"></i>
+                Previous
+
+              <% end %>
+
+            <% else %>
+
+              <span class="previous-btn disabled">
+
+                <i class="fas fa-arrow-left"></i>
+                Previous
+
+              </span>
+
+            <% end %>
+
+
+            <button
+              type="submit"
+              class="save-next-btn">
+
+              <% if @next_question %>
+
+                Save & Next
+
+                <i class="fas fa-arrow-right"></i>
+
+              <% else %>
+
+                Save Answer
+
+                <i class="fas fa-check"></i>
+
+              <% end %>
+
+            </button>
+
+          </div>
+
+
+        <% end %>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RIGHT SIDEBAR
+    ====================================================== -->
+
+    <aside class="exam-sidebar">
+
+
+      <!-- PROGRESS -->
+
+      <div class="sidebar-card progress-card">
+
+        <div class="progress-title">
+
+          <strong>
+            Test Progress
+          </strong>
+
+          <span class="progress-percent">
+
+            <%= @total_questions > 0 ?
+                  ((@answered_count.to_f /
+                    @total_questions) * 100).round :
+                  0 %>%
+
+          </span>
+
+        </div>
+
+
+        <div class="progress-track">
+
+          <div
+            class="progress-fill"
+            style="width: <%= @total_questions > 0 ? ((@answered_count.to_f / @total_questions) * 100) : 0 %>%;">
+          </div>
+
+        </div>
+
+
+        <div class="progress-stats">
+
+          <div class="progress-stat">
+
+            <strong>
+              <%= @answered_count %>
+            </strong>
+
+            <span>
+              Answered
+            </span>
+
+          </div>
+
+
+          <div class="progress-stat">
+
+            <strong>
+              <%= @total_questions - @answered_count %>
+            </strong>
+
+            <span>
+              Remaining
+            </span>
+
+          </div>
+
+
+          <div class="progress-stat">
+
+            <strong>
+              <%= @total_questions %>
+            </strong>
+
+            <span>
+              Total
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- QUESTION PALETTE -->
+
+      <div class="sidebar-card palette-card">
+
+        <div class="palette-header">
+          Question Palette
+        </div>
+
+
+        <div class="palette-legend">
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-answered"></span>
+
+            Answered
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-current"></span>
+
+            Current
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-unanswered"></span>
+
+            Unanswered
+
+          </div>
+
+
+          <div class="legend-item">
+
+            <span class="legend-dot legend-bookmarked"></span>
+
+            Bookmarked
+
+          </div>
+
+        </div>
+
+
+        <div class="question-palette">
+
+          <div class="palette-section-title">
+            All Questions
+          </div>
+
+
+          <div class="palette-grid">
+
+            <% @questions.each_with_index do |question, index| %>
+
+              <% question_number = index + 1 %>
+
+              <% answered =
+                   @answered_question_ids.include?(question.id) %>
+
+              <%= link_to(
+                question_number,
+                test_series_test_series_test_path(
+                  @test_series,
+                  @test,
+                  question: question_number,
+                  language: @language
+                ),
+                class: [
+                  "palette-number",
+                  ("answered" if answered),
+                  (
+                    "bookmarked" if
+                    @bookmarked_question_ids.include?(question.id)
+                  ),
+                  (
+                    "current" if
+                    question_number == @current_number
+                  )
+                ].compact.join(" ")
+              ) %>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SUBMIT -->
+
+      <div class="sidebar-card submit-card">
+
+        <div class="paper-link">
+
+          <i class="fas fa-file-alt"></i>
+
+          Question Paper
+
+        </div>
+
+
+        <%= form_with(
+          url: finish_test_series_test_series_test_path(
+            @test_series,
+            @test
+          ),
+          method: :post,
+          local: true,
+          id: "finishTestForm"
+        ) do %>
+
+          <%= hidden_field_tag(
+            :language,
+            @language
+          ) %>
+
+
+          <button
+            type="submit"
+            class="submit-test-btn"
+            id="submitTestBtn">
+
+            <i class="fas fa-paper-plane"></i>
+
+            Submit Test
+
+          </button>
+
+        <% end %>
+
+      </div>
+
+    </aside>
 
   </main>
 
 </div>
 
 
-<!-- =========================================================
-     SUBMITTING OVERLAY
-========================================================== -->
-
-<div
-  class="ts-submitting-overlay"
-  id="tsSubmittingOverlay"
->
-
-  <div class="ts-submitting-box">
-
-    <div class="ts-submitting-spinner"></div>
-
-    <p>
-      Saving your answer...
-    </p>
-
-  </div>
-
-</div>
-
-
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-  /* ========================================================
-     ELEMENTS
-  ========================================================= */
+      /* =====================================================
+         EXAM TIMER
+      ====================================================== */
 
-  const timerElement =
-    document.getElementById("tsTestTimer");
+      const timerElement =
+        document.getElementById("timerText");
 
-  const timerText =
-    document.getElementById("tsTimerText");
+      const timerBox =
+        document.getElementById("examTimer");
 
-  const answerForm =
-    document.getElementById("tsAnswerForm");
+      let totalSeconds =
+        <%= @remaining_seconds.to_i %>;
 
-  const finishForm =
-    document.getElementById("tsFinishForm");
+      let timerInterval;
 
-  const selectedOptionInput =
-    document.getElementById("selectedOptionId");
 
-  const submittingOverlay =
-    document.getElementById("tsSubmittingOverlay");
+      function updateTimer() {
 
-  const saveNextButton =
-    document.getElementById("tsSaveNextBtn");
+        if (totalSeconds <= 0) {
 
-  const finishButton =
-    document.getElementById("tsFinishBtn");
+          totalSeconds = 0;
 
-  const optionInputs =
-    document.querySelectorAll(".ts-option-input");
+          timerElement.textContent = "00:00";
 
-  const navigationLinks =
-    document.querySelectorAll("[data-navigation-link]");
+          timerBox.classList.add("warning");
 
+          clearInterval(timerInterval);
 
-  /* ========================================================
-     QUESTION LANGUAGE
-     
-     IMPORTANT:
-     Only elements having [data-language-content]
-     are changed.
-     
-     Buttons / timer / sidebar / progress remain English.
-  ========================================================= */
+          const form =
+            document.getElementById("finishTestForm");
 
-  const languageButtons =
-    document.querySelectorAll(".ts-language-btn");
+          if (form) {
 
-  const languageContents =
-    document.querySelectorAll("[data-language-content]");
+            /*
+             * Native submit intentionally bypasses
+             * the confirmation dialog when time expires.
+             */
 
-  const testId =
-    timerElement
-      ? timerElement.dataset.testId
-      : "unknown";
-
-  const languageStorageKey =
-    "test_series_question_language_" + testId;
-
-
-  function applyQuestionLanguage(language) {
-
-    const selectedLanguage =
-      language === "hi"
-        ? "hi"
-        : "en";
-
-
-    /* -----------------------------------------------
-       Change only question/option content
-    ------------------------------------------------ */
-
-    languageContents.forEach(function (element) {
-
-      element.hidden =
-        element.dataset.languageContent !== selectedLanguage;
-
-    });
-
-
-    /* -----------------------------------------------
-       Update language selector
-    ------------------------------------------------ */
-
-    languageButtons.forEach(function (button) {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.language === selectedLanguage
-      );
-
-    });
-
-
-    /* -----------------------------------------------
-       Remember language for this test
-    ------------------------------------------------ */
-
-    try {
-
-      sessionStorage.setItem(
-        languageStorageKey,
-        selectedLanguage
-      );
-
-    } catch (error) {
-
-      /* Ignore storage errors */
-
-    }
-
-  }
-
-
-  /* ========================================================
-     LANGUAGE BUTTON EVENTS
-  ========================================================= */
-
-  languageButtons.forEach(function (button) {
-
-    button.addEventListener("click", function () {
-
-      const language =
-        button.dataset.language;
-
-      applyQuestionLanguage(language);
-
-    });
-
-  });
-
-
-  /* ========================================================
-     RESTORE PREVIOUS LANGUAGE
-     
-     Example:
-     
-     Question 1 -> Hindi
-     Question 2 -> Hindi
-     Question 3 -> Hindi
-     
-     The page reloads between questions, but
-     sessionStorage remembers the selection.
-  ========================================================= */
-
-  let savedLanguage = "en";
-
-  try {
-
-    savedLanguage =
-      sessionStorage.getItem(
-        languageStorageKey
-      ) || "en";
-
-  } catch (error) {
-
-    savedLanguage = "en";
-
-  }
-
-  applyQuestionLanguage(savedLanguage);
-
-
-  /* ========================================================
-     OPTION SELECTION
-  ========================================================= */
-
-  optionInputs.forEach(function (input) {
-
-    input.addEventListener("change", function () {
-
-      if (selectedOptionInput) {
-
-        selectedOptionInput.value =
-          input.value;
-
-      }
-
-    });
-
-  });
-
-
-  /* ========================================================
-     SUBMITTING OVERLAY
-  ========================================================= */
-
-  function showSubmittingOverlay(message) {
-
-    if (!submittingOverlay) {
-      return;
-    }
-
-    const messageElement =
-      submittingOverlay.querySelector("p");
-
-    if (messageElement && message) {
-
-      messageElement.textContent =
-        message;
-
-    }
-
-    submittingOverlay.classList.add("show");
-
-  }
-
-
-  /* ========================================================
-     ANSWER FORM
-  ========================================================= */
-
-  if (answerForm) {
-
-    answerForm.addEventListener("submit", function (event) {
-
-      const selectedOption =
-        selectedOptionInput
-          ? selectedOptionInput.value
-          : "";
-
-
-      if (!selectedOption) {
-
-        event.preventDefault();
-
-        alert(
-          "Please select an option before continuing."
-        );
-
-        return;
-
-      }
-
-
-      showSubmittingOverlay(
-        "Saving your answer..."
-      );
-
-
-      if (saveNextButton) {
-
-        saveNextButton.disabled =
-          true;
-
-        saveNextButton.style.opacity =
-          "0.7";
-
-        saveNextButton.style.pointerEvents =
-          "none";
-
-      }
-
-    });
-
-  }
-
-
-  /* ========================================================
-     FINISH FORM
-  ========================================================= */
-
-  if (finishForm) {
-
-    finishForm.addEventListener("submit", function (event) {
-
-      const confirmed =
-        confirm(
-          "Are you sure you want to finish the test?"
-        );
-
-
-      if (!confirmed) {
-
-        event.preventDefault();
-
-        return;
-
-      }
-
-
-      showSubmittingOverlay(
-        "Finishing your test..."
-      );
-
-
-      if (finishButton) {
-
-        finishButton.disabled =
-          true;
-
-        finishButton.style.opacity =
-          "0.7";
-
-        finishButton.style.pointerEvents =
-          "none";
-
-      }
-
-    });
-
-  }
-
-
-  /* ========================================================
-     NAVIGATION LINKS
-     
-     If current answer is not selected, warn before
-     moving to another question.
-  ========================================================= */
-
-  navigationLinks.forEach(function (link) {
-
-    link.addEventListener("click", function (event) {
-
-      const selectedOption =
-        selectedOptionInput
-          ? selectedOptionInput.value
-          : "";
-
-
-      /*
-       * If an answer is already saved, navigation
-       * can continue normally.
-       */
-
-      const alreadyAnswered =
-        <%= selected_option_id.present? ? "true" : "false" %>;
-
-
-      if (alreadyAnswered) {
-        return;
-      }
-
-
-      if (!selectedOption) {
-
-        const continueNavigation =
-          confirm(
-            "You have not selected an answer for this question. Continue?"
-          );
-
-
-        if (!continueNavigation) {
-
-          event.preventDefault();
-
-        }
-
-      }
-
-    });
-
-  });
-
-
-  /* ========================================================
-     BEFORE UNLOAD
-  ========================================================= */
-
-  let allowPageUnload =
-    false;
-
-
-  if (answerForm) {
-
-    answerForm.addEventListener("submit", function () {
-
-      allowPageUnload =
-        true;
-
-    });
-
-  }
-
-
-  if (finishForm) {
-
-    finishForm.addEventListener("submit", function () {
-
-      allowPageUnload =
-        true;
-
-    });
-
-  }
-
-
-  window.addEventListener(
-    "beforeunload",
-    function (event) {
-
-      if (allowPageUnload) {
-        return;
-      }
-
-
-      /*
-       * Do not show warning if the question has
-       * already been answered.
-       */
-
-      const alreadyAnswered =
-        <%= selected_option_id.present? ? "true" : "false" %>;
-
-
-      if (alreadyAnswered) {
-        return;
-      }
-
-
-      event.preventDefault();
-
-      event.returnValue = "";
-
-    }
-  );
-
-
-  /* ========================================================
-     TIMER
-  ========================================================= */
-
-  if (timerElement && timerText) {
-
-    const duration =
-      parseInt(
-        timerElement.dataset.duration || "0",
-        10
-      );
-
-
-    const testId =
-      timerElement.dataset.testId;
-
-
-    const timerStorageKey =
-      "test_series_timer_" + testId;
-
-
-    let remainingSeconds =
-      duration;
-
-
-    /*
-     * Restore timer if already started.
-     */
-
-    try {
-
-      const storedTimer =
-        sessionStorage.getItem(
-          timerStorageKey
-        );
-
-
-      if (storedTimer) {
-
-        const parsedTimer =
-          parseInt(
-            storedTimer,
-            10
-          );
-
-
-        if (
-          !isNaN(parsedTimer) &&
-          parsedTimer > 0 &&
-          parsedTimer <= duration
-        ) {
-
-          remainingSeconds =
-            parsedTimer;
-
-        }
-
-      } else {
-
-        sessionStorage.setItem(
-          timerStorageKey,
-          remainingSeconds
-        );
-
-      }
-
-    } catch (error) {
-
-      remainingSeconds =
-        duration;
-
-    }
-
-
-    function updateTimer() {
-
-      const minutes =
-        Math.floor(
-          remainingSeconds / 60
-        );
-
-      const seconds =
-        remainingSeconds % 60;
-
-
-      timerText.textContent =
-        String(minutes).padStart(2, "0") +
-        ":" +
-        String(seconds).padStart(2, "0");
-
-
-      /*
-       * Warning under 5 minutes
-       */
-
-      if (
-        remainingSeconds <= 300 &&
-        remainingSeconds > 60
-      ) {
-
-        timerElement.classList.add(
-          "warning"
-        );
-
-      }
-
-
-      /*
-       * Danger under 1 minute
-       */
-
-      if (remainingSeconds <= 60) {
-
-        timerElement.classList.remove(
-          "warning"
-        );
-
-        timerElement.classList.add(
-          "danger"
-        );
-
-      }
-
-
-      /*
-       * Save timer
-       */
-
-      try {
-
-        sessionStorage.setItem(
-          timerStorageKey,
-          remainingSeconds
-        );
-
-      } catch (error) {
-
-        /* Ignore storage errors */
-
-      }
-
-    }
-
-
-    updateTimer();
-
-
-    const timerInterval =
-      setInterval(function () {
-
-        remainingSeconds -= 1;
-
-
-        if (remainingSeconds <= 0) {
-
-          remainingSeconds =
-            0;
-
-          updateTimer();
-
-          clearInterval(
-            timerInterval
-          );
-
-
-          /*
-           * Clear stored timer
-           */
-
-          try {
-
-            sessionStorage.removeItem(
-              timerStorageKey
-            );
-
-          } catch (error) {
-
-            /* Ignore */
-
-          }
-
-
-          /*
-           * Automatically submit
-           */
-
-          if (answerForm) {
-
-            const selectedOption =
-              selectedOptionInput
-                ? selectedOptionInput.value
-                : "";
-
-
-            if (selectedOption) {
-
-              allowPageUnload =
-                true;
-
-              showSubmittingOverlay(
-                "Time is up. Submitting your answer..."
-              );
-
-              answerForm.submit();
-
-            } else if (finishForm) {
-
-              allowPageUnload =
-                true;
-
-              showSubmittingOverlay(
-                "Time is up. Finishing your test..."
-              );
-
-              finishForm.submit();
-
-            }
+            form.submit();
 
           }
 
           return;
+        }
+
+
+        const hours =
+          Math.floor(totalSeconds / 3600);
+
+        const minutes =
+          Math.floor(
+            (totalSeconds % 3600) / 60
+          );
+
+        const seconds =
+          totalSeconds % 60;
+
+
+        let display;
+
+
+        if (hours > 0) {
+
+          display =
+            String(hours).padStart(2, "0") +
+            ":" +
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(seconds).padStart(2, "0");
+
+        } else {
+
+          display =
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(seconds).padStart(2, "0");
 
         }
 
 
-        updateTimer();
+        timerElement.textContent =
+          display;
 
-      }, 1000);
+
+        if (totalSeconds <= 300) {
+
+          timerBox.classList.add("warning");
+
+        }
 
 
-    /*
-     * Clear timer after normal finish
-     */
+        totalSeconds--;
 
-    if (finishForm) {
+      }
 
-      finishForm.addEventListener(
-        "submit",
-        function () {
 
-          try {
+      updateTimer();
 
-            sessionStorage.removeItem(
-              timerStorageKey
+
+      timerInterval =
+        setInterval(
+          updateTimer,
+          1000
+        );
+
+
+      /* =====================================================
+         QUESTION TIMER
+      ====================================================== */
+
+      const questionTimer =
+        document.getElementById("questionTimer");
+
+      let questionSeconds = 0;
+
+
+      function updateQuestionTimer() {
+
+        if (!questionTimer) {
+          return;
+        }
+
+        const minutes =
+          Math.floor(questionSeconds / 60);
+
+        const seconds =
+          questionSeconds % 60;
+
+
+        questionTimer.textContent =
+          String(minutes).padStart(2, "0") +
+          ":" +
+          String(seconds).padStart(2, "0");
+
+
+        questionSeconds++;
+
+      }
+
+
+      updateQuestionTimer();
+
+
+      setInterval(
+        updateQuestionTimer,
+        1000
+      );
+
+
+      /* =====================================================
+         QUIT CONFIRMATION
+      ====================================================== */
+
+      const quitBtn =
+        document.getElementById("quitTestBtn");
+
+
+      if (quitBtn) {
+
+        quitBtn.addEventListener(
+          "click",
+          function (event) {
+
+            const confirmed =
+              confirm(
+                "Are you sure you want to quit this test?"
+              );
+
+
+            if (!confirmed) {
+
+              event.preventDefault();
+
+            }
+
+          }
+        );
+
+      }
+
+
+      /* =====================================================
+         SUBMIT CONFIRMATION
+      ====================================================== */
+
+      const finishForm =
+        document.getElementById("finishTestForm");
+
+
+      if (finishForm) {
+
+        finishForm.addEventListener(
+          "submit",
+          function (event) {
+
+            const answered =
+              <%= @answered_count.to_i %>;
+
+            const total =
+              <%= @total_questions.to_i %>;
+
+            const remaining =
+              total - answered;
+
+
+            let message =
+              "Are you sure you want to submit the test?";
+
+
+            if (remaining > 0) {
+
+              message =
+                "You still have " +
+                remaining +
+                " unanswered question(s).\n\n" +
+                "Are you sure you want to submit the test?";
+
+            }
+
+
+            if (!confirm(message)) {
+
+              event.preventDefault();
+
+            }
+
+          }
+        );
+
+      }
+
+
+      /* =====================================================
+         OPTION KEYBOARD SHORTCUTS
+      ====================================================== */
+
+      document.addEventListener(
+        "keydown",
+        function (event) {
+
+          /*
+           * Do not trigger shortcuts while typing
+           * into an input, textarea, or select.
+           */
+
+          const target =
+            event.target;
+
+          if (
+            target &&
+            (
+              target.tagName === "INPUT" ||
+              target.tagName === "TEXTAREA" ||
+              target.tagName === "SELECT"
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          const key =
+            event.key.toLowerCase();
+
+
+          const letters =
+            ["a", "b", "c", "d"];
+
+
+          if (!letters.includes(key)) {
+
+            return;
+
+          }
+
+
+          const index =
+            letters.indexOf(key);
+
+
+          const radios =
+            document.querySelectorAll(
+              ".option-radio"
             );
 
-          } catch (error) {
 
-            /* Ignore */
+          if (radios[index]) {
+
+            radios[index].checked =
+              true;
+
+
+            radios[index].dispatchEvent(
+              new Event(
+                "change",
+                {
+                  bubbles: true
+                }
+              )
+            );
 
           }
 
@@ -2004,9 +1705,6 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
     }
-
-  }
-
-});
+  );
 
 </script>
