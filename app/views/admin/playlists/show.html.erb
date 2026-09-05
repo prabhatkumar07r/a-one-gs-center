@@ -1,0 +1,1336 @@
+<div class="playlist-show-page">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
+  <div class="playlist-show-header">
+
+
+<div class="playlist-header-left">
+
+  <%= link_to admin_course_playlists_path(@course),
+              class: "playlist-back-btn" do %>
+    <i class="bi bi-arrow-left"></i>
+    <span>Back to Playlists</span>
+  <% end %>
+
+  <div class="playlist-title-area">
+    <div class="playlist-icon">
+      <i class="bi bi-collection-play-fill"></i>
+    </div>
+
+    <div>
+      <span class="playlist-label">PLAYLIST</span>
+      <h1><%= @playlist.title %></h1>
+
+      <p>
+        <i class="bi bi-book"></i>
+        <%= @course.Course_name %>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="playlist-header-actions">
+
+  <%= link_to edit_admin_course_playlist_path(@course, @playlist),
+              class: "playlist-btn playlist-btn-primary" do %>
+    <i class="bi bi-pencil-square"></i>
+    Edit Playlist
+  <% end %>
+
+  <button type="button"
+          class="playlist-btn playlist-btn-danger"
+          id="deletePlaylistBtn">
+    <i class="bi bi-trash3"></i>
+    Delete
+  </button>
+
+</div>
+
+  </div>
+
+  <!-- =========================================================
+       CONTENT
+  ========================================================== -->
+
+  <div class="playlist-content-grid">
+
+<!-- LEFT -->
+<div class="playlist-main-column">
+
+  <!-- Overview -->
+
+  <section class="playlist-card">
+
+    <div class="playlist-card-header">
+      <div>
+        <span class="card-eyebrow">OVERVIEW</span>
+        <h2>Playlist Information</h2>
+      </div>
+
+      <div class="card-header-icon">
+        <i class="bi bi-info-circle"></i>
+      </div>
+    </div>
+
+    <div class="playlist-description">
+
+      <% if @playlist.description.present? %>
+
+        <%= simple_format(@playlist.description) %>
+
+      <% else %>
+
+        <div class="empty-description">
+          <i class="bi bi-file-text"></i>
+          <span>No description has been added.</span>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+
+  <!-- Videos -->
+
+  <section class="playlist-card">
+
+    <div class="playlist-card-header">
+
+      <div>
+        <span class="card-eyebrow">CONTENT</span>
+        <h2>Playlist Videos</h2>
+      </div>
+
+      <div class="playlist-video-count">
+        <%= @playlist.videos.count %>
+        <span>Videos</span>
+      </div>
+
+    </div>
+
+
+    <% if @playlist.videos.any? %>
+
+      <div class="playlist-video-list">
+
+        <% @playlist.videos.order(:position).each_with_index do |video, index| %>
+
+          <div class="playlist-video-item">
+
+            <div class="video-number">
+              <%= index + 1 %>
+            </div>
+
+            <div class="video-play-icon">
+              <i class="bi bi-play-fill"></i>
+            </div>
+
+            <div class="video-information">
+
+              <h3>
+                <%= video.title.presence || "Untitled Video" %>
+              </h3>
+
+              <div class="video-meta">
+
+                <% if video.respond_to?(:duration) && video.duration.present? %>
+                  <span>
+                    <i class="bi bi-clock"></i>
+                    <%= video.duration %>
+                  </span>
+                <% end %>
+
+                <span>
+                  <i class="bi bi-camera-video"></i>
+                  Video
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="playlist-empty-state">
+
+        <div class="empty-icon">
+          <i class="bi bi-camera-video-off"></i>
+        </div>
+
+        <h3>No videos yet</h3>
+
+        <p>
+          Videos added to this playlist will appear here.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>
+
+
+<!-- RIGHT -->
+<aside class="playlist-sidebar-column">
+
+  <!-- Statistics -->
+
+  <section class="playlist-card playlist-stats-card">
+
+    <div class="playlist-card-header">
+      <div>
+        <span class="card-eyebrow">STATISTICS</span>
+        <h2>Overview</h2>
+      </div>
+    </div>
+
+
+    <div class="playlist-stat">
+
+      <div class="stat-icon">
+        <i class="bi bi-camera-video"></i>
+      </div>
+
+      <div>
+        <span class="stat-value">
+          <%= @playlist.videos.count %>
+        </span>
+
+        <span class="stat-label">
+          Total Videos
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="playlist-stat">
+
+      <div class="stat-icon">
+        <i class="bi bi-list-ol"></i>
+      </div>
+
+      <div>
+        <span class="stat-value">
+          <%= @playlist.position %>
+        </span>
+
+        <span class="stat-label">
+          Playlist Position
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="playlist-stat">
+
+      <div class="stat-icon">
+        <i class="bi bi-calendar3"></i>
+      </div>
+
+      <div>
+        <span class="stat-value">
+          <%= @playlist.created_at.strftime("%d %b %Y") %>
+        </span>
+
+        <span class="stat-label">
+          Created On
+        </span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Course -->
+
+  <section class="playlist-card">
+
+    <div class="playlist-card-header">
+      <div>
+        <span class="card-eyebrow">COURSE</span>
+        <h2>Course</h2>
+      </div>
+    </div>
+
+    <div class="course-box">
+
+      <div class="course-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div>
+        <strong>
+          <%= @course.Course_name %>
+        </strong>
+
+        <span>
+          Parent Course
+        </span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Actions -->
+
+  <section class="playlist-card">
+
+    <div class="playlist-card-header">
+      <div>
+        <span class="card-eyebrow">ACTIONS</span>
+        <h2>Manage</h2>
+      </div>
+    </div>
+
+    <%= link_to edit_admin_course_playlist_path(@course, @playlist),
+                class: "manage-action edit-action" do %>
+      <i class="bi bi-pencil"></i>
+      <span>
+        <strong>Edit Playlist</strong>
+        <small>Update playlist information</small>
+      </span>
+      <i class="bi bi-chevron-right"></i>
+    <% end %>
+
+    <%= link_to admin_course_playlists_path(@course),
+                class: "manage-action" do %>
+      <i class="bi bi-collection-play"></i>
+      <span>
+        <strong>All Playlists</strong>
+        <small>Return to playlist list</small>
+      </span>
+      <i class="bi bi-chevron-right"></i>
+    <% end %>
+
+  </section>
+
+</aside>
+
+
+  </div>
+
+  <!-- =========================================================
+       DELETE CONFIRMATION MODAL
+  ========================================================== -->
+
+  <div class="playlist-modal-overlay" id="deletePlaylistModal">
+
+
+<div class="playlist-modal">
+
+  <div class="modal-warning-icon">
+    <i class="bi bi-exclamation-triangle"></i>
+  </div>
+
+  <h2>Delete Playlist?</h2>
+
+  <p>
+    Are you sure you want to delete
+    <strong><%= @playlist.title %></strong>?
+    This action cannot be undone.
+  </p>
+
+  <div class="modal-actions">
+
+    <button type="button"
+            class="playlist-btn playlist-btn-secondary"
+            id="cancelDeleteBtn">
+      Cancel
+    </button>
+
+    <%= button_to admin_course_playlist_path(@course, @playlist),
+                  method: :delete,
+                  class: "playlist-btn playlist-btn-danger",
+                  data: { turbo_confirm: nil } do %>
+      <i class="bi bi-trash3"></i>
+      Delete Playlist
+    <% end %>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+</div>
+
+<style>
+
+/* =========================================================
+   PLAYLIST SHOW PAGE
+========================================================= */
+
+.playlist-show-page {
+  min-height: 100vh;
+  padding: 32px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, .10),
+      transparent 30%
+    ),
+    #f8fafc;
+  color: #111827;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.playlist-show-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.playlist-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.playlist-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+
+  color: #64748b;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: .2s ease;
+}
+
+.playlist-back-btn:hover {
+  color: #4f46e5;
+  transform: translateX(-2px);
+}
+
+.playlist-title-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.playlist-icon {
+  width: 62px;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  );
+
+  color: #fff;
+  font-size: 26px;
+
+  box-shadow:
+    0 12px 25px rgba(79, 70, 229, .22);
+}
+
+.playlist-label {
+  display: block;
+
+  color: #6366f1;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+
+  margin-bottom: 5px;
+}
+
+.playlist-title-area h1 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+.playlist-title-area p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin: 7px 0 0;
+
+  color: #64748b;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   HEADER BUTTONS
+========================================================= */
+
+.playlist-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.playlist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: 0;
+  border-radius: 10px;
+
+  padding: 11px 16px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.playlist-btn:hover {
+  transform: translateY(-2px);
+}
+
+.playlist-btn-primary {
+  color: #fff;
+  background: #4f46e5;
+
+  box-shadow:
+    0 8px 18px rgba(79, 70, 229, .20);
+}
+
+.playlist-btn-primary:hover {
+  background: #4338ca;
+  color: #fff;
+}
+
+.playlist-btn-danger {
+  color: #fff;
+  background: #dc2626;
+
+  box-shadow:
+    0 8px 18px rgba(220, 38, 38, .15);
+}
+
+.playlist-btn-danger:hover {
+  background: #b91c1c;
+}
+
+.playlist-btn-secondary {
+  color: #475569;
+  background: #e2e8f0;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.playlist-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+
+  max-width: 1400px;
+}
+
+.playlist-main-column,
+.playlist-sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.playlist-card {
+  background: #fff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+
+  padding: 24px;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, .05);
+}
+
+.playlist-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.card-eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #6366f1;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.playlist-card h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.card-header-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.playlist-description {
+  color: #475569;
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.playlist-description p {
+  margin: 0 0 10px;
+}
+
+.empty-description {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   VIDEO COUNT
+========================================================= */
+
+.playlist-video-count {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+
+  color: #4f46e5;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.playlist-video-count span {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   VIDEO LIST
+========================================================= */
+
+.playlist-video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.playlist-video-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 14px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+
+  background: #fff;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.playlist-video-item:hover {
+  transform: translateX(3px);
+
+  border-color: #c7d2fe;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .06);
+}
+
+.video-number {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 8px;
+
+  background: #f1f5f9;
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.video-play-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+
+  font-size: 20px;
+}
+
+.video-information {
+  min-width: 0;
+  flex: 1;
+}
+
+.video-information h3 {
+  margin: 0 0 5px;
+
+  color: #1e293b;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+.video-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.playlist-empty-state {
+  padding: 45px 20px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+
+  border-radius: 16px;
+
+  background: #f1f5f9;
+  color: #94a3b8;
+
+  font-size: 25px;
+}
+
+.playlist-empty-state h3 {
+  margin: 0 0 6px;
+
+  color: #334155;
+
+  font-size: 16px;
+}
+
+.playlist-empty-state p {
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.playlist-stat {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.playlist-stat:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.stat-value {
+  display: block;
+
+  color: #1e293b;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.stat-label {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   COURSE
+========================================================= */
+
+.course-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+}
+
+.course-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.course-box strong {
+  display: block;
+
+  color: #334155;
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.course-box span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   MANAGE ACTIONS
+========================================================= */
+
+.manage-action {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px 0;
+
+  color: #475569;
+
+  text-decoration: none;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  transition: .2s ease;
+}
+
+.manage-action:last-child {
+  border-bottom: 0;
+}
+
+.manage-action > i:first-child {
+  color: #6366f1;
+  font-size: 17px;
+}
+
+.manage-action span {
+  flex: 1;
+}
+
+.manage-action strong {
+  display: block;
+
+  color: #334155;
+
+  font-size: 13px;
+}
+
+.manage-action small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+.manage-action > i:last-child {
+  color: #cbd5e1;
+}
+
+.manage-action:hover {
+  transform: translateX(3px);
+}
+
+.manage-action:hover strong {
+  color: #4f46e5;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.playlist-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, .55);
+
+  backdrop-filter: blur(5px);
+}
+
+.playlist-modal-overlay.active {
+  display: flex;
+}
+
+.playlist-modal {
+  width: min(440px, 100%);
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  background: #fff;
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, .25);
+
+  text-align: center;
+
+  animation: playlistModalIn .2s ease;
+}
+
+@keyframes playlistModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-warning-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 16px;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+  color: #dc2626;
+
+  font-size: 25px;
+}
+
+.playlist-modal h2 {
+  margin: 0 0 10px;
+
+  color: #111827;
+
+  font-size: 21px;
+}
+
+.playlist-modal p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .playlist-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .playlist-sidebar-column {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .playlist-show-page {
+    padding: 20px 15px;
+  }
+
+  .playlist-show-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .playlist-header-actions {
+    width: 100%;
+  }
+
+  .playlist-header-actions .playlist-btn {
+    flex: 1;
+  }
+
+  .playlist-title-area h1 {
+    font-size: 23px;
+  }
+
+  .playlist-sidebar-column {
+    display: flex;
+  }
+
+  .playlist-card {
+    padding: 18px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .playlist-title-area {
+    align-items: flex-start;
+  }
+
+  .playlist-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 21px;
+  }
+
+  .playlist-header-actions {
+    flex-direction: column;
+  }
+
+  .playlist-header-actions .playlist-btn {
+    width: 100%;
+  }
+
+  .playlist-video-item {
+    padding: 10px;
+  }
+
+  .video-number {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   DARK MODE SUPPORT
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+  .playlist-show-page {
+    background: #0f172a;
+    color: #f8fafc;
+  }
+
+  .playlist-title-area h1,
+  .playlist-card h2,
+  .playlist-video-item h3,
+  .playlist-modal h2 {
+    color: #f8fafc;
+  }
+
+  .playlist-card,
+  .playlist-modal {
+    background: #111827;
+    border-color: #1e293b;
+  }
+
+  .playlist-card-header {
+    border-color: #1e293b;
+  }
+
+  .playlist-description {
+    color: #cbd5e1;
+  }
+
+  .playlist-video-item {
+    background: #111827;
+    border-color: #1e293b;
+  }
+
+  .course-box,
+  .empty-description {
+    background: #1e293b;
+  }
+
+  .course-box strong,
+  .manage-action strong {
+    color: #e2e8f0;
+  }
+
+  .playlist-stat {
+    border-color: #1e293b;
+  }
+
+}
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const deleteButton =
+    document.getElementById("deletePlaylistBtn");
+
+  const cancelButton =
+    document.getElementById("cancelDeleteBtn");
+
+  const modal =
+    document.getElementById("deletePlaylistModal");
+
+
+  if (!deleteButton || !modal) {
+    return;
+  }
+
+
+  function openDeleteModal() {
+
+    modal.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+  }
+
+
+  function closeDeleteModal() {
+
+    modal.classList.remove("active");
+
+    document.body.style.overflow = "";
+
+  }
+
+
+  deleteButton.addEventListener(
+    "click",
+    openDeleteModal
+  );
+
+
+  if (cancelButton) {
+
+    cancelButton.addEventListener(
+      "click",
+      closeDeleteModal
+    );
+
+  }
+
+
+  modal.addEventListener(
+    "click",
+    function (event) {
+
+      if (event.target === modal) {
+        closeDeleteModal();
+      }
+
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (event.key === "Escape") {
+        closeDeleteModal();
+      }
+
+    }
+  );
+
+});
+
+</script>

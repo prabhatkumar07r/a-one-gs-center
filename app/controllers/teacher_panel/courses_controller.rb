@@ -8,9 +8,13 @@ module TeacherPanel
 
     def index
       if current_user.admin?
-        @courses = Course.all
+        @courses = Course
+                      .with_attached_image
+                      .order(created_at: :desc)
       else
         @courses = current_user.teacher.courses
+                          .with_attached_image
+                          .order(created_at: :desc)
       end
     end
 

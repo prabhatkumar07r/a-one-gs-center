@@ -9,7 +9,6 @@ class Course < ApplicationRecord
 
   has_one_attached :image
   has_many :quizzes, dependent: :destroy
-  has_many :test_series, dependent: :destroy
 
   # ==========================================
   # DISCOUNTS
@@ -91,13 +90,13 @@ class Course < ApplicationRecord
   # DISCOUNT PERCENTAGE
   # ==========================================
 
-def discount_percentage
-  return 0 if original_fee.blank? || fee.blank?
-  return 0 if original_fee.to_d <= 0
-  return 0 if original_fee.to_d <= fee.to_d
+  def discount_percentage
+    return 0 if original_fee.blank? || fee.blank?
+    return 0 if original_fee.to_d <= 0
+    return 0 if original_fee.to_d <= fee.to_d
 
-  (((original_fee.to_d - fee.to_d) / original_fee.to_d) * 100).round
-end
+    (((original_fee.to_d - fee.to_d) / original_fee.to_d) * 100).round
+  end
 
   # ==========================================
   # HELPER METHODS

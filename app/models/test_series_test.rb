@@ -6,6 +6,9 @@ class TestSeriesTest < ApplicationRecord
            -> { order(position: :asc) },
            dependent: :destroy
 
+  has_many :test_series_attempts,
+           dependent: :destroy
+
   validates :title, presence: true
 
   validates :test_number,
@@ -13,9 +16,12 @@ class TestSeriesTest < ApplicationRecord
             numericality: {
               only_integer: true,
               greater_than: 0
+            },
+            uniqueness: {
+              scope: :test_series_id,
+              message: "has already been used for this test series"
             }
-  has_many :test_series_attempts,
-           dependent: :destroy
+
   validates :duration,
             numericality: {
               only_integer: true,
@@ -31,20 +37,15 @@ class TestSeriesTest < ApplicationRecord
   }
 
   def calculated_total_marks
-
     test_series_questions.sum(:marks).to_f
-
   end
 
   def question_count
-  test_series_questions.count
-end
-
+    test_series_questions.count
+  end
 
   def calculated_total_questions
-
     test_series_questions.count
-
   end
 
 end

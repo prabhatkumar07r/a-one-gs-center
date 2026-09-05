@@ -1,9 +1,7 @@
 class Option < ApplicationRecord
   belongs_to :question
-
-  has_many :quiz_answers,
-           dependent: :restrict_with_error
-
+has_many :quiz_answers,
+         dependent: :destroy
   validates :option_text,
             presence: true
 

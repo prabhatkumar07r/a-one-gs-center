@@ -565,16 +565,23 @@
 
               <div class="video-field">
 
-                <%= form.label :position, "Position" %>
+             <label class="video-field-label">
+              Position
+             </label>
 
-                <%= form.number_field :position,
-                      class: "video-form-control",
-                      min: 1,
-                      placeholder: "1" %>
+            <div class="video-context-box mb-0" style="padding: 10px 12px;">
+                   <span style="color:#8009e2; font-weight:700;">
+                   📌
+              </span>
 
-              </div>
+       <small>
+        Position is assigned automatically.
+      </small>
+    </div>
 
-            </div>
+    </div>
+
+   </div>
 
 
             <div class="col-md-4">
@@ -726,28 +733,6 @@
 
         this.value = this.value
           .replace(/\s{2,}/g, " ");
-
-      });
-
-    }
-
-
-    /* =====================================================
-       POSITION VALIDATION
-    ===================================================== */
-
-    const positionInput =
-      form.querySelector("#video_position");
-
-    if (positionInput) {
-
-      positionInput.addEventListener("input", function () {
-
-        const value = parseInt(this.value);
-
-        if (isNaN(value) || value < 1) {
-          this.value = 1;
-        }
 
       });
 

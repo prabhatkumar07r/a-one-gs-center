@@ -142,7 +142,51 @@
     color: #999;
     font-size: 11px;
   }
+   /* ================= COURSE IMAGE ================= */
 
+.course-image-input {
+  cursor: pointer;
+}
+
+.course-image-input::file-selector-button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-right: 10px;
+  background: #f0ebff;
+  color: #6c3df5;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.course-image-input::file-selector-button:hover {
+  background: #e5dcff;
+}
+
+.course-image-preview {
+  margin-top: 15px;
+  padding: 14px;
+  border: 1px solid #e4ddf7;
+  border-radius: 12px;
+  background: #faf8ff;
+}
+
+.course-image-preview-label {
+  margin-bottom: 10px;
+  color: #5a526d;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.course-image-preview-img {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd5ef;
+}
   /* ================= FEE PREVIEW ================= */
 
   .fee-preview {
@@ -397,6 +441,40 @@
         </div>
 
       </div>
+      <!-- Course Image -->
+
+<div class="mb-4">
+
+  <%= f.label :image,
+      "Course Image",
+      class: "form-label" %>
+
+  <%= f.file_field :image,
+      class: "form-control course-image-input",
+      accept: "image/jpeg,image/png,image/webp" %>
+
+  <small class="form-help">
+    Upload a JPG, PNG or WEBP image for this course.
+    Maximum recommended size: 5 MB.
+  </small>
+
+  <% if course.persisted? && course.image.attached? %>
+
+    <div class="course-image-preview">
+
+      <div class="course-image-preview-label">
+        Current Course Image
+      </div>
+
+      <%= image_tag course.image,
+          class: "course-image-preview-img",
+          alt: course.Course_name %>
+
+    </div>
+
+  <% end %>
+
+</div>
 
 
       <!-- ================= FEES ================= -->
@@ -899,5 +977,52 @@
     });
 
   });
+
+
+/* =========================================================
+   COURSE IMAGE VALIDATION
+========================================================= */
+
+const courseImage =
+  form.querySelector(".course-image-input");
+
+if (courseImage) {
+
+  courseImage.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+
+      alert(
+        "Please select a JPG, PNG or WEBP image."
+      );
+
+      this.value = "";
+
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+
+      alert(
+        "Course image must be less than 5 MB."
+      );
+
+      this.value = "";
+
+    }
+
+  });
+
+}
 </script>
 

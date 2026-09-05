@@ -10,7 +10,6 @@ class LearningController < ApplicationController
     @courses = Course.where(status: "Active")
   end
 
-
   # =========================================================
   # COURSE LEARNING PAGE
   # =========================================================
@@ -30,7 +29,6 @@ class LearningController < ApplicationController
                         )
                         .order(:position)
 
-
     # =======================================================
     # STUDY NOTES
     # =======================================================
@@ -41,7 +39,6 @@ class LearningController < ApplicationController
                      course_id: @course.id
                    }
                  )
-
 
     # =======================================================
     # RESOURCES
@@ -54,7 +51,6 @@ class LearningController < ApplicationController
                            }
                          )
 
-
     # =======================================================
     # QUIZZES
     # =======================================================
@@ -63,7 +59,6 @@ class LearningController < ApplicationController
                       .where(status: "Active")
                       .includes(:questions)
                       .order(created_at: :desc)
-
 
     # =======================================================
     # COURSE PROGRESS
@@ -82,7 +77,6 @@ class LearningController < ApplicationController
                   )
                   .count
 
-
     @progress =
       if @total_videos.zero?
         0
@@ -90,10 +84,7 @@ class LearningController < ApplicationController
         ((@completed_videos.to_f / @total_videos) * 100).round
       end
 
-
-    # Your view uses @progress
     @course_progress = @progress
-
 
     # =======================================================
     # CERTIFICATE
@@ -105,7 +96,6 @@ class LearningController < ApplicationController
     )
   end
 
-
   # =========================================================
   # VIDEO
   # =========================================================
@@ -114,7 +104,6 @@ class LearningController < ApplicationController
     @video = @course.videos.find(params[:id])
 
     @playlist = @video.playlist
-
 
     # =======================================================
     # PLAYLISTS
@@ -128,13 +117,11 @@ class LearningController < ApplicationController
                         )
                         .order(:position)
 
-
     # =======================================================
     # UNLOCKED PLAYLISTS
     # =======================================================
 
     @unlocked_playlist_ids = unlocked_playlists
-
 
     # =======================================================
     # STUDY NOTES
@@ -143,14 +130,12 @@ class LearningController < ApplicationController
     @notes = @playlist.notes
                       .order(created_at: :desc)
 
-
     # =======================================================
     # RESOURCES
     # =======================================================
 
     @resources = @playlist.resources
                          .order(created_at: :desc)
-
 
     # =======================================================
     # OVERALL COURSE PROGRESS
@@ -169,14 +154,12 @@ class LearningController < ApplicationController
                   )
                   .count
 
-
     @course_progress =
       if @total_videos.zero?
         0
       else
         ((@completed_videos.to_f / @total_videos) * 100).round
       end
-
 
     # =======================================================
     # CERTIFICATE
@@ -187,34 +170,29 @@ class LearningController < ApplicationController
       course: @course
     )
 
-
     # =======================================================
     # PREVIOUS / NEXT VIDEO
     # =======================================================
 
-    videos = @course.videos
-                    .order(:position)
-                    .to_a
+    videos =
+      @course.videos
+             .where.not(id: nil)
+             .order(:position, :id)
+             .to_a
 
-    current_index = videos.index(@video)
-
+    current_index =
+      videos.index { |video| video.id == @video.id }
 
     @previous_video =
-      if current_index&.positive?
+      if current_index && current_index > 0
         videos[current_index - 1]
-      else
-        nil
       end
-
 
     @next_video =
       if current_index && current_index < videos.size - 1
         videos[current_index + 1]
-      else
-        nil
       end
   end
-
 
   # =========================================================
   # COMPLETE VIDEO
@@ -222,7 +200,6 @@ class LearningController < ApplicationController
 
   def complete_video
     @video = @course.videos.find(params[:id])
-
 
     # =======================================================
     # SAVE VIDEO PROGRESS
@@ -236,13 +213,11 @@ class LearningController < ApplicationController
     progress.last_watched_at = Time.current
     progress.save!
 
-
     # =======================================================
     # GENERATE CERTIFICATE
     # =======================================================
 
     generate_certificate(@course)
-
 
     # =======================================================
     # CURRENT PLAYLIST VIDEOS
@@ -250,11 +225,12 @@ class LearningController < ApplicationController
 
     playlist_videos =
       @video.playlist.videos
-            .order(:position)
+            .where.not(id: nil)
+            .order(:position, :id)
             .to_a
 
-    current_index = playlist_videos.index(@video)
-
+    current_index =
+      playlist_videos.index { |video| video.id == @video.id }
 
     # =======================================================
     # NEXT VIDEO IN SAME PLAYLIST
@@ -269,11 +245,10 @@ class LearningController < ApplicationController
         @course,
         next_video
       ),
-      notice: "✅ Video completed!"
+      notice: "Video completed!"
 
       return
     end
-
 
     # =======================================================
     # CURRENT PLAYLIST COMPLETED
@@ -285,38 +260,45 @@ class LearningController < ApplicationController
                "position > ?",
                @video.playlist.position
              )
-             .order(:position)
+             .order(:position, :id)
              .first
-
 
     # =======================================================
     # START NEXT PLAYLIST
     # =======================================================
 
-    if next_playlist.present? &&
-       next_playlist.videos.any?
+    if next_playlist.present?
 
-      redirect_to learning_video_path(
-        @course,
-        next_playlist.videos.order(:position).first
-      ),
-      notice: "🎉 Playlist completed! Starting next playlist."
+      next_video =
+        next_playlist.videos
+                     .where.not(id: nil)
+                     .order(:position, :id)
+                     .first
 
-    else
+      if next_video.present?
+        redirect_to learning_video_path(
+          @course,
+          next_video
+        ),
+        notice: "Playlist completed! Starting next playlist."
 
-      redirect_to learning_course_path(@course),
-                  notice: "🎉 Congratulations! Course Completed."
-
+        return
+      end
     end
-  end
 
+    # =======================================================
+    # COURSE COMPLETED
+    # =======================================================
+
+    redirect_to learning_course_path(@course),
+                notice: "Congratulations! Course Completed."
+  end
 
   # =========================================================
   # PRIVATE
   # =========================================================
 
   private
-
 
   # =========================================================
   # SET COURSE
@@ -331,7 +313,6 @@ class LearningController < ApplicationController
       end
   end
 
-
   # =========================================================
   # PLAYLIST ACCESS
   # =========================================================
@@ -344,22 +325,17 @@ class LearningController < ApplicationController
     unlocked_ids = unlocked_playlists
 
     unless unlocked_ids.include?(playlist.id)
-
       redirect_to learning_course_path(@course),
                   alert: "Complete previous playlist first."
-
     end
   end
-
 
   # =========================================================
   # GENERATE CERTIFICATE
   # =========================================================
 
   def generate_certificate(course)
-
     total = course.videos.count
-
 
     completed =
       current_user.video_progresses
@@ -372,40 +348,29 @@ class LearningController < ApplicationController
                   )
                   .count
 
-
     return unless total.positive?
-
     return unless completed == total
-
 
     Certificate.find_or_create_by!(
       user: current_user,
       course: course
     ) do |certificate|
-
       certificate.issued_on = Date.current
-
     end
   end
-
 
   # =========================================================
   # UNLOCK PLAYLISTS ONE BY ONE
   # =========================================================
 
   def unlocked_playlists
-
     unlocked = []
 
-
     @playlists.each do |playlist|
-
       # First playlist is always unlocked
       unlocked << playlist.id
 
-
       total = playlist.videos.count
-
 
       completed =
         current_user.video_progresses
@@ -418,14 +383,10 @@ class LearningController < ApplicationController
                     )
                     .count
 
-
       # Stop unlocking after the first incomplete playlist
       break unless completed == total
-
     end
-
 
     unlocked
   end
-
 end

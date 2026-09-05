@@ -21,16 +21,20 @@ module Admin
       @playlist = @course.playlists.new
     end
 
-    def create
-      @playlist = @course.playlists.new(playlist_params)
+   def create
+  @playlist = @course.playlists.new(playlist_params)
 
-      if @playlist.save
-        redirect_to admin_course_playlists_path(@course),
-                    notice: "Playlist created successfully."
-      else
-        render :new, status: :unprocessable_entity
-      end
-    end
+  if @playlist.position.blank?
+    @playlist.position = (@course.playlists.maximum(:position) || 0) + 1
+  end
+
+  if @playlist.save
+    redirect_to admin_course_playlists_path(@course),
+                notice: "Playlist created successfully."
+  else
+    render :new, status: :unprocessable_entity
+  end
+end
 
     def edit
     end
@@ -44,12 +48,21 @@ module Admin
       end
     end
 
-    def destroy
-      @playlist.destroy
-
-      redirect_to admin_course_playlists_path(@course),
-                  notice: "Playlist deleted successfully."
+   def destroy
+  if @playlist.destroy
+    @course.playlists
+           .order(:position, :id)
+           .each_with_index do |playlist, index|
+      playlist.update!(position: index + 1)
     end
+
+    redirect_to admin_course_playlists_path(@course),
+                notice: "Playlist deleted successfully."
+  else
+    redirect_to admin_course_playlists_path(@course),
+                alert: "Unable to delete playlist."
+  end
+end
 
     private
 

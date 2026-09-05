@@ -268,7 +268,10 @@ select.admin-ts-input {
 
 
 <%= form_with(
-      model: [:admin, @test_series, @test_series_test],
+      url: @test_series_test.new_record? ?
+        admin_test_series_tests_path(@test_series) :
+        admin_test_series_test_path(@test_series, @test_series_test),
+      model: @test_series_test,
       local: true,
       class: "admin-ts-form"
     ) do |form| %>

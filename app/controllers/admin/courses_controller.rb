@@ -121,6 +121,7 @@ end
       :requirements,
       :teacher_id,
       :status,
+      :image,
       :course_type
     )
   end

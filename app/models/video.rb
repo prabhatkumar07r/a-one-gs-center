@@ -20,16 +20,26 @@ class Video < ApplicationRecord
   validates :video_url, presence: true
 
   def youtube_id
-    return if video_url.blank?
+  return if video_url.blank?
 
-    if video_url.include?("youtu.be/")
-      video_url.split("/").last.split("?").first
-    elsif video_url.include?("/shorts/")
-      video_url.split("/shorts/").last.split("?").first
-    elsif video_url.include?("watch?v=")
-      video_url.split("v=").last.split("&").first
-    end
+  url = video_url.to_s.strip
+
+  # Raw YouTube video ID
+  return url if url.match?(/\A[A-Za-z0-9_-]{11}\z/)
+
+  # Standard YouTube URL
+  if url.include?("youtu.be/")
+    url.split("youtu.be/").last.split(/[?&#]/).first
+  elsif url.include?("/shorts/")
+    url.split("/shorts/").last.split(/[?&#]/).first
+  elsif url.include?("watch?v=")
+    url.split("watch?v=").last.split(/[&#]/).first
+  elsif url.include?("/embed/")
+    url.split("/embed/").last.split(/[?&#]/).first
+  elsif url.include?("/live/")
+    url.split("/live/").last.split(/[?&#]/).first
   end
+end
 
   def youtube_thumbnail
     return unless youtube_id

@@ -9,16 +9,11 @@ class QuizzesController < ApplicationController
   # ==================================================
 
   def index
-  @course_quizzes = @course.quizzes
-                           .where(test_series_id: nil)
-                           .includes(:video, :questions)
-                           .order(created_at: :desc)
-
-  @test_series = @course.test_series
-                        .includes(quizzes: :questions)
-                        .order(created_at: :desc)
-end
-
+    @course_quizzes = @course.quizzes
+                             .where(test_series_id: nil)
+                             .includes(:video, :questions)
+                             .order(created_at: :desc)
+  end
 
   # ==================================================
   # SHOW QUIZ
@@ -40,7 +35,6 @@ end
                        .includes(:options)
                        .order(:position)
   end
-
 
   # ==================================================
   # START QUIZ
@@ -69,7 +63,6 @@ end
     redirect_to course_quiz_path(@course, @quiz)
   end
 
-
   # ==================================================
   # SUBMIT QUIZ
   # ==================================================
@@ -94,9 +87,7 @@ end
     total_marks = @quiz.questions.sum(:marks).to_d
 
     ActiveRecord::Base.transaction do
-
       @quiz.questions.order(:position).each do |question|
-
         selected_option_id =
           params.dig(:answers, question.id.to_s)
 
@@ -120,7 +111,6 @@ end
           is_correct: is_correct,
           marks_obtained: marks_obtained
         )
-
       end
 
       percentage =
@@ -144,7 +134,6 @@ end
         status: final_status,
         submitted_at: Time.current
       )
-
     end
 
     redirect_to course_quiz_result_path(
@@ -154,22 +143,17 @@ end
     ),
     notice: "Quiz submitted successfully."
 
-
   rescue ActiveRecord::RecordNotFound
-
     redirect_to course_quizzes_path(@course),
                 alert: "Quiz attempt not found."
 
-
   rescue ActiveRecord::RecordInvalid => e
-
     Rails.logger.error e.message
     Rails.logger.error e.record.errors.full_messages
 
     redirect_to course_quiz_path(@course, @quiz),
                 alert: "Unable to submit quiz: #{e.record.errors.full_messages.to_sentence}"
   end
-
 
   # ==================================================
   # QUIZ RESULT
@@ -185,9 +169,7 @@ end
                        .order("questions.position ASC")
   end
 
-
   private
-
 
   # ==================================================
   # SET COURSE
@@ -196,7 +178,6 @@ end
   def set_course
     @course = Course.find(params[:course_id])
   end
-
 
   # ==================================================
   # SET QUIZ
@@ -214,19 +195,16 @@ end
     @quiz = @course.quizzes.find(quiz_id)
   end
 
-
   # ==================================================
   # TEST SERIES ACCESS
   # ==================================================
 
   def check_test_series_access
-
     # Normal course quiz
     # No Test Series attached
     return unless @quiz.test_series.present?
 
     test_series = @quiz.test_series
-
 
     # ------------------------------------------
     # FREE TEST SERIES
@@ -235,7 +213,6 @@ end
     if test_series.free?
       return
     end
-
 
     # ------------------------------------------
     # PAID TEST SERIES
@@ -248,13 +225,11 @@ end
         status: "Active"
       )
 
-
     # ------------------------------------------
     # ACCESS GRANTED
     # ------------------------------------------
 
     return if purchased
-
 
     # ------------------------------------------
     # ACCESS DENIED
@@ -263,5 +238,4 @@ end
     redirect_to test_series_path(test_series),
                 alert: "Please purchase this Test Series to access its tests."
   end
-
 end

@@ -902,13 +902,14 @@
 
           <div class="ratio ratio-16x9 video-wrapper">
 
-            <iframe
-              id="youtube-player"
-              src="https://www.youtube.com/embed/<%= @video.youtube_id %>?enablejsapi=1"
-              title="<%= @video.title %>"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen>
-            </iframe>
+      <iframe
+  id="youtube-player"
+  src="https://www.youtube.com/embed/<%= @video.youtube_id %>?enablejsapi=1"
+  referrerpolicy="strict-origin-when-cross-origin"
+  title="<%= @video.title %>"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>
 
           </div>
 
