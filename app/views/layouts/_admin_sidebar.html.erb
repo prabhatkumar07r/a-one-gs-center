@@ -23,12 +23,12 @@
   width: 260px;
   height: 100dvh;
 
-   background:
+  background:
     linear-gradient(
       135deg,
-      rgba(15, 23, 42, 0.92),
-      rgba(30, 27, 75, 0.94)
-    ) !
+      rgba(15, 23, 42, 0.98),
+      rgba(30, 27, 75, 0.98)
+    );
 
   backdrop-filter: blur(20px);
 
@@ -40,10 +40,6 @@
   overflow-y: auto;
   overflow-x: hidden;
 
-  /*
-     IMPORTANT:
-     Keep sidebar below navbar.
-  */
   z-index: 3000;
 
   transform: translateX(0);
@@ -86,9 +82,6 @@
 
   backdrop-filter: blur(3px);
 
-  /*
-     Below sidebar and navbar.
-  */
   z-index: 2990;
 }
 
@@ -128,14 +121,19 @@
 
 
 /* =========================================================
-   NAVIGATION
+   MAIN NAVIGATION
 ========================================================= */
 
-.admin-sidebar .nav {
+.admin-sidebar > .nav {
   padding: 15px 10px;
 }
 
-.admin-sidebar .nav-item {
+
+/* =========================================================
+   NAV ITEMS
+========================================================= */
+
+.admin-sidebar > .nav > .nav-item {
   margin-bottom: 5px;
 }
 
@@ -170,6 +168,11 @@
     transform .2s ease;
 }
 
+
+/* =========================================================
+   NAV LINK HOVER
+========================================================= */
+
 .admin-sidebar .nav-link:hover {
   color: #ffffff;
 
@@ -177,6 +180,11 @@
 
   transform: translateX(2px);
 }
+
+
+/* =========================================================
+   ACTIVE NAV LINK
+========================================================= */
 
 .admin-sidebar .nav-link.active {
   color: #ffffff;
@@ -216,21 +224,60 @@
 
   font-size: 12px;
 
-  transition: transform .25s ease;
+  transition:
+    transform .25s ease;
 }
 
-.admin-sidebar .nav-link[aria-expanded="true"] .collapse-arrow {
+.admin-sidebar
+.nav-link[aria-expanded="true"]
+.collapse-arrow {
   transform: rotate(180deg);
 }
 
 
 /* =========================================================
-   SUB MENU
+   BOOTSTRAP COLLAPSE
+   IMPORTANT: KEEP COLLAPSE TRANSPARENT
+========================================================= */
+
+.admin-sidebar .collapse,
+.admin-sidebar .collapse.show,
+.admin-sidebar .collapsing {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+
+/* =========================================================
+   SUBMENU
 ========================================================= */
 
 .admin-sidebar .submenu {
-  padding-left: 15px;
+  margin: 0 !important;
+
+  padding: 4px 0 6px 15px !important;
+
+  background: transparent !important;
+  background-color: transparent !important;
+
+  list-style: none;
 }
+
+
+/* =========================================================
+   SUBMENU ITEMS
+========================================================= */
+
+.admin-sidebar .submenu .nav-item {
+  margin-bottom: 3px;
+
+  background: transparent !important;
+}
+
+
+/* =========================================================
+   SUBMENU LINKS
+========================================================= */
 
 .admin-sidebar .submenu .nav-link {
   min-height: 40px;
@@ -240,10 +287,41 @@
   font-size: 13px;
 
   color: rgba(255,255,255,0.65);
+
+  background: transparent !important;
+  background-color: transparent !important;
 }
+
+
+/* =========================================================
+   SUBMENU HOVER
+========================================================= */
 
 .admin-sidebar .submenu .nav-link:hover {
   color: #ffffff;
+
+  background:
+    rgba(255,255,255,0.08) !important;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   SUBMENU ACTIVE
+========================================================= */
+
+.admin-sidebar .submenu .nav-link.active {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99,102,241,0.35),
+      rgba(79,70,229,0.25)
+    ) !important;
+
+  border: 1px solid rgba(129,140,248,0.15);
 }
 
 
@@ -254,22 +332,19 @@
 @media (max-width: 991px) {
 
   .admin-sidebar {
+
     width: 280px;
 
     max-width: calc(100vw - 45px);
 
-    /*
-       Closed state.
-    */
     transform: translateX(-105%);
 
     z-index: 3000;
   }
 
+
   .admin-sidebar.mobile-open {
-    /*
-       Open state.
-    */
+
     transform: translateX(0);
   }
 
@@ -289,23 +364,107 @@
     max-width: 86vw;
   }
 
+
   .admin-sidebar-header {
+
     min-height: 68px;
 
     padding: 10px;
   }
 
-  .admin-sidebar .nav {
+
+  /* Main navigation only */
+
+  .admin-sidebar > .nav {
+
     padding: 12px 8px;
   }
 
+
+  /* Main + submenu links */
+
   .admin-sidebar .nav-link {
+
     min-height: 44px;
 
     padding: 10px 12px;
   }
 
+
+  /* Keep submenu compact */
+
+  .admin-sidebar .submenu {
+
+    padding-left: 12px !important;
+  }
+
+
+  .admin-sidebar .submenu .nav-link {
+
+    min-height: 40px;
+
+    padding: 9px 10px;
+
+    font-size: 13px;
+  }
+
 }
+
+
+/* =========================================================
+   EXTRA PROTECTION AGAINST WHITE BACKGROUND
+========================================================= */
+
+.admin-sidebar .collapse *,
+.admin-sidebar .collapse.show *,
+.admin-sidebar .collapsing * {
+  background-color: transparent;
+}
+
+
+/* =========================================================
+   PREVENT WHITE UL BACKGROUND
+========================================================= */
+
+.admin-sidebar ul,
+.admin-sidebar li {
+  background: transparent;
+}
+
+
+/* =========================================================
+   SIDEBAR TEXT
+========================================================= */
+
+.admin-sidebar span {
+  color: inherit;
+}
+
+
+/* =========================================================
+   SIDEBAR LINK FOCUS
+========================================================= */
+
+.admin-sidebar .nav-link:focus {
+  outline: none;
+
+  color: #ffffff;
+
+  background:
+    rgba(255,255,255,0.08);
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.admin-sidebar .nav-link:focus-visible {
+  outline: 2px solid rgba(129,140,248,0.7);
+
+  outline-offset: 2px;
+}
+
 
 </style>
 
