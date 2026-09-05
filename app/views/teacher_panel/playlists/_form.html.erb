@@ -1,55 +1,435 @@
+<style>
+  /* =========================================================
+     TEACHER PLAYLIST FORM
+  ========================================================= */
 
-<%= form_with(
-      model: [:teacher_panel, @course, @playlist],
-      local: true
-    ) do |form| %>
+  .playlist-form-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+  }
 
-  <% if @playlist.errors.any? %>
-    <div class="alert alert-danger">
-      <ul class="mb-0">
-        <% @playlist.errors.full_messages.each do |message| %>
-          <li>
-            <%= message %>
-          </li>
-        <% end %>
-      </ul>
+  .playlist-form-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Header */
+
+  .playlist-form-header {
+    padding: 26px 30px;
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: #ffffff;
+  }
+
+  .playlist-form-header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .playlist-form-header p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+
+  /* Body */
+
+  .playlist-form-body {
+    padding: 30px;
+  }
+
+  /* Errors */
+
+  .playlist-error-box {
+    border: none;
+    border-left: 4px solid #dc2626;
+    border-radius: 10px;
+    background: #fef2f2;
+    color: #991b1b;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+  }
+
+  .playlist-error-box ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+  }
+
+  /* Labels */
+
+  .playlist-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  /* Inputs */
+
+  .playlist-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .playlist-input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+  }
+
+  .playlist-textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .playlist-input::placeholder {
+    color: #9ca3af;
+  }
+
+  /* Position info */
+
+  .playlist-position-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    margin-top: 8px;
+    margin-bottom: 24px;
+    border: 1px solid #ddd6fe;
+    border-left: 4px solid #7c3aed;
+    border-radius: 12px;
+    background: #f5f3ff;
+  }
+
+  .playlist-position-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #7c3aed;
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  .playlist-position-content strong {
+    display: block;
+    color: #4c1d95;
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .playlist-position-content span {
+    color: #6b7280;
+    font-size: 13px;
+  }
+
+  /* Buttons */
+
+  .playlist-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 8px;
+  }
+
+  .playlist-btn {
+    min-height: 46px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .playlist-btn-back {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+  }
+
+  .playlist-btn-back:hover {
+    background: #e5e7eb;
+    color: #111827;
+  }
+
+  .playlist-btn-save {
+    background: #7c3aed;
+    color: #ffffff;
+  }
+
+  .playlist-btn-save:hover {
+    background: #6d28d9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(124, 58, 237, 0.25);
+  }
+
+  .playlist-btn-save:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Required */
+
+  .required-star {
+    color: #dc2626;
+  }
+
+  /* Mobile */
+
+  @media (max-width: 576px) {
+
+    .playlist-form-body {
+      padding: 20px;
+    }
+
+    .playlist-form-header {
+      padding: 22px 20px;
+    }
+
+    .playlist-form-header h3 {
+      font-size: 20px;
+    }
+
+    .playlist-form-actions {
+      flex-direction: column-reverse;
+    }
+
+    .playlist-btn {
+      width: 100%;
+    }
+
+    .playlist-position-box {
+      align-items: flex-start;
+    }
+  }
+</style>
+
+
+<div class="playlist-form-wrapper">
+
+  <div class="playlist-form-card">
+
+    <!-- HEADER -->
+
+    <div class="playlist-form-header">
+
+      <h3>
+        🎵 <%= @playlist.persisted? ? "Edit Playlist" : "Add New Playlist" %>
+      </h3>
+
+      <p>
+        Manage the playlist information for this course
+      </p>
+
     </div>
-  <% end %>
 
-  <div class="mb-3">
-    <%= form.label :title,
-        class: "form-label fw-bold" %>
 
-    <%= form.text_field :title,
-        class: "form-control",
-        placeholder: "Enter playlist title" %>
+    <!-- BODY -->
+
+    <div class="playlist-form-body">
+
+      <%= form_with(
+            model: [:teacher_panel, @course, @playlist],
+            local: true,
+            id: "teacher-playlist-form"
+          ) do |form| %>
+
+
+        <!-- ERRORS -->
+
+        <% if @playlist.errors.any? %>
+
+          <div class="playlist-error-box">
+
+            <strong>
+              <%= pluralize(@playlist.errors.count, "error") %>
+              prevented this playlist from being saved.
+            </strong>
+
+            <ul class="mt-2">
+
+              <% @playlist.errors.full_messages.each do |message| %>
+
+                <li>
+                  <%= message %>
+                </li>
+
+              <% end %>
+
+            </ul>
+
+          </div>
+
+        <% end %>
+
+
+        <!-- TITLE -->
+
+        <div class="mb-4">
+
+          <%= form.label :title, class: "playlist-form-label" do %>
+
+            Playlist Title
+            <span class="required-star">*</span>
+
+          <% end %>
+
+          <%= form.text_field :title,
+                class: "playlist-input",
+                placeholder: "Enter playlist title",
+                autocomplete: "off",
+                required: true %>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="mb-4">
+
+          <%= form.label :description,
+                "Description",
+                class: "playlist-form-label" %>
+
+          <%= form.text_area :description,
+                rows: 5,
+                class: "playlist-input playlist-textarea",
+                placeholder: "Write a short description for this playlist..." %>
+
+        </div>
+
+
+        <!-- AUTOMATIC POSITION -->
+
+        <div class="playlist-position-box">
+
+          <div class="playlist-position-icon">
+            📌
+          </div>
+
+          <div class="playlist-position-content">
+
+            <strong>
+              Playlist Position
+            </strong>
+
+            <span>
+              Position is assigned automatically by the system.
+              It cannot be changed manually.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="playlist-form-actions">
+
+          <%= link_to(
+                "← Back",
+                teacher_panel_course_playlists_path(@course),
+                class: "playlist-btn playlist-btn-back"
+              ) %>
+
+          <%= form.submit(
+                @playlist.persisted? ? "Update Playlist" : "Save Playlist",
+                class: "playlist-btn playlist-btn-save",
+                id: "playlist-submit-button"
+              ) %>
+
+        </div>
+
+
+      <% end %>
+
+    </div>
+
   </div>
 
-  <div class="mb-3">
-    <%= form.label :description,
-        class: "form-label fw-bold" %>
+</div>
 
-    <%= form.text_area :description,
-        rows: 4,
-        class: "form-control",
-        placeholder: "Playlist description" %>
-  </div>
 
-  <div class="mb-3">
-    <%= form.label :position,
-        class: "form-label fw-bold" %>
+<script>
+  document.addEventListener("turbo:load", function () {
 
-    <%= form.number_field :position,
-        class: "form-control" %>
-  </div>
+    const form = document.getElementById("teacher-playlist-form");
+    const title = document.getElementById("playlist_title");
+    const submitButton = document.getElementById("playlist-submit-button");
 
-  <div class="d-flex gap-2">
-    <%= form.submit "Save Playlist",
-        class: "btn btn-success" %>
+    /* ---------------------------------------------
+       CLEAN MULTIPLE SPACES IN TITLE
+    --------------------------------------------- */
 
-    <%= link_to "Back",
-        teacher_panel_course_playlists_path(@course),
-        class: "btn btn-secondary" %>
-  </div>
+    if (title) {
 
-<% end %>
+      title.addEventListener("input", function () {
+
+        this.value = this.value
+          .replace(/\s{2,}/g, " ");
+
+      });
+
+    }
+
+
+    /* ---------------------------------------------
+       PREVENT EMPTY TITLE
+    --------------------------------------------- */
+
+    if (form && title) {
+
+      form.addEventListener("submit", function (event) {
+
+        title.value = title.value.trim();
+
+        if (title.value.length === 0) {
+
+          event.preventDefault();
+
+          title.focus();
+
+          alert("Please enter a playlist title.");
+
+          return;
+
+        }
+
+        /* Prevent double submission */
+
+        if (submitButton) {
+
+          submitButton.disabled = true;
+
+          submitButton.value =
+            "Saving...";
+
+        }
+
+      });
+
+    }
+
+  });
+</script>
