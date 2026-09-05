@@ -1,0 +1,1134 @@
+<% content_for :hide_footer, true %>
+
+<div class="teacher-playlist-show-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="playlist-header">
+
+    <div class="playlist-header-left">
+
+      <div class="playlist-back">
+        <%= link_to teacher_panel_course_playlists_path(@course),
+            class: "playlist-back-btn" do %>
+          <i class="bi bi-arrow-left"></i>
+          <span>Back to Playlists</span>
+        <% end %>
+      </div>
+
+      <div class="playlist-title-row">
+
+        <div class="playlist-icon">
+          <i class="bi bi-collection-play-fill"></i>
+        </div>
+
+        <div>
+          <h1>
+            <%= @playlist.title %>
+          </h1>
+
+          <div class="playlist-meta">
+            <span>
+              <i class="bi bi-book"></i>
+              <%= @course.title %>
+            </span>
+
+            <span class="meta-divider">•</span>
+
+            <span>
+              <i class="bi bi-list-ol"></i>
+              Position <%= @playlist.position || "—" %>
+            </span>
+
+            <span class="meta-divider">•</span>
+
+            <span>
+              <i class="bi bi-camera-video"></i>
+              <%= @playlist.videos.count %>
+              <%= @playlist.videos.count == 1 ? "Video" : "Videos" %>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         ACTIONS
+    ================================================== -->
+
+    <div class="playlist-actions">
+
+      <%= link_to edit_teacher_panel_course_playlist_path(@course, @playlist),
+          class: "playlist-btn playlist-btn-primary" do %>
+        <i class="bi bi-pencil-square"></i>
+        <span>Edit Playlist</span>
+      <% end %>
+
+      <%= link_to teacher_panel_course_playlists_path(@course),
+          class: "playlist-btn playlist-btn-secondary" do %>
+        <i class="bi bi-grid"></i>
+        <span>All Playlists</span>
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       DESCRIPTION
+  ====================================================== -->
+
+  <div class="playlist-description-card">
+
+    <div class="description-icon">
+      <i class="bi bi-info-circle-fill"></i>
+    </div>
+
+    <div>
+      <h3>Playlist Description</h3>
+
+      <% if @playlist.description.present? %>
+
+        <p>
+          <%= @playlist.description %>
+        </p>
+
+      <% else %>
+
+        <p class="empty-description">
+          No description has been added to this playlist yet.
+        </p>
+
+      <% end %>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       VIDEOS SECTION
+  ====================================================== -->
+
+  <div class="playlist-content-card">
+
+    <div class="playlist-content-header">
+
+      <div>
+        <h2>
+          <i class="bi bi-camera-video-fill"></i>
+          Playlist Videos
+        </h2>
+
+        <p>
+          Videos included in this playlist.
+        </p>
+      </div>
+
+      <div class="video-count-badge">
+        <%= @playlist.videos.count %>
+        <%= @playlist.videos.count == 1 ? "Video" : "Videos" %>
+      </div>
+
+    </div>
+
+
+    <% videos = @playlist.videos.order(:position, :id) %>
+
+    <% if videos.any? %>
+
+      <div class="playlist-video-list">
+
+        <% videos.each_with_index do |video, index| %>
+
+          <div
+            class="playlist-video-item"
+            data-video-item
+            data-video-index="<%= index %>"
+          >
+
+            <!-- Position -->
+
+            <div class="video-position">
+              <%= video.position.presence || index + 1 %>
+            </div>
+
+
+            <!-- Video Icon -->
+
+            <div class="video-thumbnail">
+
+              <i class="bi bi-play-fill"></i>
+
+            </div>
+
+
+            <!-- Video Information -->
+
+            <div class="video-information">
+
+              <h3>
+                <%= video.title %>
+              </h3>
+
+              <div class="video-details">
+
+                <span>
+                  <i class="bi bi-collection-play"></i>
+                  Playlist Video
+                </span>
+
+                <% if video.video_url.present? %>
+                  <span>
+                    <i class="bi bi-youtube"></i>
+                    YouTube Video
+                  </span>
+                <% end %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Actions -->
+
+            <div class="video-actions">
+
+              <% if video.video_url.present? %>
+
+                <%= link_to video.video_url,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    class: "video-action-btn video-watch-btn",
+                    title: "Watch video" do %>
+                  <i class="bi bi-play-circle-fill"></i>
+                  <span>Watch</span>
+                <% end %>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+
+      <!-- =================================================
+           VIDEO SUMMARY
+      ================================================== -->
+
+      <div class="playlist-video-summary">
+
+        <div class="summary-item">
+          <i class="bi bi-collection-play-fill"></i>
+
+          <div>
+            <strong><%= videos.count %></strong>
+            <span>Total Videos</span>
+          </div>
+        </div>
+
+
+        <div class="summary-item">
+          <i class="bi bi-sort-numeric-down"></i>
+
+          <div>
+            <strong>Ordered</strong>
+            <span>By Position</span>
+          </div>
+        </div>
+
+
+        <div class="summary-item">
+          <i class="bi bi-check-circle-fill"></i>
+
+          <div>
+            <strong>Active</strong>
+            <span>Playlist</span>
+          </div>
+        </div>
+
+      </div>
+
+    <% else %>
+
+      <!-- =================================================
+           EMPTY STATE
+      ================================================== -->
+
+      <div class="playlist-empty-state">
+
+        <div class="empty-icon">
+          <i class="bi bi-camera-video-off"></i>
+        </div>
+
+        <h3>No Videos Yet</h3>
+
+        <p>
+          This playlist does not contain any videos yet.
+          Add videos from the course video management section.
+        </p>
+
+        <%= link_to teacher_panel_course_videos_path(@course),
+            class: "playlist-btn playlist-btn-primary" do %>
+          <i class="bi bi-plus-circle"></i>
+          Manage Videos
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     CSS
+========================================================= -->
+
+<style>
+
+.teacher-playlist-show-page {
+  min-height: calc(100vh - 70px);
+  padding: 32px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, 0.08),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(37, 99, 235, 0.06),
+      transparent 30%
+    ),
+    #f8fafc;
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.playlist-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 25px;
+
+  margin-bottom: 25px;
+}
+
+.playlist-header-left {
+  min-width: 0;
+}
+
+.playlist-back {
+  margin-bottom: 18px;
+}
+
+.playlist-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #64748b;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.playlist-back-btn:hover {
+  color: #4f46e5;
+  transform: translateX(-2px);
+}
+
+
+.playlist-title-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.playlist-icon {
+  width: 64px;
+  height: 64px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  );
+
+  color: #fff;
+
+  font-size: 27px;
+
+  box-shadow:
+    0 12px 25px rgba(79, 70, 229, 0.25);
+}
+
+.playlist-title-row h1 {
+  margin: 0 0 8px;
+
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+.playlist-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.playlist-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.playlist-meta i {
+  color: #6366f1;
+}
+
+.meta-divider {
+  color: #cbd5e1;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.playlist-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.playlist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 42px;
+  padding: 0 17px;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.playlist-btn:hover {
+  transform: translateY(-1px);
+}
+
+.playlist-btn-primary {
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  );
+
+  box-shadow:
+    0 8px 18px rgba(79, 70, 229, 0.2);
+}
+
+.playlist-btn-primary:hover {
+  color: #fff;
+
+  box-shadow:
+    0 12px 25px rgba(79, 70, 229, 0.28);
+}
+
+.playlist-btn-secondary {
+  color: #334155;
+  background: #fff;
+
+  border: 1px solid #e2e8f0;
+}
+
+.playlist-btn-secondary:hover {
+  color: #4f46e5;
+  border-color: #c7d2fe;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.playlist-description-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  padding: 20px 22px;
+
+  margin-bottom: 22px;
+
+  background: rgba(255,255,255,0.92);
+
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.04);
+}
+
+.description-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.playlist-description-card h3 {
+  margin: 0 0 6px;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.playlist-description-card p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.empty-description {
+  font-style: italic;
+}
+
+
+/* =========================================================
+   CONTENT CARD
+========================================================= */
+
+.playlist-content-card {
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.05);
+}
+
+.playlist-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 22px 24px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.playlist-content-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin: 0 0 5px;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.playlist-content-header h2 i {
+  color: #6366f1;
+}
+
+.playlist-content-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.video-count-badge {
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: #eef2ff;
+  color: #4f46e5;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   VIDEO LIST
+========================================================= */
+
+.playlist-video-list {
+  padding: 10px 18px;
+}
+
+.playlist-video-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 15px 10px;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.playlist-video-item:last-child {
+  border-bottom: none;
+}
+
+.playlist-video-item:hover {
+  background: #f8fafc;
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   VIDEO POSITION
+========================================================= */
+
+.video-position {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #f1f5f9;
+  color: #475569;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   VIDEO THUMBNAIL
+========================================================= */
+
+.video-thumbnail {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #dc2626
+    );
+
+  color: #fff;
+
+  font-size: 22px;
+
+  box-shadow:
+    0 6px 15px rgba(220, 38, 38, 0.18);
+}
+
+
+/* =========================================================
+   VIDEO INFORMATION
+========================================================= */
+
+.video-information {
+  min-width: 0;
+  flex: 1;
+}
+
+.video-information h3 {
+  margin: 0 0 7px;
+
+  color: #1e293b;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+.video-details {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+.video-details span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.video-details i {
+  color: #64748b;
+}
+
+
+/* =========================================================
+   VIDEO ACTION
+========================================================= */
+
+.video-actions {
+  flex-shrink: 0;
+}
+
+.video-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.video-watch-btn {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.video-watch-btn:hover {
+  color: #b91c1c;
+  background: #fee2e2;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.playlist-video-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  margin: 5px 18px 20px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+
+  overflow: hidden;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 15px 18px;
+
+  border-right: 1px solid #e2e8f0;
+}
+
+.summary-item:last-child {
+  border-right: none;
+}
+
+.summary-item > i {
+  color: #6366f1;
+  font-size: 20px;
+}
+
+.summary-item strong,
+.summary-item span {
+  display: block;
+}
+
+.summary-item strong {
+  margin-bottom: 2px;
+
+  color: #1e293b;
+
+  font-size: 14px;
+}
+
+.summary-item span {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.playlist-empty-state {
+  padding: 70px 25px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 75px;
+  height: 75px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f1f5f9;
+  color: #94a3b8;
+
+  font-size: 32px;
+}
+
+.playlist-empty-state h3 {
+  margin: 0 0 8px;
+
+  color: #334155;
+
+  font-size: 20px;
+}
+
+.playlist-empty-state p {
+  max-width: 500px;
+
+  margin: 0 auto 22px;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .teacher-playlist-show-page {
+    padding: 24px 18px;
+  }
+
+  .playlist-header {
+    flex-direction: column;
+  }
+
+  .playlist-actions {
+    width: 100%;
+  }
+
+  .playlist-actions .playlist-btn {
+    flex: 1;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .teacher-playlist-show-page {
+    padding: 18px 12px;
+  }
+
+  .playlist-title-row {
+    align-items: flex-start;
+  }
+
+  .playlist-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 12px;
+
+    font-size: 21px;
+  }
+
+  .playlist-title-row h1 {
+    font-size: 21px;
+  }
+
+  .playlist-meta {
+    font-size: 11px;
+  }
+
+  .playlist-actions {
+    flex-direction: column;
+  }
+
+  .playlist-actions .playlist-btn {
+    width: 100%;
+  }
+
+  .playlist-content-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .playlist-video-item {
+    align-items: flex-start;
+  }
+
+  .video-position {
+    width: 30px;
+    height: 30px;
+  }
+
+  .video-thumbnail {
+    width: 42px;
+    height: 42px;
+
+    font-size: 18px;
+  }
+
+  .video-information h3 {
+    font-size: 13px;
+  }
+
+  .video-details {
+    font-size: 10px;
+  }
+
+  .video-action-btn span {
+    display: none;
+  }
+
+  .video-action-btn {
+    width: 36px;
+    height: 36px;
+
+    padding: 0;
+
+    justify-content: center;
+  }
+
+  .playlist-video-summary {
+    grid-template-columns: 1fr;
+
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .summary-item {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+}
+
+</style>
+
+
+<!-- =========================================================
+     REQUIRED JS
+========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /*
+   * ========================================================
+   * PLAYLIST VIDEO HOVER / ACTIVE STATE
+   * ========================================================
+   */
+
+  const videoItems = document.querySelectorAll("[data-video-item]");
+
+  videoItems.forEach(function (item) {
+
+    item.addEventListener("mouseenter", function () {
+      item.classList.add("is-active");
+    });
+
+    item.addEventListener("mouseleave", function () {
+      item.classList.remove("is-active");
+    });
+
+  });
+
+
+  /*
+   * ========================================================
+   * WATCH BUTTON
+   * ========================================================
+   *
+   * Opens YouTube links in a new tab.
+   * Prevents accidental event bubbling.
+   */
+
+  const watchButtons = document.querySelectorAll(".video-watch-btn");
+
+  watchButtons.forEach(function (button) {
+
+    button.addEventListener("click", function (event) {
+
+      event.stopPropagation();
+
+    });
+
+  });
+
+
+  /*
+   * ========================================================
+   * KEYBOARD ACCESSIBILITY
+   * ========================================================
+   *
+   * Allows ArrowUp / ArrowDown navigation through videos.
+   */
+
+  let currentIndex = -1;
+
+  document.addEventListener("keydown", function (event) {
+
+    if (videoItems.length === 0) {
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+
+      event.preventDefault();
+
+      currentIndex = Math.min(
+        currentIndex + 1,
+        videoItems.length - 1
+      );
+
+      focusVideo(currentIndex);
+
+    }
+
+    if (event.key === "ArrowUp") {
+
+      event.preventDefault();
+
+      currentIndex = Math.max(
+        currentIndex - 1,
+        0
+      );
+
+      focusVideo(currentIndex);
+
+    }
+
+  });
+
+
+  function focusVideo(index) {
+
+    videoItems.forEach(function (item) {
+      item.classList.remove("keyboard-active");
+    });
+
+    const item = videoItems[index];
+
+    if (!item) {
+      return;
+    }
+
+    item.classList.add("keyboard-active");
+
+    item.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+  }
+
+});
+</script>
