@@ -1,55 +1,45 @@
-<% content_for :hide_footer, true %>
-
 <div class="teacher-playlist-show-page">
 
-  <!-- =====================================================
-       PAGE HEADER
-  ====================================================== -->
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
 
-  <div class="playlist-header">
+  <div class="teacher-playlist-header">
 
-    <div class="playlist-header-left">
+    <div class="teacher-playlist-header-left">
 
-      <div class="playlist-back">
-        <%= link_to teacher_panel_course_playlists_path(@course),
-            class: "playlist-back-btn" do %>
-          <i class="bi bi-arrow-left"></i>
-          <span>Back to Playlists</span>
-        <% end %>
-      </div>
+      <%= link_to teacher_panel_course_playlists_path(@course),
+                  class: "teacher-playlist-back-btn" do %>
+        <i class="bi bi-arrow-left"></i>
+        <span>Back to Playlists</span>
+      <% end %>
 
-      <div class="playlist-title-row">
+      <div class="teacher-playlist-title-area">
 
-        <div class="playlist-icon">
+        <div class="teacher-playlist-icon">
           <i class="bi bi-collection-play-fill"></i>
         </div>
 
         <div>
+          <span class="teacher-playlist-label">
+            PLAYLIST
+          </span>
+
           <h1>
             <%= @playlist.title %>
           </h1>
 
-          <div class="playlist-meta">
-            <span>
-              <i class="bi bi-book"></i>
-             <%= @course.Course_name %>
-            </span>
-
-            <span class="meta-divider">•</span>
-
-            <span>
-              <i class="bi bi-list-ol"></i>
-              Position <%= @playlist.position || "—" %>
-            </span>
-
-            <span class="meta-divider">•</span>
-
-            <span>
-              <i class="bi bi-camera-video"></i>
-              <%= @playlist.videos.count %>
-              <%= @playlist.videos.count == 1 ? "Video" : "Videos" %>
-            </span>
-          </div>
+          <p>
+            <i class="bi bi-book"></i>
+            <%= @course.Course_name %>
+            <span>•</span>
+            <i class="bi bi-list-ol"></i>
+            Position <%= @playlist.position %>
+            <span>•</span>
+            <i class="bi bi-camera-video"></i>
+            <%= @playlist.videos.count %>
+            <%= @playlist.videos.count == 1 ? "Video" : "Videos" %>
+          </p>
         </div>
 
       </div>
@@ -57,259 +47,555 @@
     </div>
 
 
-    <!-- =================================================
-         ACTIONS
-    ================================================== -->
+    <!-- =======================================================
+         TEACHER ACTIONS
+    ======================================================== -->
 
-    <div class="playlist-actions">
+    <div class="teacher-playlist-actions">
 
-      <%= link_to edit_teacher_panel_course_playlist_path(@course, @playlist),
-          class: "playlist-btn playlist-btn-primary" do %>
+      <%= link_to edit_teacher_panel_course_playlist_path(
+                    @course,
+                    @playlist
+                  ),
+                  class: "teacher-playlist-btn teacher-playlist-btn-primary" do %>
+
         <i class="bi bi-pencil-square"></i>
         <span>Edit Playlist</span>
+
       <% end %>
 
-      <%= link_to teacher_panel_course_playlists_path(@course),
-          class: "playlist-btn playlist-btn-secondary" do %>
-        <i class="bi bi-grid"></i>
-        <span>All Playlists</span>
-      <% end %>
+
+      <button type="button"
+              class="teacher-playlist-btn teacher-playlist-btn-danger"
+              id="teacherDeletePlaylistBtn">
+
+        <i class="bi bi-trash3"></i>
+        <span>Delete Playlist</span>
+
+      </button>
 
     </div>
 
   </div>
 
 
-  <!-- =====================================================
-       DESCRIPTION
-  ====================================================== -->
+  <!-- =========================================================
+       CONTENT GRID
+  ========================================================== -->
 
-  <div class="playlist-description-card">
+  <div class="teacher-playlist-content-grid">
 
-    <div class="description-icon">
-      <i class="bi bi-info-circle-fill"></i>
-    </div>
+    <!-- =======================================================
+         LEFT COLUMN
+    ======================================================== -->
 
-    <div>
-      <h3>Playlist Description</h3>
+    <div class="teacher-playlist-main-column">
 
-      <% if @playlist.description.present? %>
+      <!-- =====================================================
+           PLAYLIST INFORMATION
+      ====================================================== -->
 
-        <p>
-          <%= @playlist.description %>
-        </p>
+      <section class="teacher-playlist-card">
 
-      <% else %>
+        <div class="teacher-playlist-card-header">
 
-        <p class="empty-description">
-          No description has been added to this playlist yet.
-        </p>
+          <div>
+            <span class="teacher-card-eyebrow">
+              OVERVIEW
+            </span>
 
-      <% end %>
-    </div>
+            <h2>
+              Playlist Information
+            </h2>
+          </div>
 
-  </div>
+          <div class="teacher-card-header-icon">
+            <i class="bi bi-info-circle"></i>
+          </div>
 
-
-  <!-- =====================================================
-       VIDEOS SECTION
-  ====================================================== -->
-
-  <div class="playlist-content-card">
-
-    <div class="playlist-content-header">
-
-      <div>
-        <h2>
-          <i class="bi bi-camera-video-fill"></i>
-          Playlist Videos
-        </h2>
-
-        <p>
-          Videos included in this playlist.
-        </p>
-      </div>
-
-      <div class="video-count-badge">
-        <%= @playlist.videos.count %>
-        <%= @playlist.videos.count == 1 ? "Video" : "Videos" %>
-      </div>
-
-    </div>
+        </div>
 
 
-    <% videos = @playlist.videos.order(:position, :id) %>
+        <div class="teacher-playlist-description">
 
-    <% if videos.any? %>
+          <% if @playlist.description.present? %>
 
-      <div class="playlist-video-list">
+            <%= simple_format(@playlist.description) %>
 
-        <% videos.each_with_index do |video, index| %>
+          <% else %>
 
-          <div
-            class="playlist-video-item"
-            data-video-item
-            data-video-index="<%= index %>"
-          >
+            <div class="teacher-empty-description">
 
-            <!-- Position -->
+              <i class="bi bi-file-text"></i>
 
-            <div class="video-position">
-              <%= video.position.presence || index + 1 %>
-            </div>
-
-
-            <!-- Video Icon -->
-
-            <div class="video-thumbnail">
-
-              <i class="bi bi-play-fill"></i>
+              <span>
+                No description has been added to this playlist yet.
+              </span>
 
             </div>
 
+          <% end %>
 
-            <!-- Video Information -->
+        </div>
 
-            <div class="video-information">
+      </section>
 
-              <h3>
-                <%= video.title %>
-              </h3>
 
-              <div class="video-details">
+      <!-- =====================================================
+           VIDEOS
+      ====================================================== -->
 
-                <span>
-                  <i class="bi bi-collection-play"></i>
-                  Playlist Video
-                </span>
+      <section class="teacher-playlist-card">
+
+        <div class="teacher-playlist-card-header">
+
+          <div>
+            <span class="teacher-card-eyebrow">
+              CONTENT
+            </span>
+
+            <h2>
+              Playlist Videos
+            </h2>
+
+            <p class="teacher-card-subtitle">
+              Videos included in this playlist.
+            </p>
+          </div>
+
+
+          <div class="teacher-playlist-video-count">
+
+            <%= @playlist.videos.count %>
+
+            <span>
+              <%= @playlist.videos.count == 1 ? "Video" : "Videos" %>
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <% videos = @playlist.videos.order(:position, :id) %>
+
+
+        <% if videos.any? %>
+
+          <div class="teacher-playlist-video-list">
+
+            <% videos.each_with_index do |video, index| %>
+
+              <div class="teacher-playlist-video-item"
+                   data-video-item>
+
+                <div class="teacher-video-number">
+                  <%= video.position.presence || index + 1 %>
+                </div>
+
+
+                <div class="teacher-video-play-icon">
+                  <i class="bi bi-play-fill"></i>
+                </div>
+
+
+                <div class="teacher-video-information">
+
+                  <h3>
+                    <%= video.title.presence || "Untitled Video" %>
+                  </h3>
+
+                  <div class="teacher-video-meta">
+
+                    <span>
+                      <i class="bi bi-camera-video"></i>
+                      Video
+                    </span>
+
+                    <% if video.video_url.present? %>
+                      <span>
+                        <i class="bi bi-youtube"></i>
+                        YouTube
+                      </span>
+                    <% end %>
+
+                  </div>
+
+                </div>
+
 
                 <% if video.video_url.present? %>
-                  <span>
-                    <i class="bi bi-youtube"></i>
-                    YouTube Video
-                  </span>
+
+                  <%= link_to video.video_url,
+                              target: "_blank",
+                              rel: "noopener noreferrer",
+                              class: "teacher-video-watch-btn" do %>
+
+                    <i class="bi bi-play-circle-fill"></i>
+
+                    <span>
+                      Watch
+                    </span>
+
+                  <% end %>
+
                 <% end %>
 
               </div>
 
+            <% end %>
+
+          </div>
+
+        <% else %>
+
+          <div class="teacher-playlist-empty-state">
+
+            <div class="teacher-empty-icon">
+              <i class="bi bi-camera-video-off"></i>
             </div>
 
+            <h3>
+              No Videos Yet
+            </h3>
 
-            <!-- Actions -->
-
-            <div class="video-actions">
-
-              <% if video.video_url.present? %>
-
-                <%= link_to video.video_url,
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                    class: "video-action-btn video-watch-btn",
-                    title: "Watch video" do %>
-                  <i class="bi bi-play-circle-fill"></i>
-                  <span>Watch</span>
-                <% end %>
-
-              <% end %>
-
-            </div>
+            <p>
+              Videos added to this playlist will appear here.
+            </p>
 
           </div>
 
         <% end %>
 
+      </section>
+
+    </div>
+
+
+    <!-- =======================================================
+         RIGHT SIDEBAR
+    ======================================================== -->
+
+    <aside class="teacher-playlist-sidebar-column">
+
+      <!-- =====================================================
+           STATISTICS
+      ====================================================== -->
+
+      <section class="teacher-playlist-card">
+
+        <div class="teacher-playlist-card-header">
+
+          <div>
+            <span class="teacher-card-eyebrow">
+              STATISTICS
+            </span>
+
+            <h2>
+              Overview
+            </h2>
+          </div>
+
+        </div>
+
+
+        <!-- Total Videos -->
+
+        <div class="teacher-playlist-stat">
+
+          <div class="teacher-stat-icon">
+            <i class="bi bi-camera-video"></i>
+          </div>
+
+          <div>
+            <span class="teacher-stat-value">
+              <%= @playlist.videos.count %>
+            </span>
+
+            <span class="teacher-stat-label">
+              Total Videos
+            </span>
+          </div>
+
+        </div>
+
+
+        <!-- Position -->
+
+        <div class="teacher-playlist-stat">
+
+          <div class="teacher-stat-icon">
+            <i class="bi bi-list-ol"></i>
+          </div>
+
+          <div>
+            <span class="teacher-stat-value">
+              <%= @playlist.position %>
+            </span>
+
+            <span class="teacher-stat-label">
+              Playlist Position
+            </span>
+          </div>
+
+        </div>
+
+
+        <!-- Created -->
+
+        <div class="teacher-playlist-stat">
+
+          <div class="teacher-stat-icon">
+            <i class="bi bi-calendar3"></i>
+          </div>
+
+          <div>
+            <span class="teacher-stat-value">
+              <%= @playlist.created_at.strftime("%d %b %Y") %>
+            </span>
+
+            <span class="teacher-stat-label">
+              Created On
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           COURSE
+      ====================================================== -->
+
+      <section class="teacher-playlist-card">
+
+        <div class="teacher-playlist-card-header">
+
+          <div>
+            <span class="teacher-card-eyebrow">
+              COURSE
+            </span>
+
+            <h2>
+              Assigned Course
+            </h2>
+          </div>
+
+        </div>
+
+
+        <div class="teacher-course-box">
+
+          <div class="teacher-course-icon">
+            <i class="bi bi-mortarboard-fill"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              <%= @course.Course_name %>
+            </strong>
+
+            <span>
+              Your assigned course
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           MANAGEMENT
+      ====================================================== -->
+
+      <section class="teacher-playlist-card">
+
+        <div class="teacher-playlist-card-header">
+
+          <div>
+            <span class="teacher-card-eyebrow">
+              MANAGEMENT
+            </span>
+
+            <h2>
+              Playlist Actions
+            </h2>
+          </div>
+
+        </div>
+
+
+        <!-- Edit -->
+
+        <%= link_to edit_teacher_panel_course_playlist_path(
+                      @course,
+                      @playlist
+                    ),
+                    class: "teacher-manage-action" do %>
+
+          <i class="bi bi-pencil"></i>
+
+          <span>
+            <strong>
+              Edit Playlist
+            </strong>
+
+            <small>
+              Update playlist information
+            </small>
+          </span>
+
+          <i class="bi bi-chevron-right"></i>
+
+        <% end %>
+
+
+        <!-- All Playlists -->
+
+        <%= link_to teacher_panel_course_playlists_path(@course),
+                    class: "teacher-manage-action" do %>
+
+          <i class="bi bi-collection-play"></i>
+
+          <span>
+            <strong>
+              All Playlists
+            </strong>
+
+            <small>
+              Return to playlist list
+            </small>
+          </span>
+
+          <i class="bi bi-chevron-right"></i>
+
+        <% end %>
+
+
+        <!-- Delete -->
+
+        <button type="button"
+                class="teacher-manage-action teacher-delete-action"
+                id="teacherDeletePlaylistAction">
+
+          <i class="bi bi-trash3"></i>
+
+          <span>
+            <strong>
+              Delete Playlist
+            </strong>
+
+            <small>
+              Permanently remove this playlist
+            </small>
+          </span>
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+
+  <!-- =========================================================
+       DELETE MODAL
+  ========================================================== -->
+
+  <div class="teacher-playlist-modal-overlay"
+       id="teacherDeletePlaylistModal"
+       aria-hidden="true">
+
+    <div class="teacher-playlist-modal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="teacherDeletePlaylistTitle">
+
+      <div class="teacher-modal-warning-icon">
+
+        <i class="bi bi-exclamation-triangle"></i>
+
       </div>
 
 
-      <!-- =================================================
-           VIDEO SUMMARY
-      ================================================== -->
-
-      <div class="playlist-video-summary">
-
-        <div class="summary-item">
-          <i class="bi bi-collection-play-fill"></i>
-
-          <div>
-            <strong><%= videos.count %></strong>
-            <span>Total Videos</span>
-          </div>
-        </div>
+      <h2 id="teacherDeletePlaylistTitle">
+        Delete Playlist?
+      </h2>
 
 
-        <div class="summary-item">
-          <i class="bi bi-sort-numeric-down"></i>
+      <p>
 
-          <div>
-            <strong>Ordered</strong>
-            <span>By Position</span>
-          </div>
-        </div>
+        Are you sure you want to delete
+
+        <strong>
+          <%= @playlist.title %>
+        </strong>?
+
+        This action cannot be undone.
+
+        All videos associated with this playlist may also be affected
+        depending on your model associations.
+
+      </p>
 
 
-        <div class="summary-item">
-          <i class="bi bi-check-circle-fill"></i>
+      <div class="teacher-modal-actions">
 
-          <div>
-            <strong>Active</strong>
-            <span>Playlist</span>
-          </div>
-        </div>
+        <button type="button"
+                class="teacher-playlist-btn teacher-playlist-btn-secondary"
+                id="teacherCancelDeleteBtn">
 
-      </div>
+          <i class="bi bi-x-lg"></i>
+          Cancel
 
-    <% else %>
+        </button>
 
-      <!-- =================================================
-           EMPTY STATE
-      ================================================== -->
 
-      <div class="playlist-empty-state">
+        <%= button_to teacher_panel_course_playlist_path(
+                        @course,
+                        @playlist
+                      ),
+                      method: :delete,
+                      class: "teacher-playlist-btn teacher-playlist-btn-danger",
+                      form: {
+                        class: "teacher-delete-form"
+                      } do %>
 
-        <div class="empty-icon">
-          <i class="bi bi-camera-video-off"></i>
-        </div>
+          <i class="bi bi-trash3"></i>
+          Delete Playlist
 
-        <h3>No Videos Yet</h3>
-
-        <p>
-          This playlist does not contain any videos yet.
-          Add videos from the course video management section.
-        </p>
-
-        <%= link_to teacher_panel_course_videos_path(@course),
-            class: "playlist-btn playlist-btn-primary" do %>
-          <i class="bi bi-plus-circle"></i>
-          Manage Videos
         <% end %>
 
       </div>
 
-    <% end %>
+    </div>
 
   </div>
 
 </div>
 
 
-<!-- =========================================================
-     CSS
-========================================================= -->
-
 <style>
 
+/* =========================================================
+   TEACHER PLAYLIST SHOW PAGE
+========================================================= */
+
 .teacher-playlist-show-page {
-  min-height: calc(100vh - 70px);
+  min-height: 100vh;
   padding: 32px;
+
   background:
     radial-gradient(
       circle at top right,
-      rgba(124, 58, 237, 0.08),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(37, 99, 235, 0.06),
+      rgba(124, 58, 237, .10),
       transparent 30%
     ),
     #f8fafc;
@@ -322,27 +608,27 @@
    HEADER
 ========================================================= */
 
-.playlist-header {
+.teacher-playlist-header {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 25px;
 
-  margin-bottom: 25px;
+  gap: 24px;
+  margin-bottom: 30px;
 }
 
-.playlist-header-left {
-  min-width: 0;
+.teacher-playlist-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.playlist-back {
-  margin-bottom: 18px;
-}
-
-.playlist-back-btn {
+.teacher-playlist-back-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+
+  width: fit-content;
 
   color: #64748b;
   text-decoration: none;
@@ -350,30 +636,29 @@
   font-size: 14px;
   font-weight: 600;
 
-  transition: 0.2s ease;
+  transition: .2s ease;
 }
 
-.playlist-back-btn:hover {
+.teacher-playlist-back-btn:hover {
   color: #4f46e5;
-  transform: translateX(-2px);
+  transform: translateX(-3px);
 }
 
-
-.playlist-title-row {
+.teacher-playlist-title-area {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
 }
 
-.playlist-icon {
-  width: 64px;
-  height: 64px;
-
-  flex-shrink: 0;
+.teacher-playlist-icon {
+  width: 62px;
+  height: 62px;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
 
   border-radius: 16px;
 
@@ -384,185 +669,161 @@
   );
 
   color: #fff;
-
-  font-size: 27px;
+  font-size: 26px;
 
   box-shadow:
-    0 12px 25px rgba(79, 70, 229, 0.25);
+    0 12px 25px rgba(79, 70, 229, .22);
 }
 
-.playlist-title-row h1 {
-  margin: 0 0 8px;
+.teacher-playlist-label {
+  display: block;
 
-  font-size: 28px;
-  line-height: 1.2;
+  margin-bottom: 5px;
+
+  color: #6366f1;
+
+  font-size: 10px;
   font-weight: 800;
 
-  color: #111827;
+  letter-spacing: .12em;
 }
 
-.playlist-meta {
+.teacher-playlist-title-area h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.teacher-playlist-title-area p {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 9px;
+
+  gap: 7px;
+
+  margin: 7px 0 0;
 
   color: #64748b;
 
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.playlist-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.playlist-meta i {
-  color: #6366f1;
-}
-
-.meta-divider {
-  color: #cbd5e1;
+  font-size: 14px;
 }
 
 
 /* =========================================================
-   ACTIONS
+   ACTION BUTTONS
 ========================================================= */
 
-.playlist-actions {
+.teacher-playlist-actions {
   display: flex;
   align-items: center;
   gap: 10px;
-
-  flex-shrink: 0;
 }
 
-.playlist-btn {
+.teacher-playlist-btn {
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
+
   gap: 8px;
 
   min-height: 42px;
-  padding: 0 17px;
 
+  padding: 10px 16px;
+
+  border: 0;
   border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
 
   text-decoration: none;
 
-  font-size: 14px;
-  font-weight: 700;
+  cursor: pointer;
+
+  white-space: nowrap;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
 }
 
-.playlist-btn:hover {
-  transform: translateY(-1px);
+.teacher-playlist-btn:hover {
+  transform: translateY(-2px);
 }
 
-.playlist-btn-primary {
-  color: #fff;
-  background: linear-gradient(
-    135deg,
-    #4f46e5,
-    #7c3aed
-  );
-
-  box-shadow:
-    0 8px 18px rgba(79, 70, 229, 0.2);
-}
-
-.playlist-btn-primary:hover {
+.teacher-playlist-btn-primary {
+  background: #4f46e5;
   color: #fff;
 
   box-shadow:
-    0 12px 25px rgba(79, 70, 229, 0.28);
+    0 8px 18px rgba(79, 70, 229, .20);
 }
 
-.playlist-btn-secondary {
+.teacher-playlist-btn-primary:hover {
+  background: #4338ca;
+  color: #fff;
+}
+
+.teacher-playlist-btn-danger {
+  background: #dc2626;
+  color: #fff;
+
+  box-shadow:
+    0 8px 18px rgba(220, 38, 38, .15);
+}
+
+.teacher-playlist-btn-danger:hover {
+  background: #b91c1c;
+  color: #fff;
+}
+
+.teacher-playlist-btn-secondary {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.teacher-playlist-btn-secondary:hover {
+  background: #cbd5e1;
   color: #334155;
-  background: #fff;
-
-  border: 1px solid #e2e8f0;
-}
-
-.playlist-btn-secondary:hover {
-  color: #4f46e5;
-  border-color: #c7d2fe;
 }
 
 
 /* =========================================================
-   DESCRIPTION
+   GRID
 ========================================================= */
 
-.playlist-description-card {
+.teacher-playlist-content-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    340px;
+
+  gap: 24px;
+
+  max-width: 1400px;
+}
+
+.teacher-playlist-main-column,
+.teacher-playlist-sidebar-column {
   display: flex;
-  align-items: flex-start;
-  gap: 15px;
-
-  padding: 20px 22px;
-
-  margin-bottom: 22px;
-
-  background: rgba(255,255,255,0.92);
-
-  border: 1px solid #e2e8f0;
-  border-radius: 15px;
-
-  box-shadow:
-    0 5px 18px rgba(15, 23, 42, 0.04);
-}
-
-.description-icon {
-  width: 40px;
-  height: 40px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 10px;
-
-  background: #eef2ff;
-  color: #4f46e5;
-}
-
-.playlist-description-card h3 {
-  margin: 0 0 6px;
-
-  font-size: 15px;
-  font-weight: 750;
-}
-
-.playlist-description-card p {
-  margin: 0;
-
-  color: #64748b;
-
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-.empty-description {
-  font-style: italic;
+  flex-direction: column;
+  gap: 24px;
 }
 
 
 /* =========================================================
-   CONTENT CARD
+   CARD
 ========================================================= */
 
-.playlist-content-card {
-  overflow: hidden;
+.teacher-playlist-card {
+  padding: 24px;
 
   background: #fff;
 
@@ -570,54 +831,126 @@
   border-radius: 18px;
 
   box-shadow:
-    0 8px 25px rgba(15, 23, 42, 0.05);
+    0 8px 30px rgba(15, 23, 42, .05);
 }
 
-.playlist-content-header {
+.teacher-playlist-card-header {
   display: flex;
-  align-items: center;
+
+  align-items: flex-start;
   justify-content: space-between;
 
   gap: 15px;
 
-  padding: 22px 24px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
 
   border-bottom: 1px solid #eef2f7;
 }
 
-.playlist-content-header h2 {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+.teacher-card-eyebrow {
+  display: block;
 
-  margin: 0 0 5px;
+  margin-bottom: 5px;
+
+  color: #6366f1;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: .12em;
+}
+
+.teacher-playlist-card h2 {
+  margin: 0;
+
+  color: #111827;
 
   font-size: 19px;
   font-weight: 800;
 }
 
-.playlist-content-header h2 i {
-  color: #6366f1;
-}
+.teacher-card-subtitle {
+  margin: 5px 0 0;
 
-.playlist-content-header p {
-  margin: 0;
-
-  color: #64748b;
-
-  font-size: 13px;
-}
-
-.video-count-badge {
-  padding: 7px 12px;
-
-  border-radius: 999px;
-
-  background: #eef2ff;
-  color: #4f46e5;
+  color: #94a3b8;
 
   font-size: 12px;
+}
+
+.teacher-card-header-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.teacher-playlist-description {
+  color: #475569;
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.teacher-playlist-description p {
+  margin: 0 0 10px;
+}
+
+.teacher-empty-description {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   VIDEO COUNT
+========================================================= */
+
+.teacher-playlist-video-count {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 5px;
+
+  color: #4f46e5;
+
+  font-size: 20px;
   font-weight: 800;
+}
+
+.teacher-playlist-video-count span {
+  color: #94a3b8;
+
+  font-size: 12px;
+  font-weight: 600;
 }
 
 
@@ -625,269 +958,514 @@
    VIDEO LIST
 ========================================================= */
 
-.playlist-video-list {
-  padding: 10px 18px;
+.teacher-playlist-video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.playlist-video-item {
+.teacher-playlist-video-item {
   display: flex;
+
   align-items: center;
-  gap: 15px;
 
-  padding: 15px 10px;
+  gap: 13px;
 
-  border-bottom: 1px solid #f1f5f9;
+  padding: 14px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+
+  background: #fff;
 
   transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
-.playlist-video-item:last-child {
-  border-bottom: none;
-}
-
-.playlist-video-item:hover {
-  background: #f8fafc;
+.teacher-playlist-video-item:hover {
   transform: translateX(3px);
+
+  border-color: #c7d2fe;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .06);
 }
 
-
-/* =========================================================
-   VIDEO POSITION
-========================================================= */
-
-.video-position {
-  width: 34px;
-  height: 34px;
-
-  flex-shrink: 0;
+.teacher-video-number {
+  width: 30px;
+  height: 30px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 9px;
+  flex-shrink: 0;
+
+  border-radius: 8px;
 
   background: #f1f5f9;
-  color: #475569;
 
-  font-size: 13px;
+  color: #64748b;
+
+  font-size: 12px;
   font-weight: 800;
 }
 
-
-/* =========================================================
-   VIDEO THUMBNAIL
-========================================================= */
-
-.video-thumbnail {
-  width: 50px;
-  height: 50px;
-
-  flex-shrink: 0;
+.teacher-video-play-icon {
+  width: 40px;
+  height: 40px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 12px;
+  flex-shrink: 0;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ef4444,
-      #dc2626
-    );
+  border-radius: 10px;
 
-  color: #fff;
+  background: #eef2ff;
 
-  font-size: 22px;
+  color: #4f46e5;
 
-  box-shadow:
-    0 6px 15px rgba(220, 38, 38, 0.18);
+  font-size: 20px;
 }
 
-
-/* =========================================================
-   VIDEO INFORMATION
-========================================================= */
-
-.video-information {
+.teacher-video-information {
   min-width: 0;
   flex: 1;
 }
 
-.video-information h3 {
-  margin: 0 0 7px;
+.teacher-video-information h3 {
+  margin: 0 0 5px;
 
   color: #1e293b;
 
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 
-  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.video-details {
+.teacher-video-meta {
   display: flex;
+
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
+
+  gap: 14px;
 
   color: #94a3b8;
 
   font-size: 12px;
 }
 
-.video-details span {
+.teacher-video-meta span {
   display: inline-flex;
+
   align-items: center;
+
   gap: 5px;
 }
 
-.video-details i {
-  color: #64748b;
-}
-
-
-/* =========================================================
-   VIDEO ACTION
-========================================================= */
-
-.video-actions {
-  flex-shrink: 0;
-}
-
-.video-action-btn {
+.teacher-video-watch-btn {
   display: inline-flex;
-  align-items: center;
-  gap: 7px;
 
-  padding: 9px 13px;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 8px 11px;
 
   border-radius: 9px;
+
+  background: #eef2ff;
+  color: #4f46e5;
 
   text-decoration: none;
 
   font-size: 12px;
   font-weight: 700;
 
-  transition: 0.2s ease;
+  transition: .2s ease;
 }
 
-.video-watch-btn {
-  color: #dc2626;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-}
-
-.video-watch-btn:hover {
-  color: #b91c1c;
-  background: #fee2e2;
-  transform: translateY(-1px);
+.teacher-video-watch-btn:hover {
+  background: #e0e7ff;
+  color: #4338ca;
 }
 
 
 /* =========================================================
-   SUMMARY
+   EMPTY
 ========================================================= */
 
-.playlist-video-summary {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.teacher-playlist-empty-state {
+  padding: 45px 20px;
 
-  margin: 5px 18px 20px;
-
-  border: 1px solid #e2e8f0;
-  border-radius: 13px;
-
-  overflow: hidden;
+  text-align: center;
 }
 
-.summary-item {
+.teacher-empty-icon {
+  width: 60px;
+  height: 60px;
+
   display: flex;
+
   align-items: center;
-  gap: 12px;
+  justify-content: center;
 
-  padding: 15px 18px;
+  margin: 0 auto 15px;
 
-  border-right: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  background: #f1f5f9;
+
+  color: #94a3b8;
+
+  font-size: 25px;
 }
 
-.summary-item:last-child {
-  border-right: none;
+.teacher-playlist-empty-state h3 {
+  margin: 0 0 6px;
+
+  color: #334155;
+
+  font-size: 16px;
 }
 
-.summary-item > i {
-  color: #6366f1;
-  font-size: 20px;
+.teacher-playlist-empty-state p {
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
 }
 
-.summary-item strong,
-.summary-item span {
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.teacher-playlist-stat {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.teacher-playlist-stat:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.teacher-stat-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+}
+
+.teacher-stat-value {
   display: block;
-}
-
-.summary-item strong {
-  margin-bottom: 2px;
 
   color: #1e293b;
 
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 800;
 }
 
-.summary-item span {
+.teacher-stat-label {
+  display: block;
+
+  margin-top: 2px;
+
   color: #94a3b8;
+
   font-size: 11px;
 }
 
 
 /* =========================================================
-   EMPTY STATE
+   COURSE
 ========================================================= */
 
-.playlist-empty-state {
-  padding: 70px 25px;
+.teacher-course-box {
+  display: flex;
 
-  text-align: center;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
 }
 
-.empty-icon {
-  width: 75px;
-  height: 75px;
-
-  margin: 0 auto 18px;
+.teacher-course-icon {
+  width: 42px;
+  height: 42px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
+  flex-shrink: 0;
 
-  background: #f1f5f9;
-  color: #94a3b8;
+  border-radius: 11px;
 
-  font-size: 32px;
+  background: #e0e7ff;
+
+  color: #4f46e5;
 }
 
-.playlist-empty-state h3 {
-  margin: 0 0 8px;
+.teacher-course-box strong {
+  display: block;
 
   color: #334155;
 
-  font-size: 20px;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
-.playlist-empty-state p {
-  max-width: 500px;
+.teacher-course-box span {
+  display: block;
 
-  margin: 0 auto 22px;
+  margin-top: 3px;
 
   color: #94a3b8;
 
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   MANAGEMENT
+========================================================= */
+
+.teacher-manage-action {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  padding: 13px 0;
+
+  border: 0;
+  border-bottom: 1px solid #f1f5f9;
+
+  background: transparent;
+
+  color: #475569;
+
+  text-decoration: none;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    color .2s ease;
+}
+
+.teacher-manage-action:last-child {
+  border-bottom: 0;
+}
+
+.teacher-manage-action > i:first-child {
+  color: #6366f1;
+  font-size: 17px;
+}
+
+.teacher-manage-action span {
+  flex: 1;
+}
+
+.teacher-manage-action strong {
+  display: block;
+
+  color: #334155;
+
+  font-size: 13px;
+}
+
+.teacher-manage-action small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+.teacher-manage-action > i:last-child {
+  color: #cbd5e1;
+}
+
+.teacher-manage-action:hover {
+  transform: translateX(3px);
+}
+
+.teacher-manage-action:hover strong {
+  color: #4f46e5;
+}
+
+.teacher-delete-action:hover strong {
+  color: #dc2626;
+}
+
+.teacher-delete-action:hover > i:first-child {
+  color: #dc2626;
+}
+
+
+/* =========================================================
+   DELETE MODAL
+========================================================= */
+
+.teacher-playlist-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, .55);
+
+  backdrop-filter: blur(5px);
+}
+
+.teacher-playlist-modal-overlay.active {
+  display: flex;
+}
+
+.teacher-playlist-modal {
+  width: min(440px, 100%);
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  background: #fff;
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, .25);
+
+  text-align: center;
+
+  animation:
+    teacherPlaylistModalIn .2s ease;
+}
+
+@keyframes teacherPlaylistModalIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+.teacher-modal-warning-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 16px;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  font-size: 25px;
+}
+
+.teacher-playlist-modal h2 {
+  margin: 0 0 10px;
+
+  color: #111827;
+
+  font-size: 21px;
+}
+
+.teacher-playlist-modal p {
+  margin: 0;
+
+  color: #64748b;
+
   font-size: 14px;
-  line-height: 1.6;
+
+  line-height: 1.7;
+}
+
+.teacher-modal-actions {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+.teacher-delete-form {
+  margin: 0;
+}
+
+.teacher-delete-form button {
+  font: inherit;
 }
 
 
@@ -895,118 +1473,126 @@
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 
-  .teacher-playlist-show-page {
-    padding: 24px 18px;
+  .teacher-playlist-content-grid {
+    grid-template-columns: 1fr;
   }
 
-  .playlist-header {
-    flex-direction: column;
-  }
+  .teacher-playlist-sidebar-column {
+    display: grid;
 
-  .playlist-actions {
-    width: 100%;
-  }
-
-  .playlist-actions .playlist-btn {
-    flex: 1;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 
 }
 
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
 
   .teacher-playlist-show-page {
-    padding: 18px 12px;
+    padding: 20px 15px;
   }
 
-  .playlist-title-row {
+  .teacher-playlist-header {
     align-items: flex-start;
-  }
 
-  .playlist-icon {
-    width: 50px;
-    height: 50px;
-
-    border-radius: 12px;
-
-    font-size: 21px;
-  }
-
-  .playlist-title-row h1 {
-    font-size: 21px;
-  }
-
-  .playlist-meta {
-    font-size: 11px;
-  }
-
-  .playlist-actions {
     flex-direction: column;
   }
 
-  .playlist-actions .playlist-btn {
+  .teacher-playlist-actions {
     width: 100%;
   }
 
-  .playlist-content-header {
+  .teacher-playlist-actions .teacher-playlist-btn {
+    flex: 1;
+  }
+
+  .teacher-playlist-sidebar-column {
+    display: flex;
+  }
+
+  .teacher-playlist-title-area h1 {
+    font-size: 23px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .teacher-playlist-title-area {
     align-items: flex-start;
+  }
+
+  .teacher-playlist-icon {
+    width: 50px;
+    height: 50px;
+
+    font-size: 21px;
+  }
+
+  .teacher-playlist-actions {
     flex-direction: column;
   }
 
-  .playlist-video-item {
-    align-items: flex-start;
+  .teacher-playlist-actions .teacher-playlist-btn {
+    width: 100%;
   }
 
-  .video-position {
-    width: 30px;
-    height: 30px;
-  }
-
-  .video-thumbnail {
-    width: 42px;
-    height: 42px;
-
-    font-size: 18px;
-  }
-
-  .video-information h3 {
-    font-size: 13px;
-  }
-
-  .video-details {
-    font-size: 10px;
-  }
-
-  .video-action-btn span {
+  .teacher-video-number {
     display: none;
   }
 
-  .video-action-btn {
-    width: 36px;
-    height: 36px;
+  .teacher-video-information h3 {
+    font-size: 13px;
+  }
 
-    padding: 0;
+  .teacher-video-watch-btn span {
+    display: none;
+  }
+
+  .teacher-video-watch-btn {
+    width: 35px;
+    height: 35px;
 
     justify-content: center;
+
+    padding: 0;
   }
 
-  .playlist-video-summary {
-    grid-template-columns: 1fr;
-
-    margin-left: 12px;
-    margin-right: 12px;
+  .teacher-playlist-card {
+    padding: 18px;
   }
 
-  .summary-item {
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .teacher-playlist-show-page {
+    padding: 15px 10px;
   }
 
-  .summary-item:last-child {
-    border-bottom: none;
+  .teacher-playlist-title-area {
+    gap: 10px;
+  }
+
+  .teacher-playlist-title-area h1 {
+    font-size: 20px;
+  }
+
+  .teacher-playlist-title-area p {
+    font-size: 12px;
+  }
+
+  .teacher-playlist-card {
+    padding: 15px;
   }
 
 }
@@ -1014,121 +1600,175 @@
 </style>
 
 
-<!-- =========================================================
-     REQUIRED JS
-========================================================= -->
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
 
-  /*
-   * ========================================================
-   * PLAYLIST VIDEO HOVER / ACTIVE STATE
-   * ========================================================
-   */
+/* =========================================================
+   TEACHER PLAYLIST DELETE MODAL
+========================================================= */
 
-  const videoItems = document.querySelectorAll("[data-video-item]");
+(function () {
 
-  videoItems.forEach(function (item) {
+  function initializeTeacherPlaylistDelete() {
 
-    item.addEventListener("mouseenter", function () {
-      item.classList.add("is-active");
-    });
+    const deleteButton =
+      document.getElementById(
+        "teacherDeletePlaylistBtn"
+      );
 
-    item.addEventListener("mouseleave", function () {
-      item.classList.remove("is-active");
-    });
+    const deleteAction =
+      document.getElementById(
+        "teacherDeletePlaylistAction"
+      );
 
-  });
+    const cancelButton =
+      document.getElementById(
+        "teacherCancelDeleteBtn"
+      );
 
-
-  /*
-   * ========================================================
-   * WATCH BUTTON
-   * ========================================================
-   *
-   * Opens YouTube links in a new tab.
-   * Prevents accidental event bubbling.
-   */
-
-  const watchButtons = document.querySelectorAll(".video-watch-btn");
-
-  watchButtons.forEach(function (button) {
-
-    button.addEventListener("click", function (event) {
-
-      event.stopPropagation();
-
-    });
-
-  });
+    const modal =
+      document.getElementById(
+        "teacherDeletePlaylistModal"
+      );
 
 
-  /*
-   * ========================================================
-   * KEYBOARD ACCESSIBILITY
-   * ========================================================
-   *
-   * Allows ArrowUp / ArrowDown navigation through videos.
-   */
-
-  let currentIndex = -1;
-
-  document.addEventListener("keydown", function (event) {
-
-    if (videoItems.length === 0) {
+    if (!modal) {
       return;
     }
 
-    if (event.key === "ArrowDown") {
 
-      event.preventDefault();
+    /* ======================================================
+       OPEN MODAL
+    ====================================================== */
 
-      currentIndex = Math.min(
-        currentIndex + 1,
-        videoItems.length - 1
+    function openDeleteModal() {
+
+      modal.classList.add("active");
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
       );
 
-      focusVideo(currentIndex);
+      document.body.style.overflow = "hidden";
 
     }
 
-    if (event.key === "ArrowUp") {
 
-      event.preventDefault();
+    /* ======================================================
+       CLOSE MODAL
+    ====================================================== */
 
-      currentIndex = Math.max(
-        currentIndex - 1,
-        0
+    function closeDeleteModal() {
+
+      modal.classList.remove("active");
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
       );
 
-      focusVideo(currentIndex);
+      document.body.style.overflow = "";
 
     }
 
-  });
 
+    /* ======================================================
+       HEADER DELETE
+    ====================================================== */
 
-  function focusVideo(index) {
+    if (deleteButton) {
 
-    videoItems.forEach(function (item) {
-      item.classList.remove("keyboard-active");
-    });
+      deleteButton.addEventListener(
+        "click",
+        openDeleteModal
+      );
 
-    const item = videoItems[index];
-
-    if (!item) {
-      return;
     }
 
-    item.classList.add("keyboard-active");
 
-    item.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
+    /* ======================================================
+       SIDEBAR DELETE
+    ====================================================== */
+
+    if (deleteAction) {
+
+      deleteAction.addEventListener(
+        "click",
+        openDeleteModal
+      );
+
+    }
+
+
+    /* ======================================================
+       CANCEL
+    ====================================================== */
+
+    if (cancelButton) {
+
+      cancelButton.addEventListener(
+        "click",
+        closeDeleteModal
+      );
+
+    }
+
+
+    /* ======================================================
+       CLICK OUTSIDE
+    ====================================================== */
+
+    modal.addEventListener(
+      "click",
+      function (event) {
+
+        if (event.target === modal) {
+
+          closeDeleteModal();
+
+        }
+
+      }
+    );
+
+
+    /* ======================================================
+       ESCAPE
+    ====================================================== */
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Escape" &&
+          modal.classList.contains("active")
+        ) {
+
+          closeDeleteModal();
+
+        }
+
+      }
+    );
 
   }
 
-});
+
+  /*
+   * Rails/Turbo compatible initialization.
+   */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeTeacherPlaylistDelete
+  );
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherPlaylistDelete
+  );
+
+})();
+
 </script>

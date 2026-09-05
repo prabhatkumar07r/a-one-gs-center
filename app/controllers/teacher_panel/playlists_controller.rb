@@ -12,19 +12,38 @@ class TeacherPanel::PlaylistsController < ApplicationController
 
   layout "teacher"
 
+  # =========================================================
+  # PLAYLIST LIST
+  # =========================================================
+
   def index
     normalize_positions
+
     @playlists = @course.playlists.order(:position, :id)
   end
 
+  # =========================================================
+  # PLAYLIST SHOW
+  # =========================================================
+
   def show
   end
+
+  # =========================================================
+  # NEW
+  # =========================================================
 
   def new
     @playlist = @course.playlists.new
   end
 
+  # =========================================================
+  # CREATE
+  # =========================================================
+
   def create
+    normalize_positions
+
     @playlist = @course.playlists.new(playlist_params)
 
     @playlist.position =
@@ -38,8 +57,16 @@ class TeacherPanel::PlaylistsController < ApplicationController
     end
   end
 
+  # =========================================================
+  # EDIT
+  # =========================================================
+
   def edit
   end
+
+  # =========================================================
+  # UPDATE
+  # =========================================================
 
   def update
     if @playlist.update(playlist_params)
@@ -49,6 +76,10 @@ class TeacherPanel::PlaylistsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  # =========================================================
+  # DELETE
+  # =========================================================
 
   def destroy
     @playlist.destroy
@@ -61,13 +92,29 @@ class TeacherPanel::PlaylistsController < ApplicationController
 
   private
 
+  # =========================================================
+  # COURSE ACCESS
+  # =========================================================
+
   def set_course
-    @course = Course.find(params[:course_id])
+    if current_user.admin?
+      @course = Course.find(params[:course_id])
+    else
+      @course = current_user.teacher.courses.find(params[:course_id])
+    end
   end
+
+  # =========================================================
+  # PLAYLIST ACCESS
+  # =========================================================
 
   def set_playlist
     @playlist = @course.playlists.find(params[:id])
   end
+
+  # =========================================================
+  # STRONG PARAMETERS
+  # =========================================================
 
   def playlist_params
     params.require(:playlist).permit(
@@ -76,19 +123,33 @@ class TeacherPanel::PlaylistsController < ApplicationController
     )
   end
 
+  # =========================================================
+  # AUTO NORMALIZE POSITIONS
+  # =========================================================
+
   def normalize_positions
-  @course.playlists
-         .order(Arel.sql("position ASC NULLS LAST"), :id)
-         .each_with_index do |playlist, index|
+    @course.playlists
+           .order(
+             Arel.sql("position ASC NULLS LAST"),
+             :id
+           )
+           .each_with_index do |playlist, index|
 
-    desired_position = index + 1
+      desired_position = index + 1
 
-    if playlist.position != desired_position
-      playlist.update_column(:position, desired_position)
+      if playlist.position != desired_position
+        playlist.update_column(
+          :position,
+          desired_position
+        )
+      end
+
     end
-
   end
-end
+
+  # =========================================================
+  # ROLE CHECK
+  # =========================================================
 
   def teacher_or_admin
     unless current_user.teacher? || current_user.admin?
