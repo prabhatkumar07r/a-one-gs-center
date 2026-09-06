@@ -46,25 +46,24 @@ end
   # CREATE
   # ==================================================
 
-  def create
-    @question = @quiz.questions.new(question_params)
+ def create
+  @question = @quiz.questions.new(question_params)
 
-    if @question.save
+  # Automatically assign next position
+  @question.position =
+    (@quiz.questions.maximum(:position) || 0) + 1
 
-      redirect_to admin_course_quiz_path(
-        @course,
-        @quiz
-      ),
-      notice: "Question added successfully."
-
-    else
-
-      render :new,
-             status: :unprocessable_entity
-
-    end
+  if @question.save
+    redirect_to admin_course_quiz_path(
+      @course,
+      @quiz
+    ),
+    notice: "Question added successfully."
+  else
+    render :new,
+           status: :unprocessable_entity
   end
-
+end
 
   # ==================================================
   # EDIT

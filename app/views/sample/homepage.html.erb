@@ -654,94 +654,659 @@ a {
     line-height: 1.8;
 }
 
-
 /* =========================================================
-   12. ABOUT / ACHIEVEMENTS
+   OUR ACHIEVEMENTS
 ========================================================= */
 
 .about-section {
-    padding: 100px 0;
+  width: 100%;
+  padding: 70px 35px 80px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.04),
-            rgba(91, 8, 168, 0.12)
-        );
+  background:
+    radial-gradient(
+      circle at 15% 50%,
+      rgba(255,255,255,0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 85% 50%,
+      rgba(255,255,255,0.08),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #4039a0 0%,
+      #302078 45%,
+      #35136f 100%
+    );
+
+  overflow: hidden;
+  box-sizing: border-box;
 }
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.achievements-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.achievements-heading .section-title {
+  color: #fff;
+  font-size: 38px;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
+.achievements-subtitle {
+  color: rgba(255,255,255,0.88);
+  font-size: 18px;
+  margin: 0;
+}
+
+
+/* =========================================================
+   SLIDER CONTAINER
+========================================================= */
+
+.achievements-slider-container {
+  width: 100%;
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   VIEWPORT
+========================================================= */
 
 .toppers-container {
-    display: grid;
+  flex: 1 1 auto;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
 
-    gap: 25px;
+  overflow: hidden;
 
-    margin-bottom: 50px;
+  position: relative;
+
+  box-sizing: border-box;
 }
 
-.topper-card {
-    overflow: hidden;
 
-    background: rgba(255, 255, 255, 0.10);
+/* =========================================================
+   TRACK
 
-    border: 1px solid rgba(255, 255, 255, 0.20);
+   IMPORTANT:
+   DO NOT use percentage card widths here.
+========================================================= */
 
-    border-radius: 20px;
+.achievements-track {
 
-    box-shadow: var(--shadow);
+  display: flex;
 
-    backdrop-filter: blur(14px);
+  flex-wrap: nowrap;
 
-    transition:
-        transform 0.3s ease,
-        background 0.3s ease;
+  gap: 20px;
+
+  width: max-content;
+
+  margin: 0;
+  padding: 0;
+
+  transform: translateX(0);
+
+  transition:
+    transform 0.75s
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    );
+
+  will-change: transform;
 }
 
-.topper-card:hover {
-    transform: translateY(-6px);
 
-    background: rgba(255, 255, 255, 0.15);
+/* =========================================================
+   CARD
+
+   Width is controlled by JavaScript.
+========================================================= */
+
+.achievements-track .topper-card {
+
+  flex: 0 0 auto;
+
+  width: 300px;
+  min-width: 300px;
+
+  min-height: 410px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.25
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.16),
+      rgba(255,255,255,0.08)
+    );
+
+  box-shadow:
+    0 15px 40px
+    rgba(
+      20,
+      0,
+      60,
+      0.25
+    );
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: #fff;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.achievements-track .topper-card:hover {
+
+  transform: translateY(-7px);
+
+  box-shadow:
+    0 22px 50px
+    rgba(
+      20,
+      0,
+      60,
+      0.32
+    );
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.topper-image-wrapper {
+
+  width: 100%;
+  height: 220px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
 
 .topper-image {
-    display: block;
 
-    width: 100%;
+  width: 100%;
+  height: 100%;
 
-    height: 260px;
+  object-fit: cover;
 
-    object-fit: cover;
+  display: block;
+
+  transition:
+    transform 0.5s ease;
 }
+
+
+.topper-card:hover .topper-image {
+
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   NO IMAGE
+========================================================= */
+
+.achievement-no-image {
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.65
+  );
+
+  font-size: 60px;
+}
+
+
+/* =========================================================
+   CARD INFORMATION
+========================================================= */
 
 .topper-info {
-    padding: 22px;
+
+  padding: 25px 22px 28px;
+
+  text-align: center;
+
+  box-sizing: border-box;
 }
+
+
+.achievement-student {
+
+  margin-bottom: 10px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+
+.achievement-student i {
+
+  color: #ef55ff;
+
+  margin-right: 5px;
+}
+
 
 .topper-info h4 {
-    margin: 0 0 8px;
 
-    color: #ffffff;
+  margin: 0 0 12px;
+
+  color: #fff;
+
+  font-size: 22px;
+
+  line-height: 1.35;
+
+  font-weight: 750;
+}
+
+
+.achievement-rank {
+
+  margin: 0 0 10px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.90
+    );
+
+  font-size: 15px;
+
+  line-height: 1.5;
+}
+
+
+.achievement-rank i {
+
+  color: #ffd45c;
+
+  margin-right: 5px;
+}
+
+
+.achievement-year {
+
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.75
+    );
+
+  font-size: 14px;
+}
+
+
+.achievement-year i {
+
+  margin-right: 4px;
+}
+
+
+.achievement-description {
+
+  margin: 5px auto 0;
+
+  max-width: 340px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
+
+  font-size: 14px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   VIDEO BUTTON
+========================================================= */
+
+.achievement-video-btn {
+
+  margin-top: 18px;
+
+  padding: 10px 18px;
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.30
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+
+  color: #fff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    all 0.25s ease;
+}
+
+
+.achievement-video-btn:hover {
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.24
+    );
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   NAVIGATION BUTTONS
+========================================================= */
+
+.achievement-slider-btn {
+
+  flex: 0 0 48px;
+
+  width: 48px;
+  height: 48px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #fff;
+
+  color: #7c20dd;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px
+    rgba(
+      0,
+      0,
+      0,
+      0.20
+    );
+
+  z-index: 20;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.achievement-slider-btn:hover {
+
+  transform: scale(1.08);
+
+  box-shadow:
+    0 12px 32px
+    rgba(
+      0,
+      0,
+      0,
+      0.28
+    );
+}
+
+
+.achievement-slider-btn:active {
+
+  transform: scale(0.94);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .about-section {
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .achievements-slider-container {
+
+    gap: 12px;
+  }
+
+  .achievements-track {
+
+    gap: 20px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .about-section {
+
+    padding:
+      50px 10px 60px;
+  }
+
+  .achievements-heading {
+
+    margin-bottom: 30px;
+  }
+
+  .achievements-heading .section-title {
+
+    font-size: 30px;
+  }
+
+  .achievements-subtitle {
+
+    font-size: 15px;
+  }
+
+  .achievements-slider-container {
+
+    gap: 7px;
+  }
+
+  .achievements-track {
+
+    gap: 0;
+  }
+
+  .achievements-track .topper-card {
+
+    min-height: 390px;
+
+    border-radius: 20px;
+  }
+
+  .topper-image-wrapper {
+
+    height: 210px;
+  }
+
+  .topper-info {
+
+    padding:
+      22px 18px 25px;
+  }
+
+  .topper-info h4 {
 
     font-size: 20px;
+  }
+
+  .achievement-description {
+
+    font-size: 13.5px;
+  }
+
+  .achievement-slider-btn {
+
+    flex: 0 0 36px;
+
+    width: 36px;
+    height: 36px;
+
+    font-size: 15px;
+  }
+
 }
 
-.topper-info p {
-    margin: 7px 0;
 
-    color: rgba(255, 255, 255, 0.80);
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .about-section {
+
+    padding:
+      42px 7px 50px;
+  }
+
+  .achievements-heading .section-title {
+
+    font-size: 26px;
+  }
+
+  .achievements-subtitle {
 
     font-size: 14px;
+  }
 
-    line-height: 1.6;
+  .topper-image-wrapper {
+
+    height: 190px;
+  }
+
+  .topper-info h4 {
+
+    font-size: 18px;
+  }
+
 }
-
-.topper-info small {
-    color: #ead7ff;
-}
-
-
 /* =========================================================
    13. EVENTS
 ========================================================= */
@@ -952,102 +1517,35 @@ a {
     object-fit: contain;
 }
 
-
 /* =========================================================
-   16. NOTIFICATIONS
+   NOTIFICATION TICKER — RIGHT TO LEFT
 ========================================================= */
 
-.notifications {
-    padding: 100px 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(91, 8, 168, 0.12),
-            rgba(255, 255, 255, 0.04)
-        );
-}
-
-.notif-showcase {
-    width: 100%;
-}
-
-.ticker-glass-panel {
-    position: relative;
-
-    width: 100%;
-
-    padding: 25px;
-
-    overflow: hidden;
-
-    background: rgba(255, 255, 255, 0.10);
-
-    border: 1px solid rgba(255, 255, 255, 0.22);
-
-    border-radius: 22px;
-
-    box-shadow: var(--shadow-heavy);
-
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-}
-
 .notification-ticker-container {
-    width: 100%;
-
-    overflow: hidden;
-
     position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
-.notification-ticker-container::before,
-.notification-ticker-container::after {
-    content: "";
 
-    position: absolute;
-
-    top: 0;
-
-    bottom: 0;
-
-    width: 90px;
-
-    z-index: 5;
-
-    pointer-events: none;
-}
-
-.notification-ticker-container::before {
-    left: 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(104, 4, 180, 0.75),
-            transparent
-        );
-}
-
-.notification-ticker-container::after {
-    right: 0;
-
-    background:
-        linear-gradient(
-            270deg,
-            rgba(104, 4, 180, 0.75),
-            transparent
-        );
-}
+/* =========================================================
+   TICKER TRACK
+========================================================= */
 
 .notification-ticker {
-    width: max-content;
-
     display: flex;
+
+    flex-direction: row;
 
     align-items: stretch;
 
     gap: 20px;
+
+    width: max-content;
+
+    margin: 0;
+
+    padding: 0;
 
     will-change: transform;
 
@@ -1055,74 +1553,36 @@ a {
         notificationScroll 35s linear infinite;
 }
 
-.notification-ticker:hover {
-    animation-play-state: paused;
-}
 
-.notification-card {
+/* =========================================================
+   NOTIFICATION CARD
+========================================================= */
+
+.notification-ticker .notification-card {
+    position: relative;
+
+    flex: 0 0 330px;
+
     width: 330px;
-
     min-width: 330px;
 
-    padding: 24px;
+    min-height: 270px;
 
-    background: rgba(255, 255, 255, 0.12);
+    margin: 0;
 
-    border: 1px solid rgba(255, 255, 255, 0.20);
+    opacity: 1;
 
-    border-radius: 17px;
+    visibility: visible;
 
-    box-shadow:
-        0 15px 40px rgba(40, 0, 80, 0.20);
+    transform: none;
 
-    backdrop-filter: blur(12px);
-
-    transition:
-        transform 0.3s ease,
-        background 0.3s ease;
+    box-sizing: border-box;
 }
 
-.notification-card:hover {
-    transform: translateY(-5px);
 
-    background: rgba(255, 255, 255, 0.18);
-}
-
-.notification-card h5 {
-    margin: 0 0 14px;
-
-    color: #ffffff;
-
-    font-size: 17px;
-}
-
-.notification-card h5 i {
-    margin-right: 7px;
-
-    color: #ffd166;
-}
-
-.notification-card p {
-    margin: 9px 0;
-
-    color: rgba(255, 255, 255, 0.78);
-
-    font-size: 13px;
-
-    line-height: 1.7;
-}
-
-.notification-card strong {
-    color: #ffffff;
-}
-
-.notification-card small {
-    display: block;
-
-    margin-top: 15px;
-
-    color: rgba(255, 255, 255, 0.58) !important;
-}
+/* =========================================================
+   RIGHT → LEFT
+========================================================= */
 
 @keyframes notificationScroll {
 
@@ -1133,14 +1593,48 @@ a {
     100% {
         transform: translateX(-50%);
     }
+
 }
 
+
+/* =========================================================
+   PAUSE ON HOVER
+========================================================= */
+
+.notification-ticker:hover {
+    animation-play-state: paused;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .notification-ticker {
+        gap: 14px;
+
+        animation-duration: 28s;
+    }
+
+    .notification-ticker .notification-card {
+        flex: 0 0 285px;
+
+        width: 285px;
+
+        min-width: 285px;
+    }
+
+}
 
 /* =========================================================
    17. GALLERY
 ========================================================= */
 
 .gallery {
+    position: relative;
+
     padding: 100px 0;
 
     background:
@@ -1149,14 +1643,21 @@ a {
             rgba(255, 255, 255, 0.04),
             rgba(91, 8, 168, 0.10)
         );
+
+    overflow: hidden;
 }
+
+
+/* =========================================================
+   GALLERY CONTAINER
+========================================================= */
 
 .gallery-container {
     position: relative;
 
     width: 100%;
 
-    padding: 20px;
+    padding: 20px 20px 60px;
 
     background: rgba(255, 255, 255, 0.10);
 
@@ -1165,57 +1666,153 @@ a {
     border-radius: 22px;
 
     backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
     box-shadow: var(--shadow);
 
     overflow: hidden;
 }
 
-.gallery-slider {
-    display: grid;
+/* =========================================================
+   GALLERY SLIDE
+========================================================= */
 
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+.gallery-slide {
+    position: absolute;
+    inset: 0;
 
-    gap: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: scale(1.02);
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.55s ease,
+        visibility 0.45s ease;
 }
 
-.gallery-slider img {
+.gallery-slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+
+/* =========================================================
+   GALLERY IMAGE
+========================================================= */
+
+.gallery-slider .gallery-image {
+    position: relative;
+    z-index: 2;
+
     display: block;
 
-    width: 100%;
+    width: auto;
+    max-width: 92%;
+    height: 100%;
 
-    height: 220px;
-
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
 
     padding: 0 !important;
 
-    background: rgba(255, 255, 255, 0.05);
-
-    border: 1px solid rgba(255, 255, 255, 0.20) !important;
-
+    border: none !important;
     border-radius: 14px !important;
 
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.gallery-slider img:hover {
-    transform: scale(1.03);
+    background: transparent;
 
     box-shadow:
-        0 15px 35px rgba(30, 0, 60, 0.30);
+        0 12px 35px rgba(0, 0, 0, 0.25);
 }
+
+/* =========================================================
+   INDIVIDUAL SLIDE
+========================================================= */
+
+.gallery-slide {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: scale(1.02);
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.55s ease,
+        visibility 0.45s ease;
+}
+
+
+.gallery-slide.active {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: scale(1);
+}
+
+
+/* =========================================================
+   GALLERY IMAGE
+========================================================= */
+
+.gallery-slider .gallery-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    object-position: center;
+
+    padding: 0 !important;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    border: none !important;
+
+    border-radius: 18px !important;
+
+    box-shadow: none;
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+/* =========================================================
+   NAVIGATION BUTTONS
+========================================================= */
 
 .gallery-nav {
     position: absolute;
 
     top: 50%;
 
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
 
     display: flex;
 
@@ -1226,7 +1823,8 @@ a {
 
     color: #ffffff;
 
-    background: rgba(70, 0, 120, 0.65);
+    background:
+        rgba(70, 0, 120, 0.72);
 
     border: 1px solid rgba(255, 255, 255, 0.25);
 
@@ -1237,19 +1835,41 @@ a {
     z-index: 10;
 
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 8px 22px rgba(30, 0, 60, 0.22);
 
     transition:
         background 0.25s ease,
-        transform 0.25s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
+
 .gallery-nav:hover {
-    background: rgba(255, 255, 255, 0.20);
+    background:
+        rgba(126, 34, 206, 0.90);
 
     transform:
         translateY(-50%)
         scale(1.08);
+
+    box-shadow:
+        0 12px 28px rgba(30, 0, 60, 0.30);
 }
+
+
+.gallery-nav:active {
+    transform:
+        translateY(-50%)
+        scale(0.96);
+}
+
+
+/* =========================================================
+   PREVIOUS / NEXT
+========================================================= */
 
 .gallery-prev {
     left: 10px;
@@ -1259,17 +1879,246 @@ a {
     right: 10px;
 }
 
+
+/* =========================================================
+   DOT NAVIGATION
+========================================================= */
+
 .gallery-dots {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 18px;
+
+    transform: translateX(-50%);
+
     display: flex;
 
+    align-items: center;
     justify-content: center;
 
     gap: 7px;
 
-    margin-top: 20px;
+    z-index: 20;
 }
 
 
+.gallery-dot {
+    width: 8px;
+    height: 8px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.45);
+
+    cursor: pointer;
+
+    transition:
+        width 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.gallery-dot:hover {
+    background:
+        rgba(255, 255, 255, 0.80);
+
+    transform: scale(1.15);
+}
+
+
+.gallery-dot.active {
+    width: 25px;
+
+    border-radius: 20px;
+
+    background: #ffffff;
+}
+
+
+.gallery-slide::before {
+    content: "";
+
+    position: absolute;
+    inset: -30px;
+
+    background-image: var(--gallery-image);
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    filter: blur(25px);
+
+    opacity: 0.45;
+
+    transform: scale(1.08);
+
+    z-index: 0;
+}
+
+.gallery-slide::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: rgba(50, 0, 80, 0.28);
+
+    z-index: 1;
+}
+
+.gallery-slider .gallery-image {
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================================================
+   EMPTY GALLERY
+========================================================= */
+
+.gallery-empty {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.75);
+
+    text-align: center;
+}
+
+
+.gallery-empty i {
+    margin-bottom: 12px;
+
+    font-size: 42px;
+}
+
+
+.gallery-empty p {
+    margin: 0;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .gallery {
+        padding: 75px 0;
+    }
+
+    .gallery-container {
+        padding: 16px 16px 55px;
+
+        border-radius: 20px;
+    }
+
+    .gallery-slider {
+        height: 300px;
+
+        border-radius: 16px;
+    }
+
+    .gallery-slider .gallery-image {
+        border-radius: 16px !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .gallery {
+        padding: 55px 0;
+    }
+
+    .gallery-container {
+        padding: 10px 10px 50px;
+
+        border-radius: 17px;
+    }
+
+    .gallery-slider {
+        height: 230px;
+
+        border-radius: 13px;
+    }
+
+    .gallery-slider .gallery-image {
+        border-radius: 13px !important;
+    }
+
+    .gallery-nav {
+        width: 40px;
+        height: 40px;
+
+        font-size: 15px;
+    }
+
+    .gallery-prev {
+        left: 5px;
+    }
+
+    .gallery-next {
+        right: 5px;
+    }
+
+    .gallery-dots {
+        bottom: 13px;
+
+        gap: 6px;
+    }
+
+    .gallery-dot {
+        width: 7px;
+        height: 7px;
+    }
+
+    .gallery-dot.active {
+        width: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .gallery-slider {
+        height: 200px;
+    }
+
+    .gallery-nav {
+        width: 36px;
+        height: 36px;
+    }
+
+}
 /* =========================================================
    18. COURSES
 ========================================================= */
@@ -3702,6 +4551,307 @@ textarea:focus-visible {
 }
 
 
+
+
+/* =========================================================
+   GALLERY - FINAL SIZE FIX
+========================================================= */
+
+.gallery-container {
+    position: relative;
+    width: 100%;
+    min-height: 390px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   SLIDER
+========================================================= */
+
+.gallery-slider {
+    position: relative;
+
+    width: 100%;
+    height: 350px;
+
+    min-height: 350px;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background: rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   SLIDE
+========================================================= */
+
+.gallery-slide {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.45s ease;
+}
+
+
+.gallery-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   BLURRED BACKGROUND
+========================================================= */
+
+.gallery-slide::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -40px;
+
+    background-image: var(--gallery-image);
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    filter: blur(25px);
+
+    transform: scale(1.12);
+
+    opacity: 0.55;
+
+    z-index: 0;
+}
+
+
+.gallery-slide::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(60, 0, 100, 0.30);
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   MAIN PHOTO
+========================================================= */
+
+.gallery-slider .gallery-image {
+    position: relative;
+
+    z-index: 2;
+
+    display: block;
+
+    width: auto !important;
+
+    height: 100% !important;
+
+    max-width: 92% !important;
+    max-height: 100% !important;
+
+    object-fit: contain !important;
+
+    object-position: center;
+
+    padding: 0 !important;
+
+    margin: 0 auto;
+
+    border: none !important;
+
+    border-radius: 12px !important;
+
+    background: transparent !important;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.gallery-nav {
+    position: absolute;
+
+    top: 50%;
+
+    z-index: 10;
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(-50%);
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    background: rgba(70, 0, 120, 0.78);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.gallery-nav:hover {
+    transform:
+        translateY(-50%)
+        scale(1.08);
+
+    background: rgba(100, 0, 160, 0.95);
+}
+
+
+.gallery-prev {
+    left: 12px;
+}
+
+
+.gallery-next {
+    right: 12px;
+}
+
+
+/* =========================================================
+   DOTS
+========================================================= */
+
+.gallery-dots {
+    position: absolute;
+
+    left: 50%;
+    bottom: 16px;
+
+    transform: translateX(-50%);
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+
+.gallery-dot {
+    width: 8px;
+    height: 8px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.45);
+
+    cursor: pointer;
+
+    transition:
+        width 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.gallery-dot.active {
+    width: 25px;
+
+    border-radius: 20px;
+
+    background: #fff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .gallery-container {
+        min-height: 300px;
+
+        padding: 10px 10px 48px;
+
+        border-radius: 18px;
+    }
+
+    .gallery-slider {
+        height: 260px;
+
+        min-height: 260px;
+
+        border-radius: 14px;
+    }
+
+    .gallery-slider .gallery-image {
+        max-width: 90% !important;
+    }
+
+    .gallery-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .gallery-prev {
+        left: 6px;
+    }
+
+    .gallery-next {
+        right: 6px;
+    }
+
+}
+
 /* =========================================================
    IMAGE CARD DECORATION
 ========================================================= */
@@ -4163,6 +5313,372 @@ textarea:focus-visible {
 
 }
 
+
+
+
+
+
+/* =========================================================
+   ACHIEVEMENT VIDEO MODAL
+========================================================= */
+
+.achievement-video-modal {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(10, 5, 30, 0.82);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  z-index: 99999;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.3s ease;
+}
+
+
+/* =========================================================
+   SHOW MODAL
+========================================================= */
+
+.achievement-video-modal.show {
+  display: flex;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   MODAL CONTENT
+========================================================= */
+
+.achievement-video-modal-content {
+
+  position: relative;
+
+  width: min(
+    900px,
+    95vw
+  );
+
+  max-height: 90vh;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #24145c,
+      #3d1979
+    );
+
+  border: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  box-shadow:
+    0 30px 90px
+    rgba(
+      0,
+      0,
+      0,
+      0.55
+    );
+
+  transform:
+    translateY(20px)
+    scale(0.96);
+
+  transition:
+    transform 0.3s ease;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MODAL OPEN ANIMATION
+========================================================= */
+
+.achievement-video-modal.show
+.achievement-video-modal-content {
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.achievement-video-modal-header {
+
+  width: 100%;
+
+  padding:
+    22px 70px 20px 25px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b21df,
+      #7420d0
+    );
+
+  border-bottom: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+}
+
+
+.achievement-video-modal-header h3 {
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 24px;
+
+  line-height: 1.35;
+
+  font-weight: 750;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.achievement-video-close {
+
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  color: #ffffff;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  z-index: 20;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.achievement-video-close:hover {
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.30
+    );
+
+  transform:
+    rotate(90deg)
+    scale(1.05);
+}
+
+
+/* =========================================================
+   VIDEO CONTAINER
+========================================================= */
+
+.achievement-video-container {
+
+  width: 100%;
+
+  aspect-ratio: 16 / 9;
+
+  background: #000;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.achievement-video-container video {
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  background: #000;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .achievement-video-modal {
+
+    padding: 12px;
+  }
+
+  .achievement-video-modal-content {
+
+    width: 100%;
+
+    max-height: 85vh;
+
+    border-radius: 16px;
+  }
+
+  .achievement-video-modal-header {
+
+    padding:
+      18px 58px 16px 18px;
+  }
+
+  .achievement-video-modal-header h3 {
+
+    font-size: 18px;
+  }
+
+  .achievement-video-close {
+
+    top: 10px;
+    right: 10px;
+
+    width: 36px;
+    height: 36px;
+
+    font-size: 14px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .achievement-video-modal {
+
+    padding: 8px;
+  }
+
+  .achievement-video-modal-header h3 {
+
+    font-size: 16px;
+  }
+
+}
+
+
+
+.achievements-slider-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.toppers-container {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.achievements-track {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+    max-width: none !important;
+    gap: 20px;
+    transform: translate3d(0, 0, 0);
+}
+
+.achievements-track .topper-card {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
+
 </style>
 
 
@@ -4327,69 +5843,259 @@ textarea:focus-visible {
 
 </section>
 
-
 <!-- =========================================================
      ABOUT / ACHIEVEMENTS
 ========================================================= -->
-
 <section class="about-section" id="about">
 
-    <div class="container">
+  <div class="container">
 
-        <h2 class="section-title">
-            Our Achievements
-        </h2>
+    <div class="achievements-heading">
 
-        <div class="toppers-container">
+      <h2 class="section-title">
+        Our Achievements
+      </h2>
 
-            <% if @achievements.present? %>
+      <p class="achievements-subtitle">
+        “हमारे विद्यार्थियों की मेहनत और सफलता ही हमारी सबसे बड़ी उपलब्धि है।”
+      </p>
 
-                <% @achievements.each do |achievement| %>
+    </div>
 
-                    <div class="topper-card">
 
-                        <% if achievement.photo.attached? %>
+    <!-- =====================================================
+         ACHIEVEMENT SLIDER
+    ====================================================== -->
 
-                            <%= image_tag achievement.photo,
-                                class: "topper-image",
-                                alt: achievement.title %>
+    <div class="achievements-slider-container">
 
-                        <% end %>
+      <!-- PREVIOUS -->
+      <button
+        type="button"
+        class="achievement-slider-btn achievement-prev"
+        id="achievementPrev"
+        aria-label="Previous achievements">
 
-                        <div class="topper-info">
+        <i class="bi bi-chevron-left"></i>
 
-                            <h4>
-                                <%= achievement.title %>
-                            </h4>
+      </button>
 
-                            <p>
-                                <%= achievement.rank %>
-                            </p>
 
-                            <small>
-                                <%= achievement.year %>
-                            </small>
+      <!-- VIEWPORT -->
+      <div
+        class="toppers-container"
+        id="achievementsSlider">
 
-                            <p>
-                                <%= achievement.description %>
-                            </p>
+        <!-- TRACK -->
+        <div class="achievements-track">
 
-                        </div>
+          <% if @achievements.present? %>
+
+            <% @achievements.each do |achievement| %>
+
+              <div class="topper-card">
+
+                <!-- =================================================
+                     ACHIEVEMENT PHOTO
+                ================================================== -->
+
+                <div class="topper-image-wrapper">
+
+                  <% if achievement.photo.attached? %>
+
+                    <%= image_tag achievement.photo,
+                        class: "topper-image",
+                        alt: achievement.title.presence || "Achievement" %>
+
+                  <% else %>
+
+                    <div class="achievement-no-image">
+
+                      <i class="bi bi-trophy-fill"></i>
 
                     </div>
 
-                <% end %>
+                  <% end %>
 
-            <% else %>
+                </div>
 
-                <p style="text-align:center;color:#fff;">
-                    No achievements available.
-                </p>
+
+                <!-- =================================================
+                     ACHIEVEMENT INFORMATION
+                ================================================== -->
+
+                <div class="topper-info">
+
+                  <% if achievement.student_name.present? %>
+
+                    <div class="achievement-student">
+
+                      <i class="bi bi-person-fill"></i>
+
+                      <%= achievement.student_name %>
+
+                    </div>
+
+                  <% end %>
+
+
+                  <% if achievement.title.present? %>
+
+                    <h4>
+                      <%= achievement.title %>
+                    </h4>
+
+                  <% end %>
+
+
+                  <% if achievement.rank.present? %>
+
+                    <p class="achievement-rank">
+
+                      <i class="bi bi-award-fill"></i>
+
+                      <%= achievement.rank %>
+
+                    </p>
+
+                  <% end %>
+
+
+                  <% if achievement.year.present? %>
+
+                    <small class="achievement-year">
+
+                      <i class="bi bi-calendar-event"></i>
+
+                      <%= achievement.year %>
+
+                    </small>
+
+                  <% end %>
+
+
+                  <% if achievement.description.present? %>
+
+                    <p class="achievement-description">
+
+                      <%= achievement.description %>
+
+                    </p>
+
+                  <% end %>
+
+
+                  <!-- =================================================
+                       SUCCESS STORY VIDEO
+                  ================================================== -->
+
+                  <% if achievement.video.attached? %>
+
+                    <button
+                      type="button"
+                      class="achievement-video-btn"
+                      data-video-url="<%= url_for(achievement.video) %>"
+                      data-video-title="<%= achievement.title.presence || "Achievement Success Story" %>">
+
+                      <i class="bi bi-play-circle-fill"></i>
+
+                      Watch Success Story
+
+                    </button>
+
+                  <% end %>
+
+                </div>
+
+              </div>
 
             <% end %>
 
+          <% else %>
+
+            <div class="no-achievements">
+
+              <i class="bi bi-trophy"></i>
+
+              <p>
+                No achievements available at the moment.
+              </p>
+
+            </div>
+
+          <% end %>
+
         </div>
 
+      </div>
+
+
+      <!-- NEXT -->
+      <button
+        type="button"
+        class="achievement-slider-btn achievement-next"
+        id="achievementNext"
+        aria-label="Next achievements">
+
+        <i class="bi bi-chevron-right"></i>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     ACHIEVEMENT VIDEO MODAL
+========================================================= -->
+
+<div
+  id="achievementVideoModal"
+  class="achievement-video-modal"
+  aria-hidden="true">
+
+  <div class="achievement-video-modal-content">
+
+    <button
+      type="button"
+      id="closeAchievementVideo"
+      class="achievement-video-close"
+      aria-label="Close">
+
+      <i class="bi bi-x-lg"></i>
+
+    </button>
+
+
+    <div class="achievement-video-modal-header">
+
+      <h3 id="achievementVideoTitle">
+        Success Story
+      </h3>
+
+    </div>
+
+
+    <div class="achievement-video-container">
+
+      <video
+        id="achievementVideoPlayer"
+        controls
+        playsinline
+        preload="metadata">
+
+        Your browser does not support video playback.
+
+      </video>
+
+    </div>
+
+  </div>
+
+</div>
 
         <div class="collage">
 
@@ -4431,13 +6137,13 @@ textarea:focus-visible {
             </strong>
 
             <p>
-                "Har student ko strong foundation ke sath
-                unke sapne ke career tak pahunchana."
+                "हमारा लक्ष्य केवल पढ़ाना नहीं, बल्कि हर विद्यार्थी को ज्ञान, अनुशासन, आत्मविश्वास और सही दिशा देकर उसके सपनों को सफलता में बदलना है।”
             </p>
 
             <p>
-                "Agle saalon me aur zyada district aur state
-                toppers dena."
+               📚 Strong Foundation
+              🏆 Better Results
+              🚀 Career Success
             </p>
 
         </div>
@@ -4615,67 +6321,106 @@ textarea:focus-visible {
 
 <section class="gallery" id="gallery">
 
-    <div class="container">
+  <div class="container">
 
-        <h2 class="section-title">
-            Gallery
-        </h2>
+    <h2 class="section-title">
+      Gallery
+    </h2>
 
-        <div class="gallery-container">
+    <div class="gallery-container">
 
-            <div class="gallery-slider">
+      <div class="gallery-slider" id="gallerySlider">
 
-                <% if @galleries.present? %>
+        <% if @galleries.present? %>
 
-                    <% @galleries.each do |gallery| %>
+          <% gallery_images = [] %>
 
-                        <% if gallery.photos.attached? %>
+          <% @galleries.each do |gallery| %>
 
-                            <% gallery.photos.each do |photo| %>
+            <% if gallery.photos.attached? %>
 
-                                <%= image_tag photo,
-                                    class: "img-thumbnail",
-                                    alt: "Gallery Image" %>
+              <% gallery.photos.each do |photo| %>
 
-                            <% end %>
+                <% gallery_images << photo %>
 
-                        <% end %>
+              <% end %>
 
-                    <% end %>
+            <% end %>
 
-                <% else %>
+          <% end %>
 
-                    <p style="color:#fff;">
-                        No photos uploaded.
-                    </p>
 
-                <% end %>
+          <% if gallery_images.any? %>
 
+            <% gallery_images.each_with_index do |photo, index| %>
+
+              <div class="gallery-slide <%= 'active' if index == 0 %>">
+
+                <%= image_tag photo,
+                    class: "gallery-image",
+                    alt: "A One GS Center Gallery Image",
+                    loading: index == 0 ? "eager" : "lazy" %>
+
+              </div>
+
+            <% end %>
+
+          <% else %>
+
+            <div class="gallery-empty">
+              <i class="bi bi-images"></i>
+              <p>No photos uploaded.</p>
             </div>
 
-            <button
-                type="button"
-                class="gallery-nav gallery-prev"
-                aria-label="Previous">
+          <% end %>
 
-                <i class="bi bi-chevron-left"></i>
+        <% else %>
 
-            </button>
+          <div class="gallery-empty">
+            <i class="bi bi-images"></i>
+            <p>No photos uploaded.</p>
+          </div>
 
-            <button
-                type="button"
-                class="gallery-nav gallery-next"
-                aria-label="Next">
+        <% end %>
 
-                <i class="bi bi-chevron-right"></i>
+      </div>
 
-            </button>
 
-            <div class="gallery-dots"></div>
+      <% if @galleries.present? %>
 
+        <button
+          type="button"
+          class="gallery-nav gallery-prev"
+          id="galleryPrev"
+          aria-label="Previous gallery image">
+
+          <i class="bi bi-chevron-left"></i>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-nav gallery-next"
+          id="galleryNext"
+          aria-label="Next gallery image">
+
+          <i class="bi bi-chevron-right"></i>
+
+        </button>
+
+
+        <div
+          class="gallery-dots"
+          id="galleryDots"
+          aria-label="Gallery navigation">
         </div>
 
+      <% end %>
+
     </div>
+
+  </div>
 
 </section>
 
@@ -5400,316 +7145,1430 @@ textarea:focus-visible {
 
 </section>
 
-
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
 <script>
+(function () {
 
-document.addEventListener("DOMContentLoaded", function () {
+  /* =========================================================
+     MAIN INITIALIZATION
+  ========================================================= */
 
-    /* =====================================================
+  function initializeHomepage() {
+
+    /* =======================================================
        GLOBAL HORIZONTAL OVERFLOW PROTECTION
-    ===================================================== */
+    ======================================================= */
 
     document.documentElement.style.overflowX = "hidden";
-
     document.body.style.overflowX = "hidden";
 
 
-    /* =====================================================
+    /* =======================================================
        SMOOTH ANCHOR NAVIGATION
-    ===================================================== */
+    ======================================================= */
 
-    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    document
+      .querySelectorAll('a[href^="#"]')
+      .forEach(function (link) {
+
+        if (link.dataset.smoothScrollReady === "true") {
+          return;
+        }
+
+        link.dataset.smoothScrollReady = "true";
 
         link.addEventListener("click", function (event) {
 
-            const targetId = this.getAttribute("href");
+          const targetId = this.getAttribute("href");
 
-            if (!targetId || targetId === "#") {
-                return;
-            }
+          if (!targetId || targetId === "#") {
+            return;
+          }
 
-            const target = document.querySelector(targetId);
+          const target = document.querySelector(targetId);
 
-            if (!target) {
-                return;
-            }
+          if (!target) {
+            return;
+          }
 
-            event.preventDefault();
+          event.preventDefault();
 
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
 
         });
+
+      });
+
+
+    /* =========================================================
+       AUTOMATIC NOTIFICATION TICKER
+    ========================================================= */
+
+    initializeNotificationTicker();
+
+
+    /* =========================================================
+       GALLERY CAROUSEL
+    ========================================================= */
+
+    initializeGallery();
+
+
+    /* =========================================================
+       ACHIEVEMENT SLIDER
+    ========================================================= */
+
+    initializeAchievementSlider();
+
+
+    /* =========================================================
+       ACHIEVEMENT VIDEO MODAL
+    ========================================================= */
+
+    initializeAchievementVideos();
+
+
+    /* =========================================================
+       CONTACT FORM
+    ========================================================= */
+
+    initializeContactForm();
+
+
+    /* =========================================================
+       IMAGE ERROR PROTECTION
+    ========================================================= */
+
+    initializeImageProtection();
+
+
+    /* =========================================================
+       INTERSECTION FADE-IN
+    ========================================================= */
+
+    initializeIntersectionAnimations();
+
+  }
+
+
+  /* ============================================================
+     NOTIFICATION TICKER
+  ============================================================ */
+
+  function initializeNotificationTicker() {
+
+    const ticker =
+      document.getElementById("notificationTicker");
+
+
+    if (!ticker) {
+      return;
+    }
+
+
+    if (
+      ticker.dataset.tickerInitialized === "true"
+    ) {
+      return;
+    }
+
+
+    ticker.dataset.tickerInitialized = "true";
+
+
+    const originalCards =
+      Array.from(ticker.children);
+
+
+    if (originalCards.length === 0) {
+      return;
+    }
+
+
+    /* ========================================================
+       DUPLICATE CARDS FOR CONTINUOUS LOOP
+    ======================================================== */
+
+    originalCards.forEach(function (card) {
+
+      const clone = card.cloneNode(true);
+
+      clone.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      ticker.appendChild(clone);
 
     });
 
 
-    /* =====================================================
-       AUTOMATIC NOTIFICATION TICKER
-       
-       The original notification cards are duplicated.
-       This makes the animation loop continuously.
-    ===================================================== */
+    /* ========================================================
+       SPEED
+    ======================================================== */
 
-    const ticker =
-        document.getElementById("notificationTicker");
+    ticker.style.animationDuration = "35s";
 
-    if (ticker) {
 
-        const originalCards =
-            Array.from(ticker.children);
+    /* ========================================================
+       TOUCH PAUSE
+    ======================================================== */
 
-        if (originalCards.length > 0) {
+    ticker.addEventListener(
+      "touchstart",
+      function () {
 
-            /*
-             * Clone all notification cards.
-             */
-            originalCards.forEach(function (card) {
+        ticker.style.animationPlayState =
+          "paused";
 
-                const clone =
-                    card.cloneNode(true);
+      },
+      {
+        passive: true
+      }
+    );
 
-                clone.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
 
-                ticker.appendChild(clone);
+    ticker.addEventListener(
+      "touchend",
+      function () {
 
-            });
+        ticker.style.animationPlayState =
+          "running";
+
+      },
+      {
+        passive: true
+      }
+    );
+
+  }
+
+
+  /* ============================================================
+     GALLERY CAROUSEL
+  ============================================================ */
+
+  function initializeGallery() {
+
+    const gallerySlider =
+      document.getElementById("gallerySlider");
+
+
+    const galleryPrev =
+      document.getElementById("galleryPrev");
+
+
+    const galleryNext =
+      document.getElementById("galleryNext");
+
+
+    const galleryDots =
+      document.getElementById("galleryDots");
+
+
+    if (
+      !gallerySlider ||
+      !galleryPrev ||
+      !galleryNext
+    ) {
+      return;
+    }
+
+
+    if (
+      gallerySlider.dataset.galleryInitialized ===
+      "true"
+    ) {
+      return;
+    }
+
+
+    gallerySlider.dataset.galleryInitialized =
+      "true";
+
+
+    const slides =
+      Array.from(
+        gallerySlider.querySelectorAll(
+          ".gallery-slide"
+        )
+      );
+
+
+    if (slides.length === 0) {
+      return;
+    }
+
+
+    let currentIndex = 0;
+
+    let autoPlay = null;
+
+
+    /* ========================================================
+       CREATE DOTS
+    ======================================================== */
+
+    if (galleryDots) {
+
+      galleryDots.innerHTML = "";
+
+
+      slides.forEach(function (
+        slide,
+        index
+      ) {
+
+        const dot =
+          document.createElement("button");
+
+
+        dot.type = "button";
+
+        dot.className = "gallery-dot";
+
+
+        dot.setAttribute(
+          "aria-label",
+          "Go to gallery image " +
+          (index + 1)
+        );
+
+
+        dot.addEventListener(
+          "click",
+          function () {
+
+            showSlide(index);
+
+            restartAutoPlay();
+
+          }
+        );
+
+
+        galleryDots.appendChild(dot);
+
+      });
+
+    }
+
+
+    const dots =
+      galleryDots
+        ? galleryDots.querySelectorAll(
+            ".gallery-dot"
+          )
+        : [];
+
+
+    /* ========================================================
+       SHOW SLIDE
+    ======================================================== */
+
+    function showSlide(index) {
+
+      if (
+        index >= slides.length
+      ) {
+
+        index = 0;
+
+      }
+
+
+      if (
+        index < 0
+      ) {
+
+        index =
+          slides.length - 1;
+
+      }
+
+
+      currentIndex = index;
+
+
+      slides.forEach(
+        function (
+          slide,
+          slideIndex
+        ) {
+
+          slide.classList.toggle(
+            "active",
+            slideIndex === currentIndex
+          );
+
+        }
+      );
+
+
+      dots.forEach(
+        function (
+          dot,
+          dotIndex
+        ) {
+
+          dot.classList.toggle(
+            "active",
+            dotIndex === currentIndex
+          );
+
+        }
+      );
+
+    }
+
+
+    /* ========================================================
+       NEXT
+    ======================================================== */
+
+    function nextSlide() {
+
+      showSlide(
+        currentIndex + 1
+      );
+
+    }
+
+
+    /* ========================================================
+       PREVIOUS
+    ======================================================== */
+
+    function previousSlide() {
+
+      showSlide(
+        currentIndex - 1
+      );
+
+    }
+
+
+    /* ========================================================
+       BUTTONS
+    ======================================================== */
+
+    galleryNext.addEventListener(
+      "click",
+      function () {
+
+        nextSlide();
+
+        restartAutoPlay();
+
+      }
+    );
+
+
+    galleryPrev.addEventListener(
+      "click",
+      function () {
+
+        previousSlide();
+
+        restartAutoPlay();
+
+      }
+    );
+
+
+    /* ========================================================
+       AUTOPLAY
+    ======================================================== */
+
+    function startAutoPlay() {
+
+      stopAutoPlay();
+
+
+      autoPlay =
+        setInterval(
+          function () {
+
+            nextSlide();
+
+          },
+          4000
+        );
+
+    }
+
+
+    function stopAutoPlay() {
+
+      if (
+        autoPlay !== null
+      ) {
+
+        clearInterval(
+          autoPlay
+        );
+
+        autoPlay = null;
+
+      }
+
+    }
+
+
+    function restartAutoPlay() {
+
+      stopAutoPlay();
+
+      startAutoPlay();
+
+    }
+
+
+    /* ========================================================
+       HOVER
+    ======================================================== */
+
+    gallerySlider.addEventListener(
+      "mouseenter",
+      function () {
+
+        stopAutoPlay();
+
+      }
+    );
+
+
+    gallerySlider.addEventListener(
+      "mouseleave",
+      function () {
+
+        startAutoPlay();
+
+      }
+    );
+
+
+    /* ========================================================
+       KEYBOARD
+    ======================================================== */
+
+    gallerySlider.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "ArrowLeft"
+        ) {
+
+          previousSlide();
+
+          restartAutoPlay();
 
         }
 
-    }
+
+        if (
+          event.key === "ArrowRight"
+        ) {
+
+          nextSlide();
+
+          restartAutoPlay();
+
+        }
+
+      }
+    );
 
 
-    /* =====================================================
-       NOTIFICATION SPEED CONTROL
-       
-       Adjust this value if required:
-       
-       20s  = fast
-       35s  = normal
-       50s  = slow
-       70s  = very slow
-    ===================================================== */
+    /* ========================================================
+       BLURRED BACKGROUND
+    ======================================================== */
 
-    if (ticker) {
+    slides.forEach(
+      function (slide) {
 
-        ticker.style.animationDuration = "35s";
-
-    }
+        const image =
+          slide.querySelector(
+            ".gallery-image"
+          );
 
 
-    /* =====================================================
-       PAUSE NOTIFICATION ON TOUCH
-    ===================================================== */
+        if (
+          image &&
+          image.src
+        ) {
 
-    if (ticker) {
+          slide.style.setProperty(
+            "--gallery-image",
+            'url("' +
+            image.src +
+            '")'
+          );
 
-        ticker.addEventListener(
-            "touchstart",
-            function () {
+        }
 
-                ticker.style.animationPlayState =
-                    "paused";
-
-            },
-            { passive: true }
-        );
-
-        ticker.addEventListener(
-            "touchend",
-            function () {
-
-                ticker.style.animationPlayState =
-                    "running";
-
-            },
-            { passive: true }
-        );
-
-    }
+      }
+    );
 
 
-    /* =====================================================
-       GALLERY BUTTONS
-       
-       Keeps the gallery usable on smaller screens.
-    ===================================================== */
+    /* ========================================================
+       INITIALIZE
+    ======================================================== */
 
-    const gallerySlider =
-        document.querySelector(".gallery-slider");
+    showSlide(0);
 
-    const galleryPrev =
-        document.querySelector(".gallery-prev");
+    startAutoPlay();
 
-    const galleryNext =
-        document.querySelector(".gallery-next");
+  }
 
 
-    if (
-        gallerySlider &&
-        galleryPrev &&
-        galleryNext
-    ) {
-
-        galleryPrev.addEventListener(
-            "click",
-            function () {
-
-                gallerySlider.scrollBy({
-                    left: -300,
-                    behavior: "smooth"
-                });
-
-            }
-        );
 
 
-        galleryNext.addEventListener(
-            "click",
-            function () {
 
-                gallerySlider.scrollBy({
-                    left: 300,
-                    behavior: "smooth"
-                });
+  /* ============================================================
+     ACHIEVEMENT VIDEO MODAL
+  ============================================================ */
 
-            }
-        );
+  function initializeAchievementVideos() {
 
-    }
+    const modal =
+      document.getElementById(
+        "achievementVideoModal"
+      );
 
 
-    /* =====================================================
-       CONTACT FORM BUTTON
-    ===================================================== */
+    const player =
+      document.getElementById(
+        "achievementVideoPlayer"
+      );
 
-    const contactForm =
-        document.querySelector(".contact-form");
 
-    const submitButton =
-        document.querySelector(".contact-submit-btn");
+    const title =
+      document.getElementById(
+        "achievementVideoTitle"
+      );
+
+
+    const closeButton =
+      document.getElementById(
+        "closeAchievementVideo"
+      );
 
 
     if (
-        contactForm &&
-        submitButton
+      !modal ||
+      !player ||
+      !closeButton
     ) {
-
-        contactForm.addEventListener(
-            "submit",
-            function () {
-
-                submitButton.innerHTML =
-                    '<i class="bi bi-send-fill"></i>&nbsp; Sending...';
-
-                submitButton.style.opacity = "0.85";
-
-            }
-        );
-
+      return;
     }
 
 
-    /* =====================================================
-       IMAGE ERROR PROTECTION
-       
-       Prevents broken images from making the layout ugly.
-    ===================================================== */
+    if (
+      modal.dataset.videoModalReady ===
+      "true"
+    ) {
+      return;
+    }
+
+
+    modal.dataset.videoModalReady =
+      "true";
+
+
+    /* ========================================================
+       OPEN VIDEO
+    ======================================================== */
 
     document
-        .querySelectorAll("img")
-        .forEach(function (image) {
+      .querySelectorAll(
+        ".achievement-video-btn"
+      )
+      .forEach(
+        function (button) {
 
-            image.addEventListener(
-                "error",
-                function () {
-
-                    this.style.opacity = "0.65";
-
-                }
-            );
-
-        });
-
-
-    /* =====================================================
-       INTERSECTION FADE-IN
-       
-       Makes transparent cards appear smoothly while scrolling.
-    ===================================================== */
-
-    const animatedElements =
-        document.querySelectorAll(
-            ".feature-card, " +
-            ".topper-card, " +
-            ".event-card, " +
-            ".course-card, " +
-            ".teacher-card, " +
-            ".testimonial-card, " +
-            ".highlight-box, " +
-            ".notification-card"
-        );
+          if (
+            button.dataset.videoInitialized ===
+            "true"
+          ) {
+            return;
+          }
 
 
-    if (
-        "IntersectionObserver" in window
-    ) {
-
-        const observer =
-            new IntersectionObserver(
-                function (entries) {
-
-                    entries.forEach(function (entry) {
-
-                        if (entry.isIntersecting) {
-
-                            entry.target.style.opacity = "1";
-
-                            entry.target.style.transform =
-                                "translateY(0)";
-
-                            observer.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    });
-
-                },
-                {
-                    threshold: 0.08
-                }
-            );
+          button.dataset.videoInitialized =
+            "true";
 
 
-        animatedElements.forEach(
-            function (element) {
+          button.addEventListener(
+            "click",
+            function () {
 
-                element.style.opacity = "0";
+              const videoURL =
+                button.dataset.videoUrl;
 
-                element.style.transform =
-                    "translateY(15px)";
 
-                element.style.transition +=
-                    ", opacity 0.6s ease, transform 0.6s ease";
+              const videoTitle =
+                button.dataset.videoTitle ||
+                "Success Story";
 
-                observer.observe(element);
+
+              if (!videoURL) {
+                return;
+              }
+
+
+              if (title) {
+
+                title.textContent =
+                  videoTitle;
+
+              }
+
+
+              player.src =
+                videoURL;
+
+
+              modal.classList.add(
+                "show"
+              );
+
+
+              modal.setAttribute(
+                "aria-hidden",
+                "false"
+              );
+
+
+              document.body.style.overflow =
+                "hidden";
+
+
+              const playPromise =
+                player.play();
+
+
+              if (
+                playPromise !== undefined
+              ) {
+
+                playPromise.catch(
+                  function () {
+
+                    /*
+                     * Browser autoplay
+                     * may be blocked.
+                     */
+
+                  }
+                );
+
+              }
 
             }
-        );
+          );
+
+        }
+      );
+
+
+    /* ========================================================
+       CLOSE VIDEO
+    ======================================================== */
+
+    function closeVideo() {
+
+      player.pause();
+
+
+      player.removeAttribute(
+        "src"
+      );
+
+
+      player.load();
+
+
+      modal.classList.remove(
+        "show"
+      );
+
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      document.body.style.overflow =
+        "";
 
     }
 
-});
 
+    closeButton.addEventListener(
+      "click",
+      closeVideo
+    );
+
+
+    /* ========================================================
+       CLICK OUTSIDE
+    ======================================================== */
+
+    modal.addEventListener(
+      "click",
+      function (event) {
+
+        if (
+          event.target === modal
+        ) {
+
+          closeVideo();
+
+        }
+
+      }
+    );
+
+
+    /* ========================================================
+       ESCAPE
+    ======================================================== */
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Escape" &&
+          modal.classList.contains(
+            "show"
+          )
+        ) {
+
+          closeVideo();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ============================================================
+     CONTACT FORM
+  ============================================================ */
+
+  function initializeContactForm() {
+
+    const contactForm =
+      document.querySelector(
+        ".contact-form"
+      );
+
+
+    const submitButton =
+      document.querySelector(
+        ".contact-submit-btn"
+      );
+
+
+    if (
+      !contactForm ||
+      !submitButton
+    ) {
+      return;
+    }
+
+
+    if (
+      contactForm.dataset.contactReady ===
+      "true"
+    ) {
+      return;
+    }
+
+
+    contactForm.dataset.contactReady =
+      "true";
+
+
+    contactForm.addEventListener(
+      "submit",
+      function () {
+
+        submitButton.innerHTML =
+          '<i class="bi bi-send-fill"></i>&nbsp; Sending...';
+
+
+        submitButton.style.opacity =
+          "0.85";
+
+      }
+    );
+
+  }
+
+
+  /* ============================================================
+     IMAGE ERROR PROTECTION
+  ============================================================ */
+
+  function initializeImageProtection() {
+
+    document
+      .querySelectorAll("img")
+      .forEach(
+        function (image) {
+
+          if (
+            image.dataset.imageProtectionReady ===
+            "true"
+          ) {
+            return;
+          }
+
+
+          image.dataset.imageProtectionReady =
+            "true";
+
+
+          image.addEventListener(
+            "error",
+            function () {
+
+              this.style.opacity =
+                "0.65";
+
+            }
+          );
+
+        }
+      );
+
+  }
+
+
+  /* ============================================================
+     INTERSECTION FADE-IN
+  ============================================================ */
+
+  function initializeIntersectionAnimations() {
+
+    if (
+      !("IntersectionObserver" in window)
+    ) {
+      return;
+    }
+
+
+    const animatedElements =
+      document.querySelectorAll(
+        ".feature-card, " +
+        ".topper-card, " +
+        ".event-card, " +
+        ".course-card, " +
+        ".teacher-card, " +
+        ".testimonial-card, " +
+        ".highlight-box, " +
+        ".notification-card"
+      );
+
+
+    if (
+      animatedElements.length === 0
+    ) {
+      return;
+    }
+
+
+    const observer =
+      new IntersectionObserver(
+        function (
+          entries
+        ) {
+
+          entries.forEach(
+            function (entry) {
+
+              if (
+                entry.isIntersecting
+              ) {
+
+                entry.target.style.opacity =
+                  "1";
+
+
+                entry.target.style.transform =
+                  "translateY(0)";
+
+
+                observer.unobserve(
+                  entry.target
+                );
+
+              }
+
+            }
+          );
+
+        },
+        {
+          threshold: 0.08
+        }
+      );
+
+
+    animatedElements.forEach(
+      function (element) {
+
+        if (
+          element.dataset.animationReady ===
+          "true"
+        ) {
+          return;
+        }
+
+
+        element.dataset.animationReady =
+          "true";
+
+
+        element.style.opacity =
+          "0";
+
+
+        element.style.transform =
+          "translateY(15px)";
+
+
+        element.style.transition =
+          "opacity 0.6s ease, " +
+          "transform 0.6s ease";
+
+
+        observer.observe(
+          element
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ============================================================
+     DOM READY
+  ============================================================ */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeHomepage
+  );
+
+
+  /* ============================================================
+     TURBO LOAD
+  ============================================================ */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeHomepage
+  );
+
+})();
+
+
+function initializeAchievementSlider() {
+
+  const viewport = document.getElementById("achievementsSlider");
+  const track = viewport
+    ? viewport.querySelector(".achievements-track")
+    : null;
+
+  const prevButton = document.getElementById("achievementPrev");
+  const nextButton = document.getElementById("achievementNext");
+
+  if (!viewport || !track || !prevButton || !nextButton) {
+    return;
+  }
+
+  if (viewport.dataset.achievementSliderReady === "true") {
+    return;
+  }
+
+  viewport.dataset.achievementSliderReady = "true";
+
+  const cards = Array.from(
+    track.querySelectorAll(".topper-card")
+  );
+
+  if (cards.length <= 1) {
+    return;
+  }
+
+  let currentIndex = 0;
+  let visibleCards = 3;
+  let autoPlayTimer = null;
+  let resizeTimer = null;
+  let isMoving = false;
+
+
+  /* =========================================================
+     VISIBLE CARDS
+  ========================================================= */
+
+  function getVisibleCards() {
+
+    if (window.innerWidth <= 700) {
+      return 1;
+    }
+
+    if (window.innerWidth <= 1100) {
+      return 2;
+    }
+
+    return 3;
+  }
+
+
+  /* =========================================================
+     SET CARD WIDTH
+  ========================================================= */
+
+  function setupSlider() {
+
+    visibleCards = getVisibleCards();
+
+    const viewportWidth = viewport.clientWidth;
+
+    const styles = window.getComputedStyle(track);
+
+    const gap =
+      parseFloat(styles.columnGap) ||
+      parseFloat(styles.gap) ||
+      0;
+
+    const cardWidth =
+      (
+        viewportWidth -
+        gap * (visibleCards - 1)
+      ) / visibleCards;
+
+
+    cards.forEach(function(card) {
+
+      card.style.width = cardWidth + "px";
+      card.style.minWidth = cardWidth + "px";
+      card.style.maxWidth = cardWidth + "px";
+
+      card.style.flex =
+        "0 0 " + cardWidth + "px";
+
+      card.style.boxSizing =
+        "border-box";
+
+    });
+
+
+    currentIndex = 0;
+
+    track.style.transition = "none";
+
+    track.style.transform =
+      "translate3d(0,0,0)";
+
+
+    track.offsetHeight;
+
+
+    track.style.transition =
+      "transform 0.7s ease";
+
+  }
+
+
+  /* =========================================================
+     MAXIMUM INDEX
+  ========================================================= */
+
+  function getMaxIndex() {
+
+    return Math.max(
+      0,
+      cards.length - visibleCards
+    );
+
+  }
+
+
+  /* =========================================================
+     MOVE
+  ========================================================= */
+
+  function moveSlider(index, animate) {
+
+    const maxIndex = getMaxIndex();
+
+
+    if (index > maxIndex) {
+      index = 0;
+    }
+
+
+    if (index < 0) {
+      index = maxIndex;
+    }
+
+
+    currentIndex = index;
+
+
+    const targetCard =
+      cards[currentIndex];
+
+
+    if (!targetCard) {
+      return;
+    }
+
+
+    const distance =
+      targetCard.offsetLeft;
+
+
+    if (animate) {
+
+      isMoving = true;
+
+      track.style.transition =
+        "transform 0.7s ease";
+
+    } else {
+
+      track.style.transition =
+        "none";
+
+    }
+
+
+    track.style.transform =
+      "translate3d(-" +
+      distance +
+      "px,0,0)";
+
+
+    if (animate) {
+
+      window.setTimeout(
+        function() {
+          isMoving = false;
+        },
+        750
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     NEXT
+  ========================================================= */
+
+  function nextAchievement() {
+
+    if (isMoving) {
+      return;
+    }
+
+
+    moveSlider(
+      currentIndex + 1,
+      true
+    );
+
+  }
+
+
+  /* =========================================================
+     PREVIOUS
+  ========================================================= */
+
+  function previousAchievement() {
+
+    if (isMoving) {
+      return;
+    }
+
+
+    moveSlider(
+      currentIndex - 1,
+      true
+    );
+
+  }
+
+
+  /* =========================================================
+     BUTTONS
+  ========================================================= */
+
+  nextButton.addEventListener(
+    "click",
+    function() {
+
+      nextAchievement();
+
+      restartAutoPlay();
+
+    }
+  );
+
+
+  prevButton.addEventListener(
+    "click",
+    function() {
+
+      previousAchievement();
+
+      restartAutoPlay();
+
+    }
+  );
+
+
+  /* =========================================================
+     AUTOPLAY
+  ========================================================= */
+
+  function startAutoPlay() {
+
+    stopAutoPlay();
+
+
+    autoPlayTimer =
+      window.setInterval(
+        function() {
+
+          nextAchievement();
+
+        },
+        5000
+      );
+
+  }
+
+
+  function stopAutoPlay() {
+
+    if (autoPlayTimer !== null) {
+
+      window.clearInterval(
+        autoPlayTimer
+      );
+
+      autoPlayTimer = null;
+
+    }
+
+  }
+
+
+  function restartAutoPlay() {
+
+    stopAutoPlay();
+
+    startAutoPlay();
+
+  }
+
+
+  /* =========================================================
+     HOVER
+  ========================================================= */
+
+  viewport.addEventListener(
+    "mouseenter",
+    stopAutoPlay
+  );
+
+
+  viewport.addEventListener(
+    "mouseleave",
+    startAutoPlay
+  );
+
+
+  /* =========================================================
+     TOUCH
+  ========================================================= */
+
+  viewport.addEventListener(
+    "touchstart",
+    stopAutoPlay,
+    { passive: true }
+  );
+
+
+  viewport.addEventListener(
+    "touchend",
+    startAutoPlay,
+    { passive: true }
+  );
+
+
+  /* =========================================================
+     RESIZE
+  ========================================================= */
+
+  window.addEventListener(
+    "resize",
+    function() {
+
+      window.clearTimeout(
+        resizeTimer
+      );
+
+
+      resizeTimer =
+        window.setTimeout(
+          function() {
+
+            setupSlider();
+
+            moveSlider(
+              0,
+              false
+            );
+
+            startAutoPlay();
+
+          },
+          150
+        );
+
+    }
+  );
+
+
+  /* =========================================================
+     INITIALIZE
+  ========================================================= */
+
+  setupSlider();
+
+  moveSlider(
+    0,
+    false
+  );
+
+  startAutoPlay();
+
+}
 </script>

@@ -359,11 +359,7 @@
         </div>
 
 
-        <!-- ===================================================
-             ACTION BUTTON
-        ==================================================== -->
-
-       <!-- ===================================================
+     <!-- ===================================================
      ACTION BUTTON
 =================================================== -->
 
@@ -385,14 +381,15 @@
     <% elsif @course.free? %>
 
       <!-- FREE COURSE -->
-            <%= button_to enroll_free_course_path(@course),
-    method: :post,
-    class: "payment-btn free-btn" do %>
 
-  <span>🎓</span>
-  Enroll for Free
+      <%= button_to enroll_free_course_path(@course),
+          method: :post,
+          class: "payment-btn free-btn" do %>
 
-<% end %>
+        <span>🎓</span>
+        Enroll for Free
+
+      <% end %>
 
 
     <% elsif @enrollment.present? %>
@@ -417,7 +414,7 @@
 
       <!-- PAID COURSE WITHOUT ENROLLMENT -->
 
-      <%= link_to new_enrollment_path(course_id: @course.id),
+      <%= link_to new_student_enrollment_path(course_id: @course.id),
           class: "payment-btn pay-btn" do %>
 
         <span>📝</span>
@@ -426,6 +423,7 @@
       <% end %>
 
     <% end %>
+
 
   <% else %>
 
@@ -1846,11 +1844,6 @@
 
 </style>
 
-
-<!-- ===========================================================
-     JAVASCRIPT
-=========================================================== -->
-
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1858,6 +1851,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /*
    * Add small hover animation to information cards
    */
+
   const infoCards =
     document.querySelectorAll(".info-card");
 
@@ -1877,6 +1871,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /*
    * Payment button loading state
    */
+
   const paymentButtons =
     document.querySelectorAll(
       ".pay-btn, .free-btn, .login-btn"
@@ -1889,6 +1884,7 @@ document.addEventListener("DOMContentLoaded", function () {
       /*
        * Prevent double click
        */
+
       if (button.dataset.clicked === "true") {
         return;
       }
@@ -1901,9 +1897,11 @@ document.addEventListener("DOMContentLoaded", function () {
       button.innerHTML =
         "<span>⏳</span> Please wait...";
 
+
       /*
        * Restore if browser does not navigate
        */
+
       setTimeout(function () {
 
         if (document.body.contains(button)) {
@@ -1926,20 +1924,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /*
  * BACK BUTTON
- *
+ */
+
 document.addEventListener("DOMContentLoaded", function () {
-  const backBtn = document.getElementById("courseBackBtn");
+
+  const backBtn =
+    document.getElementById("courseBackBtn");
 
   if (backBtn) {
-    backBtn.addEventListener("click", function () {
-      if (document.referrer && document.referrer !== window.location.href) {
-        window.history.back();
-      } else {
-        window.location.href = "/";
-      }
-    });
-  }
-});
 
+    backBtn.addEventListener("click", function () {
+
+      if (
+        document.referrer &&
+        document.referrer !== window.location.href
+      ) {
+
+        window.history.back();
+
+      } else {
+
+        window.location.href = "/";
+
+      }
+
+    });
+
+  }
+
+});
 
 </script>

@@ -3,41 +3,53 @@ class AchievementsController < ApplicationController
   before_action :check_admin
   before_action :set_achievement, only: [:show, :edit, :update, :destroy]
 
+  layout "admin"
+
   def index
-    @achievements = Achievement.all
+    @achievements = Achievement.order(created_at: :desc)
   end
 
   def show
   end
 
   def new
-    @achievement = Achievement.new
-  end
+  @achievement = Achievement.new
+  @achievement.status = true
+end
 
-  def create
-    @achievement = Achievement.new(achievement_params)
+def create
+  @achievement = Achievement.new(achievement_params)
 
-    if @achievement.save
-      redirect_to achievements_path, notice: "Achievement created successfully."
-    else
-      render :new, status: :unprocessable_entity
-    end
+  @achievement.status = true if @achievement.status.nil?
+
+  if @achievement.save
+    redirect_to achievements_path,
+                notice: "Achievement created successfully."
+  else
+    render :new, status: :unprocessable_entity
   end
+end
 
   def edit
   end
 
   def update
     if @achievement.update(achievement_params)
-      redirect_to achievements_path, notice: "Achievement updated successfully."
+      redirect_to achievements_path,
+                  notice: "Achievement updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @achievement.destroy
-    redirect_to achievements_path, notice: "Achievement deleted successfully."
+    if @achievement.destroy
+      redirect_to achievements_path,
+                  notice: "Achievement deleted successfully."
+    else
+      redirect_to achievements_path,
+                  alert: "Achievement could not be deleted."
+    end
   end
 
   private
@@ -54,13 +66,15 @@ class AchievementsController < ApplicationController
       :year,
       :description,
       :status,
-      :photo
+      :photo,
+      :video
     )
   end
 
   def check_admin
     unless current_user&.admin?
-      redirect_to homepage_path, alert: "Access Denied!"
+      redirect_to homepage_path,
+                  alert: "Access Denied!"
     end
   end
 end

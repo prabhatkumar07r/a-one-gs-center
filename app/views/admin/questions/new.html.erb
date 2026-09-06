@@ -203,31 +203,26 @@
 
           <!-- POSITION -->
 
-          <div class="form-group">
+<!-- POSITION -->
 
-            <%= form.label :position,
-                           "Question Position",
-                           class: "form-label" %>
+<div class="form-group">
 
-            <%= form.number_field :position,
-                                  min: 1,
-                                  step: 1,
-                                  value:
-                                  @question.position ||
-                                  (
-                                    @quiz.questions
-                                        .maximum(:position)
-                                        .to_i + 1
-                                  ),
-                                  class: "form-control" %>
+  <label class="form-label">
+    Question Position
+  </label>
 
-          </div>
+  <div class="position-display">
+    <i class="fas fa-list-ol"></i>
 
-        </div>
+    <span>
+      Automatically assigned as
+      <strong>
+        <%= (@quiz.questions.maximum(:position).to_i + 1) %>
+      </strong>
+    </span>
+  </div>
 
-      </div>
-
-    </div>
+</div>
 
 
     <!-- ==================================================
@@ -1475,6 +1470,53 @@ document.addEventListener("DOMContentLoaded", function () {
     width: 100%;
 
   }
+
+}
+
+
+/* ==================================================
+   AUTO POSITION
+================================================== */
+
+.position-display {
+
+  min-height: 44px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dfe2e8;
+
+  border-radius: 11px;
+
+  background: rgba(245,247,250,.85);
+
+  color: #707684;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
+
+}
+
+.position-display i {
+
+  color: #3f52fb;
+
+  font-size: 14px;
+
+}
+
+.position-display strong {
+
+  color: #198754;
+
+  font-weight: 800;
 
 }
 

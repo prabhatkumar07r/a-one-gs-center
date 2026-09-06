@@ -1,47 +1,769 @@
-<h2>Achievements</h2>
+<% content_for :hide_header, true %>
+<% content_for :hide_footer, true %>
 
-<%= link_to "Add Achievement", new_achievement_path, class: "btn btn-success mb-3" %>
+<style>
+/* =========================================================
+   ACHIEVEMENTS ADMIN PAGE
+========================================================= */
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>student_name</th>
-       <th>Photo</th>
-      <th>Title</th>
-      <th>Rank</th>
-      <th>Year</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
+.achievements-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, 0.08),
+      transparent 35%
+    ),
+    #f8fafc;
 
-  <tbody>
-    <% @achievements.each do |achievement| %>
-      <tr>
-        <tb><%= achievement.student_name %></tb>
+  padding: 35px 40px 60px;
+}
 
-        <td>
-          <% if achievement.photo.attached? %>
-            <%= image_tag achievement.photo, width: 80 %>
-          <% end %>
-        </td>
+/* =========================
+   PAGE HEADER
+========================= */
 
-        <td><%= achievement.title %></td>
-        <td><%= achievement.rank %></td>
-        <td><%= achievement.year %></td>
+.achievements-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 
-        <td>
-          <%= link_to "Edit", edit_achievement_path(achievement), class: "btn btn-warning btn-sm" %>
+  margin-bottom: 30px;
+}
 
-          <%= link_to "Delete",
-              achievement,
-              data: {
-                turbo_method: :delete,
-                turbo_confirm: "Are you sure?"
-              },
-              class: "btn btn-danger btn-sm" %>
-        </td>
+.achievements-heading {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.5px;
+}
 
-      </tr>
+.achievements-subtitle {
+  margin: 7px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =========================
+   ADD BUTTON
+========================= */
+
+.add-achievement-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #2563eb
+  );
+
+  color: #fff;
+  text-decoration: none;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.add-achievement-btn:hover {
+  color: #fff;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(37, 99, 235, 0.25);
+}
+
+/* =========================
+   STAT CARD
+========================= */
+
+.achievement-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+.summary-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  padding: 20px;
+
+  box-shadow:
+    0 4px 15px rgba(15, 23, 42, 0.05);
+}
+
+.summary-label {
+  display: block;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #6b7280;
+
+  margin-bottom: 7px;
+}
+
+.summary-value {
+  font-size: 25px;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+/* =========================
+   TABLE CARD
+========================= */
+
+.achievements-card {
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+.achievements-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.achievements-card-title {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 750;
+
+  color: #111827;
+}
+
+.achievements-count {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.achievements-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  margin: 0;
+}
+
+.achievements-table thead {
+  background: #f8fafc;
+}
+
+.achievements-table th {
+  padding: 15px 20px;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  color: #64748b;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  white-space: nowrap;
+}
+
+.achievements-table td {
+  padding: 17px 20px;
+
+  font-size: 14px;
+  color: #374151;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  vertical-align: middle;
+}
+
+.achievements-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.achievements-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.achievements-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================
+   STUDENT NAME
+========================= */
+
+.student-name {
+  font-weight: 700;
+  color: #111827;
+}
+
+/* =========================
+   PHOTO
+========================= */
+
+.achievement-photo {
+  width: 58px;
+  height: 58px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 3px 10px rgba(15, 23, 42, 0.08);
+}
+
+.no-photo {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f1f5f9;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.achievement-title {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* =========================
+   RANK BADGE
+========================= */
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #ede9fe;
+  color: #6d28d9;
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+/* =========================
+   YEAR
+========================= */
+
+.year-badge {
+  display: inline-flex;
+
+  padding: 5px 10px;
+
+  border-radius: 7px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.achievement-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 12px;
+
+  border-radius: 7px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.edit-btn {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.edit-btn:hover {
+  background: #fde68a;
+  color: #78350f;
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+
+  border: none;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-achievements {
+  padding: 65px 20px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+
+  border-radius: 50%;
+
+  background: #f3f4f6;
+
+  font-size: 28px;
+}
+
+.empty-achievements h3 {
+  margin: 0 0 7px;
+
+  font-size: 18px;
+  font-weight: 750;
+
+  color: #111827;
+}
+
+.empty-achievements p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .achievements-page {
+    padding: 25px 20px 50px;
+  }
+
+  .achievement-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .achievements-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .add-achievement-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .achievements-page {
+    padding: 20px 12px 40px;
+  }
+
+  .achievements-heading {
+    font-size: 24px;
+  }
+
+  .achievements-card-header {
+    padding: 16px;
+  }
+
+  .achievements-table th,
+  .achievements-table td {
+    padding: 13px 12px;
+  }
+
+  .achievement-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-btn {
+    width: 75px;
+  }
+}
+
+
+
+/* =========================
+   ACHIEVEMENT NUMBER
+========================= */
+
+.achievement-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  background: #ede9fe;
+  color: #6d28d9;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+</style>
+
+
+<div class="achievements-page">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
+
+  <div class="achievements-header">
+
+    <div>
+      <h1 class="achievements-heading">
+        Achievements
+      </h1>
+
+      <p class="achievements-subtitle">
+        Manage and maintain student achievements and success records.
+      </p>
+    </div>
+
+    <%= link_to new_achievement_path,
+                class: "add-achievement-btn" do %>
+
+      <span>＋</span>
+      Add Achievement
+
     <% end %>
-  </tbody>
-</table>
+
+  </div>
+
+
+  <!-- =========================
+       SUMMARY
+  ========================== -->
+
+  <div class="achievement-summary">
+
+    <div class="summary-card">
+
+      <span class="summary-label">
+        Total Achievements
+      </span>
+
+      <span class="summary-value">
+        <%= @achievements.count %>
+      </span>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <span class="summary-label">
+        Student Records
+      </span>
+
+      <span class="summary-value">
+        <%= @achievements.map(&:student_name).compact.uniq.count %>
+      </span>
+
+    </div>
+
+
+    <div class="summary-card">
+
+  <span class="summary-label">
+    Latest Year
+  </span>
+
+  <span class="summary-value">
+    <%= @achievements.map(&:year).select(&:present?).max || "—" %>
+  </span>
+
+</div>
+
+  </div>
+
+
+  <!-- =========================
+       ACHIEVEMENTS TABLE
+  ========================== -->
+
+  <div class="achievements-card">
+
+    <div class="achievements-card-header">
+
+      <h2 class="achievements-card-title">
+        Student Achievement Records
+      </h2>
+
+      <span class="achievements-count">
+        <%= @achievements.count %> records
+      </span>
+
+    </div>
+
+
+    <% if @achievements.any? %>
+
+      <div class="table-wrapper">
+
+        <table class="achievements-table">
+
+          <thead>
+
+            <tr>
+              <th>#</th>
+              <th>Student</th>
+              <th>Photo</th>
+              <th>Achievement</th>
+              <th>Rank</th>
+              <th>Year</th>
+              <th>Actions</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+           <% @achievements.each_with_index do |achievement, index| %>
+              <tr>
+                           <!-- NUMBER -->
+
+                <td>
+                   <span class="achievement-number">
+                  <%= index + 1 %>
+                   </span>
+                   </td>
+
+                <!-- Student -->
+
+                <td>
+                  <span class="student-name">
+                    <%= achievement.student_name %>
+                  </span>
+                </td>
+
+
+                <!-- Photo -->
+
+                <td>
+
+                  <% if achievement.photo.attached? %>
+
+                    <%= image_tag achievement.photo,
+                                  class: "achievement-photo",
+                                  alt: achievement.student_name %>
+
+                  <% else %>
+
+                    <div class="no-photo">
+                      NO PHOTO
+                    </div>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- Title -->
+
+                <td>
+                  <span class="achievement-title">
+                    <%= achievement.title %>
+                  </span>
+                </td>
+
+
+                <!-- Rank -->
+
+                <td>
+
+                  <% if achievement.rank.present? %>
+
+                    <span class="rank-badge">
+                      <%= achievement.rank %>
+                    </span>
+
+                  <% else %>
+
+                    <span class="text-muted">
+                      —
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- Year -->
+
+                <td>
+
+                  <% if achievement.year.present? %>
+
+                    <span class="year-badge">
+                      <%= achievement.year %>
+                    </span>
+
+                  <% else %>
+
+                    <span class="text-muted">
+                      —
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+
+                <!-- Actions -->
+
+                <td>
+
+                  <div class="achievement-actions">
+
+                    <%= link_to edit_achievement_path(achievement),
+                                class: "action-btn edit-btn" do %>
+                      Edit
+                    <% end %>
+
+
+                    <%= link_to achievement,
+                                data: {
+                                  turbo_method: :delete,
+                                  turbo_confirm: "Are you sure you want to delete this achievement?"
+                                },
+                                class: "action-btn delete-btn" do %>
+                      Delete
+                    <% end %>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+    <% else %>
+
+      <!-- Empty State -->
+
+      <div class="empty-achievements">
+
+        <div class="empty-icon">
+          🏆
+        </div>
+
+        <h3>
+          No achievements found
+        </h3>
+
+        <p>
+          Add the first student achievement to get started.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

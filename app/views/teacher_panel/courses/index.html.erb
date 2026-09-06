@@ -528,10 +528,36 @@
 
       <div class="col-12 col-md-6 col-xl-4">
 
-        <div class="card shadow-lg teacher-course-card">
+           <div class="card shadow-lg teacher-course-card">
 
-          <div class="card-body">
+  <!-- =================================================
+       COURSE IMAGE
+  ================================================== -->
 
+  <div class="teacher-course-image-wrapper">
+
+    <% if course.image.attached? %>
+
+      <%= image_tag course.image,
+          class: "teacher-course-image",
+          alt: course.Course_name %>
+
+    <% else %>
+
+      <div class="teacher-course-image-placeholder">
+
+        <i class="bi bi-image"></i>
+
+        <span>No Course Image</span>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+
+  <div class="card-body">
             <!-- Course Name -->
 
             <h4 class="teacher-course-name">
