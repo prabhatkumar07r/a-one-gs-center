@@ -2,86 +2,141 @@ class TeacherPanel::VideosController < ApplicationController
 
   before_action :authenticate_user!
   before_action :require_teacher
-    before_action :set_teacher_course
-
-
-  layout "teacher"
-
   before_action :set_course
   before_action :set_video, only: [:show, :edit, :update, :destroy]
 
+  layout "teacher"
+
+
+  # =========================================================
+  # INDEX
+  # =========================================================
 
   def index
     @videos = @course.videos.order(position: :asc)
   end
 
 
+  # =========================================================
+  # SHOW
+  # =========================================================
+
   def show
   end
-  def edit
 
-  @playlists = @course.playlists.order(:position)
 
-end
+  # =========================================================
+  # NEW
+  # =========================================================
 
   def new
     @video = @course.videos.new
-    @playlists = @course.playlists
+    @playlists = @course.playlists.order(:position)
   end
 
 
- def create
+  # =========================================================
+  # EDIT
+  # =========================================================
 
-  @video = @course.videos.new(video_params)
+  def edit
+    @playlists = @course.playlists.order(:position)
+  end
 
-  if @video.save
 
-    redirect_to teacher_panel_course_videos_path(@course),
-    notice: "Video added successfully."
+  # =========================================================
+  # CREATE
+  # =========================================================
 
-  else
+  def create
 
-    @playlists = @course.playlists
+    @video = @course.videos.new(video_params)
 
-    render :new,
-    status: :unprocessable_entity
+    if @video.save
+
+      redirect_to teacher_panel_course_videos_path(@course),
+                  notice: "Video added successfully."
+
+    else
+
+      @playlists = @course.playlists.order(:position)
+
+      render :new,
+             status: :unprocessable_entity
+
+    end
 
   end
 
-end
 
-def update
-  if @video.update(video_params)
-    redirect_to teacher_panel_course_videos_path(@course),
-                notice: "Video updated successfully."
-  else
-    raise @video.errors.full_messages.inspect
+  # =========================================================
+  # UPDATE
+  # =========================================================
+
+  def update
+
+    if @video.update(video_params)
+
+      redirect_to teacher_panel_course_videos_path(@course),
+                  notice: "Video updated successfully."
+
+    else
+
+      @playlists = @course.playlists.order(:position)
+
+      render :edit,
+             status: :unprocessable_entity
+
+    end
+
   end
-end
 
 
-def destroy
+  # =========================================================
+  # DESTROY
+  # =========================================================
 
-  @video.destroy
+  def destroy
 
-  redirect_to teacher_panel_course_videos_path(@course),
-  notice: "Video deleted successfully."
+    if @video.destroy
 
-end
+      redirect_to teacher_panel_course_videos_path(@course),
+                  notice: "Video deleted successfully."
 
+    else
+
+      redirect_to teacher_panel_course_videos_path(@course),
+                  alert: "Video could not be deleted."
+
+    end
+
+  end
 
 
   private
 
 
+  # =========================================================
+  # SET COURSE
+  # =========================================================
 
-  def set_video
-
-    @video = @course.videos.find(params[:id])
-
+  def set_course
+    @course = Course.find(params[:course_id])
   end
 
 
+  # =========================================================
+  # SET VIDEO
+  # =========================================================
+
+  def set_video
+    @video = @course.videos.find(params[:id])
+  end
+
+
+  # =========================================================
+  # STRONG PARAMETERS
+  # =========================================================
 
   def video_params
 
@@ -93,25 +148,26 @@ end
       :position,
       :playlist_id,
       :status,
-      :thumbnail
+      :thumbnail,
+      :is_free
     )
 
   end
 
 
+  # =========================================================
+  # TEACHER / ADMIN ACCESS
+  # =========================================================
 
   def require_teacher
 
     unless current_user.teacher? || current_user.admin?
 
       redirect_to root_path,
-      alert: "Access Denied"
+                  alert: "Access Denied"
 
     end
 
   end
 
-def set_course
-  @course = Course.find(params[:course_id])
-end
 end

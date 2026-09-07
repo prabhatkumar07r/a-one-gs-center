@@ -379,6 +379,172 @@
       text-align: center;
     }
   }
+
+
+
+  /* =========================================================
+   VIDEO ACCESS
+========================================================= */
+
+.video-access-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.video-access-option {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  min-height: 48px;
+
+  padding: 7px 10px;
+
+  border: 1px solid #ddd8e8;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+
+.video-access-option:hover {
+  border-color: #8009e2;
+
+  background: #faf8ff;
+}
+
+
+/* RADIO */
+
+.video-access-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+
+  margin: 0;
+
+  accent-color: #8009e2;
+
+  flex-shrink: 0;
+}
+
+
+/* ICON */
+
+.video-access-option .access-icon {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+
+  flex-shrink: 0;
+}
+
+
+/* TEXT */
+
+.video-access-option .access-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  line-height: 1.15;
+}
+
+.video-access-option .access-text strong {
+  color: #332b48;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.video-access-option .access-text small {
+  margin-top: 3px;
+
+  color: #8a8497;
+
+  font-size: 10px;
+}
+
+
+/* FREE */
+
+.free-access .access-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+
+/* PAID */
+
+.paid-access .access-icon {
+  background: #f3e8ff;
+  color: #8009e2;
+}
+
+
+/* SELECTED FREE */
+
+.free-access:has(input:checked) {
+  border-color: #22c55e;
+  background: #f0fdf4;
+
+  box-shadow:
+    0 4px 12px rgba(34,197,94,.10);
+}
+
+
+/* SELECTED PAID */
+
+.paid-access:has(input:checked) {
+  border-color: #8009e2;
+  background: #faf5ff;
+
+  box-shadow:
+    0 4px 12px rgba(128,9,226,.10);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .video-access-box {
+    flex-direction: row;
+  }
+
+  .video-access-option {
+    flex: 1;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .video-access-box {
+    flex-direction: column;
+  }
+
+}
 </style>
 
 
@@ -535,75 +701,156 @@
         </div>
 
 
-        <!-- VIDEO SETTINGS -->
-        <div class="form-section">
+      <!-- =====================================================
+     VIDEO SETTINGS
+====================================================== -->
 
-          <div class="form-section-title">
-            <i class="bi bi-sliders"></i>
-            Video Settings
-          </div>
+<div class="form-section">
 
-
-          <div class="row">
-
-            <div class="col-md-4">
-
-              <div class="video-field">
-
-                <%= form.label :duration, "Duration" %>
-
-                <%= form.text_field :duration,
-                      class: "video-form-control",
-                      placeholder: "15 Minutes" %>
-
-              </div>
-
-            </div>
+  <div class="form-section-title">
+    <i class="bi bi-sliders"></i>
+    Video Settings
+  </div>
 
 
-            <div class="col-md-4">
+  <div class="row">
 
-              <div class="video-field">
 
-             <label class="video-field-label">
-              Position
-             </label>
+    <!-- DURATION -->
 
-            <div class="video-context-box mb-0" style="padding: 10px 12px;">
-                   <span style="color:#8009e2; font-weight:700;">
-                   📌
-              </span>
+    <div class="col-md-3">
 
-       <small>
-        Position is assigned automatically.
-      </small>
-    </div>
+      <div class="video-field">
+
+        <%= form.label :duration, "Duration" %>
+
+        <%= form.text_field :duration,
+              class: "video-form-control",
+              placeholder: "15 Minutes" %>
+
+      </div>
 
     </div>
 
-   </div>
 
+    <!-- POSITION -->
 
-            <div class="col-md-4">
+    <div class="col-md-3">
 
-              <div class="video-field">
+      <div class="video-field">
 
-                <%= form.label :status, "Status" %>
+        <label class="video-field-label">
+          Position
+        </label>
 
-                <%= form.select :status,
-                      Video.statuses.keys.map {
-                        |s| [s.titleize, s]
-                      },
-                      {},
-                      class: "video-form-select" %>
+        <div
+          class="video-context-box mb-0"
+          style="padding: 10px 12px; min-height: 48px;"
+        >
 
-              </div>
+          <span style="color:#8009e2; font-weight:700;">
+            📌
+          </span>
 
-            </div>
-
-          </div>
+          <small>
+            Position is assigned automatically.
+          </small>
 
         </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div class="col-md-3">
+
+      <div class="video-field">
+
+        <%= form.label :status, "Status" %>
+
+        <%= form.select :status,
+              Video.statuses.keys.map {
+                |s| [s.titleize, s]
+              },
+              {},
+              class: "video-form-select" %>
+
+      </div>
+
+    </div>
+
+
+    <!-- VIDEO ACCESS -->
+
+    <div class="col-md-3">
+
+      <div class="video-field">
+
+        <label class="video-field-label">
+          Video Access
+        </label>
+
+
+        <div class="video-access-box">
+
+
+          <!-- FREE -->
+
+          <label class="video-access-option free-access">
+
+            <%= form.radio_button :is_free,
+                                  true,
+                                  checked: (
+                                    @video.is_free == true
+                                  ) %>
+
+            <span class="access-icon">
+              <i class="fas fa-unlock"></i>
+            </span>
+
+            <span class="access-text">
+              <strong>Free</strong>
+              <small>Anyone can watch</small>
+            </span>
+
+          </label>
+
+
+          <!-- PAID -->
+
+          <label class="video-access-option paid-access">
+
+            <%= form.radio_button :is_free,
+                                  false,
+                                  checked: (
+                                    @video.is_free != true
+                                  ) %>
+
+            <span class="access-icon">
+              <i class="fas fa-lock"></i>
+            </span>
+
+            <span class="access-text">
+              <strong>Paid</strong>
+              <small>Enrollment required</small>
+            </span>
+
+          </label>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>
 
 
         <!-- VIDEO SOURCE -->

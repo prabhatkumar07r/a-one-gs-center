@@ -134,96 +134,121 @@
     <% end %>
 
 
-    <!-- ==================================================
-         QUESTION DETAILS
-    ================================================== -->
+   <!-- ==================================================
+     QUESTION DETAILS
+================================================== -->
 
-    <div class="form-card">
+<div class="form-card">
 
-      <div class="card-header">
+  <div class="card-header">
 
-        <div class="header-icon">
-          <i class="fas fa-pen"></i>
-        </div>
+    <div class="header-icon">
+      <i class="fas fa-pen"></i>
+    </div>
 
-        <div>
+    <div>
+      <h2>
+        Question Details
+      </h2>
 
-          <h2>
-            Question Details
-          </h2>
+      <p>
+        Enter the question, explanation and basic settings.
+      </p>
+    </div>
 
-          <p>
-            Enter the question and basic settings.
-          </p>
+  </div>
+
+
+  <div class="card-body">
+
+    <!-- QUESTION -->
+
+    <div class="form-group">
+
+      <%= form.label :question_text,
+                     "Question",
+                     class: "form-label" %>
+
+      <%= form.text_area :question_text,
+                         rows: 5,
+                         class: "form-control question-field",
+                         placeholder: "Enter your question here..." %>
+
+    </div>
+
+
+    <!-- MARKS + POSITION -->
+
+    <div class="form-grid">
+
+      <!-- MARKS -->
+
+      <div class="form-group">
+
+        <%= form.label :marks,
+                       "Marks",
+                       class: "form-label" %>
+
+        <%= form.number_field :marks,
+                              min: 0.5,
+                              step: 0.5,
+                              value: @question.marks || 1,
+                              class: "form-control" %>
+
+      </div>
+
+
+      <!-- POSITION -->
+
+      <div class="form-group">
+
+        <label class="form-label">
+          Question Position
+        </label>
+
+        <div class="position-display">
+
+          <i class="fas fa-list-ol"></i>
+
+          <span>
+            Automatically assigned as
+
+            <strong>
+              <%= @question.persisted? ?
+                    @question.position :
+                    (@quiz.questions.maximum(:position).to_i + 1) %>
+            </strong>
+          </span>
 
         </div>
 
       </div>
 
-
-      <div class="card-body">
-
-
-        <!-- QUESTION -->
-
-        <div class="form-group">
-
-          <%= form.label :question_text,
-                         "Question",
-                         class: "form-label" %>
-
-          <%= form.text_area :question_text,
-                             rows: 5,
-                             class: "form-control question-field",
-                             placeholder:
-                             "Enter your question here..." %>
-
-        </div>
+    </div>
 
 
-        <div class="form-grid">
+    <!-- EXPLANATION -->
 
+    <div class="form-group">
 
-          <!-- MARKS -->
+      <%= form.label :explanation,
+                     "Explanation",
+                     class: "form-label" %>
 
-          <div class="form-group">
+      <%= form.text_area :explanation,
+                         rows: 5,
+                         class: "form-control explanation-field",
+                         placeholder: "Explain why the correct answer is correct..." %>
 
-            <%= form.label :marks,
-                           "Marks",
-                           class: "form-label" %>
+      <small class="form-help">
+        Students can read this explanation after answering the question.
+      </small>
 
-            <%= form.number_field :marks,
-                                  min: 0.5,
-                                  step: 0.5,
-                                  value: @question.marks || 1,
-                                  class: "form-control" %>
+    </div>
 
-          </div>
-
-
-          <!-- POSITION -->
-
-<!-- POSITION -->
-
-<div class="form-group">
-
-  <label class="form-label">
-    Question Position
-  </label>
-
-  <div class="position-display">
-    <i class="fas fa-list-ol"></i>
-
-    <span>
-      Automatically assigned as
-      <strong>
-        <%= (@quiz.questions.maximum(:position).to_i + 1) %>
-      </strong>
-    </span>
   </div>
 
 </div>
-
 
     <!-- ==================================================
          OPTIONS
@@ -344,7 +369,7 @@
       </div>
 
     </div>
-
+ 
 
     <!-- ==================================================
          ACTIONS
@@ -1520,4 +1545,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 }
 
+
+/* ==================================================
+   EXPLANATION
+================================================== */
+
+.explanation-field {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.55;
+}
+
+.form-help {
+  display: block;
+  margin-top: 6px;
+  color: #8c929f;
+  font-size: 11px;
+  line-height: 1.5;
+}
 </style>

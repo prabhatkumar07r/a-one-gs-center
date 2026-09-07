@@ -4,6 +4,8 @@ class Video < ApplicationRecord
   has_many :quizzes, dependent: :destroy
 
   has_many :notes, dependent: :destroy
+  scope :free, -> { where(is_free: true) }
+  scope :paid, -> { where(is_free: false) }
 
   has_one_attached :video_file
   has_one_attached :thumbnail

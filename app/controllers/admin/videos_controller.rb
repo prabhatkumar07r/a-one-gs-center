@@ -266,6 +266,7 @@ module Admin
         :status,
         :video_url,
         :thumbnail,
+        :is_free,
         :playlist_id
       )
     end

@@ -164,6 +164,7 @@ end
       :question_text,
       :marks,
       :position,
+      :explanation,
       options_attributes: [
         :id,
         :option_text,

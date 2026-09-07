@@ -1,35 +1,37 @@
 <% content_for :show_layout, true %>
+<% content_for :hide_footer, true %>
 
 <style>
+
 /* =========================================================
    A ONE GS CENTER
-   QUIZ RESULT PAGE
-   Light + Transparent Glass Theme
+   QUIZ RESULT + LEADERBOARD
 ========================================================= */
 
 .quiz-result-page {
   min-height: 100vh;
-  padding: 40px 20px 70px;
+
+  padding:
+    105px
+    20px
+    70px;
 
   background:
     radial-gradient(
-      circle at 10% 10%,
-      rgba(59, 130, 246, 0.10),
+      circle at top right,
+      rgba(124, 58, 237, .10),
       transparent 32%
     ),
     radial-gradient(
-      circle at 90% 20%,
-      rgba(16, 185, 129, 0.09),
-      transparent 30%
+      circle at bottom left,
+      rgba(37, 99, 235, .08),
+      transparent 32%
     ),
-    linear-gradient(
-      135deg,
-      #f8fafc,
-      #eef4f8 50%,
-      #f8fafc
-    );
+    #f6f8fc;
 
   color: #1e293b;
+
+  box-sizing: border-box;
 }
 
 
@@ -39,8 +41,74 @@
 
 .result-container {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1250px;
+
   margin: 0 auto;
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.result-topbar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+}
+
+.result-title-area {
+  min-width: 0;
+}
+
+.result-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #7c3aed;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .7px;
+
+  margin-bottom: 6px;
+}
+
+.result-eyebrow i {
+  font-size: 12px;
+}
+
+.result-title-area h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 27px;
+
+  font-weight: 850;
+
+  line-height: 1.25;
+}
+
+.result-title-area p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
 }
 
 
@@ -48,137 +116,319 @@
    BACK BUTTON
 ========================================================= */
 
-.result-back {
-  margin-bottom: 22px;
-}
-
-.result-back a {
+.result-back-btn {
   display: inline-flex;
+
   align-items: center;
+
+  justify-content: center;
+
   gap: 8px;
 
-  padding: 10px 17px;
+  flex-shrink: 0;
 
-  text-decoration: none;
-
-  color: #334155;
-
-  background: rgba(255, 255, 255, 0.55);
-
-  border: 1px solid rgba(148, 163, 184, 0.30);
+  padding: 10px 16px;
 
   border-radius: 10px;
 
-  backdrop-filter: blur(12px);
+  background: #ffffff;
 
-  transition: all .2s ease;
+  border: 1px solid #e2e8f0;
+
+  color: #475569 !important;
+
+  text-decoration: none !important;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  transition: .2s ease;
 }
 
-.result-back a:hover {
-  background: rgba(255, 255, 255, 0.85);
+.result-back-btn:hover {
+  background: #f5f3ff;
 
-  transform: translateX(-3px);
+  border-color: #ddd6fe;
 
-  box-shadow:
-    0 8px 20px rgba(15, 23, 42, 0.08);
-}
+  color: #6d28d9 !important;
 
-
-/* =========================================================
-   MAIN RESULT CARD
-========================================================= */
-
-.result-card {
-
-  background: rgba(255, 255, 255, 0.58);
-
-  border:
-    1px solid rgba(255, 255, 255, 0.75);
-
-  border-radius: 24px;
-
-  padding: 40px;
-
-  backdrop-filter: blur(18px);
-
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow:
-    0 20px 60px rgba(15, 23, 42, 0.08);
+  transform: translateX(-2px);
 }
 
 
 /* =========================================================
-   HEADER
+   MAIN CARD
 ========================================================= */
 
-.result-header {
-  text-align: center;
+.result-main-card {
+  background: #ffffff;
 
-  padding-bottom: 30px;
+  border: 1px solid #e2e8f0;
 
-  border-bottom:
-    1px solid rgba(148, 163, 184, 0.20);
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 12px 35px rgba(15, 23, 42, .07);
 }
 
-.result-icon {
-  width: 72px;
-  height: 72px;
 
-  margin: 0 auto 18px;
+/* =========================================================
+   TABS
+========================================================= */
 
+.result-tabs {
   display: flex;
+
   align-items: center;
+
+  gap: 8px;
+
+  padding: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf8ff,
+      #f6f8ff
+    );
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.result-tab {
+  flex: 1;
+
+  min-height: 46px;
+
+  display: inline-flex;
+
+  align-items: center;
+
   justify-content: center;
 
-  border-radius: 50%;
+  gap: 8px;
 
-  font-size: 32px;
+  border: 1px solid transparent;
 
-  background: rgba(255, 255, 255, 0.65);
+  border-radius: 11px;
 
-  border:
-    1px solid rgba(148, 163, 184, 0.25);
-
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.08);
-}
-
-.result-header h1 {
-  margin: 0;
-
-  font-size: 30px;
-
-  font-weight: 800;
-
-  color: #0f172a;
-}
-
-.result-header p {
-  margin: 9px 0 0;
+  background: transparent;
 
   color: #64748b;
 
-  font-size: 15px;
+  font-size: 13px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.result-tab i {
+  font-size: 14px;
+}
+
+.result-tab:hover {
+  background: #ffffff;
+
+  color: #6d28d9;
+}
+
+.result-tab.active {
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+
+  color: #ffffff;
+
+  border-color: transparent;
+
+  box-shadow:
+    0 7px 18px rgba(109, 40, 217, .22);
+}
+
+.result-tab.active:hover {
+  color: #ffffff;
 }
 
 
 /* =========================================================
-   STATUS
+   TAB CONTENT
+========================================================= */
+
+.result-tab-content {
+  display: none;
+}
+
+.result-tab-content.active {
+  display: block;
+}
+
+
+/* =========================================================
+   RESULT HERO
+========================================================= */
+
+.result-hero {
+  position: relative;
+
+  padding: 38px 35px 35px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf8ff,
+      #f4f7ff
+    );
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.result-hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+
+  height: 180px;
+
+  border-radius: 50%;
+
+  background: rgba(124, 58, 237, .06);
+
+  top: -100px;
+
+  left: -70px;
+}
+
+.result-hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 170px;
+
+  height: 170px;
+
+  border-radius: 50%;
+
+  background: rgba(37, 99, 235, .05);
+
+  bottom: -110px;
+
+  right: -70px;
+}
+
+
+/* =========================================================
+   RESULT ICON
+========================================================= */
+
+.result-icon {
+  position: relative;
+
+  z-index: 2;
+
+  width: 68px;
+
+  height: 68px;
+
+  margin: 0 auto 15px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d28d9,
+      #4f46e5
+    );
+
+  color: #ffffff;
+
+  font-size: 28px;
+
+  box-shadow:
+    0 10px 25px rgba(109, 40, 217, .22);
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.result-hero h2 {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 28px;
+
+  font-weight: 850;
+
+  line-height: 1.3;
+}
+
+.result-hero-subtitle {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 7px 0 18px;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   PASS / FAIL
 ========================================================= */
 
 .result-status {
-  margin: 28px auto;
+  position: relative;
 
-  width: fit-content;
+  z-index: 2;
 
-  padding: 9px 20px;
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 18px;
 
   border-radius: 30px;
 
-  font-size: 14px;
+  font-size: 13px;
 
-  font-weight: 800;
+  font-weight: 850;
 
   text-transform: uppercase;
 
@@ -186,41 +436,38 @@
 }
 
 .result-status.passed {
-  color: #166534;
+  background: #dcfce7;
 
-  background: rgba(220, 252, 231, 0.75);
+  border: 1px solid #bbf7d0;
 
-  border:
-    1px solid rgba(34, 197, 94, 0.30);
+  color: #15803d;
 }
 
 .result-status.failed {
+  background: #fee2e2;
+
+  border: 1px solid #fecaca;
+
   color: #b91c1c;
-
-  background: rgba(254, 226, 226, 0.75);
-
-  border:
-    1px solid rgba(239, 68, 68, 0.30);
 }
 
 
 /* =========================================================
-   SCORE SECTION
+   SCORE
 ========================================================= */
 
-.score-section {
-
+.score-area {
   display: flex;
 
   justify-content: center;
 
-  margin: 30px 0;
+  padding: 32px 25px 30px;
 }
 
-.score-circle {
+.score-box {
+  width: 175px;
 
-  width: 190px;
-  height: 190px;
+  height: 175px;
 
   border-radius: 50%;
 
@@ -233,105 +480,37 @@
   justify-content: center;
 
   background:
-    rgba(255, 255, 255, 0.62);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8f7ff
+    );
 
-  border:
-    10px solid rgba(59, 130, 246, 0.12);
+  border: 10px solid #ede9fe;
 
   box-shadow:
-    inset 0 0 30px rgba(15, 23, 42, 0.04),
-    0 15px 35px rgba(15, 23, 42, 0.08);
+    0 10px 30px rgba(79, 70, 229, .10),
+    inset 0 0 20px rgba(109, 40, 217, .03);
 }
 
-.score-percentage {
+.score-value {
+  color: #312e81;
 
-  font-size: 43px;
-
-  line-height: 1;
+  font-size: 40px;
 
   font-weight: 900;
 
-  color: #0f172a;
+  line-height: 1;
 }
 
 .score-label {
-
   margin-top: 8px;
 
   color: #64748b;
 
-  font-size: 13px;
-
-  font-weight: 600;
-}
-
-
-/* =========================================================
-   STAT GRID
-========================================================= */
-
-.result-stats {
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 15px;
-
-  margin-top: 30px;
-}
-
-.result-stat {
-
-  padding: 20px;
-
-  text-align: center;
-
-  background:
-    rgba(255, 255, 255, 0.48);
-
-  border:
-    1px solid rgba(148, 163, 184, 0.20);
-
-  border-radius: 15px;
-
-  backdrop-filter: blur(10px);
-
-  transition: all .2s ease;
-}
-
-.result-stat:hover {
-
-  transform: translateY(-3px);
-
-  background:
-    rgba(255, 255, 255, 0.72);
-
-  box-shadow:
-    0 10px 25px rgba(15, 23, 42, 0.07);
-}
-
-.result-stat strong {
-
-  display: block;
-
-  font-size: 23px;
-
-  font-weight: 800;
-
-  color: #0f172a;
-}
-
-.result-stat span {
-
-  display: block;
-
-  margin-top: 5px;
-
   font-size: 12px;
 
-  color: #64748b;
+  font-weight: 700;
 
   text-transform: uppercase;
 
@@ -340,39 +519,259 @@
 
 
 /* =========================================================
-   ANSWERS SECTION
+   STATISTICS
 ========================================================= */
 
-.answers-section {
+.result-stat-grid {
+  display: grid;
 
-  margin-top: 40px;
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 14px;
+
+  padding: 0 30px 30px;
 }
 
-.answers-title {
+.result-stat {
+  padding: 18px 15px;
+
+  text-align: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #f5f3ff
+    );
+
+  border: 1px solid #e2e8f0;
+
+  transition: .2s ease;
+}
+
+.result-stat:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, .06);
+}
+
+.result-stat-icon {
+  width: 34px;
+
+  height: 34px;
+
+  margin: 0 auto 8px;
 
   display: flex;
 
-  justify-content: space-between;
-
   align-items: center;
 
-  margin-bottom: 18px;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+  font-size: 14px;
 }
 
-.answers-title h2 {
+.result-stat strong {
+  display: block;
 
-  margin: 0;
+  color: #111827;
 
-  font-size: 21px;
+  font-size: 22px;
 
-  color: #0f172a;
+  font-weight: 850;
+
+  line-height: 1.2;
 }
 
-.answers-title span {
+.result-stat span {
+  display: block;
+
+  margin-top: 5px;
 
   color: #64748b;
 
-  font-size: 13px;
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .4px;
+}
+
+
+/* =========================================================
+   ANSWER SUMMARY
+========================================================= */
+
+.answer-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 14px;
+
+  padding: 0 30px 30px;
+}
+
+.answer-summary-box {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 15px 17px;
+
+  border-radius: 13px;
+
+  border: 1px solid #e2e8f0;
+
+  background: #ffffff;
+}
+
+.answer-summary-icon {
+  width: 38px;
+
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+}
+
+.answer-summary-icon.green {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.answer-summary-icon.orange {
+  background: #fef3c7;
+
+  color: #b45309;
+}
+
+.answer-summary-icon.blue {
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+.answer-summary-text strong {
+  display: block;
+
+  color: #1e293b;
+
+  font-size: 16px;
+
+  font-weight: 850;
+}
+
+.answer-summary-text span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   REVIEW SECTION
+========================================================= */
+
+.review-section {
+  border-top: 1px solid #e5e7eb;
+
+  padding: 30px;
+}
+
+.review-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.review-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.review-title-icon {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+}
+
+.review-title h3 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 21px;
+
+  font-weight: 850;
+}
+
+.review-count {
+  padding: 7px 12px;
+
+  border-radius: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  font-weight: 700;
 }
 
 
@@ -380,144 +779,231 @@
    ANSWER CARD
 ========================================================= */
 
-.answer-card {
-
+.answer-review-card {
   margin-bottom: 14px;
 
   padding: 20px;
 
-  background:
-    rgba(255, 255, 255, 0.48);
-
-  border:
-    1px solid rgba(148, 163, 184, 0.20);
+  border: 1px solid #e2e8f0;
 
   border-radius: 15px;
 
-  transition: all .2s ease;
+  background: #ffffff;
+
+  transition: .2s ease;
 }
 
-.answer-card:hover {
-
-  background:
-    rgba(255, 255, 255, 0.70);
+.answer-review-card:hover {
+  border-color: #c4b5fd;
 
   box-shadow:
-    0 8px 25px rgba(15, 23, 42, 0.06);
+    0 8px 25px rgba(79, 70, 229, .07);
+}
+
+.answer-review-card:last-child {
+  margin-bottom: 0;
 }
 
 
 /* =========================================================
-   ANSWER HEADER
+   ANSWER TOP
 ========================================================= */
 
-.answer-top {
-
+.answer-review-top {
   display: flex;
+
+  align-items: center;
 
   justify-content: space-between;
 
-  align-items: flex-start;
-
   gap: 15px;
 
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
-.answer-number {
+.answer-question-number {
+  display: inline-flex;
 
-  font-size: 13px;
+  align-items: center;
 
-  font-weight: 800;
+  gap: 8px;
 
   color: #64748b;
-}
-
-.answer-mark {
-
-  padding: 5px 10px;
-
-  border-radius: 20px;
 
   font-size: 12px;
 
-  font-weight: 700;
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: .4px;
 }
 
-.answer-mark.correct {
+.question-number-badge {
+  width: 31px;
 
-  color: #166534;
+  height: 31px;
 
-  background: rgba(220, 252, 231, 0.75);
-}
+  display: flex;
 
-.answer-mark.wrong {
+  align-items: center;
 
-  color: #b91c1c;
+  justify-content: center;
 
-  background: rgba(254, 226, 226, 0.75);
+  border-radius: 8px;
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+  font-size: 13px;
+
+  font-weight: 850;
 }
 
 
 /* =========================================================
-   QUESTION TEXT
+   ANSWER STATUS
 ========================================================= */
 
-.answer-question {
+.answer-status {
+  display: inline-flex;
 
-  margin-bottom: 14px;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 11px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.answer-status.correct {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.answer-status.incorrect {
+  background: #fee2e2;
+
+  color: #b91c1c;
+}
+
+.answer-status.unanswered {
+  background: #fef3c7;
+
+  color: #b45309;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.answer-review-question {
+  margin-bottom: 15px;
+
+  color: #1e293b;
 
   font-size: 16px;
 
-  line-height: 1.5;
+  font-weight: 750;
 
-  font-weight: 700;
-
-  color: #1e293b;
+  line-height: 1.6;
 }
 
 
 /* =========================================================
-   SELECTED ANSWER
+   ANSWER ROWS
 ========================================================= */
 
-.answer-selected {
+.answer-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
 
   padding: 12px 14px;
-
-  border-radius: 10px;
-
-  font-size: 14px;
-
-  background: rgba(241, 245, 249, 0.70);
-
-  color: #475569;
-}
-
-.answer-selected strong {
-
-  color: #1e293b;
-}
-
-
-/* =========================================================
-   CORRECT ANSWER
-========================================================= */
-
-.correct-answer {
 
   margin-top: 8px;
 
-  padding: 12px 14px;
-
   border-radius: 10px;
 
-  background:
-    rgba(220, 252, 231, 0.55);
+  background: #f8fafc;
 
-  color: #166534;
+  border: 1px solid #eef2f7;
 
-  font-size: 14px;
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+.answer-row.correct-answer-row {
+  background: #ecfdf5;
+
+  border-color: #bbf7d0;
+}
+
+.answer-row.unanswered-row {
+  background: #fffbeb;
+
+  border-color: #fde68a;
+}
+
+.answer-row-icon {
+  width: 25px;
+
+  height: 25px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: #e2e8f0;
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+.correct-answer-row .answer-row-icon {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.unanswered-row .answer-row-icon {
+  background: #fef3c7;
+
+  color: #b45309;
+}
+
+.answer-row-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.answer-row-content strong {
+  color: #334155;
+
+  font-weight: 800;
+}
+
+.answer-row-content span {
+  color: #475569;
 }
 
 
@@ -526,8 +1012,9 @@
 ========================================================= */
 
 .result-actions {
-
   display: flex;
+
+  align-items: center;
 
   justify-content: center;
 
@@ -535,15 +1022,18 @@
 
   flex-wrap: wrap;
 
-  margin-top: 35px;
+  padding:
+    25px
+    30px
+    30px;
 
-  padding-top: 25px;
+  border-top: 1px solid #e5e7eb;
 
-  border-top:
-    1px solid rgba(148, 163, 184, 0.20);
+  background: #fafbff;
 }
 
-.result-btn {
+.result-action-btn {
+  min-height: 45px;
 
   display: inline-flex;
 
@@ -553,122 +1043,1021 @@
 
   gap: 8px;
 
-  padding: 12px 22px;
+  padding: 11px 20px;
 
   border-radius: 10px;
 
+  text-decoration: none !important;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
   border: 1px solid transparent;
-
-  text-decoration: none;
-
-  font-weight: 700;
 
   cursor: pointer;
 
-  transition: all .2s ease;
+  transition: .2s ease;
 }
 
-.result-btn:hover {
-
+.result-action-btn:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 8px 20px rgba(15, 23, 42, 0.10);
+    0 8px 18px rgba(15, 23, 42, .10);
 }
 
-.btn-course {
-
+.result-action-primary {
   background:
-    rgba(255, 255, 255, 0.65);
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #6d28d9
+    );
 
-  border-color:
-    rgba(148, 163, 184, 0.30);
-
-  color: #334155;
+  color: #ffffff !important;
 }
 
-.btn-course:hover {
+.result-action-primary:hover {
+  color: #ffffff !important;
+}
 
+.result-action-secondary {
   background: #ffffff;
+
+  border-color: #dbe2ea;
+
+  color: #475569 !important;
 }
 
-.btn-quizzes {
+.result-action-secondary:hover {
+  background: #f8fafc;
 
-  background:
-    rgba(59, 130, 246, 0.90);
-
-  color: white;
-
-  border-color:
-    rgba(59, 130, 246, 0.20);
-}
-
-.btn-quizzes:hover {
-
-  background:
-    rgba(37, 99, 235, 0.95);
+  color: #334155 !important;
 }
 
 
 /* =========================================================
-   EMPTY ANSWER
+   LEADERBOARD
 ========================================================= */
 
-.not-answered {
-
-  color: #b45309;
-
+#leaderboardTab {
   background:
-    rgba(254, 243, 199, 0.65);
+    radial-gradient(
+      circle at 8% 5%,
+      rgba(255, 255, 255, .13),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 92% 90%,
+      rgba(255, 255, 255, .08),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #c218d8 0%,
+      #a000c8 35%,
+      #78008d 68%,
+      #4d005f 100%
+    );
+
+  color: #ffffff;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   LEADERBOARD SECTION
+========================================================= */
+
+.leaderboard-section {
+  padding:
+    38px
+    30px
+    45px;
+}
+
+
+/* =========================================================
+   A ONE GS CENTER LOGO / BRAND
+========================================================= */
+
+.leaderboard-brand {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 25px;
+
+  text-align: center;
+}
+
+.leaderboard-brand-icon {
+  width: 76px;
+
+  height: 76px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 10px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f0d6ff
+    );
+
+  color: #78008e;
+
+  font-size: 34px;
+
+  box-shadow:
+    0 12px 30px rgba(40, 0, 55, .30);
+
+  border: 4px solid rgba(255,255,255,.30);
+}
+
+.leaderboard-brand-name {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 17px;
+
+  font-weight: 950;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+.leaderboard-brand-subtitle {
+  margin-top: 4px;
+
+  color: rgba(255,255,255,.72);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   LEADERBOARD HEADER
+========================================================= */
+
+.leaderboard-heading {
+  text-align: center;
+
+  margin-bottom: 35px;
+}
+
+.leaderboard-heading-icon {
+  width: 58px;
+
+  height: 58px;
+
+  margin: 0 auto 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background:
+    rgba(255,255,255,.16);
+
+  color: #ffffff;
+
+  font-size: 24px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.22);
+
+  box-shadow:
+    0 10px 25px rgba(50,0,70,.18);
+}
+
+.leaderboard-heading h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 29px;
+
+  font-weight: 900;
+}
+
+.leaderboard-heading p {
+  margin: 7px 0 0;
+
+  color: rgba(255,255,255,.76);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   PODIUM
+========================================================= */
+
+.podium {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  align-items: end;
+
+  gap: 18px;
+
+  max-width: 950px;
+
+  margin: 0 auto 45px;
+}
+
+
+/* =========================================================
+   TOP 3 LEADER CARDS
+========================================================= */
+
+.leader-card {
+  position: relative;
+
+  padding:
+    26px
+    20px
+    23px;
+
+  text-align: center;
+
+  border-radius: 20px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.20);
+
+  background:
+    linear-gradient(
+      145deg,
+      #a000c8 0%,
+      #7b008f 55%,
+      #5a006f 100%
+    );
+
+  box-shadow:
+    0 14px 32px rgba(65,0,80,.30);
+
+  color: #ffffff;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.leader-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 20px 40px rgba(45,0,60,.40);
+}
+
+
+/* =========================================================
+   FIRST PLACE
+========================================================= */
+
+.leader-card.first {
+  padding-top: 34px;
+
+  border-color:
+    rgba(255,255,255,.40);
+
+  background:
+    linear-gradient(
+      145deg,
+      #c218d8 0%,
+      #9c00bd 48%,
+      #680078 100%
+    );
+
+  box-shadow:
+    0 20px 45px rgba(55,0,75,.38);
+}
+
+.leader-card.first:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 25px 50px rgba(45,0,65,.45);
+}
+
+
+/* =========================================================
+   SECOND / THIRD
+========================================================= */
+
+.leader-card.second,
+.leader-card.third {
+  background:
+    linear-gradient(
+      145deg,
+      #a800c9 0%,
+      #81008f 50%,
+      #59006c 100%
+    );
+}
+
+.leader-card.second {
+  margin-top: 30px;
+}
+
+.leader-card.third {
+  margin-top: 30px;
+}
+
+
+/* =========================================================
+   RANK BADGE
+========================================================= */
+
+.leader-rank {
+  position: absolute;
+
+  top: 14px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  min-width: 43px;
+
+  height: 28px;
+
+  padding: 0 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.18);
+
+  color: #ffffff;
+
+  border:
+    1px solid
+    rgba(255,255,255,.18);
+
+  font-size: 11px;
+
+  font-weight: 900;
+}
+
+.leader-card.first .leader-rank {
+  background: #ffffff;
+
+  color: #85009e;
+}
+
+
+/* =========================================================
+   STUDENT AVATAR
+========================================================= */
+
+.leader-avatar {
+  width: 82px;
+
+  height: 82px;
+
+  margin:
+    15px
+    auto
+    13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.25),
+      rgba(255,255,255,.10)
+    );
+
+  border:
+    5px solid
+    rgba(255,255,255,.45);
+
+  box-shadow:
+    0 7px 20px rgba(15,23,42,.18);
+
+  color: #ffffff;
+
+  font-size: 26px;
+
+  font-weight: 900;
+}
+
+.leader-card.first .leader-avatar {
+  width: 96px;
+
+  height: 96px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f0d6ff
+    );
+
+  color: #78008e;
+
+  font-size: 30px;
+
+  box-shadow:
+    0 10px 25px rgba(40,0,60,.25);
+}
+
+
+/* =========================================================
+   STUDENT PHOTO
+========================================================= */
+
+.leader-avatar-image {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center;
+}
+
+
+/* =========================================================
+   STUDENT NAME
+========================================================= */
+
+.leader-name {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 17px;
+
+  font-weight: 900;
+
+  line-height: 1.3;
+}
+
+.leader-card.first .leader-name {
+  font-size: 20px;
+}
+
+
+/* =========================================================
+   SCORE
+========================================================= */
+
+.leader-score {
+  margin-top: 12px;
+
+  color: #ffffff;
+
+  font-size: 27px;
+
+  font-weight: 900;
+
+  line-height: 1;
+}
+
+.leader-score-label {
+  margin-top: 5px;
+
+  color:
+    rgba(255,255,255,.70);
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+}
+
+
+/* =========================================================
+   PERCENTAGE
+========================================================= */
+
+.leader-percentage {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-top: 13px;
+
+  padding: 7px 13px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.16);
+
+  color: #ffffff;
+
+  border:
+    1px solid
+    rgba(255,255,255,.20);
+
+  font-size: 12px;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   ATTEMPTS
+========================================================= */
+
+.leader-attempts {
+  margin-top: 13px;
+
+  color:
+    rgba(255,255,255,.72);
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.leader-attempts i {
+  margin-right: 4px;
+
+  color: #f1c7ff;
+}
+
+
+/* =========================================================
+   OTHER PARTICIPANTS
+========================================================= */
+
+.other-participants {
+  margin-top: 10px;
+}
+
+.other-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 15px;
+}
+
+.other-heading h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 20px;
+
+  font-weight: 900;
+}
+
+.other-heading span {
+  padding: 6px 11px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  border:
+    1px solid
+    rgba(255,255,255,.20);
+
+  color:
+    rgba(255,255,255,.80);
+
+  font-size: 11px;
+
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.leader-table-wrapper {
+  overflow-x: auto;
+
+  border:
+    1px solid
+    rgba(255,255,255,.20);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255,255,255,.10);
+
+  box-shadow:
+    0 12px 30px rgba(45,0,60,.20);
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.leader-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 650px;
+}
+
+.leader-table th {
+  padding: 13px 15px;
+
+  text-align: left;
+
+  background:
+    rgba(255,255,255,.13);
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.18);
+
+  color:
+    rgba(255,255,255,.80);
+
+  font-size: 10px;
+
+  font-weight: 850;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
+}
+
+.leader-table td {
+  padding: 14px 15px;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.12);
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 650;
+}
+
+.leader-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.leader-table tbody tr {
+  transition:
+    background .2s ease;
+}
+
+.leader-table tbody tr:hover {
+  background:
+    rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   TABLE RANK
+========================================================= */
+
+.table-rank {
+  width: 45px;
+
+  color: #ffffff !important;
+
+  font-weight: 900 !important;
+}
+
+
+/* =========================================================
+   TABLE STUDENT
+========================================================= */
+
+.table-student {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.table-avatar {
+  width: 36px;
+
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,.16);
+
+  border:
+    1px solid
+    rgba(255,255,255,.20);
+
+  color: #ffffff;
+
+  font-size: 11px;
+
+  font-weight: 900;
+}
+
+.table-avatar-image {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center;
+}
+
+.table-student-name {
+  color: #ffffff;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   SCORE / ACCURACY
+========================================================= */
+
+.table-score {
+  color: #ffffff !important;
+
+  font-weight: 850 !important;
+}
+
+.table-percentage {
+  color: #f1c7ff !important;
+
+  font-weight: 850 !important;
+}
+
+
+/* =========================================================
+   EMPTY LEADERBOARD
+========================================================= */
+
+.leaderboard-empty {
+  padding: 65px 20px;
+
+  text-align: center;
+}
+
+.leaderboard-empty-icon {
+  width: 64px;
+
+  height: 64px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,.13);
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.18);
+}
+
+.leaderboard-empty h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 19px;
+
+  font-weight: 850;
+}
+
+.leaderboard-empty p {
+  margin: 7px 0 0;
+
+  color:
+    rgba(255,255,255,.70);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   MOBILE 850
 ========================================================= */
 
 @media(max-width: 850px) {
 
-  .result-card {
-    padding: 28px 22px;
+  .quiz-result-page {
+    padding-top: 100px;
   }
 
-  .result-stats {
+  .result-stat-grid {
     grid-template-columns:
       repeat(2, 1fr);
   }
+
+  .answer-summary {
+    grid-template-columns:
+      1fr;
+  }
+
+  .podium {
+    gap: 12px;
+  }
+
+  .leader-card {
+    padding-left: 14px;
+
+    padding-right: 14px;
+  }
+
 }
 
+
+/* =========================================================
+   MOBILE 600
+========================================================= */
 
 @media(max-width: 600px) {
 
   .quiz-result-page {
-    padding: 25px 12px 50px;
+    padding:
+      92px
+      12px
+      50px;
   }
 
-  .result-card {
-    padding: 22px 15px;
+  .result-topbar {
+    align-items: flex-start;
 
-    border-radius: 18px;
+    flex-direction: column;
+
+    margin-bottom: 16px;
   }
 
-  .result-header h1 {
+  .result-title-area h1 {
+    font-size: 23px;
+  }
+
+  .result-back-btn {
+    width: 100%;
+  }
+
+  .result-main-card {
+    border-radius: 17px;
+  }
+
+
+  /* TABS */
+
+  .result-tabs {
+    padding: 9px;
+  }
+
+  .result-tab {
+    min-height: 43px;
+
+    font-size: 12px;
+  }
+
+
+  /* HERO */
+
+  .result-hero {
+    padding:
+      28px
+      18px
+      25px;
+  }
+
+  .result-icon {
+    width: 58px;
+
+    height: 58px;
+
     font-size: 24px;
+
+    border-radius: 15px;
   }
 
-  .score-circle {
-    width: 155px;
-    height: 155px;
+  .result-hero h2 {
+    font-size: 23px;
   }
 
-  .score-percentage {
-    font-size: 35px;
+
+  /* SCORE */
+
+  .score-area {
+    padding:
+      25px
+      15px;
   }
 
-  .result-stats {
-    grid-template-columns: 1fr 1fr;
+  .score-box {
+    width: 145px;
 
-    gap: 10px;
+    height: 145px;
+
+    border-width: 8px;
+  }
+
+  .score-value {
+    font-size: 34px;
+  }
+
+
+  /* STATS */
+
+  .result-stat-grid {
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 9px;
+
+    padding:
+      0
+      15px
+      20px;
   }
 
   .result-stat {
@@ -679,17 +2068,173 @@
     font-size: 19px;
   }
 
-  .answer-top {
+
+  /* REVIEW */
+
+  .review-section {
+    padding: 22px 15px;
+  }
+
+  .review-header {
+    align-items: flex-start;
+
     flex-direction: column;
   }
+
+  .review-title h3 {
+    font-size: 19px;
+  }
+
+  .answer-review-card {
+    padding: 15px;
+  }
+
+  .answer-review-top {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .answer-review-question {
+    font-size: 15px;
+  }
+
+
+  /* ACTIONS */
 
   .result-actions {
+    padding:
+      20px
+      15px
+      22px;
+
     flex-direction: column;
   }
 
-  .result-btn {
+  .result-action-btn {
     width: 100%;
   }
+
+
+  /* LEADERBOARD */
+
+  .leaderboard-section {
+    padding:
+      28px
+      15px
+      35px;
+  }
+
+  .leaderboard-brand {
+    margin-bottom: 20px;
+  }
+
+  .leaderboard-brand-icon {
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 19px;
+
+    font-size: 29px;
+  }
+
+  .leaderboard-brand-name {
+    font-size: 15px;
+  }
+
+  .leaderboard-heading {
+    margin-bottom: 28px;
+  }
+
+  .leaderboard-heading h2 {
+    font-size: 23px;
+  }
+
+  .podium {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 14px;
+
+    margin-bottom: 30px;
+  }
+
+  .leader-card,
+  .leader-card.second,
+  .leader-card.third,
+  .leader-card.first {
+    margin: 0;
+
+    padding:
+      25px
+      18px
+      22px;
+  }
+
+  .leader-card.first {
+    order: -1;
+  }
+
+  .leader-card.second {
+    order: 0;
+  }
+
+  .leader-card.third {
+    order: 1;
+  }
+
+  .leader-avatar,
+  .leader-card.first .leader-avatar {
+    width: 76px;
+
+    height: 76px;
+
+    font-size: 24px;
+  }
+
+  .leader-card.first .leader-name {
+    font-size: 18px;
+  }
+
+  .leader-score {
+    font-size: 25px;
+  }
+
+  .other-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL
+========================================================= */
+
+@media(max-width: 420px) {
+
+  .result-tab {
+    gap: 5px;
+
+    font-size: 11px;
+  }
+
+  .result-tab i {
+    font-size: 12px;
+  }
+
+  .leaderboard-section {
+    padding-left: 12px;
+
+    padding-right: 12px;
+  }
+
 }
 
 
@@ -699,23 +2244,90 @@
 
 @media print {
 
-  .result-back,
+  .result-topbar,
+  .result-tabs,
   .result-actions {
     display: none !important;
   }
 
   .quiz-result-page {
-    background: white;
+    padding: 20px;
+
+    background: #ffffff;
   }
 
-  .result-card {
-    box-shadow: none;
-
-    background: white;
-
+  .result-main-card {
     border: 1px solid #ddd;
+
+    box-shadow: none;
   }
+
+  .answer-review-card {
+    break-inside: avoid;
+  }
+
+  #leaderboardTab {
+    display: none !important;
+  }
+
 }
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion: reduce) {
+
+  .result-tab,
+  .leader-card,
+  .answer-review-card,
+  .result-action-btn {
+    transition: none !important;
+  }
+
+}
+
+
+/* =========================================================
+   LEADERBOARD BRAND LOGO
+========================================================= */
+
+.leaderboard-brand-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(255,255,255,.35);
+
+  box-shadow:
+    0 10px 28px rgba(55,0,75,.25);
+
+  overflow: hidden;
+}
+
+.leaderboard-logo {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  padding: 7px;
+
+  box-sizing: border-box;
+}
+
 </style>
 
 
@@ -725,317 +2337,1176 @@
 
 
     <!-- =====================================================
-         BACK
+         PAGE HEADER
     ====================================================== -->
 
-    <div class="result-back">
+    <div class="result-topbar">
 
-      <%= link_to course_quizzes_path(@course) do %>
-        ← Back to Quizzes
+      <div class="result-title-area">
+
+        <div class="result-eyebrow">
+
+          <i class="fas fa-clipboard-check"></i>
+
+          Quiz Result
+
+        </div>
+
+        <h1>
+          <%= @quiz.title %>
+        </h1>
+
+        <p>
+          Review your performance and compare your ranking
+        </p>
+
+      </div>
+
+
+      <%= link_to course_quizzes_path(@course),
+                  class: "result-back-btn" do %>
+
+        <i class="fas fa-arrow-left"></i>
+
+        Back to Quizzes
+
       <% end %>
 
     </div>
 
 
     <!-- =====================================================
-         RESULT CARD
+         MAIN CARD
     ====================================================== -->
 
-    <div class="result-card">
+    <div class="result-main-card">
 
 
-      <!-- =====================================================
-           HEADER
-      ====================================================== -->
+      <!-- ===================================================
+           TABS
+      ==================================================== -->
 
-      <div class="result-header">
+      <div class="result-tabs">
 
-        <div class="result-icon">
+        <button
+          type="button"
+          class="result-tab active"
+          data-tab="answerTab">
+
+          <i class="fas fa-list-check"></i>
+
+          Answer
+
+        </button>
+
+
+        <button
+          type="button"
+          class="result-tab"
+          data-tab="leaderboardTab">
+
+          <i class="fas fa-trophy"></i>
+
+          Leaderboard
+
+        </button>
+
+      </div>
+
+
+      <!-- ===================================================
+           ANSWER TAB
+      ==================================================== -->
+
+      <div
+        id="answerTab"
+        class="result-tab-content active">
+
+
+        <!-- RESULT HERO -->
+
+        <div class="result-hero">
+
+          <div class="result-icon">
+
+            <% if @attempt.passed? %>
+
+              <i class="fas fa-trophy"></i>
+
+            <% else %>
+
+              <i class="fas fa-chart-line"></i>
+
+            <% end %>
+
+          </div>
+
+
+          <h2>
+
+            <%= @attempt.passed? ?
+                "Congratulations!" :
+                "Quiz Completed" %>
+
+          </h2>
+
+
+          <div class="result-hero-subtitle">
+
+            <%= @quiz.title %>
+
+          </div>
+
 
           <% if @attempt.passed? %>
-            🎉
+
+            <div class="result-status passed">
+
+              <i class="fas fa-check-circle"></i>
+
+              Passed
+
+            </div>
+
           <% else %>
-            📋
+
+            <div class="result-status failed">
+
+              <i class="fas fa-times-circle"></i>
+
+              Failed
+
+            </div>
+
           <% end %>
 
         </div>
 
 
-        <h1>
-          <%= @quiz.title %>
-        </h1>
+        <!-- SCORE -->
 
+        <div class="score-area">
 
-        <p>
-          Quiz Result
-        </p>
+          <div class="score-box">
 
+            <div class="score-value">
 
-        <% if @attempt.passed? %>
+              <%= @attempt.percentage.to_f.round(2) %>%
 
-          <div class="result-status passed">
-            ✓ Passed
-          </div>
+            </div>
 
-        <% else %>
+            <div class="score-label">
 
-          <div class="result-status failed">
-            ✕ Failed
-          </div>
+              Your Score
 
-        <% end %>
-
-      </div>
-
-
-      <!-- =====================================================
-           SCORE
-      ====================================================== -->
-
-      <div class="score-section">
-
-        <div class="score-circle">
-
-          <div class="score-percentage">
-
-            <%= @attempt.percentage.to_f.round(2) %>%
-
-          </div>
-
-          <div class="score-label">
-
-            Your Score
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+
+        <!-- COUNTS -->
+
+        <%
+
+          total_questions =
+            @quiz.questions.count
+
+          answered_questions =
+            @answers.count
+
+          unanswered_questions =
+            [
+              total_questions -
+              answered_questions,
+              0
+            ].max
+
+        %>
 
 
-      <!-- =====================================================
-           STATISTICS
-      ====================================================== -->
+        <!-- STATISTICS -->
 
-      <div class="result-stats">
+        <div class="result-stat-grid">
 
 
-        <div class="result-stat">
+          <div class="result-stat">
 
-          <strong>
-            <%= @attempt.score.to_f %>
-          </strong>
+            <div class="result-stat-icon">
 
-          <span>
-            Score
-          </span>
+              <i class="fas fa-star"></i>
+
+            </div>
+
+            <strong>
+              <%= @attempt.score.to_f %>
+            </strong>
+
+            <span>
+              Score
+            </span>
+
+          </div>
+
+
+          <div class="result-stat">
+
+            <div class="result-stat-icon">
+
+              <i class="fas fa-award"></i>
+
+            </div>
+
+            <strong>
+              <%= @attempt.total_marks.to_f %>
+            </strong>
+
+            <span>
+              Total Marks
+            </span>
+
+          </div>
+
+
+          <div class="result-stat">
+
+            <div class="result-stat-icon">
+
+              <i class="fas fa-question-circle"></i>
+
+            </div>
+
+            <strong>
+              <%= total_questions %>
+            </strong>
+
+            <span>
+              Questions
+            </span>
+
+          </div>
+
+
+          <div class="result-stat">
+
+            <div class="result-stat-icon">
+
+              <i class="fas fa-bullseye"></i>
+
+            </div>
+
+            <strong>
+              <%= @quiz.passing_percentage.to_f.round(0) %>%
+            </strong>
+
+            <span>
+              Pass Mark
+            </span>
+
+          </div>
+
 
         </div>
 
 
-        <div class="result-stat">
+        <!-- ANSWER SUMMARY -->
 
-          <strong>
-            <%= @attempt.total_marks.to_f %>
-          </strong>
-
-          <span>
-            Total Marks
-          </span>
-
-        </div>
+        <div class="answer-summary">
 
 
-        <div class="result-stat">
+          <div class="answer-summary-box">
 
-          <strong>
-            <%= @quiz.questions.count %>
-          </strong>
+            <div class="answer-summary-icon green">
 
-          <span>
-            Questions
-          </span>
+              <i class="fas fa-check"></i>
 
-        </div>
+            </div>
 
+            <div class="answer-summary-text">
 
-        <div class="result-stat">
+              <strong>
+                <%= answered_questions %>
+              </strong>
 
-          <strong>
-            <%= @quiz.passing_percentage.to_f.round(0) %>%
-          </strong>
-
-          <span>
-            Pass Mark
-          </span>
-
-        </div>
-
-
-      </div>
-
-
-      <!-- =====================================================
-           ANSWERS
-      ====================================================== -->
-
-      <div class="answers-section">
-
-
-        <div class="answers-title">
-
-          <h2>
-            Answer Review
-          </h2>
-
-          <span>
-            <%= @answers.count %> answers
-          </span>
-
-        </div>
-
-
-        <% @answers.each_with_index do |answer, index| %>
-
-          <% correct = answer.is_correct? %>
-
-
-          <div class="answer-card">
-
-
-            <!-- ANSWER TOP -->
-
-            <div class="answer-top">
-
-              <span class="answer-number">
-
-                Question <%= index + 1 %>
-
+              <span>
+                Answered
               </span>
 
+            </div>
 
-              <% if correct %>
+          </div>
 
-                <span class="answer-mark correct">
 
-                  ✓ Correct
+          <div class="answer-summary-box">
 
-                </span>
+            <div class="answer-summary-icon orange">
+
+              <i class="fas fa-minus"></i>
+
+            </div>
+
+            <div class="answer-summary-text">
+
+              <strong>
+                <%= unanswered_questions %>
+              </strong>
+
+              <span>
+                Unanswered
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="answer-summary-box">
+
+            <div class="answer-summary-icon blue">
+
+              <i class="fas fa-list-ol"></i>
+
+            </div>
+
+            <div class="answer-summary-text">
+
+              <strong>
+                <%= total_questions %>
+              </strong>
+
+              <span>
+                Total Questions
+              </span>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- ANSWER REVIEW -->
+
+        <div class="review-section">
+
+
+          <div class="review-header">
+
+            <div class="review-title">
+
+              <div class="review-title-icon">
+
+                <i class="fas fa-list-check"></i>
+
+              </div>
+
+              <h3>
+                Answer Review
+              </h3>
+
+            </div>
+
+
+            <div class="review-count">
+
+              <%= total_questions %> Questions
+
+            </div>
+
+          </div>
+
+
+          <%
+
+            answer_lookup =
+              @answers.index_by(&:question_id)
+
+          %>
+
+
+          <% @quiz.questions
+                    .includes(:options)
+                    .order(:position)
+                    .each_with_index do |
+                      question,
+                      index
+                    | %>
+
+
+            <%
+
+              answer =
+                answer_lookup[question.id]
+
+              correct =
+                answer.present? &&
+                answer.is_correct?
+
+              selected_option =
+                answer&.option
+
+              correct_option =
+                question.options.find_by(
+                  is_correct: true
+                )
+
+            %>
+
+
+            <div class="answer-review-card">
+
+
+              <div class="answer-review-top">
+
+                <div class="answer-question-number">
+
+                  <span class="question-number-badge">
+
+                    <%= index + 1 %>
+
+                  </span>
+
+                  Question <%= index + 1 %>
+
+                </div>
+
+
+                <% if answer.blank? %>
+
+                  <div class="answer-status unanswered">
+
+                    <i class="fas fa-minus-circle"></i>
+
+                    Not Answered
+
+                  </div>
+
+                <% elsif correct %>
+
+                  <div class="answer-status correct">
+
+                    <i class="fas fa-check-circle"></i>
+
+                    Correct
+
+                  </div>
+
+                <% else %>
+
+                  <div class="answer-status incorrect">
+
+                    <i class="fas fa-times-circle"></i>
+
+                    Incorrect
+
+                  </div>
+
+                <% end %>
+
+              </div>
+
+
+              <div class="answer-review-question">
+
+                <%= question.question_text %>
+
+              </div>
+
+
+              <% if selected_option.present? %>
+
+
+                <div class="answer-row">
+
+                  <div class="answer-row-icon">
+
+                    <i class="fas fa-user"></i>
+
+                  </div>
+
+                  <div class="answer-row-content">
+
+                    <strong>
+                      Your Answer:
+                    </strong>
+
+                    <span>
+                      <%= selected_option.option_text %>
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <% if !correct &&
+                      correct_option.present? %>
+
+                  <div class="answer-row correct-answer-row">
+
+                    <div class="answer-row-icon">
+
+                      <i class="fas fa-check"></i>
+
+                    </div>
+
+                    <div class="answer-row-content">
+
+                      <strong>
+                        Correct Answer:
+                      </strong>
+
+                      <span>
+                        <%= correct_option.option_text %>
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                <% end %>
+
 
               <% else %>
 
-                <span class="answer-mark wrong">
 
-                  ✕ Incorrect
+                <div class="answer-row unanswered-row">
 
-                </span>
+                  <div class="answer-row-icon">
+
+                    <i class="fas fa-minus"></i>
+
+                  </div>
+
+                  <div class="answer-row-content">
+
+                    <strong>
+                      Your Answer:
+                    </strong>
+
+                    <span>
+                      Not answered
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <% if correct_option.present? %>
+
+                  <div class="answer-row correct-answer-row">
+
+                    <div class="answer-row-icon">
+
+                      <i class="fas fa-check"></i>
+
+                    </div>
+
+                    <div class="answer-row-content">
+
+                      <strong>
+                        Correct Answer:
+                      </strong>
+
+                      <span>
+                        <%= correct_option.option_text %>
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                <% end %>
+
 
               <% end %>
 
-            </div>
-
-
-            <!-- QUESTION -->
-
-            <div class="answer-question">
-
-              <%= answer.question.question_text %>
 
             </div>
 
 
-            <!-- SELECTED ANSWER -->
-
-            <% if answer.option.present? %>
-
-              <div class="answer-selected">
-
-                <strong>
-                  Your Answer:
-                </strong>
-
-                <%= answer.option.option_text %>
-
-              </div>
-
-            <% else %>
-
-              <div class="answer-selected not-answered">
-
-                <strong>
-                  Your Answer:
-                </strong>
-
-                Not answered
-
-              </div>
-
-            <% end %>
+          <% end %>
 
 
-            <!-- CORRECT ANSWER -->
+        </div>
 
-            <% unless correct %>
 
-              <% correct_option =
-                   answer.question.options.find_by(is_correct: true) %>
+        <!-- ACTIONS -->
 
-              <% if correct_option.present? %>
+        <div class="result-actions">
 
-                <div class="correct-answer">
 
-                  <strong>
-                    Correct Answer:
-                  </strong>
+          <%= link_to course_quizzes_path(@course),
+                      class:
+                      "result-action-btn result-action-primary" do %>
 
-                  <%= correct_option.option_text %>
+            <i class="fas fa-clipboard-list"></i>
+
+            View All Quizzes
+
+          <% end %>
+
+
+          <%= link_to course_details_path(@course),
+                      class:
+                      "result-action-btn result-action-secondary" do %>
+
+            <i class="fas fa-arrow-left"></i>
+
+            Back to Course
+
+          <% end %>
+
+
+          <button
+            type="button"
+            class="result-action-btn result-action-secondary"
+            id="printResult">
+
+            <i class="fas fa-print"></i>
+
+            Print Result
+
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+      <!-- ===================================================
+           LEADERBOARD TAB
+      ==================================================== -->
+
+      <div
+        id="leaderboardTab"
+        class="result-tab-content">
+
+
+        <div class="leaderboard-section">
+
+
+          <!-- =================================================
+               A ONE GS CENTER BRAND
+          ================================================== -->
+
+          <div class="leaderboard-brand">
+
+            <div class="leaderboard-brand-icon">
+           <%= image_tag "logo.jpeg",
+                alt: "A One GS Center",
+                class: "leaderboard-logo" %>
+      </div>
+
+            <div class="leaderboard-brand-name">
+
+              A One GS Center
+
+            </div>
+
+            <div class="leaderboard-brand-subtitle">
+
+              Learn • Practice • Achieve
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               LEADERBOARD HEADER
+          ================================================== -->
+
+          <div class="leaderboard-heading">
+
+            <%# <div class="leaderboard-heading-icon">
+
+              <i class="fas fa-trophy"></i>
+
+            </div> %>
+
+            <h2>
+              Leaderboard
+            </h2>
+
+            <p>
+              <%= @quiz.title %>
+            </p>
+
+          </div>
+
+
+          <% if @leaderboard.any? %>
+
+
+            <!-- =================================================
+                 TOP 3
+            ================================================== -->
+
+            <div class="podium">
+
+
+              <% first =
+                   @leaderboard[0] %>
+
+              <% second =
+                   @leaderboard[1] %>
+
+              <% third =
+                   @leaderboard[2] %>
+
+
+              <!-- =============================================
+                   SECOND PLACE
+              ============================================== -->
+
+              <% if second.present? %>
+
+                <div class="leader-card second">
+
+                  <div class="leader-rank">
+
+                    #2
+
+                  </div>
+
+
+                  <div class="leader-avatar">
+
+                    <% if second[:user].respond_to?(:image) &&
+                          second[:user].image.attached? %>
+
+                      <%= image_tag second[:user].image,
+                                    alt: second[:name],
+                                    class: "leader-avatar-image" %>
+
+                    <% else %>
+
+                      <%= second[:name]
+                          .to_s
+                          .first
+                          .upcase %>
+
+                    <% end %>
+
+                  </div>
+
+
+                  <h3 class="leader-name">
+
+                    <%= second[:name] %>
+
+                  </h3>
+
+
+                  <div class="leader-score">
+
+                    <%= second[:score].to_f %>
+                    /
+                    <%= second[:total_marks].to_f %>
+
+                  </div>
+
+
+                  <div class="leader-score-label">
+
+                    Best Score
+
+                  </div>
+
+
+                  <div class="leader-percentage">
+
+                    <%= second[:percentage]
+                        .to_f
+                        .round(2) %>%
+
+                  </div>
+
+
+                  <div class="leader-attempts">
+
+                    <i class="fas fa-rotate"></i>
+
+                    <%= second[:attempts] %>
+
+                    <%= second[:attempts] == 1 ?
+                        "Attempt" :
+                        "Attempts" %>
+
+                  </div>
 
                 </div>
 
               <% end %>
 
+
+              <!-- =============================================
+                   FIRST PLACE
+              ============================================== -->
+
+              <% if first.present? %>
+
+                <div class="leader-card first">
+
+                  <div class="leader-rank">
+
+                    #1
+
+                  </div>
+
+
+                  <div class="leader-avatar">
+
+                    <% if first[:user].respond_to?(:image) &&
+                          first[:user].image.attached? %>
+
+                      <%= image_tag first[:user].image,
+                                    alt: first[:name],
+                                    class: "leader-avatar-image" %>
+
+                    <% else %>
+
+                      <%= first[:name]
+                          .to_s
+                          .first
+                          .upcase %>
+
+                    <% end %>
+
+                  </div>
+
+
+                  <h3 class="leader-name">
+
+                    <%= first[:name] %>
+
+                  </h3>
+
+
+                  <div class="leader-score">
+
+                    <%= first[:score].to_f %>
+                    /
+                    <%= first[:total_marks].to_f %>
+
+                  </div>
+
+
+                  <div class="leader-score-label">
+
+                    Best Score
+
+                  </div>
+
+
+                  <div class="leader-percentage">
+
+                    <%= first[:percentage]
+                        .to_f
+                        .round(2) %>%
+
+                  </div>
+
+
+                  <div class="leader-attempts">
+
+                    <i class="fas fa-rotate"></i>
+
+                    <%= first[:attempts] %>
+
+                    <%= first[:attempts] == 1 ?
+                        "Attempt" :
+                        "Attempts" %>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+
+              <!-- =============================================
+                   THIRD PLACE
+              ============================================== -->
+
+              <% if third.present? %>
+
+                <div class="leader-card third">
+
+                  <div class="leader-rank">
+
+                    #3
+
+                  </div>
+
+
+                  <div class="leader-avatar">
+
+                    <% if third[:user].respond_to?(:image) &&
+                          third[:user].image.attached? %>
+
+                      <%= image_tag third[:user].image,
+                                    alt: third[:name],
+                                    class: "leader-avatar-image" %>
+
+                    <% else %>
+
+                      <%= third[:name]
+                          .to_s
+                          .first
+                          .upcase %>
+
+                    <% end %>
+
+                  </div>
+
+
+                  <h3 class="leader-name">
+
+                    <%= third[:name] %>
+
+                  </h3>
+
+
+                  <div class="leader-score">
+
+                    <%= third[:score].to_f %>
+                    /
+                    <%= third[:total_marks].to_f %>
+
+                  </div>
+
+
+                  <div class="leader-score-label">
+
+                    Best Score
+
+                  </div>
+
+
+                  <div class="leader-percentage">
+
+                    <%= third[:percentage]
+                        .to_f
+                        .round(2) %>%
+
+                  </div>
+
+
+                  <div class="leader-attempts">
+
+                    <i class="fas fa-rotate"></i>
+
+                    <%= third[:attempts] %>
+
+                    <%= third[:attempts] == 1 ?
+                        "Attempt" :
+                        "Attempts" %>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 OTHER PARTICIPANTS
+            ================================================== -->
+
+            <% if @other_participants.any? %>
+
+              <div class="other-participants">
+
+
+                <div class="other-heading">
+
+                  <h3>
+                    Other Participants
+                  </h3>
+
+                  <span>
+
+                    <%= @other_participants.count %>
+
+                    <%= @other_participants.count == 1 ?
+                        "Student" :
+                        "Students" %>
+
+                  </span>
+
+                </div>
+
+
+                <div class="leader-table-wrapper">
+
+                  <table class="leader-table">
+
+                    <thead>
+
+                      <tr>
+
+                        <th>
+                          Rank
+                        </th>
+
+                        <th>
+                          Student
+                        </th>
+
+                        <th>
+                          Best Score
+                        </th>
+
+                        <th>
+                          Accuracy
+                        </th>
+
+                        <th>
+                          Attempts
+                        </th>
+
+                      </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                      <% @other_participants.each do |student| %>
+
+                        <tr>
+
+
+                          <td class="table-rank">
+
+                            #<%= student[:rank] %>
+
+                          </td>
+
+
+                          <td>
+
+                            <div class="table-student">
+
+
+                              <div class="table-avatar">
+
+                                <% if student[:user].respond_to?(:image) &&
+                                      student[:user].image.attached? %>
+
+                                  <%= image_tag student[:user].image,
+                                                alt: student[:name],
+                                                class: "table-avatar-image" %>
+
+                                <% else %>
+
+                                  <%= student[:name]
+                                      .to_s
+                                      .first
+                                      .upcase %>
+
+                                <% end %>
+
+                              </div>
+
+
+                              <div class="table-student-name">
+
+                                <%= student[:name] %>
+
+                              </div>
+
+
+                            </div>
+
+                          </td>
+
+
+                          <td class="table-score">
+
+                            <%= student[:score].to_f %>
+                            /
+                            <%= student[:total_marks].to_f %>
+
+                          </td>
+
+
+                          <td class="table-percentage">
+
+                            <%= student[:percentage]
+                                .to_f
+                                .round(2) %>%
+
+                          </td>
+
+
+                          <td>
+
+                            <%= student[:attempts] %>
+
+                            <%= student[:attempts] == 1 ?
+                                "Attempt" :
+                                "Attempts" %>
+
+                          </td>
+
+
+                        </tr>
+
+                      <% end %>
+
+                    </tbody>
+
+                  </table>
+
+                </div>
+
+
+              </div>
+
             <% end %>
 
 
-          </div>
-
-        <% end %>
+          <% else %>
 
 
-      </div>
+            <!-- =================================================
+                 EMPTY LEADERBOARD
+            ================================================== -->
+
+            <div class="leaderboard-empty">
+
+              <div class="leaderboard-empty-icon">
+
+                <i class="fas fa-users"></i>
+
+              </div>
+
+              <h3>
+                No leaderboard data yet
+              </h3>
+
+              <p>
+                Complete attempts will appear here.
+              </p>
+
+            </div>
 
 
-      <!-- =====================================================
-           ACTION BUTTONS
-      ====================================================== -->
-
-      <div class="result-actions">
+          <% end %>
 
 
-        <%= link_to course_quizzes_path(@course),
-                    class: "result-btn btn-quizzes" do %>
-
-          📝 View All Quizzes
-
-        <% end %>
-
-
-        <%= link_to course_details_path(@course),
-                    class: "result-btn btn-course" do %>
-
-          ← Back to Course
-
-        <% end %>
-
-
-        <button
-          type="button"
-          class="result-btn btn-course"
-          id="printResult">
-
-          🖨 Print Result
-
-        </button>
+        </div>
 
 
       </div>
@@ -1049,81 +3520,225 @@
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
 
-  /* =====================================================
-     PRINT RESULT
-  ====================================================== */
-
-  const printButton =
-    document.getElementById("printResult");
-
-  if (printButton) {
-
-    printButton.addEventListener("click", function () {
-
-      window.print();
-
-    });
-
-  }
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
 
 
-  /* =====================================================
-     ANIMATE SCORE
-  ====================================================== */
+    /* =====================================================
+       TAB SWITCHING
+    ===================================================== */
 
-  const score =
-    document.querySelector(".score-percentage");
+    const tabs =
+      document.querySelectorAll(
+        ".result-tab"
+      );
 
-  if (score) {
+    const contents =
+      document.querySelectorAll(
+        ".result-tab-content"
+      );
 
-    score.style.opacity = "0";
 
-    score.style.transform = "scale(.8)";
+    tabs.forEach(
+      function (tab) {
 
-    score.style.transition =
-      "all .6s ease";
+        tab.addEventListener(
+          "click",
+          function () {
 
-    setTimeout(function () {
+            const targetId =
+              tab.dataset.tab;
 
-      score.style.opacity = "1";
+
+            tabs.forEach(
+              function (item) {
+
+                item.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            contents.forEach(
+              function (content) {
+
+                content.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            tab.classList.add(
+              "active"
+            );
+
+
+            const target =
+              document.getElementById(
+                targetId
+              );
+
+
+            if (target) {
+
+              target.classList.add(
+                "active"
+              );
+
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              });
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       PRINT RESULT
+    ===================================================== */
+
+    const printButton =
+      document.getElementById(
+        "printResult"
+      );
+
+
+    if (printButton) {
+
+      printButton.addEventListener(
+        "click",
+        function () {
+
+          window.print();
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       SCORE ANIMATION
+    ===================================================== */
+
+    const score =
+      document.querySelector(
+        ".score-box"
+      );
+
+
+    if (score) {
+
+      score.style.opacity = "0";
 
       score.style.transform =
-        "scale(1)";
+        "scale(.85)";
 
-    }, 150);
+      score.style.transition =
+        "all .5s ease";
+
+
+      setTimeout(
+        function () {
+
+          score.style.opacity = "1";
+
+          score.style.transform =
+            "scale(1)";
+
+        },
+        120
+      );
+
+    }
+
+
+    /* =====================================================
+       ANSWER CARD ANIMATION
+    ===================================================== */
+
+    const cards =
+      document.querySelectorAll(
+        ".answer-review-card"
+      );
+
+
+    cards.forEach(
+      function (card, index) {
+
+        card.style.opacity = "0";
+
+        card.style.transform =
+          "translateY(8px)";
+
+        card.style.transition =
+          "all .3s ease";
+
+
+        setTimeout(
+          function () {
+
+            card.style.opacity = "1";
+
+            card.style.transform =
+              "translateY(0)";
+
+          },
+          80 + (index * 35)
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       LEADERBOARD CARD ANIMATION
+    ===================================================== */
+
+    const leaderCards =
+      document.querySelectorAll(
+        ".leader-card"
+      );
+
+
+    leaderCards.forEach(
+      function (card, index) {
+
+        card.style.opacity = "0";
+
+        card.style.transform =
+          "translateY(12px)";
+
+
+        setTimeout(
+          function () {
+
+            card.style.opacity = "1";
+
+            card.style.transform =
+              "";
+
+          },
+          100 + (index * 100)
+        );
+
+      }
+    );
+
 
   }
+);
 
-
-  /* =====================================================
-     ANSWER CARD ANIMATION
-  ====================================================== */
-
-  const cards =
-    document.querySelectorAll(".answer-card");
-
-  cards.forEach(function (card, index) {
-
-    card.style.opacity = "0";
-
-    card.style.transform =
-      "translateY(10px)";
-
-    card.style.transition =
-      "all .35s ease";
-
-    setTimeout(function () {
-
-      card.style.opacity = "1";
-
-      card.style.transform =
-        "translateY(0)";
-
-    }, 100 + (index * 60));
-
-  });
-
-});
 </script>

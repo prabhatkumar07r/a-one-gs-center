@@ -1,6 +1,110 @@
+<style>
+  /* =========================================================
+   VIDEO ACCESS
+========================================================= */
+
+.video-access-options {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.video-access-option {
+  flex: 1;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 15px 16px;
+
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+
+  background: #fff;
+
+  cursor: pointer;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.video-access-option:hover {
+  border-color: #7c3aed;
+  background: #faf5ff;
+}
+
+.video-access-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: #7c3aed;
+}
+
+.video-access-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  flex-shrink: 0;
+}
+
+.video-access-icon.free {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.video-access-icon.paid {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.video-access-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.video-access-content strong {
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.video-access-content small {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .video-access-options {
+    flex-direction: column;
+  }
+
+  .video-access-option {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+}
+</style>
+
+
 <%= form_with(
       model: video,
-      url: video.persisted? ? 
+      url: video.persisted? ?
         teacher_panel_course_video_path(@course, video) :
         teacher_panel_course_videos_path(@course),
       local: true
@@ -15,7 +119,6 @@
         <%= pluralize(video.errors.count, "error") %>
         prohibited this video from being saved:
       </h5>
-
 
       <ul class="mb-0">
 
@@ -34,15 +137,14 @@
   <% end %>
 
 
-
-
-  <!-- Title -->
+  <!-- =====================================================
+       TITLE
+  ====================================================== -->
 
   <div class="mb-3">
 
     <%= form.label :title,
         class: "form-label fw-bold" %>
-
 
     <%= form.text_field :title,
         class: "form-control",
@@ -51,16 +153,15 @@
   </div>
 
 
-
-
-  <!-- Playlist -->
+  <!-- =====================================================
+       PLAYLIST
+  ====================================================== -->
 
   <div class="mb-3">
 
     <%= form.label :playlist_id,
         "Playlist",
         class: "form-label fw-bold" %>
-
 
     <%= form.collection_select :playlist_id,
         @playlists || [],
@@ -72,15 +173,14 @@
   </div>
 
 
-
-
-  <!-- Description -->
+  <!-- =====================================================
+       DESCRIPTION
+  ====================================================== -->
 
   <div class="mb-3">
 
     <%= form.label :description,
         class: "form-label fw-bold" %>
-
 
     <%= form.text_area :description,
         rows: 4,
@@ -90,18 +190,16 @@
   </div>
 
 
-
-
-  <!-- Duration / Position / Status -->
+  <!-- =====================================================
+       DURATION / POSITION / STATUS
+  ====================================================== -->
 
   <div class="row">
-
 
     <div class="col-md-4">
 
       <%= form.label :duration,
           class: "form-label fw-bold" %>
-
 
       <%= form.text_field :duration,
           class: "form-control",
@@ -110,13 +208,10 @@
     </div>
 
 
-
-
     <div class="col-md-4">
 
       <%= form.label :position,
           class: "form-label fw-bold" %>
-
 
       <%= form.number_field :position,
           class: "form-control" %>
@@ -124,13 +219,10 @@
     </div>
 
 
-
-
     <div class="col-md-4">
 
       <%= form.label :status,
           class: "form-label fw-bold" %>
-
 
       <%= form.select :status,
           Video.statuses.keys.map { |s| [s.titleize, s] },
@@ -139,21 +231,93 @@
 
     </div>
 
+  </div>
+
+
+  <!-- =====================================================
+       VIDEO ACCESS
+  ====================================================== -->
+
+  <div class="mt-4">
+
+    <%= form.label :is_free,
+        "Video Access",
+        class: "form-label fw-bold" %>
+
+    <div class="video-access-options">
+
+      <!-- FREE VIDEO -->
+
+      <label class="video-access-option">
+
+        <%= form.radio_button :is_free,
+            true,
+            checked: (video.is_free == true) %>
+
+        <span class="video-access-icon free">
+          <i class="fas fa-unlock"></i>
+        </span>
+
+        <span class="video-access-content">
+
+          <strong>
+            Free Preview
+          </strong>
+
+          <small>
+            Students can watch this video before enrollment.
+          </small>
+
+        </span>
+
+      </label>
+
+
+      <!-- PAID VIDEO -->
+
+      <label class="video-access-option">
+
+        <%= form.radio_button :is_free,
+            false,
+            checked: (video.is_free != true) %>
+
+        <span class="video-access-icon paid">
+          <i class="fas fa-lock"></i>
+        </span>
+
+        <span class="video-access-content">
+
+          <strong>
+            Paid Video
+          </strong>
+
+          <small>
+            Students need an approved enrollment to watch this video.
+          </small>
+
+        </span>
+
+      </label>
+
+    </div>
+
+    <small class="text-muted">
+      Use Free Preview for introductory videos and Paid Video for
+      videos that require course access.
+    </small>
 
   </div>
 
 
-
-
-
-  <!-- YouTube URL -->
+  <!-- =====================================================
+       YOUTUBE URL
+  ====================================================== -->
 
   <div class="mt-3">
 
     <%= form.label :video_url,
         "YouTube Video URL",
         class: "form-label fw-bold" %>
-
 
     <%= form.text_field :video_url,
         class: "form-control",
@@ -162,16 +326,14 @@
   </div>
 
 
-
-
-
-  <!-- Thumbnail -->
+  <!-- =====================================================
+       THUMBNAIL
+  ====================================================== -->
 
   <div class="mt-3">
 
     <%= form.label :thumbnail,
         class: "form-label fw-bold" %>
-
 
     <%= form.file_field :thumbnail,
         class: "form-control" %>
@@ -179,28 +341,22 @@
   </div>
 
 
-
-
-
-  <!-- Buttons -->
+  <!-- =====================================================
+       BUTTONS
+  ====================================================== -->
 
   <div class="mt-4">
-
 
     <%= form.submit(
           video.persisted? ? "Update Video" : "Save Video",
           class: "btn btn-success"
         ) %>
 
-
-
     <%= link_to "⬅ Back",
-    teacher_panel_course_videos_path(@course),
-    class: "btn btn-secondary" %>
-
+        teacher_panel_course_videos_path(@course),
+        class: "btn btn-secondary" %>
 
   </div>
-
 
 
 <% end %>
