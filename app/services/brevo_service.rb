@@ -1,11 +1,18 @@
 require "net/http"
 require "json"
 require "uri"
+require "base64"
 
 class BrevoService
   API_URL = "https://api.brevo.com/v3/smtp/email"
 
-  def self.send_email(to:, subject:, html_content:, text_content: nil)
+  def self.send_email(
+    to:,
+    subject:,
+    html_content:,
+    text_content: nil,
+    attachment: nil
+  )
     uri = URI(API_URL)
 
     http = Net::HTTP.new(uri.host, uri.port)
@@ -31,6 +38,7 @@ class BrevoService
     }
 
     body[:textContent] = text_content if text_content.present?
+    body[:attachment] = attachment if attachment.present?
 
     request.body = body.to_json
 
@@ -54,6 +62,17 @@ class BrevoService
   # ================= CONTACT FORM =================
 
   def self.send_contact(contact)
+    attachments = []
+
+    if contact.image.attached?
+      attachments << {
+        name: contact.image.filename.to_s,
+        content: Base64.strict_encode64(
+          contact.image.download
+        )
+      }
+    end
+
     send_email(
       to: [
         {
@@ -92,8 +111,14 @@ class BrevoService
         <p>
           #{ERB::Util.html_escape(contact.message)}
         </p>
+
+        #{if contact.image.attached?
+            "<p><strong>Attachment:</strong> #{ERB::Util.html_escape(contact.image.filename.to_s)}</p>"
+          else
+            ""
+          end}
       HTML
-      text_content: <<~TEXT
+      text_content: <<~TEXT,
         New Contact Form Submission
 
         Name: #{contact.name}
@@ -103,7 +128,10 @@ class BrevoService
 
         Message:
         #{contact.message}
+
+        #{contact.image.attached? ? "Attachment: #{contact.image.filename}" : "No attachment"}
       TEXT
+      attachment: attachments
     )
   end
 end

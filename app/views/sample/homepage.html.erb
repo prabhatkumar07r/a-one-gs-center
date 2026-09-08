@@ -6962,6 +6962,7 @@ textarea:focus-visible {
                 <%= form_with url: contacts_path,
                     method: :post,
                     local: true,
+                    multipart: true,
                     class: "contact-form" do |form| %>
 
 
@@ -7007,13 +7008,13 @@ textarea:focus-visible {
 
                         <div class="contact-field">
 
-                            <%= form.label :phone, "Mobile Number *" %>
+                            <%= form.label :mobile, "Mobile Number *" %>
 
                             <div class="input-wrapper">
 
                                 <i class="bi bi-phone"></i>
 
-                                <%= form.telephone_field :phone,
+                                <%= form.telephone_field :mobile,
                                     placeholder: "Enter your mobile number",
                                     required: true %>
 
@@ -7057,6 +7058,28 @@ textarea:focus-visible {
                         </div>
 
                     </div>
+
+                    <!-- IMAGE ATTACHMENT -->
+
+<div class="contact-field">
+
+    <%= form.label :image, "Attach Image (Optional)" %>
+
+    <div class="input-wrapper">
+
+        <i class="bi bi-image"></i>
+
+        <%= form.file_field :image,
+            accept: "image/png,image/jpeg,image/jpg,image/webp",
+            class: "contact-file-input" %>
+
+    </div>
+
+    <small class="contact-file-help">
+        JPG, JPEG, PNG or WEBP • Optional
+    </small>
+
+</div>
 
 
                     <div class="contact-submit">

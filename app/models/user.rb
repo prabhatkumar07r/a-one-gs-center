@@ -7,7 +7,6 @@ class User < ApplicationRecord
          :recoverable,
          :rememberable,
          :validatable,
-         :confirmable,
          :omniauthable,
          omniauth_providers: [:google_oauth2]
 
@@ -43,8 +42,6 @@ has_many :test_series_answers, through: :test_series_attempts
         u.name = auth.info.name
         u.password = Devise.friendly_token[0, 20]
 
-        # Google already verifies the email
-        u.skip_confirmation!
      end
     end
 
@@ -64,11 +61,7 @@ has_many :test_series_answers, through: :test_series_attempts
 
   validates :role, presence: true
 
-  def confirmation_required?
-  return false if teacher? || admin?
-
-  super
-end
+  
 
   private
 

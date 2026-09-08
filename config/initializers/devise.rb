@@ -31,9 +31,7 @@ config.mailer = "UsersMailer"
 
 # ==> Configuration for :confirmable
 
-config.allow_unconfirmed_access_for = 0.days
-config.confirm_within = 3.days
-config.reconfirmable = true
+
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 
