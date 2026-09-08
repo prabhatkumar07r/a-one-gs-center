@@ -4,102 +4,362 @@ class VideosController < ApplicationController
   before_action :set_video, only: [:show, :edit, :update, :destroy]
 
 
+  # =========================================================
+  # INDEX
+  # =========================================================
+
   def index
     if params[:playlist_id].present?
-      @playlist = @course.playlists.find(params[:playlist_id])
-      @videos = @playlist.videos.order(:position)
+
+      @playlist =
+        @course.playlists.find(params[:playlist_id])
+
+      @videos =
+        @playlist.videos.order(:position, :id)
+
     else
-      @videos = @course.videos.order(:position)
+
+      @videos =
+        @course.videos.order(:position, :id)
+
     end
   end
 
+
+  # =========================================================
+  # SHOW
+  # =========================================================
 
   def show
   end
 
 
+  # =========================================================
+  # NEW
+  # =========================================================
+
   def new
-  if params[:playlist_id].present?
-    @playlist = @course.playlists.find(params[:playlist_id])
-    @video = @playlist.videos.new
-  else
-    @video = @course.videos.new
+
+    if params[:playlist_id].present?
+
+      @playlist =
+        @course.playlists.find(params[:playlist_id])
+
+      @video =
+        @playlist.videos.new
+
+      @video.position =
+        (@playlist.videos.maximum(:position) || 0) + 1
+
+    else
+
+      @video =
+        @course.videos.new
+
+    end
+
+    @playlists =
+      @course.playlists.order(:position, :id)
+
   end
 
-  @playlists = @course.playlists.order(:position)
-end
+
+  # =========================================================
+  # CREATE
+  # =========================================================
+
+  def create
+
+    @playlists =
+      @course.playlists.order(:position, :id)
+
+    if video_params[:playlist_id].present?
+
+      @playlist =
+        @course.playlists.find(
+          video_params[:playlist_id]
+        )
+
+      @video =
+        @playlist.videos.new(video_params)
+
+      @video.course =
+        @course
+
+      @video.position =
+        (@playlist.videos.maximum(:position) || 0) + 1
+
+    else
+
+      @video =
+        @course.videos.new(video_params)
+
+    end
 
 
-def create
-  @video = @course.videos.new(video_params)
-  @playlists = @course.playlists.order(:position)
+    if @video.save
 
-  if @video.save
-    redirect_to course_playlist_video_path(
-      @course,
-      @video.playlist,
-      @video
-    ), notice: "Video added successfully."
-  else
-    render :new, status: :unprocessable_entity
+      if @video.playlist.present?
+
+        redirect_to course_playlist_video_path(
+          @course,
+          @video.playlist,
+          @video
+        ),
+        notice: "Video added successfully."
+
+      else
+
+        redirect_to course_path(@course),
+                    notice: "Video added successfully."
+
+      end
+
+    else
+
+      render :new,
+             status: :unprocessable_entity
+
+    end
+
   end
-end
-
-def edit
-  @playlist = @video.playlist
-  @playlists = @course.playlists.order(:position)
-end
 
 
-def update
-  if @video.update(video_params)
-    redirect_to course_playlist_video_path(
-      @course,
-      @video.playlist,
-      @video
-    ), notice: "Video updated successfully."
-  else
-    render :edit, status: :unprocessable_entity
+  # =========================================================
+  # EDIT
+  # =========================================================
+
+  def edit
+
+    @playlist =
+      @video.playlist
+
+    @playlists =
+      @course.playlists.order(:position, :id)
+
   end
-end
 
+
+  # =========================================================
+  # UPDATE
+  # =========================================================
+
+  def update
+
+    old_playlist =
+      @video.playlist
+
+    new_playlist =
+      if video_params[:playlist_id].present?
+
+        @course.playlists.find(
+          video_params[:playlist_id]
+        )
+
+      else
+
+        nil
+
+      end
+
+
+    playlist_changed =
+      old_playlist&.id != new_playlist&.id
+
+
+    # -------------------------------------------------------
+    # Move video to another playlist
+    # -------------------------------------------------------
+
+    if playlist_changed
+
+      @video.playlist =
+        new_playlist
+
+      if new_playlist.present?
+
+        @video.position =
+          (
+            new_playlist
+              .videos
+              .where.not(id: @video.id)
+              .maximum(:position) || 0
+          ) + 1
+
+      end
+
+    end
+
+
+    # -------------------------------------------------------
+    # Update
+    # -------------------------------------------------------
+
+    if @video.update(video_params)
+
+      # Renumber old playlist
+      if playlist_changed && old_playlist.present?
+        renumber_videos(old_playlist)
+      end
+
+
+      # Renumber new playlist
+      if playlist_changed && new_playlist.present?
+        renumber_videos(new_playlist)
+      end
+
+
+      if @video.playlist.present?
+
+        redirect_to course_playlist_video_path(
+          @course,
+          @video.playlist,
+          @video
+        ),
+        notice: "Video updated successfully."
+
+      else
+
+        redirect_to course_path(@course),
+                    notice: "Video updated successfully."
+
+      end
+
+    else
+
+      @playlist =
+        @video.playlist
+
+      @playlists =
+        @course.playlists.order(:position, :id)
+
+      render :edit,
+             status: :unprocessable_entity
+
+    end
+
+  end
+
+
+  # =========================================================
+  # DESTROY
+  # =========================================================
 
   def destroy
-    @video.destroy
 
-    redirect_to course_playlist_videos_path(
-      @course,
+    playlist =
       @video.playlist
-    ),
-    notice: "Video deleted successfully."
+
+
+    if @video.destroy
+
+      if playlist.present?
+
+        renumber_videos(playlist)
+
+        redirect_to course_playlist_videos_path(
+          @course,
+          playlist
+        ),
+        notice: "Video deleted successfully.",
+        status: :see_other
+
+      else
+
+        redirect_to course_path(@course),
+                    notice: "Video deleted successfully.",
+                    status: :see_other
+
+      end
+
+    else
+
+      redirect_to course_path(@course),
+                  alert: "Unable to delete video.",
+                  status: :see_other
+
+    end
+
   end
 
 
   private
 
 
-  def set_course
-    @course = Course.find(params[:course_id])
+  # =========================================================
+  # RENUMBER VIDEOS
+  # =========================================================
+
+  def renumber_videos(playlist)
+
+    playlist
+      .videos
+      .order(:position, :id)
+      .each_with_index do |video, index|
+
+      new_position =
+        index + 1
+
+      if video.position != new_position
+
+        video.update!(
+          position: new_position
+        )
+
+      end
+
+    end
+
   end
 
 
- def set_video
-  @video = @course.videos.find(params[:id])
-  @playlist = @video.playlist
-end
+  # =========================================================
+  # COURSE
+  # =========================================================
 
+  def set_course
+
+    @course =
+      Course.find(params[:course_id])
+
+  end
+
+
+  # =========================================================
+  # VIDEO
+  # =========================================================
+
+  def set_video
+
+    @video =
+      @course.videos.find(params[:id])
+
+    @playlist =
+      @video.playlist
+
+  end
+
+
+  # =========================================================
+  # STRONG PARAMETERS
+  # =========================================================
 
   def video_params
-    params.require(:video).permit(
-      :title,
-      :description,
-      :duration,
-      :position,
-      :status,
-      :video_url,
-      :thumbnail,
-      :playlist_id
-    )
+
+    params
+      .require(:video)
+      .permit(
+        :title,
+        :description,
+        :duration,
+        :position,
+        :status,
+        :video_url,
+        :thumbnail,
+        :is_free,
+        :playlist_id
+      )
+
   end
 
 end

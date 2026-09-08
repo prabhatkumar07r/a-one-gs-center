@@ -5,42 +5,64 @@
   <!-- =========================================================
        BACK BUTTON
   ========================================================== -->
- <div class="course-back-wrapper">
-  <%= link_to root_path(anchor: "course"),
-      class: "course-back-btn",
-      id: "courseBackBtn" do %>
 
-<span class="back-arrow">←</span>
-<span>Back</span>
+  <div class="course-back-wrapper">
 
-<% end %>
+    <%= link_to root_path(anchor: "course"),
+        class: "course-back-btn",
+        id: "courseBackBtn" do %>
 
-</div>
+      <span class="back-arrow">
+        <i class="fas fa-arrow-left"></i>
+      </span>
 
+      <span>Back</span>
+
+    <% end %>
+
+  </div>
 
 
   <!-- =========================================================
        MAIN COURSE CONTAINER
   ========================================================== -->
+
   <div class="course-main-container">
 
     <!-- =======================================================
          LEFT SIDE
     ======================================================== -->
+
     <section class="course-left">
 
-      <!-- BRAND BADGE -->
-      <div class="brand-badge">
-        🎓 A ONE GS CENTER
+
+      <!-- =====================================================
+           BRAND
+      ====================================================== -->
+
+      <div class="course-brand-section">
+
+        <div class="brand-badge">
+
+          <div class="coaching-logo">
+            <%= image_tag "logo.jpeg",
+                          alt: "A One GS Center Logo" %>
+          </div>
+
+          <span>
+            A ONE GS CENTER
+          </span>
+
+        </div>
+
       </div>
 
 
-      <!-- COURSE HERO -->
-      <div class="course-hero">
+      <!-- =====================================================
+           COURSE HERO
+      ====================================================== -->
 
-        <div class="course-icon">
-          🎓
-        </div>
+      <div class="course-hero">
 
         <h1>
           <%= @course.Course_name %>
@@ -56,115 +78,416 @@
       <!-- =====================================================
            COURSE INFORMATION
       ====================================================== -->
+
       <div class="course-info-grid">
 
-        <!-- Duration -->
+
+        <!-- DURATION -->
+
         <div class="info-card">
-          <div class="info-icon">
-            ⏱️
-          </div>
 
           <div class="info-content">
-            <span>Duration</span>
+
+            <span>
+              Duration
+            </span>
+
             <strong>
-              <%= @course.duration %>
+              <%= @course.duration.presence || "—" %>
             </strong>
+
           </div>
+
         </div>
 
 
-        <!-- Lessons -->
+        <!-- LESSONS -->
+
         <div class="info-card">
-          <div class="info-icon">
-            🎥
-          </div>
 
           <div class="info-content">
-            <span>Lessons</span>
+
+            <span>
+              Lessons
+            </span>
+
             <strong>
               <%= @videos.count %>
             </strong>
+
           </div>
+
         </div>
 
 
-        <!-- Teacher -->
+        <!-- TEACHER -->
+
         <div class="info-card">
-          <div class="info-icon">
-            👨‍🏫
-          </div>
 
           <div class="info-content">
-            <span>Teacher</span>
+
+            <span>
+              Teacher
+            </span>
+
             <strong>
               <%= @course.teacher&.name || "Not Assigned" %>
             </strong>
+
           </div>
+
         </div>
 
       </div>
 
 
       <!-- =====================================================
-           ABOUT COURSE
+           ABOUT + COURSE CONTENT TABS
       ====================================================== -->
-      <div class="content-card">
 
-        <div class="section-heading">
-          <span>📖</span>
-          <h2>About This Course</h2>
+      <div class="course-tabs-wrapper">
+
+
+        <!-- ===================================================
+             TAB NAVIGATION
+        ==================================================== -->
+
+        <div class="course-tabs-nav">
+
+          <!-- ABOUT -->
+
+          <button
+            type="button"
+            class="course-tab-btn active"
+            data-course-tab="about-course-tab">
+
+            <i class="fas fa-book-open"></i>
+
+            <span>
+              About This Course
+            </span>
+
+          </button>
+
+
+          <!-- CONTENT -->
+
+          <button
+            type="button"
+            class="course-tab-btn"
+            data-course-tab="course-content-tab">
+
+            <span>
+              Course Content
+            </span>
+
+          </button>
+
         </div>
 
-        <p class="course-description">
-          <%= @course.description.presence ||
-              "This course provides complete learning material with practical lessons and guided learning." %>
-        </p>
 
-      </div>
+        <!-- ===================================================
+             TAB CONTENT
+        ==================================================== -->
 
-
-      <!-- =====================================================
-           COURSE CONTENT
-      ====================================================== -->
-      <div class="content-card">
-
-        <div class="section-heading">
-          <span>📚</span>
-          <h2>Course Content</h2>
-        </div>
+        <div class="course-tabs-content">
 
 
-        <% if @videos.any? %>
+          <!-- =================================================
+               ABOUT COURSE
+          ================================================== -->
 
-          <% if user_signed_in? && @enrollment&.status == "Approved" %>
+          <div
+            id="about-course-tab"
+            class="course-tab-pane active">
 
-            <div class="video-list">
+            <div class="course-tab-heading">
 
-              <% @videos.each_with_index do |video, index| %>
+              <div>
 
-                <div class="video-item">
+                <h2>
+                  About This Course
+                </h2>
 
-                  <div class="video-number">
-                    <%= index + 1 %>
+                <p>
+                  Learn more about this course and what you will study.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="course-description-box">
+
+              <%= simple_format(
+                    @course.description.presence ||
+                    "This course provides complete learning material with practical lessons and guided learning."
+                  ) %>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               COURSE CONTENT
+          ================================================== -->
+
+          <div
+            id="course-content-tab"
+            class="course-tab-pane">
+
+            <div class="course-tab-heading">
+
+              <div>
+
+                <h2>
+                  Course Content
+                </h2>
+
+                <p>
+                  Explore playlists and video lessons included in this course.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <% if @videos.any? %>
+
+              <%
+                approved =
+                  user_signed_in? &&
+                  @enrollment&.status == "Approved"
+
+                free_videos_count =
+                  @videos.where(is_free: true).count
+              %>
+
+
+              <!-- =================================================
+                   PLAYLISTS
+              ================================================== -->
+
+              <div class="course-playlists">
+
+                <% @course.playlists
+                         .order(:position, :id)
+                         .each do |playlist| %>
+
+                  <%
+                    playlist_videos =
+                      playlist.videos.order(:position, :id)
+
+                    playlist_open =
+                      playlist_videos.any?
+                  %>
+
+                  <% next if playlist_videos.empty? %>
+
+
+                  <!-- PLAYLIST -->
+
+                  <div
+                    class="course-playlist <%= 'open' if playlist_open %>">
+
+
+                    <!-- PLAYLIST HEADER -->
+
+                    <button
+                      type="button"
+                      class="course-playlist-header"
+                      aria-expanded="<%= playlist_open %>">
+
+                      <div class="playlist-header-left">
+
+                        <div class="playlist-icon">
+                          <i class="fas fa-folder"></i>
+                        </div>
+
+                        <div class="playlist-header-text">
+
+                          <strong>
+                            <%= playlist.title %>
+                          </strong>
+
+                          <span>
+                            <%= playlist_videos.count %>
+                            <%= playlist_videos.count == 1 ? "Video" : "Videos" %>
+                          </span>
+
+                        </div>
+
+                      </div>
+
+
+                      <div class="playlist-header-right">
+
+                        <i class="fas fa-chevron-down playlist-chevron"></i>
+
+                      </div>
+
+                    </button>
+
+
+                    <!-- PLAYLIST VIDEOS -->
+
+                    <div class="course-playlist-videos">
+
+                      <% playlist_videos.each_with_index do |video, index| %>
+
+
+                        <!-- =================================================
+                             VIDEO ROW
+                        ================================================== -->
+
+                        <div class="course-video-row">
+
+
+                          <!-- SERIAL NUMBER -->
+
+                          <div class="course-video-number">
+                            <%= index + 1 %>.
+                          </div>
+
+
+                          <!-- VIDEO INFORMATION -->
+
+                          <div class="course-video-info">
+
+                            <h4>
+                              <%= video.title %>
+                            </h4>
+
+
+                            <div class="course-video-meta">
+
+                              <% if video.is_free? %>
+
+                                <span class="free-preview-badge">
+
+                                  <i class="fas fa-unlock"></i>
+
+                                  FREE PREVIEW
+
+                                </span>
+
+                              <% else %>
+
+                                <span class="paid-video-badge">
+
+                                  <i class="fas fa-lock"></i>
+
+                                  PAID
+
+                                </span>
+
+                              <% end %>
+
+                            </div>
+
+                          </div>
+
+
+                          <!-- ACTION -->
+
+                          <div class="course-video-action">
+
+
+                            <% if video.is_free? %>
+
+                              <%= link_to learning_video_path(@course, video),
+                                  class: "watch-preview-btn" do %>
+
+                                <i class="fas fa-play"></i>
+
+                                <span>
+                                  Watch Free Preview
+                                </span>
+
+                              <% end %>
+
+
+                            <% elsif approved %>
+
+                              <%= link_to learning_video_path(@course, video),
+                                  class: "watch-video-btn" do %>
+
+                                <i class="fas fa-play"></i>
+
+                                <span>
+                                  Watch Video
+                                </span>
+
+                              <% end %>
+
+
+                            <% else %>
+
+                              <%= link_to new_student_enrollment_path(
+                                    course_id: @course.id
+                                  ),
+                                  class: "locked-video-btn" do %>
+
+                                <i class="fas fa-lock"></i>
+
+                                <span>
+                                  Enroll to Watch
+                                </span>
+
+                              <% end %>
+
+                            <% end %>
+
+
+                          </div>
+
+                        </div>
+
+
+                      <% end %>
+
+                    </div>
+
                   </div>
 
-                  <div class="video-details">
+                <% end %>
 
-                    <h4>
-                      <%= video.title %>
-                    </h4>
+              </div>
 
-                    <% if video.description.present? %>
-                      <p>
-                        <%= video.description %>
-                      </p>
-                    <% end %>
 
-                    <% if video.duration.present? %>
-                      <small>
-                        ⏱ <%= video.duration %>
-                      </small>
-                    <% end %>
+              <!-- =================================================
+                   FREE PREVIEW INFORMATION
+              ================================================== -->
+
+              <% if free_videos_count > 0 %>
+
+                <div class="free-preview-information">
+
+                  <div class="free-preview-information-icon">
+
+                    <i class="fas fa-play-circle"></i>
+
+                  </div>
+
+
+                  <div>
+
+                    <strong>
+                      Free Preview Available
+                    </strong>
+
+                    <p>
+
+                      Watch
+                      <%= free_videos_count %>
+                      free preview
+                      <%= free_videos_count == 1 ? "video" : "videos" %>
+                      before enrolling in this course.
+
+                    </p>
 
                   </div>
 
@@ -172,48 +495,38 @@
 
               <% end %>
 
-            </div>
 
-          <% else %>
+            <% else %>
 
-            <div class="locked-content">
 
-              <div class="lock-icon">
-                🔒
-              </div>
+              <!-- =================================================
+                   NO CONTENT
+              ================================================== -->
 
-              <div>
+              <div class="course-no-content">
+
+                <div class="no-content-icon">
+
+                  <i class="fas fa-folder-open"></i>
+
+                </div>
+
                 <h3>
-                  Course Content Locked
+                  Course Content Coming Soon
                 </h3>
 
                 <p>
-                  Enroll in this course to get access to complete
-                  learning material.
+                  Learning material will be added soon.
                 </p>
 
-                <ul>
-                  <li>🎥 HD Video Lectures</li>
-                  <li>📄 Downloadable PDF Notes</li>
-                  <li>📝 Practice Material</li>
-                  <li>📚 Complete Course Playlist</li>
-                </ul>
               </div>
 
-            </div>
 
-          <% end %>
+            <% end %>
 
-        <% else %>
-
-          <div class="no-content">
-            <span>📂</span>
-            <p>
-              Course content will be available soon.
-            </p>
           </div>
 
-        <% end %>
+        </div>
 
       </div>
 
@@ -223,11 +536,19 @@
     <!-- =======================================================
          RIGHT SIDE — PAYMENT
     ======================================================== -->
+
     <aside class="course-right">
+
+
+      <!-- =====================================================
+           PAYMENT CARD
+      ====================================================== -->
 
       <div class="payment-card">
 
+
         <!-- PAYMENT HEADER -->
+
         <div class="payment-header">
 
           <span>
@@ -235,7 +556,11 @@
           </span>
 
           <div class="secure-payment">
-            🔒 Secure Payment
+
+            <i class="fas fa-shield-alt"></i>
+
+            Secure Payment
+
           </div>
 
         </div>
@@ -245,68 +570,99 @@
              PRICE CALCULATION
         ==================================================== -->
 
-        <% course_fee = @course.fee.to_d %>
+        <%
+          course_fee = @course.fee.to_d
 
-        <% discount =
-             if @enrollment&.fee.present?
-               @enrollment.fee.discount_amount.to_d
-             else
-               @course.current_discount_amount.to_d
-             end
+          discount =
+            if @enrollment&.fee.present?
+
+              @enrollment.fee.discount_amount.to_d
+
+            else
+
+              @course.current_discount_amount.to_d
+
+            end
+
+          final_amount =
+            if @enrollment&.fee.present?
+
+              @enrollment.fee.total_fee.to_d -
+                @enrollment.fee.discount_amount.to_d
+
+            else
+
+              @course.final_fee.to_d
+
+            end
+
+          final_amount = 0.to_d if final_amount < 0
         %>
-
-        <% final_amount =
-             if @enrollment&.fee.present?
-               @enrollment.fee.total_fee.to_d -
-                 @enrollment.fee.discount_amount.to_d
-             else
-               @course.final_fee.to_d
-             end
-        %>
-
-        <% final_amount = 0.to_d if final_amount < 0 %>
 
 
         <!-- ORIGINAL PRICE -->
+
         <% if discount > 0 %>
 
-          <div class="original-price">
-            ₹<%= number_with_delimiter(course_fee.to_i) %>
-          </div>
+          <div class="price-row">
 
-          <div class="discount-badge">
-            Save ₹<%= number_with_delimiter(discount.to_i) %>
+            <div class="original-price">
+
+              ₹<%= number_with_delimiter(course_fee.to_i) %>
+
+            </div>
+
+
+            <div class="discount-badge">
+
+              Save ₹<%= number_with_delimiter(discount.to_i) %>
+
+            </div>
+
           </div>
 
         <% end %>
 
 
         <!-- FINAL PRICE -->
+
         <div class="final-price">
+
           ₹<%= number_with_delimiter(final_amount.to_i) %>
+
         </div>
 
 
-        <!-- DISCOUNT INFORMATION -->
+        <!-- DISCOUNT -->
+
         <% if discount > 0 %>
 
           <div class="discount-box">
 
             <div class="discount-icon">
-              🎉
+
+              <i class="fas fa-gift"></i>
+
             </div>
+
 
             <div>
 
               <strong>
+
                 <%= @course.active_discount&.name ||
                     @enrollment&.fee&.discount_name ||
                     "Special Offer" %>
+
               </strong>
 
+
               <p>
-                You save ₹<%= number_with_delimiter(discount.to_i) %>
+
+                You save
+                ₹<%= number_with_delimiter(discount.to_i) %>
                 on this course.
+
               </p>
 
             </div>
@@ -319,23 +675,39 @@
         <!-- ===================================================
              PAYMENT SUMMARY
         ==================================================== -->
+
         <div class="payment-summary">
 
+
           <div class="summary-row">
-            <span>Course Fee</span>
+
+            <span>
+              Course Fee
+            </span>
+
             <strong>
+
               ₹<%= number_with_delimiter(course_fee.to_i) %>
+
             </strong>
+
           </div>
 
 
           <% if discount > 0 %>
 
             <div class="summary-row discount-row">
-              <span>Discount</span>
+
+              <span>
+                Discount
+              </span>
+
               <strong>
+
                 - ₹<%= number_with_delimiter(discount.to_i) %>
+
               </strong>
+
             </div>
 
           <% end %>
@@ -351,7 +723,9 @@
             </span>
 
             <strong>
+
               ₹<%= number_with_delimiter(final_amount.to_i) %>
+
             </strong>
 
           </div>
@@ -359,100 +733,141 @@
         </div>
 
 
-     <!-- ===================================================
-     ACTION BUTTON
-=================================================== -->
+        <!-- ===================================================
+             PAYMENT ACTION
+        ==================================================== -->
 
-<div class="payment-action">
-
-  <% if user_signed_in? %>
-
-    <% if @enrollment&.status == "Approved" %>
-
-      <%= link_to learning_course_path(@course),
-          class: "payment-btn success-btn" do %>
-
-        <span>▶</span>
-        Start Learning
-
-      <% end %>
+        <div class="payment-action">
 
 
-    <% elsif @course.free? %>
-
-      <!-- FREE COURSE -->
-
-      <%= button_to enroll_free_course_path(@course),
-          method: :post,
-          class: "payment-btn free-btn" do %>
-
-        <span>🎓</span>
-        Enroll for Free
-
-      <% end %>
+          <% if user_signed_in? %>
 
 
-    <% elsif @enrollment.present? %>
+            <!-- APPROVED -->
 
-      <!-- PAID COURSE WITH EXISTING ENROLLMENT -->
+            <% if @enrollment&.status == "Approved" %>
 
-      <%= link_to payment_path(@enrollment),
-          class: "payment-btn pay-btn" do %>
+              <%= link_to learning_course_path(@course),
+                  class: "payment-btn success-btn" do %>
 
-        <span>💳</span>
-        Pay ₹<%= number_with_delimiter(final_amount.to_i) %>
+                <i class="fas fa-play"></i>
 
-      <% end %>
+                Start Learning
 
-      <div class="pending-note">
-        <span>⏳</span>
-        Enrollment is waiting for payment/approval
-      </div>
+              <% end %>
 
 
-    <% else %>
+            <!-- FREE COURSE -->
 
-      <!-- PAID COURSE WITHOUT ENROLLMENT -->
+            <% elsif @course.free? %>
 
-      <%= link_to new_student_enrollment_path(course_id: @course.id),
-          class: "payment-btn pay-btn" do %>
+              <%= button_to enroll_free_course_path(@course),
+                  method: :post,
+                  class: "payment-btn free-btn" do %>
 
-        <span>📝</span>
-        Enroll Now
+                <i class="fas fa-graduation-cap"></i>
 
-      <% end %>
+                Enroll for Free
 
-    <% end %>
+              <% end %>
 
 
-  <% else %>
+            <!-- EXISTING PAID ENROLLMENT -->
 
-    <%= link_to new_user_session_path,
-        class: "payment-btn login-btn" do %>
+            <% elsif @enrollment.present? %>
 
-      <span>🔐</span>
-      Login to Enroll
+              <%= link_to payment_path(@enrollment),
+                  class: "payment-btn pay-btn" do %>
 
-    <% end %>
+                <i class="fas fa-credit-card"></i>
 
-  <% end %>
+                Pay ₹<%= number_with_delimiter(final_amount.to_i) %>
 
-</div>
+              <% end %>
+
+
+              <div class="pending-note">
+
+                <i class="fas fa-hourglass-half"></i>
+
+                Enrollment is waiting for payment/approval
+
+              </div>
+
+
+            <!-- NEW PAID ENROLLMENT -->
+
+            <% else %>
+
+              <%= link_to new_student_enrollment_path(
+                    course_id: @course.id
+                  ),
+                  class: "payment-btn pay-btn" do %>
+
+                <i class="fas fa-clipboard-list"></i>
+
+                Enroll Now
+
+              <% end %>
+
+            <% end %>
+
+
+          <% else %>
+
+
+            <!-- LOGIN -->
+
+            <%= link_to new_user_session_path,
+                class: "payment-btn login-btn" do %>
+
+              <i class="fas fa-lock"></i>
+
+              Login to Enroll
+
+            <% end %>
+
+          <% end %>
+
+        </div>
+
+
         <!-- ===================================================
              SECURITY
         ==================================================== -->
+
         <div class="payment-security">
 
           <div>
-            🔒 Secure & Safe
+
+            <i class="fas fa-lock"></i>
+
+            <span>
+              Secure & Safe
+            </span>
+
           </div>
 
-          <div>
-            ⚡ Fast Payment
-          </div>
 
           <div>
-            🛡️ Trusted Checkout
+
+            <i class="fas fa-bolt"></i>
+
+            <span>
+              Fast Payment
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <i class="fas fa-shield-alt"></i>
+
+            <span>
+              Trusted Checkout
+            </span>
+
           </div>
 
         </div>
@@ -461,13 +876,10 @@
 
 
       <!-- =====================================================
-           RIGHT SIDE EXTRA CARD
+           SUPPORT CARD
       ====================================================== -->
-      <div class="support-card">
 
-        <div class="support-icon">
-          💬
-        </div>
+      <div class="support-card">
 
         <div>
 
@@ -490,45 +902,49 @@
 </div>
 
 
-<!-- ===========================================================
-     CSS
-=========================================================== -->
-
 <style>
 
 /* ============================================================
-   PAGE
+   COURSE DETAILS PAGE
 ============================================================ */
 
 .course-details-page {
+
   min-height: 100vh;
-  padding: 30px 5%;
-  color: #ffffff;
+
+  padding: 30px 5% 70px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  color: #32164f;
 
   background:
     radial-gradient(
-      circle at 15% 15%,
-      rgba(123, 47, 247, 0.28),
-      transparent 30%
+      circle at 10% 5%,
+      rgba(255,255,255,.20),
+      transparent 25%
     ),
     radial-gradient(
-      circle at 85% 20%,
-      rgba(0, 198, 255, 0.16),
+      circle at 90% 10%,
+      rgba(255,255,255,.12),
       transparent 28%
     ),
     radial-gradient(
       circle at 50% 100%,
-      rgba(126, 34, 206, 0.25),
+      rgba(255,255,255,.10),
       transparent 35%
     ),
     linear-gradient(
       135deg,
-      #09001a 0%,
-      #16052d 45%,
-      #080014 100%
+      #c026d3 0%,
+      #b414d0 30%,
+      #a21caf 62%,
+      #86198f 100%
     );
-
-  position: relative;
 }
 
 
@@ -537,91 +953,70 @@
 ============================================================ */
 
 .course-back-wrapper {
+
   width: 100%;
-  padding-top: 110px;       /* prevents header overlap */
-  padding-left: 30px;
+
+  padding-top: 110px;
+
+  padding-left: 10px;
+
   margin-bottom: 25px;
+
   position: relative;
+
   z-index: 5;
 }
 
 .course-back-btn {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 10px;
 
-  padding: 14px 24px;
+  padding: 13px 22px;
 
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,.45);
+
   border-radius: 14px;
 
-  background: linear-gradient(
-    135deg,
-    #111827,
-    #172554
-  );
+  background: rgba(255,255,255,.96);
 
-  color: #ffffff;
+  color: #7e22ce;
 
   font-size: 16px;
-  font-weight: 700;
 
-  cursor: pointer;
+  font-weight: 800;
+
+  text-decoration: none;
 
   box-shadow:
-    0 10px 25px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    0 10px 28px rgba(70,10,90,.22);
 
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+    transform .25s ease,
+    box-shadow .25s ease,
+    background .25s ease;
 }
 
 .course-back-btn:hover {
+
   transform: translateX(-4px);
 
-  background: linear-gradient(
-    135deg,
-    #1e293b,
-    #312e81
-  );
+  background: #ffffff;
+
+  color: #a21caf;
 
   box-shadow:
-    0 14px 30px rgba(0,0,0,0.45),
-    0 0 20px rgba(124,58,237,0.25);
-}
-
-.course-back-btn:active {
-  transform: translateX(-1px) scale(0.98);
+    0 15px 35px rgba(70,10,90,.30);
 }
 
 .back-arrow {
-  font-size: 24px;
+
+  font-size: 22px;
+
   line-height: 1;
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 768px) {
-
-  .course-back-wrapper {
-    padding-top: 90px;
-    padding-left: 18px;
-    margin-bottom: 20px;
-  }
-
-  .course-back-btn {
-    padding: 12px 18px;
-    font-size: 15px;
-    border-radius: 12px;
-  }
-
-  .back-arrow {
-    font-size: 21px;
-  }
 }
 
 
@@ -631,7 +1026,9 @@
 
 .course-main-container {
 
-  max-width: 1400px;
+  width: 100%;
+
+  max-width: 1450px;
 
   margin: 0 auto;
 
@@ -639,43 +1036,62 @@
 
   grid-template-columns:
     minmax(0, 1.65fr)
-    minmax(350px, 0.75fr);
+    minmax(350px, .75fr);
 
   gap: 28px;
 
   padding: 28px;
 
-  border-radius: 28px;
+  box-sizing: border-box;
 
-  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 30px;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(38, 17, 74, 0.96),
-      rgba(17, 8, 38, 0.97)
-    );
+  border: 1px solid rgba(255,255,255,.55);
+
+  background: rgba(255,255,255,.95);
 
   box-shadow:
-    0 30px 80px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.06);
+    0 30px 80px rgba(70,10,90,.28),
+    0 8px 25px rgba(255,255,255,.15);
 
   backdrop-filter: blur(18px);
+
+  animation:
+    courseFadeIn .55s ease both;
 }
 
 
 /* ============================================================
-   LEFT
+   LEFT / RIGHT
 ============================================================ */
 
 .course-left {
+
   min-width: 0;
+}
+
+.course-right {
+
+  position: sticky;
+
+  top: 25px;
+
+  align-self: start;
 }
 
 
 /* ============================================================
-   BRAND BADGE
+   BRAND
 ============================================================ */
+
+.course-brand-section {
+
+  width: 100%;
+
+  text-align: center;
+
+  margin-bottom: 24px;
+}
 
 .brand-badge {
 
@@ -683,25 +1099,60 @@
 
   align-items: center;
 
-  padding: 12px 18px;
+  justify-content: center;
 
-  border-radius: 30px;
+  gap: 12px;
 
-  background:
-    rgba(5, 2, 20, 0.75);
+  padding: 9px 20px;
 
-  border:
-    1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,.97);
 
-  color: #ffffff;
+  border: 1px solid rgba(255,255,255,.6);
 
-  font-size: 14px;
+  border-radius: 18px;
 
-  font-weight: 800;
+  color: #7e22ce;
 
-  letter-spacing: .3px;
+  font-size: 15px;
 
-  margin-bottom: 25px;
+  font-weight: 900;
+
+  letter-spacing: .8px;
+
+  box-shadow:
+    0 10px 30px rgba(70,10,90,.18);
+
+  box-sizing: border-box;
+}
+
+.coaching-logo {
+
+  width: 48px;
+
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+.coaching-logo img {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
 }
 
 
@@ -711,7 +1162,7 @@
 
 .course-hero {
 
-  min-height: 330px;
+  min-height: 290px;
 
   display: flex;
 
@@ -721,43 +1172,31 @@
 
   align-items: center;
 
-  text-align: center;
-
   padding: 40px;
 
-  border-radius: 26px;
+  border-radius: 25px;
 
-  border:
-    1px solid rgba(168,85,247,.45);
+  border: 1px solid rgba(255,255,255,.30);
 
   background:
     radial-gradient(
-      circle at center,
-      rgba(124,58,237,.35),
-      transparent 60%
+      circle at 50% 20%,
+      rgba(255,255,255,.18),
+      transparent 45%
     ),
     linear-gradient(
-      145deg,
-      #32186b,
-      #1b0c3b
+      135deg,
+      #c026d3 0%,
+      #a21caf 55%,
+      #86198f 100%
     );
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.08),
-    0 20px 50px rgba(0,0,0,.25);
+    0 20px 50px rgba(126,34,206,.28),
+    inset 0 1px 0 rgba(255,255,255,.25);
+
+  text-align: center;
 }
-
-
-.course-icon {
-
-  font-size: 70px;
-
-  margin-bottom: 20px;
-
-  filter:
-    drop-shadow(0 8px 12px rgba(0,0,0,.4));
-}
-
 
 .course-hero h1 {
 
@@ -765,31 +1204,32 @@
 
   max-width: 850px;
 
+  color: #ffffff;
+
   font-size: clamp(30px, 4vw, 48px);
 
   line-height: 1.15;
 
   font-weight: 900;
 
-  color: #ffffff;
-
   text-shadow:
-    0 4px 20px rgba(0,0,0,.35);
+    0 5px 20px rgba(60,5,80,.28);
 }
-
 
 .course-hero p {
 
-  margin-top: 15px;
+  margin: 14px 0 0;
 
-  color: #c4b5fd;
+  color: rgba(255,255,255,.90);
 
   font-size: 16px;
+
+  font-weight: 600;
 }
 
 
 /* ============================================================
-   INFORMATION GRID
+   INFORMATION
 ============================================================ */
 
 .course-info-grid {
@@ -804,8 +1244,828 @@
   margin-top: 18px;
 }
 
-
 .info-card {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #faf5ff
+    );
+
+  border: 1px solid #eadcff;
+
+  box-shadow:
+    0 8px 22px rgba(126,34,206,.08);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.info-card:hover {
+
+  transform: translateY(-4px);
+
+  border-color: #c084fc;
+
+  box-shadow:
+    0 15px 30px rgba(126,34,206,.15);
+}
+
+.info-content {
+
+  min-width: 0;
+}
+
+.info-content span {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #80658e;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.info-content strong {
+
+  display: block;
+
+  color: #3b2054;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   TABS
+============================================================ */
+
+.course-tabs-wrapper {
+
+  margin-top: 22px;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background: #ffffff;
+
+  border: 1px solid #eadcff;
+
+  box-shadow:
+    0 12px 35px rgba(126,34,206,.10);
+}
+
+.course-tabs-nav {
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: stretch;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf5ff,
+      #f5edff,
+      #fdf4ff
+    );
+
+  border-bottom:
+    1px solid #eadcff;
+}
+
+.course-tab-btn {
+
+  position: relative;
+
+  flex: 1;
+
+  min-height: 64px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #80658e;
+
+  padding: 16px 20px;
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    color .25s ease,
+    background .25s ease;
+}
+
+.course-tab-btn:hover {
+
+  background:
+    rgba(192,38,211,.07);
+
+  color: #a21caf;
+}
+
+.course-tab-btn.active {
+
+  background: #ffffff;
+
+  color: #8b1bb1;
+}
+
+.course-tab-btn.active::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 15%;
+
+  right: 15%;
+
+  bottom: 0;
+
+  height: 4px;
+
+  border-radius:
+    8px 8px 0 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7e22ce,
+      #c026d3,
+      #ec4899
+    );
+}
+
+.course-tabs-content {
+
+  padding: 28px;
+}
+
+.course-tab-pane {
+
+  display: none;
+
+  animation:
+    courseTabFade .30s ease;
+}
+
+.course-tab-pane.active {
+
+  display: block;
+}
+
+
+/* ============================================================
+   TAB HEADING
+============================================================ */
+
+.course-tab-heading {
+
+  margin-bottom: 22px;
+
+  padding-bottom: 18px;
+
+  border-bottom:
+    1px solid #eadcff;
+}
+
+.course-tab-heading h2 {
+
+  margin: 0 0 5px;
+
+  color: #3b2054;
+
+  font-size: 24px;
+
+  font-weight: 900;
+}
+
+.course-tab-heading p {
+
+  margin: 0;
+
+  color: #80658e;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   DESCRIPTION
+============================================================ */
+
+.course-description-box {
+
+  padding: 22px 24px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #fdfaff,
+      #faf5ff
+    );
+
+  border: 1px solid #eadcff;
+
+  box-shadow:
+    0 7px 20px rgba(126,34,206,.06);
+
+  color: #725d7d;
+
+  font-size: 16px;
+
+  line-height: 1.9;
+}
+
+.course-description-box p {
+
+  margin: 0 0 12px;
+}
+
+.course-description-box p:last-child {
+
+  margin-bottom: 0;
+}
+
+
+/* ============================================================
+   PLAYLISTS
+============================================================ */
+
+.course-playlists {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.course-playlist {
+
+  overflow: hidden;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #fdfaff
+    );
+
+  border: 1px solid #eadcff;
+
+  box-shadow:
+    0 6px 18px rgba(126,34,206,.06);
+
+  transition:
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.course-playlist.open {
+
+  border-color: #d8b4f5;
+
+  box-shadow:
+    0 10px 25px rgba(126,34,206,.10);
+}
+
+
+/* ============================================================
+   PLAYLIST HEADER
+============================================================ */
+
+.course-playlist-header {
+
+  width: 100%;
+
+  min-height: 72px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 12px 17px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #3b2054;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+.playlist-header-left {
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+}
+
+.playlist-icon {
+
+  width: 46px;
+
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #fce7f3
+    );
+
+  color: #a21caf;
+
+  font-size: 19px;
+}
+
+.playlist-header-text {
+
+  min-width: 0;
+}
+
+.playlist-header-text strong {
+
+  display: block;
+
+  color: #43235b;
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.playlist-header-text span {
+
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9276a0;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.playlist-header-right {
+
+  flex-shrink: 0;
+}
+
+.playlist-chevron {
+
+  color: #8b5aa0;
+
+  font-size: 13px;
+
+  transition:
+    transform .25s ease;
+}
+
+.course-playlist.open .playlist-chevron {
+
+  transform: rotate(180deg);
+
+  color: #a21caf;
+}
+
+
+/* ============================================================
+   PLAYLIST VIDEO CONTAINER
+============================================================ */
+
+.course-playlist-videos {
+
+  display: none;
+
+  padding:
+    0 12px 12px;
+}
+
+.course-playlist.open .course-playlist-videos {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+/* ============================================================
+   VIDEO ROW
+   PLAIN SERIAL NUMBER
+============================================================ */
+
+.course-video-row {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    34px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #fcf8ff 100%
+    );
+
+  border: 1px solid #eadcff;
+
+  color: #42245a;
+
+  transition:
+    transform .20s ease,
+    background .20s ease,
+    border-color .20s ease,
+    box-shadow .20s ease;
+}
+
+.course-video-row:hover {
+
+  transform: translateX(3px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf5ff 0%,
+      #fdf4ff 100%
+    );
+
+  border-color: #d8b4f5;
+
+  box-shadow:
+    0 8px 20px rgba(126,34,206,.10);
+}
+
+
+/* ============================================================
+   SERIAL NUMBER
+   NO BOX
+   NO ICON
+============================================================ */
+
+.course-video-number {
+
+  width: auto;
+
+  height: auto;
+
+  display: block;
+
+  padding: 0;
+
+  margin: 0;
+
+  background: transparent;
+
+  border: none;
+
+  border-radius: 0;
+
+  box-shadow: none;
+
+  color: #7e22ce;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 900;
+
+  text-align: left;
+}
+
+
+/* ============================================================
+   VIDEO INFO
+============================================================ */
+
+.course-video-info {
+
+  min-width: 0;
+}
+
+.course-video-info h4 {
+
+  margin: 0 0 6px;
+
+  color: #42245a;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 800;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   VIDEO META
+============================================================ */
+
+.course-video-meta {
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+
+/* ============================================================
+   FREE / PAID BADGES
+============================================================ */
+
+.free-preview-badge,
+.paid-video-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: .4px;
+}
+
+.free-preview-badge {
+
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.paid-video-badge {
+
+  background: #f3e8ff;
+
+  color: #7e22ce;
+}
+
+
+/* ============================================================
+   VIDEO ACTION
+============================================================ */
+
+.course-video-action {
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+}
+
+
+/* ============================================================
+   VIDEO BUTTONS
+============================================================ */
+
+.watch-preview-btn,
+.watch-video-btn,
+.locked-video-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 40px;
+
+  padding: 9px 14px;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  box-sizing: border-box;
+
+  transition:
+    transform .20s ease,
+    box-shadow .20s ease,
+    background .20s ease;
+}
+
+
+/* FREE */
+
+.watch-preview-btn {
+
+  background:
+    linear-gradient(
+      135deg,
+      #16a34a,
+      #22c55e
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 18px rgba(22,163,74,.20);
+}
+
+.watch-preview-btn:hover {
+
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(22,163,74,.28);
+
+  text-decoration: none;
+}
+
+
+/* PAID */
+
+.watch-video-btn {
+
+  background:
+    linear-gradient(
+      135deg,
+      #7e22ce,
+      #c026d3
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 18px rgba(126,34,206,.20);
+}
+
+.watch-video-btn:hover {
+
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(126,34,206,.28);
+
+  text-decoration: none;
+}
+
+
+/* LOCKED */
+
+.locked-video-btn {
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf5ff,
+      #f3e8ff
+    );
+
+  color: #7e22ce;
+
+  border:
+    1px solid #e5d5f5;
+}
+
+.locked-video-btn:hover {
+
+  color: #6d28d9;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #fae8ff
+    );
+
+  text-decoration: none;
+}
+
+
+/* ============================================================
+   FREE PREVIEW INFORMATION
+============================================================ */
+
+.free-preview-information {
 
   display: flex;
 
@@ -813,40 +2073,28 @@
 
   gap: 14px;
 
-  padding: 20px;
+  margin-top: 18px;
 
-  border-radius: 18px;
+  padding: 16px 18px;
+
+  border:
+    1px solid #bbf7d0;
+
+  border-radius: 14px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(255,255,255,.07),
-      rgba(255,255,255,.025)
+      #f0fdf4,
+      #ecfdf5
     );
-
-  border:
-    1px solid rgba(255,255,255,.10);
-
-  transition:
-    transform .25s ease,
-    border-color .25s ease;
 }
 
+.free-preview-information-icon {
 
-.info-card:hover {
+  width: 42px;
 
-  transform: translateY(-3px);
-
-  border-color:
-    rgba(168,85,247,.5);
-}
-
-
-.info-icon {
-
-  width: 48px;
-
-  height: 48px;
+  height: 42px;
 
   display: flex;
 
@@ -854,256 +2102,37 @@
 
   justify-content: center;
 
-  border-radius: 14px;
-
-  background:
-    rgba(124,58,237,.20);
-
-  font-size: 24px;
-}
-
-
-.info-content {
-
-  min-width: 0;
-}
-
-
-.info-content span {
-
-  display: block;
-
-  color: #a99bbd;
-
-  font-size: 13px;
-
-  margin-bottom: 5px;
-}
-
-
-.info-content strong {
-
-  display: block;
-
-  color: #ffffff;
-
-  font-size: 15px;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-
-/* ============================================================
-   CONTENT CARD
-============================================================ */
-
-.content-card {
-
-  margin-top: 20px;
-
-  padding: 26px;
-
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.065),
-      rgba(255,255,255,.025)
-    );
-
-  border:
-    1px solid rgba(255,255,255,.09);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.04);
-}
-
-
-.section-heading {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 15px;
-}
-
-
-.section-heading span {
-
-  font-size: 27px;
-}
-
-
-.section-heading h2 {
-
-  margin: 0;
-
-  color: #ffffff;
-
-  font-size: 24px;
-
-  font-weight: 800;
-}
-
-
-.course-description {
-
-  margin: 0;
-
-  color: #c8bdd5;
-
-  line-height: 1.8;
-
-  font-size: 16px;
-}
-
-
-/* ============================================================
-   VIDEO LIST
-============================================================ */
-
-.video-list {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 10px;
-}
-
-
-.video-item {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 15px;
-
-  padding: 15px;
-
-  border-radius: 14px;
-
-  background:
-    rgba(0,0,0,.20);
-
-  border:
-    1px solid rgba(255,255,255,.07);
-}
-
-
-.video-number {
-
-  min-width: 40px;
-
-  height: 40px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
+  flex-shrink: 0;
 
   border-radius: 12px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #2563eb
-    );
+  background: #dcfce7;
 
-  color: #ffffff;
+  color: #15803d;
 
-  font-weight: 800;
+  font-size: 18px;
 }
 
+.free-preview-information strong {
 
-.video-details h4 {
+  display: block;
 
-  margin: 0 0 5px;
+  margin-bottom: 3px;
 
-  color: #ffffff;
+  color: #166534;
 
-  font-size: 15px;
+  font-size: 14px;
 }
 
-
-.video-details p {
-
-  margin: 0 0 5px;
-
-  color: #aaa0b9;
-
-  font-size: 13px;
-}
-
-
-.video-details small {
-
-  color: #8e829e;
-}
-
-
-/* ============================================================
-   LOCKED CONTENT
-============================================================ */
-
-.locked-content {
-
-  display: flex;
-
-  gap: 20px;
-
-  padding: 22px;
-
-  border-radius: 17px;
-
-  background:
-    rgba(124,58,237,.08);
-
-  border:
-    1px solid rgba(168,85,247,.18);
-}
-
-
-.lock-icon {
-
-  font-size: 38px;
-}
-
-
-.locked-content h3 {
-
-  margin: 0 0 8px;
-
-  color: #ffffff;
-}
-
-
-.locked-content p {
-
-  color: #aaa0b9;
-
-  margin-bottom: 12px;
-}
-
-
-.locked-content ul {
+.free-preview-information p {
 
   margin: 0;
 
-  padding-left: 20px;
+  color: #4d7c5a;
 
-  color: #c9bdd5;
+  font-size: 12px;
 
-  line-height: 1.9;
+  line-height: 1.5;
 }
 
 
@@ -1111,37 +2140,71 @@
    NO CONTENT
 ============================================================ */
 
-.no-content {
+.course-no-content {
 
   text-align: center;
 
-  padding: 30px;
+  padding: 45px 20px;
 
-  color: #aaa0b9;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf5ff,
+      #fdf4ff
+    );
+
+  border:
+    1px solid #eadcff;
 }
 
+.no-content-icon {
 
-.no-content span {
+  width: 60px;
 
-  display: block;
+  height: 60px;
 
-  font-size: 40px;
+  margin: 0 auto 14px;
 
-  margin-bottom: 10px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #fae8ff
+    );
+
+  color: #a21caf;
+
+  font-size: 25px;
 }
 
+.course-no-content h3 {
 
-/* ============================================================
-   RIGHT SIDE
-============================================================ */
+  margin: 0 0 7px;
 
-.course-right {
+  color: #45235c;
 
-  position: sticky;
+  font-size: 18px;
 
-  top: 25px;
+  font-weight: 900;
+}
 
-  align-self: start;
+.course-no-content p {
+
+  margin: 0;
+
+  color: #80658e;
+
+  font-size: 13px;
 }
 
 
@@ -1158,16 +2221,17 @@
   background:
     linear-gradient(
       145deg,
-      #2d1555,
-      #160827
+      #ffffff,
+      #faf5ff
     );
 
   border:
-    1px solid rgba(168,85,247,.40);
+    1px solid #e9d5ff;
 
   box-shadow:
-    0 25px 55px rgba(0,0,0,.38),
-    inset 0 1px 0 rgba(255,255,255,.07);
+    0 20px 50px rgba(74,20,100,.18);
+
+  box-sizing: border-box;
 }
 
 
@@ -1188,46 +2252,50 @@
   margin-bottom: 22px;
 }
 
-
 .payment-header > span {
 
-  color: #c4b5fd;
+  color: #8b1bb1;
 
-  font-size: 14px;
+  font-size: 13px;
 
   font-weight: 900;
 
   letter-spacing: 1.2px;
 }
 
-
 .secure-payment {
 
-  color: #86efac;
+  color: #15803d;
 
   font-size: 11px;
 
-  font-weight: 700;
+  font-weight: 800;
 }
 
 
 /* ============================================================
-   ORIGINAL PRICE
+   PRICE
 ============================================================ */
+
+.price-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
 
 .original-price {
 
-  display: inline-block;
-
-  color: #81768e;
+  color: #a58caf;
 
   text-decoration: line-through;
 
   font-size: 17px;
-
-  margin-right: 8px;
 }
-
 
 .discount-badge {
 
@@ -1237,26 +2305,20 @@
 
   border-radius: 8px;
 
-  background:
-    rgba(34,197,94,.18);
+  background: #dcfce7;
 
-  color: #86efac;
+  color: #15803d;
 
   font-size: 12px;
 
-  font-weight: 800;
+  font-weight: 900;
 }
-
-
-/* ============================================================
-   FINAL PRICE
-============================================================ */
 
 .final-price {
 
   margin-top: 8px;
 
-  color: #ffffff;
+  color: #4c1d65;
 
   font-size: 52px;
 
@@ -1289,34 +2351,33 @@
   background:
     linear-gradient(
       135deg,
-      rgba(34,197,94,.14),
-      rgba(16,185,129,.05)
+      #f0fdf4,
+      #ecfdf5
     );
 
   border:
-    1px solid rgba(74,222,128,.20);
+    1px solid #bbf7d0;
 }
 
-
 .discount-icon {
+
+  color: #16a34a;
 
   font-size: 27px;
 }
 
-
 .discount-box strong {
 
-  color: #86efac;
+  color: #15803d;
 
   font-size: 14px;
 }
-
 
 .discount-box p {
 
   margin: 4px 0 0;
 
-  color: #b9b0c2;
+  color: #66806d;
 
   font-size: 12px;
 
@@ -1335,67 +2396,60 @@
   padding: 18px 0;
 
   border-top:
-    1px solid rgba(255,255,255,.10);
+    1px solid #eadcff;
 
   border-bottom:
-    1px solid rgba(255,255,255,.10);
+    1px solid #eadcff;
 }
-
 
 .summary-row {
 
   display: flex;
 
-  justify-content: space-between;
-
   align-items: center;
+
+  justify-content: space-between;
 
   gap: 15px;
 
   padding: 8px 0;
 
-  color: #aaa0b9;
+  color: #80658e;
 
   font-size: 14px;
 }
 
-
 .summary-row strong {
 
-  color: #ffffff;
+  color: #4c1d65;
 }
-
 
 .discount-row strong {
 
-  color: #4ade80;
+  color: #16a34a;
 }
-
 
 .summary-divider {
 
   height: 1px;
 
-  background:
-    rgba(255,255,255,.08);
-
   margin: 8px 0;
-}
 
+  background: #eadcff;
+}
 
 .payable-row {
 
+  color: #4c1d65;
+
   font-size: 16px;
 
-  color: #ffffff;
-
-  font-weight: 800;
+  font-weight: 900;
 }
-
 
 .payable-row strong {
 
-  color: #ffffff;
+  color: #8b1bb1;
 
   font-size: 20px;
 }
@@ -1409,7 +2463,6 @@
 
   margin-top: 22px;
 }
-
 
 .payment-btn {
 
@@ -1442,7 +2495,6 @@
     box-shadow .25s ease;
 }
 
-
 .payment-btn:hover {
 
   transform: translateY(-3px);
@@ -1451,7 +2503,8 @@
 }
 
 
-/* Pay */
+/* PAY */
+
 .pay-btn {
 
   color: #ffffff;
@@ -1459,25 +2512,25 @@
   background:
     linear-gradient(
       135deg,
-      #7c3aed,
-      #2563eb
+      #9333ea,
+      #c026d3
     );
 
   box-shadow:
-    0 12px 28px rgba(79,70,229,.35);
+    0 12px 28px rgba(147,51,234,.28);
 }
-
 
 .pay-btn:hover {
 
   color: #ffffff;
 
   box-shadow:
-    0 18px 38px rgba(79,70,229,.48);
+    0 18px 38px rgba(147,51,234,.40);
 }
 
 
-/* Success */
+/* SUCCESS */
+
 .success-btn {
 
   color: #ffffff;
@@ -1488,8 +2541,10 @@
       #059669,
       #16a34a
     );
-}
 
+  box-shadow:
+    0 10px 25px rgba(22,163,74,.20);
+}
 
 .success-btn:hover {
 
@@ -1497,22 +2552,8 @@
 }
 
 
-/* Pending */
-.pending-btn {
+/* FREE */
 
-  color: #facc15;
-
-  background:
-    rgba(234,179,8,.12);
-
-  border:
-    1px solid rgba(234,179,8,.30);
-
-  cursor: default;
-}
-
-
-/* Free */
 .free-btn {
 
   color: #ffffff;
@@ -1523,8 +2564,10 @@
       #059669,
       #10b981
     );
-}
 
+  box-shadow:
+    0 10px 25px rgba(16,185,129,.20);
+}
 
 .free-btn:hover {
 
@@ -1532,7 +2575,8 @@
 }
 
 
-/* Login */
+/* LOGIN */
+
 .login-btn {
 
   color: #ffffff;
@@ -1540,11 +2584,13 @@
   background:
     linear-gradient(
       135deg,
-      #7c3aed,
-      #4f46e5
+      #7e22ce,
+      #c026d3
     );
-}
 
+  box-shadow:
+    0 10px 25px rgba(126,34,206,.25);
+}
 
 .login-btn:hover {
 
@@ -1553,7 +2599,7 @@
 
 
 /* ============================================================
-   PENDING NOTE
+   PENDING
 ============================================================ */
 
 .pending-note {
@@ -1568,7 +2614,7 @@
 
   margin-top: 12px;
 
-  color: #c4b5fd;
+  color: #8b5aa0;
 
   font-size: 12px;
 
@@ -1591,13 +2637,12 @@
 
   margin-top: 20px;
 
-  color: #8f829d;
+  color: #9276a0;
 
   font-size: 10px;
 
   text-align: center;
 }
-
 
 .payment-security div {
 
@@ -1605,13 +2650,15 @@
 
   border-radius: 9px;
 
-  background:
-    rgba(255,255,255,.03);
+  background: #faf5ff;
+
+  border:
+    1px solid #f0e5ff;
 }
 
 
 /* ============================================================
-   SUPPORT CARD
+   SUPPORT
 ============================================================ */
 
 .support-card {
@@ -1629,34 +2676,31 @@
   border-radius: 18px;
 
   background:
-    rgba(255,255,255,.045);
+    rgba(255,255,255,.96);
 
   border:
-    1px solid rgba(255,255,255,.08);
+    1px solid #e9d5ff;
+
+  box-shadow:
+    0 10px 25px rgba(74,20,100,.14);
 }
-
-
-.support-icon {
-
-  font-size: 28px;
-}
-
 
 .support-card h3 {
 
   margin: 0 0 4px;
 
-  color: #ffffff;
+  color: #4c1d65;
 
   font-size: 15px;
-}
 
+  font-weight: 900;
+}
 
 .support-card p {
 
   margin: 0;
 
-  color: #9f93aa;
+  color: #80658e;
 
   font-size: 12px;
 
@@ -1665,7 +2709,7 @@
 
 
 /* ============================================================
-   RESPONSIVE — TABLET
+   TABLET
 ============================================================ */
 
 @media (max-width: 1050px) {
@@ -1685,93 +2729,372 @@
     grid-template-columns:
       repeat(3, 1fr);
   }
-
 }
 
 
 /* ============================================================
-   RESPONSIVE — MOBILE
+   MOBILE
 ============================================================ */
 
 @media (max-width: 700px) {
 
   .course-details-page {
 
-    padding: 20px 12px;
+    padding:
+      20px 10px 50px;
+  }
+
+  .course-back-wrapper {
+
+    padding-top: 85px;
+
+    padding-left: 0;
+
+    margin-bottom: 15px;
+  }
+
+  .course-back-btn {
+
+    padding:
+      10px 15px;
+
+    font-size: 13px;
+
+    border-radius: 11px;
   }
 
 
   .course-main-container {
 
-    padding: 15px;
+    padding: 14px;
 
-    border-radius: 20px;
+    border-radius: 22px;
 
     gap: 18px;
   }
 
 
+  .brand-badge {
+
+    padding:
+      8px 14px;
+
+    font-size: 12px;
+
+    gap: 9px;
+  }
+
+  .coaching-logo {
+
+    width: 40px;
+
+    height: 40px;
+  }
+
+
   .course-hero {
 
-    min-height: 260px;
+    min-height: 230px;
 
-    padding: 25px 15px;
+    padding: 25px 18px;
 
-    border-radius: 20px;
+    border-radius: 19px;
   }
-
-
-  .course-icon {
-
-    font-size: 55px;
-  }
-
 
   .course-hero h1 {
 
-    font-size: 30px;
+    font-size: 26px;
+  }
+
+  .course-hero p {
+
+    font-size: 13px;
   }
 
 
   .course-info-grid {
 
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
 
+    gap: 9px;
+  }
+
+  .info-card {
+
+    padding: 14px;
   }
 
 
-  .content-card {
+  /* TABS */
 
-    padding: 20px;
+  .course-tabs-wrapper {
 
-    border-radius: 18px;
+    border-radius: 19px;
   }
 
+  .course-tabs-nav {
 
-  .section-heading h2 {
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+  .course-tabs-nav::-webkit-scrollbar {
+
+    display: none;
+  }
+
+  .course-tab-btn {
+
+    flex:
+      0 0 50%;
+
+    min-height: 56px;
+
+    padding:
+      12px 8px;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+  }
+
+  .course-tab-btn i {
+
+    font-size: 13px;
+  }
+
+  .course-tabs-content {
+
+    padding: 18px;
+  }
+
+  .course-tab-heading {
+
+    margin-bottom: 17px;
+
+    padding-bottom: 14px;
+  }
+
+  .course-tab-heading h2 {
 
     font-size: 20px;
   }
 
+  .course-tab-heading p {
+
+    font-size: 11px;
+  }
+
+  .course-description-box {
+
+    padding: 16px;
+
+    font-size: 13px;
+
+    line-height: 1.75;
+  }
+
+
+  /* PLAYLIST */
+
+  .course-playlist-header {
+
+    min-height: 62px;
+
+    padding:
+      9px 11px;
+  }
+
+  .playlist-header-left {
+
+    gap: 10px;
+  }
+
+  .playlist-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+  }
+
+  .playlist-header-text strong {
+
+    font-size: 13px;
+  }
+
+  .playlist-header-text span {
+
+    font-size: 10px;
+  }
+
+  .course-playlist-videos {
+
+    padding:
+      0 7px 7px;
+  }
+
+
+  /* =========================================================
+     MOBILE VIDEO ROW
+     NUMBER + CONTENT + BUTTON
+  ========================================================== */
+
+  .course-video-row {
+
+    display: grid;
+
+    grid-template-columns:
+      25px
+      minmax(0, 1fr);
+
+    gap: 8px;
+
+    padding: 10px;
+
+    border-radius: 11px;
+  }
+
+
+  .course-video-number {
+
+    font-size: 12px;
+
+    align-self: start;
+
+    padding-top: 2px;
+  }
+
+
+  .course-video-info {
+
+    min-width: 0;
+  }
+
+  .course-video-info h4 {
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    white-space: normal;
+  }
+
+
+  .course-video-meta {
+
+    gap: 5px;
+  }
+
+  .free-preview-badge,
+  .paid-video-badge {
+
+    padding:
+      3px 7px;
+
+    font-size: 8px;
+  }
+
+
+  .course-video-action {
+
+    grid-column: 2;
+
+    width: 100%;
+
+    justify-content: stretch;
+  }
+
+
+  .watch-preview-btn,
+  .watch-video-btn,
+  .locked-video-btn {
+
+    width: 100%;
+
+    min-height: 38px;
+
+    padding:
+      8px 10px;
+
+    font-size: 11px;
+  }
+
+
+  /* PREVIEW INFORMATION */
+
+  .free-preview-information {
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding:
+      13px;
+  }
+
+  .free-preview-information-icon {
+
+    width: 36px;
+
+    height: 36px;
+
+    font-size: 15px;
+  }
+
+  .free-preview-information strong {
+
+    font-size: 12px;
+  }
+
+  .free-preview-information p {
+
+    font-size: 10px;
+  }
+
+
+  /* PAYMENT */
 
   .payment-card {
 
-    padding: 22px;
+    padding: 20px;
 
     border-radius: 20px;
   }
 
+  .payment-header > span {
+
+    font-size: 11px;
+  }
+
+  .secure-payment {
+
+    font-size: 9px;
+  }
 
   .final-price {
 
-    font-size: 44px;
+    font-size: 42px;
   }
-
 
   .payment-security {
 
     grid-template-columns:
       1fr;
+  }
+
+  .payment-btn {
+
+    min-height: 52px;
+
+    font-size: 14px;
   }
 
 }
@@ -1783,38 +3106,99 @@
 
 @media (max-width: 430px) {
 
-  .brand-badge {
+  .course-details-page {
 
-    font-size: 12px;
+    padding-left: 8px;
 
-    padding: 10px 14px;
+    padding-right: 8px;
   }
 
+  .course-main-container {
+
+    padding: 10px;
+
+    border-radius: 19px;
+  }
+
+  .course-hero {
+
+    min-height: 210px;
+
+    padding:
+      22px 14px;
+  }
 
   .course-hero h1 {
 
-    font-size: 25px;
+    font-size: 23px;
+  }
+
+  .course-hero p {
+
+    font-size: 12px;
   }
 
 
-  .course-description {
+  .course-tabs-content {
 
-    font-size: 14px;
+    padding: 14px;
+  }
+
+  .course-tab-btn {
+
+    font-size: 11px;
   }
 
 
-  .locked-content {
+  .course-video-row {
 
-    flex-direction: column;
+    grid-template-columns:
+      22px
+      minmax(0,1fr);
 
-    gap: 10px;
+    gap: 7px;
+
+    padding: 9px;
+  }
+
+  .course-video-number {
+
+    font-size: 11px;
+  }
+
+  .course-video-info h4 {
+
+    font-size: 11px;
+  }
+
+  .free-preview-badge,
+  .paid-video-badge {
+
+    font-size: 7px;
+
+    padding:
+      3px 6px;
+  }
+
+  .watch-preview-btn,
+  .watch-video-btn,
+  .locked-video-btn {
+
+    min-height: 36px;
+
+    font-size: 10px;
+  }
+
+  .final-price {
+
+    font-size: 36px;
   }
 
 }
 
 
 /* ============================================================
-   ANIMATION
+   ANIMATIONS
 ============================================================ */
 
 @keyframes courseFadeIn {
@@ -1823,94 +3207,187 @@
 
     opacity: 0;
 
-    transform: translateY(15px);
+    transform:
+      translateY(15px);
   }
 
   to {
 
     opacity: 1;
 
-    transform: translateY(0);
+    transform:
+      translateY(0);
   }
-
 }
 
 
-.course-main-container {
+@keyframes courseTabFade {
 
-  animation:
-    courseFadeIn .55s ease both;
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(5px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
 }
 
 </style>
+
+
+<!-- ===========================================================
+     JAVASCRIPT
+=========================================================== -->
 
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  /*
-   * Add small hover animation to information cards
-   */
 
-  const infoCards =
-    document.querySelectorAll(".info-card");
+  /* =========================================================
+     COURSE TABS
+  ========================================================= */
 
-  infoCards.forEach(function (card) {
+  const tabButtons =
+    document.querySelectorAll(".course-tab-btn");
 
-    card.addEventListener("mouseenter", function () {
-      card.style.transform = "translateY(-4px)";
-    });
+  const tabPanes =
+    document.querySelectorAll(".course-tab-pane");
 
-    card.addEventListener("mouseleave", function () {
-      card.style.transform = "";
+
+  tabButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      const targetId =
+        button.dataset.courseTab;
+
+
+      tabButtons.forEach(function (item) {
+
+        item.classList.remove("active");
+
+      });
+
+
+      tabPanes.forEach(function (pane) {
+
+        pane.classList.remove("active");
+
+      });
+
+
+      button.classList.add("active");
+
+
+      const targetPane =
+        document.getElementById(targetId);
+
+
+      if (targetPane) {
+
+        targetPane.classList.add("active");
+
+      }
+
     });
 
   });
 
 
-  /*
-   * Payment button loading state
-   */
+  /* =========================================================
+     PLAYLIST DROPDOWNS
+  ========================================================= */
+
+  const playlistButtons =
+    document.querySelectorAll(
+      ".course-playlist-header"
+    );
+
+
+  playlistButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      const playlist =
+        button.closest(".course-playlist");
+
+
+      if (!playlist) {
+
+        return;
+
+      }
+
+
+      const isOpen =
+        playlist.classList.toggle("open");
+
+
+      button.setAttribute(
+        "aria-expanded",
+        isOpen ? "true" : "false"
+      );
+
+    });
+
+  });
+
+
+  /* =========================================================
+     PAYMENT BUTTON LOADING
+  ========================================================= */
 
   const paymentButtons =
     document.querySelectorAll(
       ".pay-btn, .free-btn, .login-btn"
     );
 
+
   paymentButtons.forEach(function (button) {
 
     button.addEventListener("click", function () {
 
-      /*
-       * Prevent double click
-       */
+      if (
+        button.dataset.clicked === "true"
+      ) {
 
-      if (button.dataset.clicked === "true") {
         return;
+
       }
 
+
       button.dataset.clicked = "true";
+
 
       const originalHTML =
         button.innerHTML;
 
+
       button.innerHTML =
-        "<span>⏳</span> Please wait...";
+        '<i class="fas fa-spinner fa-spin"></i> Please wait...';
 
-
-      /*
-       * Restore if browser does not navigate
-       */
 
       setTimeout(function () {
 
-        if (document.body.contains(button)) {
+        if (
+          document.body.contains(button)
+        ) {
 
           button.innerHTML =
             originalHTML;
 
           button.dataset.clicked =
             "false";
+
         }
 
       }, 5000);
@@ -1919,36 +3396,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
   });
 
-});
 
-
-/*
- * BACK BUTTON
- */
-
-document.addEventListener("DOMContentLoaded", function () {
+  /* =========================================================
+     BACK BUTTON
+  ========================================================= */
 
   const backBtn =
     document.getElementById("courseBackBtn");
 
+
   if (backBtn) {
 
-    backBtn.addEventListener("click", function () {
+    backBtn.addEventListener(
+      "click",
+      function () {
 
-      if (
-        document.referrer &&
-        document.referrer !== window.location.href
-      ) {
-
-        window.history.back();
-
-      } else {
-
-        window.location.href = "/";
+        /*
+         * Normal Rails link behavior.
+         */
 
       }
-
-    });
+    );
 
   }
 

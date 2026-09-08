@@ -42,6 +42,7 @@ module Admin
 
         @video = @playlist.videos.new
 
+        # Preview next position
         @video.position =
           (@playlist.videos.maximum(:position) || 0) + 1
       else
@@ -58,34 +59,52 @@ module Admin
     def create
       @playlists = @course.playlists.order(:position, :id)
 
-      if video_params[:playlist_id].present?
-        @playlist = @course.playlists.find(video_params[:playlist_id])
+      playlist_id = video_params[:playlist_id]
+
+      if playlist_id.present?
+
+        @playlist = @course.playlists.find(playlist_id)
 
         @video = @playlist.videos.new(video_params)
         @video.course = @course
 
-        if @video.position.blank?
-          @video.position =
-            (@playlist.videos.maximum(:position) || 0) + 1
-        end
+        # =====================================================
+        # IMPORTANT:
+        # Always assign the next position.
+        # Do NOT use blank? because DB may have default = 1.
+        # =====================================================
+
+        @video.position =
+          (@playlist.videos.maximum(:position) || 0) + 1
+
       else
+
         @video = @course.videos.new(video_params)
+
       end
 
       if @video.save
+
         if @video.playlist.present?
+
           redirect_to admin_course_playlist_video_path(
             @course,
             @video.playlist,
             @video
           ),
           notice: "Video added successfully."
+
         else
+
           redirect_to admin_course_playlists_path(@course),
                       notice: "Video added successfully, but no playlist was assigned."
+
         end
+
       else
+
         render :new, status: :unprocessable_entity
+
       end
     end
 
@@ -110,19 +129,23 @@ module Admin
       new_playlist =
         if video_params[:playlist_id].present?
           @course.playlists.find(video_params[:playlist_id])
+        else
+          nil
         end
 
       playlist_changed =
         old_playlist&.id != new_playlist&.id
 
-      # -------------------------------------------------------
-      # Moving video to another playlist
-      # -------------------------------------------------------
+      # =======================================================
+      # MOVING VIDEO TO ANOTHER PLAYLIST
+      # =======================================================
 
       if playlist_changed
+
         @video.playlist = new_playlist
 
         if new_playlist.present?
+
           @video.position =
             (
               new_playlist
@@ -130,46 +153,58 @@ module Admin
                 .where.not(id: @video.id)
                 .maximum(:position) || 0
             ) + 1
+
         else
+
           @video.position = nil
+
         end
       end
 
+      # =======================================================
+      # UPDATE
+      # =======================================================
+
       if @video.update(video_params)
 
-        # -----------------------------------------------------
-        # Renumber OLD playlist
-        # -----------------------------------------------------
+        # =====================================================
+        # RENUMBER OLD PLAYLIST
+        # =====================================================
 
         if playlist_changed && old_playlist.present?
           renumber_videos(old_playlist)
         end
 
-        # -----------------------------------------------------
-        # Renumber NEW playlist
-        # -----------------------------------------------------
+        # =====================================================
+        # RENUMBER NEW PLAYLIST
+        # =====================================================
 
         if playlist_changed && new_playlist.present?
           renumber_videos(new_playlist)
         end
 
-        # -----------------------------------------------------
-        # Redirect
-        # -----------------------------------------------------
+        # =====================================================
+        # REDIRECT
+        # =====================================================
 
         if @video.playlist.present?
+
           redirect_to admin_course_playlist_video_path(
             @course,
             @video.playlist,
             @video
           ),
           notice: "Video updated successfully."
+
         else
+
           redirect_to admin_course_playlists_path(@course),
                       notice: "Video updated successfully."
+
         end
 
       else
+
         @playlist = @video.playlist
 
         @playlists = @course.playlists
@@ -189,11 +224,12 @@ module Admin
 
       if @video.destroy
 
-        # -----------------------------------------------------
-        # Renumber remaining videos
-        # -----------------------------------------------------
+        # =====================================================
+        # RENUMBER REMAINING VIDEOS
+        # =====================================================
 
         if playlist.present?
+
           renumber_videos(playlist)
 
           redirect_to admin_course_playlist_videos_path(
@@ -202,11 +238,13 @@ module Admin
           ),
           notice: "Video deleted successfully.",
           status: :see_other
+
         else
 
           redirect_to admin_course_playlists_path(@course),
                       notice: "Video deleted successfully.",
                       status: :see_other
+
         end
 
       else
@@ -224,6 +262,7 @@ module Admin
     # =========================================================
 
     def renumber_videos(playlist)
+
       playlist
         .videos
         .order(:position, :id)
@@ -232,9 +271,11 @@ module Admin
         new_position = index + 1
 
         if video.position != new_position
-          video.update!(position: new_position)
+          video.update_column(:position, new_position)
         end
+
       end
+
     end
 
     # =========================================================
@@ -270,5 +311,6 @@ module Admin
         :playlist_id
       )
     end
+
   end
 end
