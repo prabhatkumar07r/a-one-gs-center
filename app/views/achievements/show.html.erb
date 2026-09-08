@@ -1,0 +1,765 @@
+<style>
+/* =========================================================
+   ACHIEVEMENT SHOW PAGE
+========================================================= */
+
+.achievement-show-page {
+  min-height: 100vh;
+  padding: 35px;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, .10),
+      transparent 35%
+    ),
+    #f7f7fb;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.achievement-show-header {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+
+.achievement-show-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 7px 13px;
+
+  border-radius: 999px;
+
+  background: #ede9fe;
+  color: #6d28d9;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+.achievement-show-header h1 {
+  margin: 12px 0 7px;
+
+  color: #1f2937;
+
+  font-size: 32px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+
+.achievement-show-header p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 16px;
+}
+
+
+.achievement-show-header p i {
+  color: #8b5cf6;
+  margin-right: 5px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.achievement-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  color: #4f46e5;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.08);
+
+  transition: .2s ease;
+}
+
+
+.achievement-back-btn:hover {
+  color: #4338ca;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.12);
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.achievement-show-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(0, .95fr);
+
+  gap: 30px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   MEDIA
+========================================================= */
+
+.achievement-show-media {
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: #fff;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.10);
+}
+
+
+.achievement-show-image {
+  display: block;
+
+  width: 100%;
+  height: 450px;
+
+  object-fit: cover;
+}
+
+
+.achievement-show-no-image {
+  width: 100%;
+  height: 450px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4c1d95,
+      #7c3aed
+    );
+
+  color: #fff;
+}
+
+
+.achievement-show-no-image i {
+  font-size: 70px;
+}
+
+
+.achievement-show-no-image span {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.achievement-show-video {
+  padding: 20px;
+}
+
+
+.achievement-video-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 12px;
+
+  color: #4f46e5;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+
+.achievement-video-heading i {
+  color: #db4cff;
+}
+
+
+.achievement-show-video video {
+  display: block;
+
+  width: 100%;
+
+  max-height: 500px;
+
+  border-radius: 12px;
+
+  background: #000;
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.achievement-show-info {
+  padding: 28px;
+
+  border-radius: 20px;
+
+  background: #fff;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.10);
+}
+
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+.achievement-detail {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 17px 0;
+
+  border-bottom:
+    1px solid #eee;
+}
+
+
+.achievement-detail-icon {
+  width: 45px;
+  height: 45px;
+
+  flex: 0 0 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #f3e8ff;
+
+  color: #8b5cf6;
+
+  font-size: 19px;
+}
+
+
+.achievement-detail small {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #9ca3af;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+.achievement-detail strong {
+  display: block;
+
+  color: #1f2937;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.achievement-description-box {
+  margin-top: 25px;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  background: #f8f7ff;
+
+  border: 1px solid #ede9fe;
+}
+
+
+.achievement-description-box h3 {
+  margin: 0 0 10px;
+
+  color: #4c1d95;
+
+  font-size: 17px;
+}
+
+
+.achievement-description-box h3 i {
+  margin-right: 6px;
+}
+
+
+.achievement-description-box p {
+  margin: 0;
+
+  color: #4b5563;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.achievement-status-box {
+  margin-top: 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  background: #f9fafb;
+}
+
+
+.achievement-status-box > span {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+.status-active {
+  color: #16a34a;
+}
+
+
+.status-inactive {
+  color: #dc2626;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.achievement-show-actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+
+.achievement-edit-btn,
+.achievement-delete-btn {
+  flex: 1;
+
+  min-height: 45px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 10px 15px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+}
+
+
+.achievement-edit-btn {
+  border: none;
+
+  background: #4f46e5;
+
+  color: #fff;
+}
+
+
+.achievement-edit-btn:hover {
+  background: #4338ca;
+  color: #fff;
+}
+
+
+.achievement-delete-btn {
+  border: none;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+
+.achievement-delete-btn:hover {
+  background: #fecaca;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .achievement-show-page {
+    padding: 25px 15px 40px;
+  }
+
+  .achievement-show-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .achievement-show-header h1 {
+    font-size: 26px;
+  }
+
+  .achievement-show-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .achievement-show-image,
+  .achievement-show-no-image {
+    height: 320px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .achievement-show-header h1 {
+    font-size: 22px;
+  }
+
+  .achievement-show-info {
+    padding: 20px;
+  }
+
+  .achievement-show-actions {
+    flex-direction: column;
+  }
+
+  .achievement-show-image,
+  .achievement-show-no-image {
+    height: 260px;
+  }
+
+}
+</style>
+
+
+<% content_for :title, @achievement.title.presence || "Achievement" %>
+
+<div class="achievement-show-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="achievement-show-header">
+
+    <div>
+      <span class="achievement-show-badge">
+        <i class="bi bi-trophy-fill"></i>
+        Achievement
+      </span>
+
+      <h1>
+        <%= @achievement.title.presence || "Achievement" %>
+      </h1>
+
+      <% if @achievement.student_name.present? %>
+        <p>
+          <i class="bi bi-person-fill"></i>
+          <%= @achievement.student_name %>
+        </p>
+      <% end %>
+    </div>
+
+    <%= link_to achievements_path,
+        class: "achievement-back-btn" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      Back to Achievements
+
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <div class="achievement-show-grid">
+
+
+    <!-- ===================================================
+         PHOTO
+    ==================================================== -->
+
+    <div class="achievement-show-media">
+
+      <% if @achievement.photo.attached? %>
+
+        <%= image_tag @achievement.photo,
+            class: "achievement-show-image",
+            alt: @achievement.title.presence || "Achievement" %>
+
+      <% else %>
+
+        <div class="achievement-show-no-image">
+
+          <i class="bi bi-trophy-fill"></i>
+
+          <span>
+            Achievement
+          </span>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- VIDEO -->
+
+      <% if @achievement.video.attached? %>
+
+        <div class="achievement-show-video">
+
+          <div class="achievement-video-heading">
+
+            <i class="bi bi-play-circle-fill"></i>
+
+            Success Story
+
+          </div>
+
+          <video
+            controls
+            playsinline
+            preload="metadata">
+
+            <source
+              src="<%= url_for(@achievement.video) %>">
+
+            Your browser does not support video playback.
+
+          </video>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- ===================================================
+         INFORMATION
+    ==================================================== -->
+
+    <div class="achievement-show-info">
+
+
+      <% if @achievement.student_name.present? %>
+
+        <div class="achievement-detail">
+
+          <span class="achievement-detail-icon">
+            <i class="bi bi-person-fill"></i>
+          </span>
+
+          <div>
+            <small>Student / Recipient</small>
+
+            <strong>
+              <%= @achievement.student_name %>
+            </strong>
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+      <% if @achievement.rank.present? %>
+
+        <div class="achievement-detail">
+
+          <span class="achievement-detail-icon">
+            <i class="bi bi-award-fill"></i>
+          </span>
+
+          <div>
+            <small>Rank / Recognition</small>
+
+            <strong>
+              <%= @achievement.rank %>
+            </strong>
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+      <% if @achievement.year.present? %>
+
+        <div class="achievement-detail">
+
+          <span class="achievement-detail-icon">
+            <i class="bi bi-calendar-event"></i>
+          </span>
+
+          <div>
+            <small>Year</small>
+
+            <strong>
+              <%= @achievement.year %>
+            </strong>
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+      <% if @achievement.description.present? %>
+
+        <div class="achievement-description-box">
+
+          <h3>
+            <i class="bi bi-info-circle-fill"></i>
+            About This Achievement
+          </h3>
+
+          <p>
+            <%= @achievement.description %>
+          </p>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- STATUS -->
+
+      <div class="achievement-status-box">
+
+        <span>
+          Publication Status
+        </span>
+
+        <% if @achievement.status.to_s.downcase == "active" %>
+
+          <strong class="status-active">
+            <i class="bi bi-check-circle-fill"></i>
+            Active
+          </strong>
+
+        <% else %>
+
+          <strong class="status-inactive">
+            <i class="bi bi-x-circle-fill"></i>
+            Inactive
+          </strong>
+
+        <% end %>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="achievement-show-actions">
+
+        <%= link_to edit_achievement_path(@achievement),
+            class: "achievement-edit-btn" do %>
+
+          <i class="bi bi-pencil-fill"></i>
+          Edit Achievement
+
+        <% end %>
+
+        <%= button_to achievement_path(@achievement),
+            method: :delete,
+            class: "achievement-delete-btn",
+            data: {
+              turbo_confirm: "Are you sure you want to delete this achievement?"
+            } do %>
+
+          <i class="bi bi-trash-fill"></i>
+          Delete Achievement
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

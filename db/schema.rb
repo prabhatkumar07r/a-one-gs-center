@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_04_071240) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_170152) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -292,6 +292,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_071240) do
 
   create_table "questions", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.text "explanation"
     t.decimal "marks", precision: 8, scale: 2, default: "1.0", null: false
     t.integer "position", default: 1, null: false
     t.text "question_text", null: false
@@ -367,7 +368,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_071240) do
     t.integer "age"
     t.datetime "created_at", null: false
     t.string "email"
-    t.integer "mobile"
+    t.string "mobile"
     t.string "name"
     t.string "password"
     t.datetime "resets_password_sent_at"
@@ -557,6 +558,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_04_071240) do
     t.datetime "created_at", null: false
     t.text "description"
     t.string "duration"
+    t.boolean "is_free", default: false, null: false
     t.integer "playlist_id"
     t.integer "position", default: 1, null: false
     t.integer "status", default: 1
