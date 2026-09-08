@@ -505,125 +505,104 @@
            THUMBNAIL
       ====================================================== -->
 
-      <% if @video.thumbnail.attached? ||
-            (@video.video_url.present? &&
-             @video.youtube_thumbnail.present?) %>
+    <% if @video.thumbnail.attached? || @video.youtube_thumbnail.present? %>
 
-        <div class="video-thumbnail-section">
+  <div class="video-thumbnail-section">
 
-          <div class="video-section-title">
-            🖼️ Video Thumbnail
-          </div>
+    <div class="video-section-title">
+      🖼️ Video Thumbnail
+    </div>
 
-          <div class="video-thumbnail-wrapper">
+    <div class="video-thumbnail-wrapper">
 
-            <% if @video.thumbnail.attached? %>
+      <% if @video.thumbnail.attached? %>
 
-              <%= image_tag @video.thumbnail,
-                  class: "video-thumbnail",
-                  alt: @video.title %>
+        <%= image_tag @video.thumbnail,
+            class: "video-thumbnail",
+            alt: @video.title %>
 
-            <% elsif @video.youtube_thumbnail.present? %>
+      <% elsif @video.youtube_thumbnail.present? %>
 
-              <%= image_tag @video.youtube_thumbnail,
-                  class: "video-thumbnail",
-                  alt: @video.title %>
-
-            <% end %>
-
-          </div>
-
-        </div>
+        <%= image_tag @video.youtube_thumbnail,
+            class: "video-thumbnail",
+            alt: @video.title %>
 
       <% end %>
 
+    </div>
 
-      <!-- =====================================================
-           VIDEO PLAYER
-      ====================================================== -->
+  </div>
 
-      <div class="video-player-section">
-
-        <div class="video-section-title">
-          ▶️ Video Preview
-        </div>
+<% end %>
 
 
-        <% if @video.video_url.present? %>
+     <!-- =====================================================
+     VIDEO PLAYER
+====================================================== -->
 
-          <%
-            youtube_id =
-              if @video.video_url.match?(/youtu\.be\//)
-                @video.video_url.split("youtu.be/").last.split("?").first
-              elsif @video.video_url.match?(/[?&]v=/)
-                @video.video_url[/[?&]v=([^&]+)/, 1]
-              elsif @video.video_url.include?("/embed/")
-                @video.video_url.split("/embed/").last.split("?").first
-              end
-          %>
+<div class="video-player-section">
 
+  <div class="video-section-title">
+    ▶️ Video Preview
+  </div>
 
-          <% if youtube_id.present? %>
+  <% if @video.youtube_id.present? %>
 
-            <div
-              class="video-player-wrapper"
-              id="admin-video-player"
-            >
+    <div
+      class="video-player-wrapper"
+      id="admin-video-player"
+    >
 
-              <iframe
-                src="https://www.youtube.com/embed/<%= youtube_id %>"
-                title="<%= @video.title %>"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-              </iframe>
-
-            </div>
-
-          <% else %>
-
-            <div class="video-no-content">
-
-              <div class="video-no-content-icon">
-                ⚠️
-              </div>
-
-              <h5>
-                Invalid YouTube URL
-              </h5>
-
-              <p>
-                The video URL could not be converted into a YouTube player.
-              </p>
-
-            </div>
-
-          <% end %>
-
-
-        <% else %>
-
-          <div class="video-no-content">
-
-            <div class="video-no-content-icon">
-              🎬
-            </div>
-
-            <h5>
-              No Video Available
-            </h5>
-
-            <p>
-              This video does not have a YouTube URL yet.
-            </p>
-
-          </div>
-
-        <% end %>
-
-      </div>
+      <iframe
+        src="https://www.youtube.com/embed/<%= @video.youtube_id %>?rel=0"
+        title="<%= @video.title %>"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
 
     </div>
+
+  <% elsif @video.video_url.present? %>
+
+    <div class="video-no-content">
+
+      <div class="video-no-content-icon">
+        ⚠️
+      </div>
+
+      <h5>
+        Invalid YouTube URL
+      </h5>
+
+      <p>
+        The saved YouTube URL could not be converted into a valid video ID.
+      </p>
+
+    </div>
+
+  <% else %>
+
+    <div class="video-no-content">
+
+      <div class="video-no-content-icon">
+        🎬
+      </div>
+
+      <h5>
+        No Video Available
+      </h5>
+
+      <p>
+        This video does not have a YouTube URL yet.
+      </p>
+
+    </div>
+
+  <% end %>
+
+</div>
 
 
     <!-- =====================================================
