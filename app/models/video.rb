@@ -1,9 +1,12 @@
+require "uri"
+
 class Video < ApplicationRecord
   belongs_to :course
   belongs_to :playlist
   has_many :quizzes, dependent: :destroy
 
   has_many :notes, dependent: :destroy
+
   scope :free, -> { where(is_free: true) }
   scope :paid, -> { where(is_free: false) }
 
@@ -21,31 +24,136 @@ class Video < ApplicationRecord
   validates :position, presence: true
   validates :video_url, presence: true
 
+
+  # =========================================================
+  # YOUTUBE VIDEO ID
+  # =========================================================
+
   def youtube_id
-  return if video_url.blank?
+    return if video_url.blank?
 
-  url = video_url.to_s.strip
+    value = video_url.to_s.strip
 
-  # Raw YouTube video ID
-  return url if url.match?(/\A[A-Za-z0-9_-]{11}\z/)
+    # -------------------------------------------------------
+    # Raw YouTube ID
+    # Example:
+    # 595LwEjPNNA
+    # -------------------------------------------------------
 
-  # Standard YouTube URL
-  if url.include?("youtu.be/")
-    url.split("youtu.be/").last.split(/[?&#]/).first
-  elsif url.include?("/shorts/")
-    url.split("/shorts/").last.split(/[?&#]/).first
-  elsif url.include?("watch?v=")
-    url.split("watch?v=").last.split(/[&#]/).first
-  elsif url.include?("/embed/")
-    url.split("/embed/").last.split(/[?&#]/).first
-  elsif url.include?("/live/")
-    url.split("/live/").last.split(/[?&#]/).first
+    return value if value.match?(/\A[A-Za-z0-9_-]{11}\z/)
+
+
+    begin
+      uri = URI.parse(value)
+
+      host = uri.host.to_s.downcase
+      path = uri.path.to_s
+
+
+      # -----------------------------------------------------
+      # youtu.be
+      #
+      # https://youtu.be/595LwEjPNNA
+      # -----------------------------------------------------
+
+      if host == "youtu.be" ||
+         host == "www.youtu.be"
+
+        return path.split("/").reject(&:blank?).first
+      end
+
+
+      # -----------------------------------------------------
+      # youtube.com
+      # -----------------------------------------------------
+
+      if host == "youtube.com" ||
+         host == "www.youtube.com" ||
+         host == "m.youtube.com"
+
+        # -----------------------------------------------
+        # https://www.youtube.com/watch?v=595LwEjPNNA
+        # -----------------------------------------------
+
+        if path == "/watch"
+
+          params =
+            Rack::Utils.parse_nested_query(
+              uri.query.to_s
+            )
+
+          return params["v"].to_s.strip.presence
+        end
+
+
+        # -----------------------------------------------
+        # https://www.youtube.com/shorts/595LwEjPNNA
+        # -----------------------------------------------
+
+        if path.start_with?("/shorts/")
+
+          return path
+            .split("/")
+            .reject(&:blank?)[1]
+            .to_s
+            .strip
+            .presence
+
+        end
+
+
+        # -----------------------------------------------
+        # https://www.youtube.com/embed/595LwEjPNNA
+        # -----------------------------------------------
+
+        if path.start_with?("/embed/")
+
+          return path
+            .split("/")
+            .reject(&:blank?)[1]
+            .to_s
+            .strip
+            .presence
+
+        end
+
+
+        # -----------------------------------------------
+        # https://www.youtube.com/live/595LwEjPNNA
+        # -----------------------------------------------
+
+        if path.start_with?("/live/")
+
+          return path
+            .split("/")
+            .reject(&:blank?)[1]
+            .to_s
+            .strip
+            .presence
+
+        end
+
+      end
+
+    rescue URI::InvalidURIError
+      return nil
+    end
+
+
+    nil
   end
-end
+
+
+  # =========================================================
+  # YOUTUBE THUMBNAIL
+  # =========================================================
 
   def youtube_thumbnail
-    return unless youtube_id
+    id = youtube_id
 
-    "https://img.youtube.com/vi/#{youtube_id}/hqdefault.jpg"
+    return if id.blank?
+
+    "https://img.youtube.com/vi/#{id}/hqdefault.jpg"
   end
+
 end
