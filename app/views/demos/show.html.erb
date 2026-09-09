@@ -1,40 +1,498 @@
-<%= render "layouts/header" %>
-  <div class="card shadow">
+<style>
+  /* =========================================================
+   DEMO REQUEST DETAILS
+========================================================= */
 
-    <div class="card-header bg-primary text-white">
-      <h3>Demo Request Details</h3>
+.demo-details-page {
+  min-height: 100vh;
+
+  padding: 60px 20px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(79, 70, 229, 0.10),
+      transparent 32%
+    ),
+    #f8fafc;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.demo-details-card {
+  width: min(1000px, 100%);
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.09);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.demo-details-header {
+  padding: 32px 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #312e81,
+      #4f46e5
+    );
+
+  color: #ffffff;
+}
+
+.demo-details-label {
+  display: inline-block;
+
+  margin-bottom: 7px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+
+  color: rgba(255, 255, 255, 0.70);
+}
+
+.demo-details-header h1 {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.demo-details-header p {
+  margin: 7px 0 0;
+
+  font-size: 13px;
+
+  color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* =========================================================
+   HEADER STATUS
+========================================================= */
+
+.demo-status {
+  padding: 9px 17px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.demo-details-body {
+  padding: 35px 36px;
+}
+
+
+/* =========================================================
+   INFO GRID
+========================================================= */
+
+.demo-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   INFO ITEM
+========================================================= */
+
+.demo-info-item {
+  min-height: 82px;
+
+  padding: 18px 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  background: #f9fafb;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.demo-info-item:hover {
+  border-color: #c7d2fe;
+
+  background: #f5f3ff;
+}
+
+.demo-info-title {
+  margin-bottom: 7px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+
+  color: #6b7280;
+}
+
+.demo-info-item strong {
+  font-size: 15px;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   SMALL STATUS
+========================================================= */
+
+.demo-status-small {
+  display: inline-flex;
+
+  width: fit-content;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.demo-details-footer {
+  padding: 22px 36px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-top: 1px solid #e5e7eb;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.demo-back-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  color: #374151;
+
+  background: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.demo-back-btn:hover {
+  background: #f9fafb;
+
+  border-color: #9ca3af;
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   EDIT BUTTON
+========================================================= */
+
+.demo-edit-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f59e0b,
+      #d97706
+    );
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 5px 14px rgba(217, 119, 6, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.demo-edit-btn:hover {
+  color: #ffffff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 18px rgba(217, 119, 6, 0.25);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .demo-details-page {
+    padding: 25px 12px;
+  }
+
+  .demo-details-header {
+    padding: 25px 22px;
+
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .demo-details-header h1 {
+    font-size: 23px;
+  }
+
+  .demo-details-body {
+    padding: 22px;
+  }
+
+  .demo-info-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .demo-details-footer {
+    padding: 18px 22px;
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .demo-back-btn,
+  .demo-edit-btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+}
+</style>
+
+
+<div class="demo-details-page">
+
+  <div class="demo-details-card">
+
+    <!-- HEADER -->
+    <div class="demo-details-header">
+
+      <div>
+        <span class="demo-details-label">DEMO REQUEST</span>
+        <h1>Demo Request Details</h1>
+        <p>View the complete information submitted by the student.</p>
+      </div>
+
+      <div class="demo-status">
+        <%= @demo.status.presence || "Pending" %>
+      </div>
+
     </div>
 
-    <div class="card-body">
 
-      <p><strong>Name:</strong> <%= @demo.name %></p>
+    <!-- DETAILS -->
+    <div class="demo-details-body">
 
-      <p><strong>Phone:</strong> <%= @demo.phone %></p>
+      <div class="demo-info-grid">
 
-      <p><strong>Email:</strong> <%= @demo.email %></p>
+        <!-- NAME -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Student Name</span>
+          <strong>
+            <%= @demo.name.presence || "—" %>
+          </strong>
+        </div>
 
-      <p><strong>Course:</strong> <%= @demo.course %></p>
 
-      <p><strong>Batch:</strong> <%= @demo.batch %></p>
+        <!-- PHONE -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Contact Number</span>
+          <strong>
+            <%= @demo.phone.presence || "—" %>
+          </strong>
+        </div>
 
-      <p><strong>City:</strong> <%= @demo.city %></p>
 
-      <p><strong>Preferred Time:</strong> <%= @demo.preferred_time %></p>
+        <!-- EMAIL -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Email Address</span>
+          <strong>
+            <%= @demo.email.presence || "—" %>
+          </strong>
+        </div>
 
-      <p><strong>Status:</strong> <%= @demo.status %></p>
+
+        <!-- COURSE -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Selected Course</span>
+          <strong>
+            <%= @demo.course.presence || "—" %>
+          </strong>
+        </div>
+
+
+        <!-- BATCH -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Preferred Batch</span>
+          <strong>
+            <%= @demo.batch.presence || "—" %>
+          </strong>
+        </div>
+
+
+        <!-- CITY -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">City</span>
+          <strong>
+            <%= @demo.city.presence || "—" %>
+          </strong>
+        </div>
+
+
+        <!-- PREFERRED TIME -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Preferred Time</span>
+          <strong>
+            <%= @demo.preferred_time.presence || "—" %>
+          </strong>
+        </div>
+
+
+        <!-- STATUS -->
+        <div class="demo-info-item">
+          <span class="demo-info-title">Request Status</span>
+
+          <span class="demo-status-small">
+            <%= @demo.status.presence || "Pending" %>
+          </span>
+        </div>
+
+      </div>
 
     </div>
-    <div class="d-flex justify-content-between mt-4">
 
-  <%= link_to "← Back", demos_path, class: "btn btn-outline-secondary" %>
 
-  <%= link_to "✏ Edit",
-      edit_demo_path(@demo),
-      class: "btn btn-warning" %>
+    <!-- FOOTER ACTIONS -->
+    <div class="demo-details-footer">
 
-</div>
+      <%= link_to demos_path,
+          class: "demo-back-btn" do %>
+        ← Back to Demo Requests
+      <% end %>
+
+
+      <%= link_to edit_demo_path(@demo),
+          class: "demo-edit-btn" do %>
+        ✏ Edit Request
+      <% end %>
+
+    </div>
 
   </div>
-  <%= render "layouts/footer" %>
 
-<%# </div> %>
+</div>

@@ -42,6 +42,14 @@
       flex-wrap: wrap;
     }
   }
+  .action-buttons form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.action-buttons form button {
+  white-space: nowrap;
+}
 </style>
 
 
@@ -422,21 +430,20 @@
 
                       <!-- Delete -->
 
-                      <%= link_to demo_path(demo),
+                        <!-- Delete -->
 
-                          data: {
-                            turbo_method: :delete,
-                            turbo_confirm: "Are you sure you want to delete this demo request?"
-                          },
+                 <%= button_to demo_path(demo),
+                    method: :delete,
+                    data: {
+                turbo_confirm: "Are you sure you want to delete this demo request?"
+              },
+              class: "btn btn-danger btn-sm",
+              title: "Delete Demo" do %>
 
-                          class: "btn btn-danger btn-sm",
-                          title: "Delete Demo" do %>
+            <i class="bi bi-trash-fill"></i>
+            Delete
 
-                        <i class="bi bi-trash-fill"></i>
-                        Delete
-
-                      <% end %>
-
+             <% end %>
 
                     </div>
 

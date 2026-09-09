@@ -48,11 +48,12 @@
        FORM
   ================================================== -->
 
-  <%= form_with model: [@course, @quiz, @question],
+  <%= form_with model: [:teacher_panel, @course, @quiz, @question],
                 url: teacher_panel_course_quiz_questions_path(
                   @course,
                   @quiz
                 ),
+                method: :post,
                 local: true,
                 id: "questionForm" do |form| %>
 
@@ -301,7 +302,8 @@
                          name="correct_option"
                          value="<%= index %>"
                          id="correct_option_<%= index %>"
-                         class="correct-option">
+                         class="correct-option"
+                         <%= "checked" if option_form.object.is_correct? %>>
 
                   <label for="correct_option_<%= index %>"
                          class="correct-label">
@@ -318,16 +320,16 @@
 
 
                 <!-- ==================================================
-                     ACTUAL DATABASE VALUE
+                     DATABASE VALUE
                 ================================================== -->
 
                 <%= option_form.hidden_field :is_correct,
-                                             value: false,
+                                             value: option_form.object.is_correct? ? "true" : "false",
                                              class: "correct-hidden" %>
 
 
                 <!-- ==================================================
-                     POSITION
+                     OPTION POSITION
                 ================================================== -->
 
                 <%= option_form.hidden_field :position,
@@ -399,6 +401,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* ==================================================
+     APPLY INITIAL SELECTED STATE
+  ================================================== */
+
+  radios.forEach(function (radio) {
+
+    if (radio.checked) {
+
+      const selectedBox =
+        radio.closest(".option-box");
+
+      if (selectedBox) {
+
+        selectedBox.classList.add(
+          "correct-selected"
+        );
+
+      }
+
+    }
+
+  });
+
+
+  /* ==================================================
      SELECT CORRECT ANSWER
   ================================================== */
 
@@ -447,7 +473,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       if (!selectedBox) {
+
         return;
+
       }
 
 
@@ -625,17 +653,23 @@ document.addEventListener("DOMContentLoaded", function () {
   background:
     #3f52fb;
 
-  color: white;
+  color:
+    white;
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: center;
+  justify-content:
+    center;
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  font-size: 16px;
+  font-size:
+    16px;
 
 }
 
@@ -654,9 +688,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 .option-input {
 
-  border-radius: 10px;
+  border-radius:
+    10px;
 
-  min-height: 45px;
+  min-height:
+    45px;
 
 }
 
@@ -679,49 +715,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
 .correct-answer-wrapper {
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  min-height: 45px;
+  min-height:
+    45px;
 
 }
 
 
 .correct-option {
 
-  position: absolute;
+  position:
+    absolute;
 
-  opacity: 0;
+  opacity:
+    0;
 
-  width: 1px;
+  width:
+    1px;
 
-  height: 1px;
+  height:
+    1px;
 
 }
 
 
 .correct-label {
 
-  display: inline-flex;
+  display:
+    inline-flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 9px;
+  gap:
+    9px;
 
-  padding: 10px 12px;
+  padding:
+    10px 12px;
 
-  border-radius: 10px;
+  border-radius:
+    10px;
 
-  color: #6c757d;
+  color:
+    #6c757d;
 
-  font-size: 13px;
+  font-size:
+    13px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 
-  user-select: none;
+  user-select:
+    none;
 
   transition:
     all 0.2s ease;
@@ -746,20 +799,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 .radio-circle {
 
-  width: 20px;
+  width:
+    20px;
 
-  height: 20px;
+  height:
+    20px;
 
-  display: inline-block;
+  display:
+    inline-block;
 
-  position: relative;
+  position:
+    relative;
 
-  flex-shrink: 0;
+  flex-shrink:
+    0;
 
   border:
     2px solid #adb5bd;
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
   background:
     #ffffff;
@@ -791,19 +850,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 .correct-option:checked + .correct-label .radio-circle::after {
 
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  width: 10px;
+  width:
+    10px;
 
-  height: 10px;
+  height:
+    10px;
 
-  left: 3px;
+  left:
+    3px;
 
-  top: 3px;
+  top:
+    3px;
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
   background:
     #198754;

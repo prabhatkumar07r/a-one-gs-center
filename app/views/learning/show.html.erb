@@ -581,142 +581,143 @@
   </div>
 
 
+<!-- =====================================================
+     QUIZ CENTER — FULL COURSE QUIZZES ONLY
+======================================================== -->
 
-  <!-- =====================================================
-       QUIZ CENTER
-  ====================================================== -->
+<div class="learning-side-card quiz-side-card">
 
-  <div class="learning-side-card quiz-side-card">
+  <div class="side-card-header">
 
-    <div class="side-card-header">
+    <div class="side-icon quiz-side-icon">
+      🧠
+    </div>
 
-      <div class="side-icon quiz-side-icon">
-        🧠
-      </div>
+    <div>
 
-      <div>
+      <span>
+        TEST YOUR KNOWLEDGE
+      </span>
 
-        <span>
-          TEST YOUR KNOWLEDGE
-        </span>
+      <h3>
+        Quiz Center
+      </h3>
 
-        <h3>
-          Quiz Center
-        </h3>
+    </div>
 
-      </div>
+  </div>
+
+
+  <p class="side-card-description">
+    Test your understanding of the complete course with
+    course-level quizzes.
+  </p>
+
+
+  <% full_course_quizzes = @quizzes.where(video_id: nil) %>
+
+
+  <% if full_course_quizzes.present? && full_course_quizzes.any? %>
+
+    <div class="quiz-list">
+
+      <% full_course_quizzes.each do |quiz| %>
+
+        <div class="quiz-card">
+
+          <div class="quiz-card-top">
+
+            <div class="quiz-number">
+              🧠
+            </div>
+
+            <span class="quiz-active">
+              ACTIVE
+            </span>
+
+          </div>
+
+
+          <h4>
+            <%= quiz.title %>
+          </h4>
+
+
+          <% if quiz.description.present? %>
+
+            <p>
+              <%= quiz.description %>
+            </p>
+
+          <% else %>
+
+            <p>
+              Test your knowledge with this full course quiz.
+            </p>
+
+          <% end %>
+
+
+          <div class="quiz-details">
+
+            <span>
+              📝 <%= quiz.questions.count %>
+            </span>
+
+            <span>
+              ⏱ <%= quiz.time_limit.to_i %> min
+            </span>
+
+            <% if quiz.respond_to?(:passing_percentage) &&
+                  quiz.passing_percentage.present? %>
+
+              <span>
+                🎯 <%= quiz.passing_percentage %>%
+              </span>
+
+            <% end %>
+
+          </div>
+
+
+          <%= button_to start_course_quiz_path(@course, quiz),
+              method: :post,
+              class: "start-quiz-button" do %>
+
+            <span>
+              🚀
+            </span>
+
+            Start Quiz
+
+          <% end %>
+
+        </div>
+
+      <% end %>
 
     </div>
 
 
-    <p class="side-card-description">
-      Test your understanding of this course with interactive quizzes.
-    </p>
+  <% else %>
 
+    <div class="side-empty quiz-empty">
 
-    <% if @quizzes.present? && @quizzes.any? %>
+      <span>🧠</span>
 
-      <div class="quiz-list">
+      <h4>
+        No Full Course Quizzes
+      </h4>
 
-        <% @quizzes.each do |quiz| %>
+      <p>
+        Full course quizzes will appear here.
+      </p>
 
-          <div class="quiz-card">
+    </div>
 
+  <% end %>
 
-            <div class="quiz-card-top">
-
-              <div class="quiz-number">
-                🧠
-              </div>
-
-              <span class="quiz-active">
-                ACTIVE
-              </span>
-
-            </div>
-
-
-            <h4>
-              <%= quiz.title %>
-            </h4>
-
-
-            <% if quiz.description.present? %>
-
-              <p>
-                <%= quiz.description %>
-              </p>
-
-            <% else %>
-
-              <p>
-                Test your knowledge with this quiz.
-              </p>
-
-            <% end %>
-
-
-            <div class="quiz-details">
-
-              <span>
-                📝 <%= quiz.questions.count %>
-              </span>
-
-              <span>
-                ⏱ <%= quiz.time_limit.to_i %> min
-              </span>
-
-              <% if quiz.respond_to?(:passing_percentage) &&
-                    quiz.passing_percentage.present? %>
-
-                <span>
-                  🎯 <%= quiz.passing_percentage %>%
-                </span>
-
-              <% end %>
-
-            </div>
-
-
-            <%= button_to start_course_quiz_path(@course, quiz),
-                method: :post,
-                class: "start-quiz-button" do %>
-
-              <span>
-                🚀
-              </span>
-
-              Start Quiz
-
-            <% end %>
-
-
-          </div>
-
-        <% end %>
-
-      </div>
-
-    <% else %>
-
-      <div class="side-empty quiz-empty">
-
-        <span>🧠</span>
-
-        <h4>
-          No Active Quizzes
-        </h4>
-
-        <p>
-          Quizzes for this course will appear here.
-        </p>
-
-      </div>
-
-    <% end %>
-
-  </div>
-
+</div>
 
 
   <!-- =====================================================

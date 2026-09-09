@@ -1,197 +1,68 @@
-<% content_for :show_layout, true %>
+<% content_for :hide_footer, true %>
 
 <style>
 /* =========================================================
-   TEACHER PANEL - COURSE QUIZZES
-   Modern Dark Purple UI
+   TEACHER QUIZZES PAGE
+   Quizwich-inspired dark dashboard
 ========================================================= */
 
 .teacher-quizzes-page {
-  min-height: 100vh;
-  padding: 30px;
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(99, 102, 241, .20),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(168, 85, 247, .16),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #080d1c,
-      #10172b 55%,
-      #090e1c
-    );
-
-  color: #fff;
-}
-
-.teacher-quizzes-container {
-  width: 100%;
-  max-width: 1250px;
-  margin: 0 auto;
+  min-height: calc(100vh - 70px);
+  color: #f8fafc;
 }
 
 /* =========================================================
-   TOP BAR
+   HEADER
 ========================================================= */
 
-.quiz-page-top {
+.quizzes-page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 22px;
+  gap: 20px;
+  margin-bottom: 28px;
 }
 
-.quiz-breadcrumb {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-
-  color: #64748b;
-  font-size: 12px;
+.quizzes-page-heading h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 750;
+  letter-spacing: -0.7px;
+  color: #f8fafc;
 }
 
-.quiz-breadcrumb i {
-  color: #818cf8;
+.quizzes-page-heading p {
+  margin: 7px 0 0;
+  color: #94a3b8;
+  font-size: 14px;
 }
 
-.quiz-breadcrumb strong {
-  color: #e2e8f0;
-}
-
-.quiz-create-btn {
+.new-quiz-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 9px;
 
-  padding: 11px 17px;
+  padding: 11px 18px;
 
-  border-radius: 12px;
+  border: 1px solid rgba(45, 212, 191, .45);
+  border-radius: 8px;
 
-  background: linear-gradient(
-    135deg,
-    #6366f1,
-    #8b5cf6
-  );
+  background: #14b8a6;
+  color: #ffffff;
 
-  color: #fff;
   text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
 
-  font-size: 13px;
-  font-weight: 800;
+  box-shadow: 0 5px 18px rgba(20, 184, 166, .18);
 
-  box-shadow:
-    0 10px 25px rgba(99, 102, 241, .25);
-
-  transition: .25s ease;
+  transition: .2s ease;
 }
 
-.quiz-create-btn:hover {
-  color: #fff;
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 15px 32px rgba(99, 102, 241, .35);
-}
-
-/* =========================================================
-   PAGE HEADER
-========================================================= */
-
-.quiz-page-header {
-  position: relative;
-  overflow: hidden;
-
-  padding: 28px 30px;
-  margin-bottom: 24px;
-
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(79,70,229,.25),
-      rgba(124,58,237,.12)
-    );
-
-  border: 1px solid rgba(255,255,255,.08);
-
-  box-shadow:
-    0 20px 55px rgba(0,0,0,.25);
-}
-
-.quiz-page-header::after {
-  content: "";
-
-  position: absolute;
-
-  width: 240px;
-  height: 240px;
-
-  right: -100px;
-  top: -130px;
-
-  border-radius: 50%;
-
-  background: rgba(129,140,248,.08);
-}
-
-.quiz-header-content {
-  position: relative;
-  z-index: 2;
-}
-
-.quiz-header-icon {
-  width: 55px;
-  height: 55px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 14px;
-
-  border-radius: 16px;
-
-  background: rgba(255,255,255,.06);
-
-  border: 1px solid rgba(255,255,255,.08);
-
-  color: #a5b4fc;
-
-  font-size: 23px;
-}
-
-.quiz-page-header h2 {
-  margin: 0 0 7px;
-
-  color: #fff;
-
-  font-size: 27px;
-  font-weight: 800;
-
-  letter-spacing: -.4px;
-}
-
-.quiz-page-header p {
-  margin: 0;
-
-  color: #64748b;
-
-  font-size: 13px;
-}
-
-.course-name {
-  color: #c4b5fd;
-  font-weight: 800;
+.new-quiz-btn:hover {
+  background: #0d9488;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 /* =========================================================
@@ -200,148 +71,436 @@
 
 .quiz-stat-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 .quiz-stat-card {
-  padding: 19px;
+  position: relative;
 
-  border-radius: 17px;
+  min-height: 92px;
+  padding: 18px;
 
-  background: rgba(15,23,42,.78);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(30, 41, 59, .92),
+      rgba(15, 23, 42, .95)
+    );
 
-  border: 1px solid rgba(255,255,255,.07);
+  border: 1px solid #26344b;
+  border-radius: 9px;
 
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.20);
+  overflow: hidden;
 }
 
-.quiz-stat-icon {
-  width: 38px;
-  height: 38px;
+.quiz-stat-card::after {
+  content: "";
+  position: absolute;
+  right: -30px;
+  bottom: -40px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100px;
+  height: 100px;
 
-  margin-bottom: 12px;
-
-  border-radius: 11px;
-
-  background: rgba(99,102,241,.10);
-
-  color: #a5b4fc;
-
-  font-size: 16px;
-}
-
-.quiz-stat-number {
-  color: #f8fafc;
-
-  font-size: 25px;
-  font-weight: 800;
+  border-radius: 50%;
+  background: rgba(20, 184, 166, .05);
 }
 
 .quiz-stat-label {
-  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
 
-  color: #64748b;
+.quiz-stat-value {
+  font-size: 25px;
+  font-weight: 750;
+  color: #f8fafc;
+}
 
-  font-size: 11px;
+.quiz-stat-icon {
+  position: absolute;
+  right: 18px;
+  top: 19px;
+
+  font-size: 22px;
+  color: #2dd4bf;
 }
 
 /* =========================================================
-   SECTION
+   MAIN QUIZ PANEL
 ========================================================= */
 
-.quiz-section {
-  margin-bottom: 30px;
+.quizzes-panel {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 41, 59, .82),
+      rgba(15, 23, 42, .92)
+    );
+
+  border: 1px solid #26344b;
+  border-radius: 10px;
+
+  overflow: hidden;
 }
 
-.quiz-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* =========================================================
+   PANEL HEADER
+========================================================= */
 
-  gap: 15px;
+.quizzes-panel-header {
+  padding: 20px 22px 18px;
 
-  margin-bottom: 15px;
+  border-bottom: 1px solid #26344b;
 }
 
-.quiz-section-title {
+.quizzes-panel-title {
   display: flex;
   align-items: center;
   gap: 10px;
 
+  margin-bottom: 18px;
+}
+
+.quizzes-panel-title-bar {
+  width: 6px;
+  height: 25px;
+
+  border-radius: 4px;
+  background: #14b8a6;
+}
+
+.quizzes-panel-title h2 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 700;
+
   color: #f8fafc;
-
-  font-size: 18px;
-  font-weight: 800;
 }
 
-.quiz-section-title i {
-  color: #a5b4fc;
-}
-
-.quiz-section-subtitle {
+.quizzes-panel-title span {
   color: #64748b;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 /* =========================================================
-   QUIZ CARD
+   SEARCH AREA
+========================================================= */
+
+.quiz-search-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quiz-search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.quiz-search-wrapper i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: #64748b;
+  font-size: 14px;
+}
+
+.quiz-search-input {
+  width: 100%;
+  height: 42px;
+
+  padding: 0 14px 0 40px;
+
+  border: 1px solid #334155;
+  border-radius: 7px;
+
+  background: #111c30;
+  color: #f8fafc;
+
+  outline: none;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
+}
+
+.quiz-search-input::placeholder {
+  color: #64748b;
+}
+
+.quiz-search-input:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, .08);
+}
+
+.quiz-search-btn {
+  height: 42px;
+
+  padding: 0 17px;
+
+  border: 1px solid #334155;
+  border-radius: 7px;
+
+  background: #1e293b;
+  color: #e2e8f0;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.quiz-search-btn:hover {
+  border-color: #14b8a6;
+  background: #243247;
+  color: #ffffff;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.quiz-tabs {
+  display: flex;
+  gap: 5px;
+
+  padding: 14px 22px 0;
+
+  border-bottom: 1px solid #26344b;
+}
+
+.quiz-tab-btn {
+  position: relative;
+
+  border: 0;
+  background: transparent;
+
+  padding: 12px 17px 14px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.quiz-tab-btn:hover {
+  color: #cbd5e1;
+}
+
+.quiz-tab-btn.active {
+  color: #2dd4bf;
+}
+
+.quiz-tab-btn.active::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+
+  height: 3px;
+
+  border-radius: 3px 3px 0 0;
+
+  background: #14b8a6;
+}
+
+.quiz-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 21px;
+  height: 20px;
+
+  padding: 0 6px;
+  margin-left: 6px;
+
+  border-radius: 20px;
+
+  background: #263449;
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+.quiz-tab-btn.active .quiz-tab-count {
+  background: rgba(20, 184, 166, .13);
+  color: #2dd4bf;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.quiz-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 22px;
+
+  background: rgba(15, 23, 42, .5);
+
+  border-bottom: 1px solid #26344b;
+}
+
+.quiz-select-all {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.quiz-select-all input,
+.quiz-checkbox {
+  width: 16px;
+  height: 16px;
+
+  accent-color: #14b8a6;
+
+  cursor: pointer;
+}
+
+.quiz-selected-info {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.quiz-selected-info strong {
+  color: #2dd4bf;
+}
+
+/* =========================================================
+   TAB CONTENT
+========================================================= */
+
+.quiz-tab-content {
+  display: none;
+}
+
+.quiz-tab-content.active {
+  display: block;
+}
+
+/* =========================================================
+   QUIZ ROW
 ========================================================= */
 
 .quiz-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.quiz-card {
-  padding: 20px;
-
-  border-radius: 17px;
-
-  background: rgba(15,23,42,.78);
-
-  border: 1px solid rgba(255,255,255,.07);
-
-  transition: .25s ease;
-
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.18);
-}
-
-.quiz-card:hover {
-  transform: translateY(-3px);
-
-  border-color:
-    rgba(129,140,248,.28);
-
-  box-shadow:
-    0 20px 45px rgba(0,0,0,.28);
-}
-
-.quiz-card-top {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  gap: 15px;
-
-  margin-bottom: 13px;
+  flex-direction: column;
 }
 
-.quiz-card-icon {
-  width: 43px;
-  height: 43px;
+.quiz-row {
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(250px, 1fr)
+    minmax(230px, auto)
+    110px
+    115px
+    115px;
+
+  align-items: center;
+
+  min-height: 84px;
+
+  padding: 13px 22px;
+
+  border-bottom: 1px solid rgba(38, 52, 75, .8);
+
+  transition: background .18s ease;
+}
+
+.quiz-row:last-child {
+  border-bottom: none;
+}
+
+.quiz-row:hover {
+  background: rgba(51, 65, 85, .20);
+}
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.quiz-row-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+/* =========================================================
+   QUIZ INFO
+========================================================= */
+
+.quiz-info {
+  min-width: 0;
+}
+
+.quiz-title {
+  margin-bottom: 5px;
+
+  color: #f1f5f9;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quiz-description {
+  max-width: 430px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   VIDEO INFO
+========================================================= */
+
+.quiz-video-info {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  min-width: 0;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+.quiz-video-icon {
+  width: 28px;
+  height: 28px;
 
   display: flex;
   align-items: center;
@@ -349,178 +508,103 @@
 
   flex-shrink: 0;
 
-  border-radius: 12px;
+  border-radius: 6px;
 
-  background: rgba(99,102,241,.12);
-
-  color: #a5b4fc;
-
-  font-size: 18px;
+  background: rgba(59, 130, 246, .10);
+  color: #60a5fa;
 }
 
-.quiz-card-title {
-  margin: 0;
-
-  color: #f8fafc;
-
-  font-size: 15px;
-  font-weight: 800;
-
-  line-height: 1.4;
-}
-
-.quiz-card-description {
-  margin-top: 6px;
-
-  color: #64748b;
-
-  font-size: 11px;
-
-  line-height: 1.5;
-}
-
-.quiz-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-
-  padding: 5px 9px;
-
-  border-radius: 20px;
-
-  font-size: 10px;
-  font-weight: 800;
+.quiz-video-name {
+  min-width: 0;
 
   white-space: nowrap;
-}
-
-.quiz-status.active {
-  background: rgba(34,197,94,.10);
-  color: #86efac;
-  border: 1px solid rgba(34,197,94,.20);
-}
-
-.quiz-status.inactive {
-  background: rgba(239,68,68,.10);
-  color: #fca5a5;
-  border: 1px solid rgba(239,68,68,.20);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* =========================================================
-   QUIZ META
+   METADATA
 ========================================================= */
 
-.quiz-meta {
+.quiz-metric {
   display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
-
-  margin-top: 15px;
-}
-
-.quiz-meta-item {
-  display: inline-flex;
   align-items: center;
-  gap: 6px;
-
-  padding: 7px 9px;
-
-  border-radius: 9px;
-
-  background: rgba(255,255,255,.035);
+  gap: 7px;
 
   color: #94a3b8;
 
-  font-size: 10px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
-.quiz-meta-item i {
-  color: #818cf8;
-}
-
-.quiz-video-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  margin-top: 12px;
-
-  padding: 7px 10px;
-
-  border-radius: 9px;
-
-  background: rgba(168,85,247,.08);
-
-  border: 1px solid rgba(168,85,247,.15);
-
-  color: #c4b5fd;
-
-  font-size: 10px;
-  font-weight: 700;
+.quiz-metric i {
+  color: #64748b;
 }
 
 /* =========================================================
-   CARD ACTIONS
+   STATUS
 ========================================================= */
 
-.quiz-card-actions {
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  margin-top: 17px;
-
-  padding-top: 14px;
-
-  border-top:
-    1px solid rgba(255,255,255,.06);
-}
-
-.quiz-action {
+.quiz-status-badge {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
+  width: fit-content;
+
+  padding: 5px 9px;
+
+  border-radius: 5px;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.quiz-status-active {
+  background: rgba(16, 185, 129, .10);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, .20);
+}
+
+.quiz-status-inactive {
+  background: rgba(100, 116, 139, .12);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, .20);
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.quiz-actions {
+  display: flex;
+  align-items: center;
   gap: 6px;
+}
 
-  padding: 8px 11px;
+.quiz-action-btn {
+  width: 32px;
+  height: 32px;
 
-  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  font-size: 10px;
-  font-weight: 800;
+  border: 1px solid #334155;
+  border-radius: 6px;
+
+  background: #172337;
+  color: #94a3b8;
 
   text-decoration: none;
 
   transition: .2s ease;
 }
 
-.quiz-action.view {
-  background: rgba(59,130,246,.10);
-  border: 1px solid rgba(59,130,246,.18);
-  color: #93c5fd;
-}
-
-.quiz-action.edit {
-  background: rgba(245,158,11,.10);
-  border: 1px solid rgba(245,158,11,.18);
-  color: #fcd34d;
-}
-
-.quiz-action.delete {
-  background: rgba(239,68,68,.08);
-  border: 1px solid rgba(239,68,68,.15);
-  color: #fca5a5;
-}
-
-.quiz-action:hover {
-  transform: translateY(-1px);
-  color: #fff;
+.quiz-action-btn:hover {
+  border-color: #14b8a6;
+  background: #203248;
+  color: #2dd4bf;
 }
 
 /* =========================================================
@@ -528,16 +612,9 @@
 ========================================================= */
 
 .quiz-empty {
-  padding: 40px 25px;
+  padding: 65px 20px;
 
   text-align: center;
-
-  border-radius: 17px;
-
-  background: rgba(15,23,42,.65);
-
-  border:
-    1px dashed rgba(255,255,255,.10);
 }
 
 .quiz-empty-icon {
@@ -550,22 +627,20 @@
 
   margin: 0 auto 14px;
 
-  border-radius: 15px;
+  border-radius: 50%;
 
-  background: rgba(99,102,241,.08);
+  background: #1e293b;
+  color: #64748b;
 
-  color: #818cf8;
-
-  font-size: 22px;
+  font-size: 21px;
 }
 
-.quiz-empty h5 {
-  margin-bottom: 6px;
+.quiz-empty h3 {
+  margin: 0 0 7px;
 
   color: #e2e8f0;
 
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 16px;
 }
 
 .quiz-empty p {
@@ -573,598 +648,402 @@
 
   color: #64748b;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 /* =========================================================
-   TEST SERIES
+   NO SEARCH RESULTS
 ========================================================= */
 
-.test-series-list {
-  display: grid;
+.quiz-no-results {
+  display: none;
 
-  grid-template-columns:
-    repeat(2, 1fr);
+  padding: 45px 20px;
 
-  gap: 15px;
-}
-
-.test-series-card {
-  padding: 20px;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(30,41,59,.85),
-      rgba(15,23,42,.85)
-    );
-
-  border: 1px solid rgba(255,255,255,.07);
-
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.18);
-
-  transition: .25s ease;
-}
-
-.test-series-card:hover {
-  transform: translateY(-3px);
-
-  border-color:
-    rgba(168,85,247,.25);
-}
-
-.test-series-top {
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: flex-start;
-
-  gap: 15px;
-}
-
-.test-series-icon {
-  width: 45px;
-  height: 45px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 13px;
-
-  background: rgba(168,85,247,.10);
-
-  color: #c4b5fd;
-
-  font-size: 18px;
-}
-
-.test-series-title {
-  margin: 0;
-
-  color: #f8fafc;
-
-  font-size: 15px;
-
-  font-weight: 800;
-}
-
-.test-series-description {
-  margin-top: 6px;
+  text-align: center;
 
   color: #64748b;
 
-  font-size: 11px;
-
-  line-height: 1.5;
+  font-size: 13px;
 }
 
-/* =========================================================
-   FREE / PAID
-========================================================= */
+.quiz-no-results i {
+  display: block;
 
-.series-price {
-  margin-top: 15px;
+  margin-bottom: 10px;
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 10px;
-}
-
-.series-free {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  padding: 6px 10px;
-
-  border-radius: 20px;
-
-  background: rgba(34,197,94,.10);
-
-  border: 1px solid rgba(34,197,94,.18);
-
-  color: #86efac;
-
-  font-size: 10px;
-
-  font-weight: 800;
-}
-
-.series-paid {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  padding: 6px 10px;
-
-  border-radius: 20px;
-
-  background: rgba(245,158,11,.10);
-
-  border: 1px solid rgba(245,158,11,.18);
-
-  color: #fcd34d;
-
-  font-size: 10px;
-
-  font-weight: 800;
-}
-
-.series-price-value {
-  color: #e2e8f0;
-
-  font-size: 14px;
-
-  font-weight: 800;
-}
-
-/* =========================================================
-   SERIES META
-========================================================= */
-
-.series-meta {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
-
-  margin-top: 14px;
-}
-
-.series-meta-item {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  padding: 7px 9px;
-
-  border-radius: 9px;
-
-  background: rgba(255,255,255,.035);
-
-  color: #94a3b8;
-
-  font-size: 10px;
-}
-
-.series-meta-item i {
-  color: #a78bfa;
-}
-
-/* =========================================================
-   SERIES ACTIONS
-========================================================= */
-
-.series-actions {
-  margin-top: 17px;
-
-  padding-top: 14px;
-
-  border-top:
-    1px solid rgba(255,255,255,.06);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 10px;
-}
-
-.series-view-btn {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 7px;
-
-  padding: 9px 13px;
-
-  border-radius: 10px;
-
-  background: rgba(99,102,241,.10);
-
-  border:
-    1px solid rgba(99,102,241,.18);
-
-  color: #a5b4fc;
-
-  text-decoration: none;
-
-  font-size: 10px;
-
-  font-weight: 800;
-
-  transition: .2s ease;
-}
-
-.series-view-btn:hover {
-  color: #fff;
-
-  background: rgba(99,102,241,.18);
-
-  transform: translateY(-1px);
-}
-
-/* =========================================================
-   NOTICE
-========================================================= */
-
-.quiz-info-box {
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: 10px;
-
-  padding: 14px 16px;
-
-  margin-top: 20px;
-
-  border-radius: 13px;
-
-  background: rgba(59,130,246,.06);
-
-  border:
-    1px solid rgba(59,130,246,.12);
-
-  color: #94a3b8;
-
-  font-size: 11px;
-
-  line-height: 1.5;
-}
-
-.quiz-info-box i {
-  color: #60a5fa;
-
-  margin-top: 2px;
+  font-size: 24px;
 }
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 991px) {
-
-  .teacher-quizzes-page {
-    padding: 22px;
-  }
+@media (max-width: 1200px) {
 
   .quiz-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quiz-row {
     grid-template-columns:
-      repeat(2, 1fr);
-  }
+      35px
+      minmax(220px, 1fr)
+      minmax(190px, auto)
+      90px
+      100px
+      90px;
 
-  .quiz-list,
-  .test-series-list {
-    grid-template-columns: 1fr;
+    gap: 8px;
   }
-
 }
 
-@media (max-width: 767px) {
+@media (max-width: 950px) {
 
-  .teacher-quizzes-page {
-    padding: 15px;
+  .quiz-row {
+    grid-template-columns:
+      35px
+      1fr
+      auto;
+
+    gap: 10px;
+
+    padding: 15px 18px;
   }
 
-  .quiz-page-top {
+  .quiz-video-info {
+    grid-column: 2 / -1;
+  }
+
+  .quiz-metric {
+    display: inline-flex;
+  }
+
+  .quiz-row .quiz-metric:nth-of-type(2) {
+    grid-column: 2;
+  }
+
+  .quiz-row .quiz-status-wrapper {
+    grid-column: 2;
+  }
+
+  .quiz-actions {
+    grid-column: 3;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .quizzes-page-header {
     flex-direction: column;
-
-    align-items: stretch;
   }
 
-  .quiz-create-btn {
+  .new-quiz-btn {
     width: 100%;
+    justify-content: center;
   }
-
-  .quiz-page-header {
-    padding: 21px;
-    border-radius: 18px;
-  }
-
-  .quiz-page-header h2 {
-    font-size: 23px;
-  }
-
-  .quiz-stat-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .quiz-card,
-  .test-series-card {
-    padding: 17px;
-  }
-
-}
-
-@media (max-width: 480px) {
 
   .quiz-stat-grid {
     grid-template-columns: 1fr;
   }
 
-  .quiz-card-top,
-  .test-series-top {
-    flex-direction: column;
-  }
-
-  .quiz-status {
-    align-self: flex-start;
-  }
-
-  .quiz-card-actions {
-    flex-wrap: wrap;
-  }
-
-  .series-actions {
+  .quiz-search-area {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .series-view-btn {
+  .quiz-search-btn {
     width: 100%;
   }
 
+  .quiz-tabs {
+    overflow-x: auto;
+  }
+
+  .quiz-tab-btn {
+    white-space: nowrap;
+  }
+
+  .quiz-toolbar {
+    padding: 12px 16px;
+  }
+
+  .quiz-row {
+    grid-template-columns: 30px 1fr auto;
+    padding: 15px 16px;
+  }
+
+  .quiz-info {
+    min-width: 0;
+  }
+
+  .quiz-title {
+    font-size: 13px;
+  }
+
+  .quiz-description {
+    max-width: 100%;
+  }
+
+  .quiz-video-info {
+    grid-column: 2 / -1;
+  }
+
+  .quiz-metric {
+    grid-column: 2 / -1;
+  }
+
+  .quiz-status-wrapper {
+    grid-column: 2;
+  }
+
+  .quiz-actions {
+    grid-column: 3;
+    grid-row: 4;
+  }
 }
 </style>
 
 
 <div class="teacher-quizzes-page">
 
-  <div class="teacher-quizzes-container">
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="quizzes-page-header">
+
+    <div class="quizzes-page-heading">
+
+      <h1>
+        Quizzes
+      </h1>
+
+      <p>
+        Manage your course-wise and video-wise quizzes
+      </p>
+
+    </div>
+
+    <%= link_to new_teacher_panel_course_quiz_path(@course),
+                class: "new-quiz-btn" do %>
+
+      <i class="fas fa-plus"></i>
+
+      New Quiz
+
+    <% end %>
+
+  </div>
 
 
-    <!-- =====================================================
-         TOP NAVIGATION
-    ====================================================== -->
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
 
-    <div class="quiz-page-top">
+  <div class="quiz-stat-grid">
 
-      <div class="quiz-breadcrumb">
+    <div class="quiz-stat-card">
 
-        <i class="fas fa-chalkboard-teacher"></i>
-
-        <span>Teacher Panel</span>
-
-        <i class="fas fa-chevron-right"></i>
-
-        <span>Courses</span>
-
-        <i class="fas fa-chevron-right"></i>
-
-        <strong>
-          <%= @course.Course_name %>
-        </strong>
-
-        <i class="fas fa-chevron-right"></i>
-
-        <strong>
-          Quizzes
-        </strong>
-
+      <div class="quiz-stat-label">
+        Total Quizzes
       </div>
 
+      <div class="quiz-stat-value">
+        <%= @course_level_quizzes.count + @video_quizzes.count %>
+      </div>
 
-      <%= link_to new_teacher_panel_course_quiz_path(@course),
-                  class: "quiz-create-btn" do %>
-
-        <i class="fas fa-plus"></i>
-
-        Create Quiz
-
-      <% end %>
+      <div class="quiz-stat-icon">
+        <i class="fas fa-award"></i>
+      </div>
 
     </div>
 
 
-    <!-- =====================================================
-         PAGE HEADER
-    ====================================================== -->
+    <div class="quiz-stat-card">
 
-    <div class="quiz-page-header">
+      <div class="quiz-stat-label">
+        Course Wise
+      </div>
 
-      <div class="quiz-header-content">
+      <div class="quiz-stat-value">
+        <%= @course_level_quizzes.count %>
+      </div>
 
-        <div class="quiz-header-icon">
+      <div class="quiz-stat-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
 
-          <i class="fas fa-clipboard-question"></i>
+    </div>
 
-        </div>
+
+    <div class="quiz-stat-card">
+
+      <div class="quiz-stat-label">
+        Video Wise
+      </div>
+
+      <div class="quiz-stat-value">
+        <%= @video_quizzes.count %>
+      </div>
+
+      <div class="quiz-stat-icon">
+        <i class="fas fa-video"></i>
+      </div>
+
+    </div>
+
+
+    <div class="quiz-stat-card">
+
+      <div class="quiz-stat-label">
+        Total Questions
+      </div>
+
+      <div class="quiz-stat-value">
+        <%= @course.quizzes.includes(:questions).sum { |quiz| quiz.questions.size } %>
+      </div>
+
+      <div class="quiz-stat-icon">
+        <i class="fas fa-check-square"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAIN PANEL
+  ====================================================== -->
+
+  <div class="quizzes-panel">
+
+
+    <!-- ===================================================
+         PANEL HEADER
+    ==================================================== -->
+
+    <div class="quizzes-panel-header">
+
+      <div class="quizzes-panel-title">
+
+        <div class="quizzes-panel-title-bar"></div>
 
         <h2>
-          Course Quizzes
+          Your Quizzes
         </h2>
 
-        <p>
+        <span>
+          <%= @course.quizzes.count %> total
+        </span>
 
-          Manage course-level and video-wise quizzes for
+      </div>
 
-          <span class="course-name">
-            <%= @course.Course_name %>
-          </span>
 
-        </p>
+      <!-- =================================================
+           SEARCH
+      ================================================== -->
+
+      <div class="quiz-search-area">
+
+        <div class="quiz-search-wrapper">
+
+          <i class="fas fa-search"></i>
+
+          <input
+            type="text"
+            id="quizSearchInput"
+            class="quiz-search-input"
+            placeholder="Search quizzes, videos or descriptions..."
+            autocomplete="off">
+
+        </div>
+
+        <button
+          type="button"
+          id="quizSearchButton"
+          class="quiz-search-btn">
+
+          <i class="fas fa-search"></i>
+          Search
+
+        </button>
 
       </div>
 
     </div>
 
 
-    <!-- =====================================================
-         STATISTICS
-    ====================================================== -->
+    <!-- ===================================================
+         TABS
+    ==================================================== -->
 
-    <div class="quiz-stat-grid">
+    <div class="quiz-tabs">
 
+      <button
+        type="button"
+        class="quiz-tab-btn active"
+        data-tab="course-wise">
 
-      <!-- TOTAL COURSE/VIDEO QUIZZES -->
+        <i class="fas fa-graduation-cap"></i>
 
-      <div class="quiz-stat-card">
+        Course Wise
 
-        <div class="quiz-stat-icon">
-
-          <i class="fas fa-clipboard-list"></i>
-
-        </div>
-
-        <div class="quiz-stat-number">
-
+        <span class="quiz-tab-count">
           <%= @course_level_quizzes.count %>
+        </span>
 
-        </div>
-
-        <div class="quiz-stat-label">
-
-          Course & Video Quizzes
-
-        </div>
-
-      </div>
+      </button>
 
 
-      <!-- COURSE LEVEL -->
+      <button
+        type="button"
+        class="quiz-tab-btn"
+        data-tab="video-wise">
 
-      <div class="quiz-stat-card">
+        <i class="fas fa-video"></i>
 
-        <div class="quiz-stat-icon">
+        Video Wise
 
-          <i class="fas fa-graduation-cap"></i>
+        <span class="quiz-tab-count">
+          <%= @video_quizzes.count %>
+        </span>
 
-        </div>
-
-        <div class="quiz-stat-number">
-
-          <%= @course_level_quizzes.count { |quiz| quiz.video_id.blank? } %>
-
-        </div>
-
-        <div class="quiz-stat-label">
-
-          Course Level
-
-        </div>
-
-      </div>
-
-
-      <!-- VIDEO LEVEL -->
-
-      <div class="quiz-stat-card">
-
-        <div class="quiz-stat-icon">
-
-          <i class="fas fa-video"></i>
-
-        </div>
-
-        <div class="quiz-stat-number">
-
-          <%= @course_level_quizzes.count { |quiz| quiz.video_id.present? } %>
-
-        </div>
-
-        <div class="quiz-stat-label">
-
-          Video-wise
-
-        </div>
-
-      </div>
-
-
-      <!-- TEST SERIES -->
-
-      <div class="quiz-stat-card">
-
-        <div class="quiz-stat-icon">
-
-          <i class="fas fa-layer-group"></i>
-
-        </div>
-
-        <div class="quiz-stat-number">
-
-          <%= @test_series.count %>
-
-        </div>
-
-        <div class="quiz-stat-label">
-
-          Test Series
-
-        </div>
-
-      </div>
+      </button>
 
     </div>
 
 
-    <!-- =====================================================
-         COURSE / VIDEO QUIZZES
-    ====================================================== -->
+    <!-- ===================================================
+         COURSE WISE
+    ==================================================== -->
 
-    <div class="quiz-section">
+    <div
+      class="quiz-tab-content active"
+      data-content="course-wise">
 
-      <div class="quiz-section-header">
 
-        <div>
+      <!-- Toolbar -->
 
-          <div class="quiz-section-title">
+      <div class="quiz-toolbar">
 
-            <i class="fas fa-clipboard-check"></i>
+        <label class="quiz-select-all">
 
-            Course & Video Quizzes
+          <input
+            type="checkbox"
+            class="select-all-checkbox"
+            data-group="course-wise">
 
-          </div>
+          Select All
 
-          <div class="quiz-section-subtitle">
+        </label>
 
-            Quizzes created directly for this course or linked to a video.
-
-          </div>
-
+        <div class="quiz-selected-info">
+          <strong class="selected-count"
+                  data-group="course-wise">0</strong>
+          selected
         </div>
 
       </div>
@@ -1172,88 +1051,101 @@
 
       <% if @course_level_quizzes.any? %>
 
-        <div class="quiz-list">
-
+        <div class="quiz-list"
+             data-list="course-wise">
 
           <% @course_level_quizzes.each do |quiz| %>
 
-            <div class="quiz-card">
+            <div
+              class="quiz-row"
+              data-quiz-row
+              data-search="<%= [
+                quiz.title,
+                quiz.description
+              ].compact.join(' ').downcase %>">
 
 
-              <div class="quiz-card-top">
+              <!-- Checkbox -->
+
+              <div class="quiz-row-checkbox">
+
+                <input
+                  type="checkbox"
+                  class="quiz-checkbox"
+                  data-group="course-wise"
+                  value="<%= quiz.id %>">
+
+              </div>
 
 
-                <div class="d-flex gap-3">
+              <!-- Quiz -->
 
+              <div class="quiz-info">
 
-                  <div class="quiz-card-icon">
-
-                    <% if quiz.video_id.present? %>
-
-                      <i class="fas fa-video"></i>
-
-                    <% else %>
-
-                      <i class="fas fa-graduation-cap"></i>
-
-                    <% end %>
-
-                  </div>
-
-
-                  <div>
-
-                    <h3 class="quiz-card-title">
-
-                      <%= quiz.title %>
-
-                    </h3>
-
-
-                    <% if quiz.description.present? %>
-
-                      <div class="quiz-card-description">
-
-                        <%= truncate(
-                              quiz.description,
-                              length: 130
-                            ) %>
-
-                      </div>
-
-                    <% else %>
-
-                      <div class="quiz-card-description">
-
-                        No description provided.
-
-                      </div>
-
-                    <% end %>
-
-                  </div>
-
+                <div class="quiz-title">
+                  <%= quiz.title %>
                 </div>
 
+                <div class="quiz-description">
+                  <%= quiz.description.presence || "Course level quiz" %>
+                </div>
 
-                <% if quiz.status.to_s == "Active" %>
+              </div>
 
-                  <span class="quiz-status active">
 
-                    <i class="fas fa-circle-check"></i>
+              <!-- Type -->
 
+              <div class="quiz-video-info">
+
+                <div class="quiz-video-icon">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+
+                <div class="quiz-video-name">
+                  Full Course Quiz
+                </div>
+
+              </div>
+
+
+              <!-- Questions -->
+
+              <div class="quiz-metric">
+
+                <i class="fas fa-question-circle"></i>
+
+                <%= quiz.questions.size %>
+
+                Questions
+
+              </div>
+
+
+              <!-- Time -->
+
+              <div class="quiz-metric">
+
+                <i class="fas fa-clock"></i>
+
+                <%= quiz.time_limit %> min
+
+              </div>
+
+
+              <!-- Status -->
+
+              <div class="quiz-status-wrapper">
+
+                <% if quiz.status.to_s.downcase == "active" %>
+
+                  <span class="quiz-status-badge quiz-status-active">
                     Active
-
                   </span>
 
                 <% else %>
 
-                  <span class="quiz-status inactive">
-
-                    <i class="fas fa-circle-pause"></i>
-
-                    <%= quiz.status.presence || "Inactive" %>
-
+                  <span class="quiz-status-badge quiz-status-inactive">
+                    <%= quiz.status %>
                   </span>
 
                 <% end %>
@@ -1261,133 +1153,26 @@
               </div>
 
 
-              <!-- VIDEO -->
+              <!-- Actions -->
 
-              <% if quiz.video.present? %>
+              <div class="quiz-actions">
 
-                <div class="quiz-video-tag">
-
-                  <i class="fas fa-video"></i>
-
-                  Video:
-
-                  <%= quiz.video.title %>
-
-                </div>
-
-              <% else %>
-
-                <div class="quiz-video-tag">
-
-                  <i class="fas fa-graduation-cap"></i>
-
-                  Course Level Quiz
-
-                </div>
-
-              <% end %>
-
-
-              <!-- META -->
-
-              <div class="quiz-meta">
-
-
-                <div class="quiz-meta-item">
-
-                  <i class="fas fa-clock"></i>
-
-                  <%= quiz.time_limit || 0 %>
-
-                  min
-
-                </div>
-
-
-                <div class="quiz-meta-item">
-
-                  <i class="fas fa-percent"></i>
-
-                  Pass:
-
-                  <%= quiz.passing_percentage || 0 %>%
-
-                </div>
-
-
-                <div class="quiz-meta-item">
-
-                  <i class="fas fa-question-circle"></i>
-
-                  <%= quiz.questions.size %>
-
-                  Questions
-
-                </div>
-
-
-                <div class="quiz-meta-item">
-
-                  <i class="fas fa-calendar"></i>
-
-                  <%= quiz.created_at.strftime("%d %b %Y") if quiz.created_at %>
-
-                </div>
-
-              </div>
-
-
-              <!-- ACTIONS -->
-
-              <div class="quiz-card-actions">
-
-
-                <%= link_to teacher_panel_course_quiz_path(
-                              @course,
-                              quiz
-                            ),
-                            class: "quiz-action view" do %>
+                <%= link_to teacher_panel_course_quiz_path(@course, quiz),
+                            class: "quiz-action-btn",
+                            title: "View Quiz" do %>
 
                   <i class="fas fa-eye"></i>
 
-                  View
-
                 <% end %>
 
 
-                <%= link_to edit_teacher_panel_course_quiz_path(
-                              @course,
-                              quiz
-                            ),
-                            class: "quiz-action edit" do %>
+                <%= link_to edit_teacher_panel_course_quiz_path(@course, quiz),
+                            class: "quiz-action-btn",
+                            title: "Edit Quiz" do %>
 
                   <i class="fas fa-pen"></i>
 
-                  Edit
-
                 <% end %>
-
-
-                <%= button_to teacher_panel_course_quiz_path(
-                              @course,
-                              quiz
-                            ),
-                            method: :delete,
-                            class: "quiz-action delete",
-                            form: {
-                              style: "display:inline;"
-                            },
-                            data: {
-                              turbo_confirm:
-                                "Are you sure you want to delete this quiz?"
-                            } do %>
-
-                  <i class="fas fa-trash"></i>
-
-                  Delete
-
-                <% end %>
-
 
               </div>
 
@@ -1395,27 +1180,32 @@
 
           <% end %>
 
-
         </div>
 
 
-      <% else %>
+        <div class="quiz-no-results"
+             data-no-results="course-wise">
 
+          <i class="fas fa-search"></i>
+
+          No course quizzes found.
+
+        </div>
+
+      <% else %>
 
         <div class="quiz-empty">
 
           <div class="quiz-empty-icon">
-
-            <i class="fas fa-clipboard-question"></i>
-
+            <i class="fas fa-graduation-cap"></i>
           </div>
 
-          <h5>
-            No Course Quizzes Yet
-          </h5>
+          <h3>
+            No Course Wise Quizzes
+          </h3>
 
           <p>
-            Create your first course-level or video-wise quiz.
+            Create a course-wise quiz to see it here.
           </p>
 
         </div>
@@ -1425,281 +1215,533 @@
     </div>
 
 
-    <!-- =====================================================
-         TEST SERIES
-    ====================================================== -->
+    <!-- ===================================================
+         VIDEO WISE
+    ==================================================== -->
 
-    <div class="quiz-section">
+    <div
+      class="quiz-tab-content"
+      data-content="video-wise">
 
-      <div class="quiz-section-header">
 
-        <div>
+      <!-- Toolbar -->
 
-          <div class="quiz-section-title">
+      <div class="quiz-toolbar">
 
-            <i class="fas fa-layer-group"></i>
+        <label class="quiz-select-all">
 
-            Test Series
+          <input
+            type="checkbox"
+            class="select-all-checkbox"
+            data-group="video-wise">
 
-          </div>
+          Select All
 
-          <div class="quiz-section-subtitle">
+        </label>
 
-            Test series created for this course.
+        <div class="quiz-selected-info">
 
-          </div>
+          <strong class="selected-count"
+                  data-group="video-wise">
+            0
+          </strong>
+
+          selected
 
         </div>
 
       </div>
 
 
-      <% if @test_series.any? %>
+      <% if @video_quizzes.any? %>
 
-        <div class="test-series-list">
+        <div class="quiz-list"
+             data-list="video-wise">
 
+          <% @video_quizzes.each do |quiz| %>
 
-          <% @test_series.each do |series| %>
-
-            <div class="test-series-card">
-
-
-              <div class="test-series-top">
-
-
-                <div class="d-flex gap-3">
-
-
-                  <div class="test-series-icon">
-
-                    <i class="fas fa-layer-group"></i>
-
-                  </div>
+            <div
+              class="quiz-row"
+              data-quiz-row
+              data-search="<%= [
+                quiz.title,
+                quiz.description,
+                quiz.video&.title
+              ].compact.join(' ').downcase %>">
 
 
-                  <div>
+              <!-- Checkbox -->
 
-                    <h3 class="test-series-title">
+              <div class="quiz-row-checkbox">
 
-                      <%= series.title %>
-
-                    </h3>
-
-
-                    <% if series.respond_to?(:description) &&
-                          series.description.present? %>
-
-                      <div class="test-series-description">
-
-                        <%= truncate(
-                              series.description,
-                              length: 140
-                            ) %>
-
-                      </div>
-
-                    <% else %>
-
-                      <div class="test-series-description">
-
-                        Test series for
-                        <%= @course.Course_name %>.
-
-                      </div>
-
-                    <% end %>
-
-                  </div>
-
-                </div>
-
+                <input
+                  type="checkbox"
+                  class="quiz-checkbox"
+                  data-group="video-wise"
+                  value="<%= quiz.id %>">
 
               </div>
 
 
-              <!-- PRICE -->
+              <!-- Quiz -->
 
-              <div class="series-price">
+              <div class="quiz-info">
+
+                <div class="quiz-title">
+                  <%= quiz.title %>
+                </div>
+
+                <div class="quiz-description">
+                  <%= quiz.description.presence || "Video level quiz" %>
+                </div>
+
+              </div>
 
 
-                <% price =
-                     if series.respond_to?(:price)
-                       series.price
-                     elsif series.respond_to?(:amount)
-                       series.amount
-                     else
-                       0
-                     end
-                %>
+              <!-- Video -->
+
+              <div class="quiz-video-info">
+
+                <div class="quiz-video-icon">
+                  <i class="fas fa-video"></i>
+                </div>
+
+                <div
+                  class="quiz-video-name"
+                  title="<%= quiz.video&.title %>">
+
+                  <%= quiz.video&.title.presence || "Video not available" %>
+
+                </div>
+
+              </div>
 
 
-                <% if price.to_f <= 0 %>
+              <!-- Questions -->
 
-                  <span class="series-free">
+              <div class="quiz-metric">
 
-                    <i class="fas fa-unlock"></i>
+                <i class="fas fa-question-circle"></i>
 
-                    FREE
+                <%= quiz.questions.size %>
 
-                  </span>
+                Questions
 
-                  <span class="series-price-value">
+              </div>
 
-                    Free
 
+              <!-- Time -->
+
+              <div class="quiz-metric">
+
+                <i class="fas fa-clock"></i>
+
+                <%= quiz.time_limit %> min
+
+              </div>
+
+
+              <!-- Status -->
+
+              <div class="quiz-status-wrapper">
+
+                <% if quiz.status.to_s.downcase == "active" %>
+
+                  <span class="quiz-status-badge quiz-status-active">
+                    Active
                   </span>
 
                 <% else %>
 
-                  <span class="series-paid">
-
-                    <i class="fas fa-lock"></i>
-
-                    PAID
-
-                  </span>
-
-                  <span class="series-price-value">
-
-                    ₹<%= number_with_precision(
-                          price,
-                          precision: 2
-                        ) %>
-
+                  <span class="quiz-status-badge quiz-status-inactive">
+                    <%= quiz.status %>
                   </span>
 
                 <% end %>
 
-
               </div>
 
 
-              <!-- META -->
+              <!-- Actions -->
 
-              <div class="series-meta">
+              <div class="quiz-actions">
 
+                <%= link_to teacher_panel_course_quiz_path(@course, quiz),
+                            class: "quiz-action-btn",
+                            title: "View Quiz" do %>
 
-                <div class="series-meta-item">
-
-                  <i class="fas fa-clipboard-list"></i>
-
-                  <%= series.quizzes.size %>
-
-                  Quizzes
-
-                </div>
-
-
-                <div class="series-meta-item">
-
-                  <i class="fas fa-question-circle"></i>
-
-                  <%= series.quizzes.sum { |q| q.questions.size } %>
-
-                  Questions
-
-                </div>
-
-
-                <div class="series-meta-item">
-
-                  <i class="fas fa-calendar"></i>
-
-                  <%= series.created_at.strftime("%d %b %Y") if series.created_at %>
-
-                </div>
-
-
-              </div>
-
-
-              <!-- ACTION -->
-
-              <div class="series-actions">
-
-
-                <span class="field-help">
-
-                  <i class="fas fa-circle-info me-1"></i>
-
-                  Quizzes assigned to this series are shown here.
-
-                </span>
-
-
-                <% if respond_to?(:teacher_panel_course_test_series_path) %>
-
-                  <%= link_to teacher_panel_course_test_series_path(
-                                @course,
-                                series
-                              ),
-                              class: "series-view-btn" do %>
-
-                    <i class="fas fa-eye"></i>
-
-                    View Test Series
-
-                  <% end %>
+                  <i class="fas fa-eye"></i>
 
                 <% end %>
 
 
-              </div>
+                <%= link_to edit_teacher_panel_course_quiz_path(@course, quiz),
+                            class: "quiz-action-btn",
+                            title: "Edit Quiz" do %>
 
+                  <i class="fas fa-pen"></i>
+
+                <% end %>
+
+              </div>
 
             </div>
 
           <% end %>
 
-
         </div>
 
 
-      <% else %>
+        <div class="quiz-no-results"
+             data-no-results="video-wise">
 
+          <i class="fas fa-search"></i>
+
+          No video quizzes found.
+
+        </div>
+
+      <% else %>
 
         <div class="quiz-empty">
 
           <div class="quiz-empty-icon">
-
-            <i class="fas fa-layer-group"></i>
-
+            <i class="fas fa-video"></i>
           </div>
 
-          <h5>
-            No Test Series Yet
-          </h5>
+          <h3>
+            No Video Wise Quizzes
+          </h3>
 
           <p>
-            Test series created for this course will appear here.
+            Create a video-wise quiz to see it here.
           </p>
 
         </div>
 
       <% end %>
 
-
-      <!-- INFORMATION -->
-
-      <div class="quiz-info-box">
-
-        <i class="fas fa-circle-info"></i>
-
-        <div>
-
-          <strong>Test Series:</strong>
-
-          Test series are separate from normal course quizzes.
-          They can be configured as free or paid and can contain
-          multiple quizzes for students.
-
-        </div>
-
-      </div>
-
     </div>
-
 
   </div>
 
 </div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* ========================================================
+     TAB SYSTEM
+  ======================================================== */
+
+  const tabButtons =
+    document.querySelectorAll(".quiz-tab-btn");
+
+  const tabContents =
+    document.querySelectorAll(".quiz-tab-content");
+
+
+  tabButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+      const target =
+        button.getAttribute("data-tab");
+
+
+      /* Remove active from buttons */
+
+      tabButtons.forEach(function (btn) {
+        btn.classList.remove("active");
+      });
+
+
+      /* Hide all content */
+
+      tabContents.forEach(function (content) {
+        content.classList.remove("active");
+      });
+
+
+      /* Activate clicked tab */
+
+      button.classList.add("active");
+
+
+      const targetContent =
+        document.querySelector(
+          '.quiz-tab-content[data-content="' +
+          target +
+          '"]'
+        );
+
+
+      if (targetContent) {
+        targetContent.classList.add("active");
+      }
+
+
+      /* Re-run search for active tab */
+
+      filterQuizzes();
+
+    });
+
+  });
+
+
+  /* ========================================================
+     SEARCH
+  ======================================================== */
+
+  const searchInput =
+    document.getElementById("quizSearchInput");
+
+  const searchButton =
+    document.getElementById("quizSearchButton");
+
+
+  function filterQuizzes() {
+
+    if (!searchInput) return;
+
+
+    const searchTerm =
+      searchInput.value
+        .trim()
+        .toLowerCase();
+
+
+    const activeContent =
+      document.querySelector(
+        ".quiz-tab-content.active"
+      );
+
+
+    if (!activeContent) return;
+
+
+    const rows =
+      activeContent.querySelectorAll(
+        "[data-quiz-row]"
+      );
+
+
+    const noResults =
+      activeContent.querySelector(
+        ".quiz-no-results"
+      );
+
+
+    let visibleCount = 0;
+
+
+    rows.forEach(function (row) {
+
+      const searchableText =
+        row.getAttribute("data-search") || "";
+
+
+      if (
+        searchTerm === "" ||
+        searchableText.includes(searchTerm)
+      ) {
+
+        row.style.display = "grid";
+
+        visibleCount++;
+
+      } else {
+
+        row.style.display = "none";
+
+      }
+
+    });
+
+
+    if (noResults) {
+
+      noResults.style.display =
+        searchTerm !== "" && visibleCount === 0
+          ? "block"
+          : "none";
+
+    }
+
+  }
+
+
+  if (searchButton) {
+
+    searchButton.addEventListener(
+      "click",
+      filterQuizzes
+    );
+
+  }
+
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (event.key === "Enter") {
+          event.preventDefault();
+          filterQuizzes();
+        }
+
+      }
+    );
+
+
+    searchInput.addEventListener(
+      "input",
+      function () {
+
+        filterQuizzes();
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     SELECT ALL + INDIVIDUAL SELECTION
+  ======================================================== */
+
+  function updateSelection(group) {
+
+    const checkboxes =
+      document.querySelectorAll(
+        '.quiz-checkbox[data-group="' +
+        group +
+        '"]'
+      );
+
+
+    const selectAll =
+      document.querySelector(
+        '.select-all-checkbox[data-group="' +
+        group +
+        '"]'
+      );
+
+
+    const countElement =
+      document.querySelector(
+        '.selected-count[data-group="' +
+        group +
+        '"]'
+      );
+
+
+    const checked =
+      Array.from(checkboxes)
+        .filter(function (checkbox) {
+          return checkbox.checked;
+        });
+
+
+    if (countElement) {
+      countElement.textContent =
+        checked.length;
+    }
+
+
+    if (selectAll) {
+
+      selectAll.checked =
+        checkboxes.length > 0 &&
+        checked.length === checkboxes.length;
+
+      selectAll.indeterminate =
+        checked.length > 0 &&
+        checked.length < checkboxes.length;
+
+    }
+
+  }
+
+
+  const selectAllCheckboxes =
+    document.querySelectorAll(
+      ".select-all-checkbox"
+    );
+
+
+  selectAllCheckboxes.forEach(function (selectAll) {
+
+    selectAll.addEventListener(
+      "change",
+      function () {
+
+        const group =
+          selectAll.getAttribute("data-group");
+
+
+        const checkboxes =
+          document.querySelectorAll(
+            '.quiz-checkbox[data-group="' +
+            group +
+            '"]'
+          );
+
+
+        checkboxes.forEach(function (checkbox) {
+
+          checkbox.checked =
+            selectAll.checked;
+
+        });
+
+
+        updateSelection(group);
+
+      }
+    );
+
+  });
+
+
+  const quizCheckboxes =
+    document.querySelectorAll(
+      ".quiz-checkbox"
+    );
+
+
+  quizCheckboxes.forEach(function (checkbox) {
+
+    checkbox.addEventListener(
+      "change",
+      function () {
+
+        const group =
+          checkbox.getAttribute("data-group");
+
+
+        updateSelection(group);
+
+      }
+    );
+
+  });
+
+
+  /* ========================================================
+     INITIAL STATE
+  ======================================================== */
+
+  updateSelection("course-wise");
+  updateSelection("video-wise");
+
+});
+</script>

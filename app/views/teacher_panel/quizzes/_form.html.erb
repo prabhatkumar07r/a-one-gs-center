@@ -1,287 +1,997 @@
-<div class="card border-0 shadow-sm rounded-4">
-  <div class="card-body p-4">
-
-    <div class="mb-4">
-      <h3 class="fw-bold mb-1">
-        <%= @quiz.new_record? ? "➕ Create Quiz" : "✏️ Edit Quiz" %>
-      </h3>
-
-      <p class="text-muted mb-0">
-        Create a quiz for this course or for a specific video.
-      </p>
-    </div>
-
-    <%= form_with model: [:teacher, @course, @quiz] do |f| %>
-
-      <% if @quiz.errors.any? %>
-        <div class="alert alert-danger">
-          <h6 class="fw-bold">
-            Please fix the following errors:
-          </h6>
-
-          <ul class="mb-0">
-            <% @quiz.errors.full_messages.each do |error| %>
-              <li><%= error %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-
-      <!-- Course -->
-      <div class="mb-4">
-
-        <label class="form-label fw-bold">
-          Course
-        </label>
-
-        <div class="form-control bg-light">
-          🎓 <%= @course.Course_name %>
-        </div>
-
-      </div>
-
-
-      <!-- Quiz Type -->
-      <div class="mb-4">
-
-        <label class="form-label fw-bold">
-          Quiz Type
-        </label>
-
-        <div class="row g-3">
-
-          <!-- Course Quiz -->
-          <div class="col-md-6">
-
-            <label class="quiz-type-card w-100">
-
-              <%= radio_button_tag :quiz_type,
-                  "course",
-                  @quiz.video_id.blank?,
-                  id: "course_quiz",
-                  class: "quiz-type-radio" %>
-
-              <div class="quiz-type-content">
-
-                <div class="fs-2">
-                  🎓
-                </div>
-
-                <h5 class="fw-bold mb-1">
-                  Course Quiz
-                </h5>
-
-                <small class="text-muted">
-                  Quiz for the complete course
-                </small>
-
-              </div>
-
-            </label>
-
-          </div>
-
-
-          <!-- Video Quiz -->
-          <div class="col-md-6">
-
-            <label class="quiz-type-card w-100">
-
-              <%= radio_button_tag :quiz_type,
-                  "video",
-                  @quiz.video_id.present?,
-                  id: "video_quiz",
-                  class: "quiz-type-radio" %>
-
-              <div class="quiz-type-content">
-
-                <div class="fs-2">
-                  🎥
-                </div>
-
-                <h5 class="fw-bold mb-1">
-                  Video Quiz
-                </h5>
-
-                <small class="text-muted">
-                  Quiz for a specific lesson
-                </small>
-
-              </div>
-
-            </label>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- Video Selection -->
-
-      <div class="mb-4"
-           id="video-selection"
-           style="<%= @quiz.video_id.present? ? '' : 'display:none;' %>">
-
-        <%= f.label :video_id,
-            "Select Video",
-            class: "form-label fw-bold" %>
-
-        <%= f.collection_select :video_id,
-            @course.videos.order(:position),
-            :id,
-            :title,
-            {
-              include_blank: "Select a video"
-            },
-            {
-              class: "form-select",
-              id: "quiz_video_id"
-            } %>
-
-      </div>
-
-
-      <!-- Quiz Title -->
-
-      <div class="mb-4">
-
-        <%= f.label :title,
-            "Quiz Title",
-            class: "form-label fw-bold" %>
-
-        <%= f.text_field :title,
-            class: "form-control form-control-lg",
-            placeholder: "Example: Introduction to Java Quiz",
-            required: true %>
-
-      </div>
-
-
-      <!-- Description -->
-
-      <div class="mb-4">
-
-        <%= f.label :description,
-            class: "form-label fw-bold" %>
-
-        <%= f.text_area :description,
-            rows: 4,
-            class: "form-control",
-            placeholder: "Enter quiz instructions or description..." %>
-
-      </div>
-
-
-      <!-- Quiz Settings -->
-
-      <div class="row">
-
-        <div class="col-md-4 mb-3">
-
-          <%= f.label :time_limit,
-              "Time Limit (minutes)",
-              class: "form-label fw-bold" %>
-
-          <%= f.number_field :time_limit,
-              min: 1,
-              class: "form-control",
-              placeholder: "30" %>
-
-        </div>
-
-
-        <div class="col-md-4 mb-3">
-
-          <%= f.label :passing_percentage,
-              "Passing Percentage",
-              class: "form-label fw-bold" %>
-
-          <%= f.number_field :passing_percentage,
-              min: 0,
-              max: 100,
-              class: "form-control",
-              placeholder: "40" %>
-
-        </div>
-
-
-        <div class="col-md-4 mb-3">
-
-          <%= f.label :status,
-              class: "form-label fw-bold" %>
-
-          <%= f.select :status,
-              [
-                ["Active", "Active"],
-                ["Inactive", "Inactive"]
-              ],
-              {},
-              class: "form-select" %>
-
-        </div>
-
-      </div>
-
-
-      <!-- Buttons -->
-
-      <div class="d-flex gap-2 mt-4">
-
-        <%= f.submit "💾 Save Quiz",
-            class: "btn btn-primary btn-lg px-4" %>
-
-        <%= link_to "Cancel",
-            teacher_course_quizzes_path(@course),
-            class: "btn btn-outline-secondary btn-lg" %>
-
-      </div>
-
-    <% end %>
-
-  </div>
-</div>
-
-
 <style>
+/* =========================================================
+   TEACHER QUIZ FORM
+========================================================= */
 
-.quiz-type-card {
-  display: block;
-  cursor: pointer;
+.teacher-quiz-form-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f8fafc;
+  box-sizing: border-box;
 }
 
-.quiz-type-radio {
-  display: none;
+.quiz-form-wrapper {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.quiz-form-header {
+  margin-bottom: 25px;
+}
+
+.quiz-form-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.quiz-form-breadcrumb i {
+  font-size: 10px;
+}
+
+.quiz-form-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.quiz-form-header p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.quiz-form-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.quiz-form-card-header {
+  padding: 22px 25px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.quiz-form-card-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.quiz-form-card-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.quiz-form-card-body {
+  padding: 28px;
+}
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.quiz-form-group {
+  margin-bottom: 23px;
+}
+
+.quiz-form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.quiz-form-required {
+  color: #dc2626;
+}
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.quiz-form-input,
+.quiz-form-textarea,
+.quiz-form-select {
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #111827;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.quiz-form-input,
+.quiz-form-select {
+  min-height: 48px;
+  padding: 12px 14px;
+}
+
+.quiz-form-textarea {
+  min-height: 120px;
+  padding: 13px 14px;
+  resize: vertical;
+}
+
+.quiz-form-input:focus,
+.quiz-form-textarea:focus,
+.quiz-form-select:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+}
+
+.quiz-form-input::placeholder,
+.quiz-form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* =========================================================
+   QUIZ TYPE
+========================================================= */
+
+.quiz-type-title {
+  margin-bottom: 12px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.quiz-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.quiz-type-option {
+  position: relative;
+}
+
+.quiz-type-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.quiz-type-label {
+  display: block;
+  padding: 18px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 13px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-type-label:hover {
+  border-color: #a78bfa;
+  background: #faf8ff;
+}
+
+.quiz-type-option input:checked + .quiz-type-label {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
 }
 
 .quiz-type-content {
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 22px;
-  text-align: center;
-  transition: all .2s ease;
-  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.quiz-type-card:hover .quiz-type-content {
-  border-color: #3f52fb;
-  transform: translateY(-2px);
+.quiz-type-icon {
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #ede9fe;
+  color: #7c3aed;
+
+  font-size: 18px;
 }
 
-.quiz-type-radio:checked + .quiz-type-content {
-  border-color: #3f52fb;
-  background: rgba(63, 82, 251, .08);
-  box-shadow: 0 8px 25px rgba(63, 82, 251, .12);
+.quiz-type-option input:checked
+  + .quiz-type-label
+  .quiz-type-icon {
+  background: #7c3aed;
+  color: #ffffff;
 }
 
+.quiz-type-text strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #111827;
+  font-size: 14px;
+}
+
+.quiz-type-text span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   VIDEO SELECTION
+========================================================= */
+
+#video-selection-box {
+  display: none;
+
+  margin-bottom: 25px;
+  padding: 20px;
+
+  border: 1px solid #ddd6fe;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf5ff,
+      #f5f3ff
+    );
+}
+
+#video-selection-box.show {
+  display: block;
+}
+
+.video-selection-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.video-selection-header-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+.video-selection-header-text strong {
+  display: block;
+  color: #312e81;
+  font-size: 15px;
+}
+
+.video-selection-header-text span {
+  display: block;
+  margin-top: 3px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.video-selection-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.quiz-settings-title {
+  margin-bottom: 15px;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.quiz-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.quiz-form-errors {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.quiz-form-errors-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 8px;
+
+  font-weight: 750;
+  font-size: 14px;
+}
+
+.quiz-form-errors ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.quiz-form-errors li {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.quiz-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 30px;
+  padding-top: 22px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.quiz-form-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quiz-form-btn {
+  min-height: 45px;
+  padding: 11px 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.quiz-form-btn.cancel {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+}
+
+.quiz-form-btn.cancel:hover {
+  background: #f9fafb;
+}
+
+.quiz-form-btn.submit {
+  border: 1px solid #7c3aed;
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+.quiz-form-btn.submit:hover {
+  background: #6d28d9;
+  border-color: #6d28d9;
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   DISABLED SELECT
+========================================================= */
+
+.quiz-form-select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .teacher-quiz-form-page {
+    padding: 20px 15px;
+  }
+
+  .quiz-form-card-body {
+    padding: 20px;
+  }
+
+  .quiz-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .video-selection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quiz-form-actions-right {
+    width: 100%;
+  }
+
+  .quiz-form-actions-right .quiz-form-btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .quiz-form-header h1 {
+    font-size: 24px;
+  }
+
+  .quiz-form-card-body {
+    padding: 16px;
+  }
+
+  #video-selection-box {
+    padding: 15px;
+  }
+}
 </style>
 
 
+<div class="teacher-quiz-form-page">
+
+  <div class="quiz-form-wrapper">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="quiz-form-header">
+
+      <div class="quiz-form-breadcrumb">
+
+        <span>Teacher Panel</span>
+
+        <i class="fas fa-chevron-right"></i>
+
+        <span>Courses</span>
+
+        <i class="fas fa-chevron-right"></i>
+
+        <span>Quizzes</span>
+
+        <i class="fas fa-chevron-right"></i>
+
+        <span>
+          <%= @quiz.new_record? ? "Create Quiz" : "Edit Quiz" %>
+        </span>
+
+      </div>
+
+      <h1>
+        <%= @quiz.new_record? ? "Create New Quiz" : "Edit Quiz" %>
+      </h1>
+
+      <p>
+        Create a course-wise quiz or assign a quiz to a specific video.
+      </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         CARD
+    ====================================================== -->
+
+    <div class="quiz-form-card">
+
+      <div class="quiz-form-card-header">
+
+        <h2>
+          <i class="fas fa-clipboard-question"></i>
+          Quiz Information
+        </h2>
+
+        <p>
+          Enter the quiz details and choose where this quiz should appear.
+        </p>
+
+      </div>
+
+
+      <div class="quiz-form-card-body">
+
+
+        <!-- =================================================
+             ERRORS
+        ================================================== -->
+
+        <% if @quiz.errors.any? %>
+
+          <div class="quiz-form-errors">
+
+            <div class="quiz-form-errors-title">
+
+              <i class="fas fa-circle-exclamation"></i>
+
+              <span>
+                Please fix the following errors:
+              </span>
+
+            </div>
+
+            <ul>
+
+              <% @quiz.errors.full_messages.each do |message| %>
+
+                <li>
+                  <%= message %>
+                </li>
+
+              <% end %>
+
+            </ul>
+
+          </div>
+
+        <% end %>
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <%= form_with(
+              model: [:teacher_panel, @course, @quiz],
+              local: true,
+              data: { quiz_form: true }
+            ) do |f| %>
+
+
+          <!-- ===============================================
+               QUIZ TYPE
+          ================================================ -->
+
+          <div class="quiz-form-group">
+
+            <div class="quiz-type-title">
+
+              Quiz Type
+
+              <span class="quiz-form-required">*</span>
+
+            </div>
+
+
+            <div class="quiz-type-grid">
+
+
+              <!-- COURSE QUIZ -->
+
+              <div class="quiz-type-option">
+
+                <%= radio_button_tag(
+                      :quiz_type,
+                      "course",
+                      @quiz.video_id.blank?,
+                      id: "course_quiz"
+                    ) %>
+
+                <label
+                  for="course_quiz"
+                  class="quiz-type-label">
+
+                  <div class="quiz-type-content">
+
+                    <div class="quiz-type-icon">
+
+                      <i class="fas fa-graduation-cap"></i>
+
+                    </div>
+
+                    <div class="quiz-type-text">
+
+                      <strong>
+                        Course-wise Quiz
+                      </strong>
+
+                      <span>
+                        Quiz for the complete course.
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </label>
+
+              </div>
+
+
+              <!-- VIDEO QUIZ -->
+
+              <div class="quiz-type-option">
+
+                <%= radio_button_tag(
+                      :quiz_type,
+                      "video",
+                      @quiz.video_id.present?,
+                      id: "video_quiz"
+                    ) %>
+
+                <label
+                  for="video_quiz"
+                  class="quiz-type-label">
+
+                  <div class="quiz-type-content">
+
+                    <div class="quiz-type-icon">
+
+                      <i class="fas fa-video"></i>
+
+                    </div>
+
+                    <div class="quiz-type-text">
+
+                      <strong>
+                        Video-wise Quiz
+                      </strong>
+
+                      <span>
+                        Quiz for one specific video.
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               VIDEO SELECTION
+          ================================================ -->
+
+          <div
+            id="video-selection-box"
+            class="<%= 'show' if @quiz.video_id.present? %>"
+          >
+
+            <div class="video-selection-header">
+
+              <div class="video-selection-header-icon">
+
+                <i class="fas fa-link"></i>
+
+              </div>
+
+              <div class="video-selection-header-text">
+
+                <strong>
+                  Select Video
+                </strong>
+
+                <span>
+                  Choose a playlist first, then select the video.
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="video-selection-grid">
+
+
+              <!-- PLAYLIST -->
+
+              <div class="quiz-form-group" style="margin-bottom: 0;">
+
+                <%= label_tag(
+                      :quiz_playlist_id,
+                      "Playlist",
+                      class: "quiz-form-label"
+                    ) %>
+
+                <%= select_tag(
+                      :quiz_playlist_id,
+
+                      options_from_collection_for_select(
+                        @playlists,
+                        :id,
+                        :title,
+                        @quiz.video&.playlist_id
+                      ),
+
+                      {
+                        include_blank: "Select a playlist...",
+                        class: "quiz-form-select",
+                        id: "quiz_playlist_id"
+                      }
+                    ) %>
+
+              </div>
+
+
+              <!-- VIDEO -->
+
+              <div class="quiz-form-group" style="margin-bottom: 0;">
+
+                <%= f.label(
+                      :video_id,
+                      "Video",
+                      class: "quiz-form-label"
+                    ) %>
+
+                <%= f.select(
+                      :video_id,
+                      [],
+                      {
+                        include_blank: "Select a video..."
+                      },
+                      {
+                        class: "quiz-form-select",
+                        id: "quiz_video_id"
+                      }
+                    ) %>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               TITLE
+          ================================================ -->
+
+          <div class="quiz-form-group">
+
+            <%= f.label(
+                  :title,
+                  "Quiz Title",
+                  class: "quiz-form-label"
+                ) %>
+
+            <%= f.text_field(
+                  :title,
+                  class: "quiz-form-input",
+                  placeholder: "Enter quiz title",
+                  required: true
+                ) %>
+
+          </div>
+
+
+          <!-- ===============================================
+               DESCRIPTION
+          ================================================ -->
+
+          <div class="quiz-form-group">
+
+            <%= f.label(
+                  :description,
+                  "Description",
+                  class: "quiz-form-label"
+                ) %>
+
+            <%= f.text_area(
+                  :description,
+                  class: "quiz-form-textarea",
+                  placeholder: "Enter a short description about this quiz..."
+                ) %>
+
+          </div>
+
+
+          <!-- ===============================================
+               SETTINGS
+          ================================================ -->
+
+          <div class="quiz-settings-title">
+
+            <i class="fas fa-sliders"></i>
+
+            Quiz Settings
+
+          </div>
+
+
+          <div class="quiz-settings-grid">
+
+
+            <!-- TIME LIMIT -->
+
+            <div class="quiz-form-group">
+
+              <%= f.label(
+                    :time_limit,
+                    "Time Limit (minutes)",
+                    class: "quiz-form-label"
+                  ) %>
+
+              <%= f.number_field(
+                    :time_limit,
+                    class: "quiz-form-input",
+                    min: 1,
+                    required: true
+                  ) %>
+
+            </div>
+
+
+            <!-- PASSING -->
+
+            <div class="quiz-form-group">
+
+              <%= f.label(
+                    :passing_percentage,
+                    "Passing Percentage",
+                    class: "quiz-form-label"
+                  ) %>
+
+              <%= f.number_field(
+                    :passing_percentage,
+                    class: "quiz-form-input",
+                    min: 0,
+                    max: 100,
+                    step: 0.01,
+                    required: true
+                  ) %>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="quiz-form-group">
+
+              <%= f.label(
+                    :status,
+                    "Status",
+                    class: "quiz-form-label"
+                  ) %>
+
+              <%= f.select(
+                    :status,
+
+                    [
+                      ["Active", "Active"],
+                      ["Inactive", "Inactive"]
+                    ],
+
+                    {},
+
+                    {
+                      class: "quiz-form-select"
+                    }
+                  ) %>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- ===============================================
+               ACTIONS
+          ================================================ -->
+
+          <div class="quiz-form-actions">
+
+            <%= link_to(
+                  teacher_panel_course_quizzes_path(@course),
+                  class: "quiz-form-btn cancel"
+                ) do %>
+
+              <i class="fas fa-arrow-left"></i>
+
+              Cancel
+
+            <% end %>
+
+
+            <div class="quiz-form-actions-right">
+
+              <button
+                type="submit"
+                class="quiz-form-btn submit">
+
+                <i class="fas fa-save"></i>
+
+                <%= @quiz.new_record? ? "Create Quiz" : "Update Quiz" %>
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
 
   const courseQuiz =
     document.getElementById("course_quiz");
@@ -289,26 +999,171 @@ document.addEventListener("DOMContentLoaded", function () {
   const videoQuiz =
     document.getElementById("video_quiz");
 
-  const videoSelection =
-    document.getElementById("video-selection");
+  const videoBox =
+    document.getElementById("video-selection-box");
+
+  const playlistSelect =
+    document.getElementById("quiz_playlist_id");
 
   const videoSelect =
     document.getElementById("quiz_video_id");
 
 
+  if (
+    !courseQuiz ||
+    !videoQuiz ||
+    !videoBox ||
+    !playlistSelect ||
+    !videoSelect
+  ) {
+    return;
+  }
+
+
+  /* ========================================================
+     ALL COURSE VIDEOS
+  ======================================================== */
+
+  const allVideos = <%= raw(
+    @videos.map do |video|
+      {
+        id: video.id,
+        title: video.title,
+        position: video.position,
+        playlist_id: video.playlist_id
+      }
+    end.to_json
+  ) %>;
+
+
+  /* ========================================================
+     LOAD VIDEOS
+  ======================================================== */
+
+  function loadVideos(
+    playlistId,
+    selectedVideoId = ""
+  ) {
+
+    videoSelect.innerHTML =
+      '<option value="">Select a video...</option>';
+
+
+    if (!playlistId) {
+
+      videoSelect.disabled = true;
+
+      return;
+    }
+
+
+    const filteredVideos =
+      allVideos.filter(function (video) {
+
+        return String(video.playlist_id) ===
+               String(playlistId);
+
+      });
+
+
+    filteredVideos.forEach(function (video) {
+
+      const option =
+        document.createElement("option");
+
+
+      option.value = video.id;
+
+
+      option.textContent =
+        video.position +
+        ". " +
+        video.title;
+
+
+      if (
+        String(video.id) ===
+        String(selectedVideoId)
+      ) {
+
+        option.selected = true;
+
+      }
+
+
+      videoSelect.appendChild(option);
+
+    });
+
+
+    videoSelect.disabled = false;
+
+  }
+
+
+  /* ========================================================
+     UPDATE QUIZ TYPE
+  ======================================================== */
+
   function updateQuizType() {
 
     if (videoQuiz.checked) {
 
-      videoSelection.style.display = "block";
+      /* Show video section */
+
+      videoBox.classList.add("show");
+
+
+      playlistSelect.disabled = false;
+
+      playlistSelect.required = true;
+
+
+      /*
+       * Existing video when editing
+       */
+
+      const existingVideoId =
+        videoSelect.dataset.selectedVideo || "";
+
+
+      if (playlistSelect.value) {
+
+        loadVideos(
+          playlistSelect.value,
+          existingVideoId
+        );
+
+      } else {
+
+        videoSelect.innerHTML =
+          '<option value="">Select a video...</option>';
+
+        videoSelect.disabled = true;
+
+      }
+
 
       videoSelect.required = true;
 
     } else {
 
-      videoSelection.style.display = "none";
+      /* Course-wise quiz */
+
+      videoBox.classList.remove("show");
+
+
+      playlistSelect.required = false;
 
       videoSelect.required = false;
+
+
+      playlistSelect.disabled = true;
+
+      videoSelect.disabled = true;
+
+
+      playlistSelect.value = "";
 
       videoSelect.value = "";
 
@@ -316,6 +1171,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+
+  /* ========================================================
+     PLAYLIST CHANGE
+  ======================================================== */
+
+  playlistSelect.addEventListener(
+    "change",
+    function () {
+
+      loadVideos(
+        this.value,
+        ""
+      );
+
+    }
+  );
+
+
+  /* ========================================================
+     VIDEO CHANGE
+  ======================================================== */
+
+  videoSelect.addEventListener(
+    "change",
+    function () {
+
+      this.dataset.selectedVideo =
+        this.value;
+
+    }
+  );
+
+
+  /* ========================================================
+     QUIZ TYPE CHANGE
+  ======================================================== */
 
   courseQuiz.addEventListener(
     "change",
@@ -328,7 +1219,75 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
 
+  /* ========================================================
+     EDIT MODE
+  ======================================================== */
+
+  <% if @quiz.video_id.present? %>
+
+    videoSelect.dataset.selectedVideo =
+      "<%= @quiz.video_id %>";
+
+  <% end %>
+
+
+  /* ========================================================
+     INITIAL LOAD
+  ======================================================== */
+
   updateQuizType();
+
+
+  /* ========================================================
+     FORM SUBMIT DEBUG
+  ======================================================== */
+
+  const form =
+    document.querySelector(
+      'form[data-quiz-form]'
+    );
+
+
+  if (form) {
+
+    form.addEventListener(
+      "submit",
+      function () {
+
+        console.log(
+          "========== QUIZ SUBMIT =========="
+        );
+
+        console.log(
+          "Quiz Type:",
+          videoQuiz.checked
+            ? "video"
+            : "course"
+        );
+
+        console.log(
+          "Playlist ID:",
+          playlistSelect.value
+        );
+
+        console.log(
+          "Video ID:",
+          videoSelect.value
+        );
+
+        console.log(
+          "Video disabled:",
+          videoSelect.disabled
+        );
+
+        console.log(
+          "================================="
+        );
+
+      }
+    );
+
+  }
 
 });
 

@@ -1,38 +1,75 @@
-<% content_for :title, "Quiz Details" %>
+<% content_for :hide_footer, true %>
 
-<div class="container-fluid py-4">
+<div class="teacher-quiz-show-page">
 
-  <!-- ================= HEADER ================= -->
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="teacher-quiz-show-header">
 
     <div>
-      <div class="text-muted small mb-1">
-        Teacher Panel / Quizzes / Show
+
+      <div class="teacher-quiz-breadcrumb">
+        <%= link_to "Teacher Panel",
+                    teacher_dashboard_path %>
+
+        <i class="fas fa-chevron-right"></i>
+
+        <%= link_to "Courses",
+                    teacher_panel_courses_path %>
+
+        <i class="fas fa-chevron-right"></i>
+
+        <%= link_to "Quizzes",
+                    teacher_panel_course_quizzes_path(@course) %>
+
+        <i class="fas fa-chevron-right"></i>
+
+        <span><%= @quiz.title %></span>
       </div>
 
-      <h2 class="fw-bold mb-1">
-        <i class="fas fa-clipboard-question text-primary me-2"></i>
-        <%= @quiz.title %>
-      </h2>
 
-      <p class="text-muted mb-0">
-        <%= @course.Course_name %>
-      </p>
+      <div class="quiz-title-row">
+
+        <div class="quiz-main-icon">
+          <i class="fas fa-clipboard-check"></i>
+        </div>
+
+        <div>
+
+          <h1>
+            <%= @quiz.title %>
+          </h1>
+
+          <p>
+            <%= @course.Course_name %>
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="d-flex gap-2">
 
-      <%= link_to teacher_panel_course_quizzes_path(@course),
-            class: "btn btn-outline-secondary" do %>
-           <i class="fas fa-arrow-left me-1"></i>
-           Back
-         <% end %>
+    <div class="quiz-header-actions">
 
       <%= link_to edit_teacher_panel_course_quiz_path(@course, @quiz),
-          class: "btn btn-primary" do %>
-        <i class="fas fa-edit me-1"></i>
+                  class: "quiz-edit-btn" do %>
+
+        <i class="fas fa-edit"></i>
         Edit Quiz
+
+      <% end %>
+
+
+      <%= link_to teacher_panel_course_quizzes_path(@course),
+                  class: "quiz-back-btn" do %>
+
+        <i class="fas fa-arrow-left"></i>
+        Back
+
       <% end %>
 
     </div>
@@ -40,461 +77,310 @@
   </div>
 
 
-  <!-- ================= QUIZ INFORMATION ================= -->
+  <!-- =====================================================
+       QUIZ SUMMARY
+  ====================================================== -->
 
-  <div class="row g-4 mb-4">
+  <div class="quiz-summary-grid">
 
-    <!-- Quiz Information -->
 
-    <div class="col-lg-8">
+    <!-- QUESTIONS -->
 
-      <div class="card border-0 shadow-sm h-100">
+    <div class="quiz-summary-card">
 
-        <div class="card-header bg-primary text-white py-3">
+      <div class="summary-icon purple">
+        <i class="fas fa-question-circle"></i>
+      </div>
 
-          <h5 class="mb-0 fw-bold">
-            <i class="fas fa-info-circle me-2"></i>
-            Quiz Information
-          </h5>
+      <div>
 
-        </div>
+        <span>Questions</span>
 
-        <div class="card-body">
+        <strong>
+          <%= @questions.count %>
+        </strong>
 
-          <% if @quiz.description.present? %>
+      </div>
 
-            <div class="mb-4">
+    </div>
 
-              <h6 class="fw-bold">
-                Description
-              </h6>
 
-              <p class="text-muted mb-0">
-                <%= @quiz.description %>
-              </p>
+    <!-- TIME -->
 
-            </div>
+    <div class="quiz-summary-card">
+
+      <div class="summary-icon blue">
+        <i class="fas fa-clock"></i>
+      </div>
+
+      <div>
+
+        <span>Time Limit</span>
+
+        <strong>
+          <%= @quiz.time_limit %> min
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- PASSING -->
+
+    <div class="quiz-summary-card">
+
+      <div class="summary-icon orange">
+        <i class="fas fa-percentage"></i>
+      </div>
+
+      <div>
+
+        <span>Passing</span>
+
+        <strong>
+          <%= @quiz.passing_percentage %>%
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div class="quiz-summary-card">
+
+      <div class="summary-icon green">
+        <i class="fas fa-toggle-on"></i>
+      </div>
+
+      <div>
+
+        <span>Status</span>
+
+        <strong>
+          <%= @quiz.status %>
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       QUIZ INFORMATION
+  ====================================================== -->
+
+  <div class="quiz-info-card">
+
+    <div class="quiz-card-header">
+
+      <div>
+
+        <h2>
+          Quiz Information
+        </h2>
+
+        <p>
+          Details about this quiz.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="quiz-info-grid">
+
+
+      <!-- TYPE -->
+
+      <div class="quiz-info-item">
+
+        <span class="info-label">
+          Quiz Type
+        </span>
+
+        <strong>
+
+          <% if @quiz.video.present? %>
+
+            <i class="fas fa-video"></i>
+            Video Quiz
+
+          <% else %>
+
+            <i class="fas fa-book-open"></i>
+            Course Quiz
 
           <% end %>
 
+        </strong>
 
-          <div class="row g-3">
-
-            <!-- Time Limit -->
-
-            <div class="col-md-4">
-
-              <div class="p-3 bg-light rounded">
-
-                <small class="text-muted d-block">
-                  <i class="fas fa-clock me-1"></i>
-                  Time Limit
-                </small>
-
-                <strong class="fs-5">
-                  <%= @quiz.time_limit %> min
-                </strong>
-
-              </div>
-
-            </div>
+      </div>
 
 
-            <!-- Passing Percentage -->
+      <!-- VIDEO -->
 
-            <div class="col-md-4">
+      <% if @quiz.video.present? %>
 
-              <div class="p-3 bg-light rounded">
+        <div class="quiz-info-item">
 
-                <small class="text-muted d-block">
-                  <i class="fas fa-percent me-1"></i>
-                  Passing Percentage
-                </small>
+          <span class="info-label">
+            Video
+          </span>
 
-                <strong class="fs-5">
-                  <%= @quiz.passing_percentage %>%
-                </strong>
+          <strong>
+            <%= @quiz.video.title %>
+          </strong>
 
-              </div>
+        </div>
 
-            </div>
+      <% end %>
 
 
-            <!-- Status -->
+      <!-- DESCRIPTION -->
 
-            <div class="col-md-4">
+      <div class="quiz-info-item full-width">
 
-              <div class="p-3 bg-light rounded">
+        <span class="info-label">
+          Description
+        </span>
 
-                <small class="text-muted d-block">
-                  <i class="fas fa-circle me-1"></i>
-                  Status
-                </small>
+        <div class="quiz-description">
 
-                <% if @quiz.status.to_s.downcase == "active" %>
+          <%= @quiz.description.present? ?
+                @quiz.description :
+                "No description provided." %>
 
-                  <span class="badge bg-success fs-6">
-                    Active
-                  </span>
+        </div>
 
-                <% else %>
+      </div>
 
-                  <span class="badge bg-secondary fs-6">
-                    <%= @quiz.status %>
-                  </span>
+    </div>
 
-                <% end %>
+  </div>
 
-              </div>
+
+  <!-- =====================================================
+       QUESTIONS HEADER
+  ====================================================== -->
+
+  <div class="questions-section-header">
+
+    <div>
+
+      <h2>
+        Questions
+      </h2>
+
+      <p>
+        Create and manage questions for this quiz.
+      </p>
+
+    </div>
+
+
+    <%= link_to new_teacher_panel_course_quiz_question_path(
+                  @course,
+                  @quiz
+                ),
+                class: "add-question-btn" do %>
+
+      <i class="fas fa-plus"></i>
+      Add Question
+
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       QUESTIONS
+  ====================================================== -->
+
+  <% if @questions.any? %>
+
+    <div class="teacher-question-list">
+
+      <% @questions.each_with_index do |question, index| %>
+
+        <div class="teacher-question-card">
+
+          <div class="question-number">
+            <%= index + 1 %>
+          </div>
+
+
+          <div class="question-content">
+
+            <h3>
+              <%= question.question_text %>
+            </h3>
+
+
+            <div class="question-meta">
+
+              <span>
+                <i class="fas fa-list"></i>
+
+                <%= question.options.count %>
+                Options
+              </span>
 
             </div>
 
           </div>
 
-        </div>
 
-      </div>
+          <div class="question-actions">
 
-    </div>
+            <%= link_to teacher_panel_course_quiz_question_path(
+                          @course,
+                          @quiz,
+                          question
+                        ),
+                        class: "question-view-btn",
+                        title: "View Question" do %>
 
+              <i class="fas fa-eye"></i>
 
-    <!-- Linked Video -->
+            <% end %>
 
-    <div class="col-lg-4">
 
-      <div class="card border-0 shadow-sm h-100">
+            <%= link_to edit_teacher_panel_course_quiz_question_path(
+                          @course,
+                          @quiz,
+                          question
+                        ),
+                        class: "question-edit-btn",
+                        title: "Edit Question" do %>
 
-        <div class="card-header bg-success text-white py-3">
+              <i class="fas fa-edit"></i>
 
-          <h5 class="mb-0 fw-bold">
-            <i class="fas fa-video me-2"></i>
-            Quiz Video
-          </h5>
+            <% end %>
 
-        </div>
 
-        <div class="card-body">
+            <%= button_to teacher_panel_course_quiz_question_path(
+                          @course,
+                          @quiz,
+                          question
+                        ),
+                        method: :delete,
+                        data: {
+                          turbo_confirm: "Delete this question?"
+                        },
+                        class: "question-delete-btn",
+                        title: "Delete Question" do %>
 
-          <% if @quiz.video.present? %>
+              <i class="fas fa-trash"></i>
 
-            <div class="mb-3">
+            <% end %>
 
-              <span class="badge bg-success mb-2">
-                Video Linked
-              </span>
-
-              <h5 class="fw-bold">
-                <%= @quiz.video.title %>
-              </h5>
-
-              <% if @quiz.video.description.present? %>
-
-                <p class="text-muted small">
-                  <%= truncate(@quiz.video.description, length: 120) %>
-                </p>
-
-              <% end %>
-
-              <div class="small text-muted">
-
-                <div class="mb-2">
-
-                  <i class="fas fa-list-ol me-2"></i>
-
-                  Lesson:
-                  <strong>
-                    <%= @quiz.video.position %>
-                  </strong>
-
-                </div>
-
-                <% if @quiz.video.duration.present? %>
-
-                  <div>
-
-                    <i class="fas fa-clock me-2"></i>
-
-                    Duration:
-                    <strong>
-                      <%= @quiz.video.duration %>
-                    </strong>
-
-                  </div>
-
-                <% end %>
-
-              </div>
-
-            </div>
-
-          <% else %>
-
-            <div class="text-center py-4">
-
-              <i class="fas fa-video-slash fa-3x text-muted mb-3"></i>
-
-              <p class="text-muted mb-0">
-                This quiz is not linked to a video.
-              </p>
-
-            </div>
-
-          <% end %>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================= QUESTION HEADER ================= -->
-
-  <div class="card border-0 shadow-sm">
-
-    <div class="card-header bg-dark text-white py-3">
-
-      <div class="d-flex justify-content-between align-items-center">
-
-        <h5 class="mb-0 fw-bold">
-
-          <i class="fas fa-list-check me-2"></i>
-
-          Quiz Questions
-
-          <span class="badge bg-light text-dark ms-2">
-            <%= @questions.count %>
-          </span>
-
-        </h5>
-
-
-        <!-- Add Question -->
-
-       <%= link_to new_teacher_panel_course_quiz_question_path(@course, @quiz),
-    class: "btn btn-light btn-sm" do %>
-
-  <i class="fas fa-plus me-1"></i>
-  Add Question
-
-<% end %>
-
-      </div>
-
-    </div>
-
-
-    <div class="card-body p-0">
-
-      <% if @questions.any? %>
-
-        <div class="accordion accordion-flush"
-             id="quizQuestionsAccordion">
-
-          <% @questions.each_with_index do |question, index| %>
-
-            <div class="accordion-item">
-
-              <!-- ================= QUESTION HEADER ================= -->
-
-              <h2 class="accordion-header"
-                  id="heading<%= question.id %>">
-
-                <button class="accordion-button <%= index == 0 ? '' : 'collapsed' %>"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#question<%= question.id %>"
-                        aria-expanded="<%= index == 0 %>">
-
-                  <div class="w-100 pe-3">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                      <div>
-
-                        <span class="badge bg-primary me-2">
-                          Q<%= index + 1 %>
-                        </span>
-
-                        <strong>
-                          <%= question.question_text %>
-                        </strong>
-
-                      </div>
-
-                      <span class="badge bg-warning text-dark">
-
-                        <%= question.marks %>
-                        <%= question.marks.to_f == 1 ? "Mark" : "Marks" %>
-
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </button>
-
-              </h2>
-
-
-              <!-- ================= QUESTION BODY ================= -->
-
-              <div id="question<%= question.id %>"
-                   class="accordion-collapse collapse <%= index == 0 ? 'show' : '' %>"
-                   data-bs-parent="#quizQuestionsAccordion">
-
-                <div class="accordion-body">
-
-                  <!-- Question -->
-
-                  <div class="mb-4">
-
-                    <h6 class="fw-bold text-primary">
-                      Question
-                    </h6>
-
-                    <div class="p-3 bg-light rounded">
-
-                      <%= question.question_text %>
-
-                    </div>
-
-                  </div>
-
-
-                  <!-- Options -->
-
-                  <h6 class="fw-bold mb-3">
-                    Options
-                  </h6>
-
-                  <% if question.options.any? %>
-
-                    <div class="row g-3">
-
-                      <% question.options.order(:position).each do |option| %>
-
-                        <div class="col-md-6">
-
-                          <% if option.is_correct? %>
-
-                            <div class="border border-success rounded p-3 bg-success bg-opacity-10">
-
-                              <div class="d-flex align-items-center">
-
-                                <span class="badge bg-success me-2">
-                                  ✓
-                                </span>
-
-                                <strong>
-                                  <%= option.option_text %>
-                                </strong>
-
-                              </div>
-
-                              <small class="text-success mt-2 d-block">
-                                Correct Answer
-                              </small>
-
-                            </div>
-
-                          <% else %>
-
-                            <div class="border rounded p-3">
-
-                              <div class="d-flex align-items-center">
-
-                                <span class="badge bg-secondary me-2">
-                                  ○
-                                </span>
-
-                                <span>
-                                  <%= option.option_text %>
-                                </span>
-
-                              </div>
-
-                            </div>
-
-                          <% end %>
-
-                        </div>
-
-                      <% end %>
-
-                    </div>
-
-                  <% else %>
-
-                    <div class="alert alert-warning">
-
-                      <i class="fas fa-exclamation-triangle me-2"></i>
-
-                      No options added to this question.
-
-                    </div>
-
-                  <% end %>
-
-
-                  <!-- Question Actions -->
-
-                  <div class="border-top mt-4 pt-3">
-
-                    <div class="d-flex justify-content-end gap-2">
-
-                      <%= link_to edit_teacher_panel_course_quiz_question_path(
-                       @course,
-                     @quiz,
-                    question
-                     ),
-                          class: "btn btn-outline-primary btn-sm" do %>
-
-                             <i class="fas fa-edit me-1"></i>
-                           Edit Question
-
-                        <% end %>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          <% end %>
-
-        </div>
-
-      <% else %>
-
-        <!-- ================= NO QUESTIONS ================= -->
-
-        <div class="text-center py-5">
-
-          <i class="fas fa-clipboard-question fa-4x text-muted mb-3"></i>
-
-          <h5 class="fw-bold">
-            No Questions Added
-          </h5>
-
-          <p class="text-muted">
-            Add questions to this quiz before making it active.
-          </p>
-
-          <%= link_to new_teacher_panel_course_quiz_question_path(@course, @quiz),
-    class: "btn btn-primary" do %>
-
-  <i class="fas fa-plus me-1"></i>
-  Add First Question
-
-<% end %>
+          </div>
 
         </div>
 
@@ -502,49 +388,708 @@
 
     </div>
 
-  </div>
+  <% else %>
 
+    <!-- EMPTY -->
 
-  <!-- ================= BOTTOM ACTIONS ================= -->
+    <div class="questions-empty">
 
-  <div class="d-flex justify-content-between align-items-center mt-4">
+      <div class="questions-empty-icon">
+        <i class="fas fa-question-circle"></i>
+      </div>
 
-    <%= link_to teacher_panel_course_quizzes_path(@course),
-        class: "btn btn-outline-secondary" do %>
+      <h2>
+        No questions yet
+      </h2>
 
-      <i class="fas fa-arrow-left me-1"></i>
-      Back to Quizzes
+      <p>
+        Add questions to make this quiz available to students.
+      </p>
 
-    <% end %>
+      <%= link_to new_teacher_panel_course_quiz_question_path(
+                    @course,
+                    @quiz
+                  ),
+                  class: "add-question-btn" do %>
 
-
-    <div class="d-flex gap-2">
-
-      <%= link_to edit_teacher_panel_course_quiz_path(@course, @quiz),
-          class: "btn btn-primary" do %>
-
-        <i class="fas fa-edit me-1">
-        
-        </i>
-        Edit Quiz
-
-      <% end %>
-
-
-      <%= button_to teacher_panel_course_quiz_path(@course, @quiz),
-          method: :delete,
-          class: "btn btn-outline-danger",
-          data: {
-            turbo_confirm: "Are you sure you want to delete this quiz?"
-          } do %>
-
-        <i class="fas fa-trash me-1"></i>
-        Delete Quiz
+        <i class="fas fa-plus"></i>
+        Add First Question
 
       <% end %>
 
     </div>
 
-  </div>
+  <% end %>
 
 </div>
+
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.teacher-quiz-show-page {
+  min-height: 100vh;
+
+  padding: 32px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, .09),
+      transparent 35%
+    ),
+    #f8fafc;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.teacher-quiz-show-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 28px;
+}
+
+.teacher-quiz-breadcrumb {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 16px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.teacher-quiz-breadcrumb a {
+  color: #7c3aed;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+.teacher-quiz-breadcrumb i {
+  color: #94a3b8;
+
+  font-size: 9px;
+}
+
+.quiz-title-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.quiz-main-icon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #ede9fe;
+
+  color: #7c3aed;
+
+  font-size: 23px;
+}
+
+.quiz-title-row h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 28px;
+
+  font-weight: 800;
+}
+
+.quiz-title-row p {
+  margin: 5px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.quiz-header-actions {
+  display: flex;
+
+  gap: 10px;
+}
+
+.quiz-edit-btn,
+.quiz-back-btn {
+  min-height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 16px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.quiz-edit-btn {
+  background: #7c3aed;
+
+  color: #fff;
+}
+
+.quiz-edit-btn:hover {
+  background: #6d28d9;
+
+  color: #fff;
+}
+
+.quiz-back-btn {
+  border: 1px solid #d1d5db;
+
+  background: #fff;
+
+  color: #475569;
+}
+
+.quiz-back-btn:hover {
+  background: #f8fafc;
+
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.quiz-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.quiz-summary-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 18px;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, .05);
+}
+
+.summary-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+}
+
+.summary-icon.purple {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.summary-icon.blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.summary-icon.orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.summary-icon.green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.quiz-summary-card span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+.quiz-summary-card strong {
+  color: #1e293b;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   INFO CARD
+========================================================= */
+
+.quiz-info-card {
+  margin-bottom: 30px;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 6px 20px rgba(15, 23, 42, .05);
+}
+
+.quiz-card-header {
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.quiz-card-header h2 {
+  margin: 0 0 4px;
+
+  color: #1e293b;
+
+  font-size: 17px;
+}
+
+.quiz-card-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.quiz-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 0;
+}
+
+.quiz-info-item {
+  padding: 18px 22px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.quiz-info-item:nth-child(odd) {
+  border-right: 1px solid #f1f5f9;
+}
+
+.quiz-info-item.full-width {
+  grid-column: 1 / -1;
+
+  border-right: 0;
+}
+
+.info-label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .05em;
+}
+
+.quiz-info-item strong {
+  color: #334155;
+
+  font-size: 13px;
+}
+
+.quiz-info-item strong i {
+  margin-right: 6px;
+
+  color: #7c3aed;
+}
+
+.quiz-description {
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   QUESTIONS HEADER
+========================================================= */
+
+.questions-section-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 16px;
+}
+
+.questions-section-header h2 {
+  margin: 0 0 4px;
+
+  color: #1e293b;
+
+  font-size: 20px;
+}
+
+.questions-section-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.add-question-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border-radius: 10px;
+
+  background: #7c3aed;
+
+  color: #fff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 7px 18px rgba(124, 58, 237, .18);
+}
+
+.add-question-btn:hover {
+  background: #6d28d9;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   QUESTION LIST
+========================================================= */
+
+.teacher-question-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.teacher-question-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 16px;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 13px;
+
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, .04);
+}
+
+.question-number {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #ede9fe;
+
+  color: #7c3aed;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+.question-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.question-content h3 {
+  margin: 0 0 7px;
+
+  color: #1e293b;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.5;
+}
+
+.question-meta {
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+.question-meta i {
+  margin-right: 4px;
+
+  color: #7c3aed;
+}
+
+
+/* =========================================================
+   QUESTION ACTIONS
+========================================================= */
+
+.question-actions {
+  display: flex;
+
+  gap: 6px;
+}
+
+.question-actions a,
+.question-actions button {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: #f8fafc;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  font-size: 12px;
+}
+
+.question-view-btn {
+  color: #2563eb;
+}
+
+.question-edit-btn {
+  color: #7c3aed;
+}
+
+.question-delete-btn {
+  color: #dc2626;
+}
+
+.question-actions a:hover,
+.question-actions button:hover {
+  background: #f1f5f9;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.questions-empty {
+  padding: 65px 25px;
+
+  text-align: center;
+
+  background: #fff;
+
+  border: 1px dashed #d1d5db;
+
+  border-radius: 16px;
+}
+
+.questions-empty-icon {
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+
+  border-radius: 17px;
+
+  background: #ede9fe;
+
+  color: #7c3aed;
+
+  font-size: 25px;
+}
+
+.questions-empty h2 {
+  margin: 0 0 7px;
+
+  color: #1e293b;
+
+  font-size: 20px;
+}
+
+.questions-empty p {
+  margin: 0 0 20px;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+  .quiz-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .teacher-quiz-show-page {
+    padding: 20px 15px;
+  }
+
+  .teacher-quiz-show-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .quiz-header-actions {
+    width: 100%;
+  }
+
+  .quiz-edit-btn,
+  .quiz-back-btn {
+    flex: 1;
+  }
+
+  .quiz-summary-grid,
+  .quiz-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-info-item:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .quiz-info-item.full-width {
+    grid-column: auto;
+  }
+
+  .questions-section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .add-question-btn {
+    width: 100%;
+  }
+
+  .teacher-question-card {
+    align-items: flex-start;
+  }
+
+}
+
+</style>

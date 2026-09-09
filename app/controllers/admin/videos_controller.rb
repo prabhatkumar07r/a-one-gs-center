@@ -36,21 +36,24 @@ module Admin
     # NEW
     # =========================================================
 
-    def new
-      if params[:playlist_id].present?
-        @playlist = @course.playlists.find(params[:playlist_id])
+def new
+  if params[:playlist_id].present?
+    @playlist = @course.playlists.find(params[:playlist_id])
 
-        @video = @playlist.videos.new
+    @video = @playlist.videos.new(
+      status: "Active"
+    )
 
-        # Preview next position
-        @video.position =
-          (@playlist.videos.maximum(:position) || 0) + 1
-      else
-        @video = @course.videos.new
-      end
+    @video.position =
+      (@playlist.videos.maximum(:position) || 0) + 1
+  else
+    @video = @course.videos.new(
+      status: "Active"
+    )
+  end
 
-      @playlists = @course.playlists.order(:position, :id)
-    end
+  @playlists = @course.playlists.order(:position, :id)
+end
 
     # =========================================================
     # CREATE
@@ -67,6 +70,7 @@ module Admin
 
         @video = @playlist.videos.new(video_params)
         @video.course = @course
+        @video.status = "Active" if @video.status.blank?
 
         # =====================================================
         # IMPORTANT:

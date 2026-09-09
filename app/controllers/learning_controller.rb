@@ -114,6 +114,17 @@ before_action :check_video_access,
 
     @video = @course.videos.find(params[:id])
 
+      # =======================================================
+# VIDEO QUIZZES
+# =======================================================
+
+  @quizzes =
+      @video.quizzes
+        .where(status: "Active")
+        .where(test_series_id: nil)
+        .includes(:questions)
+        .order(created_at: :desc)
+
     @playlist = @video.playlist
 
     # =======================================================

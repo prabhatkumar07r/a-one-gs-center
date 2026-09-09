@@ -1,7 +1,6 @@
 class Quiz < ApplicationRecord
   belongs_to :course
   belongs_to :video, optional: true
-  belongs_to :test_series, optional: true
 
   has_many :questions, dependent: :destroy
   has_many :quiz_attempts, dependent: :destroy
@@ -22,7 +21,7 @@ class Quiz < ApplicationRecord
   validates :status, presence: true
 
   scope :active, -> {
-    where(status: "Active")
+    where("LOWER(status) = ?", "active")
   }
 
   scope :course_wise, -> {
@@ -41,7 +40,10 @@ class Quiz < ApplicationRecord
     return if video.blank?
 
     if video.course_id != course_id
-      errors.add(:video, "must belong to the selected course")
+      errors.add(
+        :video,
+        "must belong to the selected course"
+      )
     end
   end
 end

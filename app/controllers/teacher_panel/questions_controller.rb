@@ -23,20 +23,29 @@ class TeacherPanel::QuestionsController < ApplicationController
     end
   end
 
-  def create
-    @question = @quiz.questions.new(question_params)
+def create
+  @question = @quiz.questions.new(question_params)
 
-    if @question.save
-      redirect_to teacher_panel_course_quiz_path(
-        @course,
-        @quiz
-      ),
-      notice: "Question created successfully."
-    else
-      render :new,
-             status: :unprocessable_entity
+  if @question.save
+    redirect_to teacher_panel_course_quiz_path(
+      @course,
+      @quiz
+    ),
+    notice: "Question created successfully."
+  else
+    missing = 4 - @question.options.size
+
+    missing.times do |index|
+      @question.options.build(
+        position: @question.options.size + index + 1,
+        is_correct: false
+      )
     end
+
+    render :new,
+           status: :unprocessable_entity
   end
+end
 
   def show
     @options = @question.options.order(:position)

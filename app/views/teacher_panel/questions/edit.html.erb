@@ -2,7 +2,10 @@
 
 <div class="container-fluid py-4">
 
-  <!-- HEADER -->
+  <!-- ==================================================
+       HEADER
+  ================================================== -->
+
   <div class="mb-4">
 
     <div class="text-muted small mb-2">
@@ -12,6 +15,7 @@
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
       <div>
+
         <h2 class="fw-bold mb-1">
           <i class="fas fa-pen-to-square text-primary me-2"></i>
           Edit Question
@@ -19,16 +23,27 @@
 
         <p class="text-muted mb-0">
           Quiz:
-          <strong><%= @quiz.title %></strong>
+          <strong>
+            <%= @quiz.title %>
+          </strong>
         </p>
+
+        <p class="text-muted small mb-0">
+          Course:
+          <strong>
+            <%= @course.Course_name %>
+          </strong>
+        </p>
+
       </div>
 
+
       <%= link_to teacher_panel_course_quiz_question_path(
-                    @course,
-                    @quiz,
-                    @question
-                  ),
-                  class: "btn btn-outline-secondary" do %>
+            @course,
+            @quiz,
+            @question
+          ),
+          class: "btn btn-outline-secondary" do %>
 
         <i class="fas fa-arrow-left me-1"></i>
         Back to Question
@@ -40,15 +55,21 @@
   </div>
 
 
-  <!-- ERRORS -->
+  <!-- ==================================================
+       ERRORS
+  ================================================== -->
+
   <% if @question.errors.any? %>
 
-    <div class="alert alert-danger shadow-sm">
+    <div class="alert alert-danger shadow-sm rounded-4 mb-4">
 
-      <h6 class="fw-bold">
+      <div class="fw-bold mb-2">
+
         <i class="fas fa-exclamation-triangle me-2"></i>
+
         Please fix the following errors:
-      </h6>
+
+      </div>
 
       <ul class="mb-0">
 
@@ -67,7 +88,10 @@
   <% end %>
 
 
-  <!-- FORM -->
+  <!-- ==================================================
+       FORM
+  ================================================== -->
+
   <%= form_with model: @question,
                 url: teacher_panel_course_quiz_question_path(
                   @course,
@@ -75,17 +99,24 @@
                   @question
                 ),
                 method: :patch,
-                local: true do |form| %>
+                local: true,
+                id: "editQuestionForm" do |form| %>
 
 
-    <!-- QUESTION DETAILS -->
+    <!-- ==================================================
+         QUESTION DETAILS
+    ================================================== -->
+
     <div class="card border-0 shadow-sm rounded-4 mb-4">
 
-      <div class="card-header question-header py-3">
+      <div class="card-header question-header">
 
         <h5 class="mb-0 fw-bold">
+
           <i class="fas fa-pen me-2"></i>
+
           Question Details
+
         </h5>
 
       </div>
@@ -95,6 +126,7 @@
 
 
         <!-- QUESTION -->
+
         <div class="mb-4">
 
           <%= form.label :question_text,
@@ -102,59 +134,68 @@
                          class: "form-label fw-bold" %>
 
           <%= form.text_area :question_text,
-                             class: "form-control",
                              rows: 5,
-                             placeholder: "Enter your question..." %>
+                             class: "form-control question-textarea",
+                             placeholder: "Enter your question...",
+                             required: true %>
 
         </div>
 
 
-        <div class="row">
+        <div class="row g-3">
 
 
           <!-- MARKS -->
-          <div class="col-md-6 mb-3">
+
+          <div class="col-md-6">
 
             <%= form.label :marks,
                            "Marks",
                            class: "form-label fw-bold" %>
 
             <%= form.number_field :marks,
-                                  class: "form-control",
                                   min: 0.5,
-                                  step: 0.5 %>
+                                  step: 0.5,
+                                  class: "form-control",
+                                  required: true %>
 
           </div>
 
 
           <!-- POSITION -->
-          <div class="col-md-6 mb-3">
+
+          <div class="col-md-6">
 
             <%= form.label :position,
                            "Question Position",
                            class: "form-label fw-bold" %>
 
             <%= form.number_field :position,
+                                  min: 1,
+                                  step: 1,
                                   class: "form-control",
-                                  min: 1 %>
+                                  required: true %>
 
           </div>
 
         </div>
 
 
-        <!-- EXPLANATION -->
+        <!-- ==================================================
+             EXPLANATION
+        ================================================== -->
+
         <% if @question.respond_to?(:explanation) %>
 
-          <div class="mb-2">
+          <div class="mt-4">
 
             <%= form.label :explanation,
                            "Explanation",
                            class: "form-label fw-bold" %>
 
             <%= form.text_area :explanation,
-                               class: "form-control",
                                rows: 4,
+                               class: "form-control",
                                placeholder:
                                "Explain why the correct answer is correct..." %>
 
@@ -167,101 +208,165 @@
     </div>
 
 
-    <!-- ANSWER OPTIONS -->
+    <!-- ==================================================
+         ANSWER OPTIONS
+    ================================================== -->
+
     <div class="card border-0 shadow-sm rounded-4 mb-4">
 
-      <div class="card-header options-header py-3">
+      <div class="card-header options-header">
 
-        <h5 class="mb-1 fw-bold">
+        <div class="d-flex justify-content-between align-items-center">
 
-          <i class="fas fa-list-check me-2"></i>
-          Answer Options
+          <div>
 
-        </h5>
+            <h5 class="mb-1 fw-bold">
 
-        <small>
-          Select exactly one correct answer.
-        </small>
+              <i class="fas fa-list-check me-2"></i>
+
+              Answer Options
+
+            </h5>
+
+            <small>
+              Select exactly one correct answer.
+            </small>
+
+          </div>
+
+
+          <span class="badge bg-light text-success">
+            <%= @question.options.size %> Options
+          </span>
+
+        </div>
 
       </div>
 
 
       <div class="card-body p-4">
 
+
+        <div class="alert alert-info rounded-3 mb-4">
+
+          <i class="fas fa-circle-info me-2"></i>
+
+          Update the options below and select exactly one
+          option as the correct answer.
+
+        </div>
+
+
+        <!-- ==================================================
+             NESTED OPTIONS
+        ================================================== -->
+
         <%= form.fields_for :options do |option_form| %>
 
-          <div class="option-box border rounded-4 p-3 mb-3
-                      <%= 'selected-option' if option_form.object.is_correct? %>">
+          <% index = option_form.index.to_i %>
 
-            <div class="row align-items-center">
+          <% letter = ('A'.ord + index).chr %>
+
+          <% correct = option_form.object.is_correct? %>
 
 
-              <!-- NUMBER -->
-              <div class="col-md-1 text-center">
+          <div
+            class="option-box
+                   <%= 'selected-option' if correct %>"
+            data-option-index="<%= index %>">
 
-                <span class="option-number">
 
-                  <%= option_form.index + 1 %>
+            <div class="row align-items-center g-3">
 
-                </span>
+
+              <!-- ==================================================
+                   OPTION LETTER
+              ================================================== -->
+
+              <div class="col-md-1 col-2 text-center">
+
+                <div class="option-number">
+
+                  <%= letter %>
+
+                </div>
 
               </div>
 
 
-              <!-- OPTION TEXT -->
-              <div class="col-md-8">
+              <!-- ==================================================
+                   OPTION TEXT
+              ================================================== -->
 
-                <%= option_form.label :text,
-                                     "Option #{option_form.index + 1}",
-                                     class: "form-label fw-bold" %>
+              <div class="col-md-8 col-10">
 
-                <%= option_form.text_field :text,
-                                           class: "form-control",
+                <%= option_form.label :option_text,
+                                      "Option #{letter}",
+                                      class: "form-label fw-bold" %>
+
+                <%= option_form.text_field :option_text,
+                                           class: "form-control option-input",
                                            placeholder:
-                                           "Enter option #{option_form.index + 1}" %>
+                                           "Enter option #{letter}",
+                                           autocomplete: "off",
+                                           required: true %>
 
               </div>
 
 
-              <!-- CORRECT ANSWER -->
+              <!-- ==================================================
+                   CORRECT ANSWER
+              ================================================== -->
+
               <div class="col-md-3">
 
-                <div class="form-check mt-4">
+                <div class="correct-answer-wrapper">
 
-                  <%= option_form.radio_button :is_correct,
-                                               true,
-                                               name: "correct_option",
-                                               class: "form-check-input correct-option",
-                                               checked: option_form.object.is_correct?,
-                                               data: {
-                                                 option_index:
-                                                 option_form.index
-                                               } %>
+                  <input
+                    type="radio"
+                    name="correct_option"
+                    value="<%= index %>"
+                    id="correct_option_<%= index %>"
+                    class="correct-option"
+                    <%= "checked" if correct %>>
 
-                  <%= option_form.label :is_correct,
-                                        "Correct Answer",
-                                        class:
-                                        "form-check-label fw-bold text-success" %>
+                  <label
+                    for="correct_option_<%= index %>"
+                    class="correct-label">
+
+                    <span class="radio-circle"></span>
+
+                    <span>
+                      Correct Answer
+                    </span>
+
+                  </label>
 
                 </div>
 
 
-                <!-- Hidden is_correct value -->
+                <!-- ==================================================
+                     DATABASE VALUE
+                ================================================== -->
 
                 <%= option_form.hidden_field :is_correct,
-                                              value:
-                                              option_form.object.is_correct?,
-                                              class:
-                                              "correct-value" %>
+                                             value: correct ? "true" : "false",
+                                             class: "correct-value" %>
 
+
+                <!-- ==================================================
+                     POSITION
+                ================================================== -->
 
                 <%= option_form.hidden_field :position,
-                                              value:
-                                              option_form.object.position ||
-                                              option_form.index + 1 %>
+                                             value:
+                                             option_form.object.position ||
+                                             index + 1 %>
 
 
-                <!-- ID for existing option -->
+                <!-- ==================================================
+                     EXISTING OPTION ID
+                ================================================== -->
 
                 <% if option_form.object.persisted? %>
 
@@ -278,11 +383,17 @@
         <% end %>
 
 
-        <div class="alert alert-info mb-0">
+        <!-- ==================================================
+             CORRECT ANSWER WARNING
+        ================================================== -->
 
-          <i class="fas fa-info-circle me-2"></i>
+        <div
+          id="correctAnswerWarning"
+          class="alert alert-warning rounded-3 d-none mb-0">
 
-          Select one option as the correct answer.
+          <i class="fas fa-triangle-exclamation me-2"></i>
+
+          Please select exactly one correct answer.
 
         </div>
 
@@ -291,25 +402,30 @@
     </div>
 
 
-    <!-- ACTIONS -->
+    <!-- ==================================================
+         ACTIONS
+    ================================================== -->
+
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
 
       <%= link_to teacher_panel_course_quiz_question_path(
-                    @course,
-                    @quiz,
-                    @question
-                  ),
-                  class: "btn btn-outline-secondary" do %>
+            @course,
+            @quiz,
+            @question
+          ),
+          class: "btn btn-outline-secondary btn-lg" do %>
 
         <i class="fas fa-times me-1"></i>
+
         Cancel
 
       <% end %>
 
 
       <%= form.submit "Update Question",
-                      class: "btn btn-success btn-lg px-4" %>
+                      class: "btn btn-success btn-lg px-5",
+                      id: "updateQuestionBtn" %>
 
     </div>
 
@@ -327,35 +443,56 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
+  const form =
+    document.getElementById("editQuestionForm");
+
   const radios =
     document.querySelectorAll(".correct-option");
 
   const boxes =
     document.querySelectorAll(".option-box");
 
+  const warning =
+    document.getElementById("correctAnswerWarning");
 
-  function updateCorrectOption(selectedRadio) {
+
+  /*
+   * ==================================================
+   * UPDATE CORRECT ANSWER
+   * ==================================================
+   */
+
+  function updateCorrectAnswer(selectedRadio) {
 
     radios.forEach(function (radio) {
 
-      const parent =
+      const box =
         radio.closest(".option-box");
 
+      if (!box) {
+        return;
+      }
+
+
       const hidden =
-        parent.querySelector(".correct-value");
+        box.querySelector(".correct-value");
 
 
       if (radio === selectedRadio) {
 
-        hidden.value = "true";
+        if (hidden) {
+          hidden.value = "true";
+        }
 
-        parent.classList.add("selected-option");
+        box.classList.add("selected-option");
 
       } else {
 
-        hidden.value = "false";
+        if (hidden) {
+          hidden.value = "false";
+        }
 
-        parent.classList.remove("selected-option");
+        box.classList.remove("selected-option");
 
       }
 
@@ -364,11 +501,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
+  /*
+   * ==================================================
+   * RADIO CHANGE
+   * ==================================================
+   */
+
   radios.forEach(function (radio) {
 
     radio.addEventListener("change", function () {
 
-      updateCorrectOption(this);
+      updateCorrectAnswer(this);
 
     });
 
@@ -376,7 +519,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /*
-   * Set correct hidden value when page loads
+   * ==================================================
+   * RESTORE CURRENT CORRECT ANSWER
+   * ==================================================
    */
 
   const checkedRadio =
@@ -387,7 +532,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (checkedRadio) {
 
-    updateCorrectOption(checkedRadio);
+    updateCorrectAnswer(checkedRadio);
+
+  }
+
+
+  /*
+   * ==================================================
+   * FORM SUBMIT
+   * ==================================================
+   */
+
+  if (form) {
+
+    form.addEventListener("submit", function (event) {
+
+      const selected =
+        document.querySelector(
+          ".correct-option:checked"
+        );
+
+
+      if (!selected) {
+
+        event.preventDefault();
+
+        if (warning) {
+          warning.classList.remove("d-none");
+        }
+
+        alert(
+          "Please select one correct answer before updating the question."
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Make absolutely sure database values
+       * are synchronized before submission.
+       */
+
+      updateCorrectAnswer(selected);
+
+
+      if (warning) {
+        warning.classList.add("d-none");
+      }
+
+    });
 
   }
 
@@ -397,12 +592,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 <!-- ==================================================
-     DESIGN
+     CSS
 ================================================== -->
 
 <style>
 
+/* ==================================================
+   QUESTION HEADER
+================================================== */
+
 .question-header {
+
+  padding: 16px 20px;
 
   background:
     linear-gradient(
@@ -416,7 +617,13 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 
+/* ==================================================
+   OPTIONS HEADER
+================================================== */
+
 .options-header {
+
+  padding: 16px 20px;
 
   background:
     linear-gradient(
@@ -430,26 +637,58 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 
+/* ==================================================
+   QUESTION TEXTAREA
+================================================== */
+
+.question-textarea {
+
+  min-height: 130px;
+
+  resize: vertical;
+
+}
+
+
+/* ==================================================
+   OPTION BOX
+================================================== */
+
 .option-box {
+
+  position: relative;
+
+  padding: 18px;
+
+  margin-bottom: 14px;
 
   background: #ffffff;
 
-  border-color: #dee2e6 !important;
+  border:
+    1px solid #dee2e6;
+
+  border-radius: 16px;
 
   transition:
-    all 0.2s ease;
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
 
 }
 
 
 .option-box:hover {
 
-  transform:
-    translateY(-2px);
+  border-color: #a5b4fc;
+
+  background: #fafbff;
 
   box-shadow:
-    0 5px 18px
-    rgba(0,0,0,0.08);
+    0 7px 22px
+    rgba(15, 23, 42, .06);
+
+  transform: translateY(-1px);
 
 }
 
@@ -457,19 +696,29 @@ document.addEventListener("DOMContentLoaded", function () {
 .option-box.selected-option {
 
   border:
-    2px solid #198754 !important;
+    2px solid #198754;
 
   background:
-    rgba(25,135,84,0.06);
+    rgba(25, 135, 84, .055);
+
+  box-shadow:
+    0 7px 22px
+    rgba(25, 135, 84, .10);
 
 }
 
 
+/* ==================================================
+   OPTION NUMBER
+================================================== */
+
 .option-number {
 
-  width: 42px;
+  width: 44px;
 
-  height: 42px;
+  height: 44px;
+
+  border-radius: 50%;
 
   display: inline-flex;
 
@@ -477,15 +726,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   justify-content: center;
 
-  border-radius: 50%;
-
   background: #3f52fb;
 
   color: #ffffff;
 
-  font-weight: 700;
+  font-weight: 800;
 
   font-size: 16px;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
 
 }
 
@@ -494,15 +745,179 @@ document.addEventListener("DOMContentLoaded", function () {
 
   background: #198754;
 
+  transform: scale(1.04);
+
 }
 
+
+/* ==================================================
+   OPTION INPUT
+================================================== */
+
+.option-input {
+
+  min-height: 45px;
+
+  border-radius: 10px;
+
+}
+
+
+.option-input:focus {
+
+  border-color: #3f52fb;
+
+  box-shadow:
+    0 0 0 .2rem
+    rgba(63, 82, 251, .14);
+
+}
+
+
+/* ==================================================
+   CORRECT ANSWER WRAPPER
+================================================== */
+
+.correct-answer-wrapper {
+
+  min-height: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+/* ==================================================
+   HIDDEN RADIO
+================================================== */
 
 .correct-option {
 
-  cursor: pointer;
+  position: absolute;
+
+  width: 1px;
+
+  height: 1px;
+
+  opacity: 0;
+
+  pointer-events: none;
 
 }
 
+
+/* ==================================================
+   CORRECT LABEL
+================================================== */
+
+.correct-label {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    all .2s ease;
+
+}
+
+
+.correct-label:hover {
+
+  color: #198754;
+
+  background:
+    rgba(25, 135, 84, .08);
+
+}
+
+
+/* ==================================================
+   RADIO CIRCLE
+================================================== */
+
+.radio-circle {
+
+  width: 21px;
+
+  height: 21px;
+
+  min-width: 21px;
+
+  border:
+    2px solid #adb5bd;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  position: relative;
+
+  transition:
+    all .2s ease;
+
+}
+
+
+.correct-option:checked + .correct-label {
+
+  color: #198754;
+
+  background:
+    rgba(25, 135, 84, .08);
+
+}
+
+
+.correct-option:checked + .correct-label .radio-circle {
+
+  border-color: #198754;
+
+}
+
+
+.correct-option:checked + .correct-label .radio-circle::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 10px;
+
+  height: 10px;
+
+  left: 3px;
+
+  top: 3px;
+
+  border-radius: 50%;
+
+  background: #198754;
+
+}
+
+
+/* ==================================================
+   FORM CONTROL
+================================================== */
 
 .form-control {
 
@@ -516,11 +931,15 @@ document.addEventListener("DOMContentLoaded", function () {
   border-color: #3f52fb;
 
   box-shadow:
-    0 0 0 0.2rem
-    rgba(63,82,251,0.15);
+    0 0 0 .2rem
+    rgba(63, 82, 251, .15);
 
 }
 
+
+/* ==================================================
+   BUTTONS
+================================================== */
 
 .btn {
 
@@ -529,17 +948,38 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
 @media (max-width: 768px) {
 
   .option-box {
 
-    padding: 15px !important;
+    padding: 15px;
 
   }
 
+
   .option-number {
 
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+
+  }
+
+
+  .correct-answer-wrapper {
+
+    margin-top: 4px;
+
+  }
+
+
+  .correct-label {
+
+    width: 100%;
+
+    justify-content: flex-start;
 
   }
 

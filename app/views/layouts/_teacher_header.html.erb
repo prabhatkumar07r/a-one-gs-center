@@ -308,6 +308,156 @@
 
   }
 
+
+  /* =========================================================
+   DAY / NIGHT TOGGLE
+========================================================= */
+
+.header-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #315f91;
+  color: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    transform .2s ease;
+}
+
+.header-icon:hover {
+  transform: scale(1.05);
+}
+
+.header-icon i {
+  font-size: 20px;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+html.teacher-day-mode body {
+  background: #f5f7fb !important;
+  color: #1f2937 !important;
+}
+
+html.teacher-day-mode .teacher-body,
+html.teacher-day-mode .teacher-main,
+html.teacher-day-mode .teacher-content {
+  background: #f5f7fb !important;
+  color: #1f2937 !important;
+}
+
+
+/* Sidebar */
+
+html.teacher-day-mode .teacher-sidebar {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+
+  border-right: 1px solid #e5e7eb !important;
+}
+
+
+/* Navbar */
+
+html.teacher-day-mode .teacher-navbar,
+html.teacher-day-mode .teacher-header,
+html.teacher-day-mode .teacher-topbar {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+
+/* Cards */
+
+html.teacher-day-mode .card,
+html.teacher-day-mode .teacher-card,
+html.teacher-day-mode .videos-card {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+
+  border-color: #e5e7eb !important;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, .08) !important;
+}
+
+
+/* Table */
+
+html.teacher-day-mode .videos-table tbody td {
+  background: #ffffff !important;
+  color: #374151 !important;
+  border-color: #e5e7eb !important;
+}
+
+
+/* Titles */
+
+html.teacher-day-mode .video-title,
+html.teacher-day-mode h1,
+html.teacher-day-mode h2,
+html.teacher-day-mode h3,
+html.teacher-day-mode h4,
+html.teacher-day-mode h5 {
+  color: #111827 !important;
+}
+
+
+/* Paragraph */
+
+html.teacher-day-mode p {
+  color: #6b7280 !important;
+}
+
+
+/* =========================================================
+   TOGGLE IN DAY MODE
+========================================================= */
+
+html.teacher-day-mode .header-icon {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+
+/* =========================================================
+   SMOOTH TRANSITION
+========================================================= */
+
+body,
+.teacher-body,
+.teacher-main,
+.teacher-content,
+.teacher-sidebar,
+.teacher-navbar,
+.teacher-header,
+.teacher-topbar,
+.card,
+.teacher-card,
+.videos-card,
+.videos-table tbody td {
+  transition:
+    background-color .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
 </style>
 
 
@@ -317,29 +467,26 @@
 
 <nav class="teacher-navbar">
 
-
   <!-- =======================================================
        LEFT SIDE
   ======================================================== -->
 
   <div class="teacher-navbar-left">
 
-
-    <!-- =====================================================
-         MOBILE MENU BUTTON
-    ====================================================== -->
+    <!-- MOBILE MENU -->
 
     <button
       type="button"
       class="menu-btn"
       id="teacherMenuBtn"
       aria-label="Open teacher menu"
-      aria-expanded="false">☰</button>
+      aria-expanded="false"
+    >
+      ☰
+    </button>
 
 
-    <!-- =====================================================
-         TITLE + WELCOME
-    ====================================================== -->
+    <!-- TITLE -->
 
     <div>
 
@@ -350,7 +497,6 @@
               "Teacher Dashboard" %>
 
       </h4>
-
 
       <small class="welcome-text">
 
@@ -373,7 +519,6 @@
 
   <div class="teacher-navbar-right">
 
-
     <!-- DATE -->
 
     <div class="header-item">
@@ -387,13 +532,29 @@
     </div>
 
 
-    <!-- NOTIFICATION -->
+    <!-- =====================================================
+         DAY / NIGHT TOGGLE
+         ONLY SHOW ON SELECTED PAGES
+    ====================================================== -->
 
-    <div class="header-icon">
+    <% if content_for?(:enable_theme_toggle) %>
 
-      <i class="bi bi-bell-fill"></i>
+      <button
+        type="button"
+        class="header-icon theme-toggle"
+        id="themeToggle"
+        title="Switch to Day Mode"
+        aria-label="Toggle Day/Night Mode"
+      >
 
-    </div>
+        <i
+          class="bi bi-sun-fill"
+          id="themeIcon"
+        ></i>
+
+      </button>
+
+    <% end %>
 
   </div>
 
@@ -663,4 +824,89 @@
 
 })();
 
+document.addEventListener("DOMContentLoaded", function () {
+
+  const themeToggle =
+    document.getElementById("themeToggle");
+
+  const themeIcon =
+    document.getElementById("themeIcon");
+
+
+  /* =====================================================
+     LOAD SAVED THEME
+  ===================================================== */
+
+  const savedTheme =
+    localStorage.getItem("teacherTheme");
+
+
+  if (savedTheme === "day") {
+
+    document.documentElement.classList.add(
+      "teacher-day-mode"
+    );
+
+    themeIcon.className =
+      "bi bi-moon-stars-fill";
+
+  } else {
+
+    document.documentElement.classList.remove(
+      "teacher-day-mode"
+    );
+
+    themeIcon.className =
+      "bi bi-sun-fill";
+
+  }
+
+
+  /* =====================================================
+     TOGGLE
+  ===================================================== */
+
+  themeToggle.addEventListener("click", function () {
+
+    const isDay =
+      document.documentElement.classList.toggle(
+        "teacher-day-mode"
+      );
+
+
+    if (isDay) {
+
+      /* WHITE / DAY MODE */
+
+      localStorage.setItem(
+        "teacherTheme",
+        "day"
+      );
+
+      themeIcon.className =
+        "bi bi-moon-stars-fill";
+
+      themeToggle.title =
+        "Switch to Night Mode";
+
+    } else {
+
+      /* DARK / NIGHT MODE */
+
+      localStorage.setItem(
+        "teacherTheme",
+        "night"
+      );
+
+      themeIcon.className =
+        "bi bi-sun-fill";
+
+      themeToggle.title =
+        "Switch to Day Mode";
+
+    }
+
+  });
+
+});
 </script>

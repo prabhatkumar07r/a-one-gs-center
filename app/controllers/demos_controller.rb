@@ -3,33 +3,37 @@ class DemosController < AdminController
   before_action :require_admin
 
   def index
-    @demos = Demo.order(created_at: :desc)
+  @demos = Demo.order(created_at: :desc)
 
-    if params[:search].present?
-      keyword = "%#{params[:search]}%"
-      @demos = @demos.where(
-        "name LIKE ? OR phone LIKE ? OR email LIKE ?",
-        keyword,
-        keyword,
-        keyword
-      )
-    end
+  # Search: Name OR Phone OR Email
+  if params[:search].present?
+    keyword = "%#{params[:search]}%"
 
-    if params[:status].present?
-      @demos = @demos.where(status: params[:status])
-    end
-
-    @demos = @demos.page(params[:page]).per(10)
-
-    @total_demos = Demo.count
-    @pending     = Demo.where(status: "Pending").count
-    @contacted   = Demo.where(status: "Contacted").count
-    @enrolled    = Demo.where(status: "Enrolled").count
-    @rejected    = Demo.where(status: "Rejected").count
-
-    @status_chart = Demo.group(:status).count
-    @course_chart = Demo.group(:course).count
+    @demos = @demos.where(
+      "name ILIKE :keyword OR phone ILIKE :keyword OR email ILIKE :keyword",
+      keyword: keyword
+    )
   end
+
+  # Status filter
+  if params[:status].present?
+    @demos = @demos.where(status: params[:status])
+  end
+
+  # Pagination
+  @demos = @demos.page(params[:page]).per(10)
+
+  # Statistics
+  @total_demos = Demo.count
+  @pending     = Demo.where(status: "Pending").count
+  @contacted   = Demo.where(status: "Contacted").count
+  @enrolled    = Demo.where(status: "Enrolled").count
+  @rejected    = Demo.where(status: "Rejected").count
+
+  # Charts
+  @status_chart = Demo.group(:status).count
+  @course_chart = Demo.group(:course).count
+end
 
   def show
     @demo = Demo.find(params[:id])
@@ -37,14 +41,17 @@ class DemosController < AdminController
 
   def edit
     @demo = Demo.find(params[:id])
+    @courses = Course.order(created_at: :desc)
   end
 
   def update
     @demo = Demo.find(params[:id])
 
     if @demo.update(admin_demo_params)
-      redirect_to demos_path, notice: "Demo request updated successfully."
+      redirect_to demos_path,
+                  notice: "Demo request updated successfully."
     else
+      @courses = Course.order(created_at: :desc)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -53,7 +60,8 @@ class DemosController < AdminController
     @demo = Demo.find(params[:id])
     @demo.destroy
 
-    redirect_to demos_path, notice: "Demo request deleted successfully."
+    redirect_to demos_path,
+                notice: "Demo request deleted successfully."
   end
 
   def export
@@ -67,10 +75,20 @@ class DemosController < AdminController
   private
 
   def admin_demo_params
-    params.require(:demo).permit(:status)
+    params.require(:demo).permit(
+      :name,
+      :phone,
+      :email,
+      :course,
+      :batch,
+      :city,
+      :preferred_time,
+      :status
+    )
   end
 
   def require_admin
-    redirect_to homepage_path, alert: "Access Denied!" unless current_user.admin?
+    redirect_to homepage_path,
+                alert: "Access Denied!" unless current_user.admin?
   end
 end

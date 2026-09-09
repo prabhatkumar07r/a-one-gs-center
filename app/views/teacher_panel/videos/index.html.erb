@@ -1,44 +1,82 @@
+
 <style>
 /* =========================================================
    TEACHER VIDEOS PAGE
-   All styles are scoped to avoid affecting other pages
+   MODERN DARK / PURPLE DASHBOARD
+   Fully scoped to .teacher-videos-page
 ========================================================= */
 
 .teacher-videos-page {
+  --tv-primary: #7c3aed;
+  --tv-primary-2: #6366f1;
+  --tv-purple-light: #a78bfa;
+  --tv-blue: #3b82f6;
+  --tv-green: #10b981;
+  --tv-yellow: #f59e0b;
+  --tv-red: #ef4444;
+
+  --tv-bg: #07111f;
+  --tv-bg-2: #0a1628;
+  --tv-card: #0d1b30;
+  --tv-card-2: #10213a;
+
+  --tv-border: rgba(148, 163, 184, 0.14);
+  --tv-text: #f8fafc;
+  --tv-text-2: #e2e8f0;
+  --tv-muted: #94a3b8;
+  --tv-muted-2: #64748b;
+
   width: 100%;
+  min-height: calc(100vh - 70px);
   padding: 25px;
   box-sizing: border-box;
+
+  color: var(--tv-text);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(37, 99, 235, 0.08),
+      transparent 30%
+    );
 }
+
 
 /* =========================================================
    BREADCRUMB
 ========================================================= */
 
 .teacher-videos-page .custom-breadcrumb {
-  background: transparent;
   padding: 0;
-  margin: 0 0 18px 0;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
+  margin: 0 0 22px;
+  background: transparent;
+  border: 0;
 }
 
 .teacher-videos-page .custom-breadcrumb .breadcrumb {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+
+  padding: 0;
+  margin: 0;
+
+  background: transparent;
 }
 
 .teacher-videos-page .custom-breadcrumb .breadcrumb-item {
   display: flex;
   align-items: center;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+
+  color: var(--tv-muted);
 }
 
 .teacher-videos-page
@@ -46,44 +84,42 @@
 .breadcrumb-item
 + .breadcrumb-item::before {
 
-  content: ">";
-
-  color: #6c757d;
+  content: "›";
 
   padding: 0 10px;
 
-  font-weight: 600;
+  color: #475569;
+
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .teacher-videos-page .custom-breadcrumb .breadcrumb-item a {
 
-  color: #0d6efd;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #a5b4fc;
 
   text-decoration: none;
 
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  transition: color 0.2s ease;
+  transition: color .2s ease;
 }
 
 .teacher-videos-page .custom-breadcrumb .breadcrumb-item a:hover {
-  color: #084298;
+  color: #c4b5fd;
 }
 
 .teacher-videos-page .custom-breadcrumb .breadcrumb-item.active {
-
-  color: #198754;
-
+  color: var(--tv-purple-light);
   font-weight: 600;
 }
 
 .teacher-videos-page .custom-breadcrumb i {
-  font-size: 14px;
+  font-size: 13px;
 }
+
 
 /* =========================================================
    PAGE HEADER
@@ -92,10 +128,8 @@
 .teacher-videos-page .videos-page-header {
 
   display: flex;
-
-  justify-content: space-between;
-
   align-items: center;
+  justify-content: space-between;
 
   gap: 20px;
 
@@ -103,70 +137,424 @@
 }
 
 .teacher-videos-page .videos-page-title {
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
   min-width: 0;
+}
+
+.teacher-videos-page .videos-title-icon {
+
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, .95),
+      rgba(79, 70, 229, .85)
+    );
+
+  border: 1px solid rgba(167, 139, 250, .35);
+
+  box-shadow:
+    0 10px 30px rgba(124, 58, 237, .20);
+}
+
+.teacher-videos-page .videos-title-icon i {
+
+  font-size: 25px;
+
+  color: #fff;
 }
 
 .teacher-videos-page .videos-page-title h2 {
 
   margin: 0;
 
-  font-size: 2rem;
+  color: var(--tv-text);
 
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 750;
 
-  color: #1f2937;
+  letter-spacing: -.5px;
 }
 
 .teacher-videos-page .videos-page-title p {
 
-  margin: 6px 0 0;
+  margin: 5px 0 0;
 
-  color: #6b7280;
+  color: var(--tv-muted);
 
-  font-size: 14px;
+  font-size: 13px;
 }
+
 
 /* =========================================================
    ADD VIDEO BUTTON
 ========================================================= */
 
-.teacher-videos-page .back-btn {
+.teacher-videos-page .add-video-btn {
 
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
 
-  gap: 5px;
+  gap: 8px;
 
-  padding: 6px 10px;
+  min-height: 44px;
 
-  width: auto;
+  padding: 0 18px;
 
-  min-width: auto;
-
-  white-space: nowrap;
-
-  font-size: 14px;
-
-  font-weight: 500;
-
+  border: 0;
   border-radius: 10px;
 
-  transition: all 0.2s ease-in-out;
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 24px rgba(124, 58, 237, .25);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease;
 }
 
-.teacher-videos-page .back-btn:hover {
+.teacher-videos-page .add-video-btn:hover {
+
+  color: #fff;
 
   transform: translateY(-2px);
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  filter: brightness(1.08);
+
+  box-shadow:
+    0 12px 30px rgba(124, 58, 237, .35);
 }
 
-.teacher-videos-page .back-btn i {
-  font-size: 15px;
+.teacher-videos-page .add-video-btn i {
+  font-size: 17px;
 }
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.teacher-videos-page .video-stats {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.teacher-videos-page .video-stat-card {
+
+  position: relative;
+
+  min-height: 112px;
+
+  padding: 17px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--tv-border);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(13, 27, 48, .98),
+      rgba(10, 22, 40, .98)
+    );
+
+  box-sizing: border-box;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease;
+}
+
+.teacher-videos-page .video-stat-card:hover {
+
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(167, 139, 250, .35);
+}
+
+.teacher-videos-page .video-stat-card::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  right: -35px;
+  bottom: -50px;
+
+  border-radius: 50%;
+
+  background: rgba(124, 58, 237, .08);
+
+  pointer-events: none;
+}
+
+.teacher-videos-page .video-stat-top {
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.teacher-videos-page .video-stat-icon {
+
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  font-size: 19px;
+}
+
+.teacher-videos-page .video-stat-icon.total {
+
+  color: #c4b5fd;
+
+  background:
+    rgba(124, 58, 237, .20);
+
+  border:
+    1px solid rgba(167, 139, 250, .22);
+}
+
+.teacher-videos-page .video-stat-icon.active {
+
+  color: #6ee7b7;
+
+  background:
+    rgba(16, 185, 129, .15);
+
+  border:
+    1px solid rgba(16, 185, 129, .22);
+}
+
+.teacher-videos-page .video-stat-icon.duration {
+
+  color: #93c5fd;
+
+  background:
+    rgba(59, 130, 246, .15);
+
+  border:
+    1px solid rgba(59, 130, 246, .22);
+}
+
+.teacher-videos-page .video-stat-icon.inactive {
+
+  color: #fcd34d;
+
+  background:
+    rgba(245, 158, 11, .13);
+
+  border:
+    1px solid rgba(245, 158, 11, .20);
+}
+
+.teacher-videos-page .video-stat-info {
+  min-width: 0;
+}
+
+.teacher-videos-page .video-stat-label {
+
+  margin-bottom: 3px;
+
+  color: var(--tv-muted);
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.teacher-videos-page .video-stat-number {
+
+  color: var(--tv-text);
+
+  font-size: 25px;
+  font-weight: 750;
+
+  line-height: 1.1;
+}
+
+
+/* =========================================================
+   FILTER / SEARCH CARD
+========================================================= */
+
+.teacher-videos-page .video-filter-card {
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px;
+
+  margin-bottom: 16px;
+
+  border: 1px solid var(--tv-border);
+
+  border-radius: 13px;
+
+  background:
+    rgba(13, 27, 48, .95);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, .12);
+}
+
+.teacher-videos-page .video-search {
+
+  position: relative;
+
+  flex: 1;
+
+  min-width: 180px;
+}
+
+.teacher-videos-page .video-search i {
+
+  position: absolute;
+
+  left: 13px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--tv-muted-2);
+
+  font-size: 15px;
+
+  pointer-events: none;
+}
+
+.teacher-videos-page .video-search input {
+
+  width: 100%;
+  height: 42px;
+
+  padding:
+    0 14px 0 38px;
+
+  border:
+    1px solid rgba(148, 163, 184, .15);
+
+  border-radius: 9px;
+
+  outline: none;
+
+  color: var(--tv-text);
+
+  background: #0a1830;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.teacher-videos-page .video-search input::placeholder {
+  color: #64748b;
+}
+
+.teacher-videos-page .video-search input:focus {
+
+  border-color:
+    rgba(124, 58, 237, .65);
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, .10);
+}
+
+.teacher-videos-page .video-filter-select {
+
+  width: 170px;
+  height: 42px;
+
+  padding: 0 12px;
+
+  border:
+    1px solid rgba(148, 163, 184, .15);
+
+  border-radius: 9px;
+
+  outline: none;
+
+  color: var(--tv-text);
+
+  background: #0a1830;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.teacher-videos-page .video-filter-select:focus {
+
+  border-color:
+    rgba(124, 58, 237, .65);
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, .10);
+}
+
+.teacher-videos-page .video-filter-select option {
+
+  background: #0d1b30;
+
+  color: #fff;
+}
+
 
 /* =========================================================
    VIDEO CARD
@@ -174,16 +562,22 @@
 
 .teacher-videos-page .videos-card {
 
-  border: none;
-
-  border-radius: 15px;
+  width: 100%;
 
   overflow: hidden;
 
-  background: #fff;
+  border:
+    1px solid var(--tv-border);
 
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+
+  background:
+    rgba(13, 27, 48, .98);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, .15);
 }
+
 
 /* =========================================================
    TABLE
@@ -193,74 +587,225 @@
 
   width: 100%;
 
-  margin-bottom: 0;
-}
+  min-width: 850px;
 
-/* Table Header */
+  margin: 0;
+
+  border-collapse: collapse;
+}
 
 .teacher-videos-page .videos-table thead th {
 
-  background: #000 !important;
+  padding: 15px 14px;
 
-  color: #fff !important;
+  border-bottom:
+    1px solid rgba(148, 163, 184, .14);
 
-  border: none;
+  border-top: 0;
 
-  font-size: 14px;
+  background:
+    #0b1a31 !important;
 
-  font-weight: 600;
+  color: #94a3b8 !important;
 
-  padding: 14px;
+  font-size: 11px;
 
-  vertical-align: middle;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .5px;
 
   white-space: nowrap;
-}
 
-/* Table Body */
+  vertical-align: middle;
+}
 
 .teacher-videos-page .videos-table tbody td {
 
   padding: 14px;
 
+  border-bottom:
+    1px solid rgba(148, 163, 184, .09);
+
+  color: #cbd5e1;
+
+  background: transparent;
+
+  font-size: 13px;
+
   vertical-align: middle;
-
-  font-size: 14px;
-
-  color: #374151;
-
-  border-color: #eef0f2;
 }
 
 .teacher-videos-page .videos-table tbody tr {
 
-  transition: background 0.2s ease;
+  transition:
+    background .2s ease;
 }
 
 .teacher-videos-page .videos-table tbody tr:hover {
 
-  background: #f8f9fa;
+  background:
+    rgba(124, 58, 237, .055);
 }
+
+.teacher-videos-page .videos-table tbody tr:last-child td {
+
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.teacher-videos-page .video-number {
+
+  color: #64748b;
+
+  font-weight: 600;
+
+  width: 35px;
+}
+
 
 /* =========================================================
    VIDEO TITLE
 ========================================================= */
 
+.teacher-videos-page .video-title-wrapper {
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 230px;
+}
+
+.teacher-videos-page .video-title-icon {
+
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  color: #c4b5fd;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, .35),
+      rgba(99, 102, 241, .22)
+    );
+
+  border:
+    1px solid rgba(167, 139, 250, .20);
+}
+
+.teacher-videos-page .video-title-icon i {
+  font-size: 16px;
+}
+
+.teacher-videos-page .video-title-content {
+  min-width: 0;
+}
+
 .teacher-videos-page .video-title {
 
-  font-weight: 600;
+  max-width: 280px;
 
-  color: #1f2937;
+  overflow: hidden;
 
-  max-width: 250px;
+  color: #f1f5f9;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  line-height: 1.4;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.teacher-videos-page .video-subtitle {
+
+  margin-top: 3px;
+
+  color: #64748b;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   COURSE
+========================================================= */
+
+.teacher-videos-page .video-course {
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  max-width: 190px;
+
+  color: #cbd5e1;
+
+  font-size: 12px;
+}
+
+.teacher-videos-page .video-course i {
+
+  color: #a78bfa;
+
+  font-size: 13px;
+}
+
+.teacher-videos-page .video-course span {
 
   overflow: hidden;
 
   text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
+
 /* =========================================================
-   STATUS BADGE
+   DURATION
+========================================================= */
+
+.teacher-videos-page .video-duration {
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: #94a3b8;
+
+  white-space: nowrap;
+}
+
+.teacher-videos-page .video-duration i {
+
+  color: #64748b;
+}
+
+
+/* =========================================================
+   STATUS
 ========================================================= */
 
 .teacher-videos-page .video-status {
@@ -268,19 +813,55 @@
   display: inline-flex;
 
   align-items: center;
-
   justify-content: center;
 
-  padding: 6px 12px;
+  gap: 6px;
+
+  min-width: 72px;
+
+  padding: 6px 10px;
 
   border-radius: 50px;
 
-  font-size: 12px;
+  font-size: 10px;
 
-  font-weight: 600;
+  font-weight: 700;
 
   white-space: nowrap;
 }
+
+.teacher-videos-page .video-status.status-active {
+
+  color: #6ee7b7;
+
+  background:
+    rgba(16, 185, 129, .14);
+
+  border:
+    1px solid rgba(16, 185, 129, .20);
+}
+
+.teacher-videos-page .video-status.status-inactive {
+
+  color: #94a3b8;
+
+  background:
+    rgba(100, 116, 139, .15);
+
+  border:
+    1px solid rgba(100, 116, 139, .20);
+}
+
+.teacher-videos-page .video-status-dot {
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
 
 /* =========================================================
    ACTION BUTTONS
@@ -297,27 +878,74 @@
   white-space: nowrap;
 }
 
-.teacher-videos-page .video-actions .btn {
+.teacher-videos-page .video-actions .video-action {
 
-  width: 34px;
-
-  height: 34px;
+  width: 32px;
+  height: 32px;
 
   padding: 0;
 
   display: inline-flex;
 
   align-items: center;
-
   justify-content: center;
 
+  border: 1px solid transparent;
+
   border-radius: 7px;
+
+  text-decoration: none;
+
+  transition:
+    transform .2s ease,
+    filter .2s ease,
+    background .2s ease;
+}
+
+.teacher-videos-page .video-actions .video-action:hover {
+
+  transform: translateY(-2px);
+
+  filter: brightness(1.12);
+}
+
+.teacher-videos-page .video-action.view {
+
+  color: #93c5fd;
+
+  background:
+    rgba(59, 130, 246, .16);
+
+  border-color:
+    rgba(59, 130, 246, .20);
+}
+
+.teacher-videos-page .video-action.edit {
+
+  color: #fcd34d;
+
+  background:
+    rgba(245, 158, 11, .14);
+
+  border-color:
+    rgba(245, 158, 11, .20);
+}
+
+.teacher-videos-page .video-action.delete {
+
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, .14);
+
+  border-color:
+    rgba(239, 68, 68, .20);
 }
 
 .teacher-videos-page .video-actions i {
-
-  font-size: 14px;
+  font-size: 13px;
 }
+
 
 /* =========================================================
    EMPTY STATE
@@ -325,113 +953,160 @@
 
 .teacher-videos-page .videos-empty {
 
+  padding: 60px 20px !important;
+
   text-align: center;
 
-  padding: 45px 20px !important;
-
-  color: #6b7280;
+  color: var(--tv-muted);
 }
 
-.teacher-videos-page .videos-empty i {
+.teacher-videos-page .videos-empty-icon {
 
-  display: block;
+  width: 65px;
+  height: 65px;
 
-  font-size: 40px;
+  margin: 0 auto 15px;
 
-  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  margin-bottom: 12px;
+  border-radius: 15px;
+
+  color: #a78bfa;
+
+  background:
+    rgba(124, 58, 237, .12);
+
+  border:
+    1px solid rgba(124, 58, 237, .20);
+}
+
+.teacher-videos-page .videos-empty-icon i {
+  font-size: 27px;
 }
 
 .teacher-videos-page .videos-empty h5 {
 
-  margin: 0 0 5px;
+  margin: 0 0 6px;
 
-  font-weight: 600;
+  color: #e2e8f0;
 
-  color: #374151;
+  font-size: 15px;
+  font-weight: 700;
 }
 
-/* =========================================================
-   TABLET
-========================================================= */
+.teacher-videos-page .videos-empty p {
 
-@media (max-width: 992px) {
+  margin: 0;
 
-  .teacher-videos-page {
+  color: #64748b;
 
-    padding: 20px;
-  }
-
-  .teacher-videos-page .videos-page-title h2 {
-
-    font-size: 1.7rem;
-  }
-
+  font-size: 12px;
 }
 
+
 /* =========================================================
-   MOBILE
+   TABLE FOOTER
 ========================================================= */
+
+.teacher-videos-page .videos-table-footer {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 13px 16px;
+
+  border-top:
+    1px solid rgba(148, 163, 184, .09);
+
+  background:
+    rgba(7, 17, 31, .35);
+}
+
+.teacher-videos-page .videos-result-count {
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .teacher-videos-page .video-stats {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .teacher-videos-page .video-filter-select {
+
+    width: 150px;
+  }
+}
+
 
 @media (max-width: 768px) {
 
   .teacher-videos-page {
 
-    padding: 15px;
+    padding: 18px 15px;
   }
-
-  /* Breadcrumb */
-
-  .teacher-videos-page .custom-breadcrumb {
-
-    margin-bottom: 15px;
-  }
-
-  .teacher-videos-page
-  .custom-breadcrumb
-  .breadcrumb-item {
-
-    font-size: 13px;
-  }
-
-  .teacher-videos-page
-  .custom-breadcrumb
-  .breadcrumb-item
-  + .breadcrumb-item::before {
-
-    padding: 0 6px;
-  }
-
-  /* Header */
 
   .teacher-videos-page .videos-page-header {
 
-    flex-direction: column;
-
     align-items: flex-start;
 
-    gap: 12px;
+    flex-direction: column;
+
+    gap: 15px;
   }
 
   .teacher-videos-page .videos-page-title h2 {
 
-    font-size: 1.45rem;
+    font-size: 25px;
   }
 
-  .teacher-videos-page .videos-page-title p {
+  .teacher-videos-page .videos-title-icon {
 
-    font-size: 13px;
+    width: 50px;
+    height: 50px;
   }
 
-  .teacher-videos-page .back-btn {
+  .teacher-videos-page .add-video-btn {
 
-    font-size: 13px;
-
-    padding: 6px 10px;
+    width: 100%;
   }
 
-  /* Table */
+  .teacher-videos-page .video-filter-card {
+
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .teacher-videos-page .video-search {
+
+    width: 100%;
+  }
+
+  .teacher-videos-page .video-filter-select {
+
+    width: 100%;
+  }
+
+  .teacher-videos-page .videos-table {
+
+    min-width: 850px;
+  }
 
   .teacher-videos-page .table-responsive {
 
@@ -440,57 +1115,382 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .teacher-videos-page .videos-table {
+  .teacher-videos-page .videos-table-footer {
 
-    min-width: 800px;
+    align-items: flex-start;
+
+    flex-direction: column;
   }
-
-  .teacher-videos-page .videos-table thead th,
-  .teacher-videos-page .videos-table tbody td {
-
-    padding: 10px;
-
-    font-size: 13px;
-  }
-
 }
 
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
 
 @media (max-width: 480px) {
 
   .teacher-videos-page {
 
-    padding: 12px;
+    padding: 14px 12px;
+  }
+
+  .teacher-videos-page .video-stats {
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .teacher-videos-page .videos-page-title {
+
+    gap: 11px;
+  }
+
+  .teacher-videos-page .videos-title-icon {
+
+    width: 45px;
+    height: 45px;
   }
 
   .teacher-videos-page .videos-page-title h2 {
 
-    font-size: 1.25rem;
+    font-size: 22px;
   }
 
   .teacher-videos-page .videos-page-title p {
 
     font-size: 12px;
   }
+}
 
-  .teacher-videos-page .custom-breadcrumb .breadcrumb-item {
 
-    font-size: 12px;
-  }
 
-  .teacher-videos-page .custom-breadcrumb i {
+/* =========================================================
+   FINAL VISIBILITY FIX
+   Put this at the VERY END of the style block
+========================================================= */
 
-    font-size: 12px;
-  }
+.teacher-videos-page {
+  opacity: 1 !important;
+  filter: none !important;
+  visibility: visible !important;
 
-  .teacher-videos-page .videos-card {
+  color: #f8fafc !important;
 
-    border-radius: 12px;
-  }
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, 0.12),
+      transparent 32%
+    ),
+    #07111f !important;
+}
 
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.teacher-videos-page .video-filter-card {
+  opacity: 1 !important;
+  filter: none !important;
+
+  background: #0d1b30 !important;
+
+  border: 1px solid rgba(148, 163, 184, .16) !important;
+}
+
+.teacher-videos-page .video-search input,
+.teacher-videos-page .video-filter-select {
+  opacity: 1 !important;
+
+  color: #f8fafc !important;
+
+  background: #0a1830 !important;
+
+  border: 1px solid rgba(148, 163, 184, .20) !important;
+}
+
+.teacher-videos-page .video-search input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.teacher-videos-page .video-search i {
+  color: #94a3b8 !important;
+}
+
+
+/* =========================================================
+   TABLE CARD
+========================================================= */
+
+.teacher-videos-page .videos-card {
+  opacity: 1 !important;
+  filter: none !important;
+
+  background: #0d1b30 !important;
+
+  border: 1px solid rgba(148, 163, 184, .18) !important;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.teacher-videos-page .videos-table thead,
+.teacher-videos-page .videos-table thead tr,
+.teacher-videos-page .videos-table thead th {
+  opacity: 1 !important;
+
+  background: #0b1a31 !important;
+
+  color: #cbd5e1 !important;
+
+  border-color:
+    rgba(148, 163, 184, .16) !important;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.teacher-videos-page .videos-table tbody,
+.teacher-videos-page .videos-table tbody tr,
+.teacher-videos-page .videos-table tbody td {
+  opacity: 1 !important;
+
+  color: #cbd5e1 !important;
+
+  background: #0d1b30 !important;
+
+  border-color:
+    rgba(148, 163, 184, .09) !important;
+}
+
+
+/* =========================================================
+   ROW HOVER
+========================================================= */
+
+.teacher-videos-page .videos-table tbody tr:hover td {
+  background:
+    rgba(124, 58, 237, .08) !important;
+
+  color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   VIDEO TITLE
+========================================================= */
+
+.teacher-videos-page .video-title {
+  opacity: 1 !important;
+
+  color: #f8fafc !important;
+
+  font-weight: 650 !important;
+}
+
+.teacher-videos-page .video-subtitle {
+  opacity: 1 !important;
+
+  color: #64748b !important;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.teacher-videos-page .video-number {
+  color: #94a3b8 !important;
+
+  opacity: 1 !important;
+}
+
+
+/* =========================================================
+   COURSE
+========================================================= */
+
+.teacher-videos-page .video-course {
+  color: #cbd5e1 !important;
+
+  opacity: 1 !important;
+}
+
+.teacher-videos-page .video-course i {
+  color: #a78bfa !important;
+}
+
+
+/* =========================================================
+   DURATION
+========================================================= */
+
+.teacher-videos-page .video-duration {
+  color: #cbd5e1 !important;
+
+  opacity: 1 !important;
+}
+
+.teacher-videos-page .video-duration i {
+  color: #94a3b8 !important;
+}
+
+
+/* =========================================================
+   TITLE ICON
+========================================================= */
+
+.teacher-videos-page .video-title-icon {
+  opacity: 1 !important;
+
+  color: #c4b5fd !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, .45),
+      rgba(99, 102, 241, .30)
+    ) !important;
+
+  border:
+    1px solid rgba(167, 139, 250, .30) !important;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.teacher-videos-page .video-status {
+  opacity: 1 !important;
+}
+
+.teacher-videos-page .video-status.status-active {
+  color: #6ee7b7 !important;
+
+  background:
+    rgba(16, 185, 129, .18) !important;
+
+  border:
+    1px solid rgba(16, 185, 129, .30) !important;
+}
+
+.teacher-videos-page .video-status.status-inactive {
+  color: #cbd5e1 !important;
+
+  background:
+    rgba(100, 116, 139, .22) !important;
+
+  border:
+    1px solid rgba(148, 163, 184, .25) !important;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.teacher-videos-page .video-actions .video-action {
+  opacity: 1 !important;
+
+  filter: none !important;
+}
+
+.teacher-videos-page .video-action.view {
+  color: #93c5fd !important;
+
+  background:
+    rgba(59, 130, 246, .20) !important;
+
+  border-color:
+    rgba(59, 130, 246, .35) !important;
+}
+
+.teacher-videos-page .video-action.edit {
+  color: #fcd34d !important;
+
+  background:
+    rgba(245, 158, 11, .18) !important;
+
+  border-color:
+    rgba(245, 158, 11, .30) !important;
+}
+
+.teacher-videos-page .video-action.delete {
+  color: #fca5a5 !important;
+
+  background:
+    rgba(239, 68, 68, .18) !important;
+
+  border-color:
+    rgba(239, 68, 68, .30) !important;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.teacher-videos-page .add-video-btn {
+  opacity: 1 !important;
+
+  color: #fff !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    ) !important;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.teacher-videos-page .videos-page-title h2 {
+  opacity: 1 !important;
+
+  color: #f8fafc !important;
+}
+
+.teacher-videos-page .videos-page-title p {
+  opacity: 1 !important;
+
+  color: #94a3b8 !important;
+}
+
+.teacher-videos-page .videos-title-icon {
+  opacity: 1 !important;
+}
+
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.teacher-videos-page .custom-breadcrumb,
+.teacher-videos-page .custom-breadcrumb * {
+  opacity: 1 !important;
+
+  filter: none !important;
+}
+
+.teacher-videos-page .custom-breadcrumb .breadcrumb-item {
+  color: #94a3b8 !important;
+}
+
+.teacher-videos-page .custom-breadcrumb a {
+  color: #a78bfa !important;
+}
+
+.teacher-videos-page
+.custom-breadcrumb
+.breadcrumb-item.active {
+  color: #c4b5fd !important;
 }
 </style>
 
@@ -516,7 +1516,6 @@
 
       </li>
 
-
       <li class="breadcrumb-item">
 
         <%= link_to teacher_panel_courses_path do %>
@@ -528,7 +1527,6 @@
 
       </li>
 
-
       <li class="breadcrumb-item">
 
         <%= link_to teacher_panel_course_path(@course) do %>
@@ -539,7 +1537,6 @@
         <% end %>
 
       </li>
-
 
       <li class="breadcrumb-item active" aria-current="page">
 
@@ -561,21 +1558,32 @@
 
     <div class="videos-page-title">
 
-      <h2>
-        🎥 My Videos
-      </h2>
+      <div class="videos-title-icon">
 
-      <p>
-        Manage videos of your assigned courses.
-      </p>
+        <i class="bi bi-camera-video-fill"></i>
+
+      </div>
+
+      <div>
+
+        <h2>
+          My Videos
+        </h2>
+
+        <p>
+          Manage videos of your assigned courses.
+        </p>
+
+      </div>
 
     </div>
 
 
     <%= link_to new_teacher_panel_course_video_path(@course),
-        class: "btn btn-outline-secondary back-btn" do %>
+        class: "add-video-btn" do %>
 
-      <i class="bi bi-plus-circle"></i>
+      <i class="bi bi-plus-lg"></i>
+
       Add Video
 
     <% end %>
@@ -584,14 +1592,192 @@
 
 
   <!-- =====================================================
-       VIDEO CARD
+       STATISTICS
+  ====================================================== -->
+
+  <div class="video-stats">
+
+    <!-- Total -->
+
+    <div class="video-stat-card">
+
+      <div class="video-stat-top">
+
+        <div class="video-stat-icon total">
+
+          <i class="bi bi-camera-video-fill"></i>
+
+        </div>
+
+        <div class="video-stat-info">
+
+          <div class="video-stat-label">
+            Total Videos
+          </div>
+
+          <div class="video-stat-number">
+            <%= @videos.count %>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Active -->
+
+    <div class="video-stat-card">
+
+      <div class="video-stat-top">
+
+        <div class="video-stat-icon active">
+
+          <i class="bi bi-check-circle-fill"></i>
+
+        </div>
+
+        <div class="video-stat-info">
+
+          <div class="video-stat-label">
+            Active Videos
+          </div>
+
+          <div class="video-stat-number">
+
+            <%= @videos.count { |video|
+                  video.status.to_s.downcase == "active"
+                } %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Duration -->
+
+    <div class="video-stat-card">
+
+      <div class="video-stat-top">
+
+        <div class="video-stat-icon duration">
+
+          <i class="bi bi-clock-fill"></i>
+
+        </div>
+
+        <div class="video-stat-info">
+
+          <div class="video-stat-label">
+            With Duration
+          </div>
+
+          <div class="video-stat-number">
+
+            <%= @videos.count { |video|
+                  video.duration.present?
+                } %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Inactive -->
+
+    <div class="video-stat-card">
+
+      <div class="video-stat-top">
+
+        <div class="video-stat-icon inactive">
+
+          <i class="bi bi-pause-circle-fill"></i>
+
+        </div>
+
+        <div class="video-stat-info">
+
+          <div class="video-stat-label">
+            Inactive Videos
+          </div>
+
+          <div class="video-stat-number">
+
+            <%= @videos.count { |video|
+                  video.status.to_s.downcase != "active"
+                } %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       SEARCH / FILTER
+  ====================================================== -->
+
+  <div class="video-filter-card">
+
+    <div class="video-search">
+
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        id="teacherVideoSearch"
+        placeholder="Search videos..."
+        autocomplete="off"
+      >
+
+    </div>
+
+
+    <select
+      class="video-filter-select"
+      id="teacherVideoStatusFilter"
+    >
+
+      <option value="all">
+        All Status
+      </option>
+
+      <option value="active">
+        Active
+      </option>
+
+      <option value="inactive">
+        Inactive
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- =====================================================
+       VIDEO TABLE
   ====================================================== -->
 
   <div class="videos-card">
 
     <div class="table-responsive">
 
-      <table class="table table-hover videos-table">
+      <table class="table videos-table">
 
         <thead>
 
@@ -599,7 +1785,7 @@
 
             <th>#</th>
 
-            <th>Title</th>
+            <th>Video</th>
 
             <th>Course</th>
 
@@ -607,67 +1793,113 @@
 
             <th>Status</th>
 
-            <th>Action</th>
+            <th>Actions</th>
 
           </tr>
 
         </thead>
 
 
-        <tbody>
+        <tbody id="teacherVideosTableBody">
 
           <% if @videos.any? %>
 
             <% @videos.each_with_index do |video, index| %>
 
-              <tr>
+              <tr
+                class="teacher-video-row"
+                data-video-title="<%= video.title.to_s.downcase %>"
+                data-video-status="<%= video.status.to_s.downcase == 'active' ? 'active' : 'inactive' %>"
+              >
 
-                <!-- Number -->
+                <!-- NUMBER -->
 
-                <td>
+                <td class="video-number">
+
                   <%= index + 1 %>
+
                 </td>
 
 
-                <!-- Title -->
+                <!-- VIDEO -->
 
                 <td>
 
-                  <div class="video-title"
-                       title="<%= video.title %>">
+                  <div class="video-title-wrapper">
 
-                    <%= video.title %>
+                    <div class="video-title-icon">
+
+                      <i class="bi bi-play-fill"></i>
+
+                    </div>
+
+                    <div class="video-title-content">
+
+                      <div
+                        class="video-title"
+                        title="<%= video.title %>"
+                      >
+
+                        <%= video.title %>
+
+                      </div>
+
+                      <div class="video-subtitle">
+
+                        Video Lesson
+
+                      </div>
+
+                    </div>
 
                   </div>
 
                 </td>
 
 
-                <!-- Course -->
+                <!-- COURSE -->
 
                 <td>
 
-                  <%= video.course&.Course_name || "N/A" %>
+                  <div class="video-course">
+
+                    <i class="bi bi-book-fill"></i>
+
+                    <span title="<%= video.course&.Course_name %>">
+
+                      <%= video.course&.Course_name || "N/A" %>
+
+                    </span>
+
+                  </div>
 
                 </td>
 
 
-                <!-- Duration -->
+                <!-- DURATION -->
 
                 <td>
 
-                  <%= video.duration.presence || "-" %>
+                  <div class="video-duration">
+
+                    <i class="bi bi-clock"></i>
+
+                    <%= video.duration.presence || "-" %>
+
+                  </div>
 
                 </td>
 
 
-                <!-- Status -->
+                <!-- STATUS -->
 
                 <td>
 
-                  <% if video.status == 1 %>
+                  <% if video.status.to_s.downcase == "active" %>
 
-                    <span class="badge bg-success video-status">
+                    <span class="video-status status-active">
+
+                      <span class="video-status-dot"></span>
 
                       Active
 
@@ -675,7 +1907,9 @@
 
                   <% else %>
 
-                    <span class="badge bg-secondary video-status">
+                    <span class="video-status status-inactive">
+
+                      <span class="video-status-dot"></span>
 
                       Inactive
 
@@ -686,41 +1920,41 @@
                 </td>
 
 
-                <!-- Actions -->
+                <!-- ACTIONS -->
 
                 <td>
 
                   <div class="video-actions">
 
-                    <!-- View -->
+                    <!-- VIEW -->
 
                     <%= link_to teacher_panel_course_video_path(
                           @course,
                           video
                         ),
-                        class: "btn btn-info btn-sm",
+                        class: "video-action view",
                         title: "View Video" do %>
 
-                      <i class="bi bi-eye"></i>
+                      <i class="bi bi-eye-fill"></i>
 
                     <% end %>
 
 
-                    <!-- Edit -->
+                    <!-- EDIT -->
 
                     <%= link_to edit_teacher_panel_course_video_path(
                           @course,
                           video
                         ),
-                        class: "btn btn-warning btn-sm",
+                        class: "video-action edit",
                         title: "Edit Video" do %>
 
-                      <i class="bi bi-pencil"></i>
+                      <i class="bi bi-pencil-fill"></i>
 
                     <% end %>
 
 
-                    <!-- Delete -->
+                    <!-- DELETE -->
 
                     <%= link_to teacher_panel_course_video_path(
                           @course,
@@ -730,10 +1964,10 @@
                           turbo_method: :delete,
                           turbo_confirm: "Delete this video?"
                         },
-                        class: "btn btn-danger btn-sm",
+                        class: "video-action delete",
                         title: "Delete Video" do %>
 
-                      <i class="bi bi-trash"></i>
+                      <i class="bi bi-trash-fill"></i>
 
                     <% end %>
 
@@ -745,7 +1979,6 @@
 
             <% end %>
 
-
           <% else %>
 
             <tr>
@@ -755,13 +1988,17 @@
                 class="videos-empty"
               >
 
-                <i class="bi bi-camera-video-off"></i>
+                <div class="videos-empty-icon">
+
+                  <i class="bi bi-camera-video-off"></i>
+
+                </div>
 
                 <h5>
                   No Videos Available
                 </h5>
 
-                <p class="mb-0">
+                <p>
                   No videos have been added to this course yet.
                 </p>
 
@@ -777,6 +2014,131 @@
 
     </div>
 
+
+    <!-- ===================================================
+         FOOTER
+    ==================================================== -->
+
+    <% if @videos.any? %>
+
+      <div class="videos-table-footer">
+
+        <div class="videos-result-count"
+             id="teacherVideoResultCount">
+
+          Showing <%= @videos.count %>
+          <%= @videos.count == 1 ? "video" : "videos" %>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
   </div>
 
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const searchInput =
+    document.getElementById("teacherVideoSearch");
+
+  const statusFilter =
+    document.getElementById("teacherVideoStatusFilter");
+
+  const rows =
+    document.querySelectorAll(".teacher-video-row");
+
+  const resultCount =
+    document.getElementById("teacherVideoResultCount");
+
+
+  function filterVideos() {
+
+    const search =
+      searchInput
+        ? searchInput.value
+            .trim()
+            .toLowerCase()
+        : "";
+
+    const status =
+      statusFilter
+        ? statusFilter.value
+        : "all";
+
+    let visibleCount = 0;
+
+
+    rows.forEach(function (row) {
+
+      const title =
+        row.dataset.videoTitle || "";
+
+      const rowStatus =
+        row.dataset.videoStatus || "";
+
+
+      const matchesSearch =
+        title.includes(search);
+
+      const matchesStatus =
+        status === "all" ||
+        rowStatus === status;
+
+
+      if (
+        matchesSearch &&
+        matchesStatus
+      ) {
+
+        row.style.display = "";
+
+        visibleCount++;
+
+      } else {
+
+        row.style.display = "none";
+
+      }
+
+    });
+
+
+    if (resultCount) {
+
+      resultCount.textContent =
+        "Showing " +
+        visibleCount +
+        " " +
+        (visibleCount === 1 ? "video" : "videos");
+
+    }
+
+  }
+
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "input",
+      filterVideos
+    );
+
+  }
+
+
+  if (statusFilter) {
+
+    statusFilter.addEventListener(
+      "change",
+      filterVideos
+    );
+
+  }
+
+});
+</script>

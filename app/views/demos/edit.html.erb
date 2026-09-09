@@ -1,49 +1,477 @@
-<%=render "layouts/header"%>
-<div class="container mt-5">
+<style>
+  /* =========================================================
+   EDIT DEMO PAGE
+========================================================= */
 
-<h2>Edit Demo Request</h2>
+.demo-edit-page {
+  min-height: 100vh;
 
-<%= form_with model: @demo, local: true do |f| %>
+  padding: 60px 20px;
 
-<div class="mb-3">
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(79, 70, 229, 0.10),
+      transparent 35%
+    ),
+    #f8fafc;
+}
 
-<%= f.label :name %>
 
-<%= f.text_field :name, class:"form-control" %>
+/* =========================================================
+   CARD
+========================================================= */
+
+.demo-edit-card {
+  width: min(900px, 100%);
+
+  margin: 0 auto;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.09);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.demo-edit-header {
+  padding: 30px 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #312e81,
+      #4f46e5
+    );
+}
+
+.demo-edit-label {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: rgba(255, 255, 255, 0.70);
+}
+
+.demo-edit-header h1 {
+  margin: 6px 0 0;
+
+  font-size: 27px;
+
+  font-weight: 800;
+}
+
+.demo-edit-header p {
+  margin: 6px 0 0;
+
+  font-size: 13px;
+
+  color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.demo-edit-status {
+  padding: 8px 15px;
+
+  flex-shrink: 0;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.demo-edit-body {
+  padding: 35px;
+}
+
+
+/* =========================================================
+   TWO COLUMN FORM
+========================================================= */
+
+.demo-edit-body form {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.demo-edit-field {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.demo-edit-field label {
+  margin-bottom: 7px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: #374151;
+}
+
+
+/* =========================================================
+   INPUT / SELECT
+========================================================= */
+
+.demo-edit-input,
+.demo-edit-select {
+  width: 100%;
+
+  height: 47px;
+
+  padding: 0 13px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.demo-edit-input::placeholder {
+  color: #9ca3af;
+}
+
+.demo-edit-input:focus,
+.demo-edit-select:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 4px rgba(99, 102, 241, 0.10);
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.demo-edit-actions {
+  grid-column: 1 / -1;
+
+  margin-top: 10px;
+
+  padding-top: 25px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.demo-edit-back {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  color: #374151;
+
+  background: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.demo-edit-back:hover {
+  background: #f9fafb;
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+.demo-edit-submit {
+  min-height: 42px;
+
+  padding: 0 20px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(79, 70, 229, 0.20);
+}
+
+.demo-edit-submit:hover {
+  box-shadow:
+    0 9px 20px rgba(79, 70, 229, 0.28);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .demo-edit-page {
+    padding: 25px 12px;
+  }
+
+  .demo-edit-header {
+    padding: 25px 22px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .demo-edit-header h1 {
+    font-size: 23px;
+  }
+
+  .demo-edit-body {
+    padding: 25px 22px;
+  }
+
+  .demo-edit-body form {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-edit-actions {
+    grid-column: auto;
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .demo-edit-back,
+  .demo-edit-submit {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+}
+
+
+
+.demo-edit-readonly {
+  width: 100%;
+  min-height: 47px;
+  padding: 13px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+
+  background: #f8fafc;
+  color: #374151;
+
+  font-size: 14px;
+}
+</style>
+
+<div class="demo-edit-body">
+
+  <%= form_with model: @demo, local: true do |f| %>
+
+    <!-- NAME -->
+    <div class="demo-edit-field">
+      <%= f.label :name, "Full Name" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.name.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- PHONE -->
+    <div class="demo-edit-field">
+      <%= f.label :phone, "Contact Number" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.phone.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- EMAIL -->
+    <div class="demo-edit-field">
+      <%= f.label :email, "Email Address" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.email.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- COURSE -->
+    <div class="demo-edit-field">
+      <%= f.label :course, "Selected Course" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.course.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- BATCH -->
+    <div class="demo-edit-field">
+      <%= f.label :batch, "Preferred Batch" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.batch.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- CITY -->
+    <div class="demo-edit-field">
+      <%= f.label :city, "City" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.city.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- PREFERRED TIME -->
+    <div class="demo-edit-field">
+      <%= f.label :preferred_time, "Preferred Time" %>
+
+      <div class="demo-edit-readonly">
+        <%= @demo.preferred_time.presence || "—" %>
+      </div>
+    </div>
+
+
+    <!-- STATUS — ONLY EDITABLE FIELD -->
+    <div class="demo-edit-field">
+
+      <%= f.label :status, "Request Status" %>
+
+      <%= f.select :status,
+          [
+            "Pending",
+            "Contacted",
+            "Enrolled",
+            "Rejected"
+          ],
+          {},
+          {
+            class: "demo-edit-select",
+            required: true
+          } %>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+    <div class="demo-edit-actions">
+
+      <%= link_to "← Back",
+          demo_path(@demo),
+          class: "demo-edit-back" %>
+
+      <%= f.submit "Update Status",
+          class: "demo-edit-submit" %>
+
+    </div>
+
+  <% end %>
 
 </div>
-
-<div class="mb-3">
-
-<%= f.label :phone %>
-
-<%= f.text_field :phone, class:"form-control" %>
-
-</div>
-
-<div class="mb-3">
-
-<%= f.label :email %>
-
-<%= f.email_field :email, class:"form-control" %>
-
-</div>
-
-<div class="mb-3">
-
-<%= f.label :status %>
-
-<%= f.select :status,
-["Pending","Contacted","Enrolled","Rejected"],
-{},
-class:"form-select" %>
-
-</div>
-
-<%= f.submit "Update Demo",
-class:"btn btn-success" %>
-
-<% end %>
-
-</div>
-<%=render "layouts/footer"%>
