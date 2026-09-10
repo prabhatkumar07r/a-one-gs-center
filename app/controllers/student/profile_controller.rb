@@ -1,13 +1,17 @@
 class Student::ProfileController < ApplicationController
+
   before_action :authenticate_user!
   before_action :require_student
+
 
   # =========================================================
   # SHOW PROFILE
   # =========================================================
 
   def show
+
     @student = current_user
+
 
     # =======================================================
     # COURSES
@@ -21,19 +25,102 @@ class Student::ProfileController < ApplicationController
         .compact
         .uniq
 
-    @total_courses = @courses.count
+    @total_courses =
+      @courses.count
 
-    # -------------------------------------------------------
+
+    # =======================================================
     # COURSE STATISTICS
-    # -------------------------------------------------------
-
-    @completed_courses = 0
-    @lectures_done = 0
+    # =======================================================
 
     @total_modules =
       @courses.sum do |course|
-        course.respond_to?(:videos) ? course.videos.count : 0
+
+        course.respond_to?(:videos) ?
+          course.videos.count :
+          0
+
       end
+
+
+    # =======================================================
+    # TOTAL LECTURES
+    # =======================================================
+
+    @total_lectures =
+      @courses.sum do |course|
+
+        course.respond_to?(:videos) ?
+          course.videos.count :
+          0
+
+      end
+
+
+    # =======================================================
+    # COMPLETED LECTURES
+    # =======================================================
+
+    course_ids =
+      @courses.map(&:id)
+
+
+    if course_ids.present?
+
+      @completed_videos =
+        current_user
+          .video_progresses
+          .where(completed: true)
+          .joins(:video)
+          .where(
+            videos: {
+              course_id: course_ids
+            }
+          )
+          .count
+
+    else
+
+      @completed_videos = 0
+
+    end
+
+
+    # Keep the old variable working
+    # in case another part of the profile uses it.
+
+    @lectures_done =
+      @completed_videos
+
+
+    # =======================================================
+    # COMPLETED COURSES
+    # =======================================================
+
+    @completed_courses =
+      @courses.count do |course|
+
+        total_videos =
+          course.videos.count
+
+
+        next false if total_videos.zero?
+
+
+        completed_videos =
+          current_user
+            .video_progresses
+            .where(
+              video_id: course.videos.select(:id),
+              completed: true
+            )
+            .count
+
+
+        completed_videos == total_videos
+
+      end
+
 
 
     # =======================================================
@@ -52,14 +139,17 @@ class Student::ProfileController < ApplicationController
         )
         .order(created_at: :desc)
 
+
     @my_test_series =
       @test_series_purchases
         .map(&:test_series)
         .compact
         .uniq
 
+
     @total_test_series =
       @my_test_series.count
+
 
 
     # =======================================================
@@ -72,16 +162,8 @@ class Student::ProfileController < ApplicationController
         .where(status: "Completed")
         .count
 
-
-    # =======================================================
-    # TOTAL LECTURES
-    # =======================================================
-
-    @total_lectures =
-      @courses.sum do |course|
-        course.respond_to?(:videos) ? course.videos.count : 0
-      end
   end
+
 
 
   # =========================================================
@@ -89,8 +171,11 @@ class Student::ProfileController < ApplicationController
   # =========================================================
 
   def edit
+
     @student = current_user
+
   end
+
 
 
   # =========================================================
@@ -98,7 +183,9 @@ class Student::ProfileController < ApplicationController
   # =========================================================
 
   def update
+
     @student = current_user
+
 
     if @student.update(profile_params)
 
@@ -112,8 +199,11 @@ class Student::ProfileController < ApplicationController
 
       render :edit,
              status: :unprocessable_entity
+
     end
+
   end
+
 
 
   # =========================================================
@@ -121,8 +211,11 @@ class Student::ProfileController < ApplicationController
   # =========================================================
 
   def password
+
     @student = current_user
+
   end
+
 
 
   # =========================================================
@@ -130,18 +223,23 @@ class Student::ProfileController < ApplicationController
   # =========================================================
 
   def change_password
+
     @student = current_user
+
 
     # -------------------------------------------------------
     # CURRENT PASSWORD
     # -------------------------------------------------------
 
-    unless @student.valid_password?(params[:current_password])
+    unless @student.valid_password?(
+      params[:current_password]
+    )
 
       redirect_to student_profile_password_path,
                   alert: "Current password is incorrect."
 
       return
+
     end
 
 
@@ -155,6 +253,7 @@ class Student::ProfileController < ApplicationController
                   alert: "New password cannot be blank."
 
       return
+
     end
 
 
@@ -162,12 +261,15 @@ class Student::ProfileController < ApplicationController
     # CONFIRM PASSWORD
     # -------------------------------------------------------
 
-    if params[:password] != params[:password_confirmation]
+    if params[:password] !=
+       params[:password_confirmation]
 
       redirect_to student_profile_password_path,
-                  alert: "New password and confirmation do not match."
+                  alert:
+                    "New password and confirmation do not match."
 
       return
+
     end
 
 
@@ -186,12 +288,17 @@ class Student::ProfileController < ApplicationController
     else
 
       redirect_to student_profile_password_path,
-                  alert: @student.errors.full_messages.to_sentence
+                  alert:
+                    @student.errors.full_messages.to_sentence
+
     end
+
   end
 
 
+
   private
+
 
 
   # =========================================================
@@ -199,13 +306,18 @@ class Student::ProfileController < ApplicationController
   # =========================================================
 
   def profile_params
-    params.require(:user).permit(
-      :name,
-      :email,
-      :mobile,
-      :image
-    )
+
+    params
+      .require(:user)
+      .permit(
+        :name,
+        :email,
+        :mobile,
+        :image
+      )
+
   end
+
 
 
   # =========================================================
@@ -213,12 +325,14 @@ class Student::ProfileController < ApplicationController
   # =========================================================
 
   def require_student
+
     unless current_user.present?
 
       redirect_to root_path,
                   alert: "Student access required."
 
     end
+
   end
 
 end

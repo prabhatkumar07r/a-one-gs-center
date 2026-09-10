@@ -115,7 +115,7 @@
         <span>Completed Courses</span>
 
         <strong>
-          <%= @completed_courses || 0 %>
+          <%= @completed_courses%>
         </strong>
 
       </div>
@@ -214,59 +214,67 @@
        PROFILE CONTENT
   ========================================================== -->
 
-  <section class="student-profile-content">
+ <section class="student-profile-content">
+
+  <!-- =======================================================
+       TABS
+  ======================================================== -->
+
+  <div class="student-profile-tabs">
+
+    <button
+      type="button"
+      class="student-profile-tab active"
+      data-profile-tab="overview">
+
+      <i class="bi bi-grid-1x2"></i>
+      Overview
+
+    </button>
+
+    <button
+      type="button"
+      class="student-profile-tab"
+      data-profile-tab="certificates">
+
+      <i class="bi bi-award"></i>
+      Certificates
+
+    </button>
+
+    <button
+      type="button"
+      class="student-profile-tab"
+      data-profile-tab="activity">
+
+      <i class="bi bi-clock-history"></i>
+      Activity
+
+    </button>
+
+  </div>
 
 
-    <!-- =======================================================
-         TABS
-    ======================================================== -->
+  <!-- =======================================================
+       OVERVIEW TAB
+  ======================================================== -->
 
-    <div class="student-profile-tabs">
-
-      <%= link_to student_profile_path,
-          class: "student-profile-tab active" do %>
-
-        <i class="bi bi-grid-1x2"></i>
-        Overview
-
-      <% end %>
+  <div
+    class="student-profile-tab-content active"
+    data-profile-content="overview">
 
 
-      <%= link_to "#",
-          class: "student-profile-tab" do %>
-
-        <i class="bi bi-award"></i>
-        Certificates
-
-      <% end %>
-
-
-      <%= link_to "#",
-          class: "student-profile-tab" do %>
-
-        <i class="bi bi-clock-history"></i>
-        Activity
-
-      <% end %>
-
-    </div>
-
-
-
-    <!-- =======================================================
+    <!-- =====================================================
          MY COURSES
-    ======================================================== -->
+    ====================================================== -->
 
     <div class="student-content-card">
 
       <div class="student-content-title">
 
         <div>
-
           <i class="bi bi-book-half"></i>
-
           My Courses
-
         </div>
 
         <span class="student-section-count">
@@ -288,7 +296,6 @@
 
             <div class="student-course-card">
 
-
               <!-- COURSE IMAGE -->
 
               <div class="student-course-image">
@@ -309,7 +316,6 @@
                 <% end %>
 
               </div>
-
 
 
               <!-- COURSE CONTENT -->
@@ -436,18 +442,16 @@
 
           <%= @total_test_series || 0 %>
 
-          <%= (@total_test_series || 0) == 1 ? "Series" : "Series" %>
+          Series
 
         </span>
 
       </div>
 
 
-
       <% if @test_series_purchases.present? %>
 
         <div class="student-test-series-list">
-
 
           <% @test_series_purchases.each do |purchase| %>
 
@@ -493,7 +497,6 @@
 
             <div class="student-test-series-card">
 
-
               <!-- SERIES IMAGE -->
 
               <div class="student-test-series-image">
@@ -516,13 +519,9 @@
               </div>
 
 
-
               <!-- SERIES CONTENT -->
 
               <div class="student-test-series-content">
-
-
-                <!-- TOP -->
 
                 <div class="student-test-series-top">
 
@@ -563,11 +562,9 @@
                 </div>
 
 
-
                 <!-- SERIES INFORMATION -->
 
                 <div class="student-test-series-stats">
-
 
                   <span>
 
@@ -604,9 +601,7 @@
 
                   <% end %>
 
-
                 </div>
-
 
 
                 <!-- PROGRESS -->
@@ -634,14 +629,12 @@
                 </div>
 
 
-
                 <!-- BUTTON -->
 
                 <div class="student-test-series-actions">
 
                   <%= link_to test_series_path(series),
                       class: "student-test-series-button" do %>
-
 
                     <% if progress > 0 && progress < 100 %>
 
@@ -656,7 +649,6 @@
                       Start Test Series
 
                     <% end %>
-
 
                     <i class="bi bi-arrow-right"></i>
 
@@ -761,7 +753,6 @@
         </div>
 
 
-
         <!-- COMPLETED LECTURES -->
 
         <div class="student-learning-stat">
@@ -779,13 +770,12 @@
             </span>
 
             <strong>
-              <%= @lectures_done || 0 %>
+              <%= @completed_videos%>
             </strong>
 
           </div>
 
         </div>
-
 
 
         <!-- COURSES -->
@@ -813,7 +803,6 @@
         </div>
 
 
-
         <!-- TEST SERIES -->
 
         <div class="student-learning-stat">
@@ -837,7 +826,6 @@
           </div>
 
         </div>
-
 
 
         <!-- TESTS COMPLETED -->
@@ -869,7 +857,108 @@
 
     </div>
 
-  </section>
+  </div>
+
+
+
+  <!-- =======================================================
+       CERTIFICATES TAB
+  ======================================================== -->
+
+  <div
+    class="student-profile-tab-content"
+    data-profile-content="certificates">
+
+    <div class="student-content-card">
+
+      <div class="student-content-title">
+
+        <div>
+
+          <i class="bi bi-award"></i>
+
+          Certificates
+
+        </div>
+
+      </div>
+
+
+      <div class="student-empty-state">
+
+        <div class="student-empty-icon">
+
+          <i class="bi bi-award"></i>
+
+        </div>
+
+
+        <h3>
+          Certificates
+        </h3>
+
+
+        <p>
+          Your course certificates will appear here after
+          completing eligible courses.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =======================================================
+       ACTIVITY TAB
+  ======================================================== -->
+
+  <div
+    class="student-profile-tab-content"
+    data-profile-content="activity">
+
+    <div class="student-content-card">
+
+      <div class="student-content-title">
+
+        <div>
+
+          <i class="bi bi-clock-history"></i>
+
+          Recent Activity
+
+        </div>
+
+      </div>
+
+
+      <div class="student-empty-state">
+
+        <div class="student-empty-icon">
+
+          <i class="bi bi-clock-history"></i>
+
+        </div>
+
+
+        <h3>
+          Recent Activity
+        </h3>
+
+
+        <p>
+          Your recent learning activity will appear here.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
 </div>
 
@@ -895,6 +984,7 @@
   color: #f8fafc;
 
   padding-bottom: 60px;
+  padding-top: 105px;
 }
 
 
@@ -2003,5 +2093,178 @@
   }
 
 }
+.student-profile-tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
 
+.student-profile-tab-content {
+  display: none;
+}
+
+.student-profile-tab-content.active {
+  display: block;
+}
+
+
+
+
+
+
+
+.student-profile-page {
+  padding-top: 105px;
+}
+
+
+.student-profile-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(148, 163, 184, .14);
+}
+
+
+.student-profile-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 13px 18px;
+
+  color: #94a3b8;
+
+  background: transparent;
+
+  border: 0;
+  border-bottom: 2px solid transparent;
+
+  cursor: pointer;
+
+  font-family: inherit;
+  font-size: inherit;
+
+  transition:
+    color .25s ease,
+    border-color .25s ease,
+    background .25s ease;
+}
+
+
+.student-profile-tab:hover {
+  color: #c4b5fd;
+}
+
+
+.student-profile-tab.active {
+  color: #c4b5fd;
+  border-bottom-color: #8b5cf6;
+}
+
+
+.student-profile-tab i {
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   TAB CONTENT
+========================================================= */
+
+.student-profile-tab-content {
+  display: none;
+}
+
+
+.student-profile-tab-content.active {
+  display: block;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+  .student-profile-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .student-profile-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .student-profile-tab {
+    flex-shrink: 0;
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+}
 </style>
+
+  <script nonce="<%= content_security_policy_nonce %>">
+document.addEventListener("DOMContentLoaded", function () {
+
+  const tabs = document.querySelectorAll("[data-profile-tab]");
+  const contents = document.querySelectorAll("[data-profile-content]");
+
+  if (!tabs.length || !contents.length) return;
+
+
+  tabs.forEach(function (tab) {
+
+    tab.addEventListener("click", function () {
+
+      const target = this.dataset.profileTab;
+
+
+      /* Remove active from all tabs */
+
+      tabs.forEach(function (item) {
+
+        item.classList.remove("active");
+
+      });
+
+
+      /* Hide all content */
+
+      contents.forEach(function (content) {
+
+        content.classList.remove("active");
+
+      });
+
+
+      /* Activate clicked tab */
+
+      this.classList.add("active");
+
+
+      /* Show target */
+
+      const targetContent =
+        document.querySelector(
+          '[data-profile-content="' + target + '"]'
+        );
+
+
+      if (targetContent) {
+
+        targetContent.classList.add("active");
+
+      }
+
+    });
+
+  });
+
+});
+</script>

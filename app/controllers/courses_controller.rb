@@ -2,13 +2,46 @@ class CoursesController < ApplicationController
 
   before_action :set_course, only: [:details, :enroll_free]
 
-  def details
-    @enrollment = if user_signed_in?
-                    current_user.enrollments.find_by(course_id: @course.id)
-                  end
+def details
 
-    @videos = @course.videos
-  end
+  @enrollment =
+    if user_signed_in?
+      current_user.enrollments.find_by(
+        course_id: @course.id
+      )
+    end
+
+  @videos = @course.videos
+
+  # =======================================================
+  # COURSE PROGRESS
+  # =======================================================
+
+  @total_videos = @course.videos.count
+
+  @completed_videos =
+    if user_signed_in?
+      current_user.video_progresses
+                  .joins(:video)
+                  .where(
+                    videos: {
+                      course_id: @course.id
+                    },
+                    completed: true
+                  )
+                  .count
+    else
+      0
+    end
+
+  @course_progress =
+    if @total_videos.zero?
+      0
+    else
+      ((@completed_videos.to_f / @total_videos) * 100).round
+    end
+
+end
 
 
   # =========================================================

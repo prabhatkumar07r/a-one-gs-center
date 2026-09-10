@@ -245,6 +245,15 @@ Rails.application.routes.draw do
        as: :enroll_free_course
 
 
+     # ==================================================
+# STUDENT COURSE ENROLLMENT
+# ==================================================
+
+  post "/enrollments",
+     to: "enrollments#create",
+     as: :enrollments  
+
+
   # ==================================================
   # STUDENT QUIZ
   # ==================================================

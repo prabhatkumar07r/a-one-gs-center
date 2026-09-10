@@ -1,5 +1,3 @@
-
-
 <style>
 
 /* =========================================================
@@ -15,14 +13,16 @@
     width: 100%;
     height: 82px;
 
-    background: transparent !important;;
+    background: transparent !important;
 
-     border: none !important;
-    box-shadow: none !important;;
+    border: none !important;
+    box-shadow: none !important;
 
     z-index: 99999;
 
-    pointer-events: none;
+    /* IMPORTANT:
+       Header and all controls must remain clickable */
+    pointer-events: auto;
 }
 
 
@@ -100,6 +100,8 @@
     padding-left: 6px;
 
     text-decoration: none;
+
+    pointer-events: auto;
 }
 
 .header .logo img {
@@ -131,6 +133,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    pointer-events: auto;
 }
 
 .header nav ul {
@@ -250,6 +254,8 @@
     align-items: center;
 
     flex-shrink: 0;
+
+    pointer-events: auto;
 }
 
 
@@ -261,6 +267,8 @@
     position: relative;
 
     z-index: 100001;
+
+    pointer-events: auto;
 }
 
 
@@ -305,6 +313,8 @@
         0 6px 20px rgba(0, 0, 0, 0.16);
 
     touch-action: manipulation;
+
+    pointer-events: auto;
 
     transition:
         background 0.2s ease,
@@ -782,6 +792,8 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
+    pointer-events: auto;
+
     transition:
         background 0.2s ease,
         color 0.2s ease,
@@ -840,6 +852,8 @@
         0 20px 45px rgba(0, 0, 0, 0.38);
 
     z-index: 99998;
+
+    pointer-events: auto;
 }
 
 .mobile-navigation.open {
@@ -1122,6 +1136,107 @@ li.contact-mobile-item a {
 
 
 /* =========================================================
+   STUDENT HEADER THEME TOGGLE
+========================================================= */
+
+.header-icon.theme-toggle {
+    position: relative;
+
+    z-index: 100005;
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 4px;
+
+    padding: 0;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.05);
+
+    color: #facc15;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    user-select: none;
+
+    pointer-events: auto !important;
+
+    touch-action: manipulation;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.15);
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.header-icon.theme-toggle:hover {
+    background: rgba(255,255,255,.10);
+
+    border-color: rgba(168,85,247,.45);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 22px rgba(124,58,237,.20);
+}
+
+.header-icon.theme-toggle:active {
+    transform: scale(.94);
+}
+
+.header-icon.theme-toggle:focus {
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(168,85,247,.18);
+}
+
+
+/* =========================================================
+   THEME ICON
+========================================================= */
+
+#themeIcon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
    VERY SMALL MOBILE
 ========================================================= */
 
@@ -1167,6 +1282,38 @@ li.contact-mobile-item a {
 
 
 /* =========================================================
+   THEME TOGGLE - TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .header-icon.theme-toggle {
+        width: 42px;
+        height: 42px;
+
+        margin-right: 0;
+
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================================
+   THEME TOGGLE - MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .header-icon.theme-toggle {
+        width: 39px;
+        height: 39px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
    FORCE MOBILE NAV HIDDEN ON DESKTOP
 ========================================================= */
 
@@ -1180,6 +1327,276 @@ li.contact-mobile-item a {
 
 
 /* =========================================================
+   DAY / NIGHT MODE
+========================================================= */
+
+html,
+body {
+    transition:
+        background-color 0.35s ease,
+        color 0.35s ease;
+}
+
+
+/* =========================================================
+   NIGHT MODE - PAGE
+========================================================= */
+
+html.night-mode,
+html.night-mode body {
+    background: #080b12 !important;
+
+    color: #e5e7eb !important;
+}
+
+
+/* =========================================================
+   COMMON PAGE CONTAINERS
+========================================================= */
+
+html.night-mode main,
+html.night-mode section,
+html.night-mode .student-course-details,
+html.night-mode .course-details-page,
+html.night-mode .course-details-container {
+    color: #e5e7eb;
+}
+
+
+/* =========================================================
+   COURSE CONTENT CARDS
+========================================================= */
+
+html.night-mode .course-details-card,
+html.night-mode .course-info-card,
+html.night-mode .course-content-card,
+html.night-mode .course-action-card {
+    background: rgba(17, 20, 30, 0.88) !important;
+
+    border-color: rgba(255,255,255,.10) !important;
+
+    color: #e5e7eb !important;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.25);
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+html.night-mode h1,
+html.night-mode h2,
+html.night-mode h3,
+html.night-mode h4,
+html.night-mode h5,
+html.night-mode h6 {
+    color: #ffffff !important;
+}
+
+html.night-mode p,
+html.night-mode span,
+html.night-mode li {
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   HEADER - NIGHT
+========================================================= */
+
+html.night-mode .header-content {
+    background: rgba(5, 7, 13, 0.90) !important;
+
+    border-color: rgba(255,255,255,.12) !important;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.40),
+        inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+
+/* =========================================================
+   HEADER NAV - NIGHT
+========================================================= */
+
+html.night-mode .header nav ul {
+    background: rgba(0,0,0,.38);
+
+    border-color: rgba(255,255,255,.08);
+}
+
+html.night-mode .header nav ul li a {
+    color: #aeb8c9;
+}
+
+html.night-mode .header nav ul li a:hover {
+    color: #ffffff;
+
+    background: rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   THEME BUTTON - NIGHT
+========================================================= */
+
+html.night-mode .header-icon.theme-toggle {
+    background: rgba(124,58,237,.25) !important;
+
+    border-color: rgba(168,85,247,.45) !important;
+
+    color: #facc15 !important;
+
+    box-shadow:
+        0 5px 20px rgba(124,58,237,.20);
+}
+
+
+/* =========================================================
+   PROFILE BUTTON - NIGHT
+========================================================= */
+
+html.night-mode .student-profile-button {
+    background: rgba(255,255,255,.06) !important;
+
+    border-color: rgba(255,255,255,.12) !important;
+
+    color: #e5e7eb !important;
+}
+
+html.night-mode .student-profile-button:hover {
+    background: rgba(255,255,255,.10) !important;
+
+    border-color: rgba(168,85,247,.40) !important;
+}
+
+
+/* =========================================================
+   PROFILE DROPDOWN - NIGHT
+========================================================= */
+
+html.night-mode .student-dropdown-menu {
+    background: rgba(8,10,17,.97) !important;
+
+    border-color: rgba(255,255,255,.12) !important;
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.55);
+}
+
+html.night-mode .student-dropdown-info strong {
+    color: #ffffff !important;
+}
+
+html.night-mode .student-dropdown-info small {
+    color: #94a3b8 !important;
+}
+
+html.night-mode .student-dropdown-divider {
+    background: rgba(255,255,255,.10);
+}
+
+html.night-mode .student-dropdown-item {
+    color: #cbd5e1;
+}
+
+html.night-mode .student-dropdown-item:hover {
+    background: rgba(255,255,255,.07);
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   MOBILE NAV - NIGHT
+========================================================= */
+
+html.night-mode .mobile-navigation {
+    background: rgba(8,10,16,.96) !important;
+
+    border-color: rgba(255,255,255,.12) !important;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.50);
+}
+
+html.night-mode .mobile-navigation ul li a {
+    color: #aeb8c9;
+}
+
+html.night-mode .mobile-navigation ul li a:hover {
+    color: #ffffff;
+
+    background: rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON - NIGHT
+========================================================= */
+
+html.night-mode .mobile-menu-button {
+    background: rgba(255,255,255,.06) !important;
+
+    border-color: rgba(255,255,255,.12) !important;
+
+    color: #e5e7eb !important;
+}
+
+
+/* =========================================================
+   FORM / INPUTS - NIGHT
+========================================================= */
+
+html.night-mode input,
+html.night-mode textarea,
+html.night-mode select {
+    background: #11151f !important;
+
+    color: #ffffff !important;
+
+    border-color: rgba(255,255,255,.12) !important;
+}
+
+html.night-mode input::placeholder,
+html.night-mode textarea::placeholder {
+    color: #64748b !important;
+}
+
+
+/* =========================================================
+   LINKS - NIGHT
+========================================================= */
+
+html.night-mode a {
+    color: #c4b5fd;
+}
+
+
+/* =========================================================
+   BOOTSTRAP CARD SUPPORT
+========================================================= */
+
+html.night-mode .card {
+    background: rgba(17,20,30,.90) !important;
+
+    color: #e5e7eb !important;
+
+    border-color: rgba(255,255,255,.10) !important;
+}
+
+html.night-mode .card-body,
+html.night-mode .card-header,
+html.night-mode .card-footer {
+    background: transparent !important;
+
+    color: #e5e7eb !important;
+}
+
+
+/* =========================================================
    REDUCE MOTION
 ========================================================= */
 
@@ -1189,7 +1606,8 @@ li.contact-mobile-item a {
     .header nav ul li a,
     .student-profile-button,
     .student-dropdown-menu,
-    .mobile-menu-button {
+    .mobile-menu-button,
+    .header-icon.theme-toggle {
         transition: none !important;
     }
 }
@@ -1259,6 +1677,7 @@ li.contact-mobile-item a {
       </nav>
 
 
+
       <!-- =====================================================
            MOBILE MENU
       ====================================================== -->
@@ -1273,6 +1692,23 @@ li.contact-mobile-item a {
         <i class="bi bi-list"></i>
 
       </button>
+      <% if content_for?(:enable_theme_toggle) %>
+
+  <button
+    type="button"
+    class="header-icon theme-toggle"
+    id="themeToggle"
+    title="Switch to Night Mode"
+    aria-label="Toggle Day/Night Mode">
+
+    <i
+      class="bi bi-moon-stars-fill"
+      id="themeIcon">
+    </i>
+
+  </button>
+
+<% end %>
 
 
       <!-- =====================================================
@@ -1399,7 +1835,6 @@ li.contact-mobile-item a {
               <% end %>
 
             </div>
-
           </div>
 
         </div>
@@ -1804,5 +2239,86 @@ li.contact-mobile-item a {
     );
 
 })();
+
+
+(function () {
+
+    const toggle = document.getElementById("themeToggle");
+    const icon = document.getElementById("themeIcon");
+
+    if (!toggle || !icon) {
+        return;
+    }
+
+    const savedTheme =
+        localStorage.getItem("student-theme") || "day";
+
+    applyTheme(savedTheme);
+
+
+    toggle.addEventListener("click", function () {
+
+        const currentTheme =
+            document.documentElement.classList.contains("night-mode")
+                ? "night"
+                : "day";
+
+        const newTheme =
+            currentTheme === "night"
+                ? "day"
+                : "night";
+
+        applyTheme(newTheme);
+
+        localStorage.setItem(
+            "student-theme",
+            newTheme
+        );
+
+    });
+
+
+    function applyTheme(theme) {
+
+        if (theme === "night") {
+
+            document.documentElement.classList.add(
+                "night-mode"
+            );
+
+            icon.className =
+                "bi bi-sun-fill";
+
+            toggle.title =
+                "Switch to Day Mode";
+
+            toggle.setAttribute(
+                "aria-label",
+                "Switch to Day Mode"
+            );
+
+        } else {
+
+            document.documentElement.classList.remove(
+                "night-mode"
+            );
+
+            icon.className =
+                "bi bi-moon-stars-fill";
+
+            toggle.title =
+                "Switch to Night Mode";
+
+            toggle.setAttribute(
+                "aria-label",
+                "Switch to Night Mode"
+            );
+
+        }
+
+    }
+
+})();
+
 
 </script>

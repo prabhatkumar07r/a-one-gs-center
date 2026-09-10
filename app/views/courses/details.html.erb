@@ -1,530 +1,844 @@
+
+<% content_for :enable_theme_toggle, true %>
+
 <% content_for :show_layout, true %>
+<main class="student-course-details">
 
-<div class="course-details-page">
+  <!-- =====================================================
+       BREADCRUMB
+  ====================================================== -->
 
-  <!-- =========================================================
-       BACK BUTTON
-  ========================================================== -->
+  <div class="course-breadcrumb">
+    <%= link_to student_dashboard_path do %>
+      <i class="fas fa-home"></i>
+      Home
+    <% end %>
 
-  <div class="course-back-wrapper">
+    <i class="fas fa-chevron-right"></i>
 
-    <%= link_to root_path(anchor: "course"),
-        class: "course-back-btn",
-        id: "courseBackBtn" do %>
+    <span>Courses</span>
 
-      <span class="back-arrow">
-        <i class="fas fa-arrow-left"></i>
-      </span>
+    <i class="fas fa-chevron-right"></i>
 
-      <span>Back</span>
+    <strong>
+      <%= @course.Course_name %>
+    </strong>
+  </div>
+
+<%= link_to homepage_path(anchor: "courses"),
+      class: "payment-back-link",
+      title: "Back to Courses" do %>
+
+  <span class="back-icon">
+    <i class="bi bi-arrow-left"></i>
+  </span>
+
+<% end %>
+
+
+  <!-- =====================================================
+       COURSE HERO
+  ====================================================== -->
+
+  <section class="course-hero">
+
+    <div class="course-hero-image">
+
+      <% if @course.image.present? %>
+
+        <%= image_tag @course.image,
+              alt: @course.Course_name %>
+
+      <% else %>
+
+        <div class="course-image-placeholder">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <div class="course-hero-info">
+
+      <div class="course-label">
+        <i class="fas fa-book-open"></i>
+        COURSE
+      </div>
+
+      <h1>
+        <%= @course.Course_name %>
+      </h1>
+
+      <p class="course-subtitle">
+        Complete learning course with lectures,
+        notes, practice and quizzes.
+      </p>
+
+
+      <!-- Course Meta -->
+
+      <div class="course-meta">
+
+        <span>
+          <i class="fas fa-user-tie"></i>
+          <%= @course.teacher&.name || "Expert Instructor" %>
+        </span>
+
+        <span>
+          <i class="fas fa-video"></i>
+          Course Videos
+        </span>
+
+        <span>
+          <i class="fas fa-book"></i>
+          Notes & Resources
+        </span>
+
+      </div>
+
+
+      <!-- Rating -->
+
+      <div class="course-rating">
+
+        <span class="rating-stars">
+          ★★★★★
+        </span>
+
+        <strong>4.8/5</strong>
+
+        <span>
+          Student Learning Course
+        </span>
+
+      </div>
+
+
+      <!-- Pricing -->
+
+      <div class="course-price-row">
+
+        <% if @course.respond_to?(:original_fee) &&
+              @course.original_fee.present? &&
+              @course.original_fee.to_f > @course.fee.to_f %>
+
+          <span class="course-old-price">
+            ₹<%= number_with_delimiter(@course.original_fee.to_i) %>
+          </span>
+
+        <% end %>
+
+
+        <span class="course-current-price">
+
+          <% if @course.respond_to?(:free?) && @course.free? %>
+
+            Free
+
+          <% elsif @course.fee.to_f <= 0 %>
+
+            Free
+
+          <% else %>
+
+            ₹<%= number_with_delimiter(@course.fee.to_i) %>
+
+          <% end %>
+
+        </span>
+
+
+        <% if @course.respond_to?(:discount_percentage) &&
+              @course.discount_percentage.to_f > 0 %>
+
+          <span class="course-discount">
+            <%= @course.discount_percentage.to_i %>% OFF
+          </span>
+
+        <% end %>
+
+      </div>
+
+
+      <!-- =================================================
+           ACTIONS
+      ================================================== -->
+<div class="course-actions">
+
+  <% if @enrollment.present? && @enrollment.status == "Approved" %>
+
+    <%= link_to learning_course_path(@course),
+          class: "course-primary-btn" do %>
+
+      <i class="fas fa-play"></i>
+      Continue Learning
 
     <% end %>
 
-  </div>
+  <% elsif @course.respond_to?(:free?) && @course.free? %>
+
+    <%= button_to enrollments_path,
+          method: :post,
+          params: { enrollment: { course_id: @course.id } },
+          class: "course-primary-btn" do %>
+
+      <i class="fas fa-graduation-cap"></i>
+      Enroll for Free
+
+    <% end %>
+
+  <% elsif @course.fee.to_f <= 0 %>
+
+    <%= button_to enrollments_path,
+          method: :post,
+          params: { enrollment: { course_id: @course.id } },
+          class: "course-primary-btn" do %>
+
+      <i class="fas fa-graduation-cap"></i>
+      Enroll for Free
+
+    <% end %>
+
+  <% elsif @enrollment.present? && @enrollment.status == "Pending" %>
+
+    <%= link_to payment_path(@enrollment),
+          class: "course-primary-btn" do %>
+
+      <i class="fas fa-credit-card"></i>
+      Continue Payment
+
+    <% end %>
+
+  <% else %>
+
+    <%= button_to enrollments_path,
+          method: :post,
+          params: { enrollment: { course_id: @course.id } },
+          class: "course-primary-btn" do %>
+
+      <i class="fas fa-shopping-cart"></i>
+      Enroll Now
+
+    <% end %>
+
+  <% end %>
 
 
-  <!-- =========================================================
-       MAIN COURSE CONTAINER
-  ========================================================== -->
+  <button type="button"
+          class="course-wishlist-btn"
+          onclick="toggleCourseWishlist(this)">
 
-  <div class="course-main-container">
+    <i class="far fa-heart"></i>
 
-    <!-- =======================================================
-         LEFT SIDE
-    ======================================================== -->
+    <span>Add to Wishlist</span>
 
-    <section class="course-left">
+  </button>
+
+</div>
+
+    </div>
+
+  </section>
 
 
-      <!-- =====================================================
-           BRAND
-      ====================================================== -->
 
-      <div class="course-brand-section">
+  <!-- =====================================================
+       COURSE TABS
+  ====================================================== -->
+<div class="course-tabs">
 
-        <div class="brand-badge">
+  <button class="course-tab active" data-tab="about">
+    About
+  </button>
 
-          <div class="coaching-logo">
-            <%= image_tag "logo.jpeg",
-                          alt: "A One GS Center Logo" %>
-          </div>
+  <button class="course-tab" data-tab="content">
+    Course Content
+  </button>
 
-          <span>
-            A ONE GS CENTER
-          </span>
+  <button class="course-tab" data-tab="instructor">
+    Instructor
+  </button>
+
+  <button class="course-tab" data-tab="reviews">
+    Reviews
+  </button>
+
+  <button class="course-tab" data-tab="faqs">
+    FAQs
+  </button>
+
+</div>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT + SIDEBAR
+  ====================================================== -->
+
+  <div class="course-details-grid">
+
+
+    <!-- ===================================================
+         LEFT CONTENT
+    ==================================================== -->
+
+   <!-- ===================================================
+     LEFT CONTENT
+==================================================== -->
+
+<div class="course-main-column">
+
+
+  <!-- =================================================
+       ABOUT TAB
+  ================================================== -->
+
+  <div id="about" class="course-tab-panel active">
+
+
+    <!-- ================================================
+         OVERVIEW
+    ================================================= -->
+
+    <section class="course-content-card">
+
+      <div class="section-heading">
+
+        <div class="section-heading-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+
+        <div>
+
+          <h2>
+            About This Course
+          </h2>
+
+          <p>
+            Learn, practice and improve your concepts
+            with structured course content.
+          </p>
 
         </div>
 
       </div>
 
 
-      <!-- =====================================================
-           COURSE HERO
-      ====================================================== -->
+      <div class="course-description">
 
-      <div class="course-hero">
+        <% if @course.respond_to?(:description) &&
+              @course.description.present? %>
 
-        <h1>
-          <%= @course.Course_name %>
-        </h1>
+          <%= simple_format(@course.description) %>
+
+        <% else %>
+
+          <p>
+            This course is designed to help students
+            understand important concepts through
+            structured video lectures, notes,
+            practice questions and quizzes.
+          </p>
+
+          <p>
+            Follow the lessons step by step and
+            practice regularly to improve your
+            preparation and performance.
+          </p>
+
+        <% end %>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================
+         COURSE INCLUDES
+    ================================================= -->
+
+    <section class="course-content-card">
+
+      <div class="section-title">
+
+        <i class="fas fa-layer-group"></i>
+
+        <h2>
+          Course Includes
+        </h2>
+
+      </div>
+
+
+      <div class="includes-grid">
+
+
+        <div class="include-item">
+
+          <div class="include-icon blue">
+            <i class="fas fa-play"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              Video Lectures
+            </strong>
+
+            <small>
+              High-quality learning videos
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="include-item">
+
+          <div class="include-icon green">
+            <i class="fas fa-file-alt"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              Study Notes
+            </strong>
+
+            <small>
+              Downloadable learning material
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="include-item">
+
+          <div class="include-icon orange">
+            <i class="fas fa-pencil-alt"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              Practice Questions
+            </strong>
+
+            <small>
+              Practice and improve concepts
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="include-item">
+
+          <div class="include-icon purple">
+            <i class="fas fa-question-circle"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              Quizzes
+            </strong>
+
+            <small>
+              Existing course & video quizzes
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="include-item">
+
+          <div class="include-icon pink">
+            <i class="fas fa-chart-line"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              Progress Tracking
+            </strong>
+
+            <small>
+              Track your learning progress
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="include-item">
+
+          <div class="include-icon teal">
+            <i class="fas fa-certificate"></i>
+          </div>
+
+          <div>
+
+            <strong>
+              Certificate
+            </strong>
+
+            <small>
+              Course completion certificate
+            </small>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ================================================
+         WHO IS THIS COURSE FOR
+    ================================================= -->
+
+    <section class="course-content-card">
+
+      <div class="section-title">
+
+        <i class="fas fa-users"></i>
+
+        <h2>
+          Who Is This Course For?
+        </h2>
+
+      </div>
+
+
+      <ul class="course-target-list">
+
+        <li>
+          <i class="fas fa-check"></i>
+          Students preparing for their examinations
+        </li>
+
+        <li>
+          <i class="fas fa-check"></i>
+          Students who want structured learning
+        </li>
+
+        <li>
+          <i class="fas fa-check"></i>
+          Students looking for video-based learning
+        </li>
+
+        <li>
+          <i class="fas fa-check"></i>
+          Students who want regular practice and quizzes
+        </li>
+
+      </ul>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- =================================================
+       COURSE CONTENT TAB
+  ================================================== -->
+
+  <div id="content" class="course-tab-panel">
+
+
+    <section class="course-content-card">
+
+      <div class="content-header">
+
+        <div>
+
+          <div class="section-title">
+
+            <i class="fas fa-list"></i>
+
+            <h2>
+              Course Content
+            </h2>
+
+          </div>
+
+          <p class="section-subtitle">
+            Explore the available lessons and
+            learning resources.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <% if @course.respond_to?(:playlists) &&
+            @course.playlists.present? %>
+
+
+        <div class="course-chapters">
+
+          <% @course.playlists.each_with_index do |playlist, index| %>
+
+            <div class="chapter-item">
+
+              <button type="button"
+                      class="chapter-header"
+                      onclick="toggleChapter(this)">
+
+                <div class="chapter-number">
+                  <%= index + 1 %>
+                </div>
+
+                <div class="chapter-info">
+
+                  <strong>
+
+                    <%= playlist.respond_to?(:name) ?
+                          playlist.name :
+                          "Chapter #{index + 1}" %>
+
+                  </strong>
+
+                  <div class="chapter-meta">
+
+                    <span>
+                      <i class="fas fa-video"></i>
+                      Lessons
+                    </span>
+
+                    <span>
+                      <i class="fas fa-file-alt"></i>
+                      Notes
+                    </span>
+
+                    <span>
+                      <i class="fas fa-question-circle"></i>
+                      Quiz
+                    </span>
+
+                  </div>
+
+                </div>
+
+                <i class="fas fa-chevron-down chapter-arrow"></i>
+
+              </button>
+
+
+              <div class="chapter-body">
+
+                <div class="chapter-empty">
+
+                  <i class="fas fa-play-circle"></i>
+
+                  <span>
+                    Open Learning Portal to access
+                    the lessons in this section.
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+
+      <% else %>
+
+        <div class="empty-course-content">
+
+          <i class="fas fa-book-open"></i>
+
+          <h3>
+            Course content is being prepared
+          </h3>
+
+          <p>
+            Lessons and resources will appear here
+            when they are available.
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- =================================================
+       INSTRUCTOR TAB
+  ================================================== -->
+
+ <!-- =========================================================
+     INSTRUCTOR
+========================================================= -->
+
+<div id="instructor" class="course-tab-panel">
+
+  <section class="course-content-card">
+
+    <div class="section-title">
+
+      <i class="fas fa-user-tie"></i>
+
+      <h2>
+        Instructor
+      </h2>
+
+    </div>
+
+
+    <div class="instructor-card">
+
+
+      <!-- =================================================
+           INSTRUCTOR AVATAR
+      ================================================== -->
+
+      <div class="instructor-avatar">
+
+        <% if @course.teacher&.photo&.attached? %>
+
+          <%= image_tag @course.teacher.photo,
+                alt: @course.teacher.name,
+                class: "instructor-avatar-image" %>
+
+        <% else %>
+
+          <i class="fas fa-user"></i>
+
+        <% end %>
+
+      </div>
+
+
+      <!-- =================================================
+           INSTRUCTOR INFO
+      ================================================== -->
+
+      <div class="instructor-info">
+
+        <h3>
+          <%= @course.teacher&.name ||
+              "A-One GS Center Instructor" %>
+        </h3>
+
+        <span>
+          Course Instructor
+        </span>
+
+
+        <div class="instructor-rating">
+
+          <span>
+            ★
+          </span>
+
+          <strong>
+            4.8
+          </strong>
+
+          Instructor Rating
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           DESCRIPTION
+      ================================================== -->
+
+      <div class="instructor-description">
 
         <p>
-          Learn. Practice. Grow.
+          Experienced educator focused on helping
+          students understand concepts and improve
+          their academic preparation.
         </p>
 
       </div>
 
 
-      <!-- =====================================================
-           COURSE INFORMATION
-      ====================================================== -->
+    </div>
 
-      <div class="course-info-grid">
+  </section>
 
-
-        <!-- DURATION -->
-
-        <div class="info-card">
-
-          <div class="info-content">
-
-            <span>
-              Duration
-            </span>
-
-            <strong>
-              <%= @course.duration.presence || "—" %>
-            </strong>
-
-          </div>
-
-        </div>
+</div>
 
 
-        <!-- LESSONS -->
+  <!-- =================================================
+       REVIEWS TAB
+  ================================================== -->
 
-        <div class="info-card">
+  <div id="reviews" class="course-tab-panel">
 
-          <div class="info-content">
+    <section class="course-content-card">
 
-            <span>
-              Lessons
-            </span>
+      <div class="section-title">
 
-            <strong>
-              <%= @videos.count %>
-            </strong>
+        <i class="fas fa-star"></i>
 
-          </div>
-
-        </div>
-
-
-        <!-- TEACHER -->
-
-        <div class="info-card">
-
-          <div class="info-content">
-
-            <span>
-              Teacher
-            </span>
-
-            <strong>
-              <%= @course.teacher&.name || "Not Assigned" %>
-            </strong>
-
-          </div>
-
-        </div>
+        <h2>
+          Student Reviews
+        </h2>
 
       </div>
 
 
-      <!-- =====================================================
-           ABOUT + COURSE CONTENT TABS
-      ====================================================== -->
+      <div class="review-summary">
 
-      <div class="course-tabs-wrapper">
+        <div class="review-score">
 
+          <strong>
+            4.8
+          </strong>
 
-        <!-- ===================================================
-             TAB NAVIGATION
-        ==================================================== -->
+          <span>
+            ★★★★★
+          </span>
 
-        <div class="course-tabs-nav">
-
-          <!-- ABOUT -->
-
-          <button
-            type="button"
-            class="course-tab-btn active"
-            data-course-tab="about-course-tab">
-
-            <i class="fas fa-book-open"></i>
-
-            <span>
-              About This Course
-            </span>
-
-          </button>
-
-
-          <!-- CONTENT -->
-
-          <button
-            type="button"
-            class="course-tab-btn"
-            data-course-tab="course-content-tab">
-
-            <span>
-              Course Content
-            </span>
-
-          </button>
+          <small>
+            Overall Course Rating
+          </small>
 
         </div>
 
 
-        <!-- ===================================================
-             TAB CONTENT
-        ==================================================== -->
-
-        <div class="course-tabs-content">
-
-
-          <!-- =================================================
-               ABOUT COURSE
-          ================================================== -->
-
-          <div
-            id="about-course-tab"
-            class="course-tab-pane active">
-
-            <div class="course-tab-heading">
-
-              <div>
-
-                <h2>
-                  About This Course
-                </h2>
-
-                <p>
-                  Learn more about this course and what you will study.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div class="course-description-box">
-
-              <%= simple_format(
-                    @course.description.presence ||
-                    "This course provides complete learning material with practical lessons and guided learning."
-                  ) %>
-
-            </div>
-
-          </div>
-
-
-          <!-- =================================================
-               COURSE CONTENT
-          ================================================== -->
-
-          <div
-            id="course-content-tab"
-            class="course-tab-pane">
-
-            <div class="course-tab-heading">
-
-              <div>
-
-                <h2>
-                  Course Content
-                </h2>
-
-                <p>
-                  Explore playlists and video lessons included in this course.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <% if @videos.any? %>
-
-              <%
-                approved =
-                  user_signed_in? &&
-                  @enrollment&.status == "Approved"
-
-                free_videos_count =
-                  @videos.where(is_free: true).count
-              %>
-
-
-              <!-- =================================================
-                   PLAYLISTS
-              ================================================== -->
-
-              <div class="course-playlists">
-
-                <% @course.playlists
-                         .order(:position, :id)
-                         .each do |playlist| %>
-
-                  <%
-                    playlist_videos =
-                      playlist.videos.order(:position, :id)
-
-                    playlist_open =
-                      playlist_videos.any?
-                  %>
-
-                  <% next if playlist_videos.empty? %>
-
-
-                  <!-- PLAYLIST -->
-
-                  <div
-                    class="course-playlist <%= 'open' if playlist_open %>">
-
-
-                    <!-- PLAYLIST HEADER -->
-
-                    <button
-                      type="button"
-                      class="course-playlist-header"
-                      aria-expanded="<%= playlist_open %>">
-
-                      <div class="playlist-header-left">
-
-                        <div class="playlist-icon">
-                          <i class="fas fa-folder"></i>
-                        </div>
-
-                        <div class="playlist-header-text">
-
-                          <strong>
-                            <%= playlist.title %>
-                          </strong>
-
-                          <span>
-                            <%= playlist_videos.count %>
-                            <%= playlist_videos.count == 1 ? "Video" : "Videos" %>
-                          </span>
-
-                        </div>
-
-                      </div>
-
-
-                      <div class="playlist-header-right">
-
-                        <i class="fas fa-chevron-down playlist-chevron"></i>
-
-                      </div>
-
-                    </button>
-
-
-                    <!-- PLAYLIST VIDEOS -->
-
-                    <div class="course-playlist-videos">
-
-                      <% playlist_videos.each_with_index do |video, index| %>
-
-
-                        <!-- =================================================
-                             VIDEO ROW
-                        ================================================== -->
-
-                        <div class="course-video-row">
-
-
-                          <!-- SERIAL NUMBER -->
-
-                          <div class="course-video-number">
-                            <%= index + 1 %>.
-                          </div>
-
-
-                          <!-- VIDEO INFORMATION -->
-
-                          <div class="course-video-info">
-
-                            <h4>
-                              <%= video.title %>
-                            </h4>
-
-
-                            <div class="course-video-meta">
-
-                              <% if video.is_free? %>
-
-                                <span class="free-preview-badge">
-
-                                  <i class="fas fa-unlock"></i>
-
-                                  FREE PREVIEW
-
-                                </span>
-
-                              <% else %>
-
-                                <span class="paid-video-badge">
-
-                                  <i class="fas fa-lock"></i>
-
-                                  PAID
-
-                                </span>
-
-                              <% end %>
-
-                            </div>
-
-                          </div>
-
-
-                          <!-- ACTION -->
-
-                          <div class="course-video-action">
-
-
-                            <% if video.is_free? %>
-
-                              <%= link_to learning_video_path(@course, video),
-                                  class: "watch-preview-btn" do %>
-
-                                <i class="fas fa-play"></i>
-
-                                <span>
-                                  Watch Free Preview
-                                </span>
-
-                              <% end %>
-
-
-                            <% elsif approved %>
-
-                              <%= link_to learning_video_path(@course, video),
-                                  class: "watch-video-btn" do %>
-
-                                <i class="fas fa-play"></i>
-
-                                <span>
-                                  Watch Video
-                                </span>
-
-                              <% end %>
-
-
-                            <% else %>
-
-                              <%= link_to new_student_enrollment_path(
-                                    course_id: @course.id
-                                  ),
-                                  class: "locked-video-btn" do %>
-
-                                <i class="fas fa-lock"></i>
-
-                                <span>
-                                  Enroll to Watch
-                                </span>
-
-                              <% end %>
-
-                            <% end %>
-
-
-                          </div>
-
-                        </div>
-
-
-                      <% end %>
-
-                    </div>
-
-                  </div>
-
-                <% end %>
-
-              </div>
-
-
-              <!-- =================================================
-                   FREE PREVIEW INFORMATION
-              ================================================== -->
-
-              <% if free_videos_count > 0 %>
-
-                <div class="free-preview-information">
-
-                  <div class="free-preview-information-icon">
-
-                    <i class="fas fa-play-circle"></i>
-
-                  </div>
-
-
-                  <div>
-
-                    <strong>
-                      Free Preview Available
-                    </strong>
-
-                    <p>
-
-                      Watch
-                      <%= free_videos_count %>
-                      free preview
-                      <%= free_videos_count == 1 ? "video" : "videos" %>
-                      before enrolling in this course.
-
-                    </p>
-
-                  </div>
-
-                </div>
-
-              <% end %>
-
-
-            <% else %>
-
-
-              <!-- =================================================
-                   NO CONTENT
-              ================================================== -->
-
-              <div class="course-no-content">
-
-                <div class="no-content-icon">
-
-                  <i class="fas fa-folder-open"></i>
-
-                </div>
-
-                <h3>
-                  Course Content Coming Soon
-                </h3>
-
-                <p>
-                  Learning material will be added soon.
-                </p>
-
-              </div>
-
-
-            <% end %>
-
-          </div>
+        <div class="review-message">
+
+          <h3>
+            Learn with confidence
+          </h3>
+
+          <p>
+            Student feedback and course reviews
+            will appear here.
+          </p>
 
         </div>
 
@@ -532,2770 +846,1726 @@
 
     </section>
 
+  </div>
 
-    <!-- =======================================================
-         RIGHT SIDE — PAYMENT
-    ======================================================== -->
 
-    <aside class="course-right">
 
+  <!-- =================================================
+       FAQ TAB
+  ================================================== -->
 
-      <!-- =====================================================
-           PAYMENT CARD
-      ====================================================== -->
+  <div id="faqs" class="course-tab-panel">
 
-      <div class="payment-card">
+    <section class="course-content-card">
 
+      <div class="section-title">
 
-        <!-- PAYMENT HEADER -->
+        <i class="fas fa-question-circle"></i>
 
-        <div class="payment-header">
-
-          <span>
-            COURSE PRICE
-          </span>
-
-          <div class="secure-payment">
-
-            <i class="fas fa-shield-alt"></i>
-
-            Secure Payment
-
-          </div>
-
-        </div>
-
-
-        <!-- ===================================================
-             PRICE CALCULATION
-        ==================================================== -->
-
-        <%
-          course_fee = @course.fee.to_d
-
-          discount =
-            if @enrollment&.fee.present?
-
-              @enrollment.fee.discount_amount.to_d
-
-            else
-
-              @course.current_discount_amount.to_d
-
-            end
-
-          final_amount =
-            if @enrollment&.fee.present?
-
-              @enrollment.fee.total_fee.to_d -
-                @enrollment.fee.discount_amount.to_d
-
-            else
-
-              @course.final_fee.to_d
-
-            end
-
-          final_amount = 0.to_d if final_amount < 0
-        %>
-
-
-        <!-- ORIGINAL PRICE -->
-
-        <% if discount > 0 %>
-
-          <div class="price-row">
-
-            <div class="original-price">
-
-              ₹<%= number_with_delimiter(course_fee.to_i) %>
-
-            </div>
-
-
-            <div class="discount-badge">
-
-              Save ₹<%= number_with_delimiter(discount.to_i) %>
-
-            </div>
-
-          </div>
-
-        <% end %>
-
-
-        <!-- FINAL PRICE -->
-
-        <div class="final-price">
-
-          ₹<%= number_with_delimiter(final_amount.to_i) %>
-
-        </div>
-
-
-        <!-- DISCOUNT -->
-
-        <% if discount > 0 %>
-
-          <div class="discount-box">
-
-            <div class="discount-icon">
-
-              <i class="fas fa-gift"></i>
-
-            </div>
-
-
-            <div>
-
-              <strong>
-
-                <%= @course.active_discount&.name ||
-                    @enrollment&.fee&.discount_name ||
-                    "Special Offer" %>
-
-              </strong>
-
-
-              <p>
-
-                You save
-                ₹<%= number_with_delimiter(discount.to_i) %>
-                on this course.
-
-              </p>
-
-            </div>
-
-          </div>
-
-        <% end %>
-
-
-        <!-- ===================================================
-             PAYMENT SUMMARY
-        ==================================================== -->
-
-        <div class="payment-summary">
-
-
-          <div class="summary-row">
-
-            <span>
-              Course Fee
-            </span>
-
-            <strong>
-
-              ₹<%= number_with_delimiter(course_fee.to_i) %>
-
-            </strong>
-
-          </div>
-
-
-          <% if discount > 0 %>
-
-            <div class="summary-row discount-row">
-
-              <span>
-                Discount
-              </span>
-
-              <strong>
-
-                - ₹<%= number_with_delimiter(discount.to_i) %>
-
-              </strong>
-
-            </div>
-
-          <% end %>
-
-
-          <div class="summary-divider"></div>
-
-
-          <div class="summary-row payable-row">
-
-            <span>
-              Payable Amount
-            </span>
-
-            <strong>
-
-              ₹<%= number_with_delimiter(final_amount.to_i) %>
-
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <!-- ===================================================
-             PAYMENT ACTION
-        ==================================================== -->
-
-        <div class="payment-action">
-
-
-          <% if user_signed_in? %>
-
-
-            <!-- APPROVED -->
-
-            <% if @enrollment&.status == "Approved" %>
-
-              <%= link_to learning_course_path(@course),
-                  class: "payment-btn success-btn" do %>
-
-                <i class="fas fa-play"></i>
-
-                Start Learning
-
-              <% end %>
-
-
-            <!-- FREE COURSE -->
-
-            <% elsif @course.free? %>
-
-              <%= button_to enroll_free_course_path(@course),
-                  method: :post,
-                  class: "payment-btn free-btn" do %>
-
-                <i class="fas fa-graduation-cap"></i>
-
-                Enroll for Free
-
-              <% end %>
-
-
-            <!-- EXISTING PAID ENROLLMENT -->
-
-            <% elsif @enrollment.present? %>
-
-              <%= link_to payment_path(@enrollment),
-                  class: "payment-btn pay-btn" do %>
-
-                <i class="fas fa-credit-card"></i>
-
-                Pay ₹<%= number_with_delimiter(final_amount.to_i) %>
-
-              <% end %>
-
-
-              <div class="pending-note">
-
-                <i class="fas fa-hourglass-half"></i>
-
-                Enrollment is waiting for payment/approval
-
-              </div>
-
-
-            <!-- NEW PAID ENROLLMENT -->
-
-            <% else %>
-
-              <%= link_to new_student_enrollment_path(
-                    course_id: @course.id
-                  ),
-                  class: "payment-btn pay-btn" do %>
-
-                <i class="fas fa-clipboard-list"></i>
-
-                Enroll Now
-
-              <% end %>
-
-            <% end %>
-
-
-          <% else %>
-
-
-            <!-- LOGIN -->
-
-            <%= link_to new_user_session_path,
-                class: "payment-btn login-btn" do %>
-
-              <i class="fas fa-lock"></i>
-
-              Login to Enroll
-
-            <% end %>
-
-          <% end %>
-
-        </div>
-
-
-        <!-- ===================================================
-             SECURITY
-        ==================================================== -->
-
-        <div class="payment-security">
-
-          <div>
-
-            <i class="fas fa-lock"></i>
-
-            <span>
-              Secure & Safe
-            </span>
-
-          </div>
-
-
-          <div>
-
-            <i class="fas fa-bolt"></i>
-
-            <span>
-              Fast Payment
-            </span>
-
-          </div>
-
-
-          <div>
-
-            <i class="fas fa-shield-alt"></i>
-
-            <span>
-              Trusted Checkout
-            </span>
-
-          </div>
-
-        </div>
+        <h2>
+          Frequently Asked Questions
+        </h2>
 
       </div>
 
 
-      <!-- =====================================================
-           SUPPORT CARD
-      ====================================================== -->
+      <div class="faq-list">
 
-      <div class="support-card">
 
-        <div>
+        <details>
 
-          <h3>
-            Need Help?
-          </h3>
+          <summary>
+
+            How can I access this course?
+
+            <i class="fas fa-chevron-down"></i>
+
+          </summary>
 
           <p>
-            Contact A One GS Center for course-related assistance.
+            Enroll in the course and access your
+            available learning content from the
+            Learning Portal.
           </p>
 
-        </div>
+        </details>
+
+
+        <details>
+
+          <summary>
+
+            Are course videos available after enrollment?
+
+            <i class="fas fa-chevron-down"></i>
+
+          </summary>
+
+          <p>
+            Approved enrollment provides access to
+            the course learning content according to
+            the existing course access rules.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+
+            Are quizzes included?
+
+            <i class="fas fa-chevron-down"></i>
+
+          </summary>
+
+          <p>
+            Your existing course-wise and video-wise
+            quiz system remains available for the
+            enrolled course.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+
+            Is this course available on mobile?
+
+            <i class="fas fa-chevron-down"></i>
+
+          </summary>
+
+          <p>
+            Yes. The student learning interface is
+            designed to work on mobile, tablet and
+            desktop screens.
+          </p>
+
+        </details>
+
 
       </div>
 
-    </aside>
+    </section>
 
   </div>
 
+
 </div>
+
+    <!-- ===================================================
+         RIGHT SIDEBAR
+    ==================================================== -->
+<aside class="course-sidebar">
+
+
+  <!-- =====================================================
+       FREE PREVIEW
+  ====================================================== -->
+
+  <div class="sidebar-card preview-card">
+
+    <div class="preview-icon">
+      <i class="fas fa-play"></i>
+    </div>
+
+    <h3>
+      Free Preview Available
+    </h3>
+
+    <p>
+      Watch a preview and experience the quality
+      of the course.
+    </p>
+
+    <button type="button"
+            class="preview-btn">
+
+      <i class="fas fa-play"></i>
+      Watch Free Preview
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       APPROVED — COURSE PROGRESS
+  ====================================================== -->
+
+  <% if @enrollment.present? &&
+        @enrollment.status == "Approved" %>
+
+    <div class="sidebar-card">
+
+      <div class="sidebar-card-title">
+
+        <i class="fas fa-chart-line"></i>
+
+        <h3>
+          Course Progress
+        </h3>
+
+      </div>
+
+
+      <div
+        class="progress-circle"
+        style="--progress: <%= @course_progress %>%;"
+      >
+
+        <div class="progress-circle-inner">
+
+          <%= @course_progress %>%
+
+        </div>
+
+      </div>
+
+
+      <div class="progress-label">
+
+        <span>
+          Continue Learning
+        </span>
+
+        <strong>
+          <%= @course_progress %>%
+        </strong>
+
+      </div>
+
+
+      <div class="progress-bar">
+
+        <span
+          style="width: <%= @course_progress %>%;"
+        ></span>
+
+      </div>
+
+
+      <div class="progress-video-count">
+
+        <i class="fas fa-play-circle"></i>
+
+        <span>
+          <%= @completed_videos %>
+          of
+          <%= @total_videos %>
+          videos completed
+        </span>
+
+      </div>
+
+
+      <%= link_to learning_course_path(@course),
+            class: "sidebar-primary-btn" do %>
+
+        <i class="fas fa-play"></i>
+
+        Continue Learning
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- =====================================================
+       PENDING — CONTINUE PAYMENT
+  ====================================================== -->
+
+  <% if @enrollment.present? &&
+        @enrollment.status == "Pending" %>
+
+    <div class="sidebar-card pending-payment-card">
+
+      <div class="sidebar-card-title">
+
+        <i class="fas fa-credit-card"></i>
+
+        <h3>
+          Complete Enrollment
+        </h3>
+
+      </div>
+
+
+      <p class="pending-payment-text">
+
+        Your enrollment has been created.
+        Complete the payment to get access
+        to this course.
+
+      </p>
+
+
+      <%= link_to payment_path(@enrollment),
+            class: "sidebar-primary-btn" do %>
+
+        <i class="fas fa-credit-card"></i>
+
+        Continue Payment
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- =====================================================
+       PRICE DETAILS
+  ====================================================== -->
+
+  <div class="sidebar-card price-card">
+
+    <div class="sidebar-card-title">
+
+      <i class="fas fa-tag"></i>
+
+      <h3>
+        Price Details
+      </h3>
+
+    </div>
+
+
+    <% if @course.original_fee.present? &&
+          @course.original_fee.to_f > @course.fee.to_f %>
+
+      <div class="price-row">
+
+        <span>
+          Course Fee
+        </span>
+
+        <del>
+          ₹<%= number_with_delimiter(@course.original_fee.to_i) %>
+        </del>
+
+      </div>
+
+    <% end %>
+
+
+    <div class="price-row final">
+
+      <span>
+        Final Price
+      </span>
+
+      <strong>
+
+        <% if @course.respond_to?(:free?) &&
+              @course.free? %>
+
+          Free
+
+        <% elsif @course.fee.to_f <= 0 %>
+
+          Free
+
+        <% else %>
+
+          ₹<%= number_with_delimiter(@course.fee.to_i) %>
+
+        <% end %>
+
+      </strong>
+
+    </div>
+
+
+    <!-- ===================================================
+         NO ENROLLMENT
+    ==================================================== -->
+
+    <% if @enrollment.blank? %>
+
+      <% if @course.respond_to?(:free?) &&
+            @course.free? %>
+
+        <%= button_to enroll_free_course_path(@course),
+              method: :post,
+              class: "sidebar-primary-btn" do %>
+
+          <i class="fas fa-graduation-cap"></i>
+
+          Enroll for Free
+
+        <% end %>
+
+
+      <% elsif @course.fee.to_f <= 0 %>
+
+        <%= button_to enroll_free_course_path(@course),
+              method: :post,
+              class: "sidebar-primary-btn" do %>
+
+          <i class="fas fa-graduation-cap"></i>
+
+          Enroll for Free
+
+        <% end %>
+
+
+      <% else %>
+
+        <%= button_to enrollments_path,
+              method: :post,
+              params: {
+                enrollment: {
+                  course_id: @course.id
+                }
+              },
+              class: "sidebar-primary-btn" do %>
+
+          <i class="fas fa-shopping-cart"></i>
+
+          Enroll Now
+
+        <% end %>
+
+      <% end %>
+
+
+    <!-- ===================================================
+         PENDING
+    ==================================================== -->
+
+    <% elsif @enrollment.status == "Pending" %>
+
+      <%= link_to payment_path(@enrollment),
+            class: "sidebar-primary-btn" do %>
+
+        <i class="fas fa-credit-card"></i>
+
+        Continue Payment
+
+      <% end %>
+
+
+    <!-- ===================================================
+         APPROVED
+    ==================================================== -->
+
+    <% elsif @enrollment.status == "Approved" %>
+
+      <%= link_to learning_course_path(@course),
+            class: "sidebar-primary-btn" do %>
+
+        <i class="fas fa-play"></i>
+
+        Continue Learning
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       QUICK INFORMATION
+  ====================================================== -->
+
+  <div class="sidebar-card quick-info-card">
+
+    <div class="sidebar-card-title">
+
+      <i class="fas fa-info-circle"></i>
+
+      <h3>
+        Course Information
+      </h3>
+
+    </div>
+
+
+    <div class="quick-info-row">
+
+      <span>
+        <i class="fas fa-user-tie"></i>
+        Instructor
+      </span>
+
+      <strong>
+        <%= @course.teacher&.name || "Assigned Instructor" %>
+      </strong>
+
+    </div>
+
+
+    <div class="quick-info-row">
+
+      <span>
+        <i class="fas fa-play-circle"></i>
+        Videos
+      </span>
+
+      <strong>
+        Available in Learning Portal
+      </strong>
+
+    </div>
+
+
+    <div class="quick-info-row">
+
+      <span>
+        <i class="fas fa-question-circle"></i>
+        Quizzes
+      </span>
+
+      <strong>
+        Included
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       CTA
+  ====================================================== -->
+
+  <div class="sidebar-cta">
+
+    <i class="fas fa-graduation-cap"></i>
+
+    <h3>
+      Learn Today,
+      Build a Better Tomorrow!
+    </h3>
+
+    <p>
+      Join A-One GS Center and take the next
+      step towards your success.
+    </p>
+
+  </div>
+
+</aside>
+  </div>
+
+</main>
 
 
 <style>
+  /* =========================================================
+   STUDENT COURSE DETAILS
+========================================================= */
 
-/* ============================================================
-   COURSE DETAILS PAGE
-============================================================ */
-
-.course-details-page {
-
+.student-course-details {
   min-height: 100vh;
-
-  padding: 30px 5% 70px;
-
-  position: relative;
-
-  overflow: hidden;
-
-  box-sizing: border-box;
-
-  color: #32164f;
-
-  background:
-    radial-gradient(
-      circle at 10% 5%,
-      rgba(255,255,255,.20),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 90% 10%,
-      rgba(255,255,255,.12),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 50% 100%,
-      rgba(255,255,255,.10),
-      transparent 35%
-    ),
-    linear-gradient(
-      135deg,
-      #c026d3 0%,
-      #b414d0 30%,
-      #a21caf 62%,
-      #86198f 100%
-    );
+  background: #f5f8fc;
+  color: #172b4d;
+  padding: 25px 32px 60px;
+  transition: background .3s ease, color .3s ease;
+  padding-top: 100px;
 }
 
 
-/* ============================================================
-   BACK BUTTON
-============================================================ */
-
-.course-back-wrapper {
-
-  width: 100%;
-
-  padding-top: 110px;
-
-  padding-left: 10px;
-
-  margin-bottom: 25px;
-
-  position: relative;
-
-  z-index: 5;
-}
-
-.course-back-btn {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 13px 22px;
-
-  border: 1px solid rgba(255,255,255,.45);
-
-  border-radius: 14px;
-
-  background: rgba(255,255,255,.96);
-
-  color: #7e22ce;
-
-  font-size: 16px;
-
-  font-weight: 800;
-
-  text-decoration: none;
-
-  box-shadow:
-    0 10px 28px rgba(70,10,90,.22);
-
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease,
-    background .25s ease;
-}
-
-.course-back-btn:hover {
-
-  transform: translateX(-4px);
-
-  background: #ffffff;
-
-  color: #a21caf;
-
-  box-shadow:
-    0 15px 35px rgba(70,10,90,.30);
-}
-
-.back-arrow {
-
-  font-size: 22px;
-
-  line-height: 1;
-}
-
-
-/* ============================================================
-   MAIN CONTAINER
-============================================================ */
-
-.course-main-container {
-
-  width: 100%;
-
-  max-width: 1450px;
-
-  margin: 0 auto;
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 1.65fr)
-    minmax(350px, .75fr);
-
-  gap: 28px;
-
-  padding: 28px;
-
-  box-sizing: border-box;
-
-  border-radius: 30px;
-
-  border: 1px solid rgba(255,255,255,.55);
-
-  background: rgba(255,255,255,.95);
-
-  box-shadow:
-    0 30px 80px rgba(70,10,90,.28),
-    0 8px 25px rgba(255,255,255,.15);
-
-  backdrop-filter: blur(18px);
-
-  animation:
-    courseFadeIn .55s ease both;
-}
-
-
-/* ============================================================
-   LEFT / RIGHT
-============================================================ */
-
-.course-left {
-
-  min-width: 0;
-}
-
-.course-right {
-
-  position: sticky;
-
-  top: 25px;
-
-  align-self: start;
-}
-
-
-/* ============================================================
-   BRAND
-============================================================ */
-
-.course-brand-section {
-
-  width: 100%;
-
-  text-align: center;
-
-  margin-bottom: 24px;
-}
-
-.brand-badge {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 12px;
-
-  padding: 9px 20px;
-
-  background: rgba(255,255,255,.97);
-
-  border: 1px solid rgba(255,255,255,.6);
-
-  border-radius: 18px;
-
-  color: #7e22ce;
-
-  font-size: 15px;
-
-  font-weight: 900;
-
-  letter-spacing: .8px;
-
-  box-shadow:
-    0 10px 30px rgba(70,10,90,.18);
-
-  box-sizing: border-box;
-}
-
-.coaching-logo {
-
-  width: 48px;
-
-  height: 48px;
-
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.course-breadcrumb {
   display: flex;
-
   align-items: center;
-
-  justify-content: center;
-
-  overflow: hidden;
-
-  border-radius: 10px;
-
-  background: #ffffff;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #718096;
 }
 
-.coaching-logo img {
+.course-breadcrumb a {
+  color: #4c6fff;
+  text-decoration: none;
+}
 
-  width: 100%;
-
-  height: 100%;
-
-  display: block;
-
-  object-fit: contain;
+.course-breadcrumb i {
+  font-size: 9px;
+  color: #a0aec0;
 }
 
 
-/* ============================================================
+/* =========================================================
    HERO
-============================================================ */
+========================================================= */
 
 .course-hero {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 28px;
+  background: #fff;
+  border: 1px solid #e5eaf1;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(20, 40, 80, .06);
+}
 
-  min-height: 290px;
+.course-hero-image {
+  height: 205px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e8eef7;
+}
 
+.course-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-image-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-
   align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  color: #7557d9;
+  background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+}
 
-  padding: 40px;
+.course-hero-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  border-radius: 25px;
+.course-label {
+  color: #6d4aff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  margin-bottom: 6px;
+}
 
-  border: 1px solid rgba(255,255,255,.30);
-
-  background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(255,255,255,.18),
-      transparent 45%
-    ),
-    linear-gradient(
-      135deg,
-      #c026d3 0%,
-      #a21caf 55%,
-      #86198f 100%
-    );
-
-  box-shadow:
-    0 20px 50px rgba(126,34,206,.28),
-    inset 0 1px 0 rgba(255,255,255,.25);
-
-  text-align: center;
+.course-label i {
+  margin-right: 5px;
 }
 
 .course-hero h1 {
-
   margin: 0;
-
-  max-width: 850px;
-
-  color: #ffffff;
-
-  font-size: clamp(30px, 4vw, 48px);
-
+  font-size: 34px;
   line-height: 1.15;
-
-  font-weight: 900;
-
-  text-shadow:
-    0 5px 20px rgba(60,5,80,.28);
+  font-weight: 800;
+  color: #12243f;
 }
 
-.course-hero p {
-
-  margin: 14px 0 0;
-
-  color: rgba(255,255,255,.90);
-
+.course-subtitle {
+  margin: 9px 0 15px;
+  color: #617087;
   font-size: 16px;
-
-  font-weight: 600;
 }
 
-
-/* ============================================================
-   INFORMATION
-============================================================ */
-
-.course-info-grid {
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 14px;
-
-  margin-top: 18px;
-}
-
-.info-card {
-
+.course-meta {
   display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: #526176;
+  font-size: 13px;
+}
 
+.course-meta i {
+  color: #6954d8;
+  margin-right: 5px;
+}
+
+.course-rating {
+  display: flex;
   align-items: center;
-
-  padding: 18px;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      #faf5ff
-    );
-
-  border: 1px solid #eadcff;
-
-  box-shadow:
-    0 8px 22px rgba(126,34,206,.08);
-
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+  gap: 8px;
+  margin-top: 13px;
+  font-size: 13px;
+  color: #66758a;
 }
 
-.info-card:hover {
-
-  transform: translateY(-4px);
-
-  border-color: #c084fc;
-
-  box-shadow:
-    0 15px 30px rgba(126,34,206,.15);
+.rating-stars {
+  color: #f4b400;
+  letter-spacing: 1px;
 }
 
-.info-content {
+.course-price-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 14px;
+}
 
+.course-current-price {
+  font-size: 28px;
+  font-weight: 900;
+  color: #159447;
+}
+
+.course-old-price {
+  color: #8290a3;
+  text-decoration: line-through;
+  font-size: 17px;
+}
+
+.course-discount {
+  background: #20a568;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.course-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 17px;
+}
+
+.course-primary-btn,
+.sidebar-primary-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 43px;
+  padding: 0 25px;
+  border: 0;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #2563eb, #5b45d6);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.course-primary-btn:hover,
+.sidebar-primary-btn:hover {
+  transform: translateY(-1px);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(54, 91, 220, .22);
+}
+
+.course-wishlist-btn {
+  border: 0;
+  background: transparent;
+  color: #59677b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.course-wishlist-btn i {
+  color: #e84a63;
+  font-size: 21px;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.course-tabs {
+  display: flex;
+  gap: 5px;
+  background: #fff;
+  border: 1px solid #e4e9f0;
+  margin-top: 20px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.course-tab {
+  border: 0;
+  background: transparent;
+  padding: 13px 24px;
+  color: #536176;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.course-tab:hover {
+  background: #f1f4fa;
+}
+
+.course-tab.active {
+  background: #edf3ff;
+  color: #2563eb;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.course-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.course-main-column,
+.course-sidebar {
   min-width: 0;
 }
 
-.info-content span {
 
-  display: block;
+/* =========================================================
+   CONTENT CARDS
+========================================================= */
 
-  margin-bottom: 5px;
-
-  color: #80658e;
-
-  font-size: 12px;
-
-  font-weight: 700;
+.course-content-card,
+.sidebar-card {
+  background: #fff;
+  border: 1px solid #e4e9f0;
+  border-radius: 12px;
+  padding: 23px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px rgba(25, 45, 75, .04);
 }
 
-.info-content strong {
-
-  display: block;
-
-  color: #3b2054;
-
-  font-size: 15px;
-
-  font-weight: 800;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-/* ============================================================
-   TABS
-============================================================ */
-
-.course-tabs-wrapper {
-
-  margin-top: 22px;
-
-  overflow: hidden;
-
-  border-radius: 24px;
-
-  background: #ffffff;
-
-  border: 1px solid #eadcff;
-
-  box-shadow:
-    0 12px 35px rgba(126,34,206,.10);
-}
-
-.course-tabs-nav {
-
-  width: 100%;
-
+.section-heading {
   display: flex;
-
-  align-items: stretch;
-
-  background:
-    linear-gradient(
-      135deg,
-      #faf5ff,
-      #f5edff,
-      #fdf4ff
-    );
-
-  border-bottom:
-    1px solid #eadcff;
-}
-
-.course-tab-btn {
-
-  position: relative;
-
-  flex: 1;
-
-  min-height: 64px;
-
-  display: flex;
-
+  gap: 13px;
   align-items: center;
+  margin-bottom: 18px;
+}
 
+.section-heading-icon,
+.section-title > i {
+  color: #5c48d8;
+}
+
+.section-heading h2,
+.section-title h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.section-heading p,
+.section-subtitle {
+  margin: 4px 0 0;
+  color: #718096;
+  font-size: 13px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.course-description {
+  color: #56657a;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   INCLUDES
+========================================================= */
+
+.includes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+  background: #f1f8fc;
+  border-radius: 9px;
+  padding: 17px;
+}
+
+.include-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.include-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.include-icon.blue { background: #3285df; }
+.include-icon.green { background: #37a76f; }
+.include-icon.orange { background: #f28a32; }
+.include-icon.purple { background: #7650d8; }
+.include-icon.pink { background: #ed5375; }
+.include-icon.teal { background: #23a99a; }
+
+.include-item strong {
+  display: block;
+  font-size: 13px;
+}
+
+.include-item small {
+  color: #718096;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   CHAPTERS
+========================================================= */
+
+.chapter-item {
+  border: 1px solid #e4e9f0;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.chapter-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 0;
+  background: #fff;
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chapter-number {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  background: #edf2f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  color: #40516a;
+}
+
+.chapter-info {
+  flex: 1;
+}
+
+.chapter-info strong {
+  font-size: 14px;
+}
+
+.chapter-meta {
+  display: flex;
+  gap: 15px;
+  margin-top: 6px;
+  color: #78869a;
+  font-size: 11px;
+}
+
+.chapter-arrow {
+  transition: transform .25s ease;
+}
+
+.chapter-item.open .chapter-arrow {
+  transform: rotate(180deg);
+}
+
+.chapter-body {
+  display: none;
+  padding: 0 15px 15px 59px;
+  background: #fafcff;
+}
+
+.chapter-item.open .chapter-body {
+  display: block;
+}
+
+.chapter-empty {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #66758a;
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   INSTRUCTOR
+========================================================= */
+
+.instructor-card {
+  display: grid;
+  grid-template-columns: 75px 220px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.instructor-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #e9eff8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #65748b;
+  font-size: 25px;
+}
+
+.instructor-info h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.instructor-info > span {
+  color: #7a8799;
+  font-size: 12px;
+}
+
+.instructor-rating {
+  margin-top: 7px;
+  font-size: 11px;
+  color: #718096;
+}
+
+.instructor-rating span {
+  color: #f5ae18;
+  margin-right: 5px;
+}
+
+.instructor-description {
+  border-left: 1px solid #e1e6ed;
+  padding-left: 18px;
+  color: #68768a;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   TARGET LIST
+========================================================= */
+
+.course-target-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course-target-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 11px;
+  color: #56657a;
+  font-size: 14px;
+}
+
+.course-target-list i {
+  color: #27a56b;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar-card-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 15px;
+}
+
+.sidebar-card-title i {
+  color: #6049d6;
+}
+
+.sidebar-card-title h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.preview-card {
+  background: #effaf5;
+  border-color: #d6eee3;
+}
+
+.preview-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #31a66e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-card h3 {
+  margin: 12px 0 7px;
+  color: #19804e;
+  font-size: 16px;
+}
+
+.preview-card p {
+  color: #526b5d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.preview-btn {
+  width: 100%;
+  border: 1px solid #319b6b;
+  color: #238154;
+  background: transparent;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+/* =========================================================
+   COURSE PROGRESS CIRCLE
+========================================================= */
+
+.progress-circle {
+  --progress: 0%;
+
+  width: 130px;
+  height: 130px;
+
+  margin: 20px auto;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
   justify-content: center;
 
-  gap: 9px;
-
-  border: none;
-
-  outline: none;
-
-  background: transparent;
-
-  color: #80658e;
-
-  padding: 16px 20px;
-
-  font-size: 15px;
-
-  font-weight: 900;
-
-  cursor: pointer;
-
-  transition:
-    color .25s ease,
-    background .25s ease;
-}
-
-.course-tab-btn:hover {
-
   background:
-    rgba(192,38,211,.07);
+    conic-gradient(
+      #7c3aed var(--progress),
+      rgba(124, 58, 237, 0.12) var(--progress)
+    );
 
-  color: #a21caf;
+  position: relative;
 }
 
-.course-tab-btn.active {
 
-  background: #ffffff;
+/* Inner Circle */
 
-  color: #8b1bb1;
-}
-
-.course-tab-btn.active::after {
+.progress-circle::before {
 
   content: "";
 
   position: absolute;
 
-  left: 15%;
+  width: 104px;
+  height: 104px;
 
-  right: 15%;
+  border-radius: 50%;
 
-  bottom: 0;
+  background: rgba(255, 255, 255, 0.96);
 
-  height: 4px;
-
-  border-radius:
-    8px 8px 0 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      #7e22ce,
-      #c026d3,
-      #ec4899
-    );
-}
-
-.course-tabs-content {
-
-  padding: 28px;
-}
-
-.course-tab-pane {
-
-  display: none;
-
-  animation:
-    courseTabFade .30s ease;
-}
-
-.course-tab-pane.active {
-
-  display: block;
 }
 
 
-/* ============================================================
-   TAB HEADING
-============================================================ */
+/* Percentage */
 
-.course-tab-heading {
+.progress-circle-inner {
 
-  margin-bottom: 22px;
+  width: 104px;
+  height: 104px;
 
-  padding-bottom: 18px;
-
-  border-bottom:
-    1px solid #eadcff;
-}
-
-.course-tab-heading h2 {
-
-  margin: 0 0 5px;
-
-  color: #3b2054;
-
-  font-size: 24px;
-
-  font-weight: 900;
-}
-
-.course-tab-heading p {
-
-  margin: 0;
-
-  color: #80658e;
-
-  font-size: 13px;
-
-  line-height: 1.5;
-}
-
-
-/* ============================================================
-   DESCRIPTION
-============================================================ */
-
-.course-description-box {
-
-  padding: 22px 24px;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      #fdfaff,
-      #faf5ff
-    );
-
-  border: 1px solid #eadcff;
-
-  box-shadow:
-    0 7px 20px rgba(126,34,206,.06);
-
-  color: #725d7d;
-
-  font-size: 16px;
-
-  line-height: 1.9;
-}
-
-.course-description-box p {
-
-  margin: 0 0 12px;
-}
-
-.course-description-box p:last-child {
-
-  margin-bottom: 0;
-}
-
-
-/* ============================================================
-   PLAYLISTS
-============================================================ */
-
-.course-playlists {
+  border-radius: 50%;
 
   display: flex;
-
-  flex-direction: column;
-
-  gap: 12px;
-}
-
-.course-playlist {
-
-  overflow: hidden;
-
-  border-radius: 17px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      #fdfaff
-    );
-
-  border: 1px solid #eadcff;
-
-  box-shadow:
-    0 6px 18px rgba(126,34,206,.06);
-
-  transition:
-    border-color .25s ease,
-    box-shadow .25s ease;
-}
-
-.course-playlist.open {
-
-  border-color: #d8b4f5;
-
-  box-shadow:
-    0 10px 25px rgba(126,34,206,.10);
-}
-
-
-/* ============================================================
-   PLAYLIST HEADER
-============================================================ */
-
-.course-playlist-header {
-
-  width: 100%;
-
-  min-height: 72px;
-
-  display: flex;
-
   align-items: center;
-
-  justify-content: space-between;
-
-  gap: 15px;
-
-  padding: 12px 17px;
-
-  border: none;
-
-  outline: none;
-
-  background: transparent;
-
-  color: #3b2054;
-
-  cursor: pointer;
-
-  text-align: left;
-}
-
-.playlist-header-left {
-
-  min-width: 0;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-}
-
-.playlist-icon {
-
-  width: 46px;
-
-  height: 46px;
-
-  flex-shrink: 0;
-
-  display: flex;
-
-  align-items: center;
-
   justify-content: center;
 
-  border-radius: 13px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f3e8ff,
-      #fce7f3
-    );
-
-  color: #a21caf;
-
-  font-size: 19px;
-}
-
-.playlist-header-text {
-
-  min-width: 0;
-}
-
-.playlist-header-text strong {
-
-  display: block;
-
-  color: #43235b;
-
-  font-size: 15px;
-
-  font-weight: 900;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-.playlist-header-text span {
-
-  display: block;
-
-  margin-top: 3px;
-
-  color: #9276a0;
-
-  font-size: 12px;
-
-  font-weight: 600;
-}
-
-.playlist-header-right {
-
-  flex-shrink: 0;
-}
-
-.playlist-chevron {
-
-  color: #8b5aa0;
-
-  font-size: 13px;
-
-  transition:
-    transform .25s ease;
-}
-
-.course-playlist.open .playlist-chevron {
-
-  transform: rotate(180deg);
-
-  color: #a21caf;
-}
-
-
-/* ============================================================
-   PLAYLIST VIDEO CONTAINER
-============================================================ */
-
-.course-playlist-videos {
-
-  display: none;
-
-  padding:
-    0 12px 12px;
-}
-
-.course-playlist.open .course-playlist-videos {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 8px;
-}
-
-
-/* ============================================================
-   VIDEO ROW
-   PLAIN SERIAL NUMBER
-============================================================ */
-
-.course-video-row {
-
-  width: 100%;
-
-  display: grid;
-
-  grid-template-columns:
-    34px
-    minmax(0, 1fr)
-    auto;
-
-  align-items: center;
-
-  gap: 14px;
-
-  padding: 14px 15px;
-
-  box-sizing: border-box;
-
-  border-radius: 14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff 0%,
-      #fcf8ff 100%
-    );
-
-  border: 1px solid #eadcff;
-
-  color: #42245a;
-
-  transition:
-    transform .20s ease,
-    background .20s ease,
-    border-color .20s ease,
-    box-shadow .20s ease;
-}
-
-.course-video-row:hover {
-
-  transform: translateX(3px);
-
-  background:
-    linear-gradient(
-      135deg,
-      #faf5ff 0%,
-      #fdf4ff 100%
-    );
-
-  border-color: #d8b4f5;
-
-  box-shadow:
-    0 8px 20px rgba(126,34,206,.10);
-}
-
-
-/* ============================================================
-   SERIAL NUMBER
-   NO BOX
-   NO ICON
-============================================================ */
-
-.course-video-number {
-
-  width: auto;
-
-  height: auto;
-
-  display: block;
-
-  padding: 0;
-
-  margin: 0;
-
-  background: transparent;
-
-  border: none;
-
-  border-radius: 0;
-
-  box-shadow: none;
-
-  color: #7e22ce;
-
-  font-size: 14px;
-
-  line-height: 1.4;
-
-  font-weight: 900;
-
-  text-align: left;
-}
-
-
-/* ============================================================
-   VIDEO INFO
-============================================================ */
-
-.course-video-info {
-
-  min-width: 0;
-}
-
-.course-video-info h4 {
-
-  margin: 0 0 6px;
-
-  color: #42245a;
-
-  font-size: 14px;
-
-  line-height: 1.4;
-
-  font-weight: 800;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-/* ============================================================
-   VIDEO META
-============================================================ */
-
-.course-video-meta {
-
-  display: flex;
-
-  align-items: center;
-
-  flex-wrap: wrap;
-
-  gap: 7px;
-}
-
-
-/* ============================================================
-   FREE / PAID BADGES
-============================================================ */
-
-.free-preview-badge,
-.paid-video-badge {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 5px;
-
-  padding: 4px 9px;
-
-  border-radius: 999px;
-
-  font-size: 10px;
-
-  font-weight: 900;
-
-  letter-spacing: .4px;
-}
-
-.free-preview-badge {
-
-  background: #dcfce7;
-
-  color: #15803d;
-}
-
-.paid-video-badge {
-
-  background: #f3e8ff;
-
-  color: #7e22ce;
-}
-
-
-/* ============================================================
-   VIDEO ACTION
-============================================================ */
-
-.course-video-action {
-
-  flex-shrink: 0;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-end;
-}
-
-
-/* ============================================================
-   VIDEO BUTTONS
-============================================================ */
-
-.watch-preview-btn,
-.watch-video-btn,
-.locked-video-btn {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 7px;
-
-  min-height: 40px;
-
-  padding: 9px 14px;
-
-  border-radius: 10px;
-
-  text-decoration: none;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  white-space: nowrap;
-
-  box-sizing: border-box;
-
-  transition:
-    transform .20s ease,
-    box-shadow .20s ease,
-    background .20s ease;
-}
-
-
-/* FREE */
-
-.watch-preview-btn {
-
-  background:
-    linear-gradient(
-      135deg,
-      #16a34a,
-      #22c55e
-    );
-
-  color: #ffffff;
-
-  box-shadow:
-    0 7px 18px rgba(22,163,74,.20);
-}
-
-.watch-preview-btn:hover {
-
-  color: #ffffff;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 24px rgba(22,163,74,.28);
-
-  text-decoration: none;
-}
-
-
-/* PAID */
-
-.watch-video-btn {
-
-  background:
-    linear-gradient(
-      135deg,
-      #7e22ce,
-      #c026d3
-    );
-
-  color: #ffffff;
-
-  box-shadow:
-    0 7px 18px rgba(126,34,206,.20);
-}
-
-.watch-video-btn:hover {
-
-  color: #ffffff;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 24px rgba(126,34,206,.28);
-
-  text-decoration: none;
-}
-
-
-/* LOCKED */
-
-.locked-video-btn {
-
-  background:
-    linear-gradient(
-      135deg,
-      #faf5ff,
-      #f3e8ff
-    );
-
-  color: #7e22ce;
-
-  border:
-    1px solid #e5d5f5;
-}
-
-.locked-video-btn:hover {
-
-  color: #6d28d9;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f3e8ff,
-      #fae8ff
-    );
-
-  text-decoration: none;
-}
-
-
-/* ============================================================
-   FREE PREVIEW INFORMATION
-============================================================ */
-
-.free-preview-information {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 14px;
-
-  margin-top: 18px;
-
-  padding: 16px 18px;
-
-  border:
-    1px solid #bbf7d0;
-
-  border-radius: 14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f0fdf4,
-      #ecfdf5
-    );
-}
-
-.free-preview-information-icon {
-
-  width: 42px;
-
-  height: 42px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  border-radius: 12px;
-
-  background: #dcfce7;
-
-  color: #15803d;
-
-  font-size: 18px;
-}
-
-.free-preview-information strong {
-
-  display: block;
-
-  margin-bottom: 3px;
-
-  color: #166534;
-
-  font-size: 14px;
-}
-
-.free-preview-information p {
-
-  margin: 0;
-
-  color: #4d7c5a;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-}
-
-
-/* ============================================================
-   NO CONTENT
-============================================================ */
-
-.course-no-content {
-
-  text-align: center;
-
-  padding: 45px 20px;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #faf5ff,
-      #fdf4ff
-    );
-
-  border:
-    1px solid #eadcff;
-}
-
-.no-content-icon {
-
-  width: 60px;
-
-  height: 60px;
-
-  margin: 0 auto 14px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 17px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f3e8ff,
-      #fae8ff
-    );
-
-  color: #a21caf;
+  position: relative;
+  z-index: 2;
 
   font-size: 25px;
-}
-
-.course-no-content h3 {
-
-  margin: 0 0 7px;
-
-  color: #45235c;
-
-  font-size: 18px;
-
-  font-weight: 900;
-}
-
-.course-no-content p {
-
-  margin: 0;
-
-  color: #80658e;
-
-  font-size: 13px;
-}
-
-
-/* ============================================================
-   PAYMENT CARD
-============================================================ */
-
-.payment-card {
-
-  padding: 28px;
-
-  border-radius: 25px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #faf5ff
-    );
-
-  border:
-    1px solid #e9d5ff;
-
-  box-shadow:
-    0 20px 50px rgba(74,20,100,.18);
-
-  box-sizing: border-box;
-}
-
-
-/* ============================================================
-   PAYMENT HEADER
-============================================================ */
-
-.payment-header {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 10px;
-
-  margin-bottom: 22px;
-}
-
-.payment-header > span {
-
-  color: #8b1bb1;
-
-  font-size: 13px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.2px;
-}
-
-.secure-payment {
-
-  color: #15803d;
-
-  font-size: 11px;
-
   font-weight: 800;
+
+  color: #7c3aed;
 }
 
 
-/* ============================================================
-   PRICE
-============================================================ */
+/* =========================================================
+   PROGRESS LABEL
+========================================================= */
 
-.price-row {
+.progress-label {
 
   display: flex;
 
   align-items: center;
-
-  gap: 8px;
-
-  flex-wrap: wrap;
-}
-
-.original-price {
-
-  color: #a58caf;
-
-  text-decoration: line-through;
-
-  font-size: 17px;
-}
-
-.discount-badge {
-
-  display: inline-block;
-
-  padding: 6px 10px;
-
-  border-radius: 8px;
-
-  background: #dcfce7;
-
-  color: #15803d;
-
-  font-size: 12px;
-
-  font-weight: 900;
-}
-
-.final-price {
-
-  margin-top: 8px;
-
-  color: #4c1d65;
-
-  font-size: 52px;
-
-  line-height: 1;
-
-  font-weight: 900;
-
-  letter-spacing: -2px;
-}
-
-
-/* ============================================================
-   DISCOUNT BOX
-============================================================ */
-
-.discount-box {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  margin-top: 22px;
-
-  padding: 15px;
-
-  border-radius: 15px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f0fdf4,
-      #ecfdf5
-    );
-
-  border:
-    1px solid #bbf7d0;
-}
-
-.discount-icon {
-
-  color: #16a34a;
-
-  font-size: 27px;
-}
-
-.discount-box strong {
-
-  color: #15803d;
-
-  font-size: 14px;
-}
-
-.discount-box p {
-
-  margin: 4px 0 0;
-
-  color: #66806d;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-}
-
-
-/* ============================================================
-   PAYMENT SUMMARY
-============================================================ */
-
-.payment-summary {
-
-  margin-top: 25px;
-
-  padding: 18px 0;
-
-  border-top:
-    1px solid #eadcff;
-
-  border-bottom:
-    1px solid #eadcff;
-}
-
-.summary-row {
-
-  display: flex;
-
-  align-items: center;
-
   justify-content: space-between;
 
-  gap: 15px;
-
-  padding: 8px 0;
-
-  color: #80658e;
+  margin-top: 10px;
 
   font-size: 14px;
 }
 
-.summary-row strong {
 
-  color: #4c1d65;
+.progress-label span {
+
+  color: #64748b;
+
 }
 
-.discount-row strong {
 
-  color: #16a34a;
-}
+.progress-label strong {
 
-.summary-divider {
-
-  height: 1px;
-
-  margin: 8px 0;
-
-  background: #eadcff;
-}
-
-.payable-row {
-
-  color: #4c1d65;
+  color: #7c3aed;
 
   font-size: 16px;
 
-  font-weight: 900;
-}
-
-.payable-row strong {
-
-  color: #8b1bb1;
-
-  font-size: 20px;
 }
 
 
-/* ============================================================
-   PAYMENT BUTTON
-============================================================ */
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
 
-.payment-action {
-
-  margin-top: 22px;
-}
-
-.payment-btn {
+.progress-bar {
 
   width: 100%;
 
-  min-height: 56px;
+  height: 8px;
 
-  display: flex;
+  margin-top: 10px;
 
-  align-items: center;
+  border-radius: 20px;
 
-  justify-content: center;
+  overflow: hidden;
 
-  gap: 10px;
+  background: rgba(124, 58, 237, 0.10);
 
-  border: none;
+}
 
-  border-radius: 15px;
 
-  text-decoration: none;
+.progress-bar span {
 
-  font-size: 16px;
+  display: block;
 
-  font-weight: 900;
+  height: 100%;
 
-  cursor: pointer;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    #7c3aed,
+    #a855f7
+  );
 
   transition:
-    transform .25s ease,
-    box-shadow .25s ease;
-}
+    width 0.5s ease;
 
-.payment-btn:hover {
-
-  transform: translateY(-3px);
-
-  text-decoration: none;
 }
 
 
-/* PAY */
+/* =========================================================
+   VIDEO COUNT
+========================================================= */
 
-.pay-btn {
-
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #9333ea,
-      #c026d3
-    );
-
-  box-shadow:
-    0 12px 28px rgba(147,51,234,.28);
-}
-
-.pay-btn:hover {
-
-  color: #ffffff;
-
-  box-shadow:
-    0 18px 38px rgba(147,51,234,.40);
-}
-
-
-/* SUCCESS */
-
-.success-btn {
-
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #059669,
-      #16a34a
-    );
-
-  box-shadow:
-    0 10px 25px rgba(22,163,74,.20);
-}
-
-.success-btn:hover {
-
-  color: #ffffff;
-}
-
-
-/* FREE */
-
-.free-btn {
-
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #059669,
-      #10b981
-    );
-
-  box-shadow:
-    0 10px 25px rgba(16,185,129,.20);
-}
-
-.free-btn:hover {
-
-  color: #ffffff;
-}
-
-
-/* LOGIN */
-
-.login-btn {
-
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #7e22ce,
-      #c026d3
-    );
-
-  box-shadow:
-    0 10px 25px rgba(126,34,206,.25);
-}
-
-.login-btn:hover {
-
-  color: #ffffff;
-}
-
-
-/* ============================================================
-   PENDING
-============================================================ */
-
-.pending-note {
+.progress-video-count {
 
   display: flex;
 
   align-items: center;
-
-  justify-content: center;
 
   gap: 7px;
 
   margin-top: 12px;
 
-  color: #8b5aa0;
+  font-size: 13px;
 
-  font-size: 12px;
+  color: #64748b;
 
-  text-align: center;
 }
 
 
-/* ============================================================
-   SECURITY
-============================================================ */
+.progress-video-count i {
 
-.payment-security {
+  color: #7c3aed;
 
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 7px;
-
-  margin-top: 20px;
-
-  color: #9276a0;
-
-  font-size: 10px;
-
-  text-align: center;
-}
-
-.payment-security div {
-
-  padding: 8px 4px;
-
-  border-radius: 9px;
-
-  background: #faf5ff;
-
-  border:
-    1px solid #f0e5ff;
 }
 
 
-/* ============================================================
-   SUPPORT
-============================================================ */
+/* =========================================================
+   NIGHT MODE
+========================================================= */
 
-.support-card {
+html.night-mode .progress-circle::before {
 
+  background: #111827;
+
+}
+
+
+html.night-mode .progress-circle-inner {
+
+  color: #c4b5fd;
+
+}
+
+
+html.night-mode .progress-label span,
+html.night-mode .progress-video-count {
+
+  color: #94a3b8;
+
+}
+
+
+html.night-mode .progress-label strong {
+
+  color: #c4b5fd;
+
+}
+
+
+html.night-mode .progress-bar {
+
+  background: rgba(139, 92, 246, 0.15);
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.price-row {
   display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-
-  margin-top: 18px;
-
-  padding: 18px;
-
-  border-radius: 18px;
-
-  background:
-    rgba(255,255,255,.96);
-
-  border:
-    1px solid #e9d5ff;
-
-  box-shadow:
-    0 10px 25px rgba(74,20,100,.14);
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f4;
+  color: #68768a;
+  font-size: 13px;
 }
 
-.support-card h3 {
-
-  margin: 0 0 4px;
-
-  color: #4c1d65;
-
-  font-size: 15px;
-
-  font-weight: 900;
+.price-row del {
+  color: #8995a6;
 }
 
-.support-card p {
+.price-row.final {
+  border-bottom: 0;
+  padding-bottom: 16px;
+}
 
+.price-row.final strong {
+  color: #16945d;
+  font-size: 20px;
+}
+
+.sidebar-primary-btn {
+  width: 100%;
+}
+
+
+/* =========================================================
+   QUICK INFO
+========================================================= */
+
+.quick-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid #edf0f4;
+  font-size: 11px;
+}
+
+.quick-info-row:last-child {
+  border-bottom: 0;
+}
+
+.quick-info-row span {
+  color: #748197;
+}
+
+.quick-info-row i {
+  margin-right: 5px;
+  color: #6751d8;
+}
+
+.quick-info-row strong {
+  text-align: right;
+  color: #34445b;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.sidebar-cta {
+  background: linear-gradient(135deg, #fff3c8, #fff9e7);
+  border: 1px solid #f4e4a9;
+  border-radius: 12px;
+  padding: 22px;
+}
+
+.sidebar-cta > i {
+  font-size: 28px;
+  color: #7957cf;
+}
+
+.sidebar-cta h3 {
+  margin: 12px 0 7px;
+  font-size: 16px;
+  color: #6c4e16;
+}
+
+.sidebar-cta p {
   margin: 0;
-
-  color: #80658e;
-
+  color: #806f4c;
   font-size: 12px;
-
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 
-/* ============================================================
-   TABLET
-============================================================ */
+/* =========================================================
+   REVIEWS
+========================================================= */
 
-@media (max-width: 1050px) {
+.review-summary {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  background: #f7f9fc;
+  padding: 20px;
+  border-radius: 9px;
+}
 
-  .course-main-container {
+.review-score {
+  text-align: center;
+  min-width: 130px;
+}
 
+.review-score strong {
+  display: block;
+  font-size: 35px;
+}
+
+.review-score span {
+  display: block;
+  color: #f5b319;
+  letter-spacing: 2px;
+}
+
+.review-score small {
+  color: #78869a;
+}
+
+.review-message h3 {
+  margin: 0 0 5px;
+}
+
+.review-message p {
+  margin: 0;
+  color: #718096;
+}
+
+
+/* =========================================================
+   FAQ
+========================================================= */
+
+.faq-list details {
+  border: 1px solid #e4e9f0;
+  border-radius: 8px;
+  margin-bottom: 9px;
+  overflow: hidden;
+}
+
+.faq-list summary {
+  padding: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list details p {
+  margin: 0;
+  padding: 0 14px 14px;
+  color: #68768a;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-course-content {
+  text-align: center;
+  padding: 45px 20px;
+  color: #718096;
+}
+
+.empty-course-content i {
+  font-size: 35px;
+  color: #7557d9;
+}
+
+.empty-course-content h3 {
+  color: #34445b;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .course-details-grid {
     grid-template-columns: 1fr;
   }
 
-  .course-right {
-
-    position: static;
+  .course-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
   }
 
-  .course-info-grid {
-
-    grid-template-columns:
-      repeat(3, 1fr);
+  .sidebar-card,
+  .sidebar-cta {
+    margin-bottom: 0;
   }
+
 }
 
-
-/* ============================================================
-   MOBILE
-============================================================ */
 
 @media (max-width: 700px) {
 
-  .course-details-page {
-
-    padding:
-      20px 10px 50px;
+  .student-course-details {
+    padding: 15px;
   }
 
-  .course-back-wrapper {
+  .course-hero {
+    grid-template-columns: 1fr;
+  }
 
-    padding-top: 85px;
+  .course-hero-image {
+    height: 220px;
+  }
 
-    padding-left: 0;
+  .course-hero h1 {
+    font-size: 27px;
+  }
 
+  .course-tabs {
+    overflow-x: auto;
+  }
+
+  .course-tab {
+    white-space: nowrap;
+    padding: 11px 17px;
+  }
+
+  .includes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .instructor-card {
+    grid-template-columns: 65px 1fr;
+  }
+
+  .instructor-description {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid #e1e6ed;
+    padding: 15px 0 0;
+  }
+
+  .course-sidebar {
+    display: block;
+  }
+
+  .sidebar-card,
+  .sidebar-cta {
     margin-bottom: 15px;
   }
 
-  .course-back-btn {
-
-    padding:
-      10px 15px;
-
-    font-size: 13px;
-
-    border-radius: 11px;
+  .course-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-
-  .course-main-container {
-
-    padding: 14px;
-
-    border-radius: 22px;
-
-    gap: 18px;
-  }
-
-
-  .brand-badge {
-
-    padding:
-      8px 14px;
-
-    font-size: 12px;
-
-    gap: 9px;
-  }
-
-  .coaching-logo {
-
-    width: 40px;
-
-    height: 40px;
-  }
-
-
-  .course-hero {
-
-    min-height: 230px;
-
-    padding: 25px 18px;
-
-    border-radius: 19px;
-  }
-
-  .course-hero h1 {
-
-    font-size: 26px;
-  }
-
-  .course-hero p {
-
-    font-size: 13px;
-  }
-
-
-  .course-info-grid {
-
-    grid-template-columns:
-      1fr;
-
-    gap: 9px;
-  }
-
-  .info-card {
-
-    padding: 14px;
-  }
-
-
-  /* TABS */
-
-  .course-tabs-wrapper {
-
-    border-radius: 19px;
-  }
-
-  .course-tabs-nav {
-
-    overflow-x: auto;
-
-    scrollbar-width: none;
-  }
-
-  .course-tabs-nav::-webkit-scrollbar {
-
-    display: none;
-  }
-
-  .course-tab-btn {
-
-    flex:
-      0 0 50%;
-
-    min-height: 56px;
-
-    padding:
-      12px 8px;
-
-    font-size: 12px;
-
-    white-space: nowrap;
-  }
-
-  .course-tab-btn i {
-
-    font-size: 13px;
-  }
-
-  .course-tabs-content {
-
-    padding: 18px;
-  }
-
-  .course-tab-heading {
-
-    margin-bottom: 17px;
-
-    padding-bottom: 14px;
-  }
-
-  .course-tab-heading h2 {
-
-    font-size: 20px;
-  }
-
-  .course-tab-heading p {
-
-    font-size: 11px;
-  }
-
-  .course-description-box {
-
-    padding: 16px;
-
-    font-size: 13px;
-
-    line-height: 1.75;
-  }
-
-
-  /* PLAYLIST */
-
-  .course-playlist-header {
-
-    min-height: 62px;
-
-    padding:
-      9px 11px;
-  }
-
-  .playlist-header-left {
-
-    gap: 10px;
-  }
-
-  .playlist-icon {
-
-    width: 38px;
-
-    height: 38px;
-
-    border-radius: 10px;
-
-    font-size: 15px;
-  }
-
-  .playlist-header-text strong {
-
-    font-size: 13px;
-  }
-
-  .playlist-header-text span {
-
-    font-size: 10px;
-  }
-
-  .course-playlist-videos {
-
-    padding:
-      0 7px 7px;
-  }
-
-
-  /* =========================================================
-     MOBILE VIDEO ROW
-     NUMBER + CONTENT + BUTTON
-  ========================================================== */
-
-  .course-video-row {
-
-    display: grid;
-
-    grid-template-columns:
-      25px
-      minmax(0, 1fr);
-
-    gap: 8px;
-
-    padding: 10px;
-
-    border-radius: 11px;
-  }
-
-
-  .course-video-number {
-
-    font-size: 12px;
-
-    align-self: start;
-
-    padding-top: 2px;
-  }
-
-
-  .course-video-info {
-
-    min-width: 0;
-  }
-
-  .course-video-info h4 {
-
-    margin-bottom: 5px;
-
-    font-size: 12px;
-
-    line-height: 1.4;
-
-    white-space: normal;
-  }
-
-
-  .course-video-meta {
-
-    gap: 5px;
-  }
-
-  .free-preview-badge,
-  .paid-video-badge {
-
-    padding:
-      3px 7px;
-
-    font-size: 8px;
-  }
-
-
-  .course-video-action {
-
-    grid-column: 2;
-
-    width: 100%;
-
-    justify-content: stretch;
-  }
-
-
-  .watch-preview-btn,
-  .watch-video-btn,
-  .locked-video-btn {
-
-    width: 100%;
-
-    min-height: 38px;
-
-    padding:
-      8px 10px;
-
-    font-size: 11px;
-  }
-
-
-  /* PREVIEW INFORMATION */
-
-  .free-preview-information {
-
-    align-items: flex-start;
-
-    gap: 10px;
-
-    padding:
-      13px;
-  }
-
-  .free-preview-information-icon {
-
-    width: 36px;
-
-    height: 36px;
-
-    font-size: 15px;
-  }
-
-  .free-preview-information strong {
-
-    font-size: 12px;
-  }
-
-  .free-preview-information p {
-
-    font-size: 10px;
-  }
-
-
-  /* PAYMENT */
-
-  .payment-card {
-
-    padding: 20px;
-
-    border-radius: 20px;
-  }
-
-  .payment-header > span {
-
-    font-size: 11px;
-  }
-
-  .secure-payment {
-
-    font-size: 9px;
-  }
-
-  .final-price {
-
-    font-size: 42px;
-  }
-
-  .payment-security {
-
-    grid-template-columns:
-      1fr;
-  }
-
-  .payment-btn {
-
-    min-height: 52px;
-
-    font-size: 14px;
+  .course-wishlist-btn {
+    justify-content: center;
   }
 
 }
 
+/* =========================================================
+   PENDING PAYMENT CARD
+========================================================= */
 
-/* ============================================================
-   SMALL MOBILE
-============================================================ */
+.pending-payment-card {
+  background: linear-gradient(
+    135deg,
+    #fffaf0,
+    #fff7e6
+  );
 
-@media (max-width: 430px) {
+  border-color: #f1dfb5;
+}
 
-  .course-details-page {
+.pending-payment-card .sidebar-card-title i {
+  color: #d97706;
+}
 
-    padding-left: 8px;
+.pending-payment-text {
+  margin: 0 0 16px;
 
-    padding-right: 8px;
-  }
+  color: #75664d;
 
-  .course-main-container {
+  font-size: 13px;
 
-    padding: 10px;
-
-    border-radius: 19px;
-  }
-
-  .course-hero {
-
-    min-height: 210px;
-
-    padding:
-      22px 14px;
-  }
-
-  .course-hero h1 {
-
-    font-size: 23px;
-  }
-
-  .course-hero p {
-
-    font-size: 12px;
-  }
-
-
-  .course-tabs-content {
-
-    padding: 14px;
-  }
-
-  .course-tab-btn {
-
-    font-size: 11px;
-  }
-
-
-  .course-video-row {
-
-    grid-template-columns:
-      22px
-      minmax(0,1fr);
-
-    gap: 7px;
-
-    padding: 9px;
-  }
-
-  .course-video-number {
-
-    font-size: 11px;
-  }
-
-  .course-video-info h4 {
-
-    font-size: 11px;
-  }
-
-  .free-preview-badge,
-  .paid-video-badge {
-
-    font-size: 7px;
-
-    padding:
-      3px 6px;
-  }
-
-  .watch-preview-btn,
-  .watch-video-btn,
-  .locked-video-btn {
-
-    min-height: 36px;
-
-    font-size: 10px;
-  }
-
-  .final-price {
-
-    font-size: 36px;
-  }
-
+  line-height: 1.7;
 }
 
 
-/* ============================================================
-   ANIMATIONS
-============================================================ */
+.course-tab-panel {
+  display: none;
+}
 
-@keyframes courseFadeIn {
-
-  from {
-
-    opacity: 0;
-
-    transform:
-      translateY(15px);
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0);
-  }
+.course-tab-panel.active {
+  display: block;
 }
 
 
-@keyframes courseTabFade {
 
-  from {
-
-    opacity: 0;
-
-    transform:
-      translateY(5px);
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0);
-  }
+.payment-back-link {
+  display: inline-flex;
+  text-decoration: none;
 }
 
+.back-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+  border: 1px solid #dbe3ee;
+
+  color: #1261d8;
+
+  font-size: 18px;
+
+  transition: 0.2s ease;
+}
+
+.back-icon:hover {
+  background: #1261d8;
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
+
+
+.instructor-avatar {
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ede9fe;
+
+  color: #6d4aff;
+
+  flex-shrink: 0;
+}
+
+.instructor-avatar-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
 </style>
-
-
-<!-- ===========================================================
-     JAVASCRIPT
-=========================================================== -->
-
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
 
-
-  /* =========================================================
+  /* =====================================================
      COURSE TABS
-  ========================================================= */
+  ====================================================== */
 
-  const tabButtons =
-    document.querySelectorAll(".course-tab-btn");
+  const tabs = document.querySelectorAll(".course-tab");
+  const panels = document.querySelectorAll(".course-tab-panel");
 
-  const tabPanes =
-    document.querySelectorAll(".course-tab-pane");
+  tabs.forEach(function (tab) {
 
+    tab.addEventListener("click", function () {
 
-  tabButtons.forEach(function (button) {
+      const target = this.dataset.tab;
 
-    button.addEventListener("click", function () {
-
-      const targetId =
-        button.dataset.courseTab;
-
-
-      tabButtons.forEach(function (item) {
-
+      // Remove active from all tabs
+      tabs.forEach(function (item) {
         item.classList.remove("active");
-
       });
 
-
-      tabPanes.forEach(function (pane) {
-
-        pane.classList.remove("active");
-
+      // Hide all tab contents
+      panels.forEach(function (panel) {
+        panel.classList.remove("active");
       });
 
+      // Activate clicked tab
+      this.classList.add("active");
 
-      button.classList.add("active");
+      // Show selected tab only
+      const selectedPanel = document.getElementById(target);
 
-
-      const targetPane =
-        document.getElementById(targetId);
-
-
-      if (targetPane) {
-
-        targetPane.classList.add("active");
-
+      if (selectedPanel) {
+        selectedPanel.classList.add("active");
       }
 
     });
@@ -3303,123 +2573,46 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  /* =========================================================
-     PLAYLIST DROPDOWNS
-  ========================================================= */
+  /* =====================================================
+     CHAPTER ACCORDION
+  ====================================================== */
 
-  const playlistButtons =
-    document.querySelectorAll(
-      ".course-playlist-header"
-    );
+  window.toggleChapter = function (button) {
 
+    const chapter = button.closest(".chapter-item");
 
-  playlistButtons.forEach(function (button) {
+    if (!chapter) return;
 
-    button.addEventListener("click", function () {
+    chapter.classList.toggle("open");
 
-      const playlist =
-        button.closest(".course-playlist");
+  };
 
 
-      if (!playlist) {
+  /* =====================================================
+     WISHLIST
+  ====================================================== */
 
-        return;
+  window.toggleCourseWishlist = function (button) {
 
-      }
+    const icon = button.querySelector("i");
+    const text = button.querySelector("span");
 
+    if (!icon || !text) return;
 
-      const isOpen =
-        playlist.classList.toggle("open");
+    icon.classList.toggle("far");
+    icon.classList.toggle("fas");
 
+    if (icon.classList.contains("fas")) {
 
-      button.setAttribute(
-        "aria-expanded",
-        isOpen ? "true" : "false"
-      );
+      text.textContent = "Added to Wishlist";
 
-    });
+    } else {
 
-  });
+      text.textContent = "Add to Wishlist";
 
+    }
 
-  /* =========================================================
-     PAYMENT BUTTON LOADING
-  ========================================================= */
-
-  const paymentButtons =
-    document.querySelectorAll(
-      ".pay-btn, .free-btn, .login-btn"
-    );
-
-
-  paymentButtons.forEach(function (button) {
-
-    button.addEventListener("click", function () {
-
-      if (
-        button.dataset.clicked === "true"
-      ) {
-
-        return;
-
-      }
-
-
-      button.dataset.clicked = "true";
-
-
-      const originalHTML =
-        button.innerHTML;
-
-
-      button.innerHTML =
-        '<i class="fas fa-spinner fa-spin"></i> Please wait...';
-
-
-      setTimeout(function () {
-
-        if (
-          document.body.contains(button)
-        ) {
-
-          button.innerHTML =
-            originalHTML;
-
-          button.dataset.clicked =
-            "false";
-
-        }
-
-      }, 5000);
-
-    });
-
-  });
-
-
-  /* =========================================================
-     BACK BUTTON
-  ========================================================= */
-
-  const backBtn =
-    document.getElementById("courseBackBtn");
-
-
-  if (backBtn) {
-
-    backBtn.addEventListener(
-      "click",
-      function () {
-
-        /*
-         * Normal Rails link behavior.
-         */
-
-      }
-    );
-
-  }
+  };
 
 });
-
 </script>

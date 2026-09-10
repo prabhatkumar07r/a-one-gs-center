@@ -1,183 +1,1104 @@
+<% content_for :title, "Edit Profile" %>
+
 <style>
 
+/* =========================================================
+   STUDENT PROFILE
+   PROFESSIONAL LIGHT EDUCATION UI
+========================================================= */
 
-   body {
-    background: linear-gradient(
-      180deg,
-      #050A14 0%,
-      #081321 50%,
-      #050A14 100%
-    );
-    background-color: #050A14;
-    min-height: 100vh;
+.student-profile-page {
+  min-height: 100vh;
+  padding: 100px 24px 60px;
+
+  background: #f5f7fb;
+
+  color: #1f2937;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.student-profile-container {
+  width: min(900px, 100%);
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   PAGE TOP
+========================================================= */
+
+.profile-page-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   BRAND / TITLE
+========================================================= */
+
+.profile-page-title {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+.profile-page-logo {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, .06);
+}
+
+.profile-page-logo img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.profile-page-title-text h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 24px;
+  font-weight: 800;
+
+  line-height: 1.25;
+}
+
+.profile-page-title-text p {
+  margin: 4px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.profile-back-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 40px;
+
+  padding: 8px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3eb;
+
+  border-radius: 9px;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    .2s ease;
+}
+
+.profile-back-button:hover {
+  background: #f8f7ff;
+
+  border-color: #c4b5fd;
+
+  color: #5b21b6;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.student-profile-card {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e7ee;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, .06);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 20px 24px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #edf0f5;
+}
+
+.profile-card-header-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #f0edff;
+
+  color: #6d28d9;
+
+  font-size: 18px;
+}
+
+.profile-card-header-content h2 {
+  margin: 0;
+
+  color: #1f2937;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.profile-card-header-content p {
+  margin: 3px 0 0;
+
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.profile-card-body {
+  padding: 28px;
+}
+
+
+/* =========================================================
+   DEVise ERROR
+========================================================= */
+
+.profile-card-body .alert {
+  margin-bottom: 24px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM SECTION
+========================================================= */
+
+.profile-section {
+  margin-bottom: 30px;
+}
+
+.profile-section:last-of-type {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.profile-section-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+
+  padding-bottom: 11px;
+
+  border-bottom: 1px solid #edf0f5;
+}
+
+.profile-section-heading i {
+  color: #6366f1;
+
+  font-size: 16px;
+}
+
+.profile-section-heading h3 {
+  margin: 0;
+
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.profile-form-group {
+  margin-bottom: 18px;
+}
+
+.profile-form-group:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.profile-form-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #374151;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.profile-form-control {
+  width: 100%;
+
+  min-height: 44px;
+
+  box-sizing: border-box;
+
+  padding: 9px 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #d8dde7;
+
+  border-radius: 8px;
+
+  outline: none;
+
+  color: #1f2937;
+
+  font-size: 13px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.profile-form-control:hover {
+  border-color: #c7cdd8;
+}
+
+.profile-form-control:focus {
+  border-color: #818cf8;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, .10);
+}
+
+.profile-form-control::placeholder {
+  color: #9ca3af;
+}
+
+
+/* =========================================================
+   HELP TEXT
+========================================================= */
+
+.profile-help-text {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   PASSWORD BOX
+========================================================= */
+
+.profile-password-box {
+  padding: 18px;
+
+  background: #fafbfc;
+
+  border: 1px solid #e7eaf0;
+
+  border-radius: 11px;
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+========================================================= */
+
+.profile-security-note {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+  margin-top: 8px;
+
+  padding: 10px 12px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 8px;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.profile-security-note i {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  color: #6366f1;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   RECONFIRMATION
+========================================================= */
+
+.profile-reconfirmation {
+  padding: 11px 13px;
+
+  margin-top: 14px;
+
+  background: #fffbeb;
+
+  border: 1px solid #fde68a;
+
+  border-radius: 8px;
+
+  color: #92400e;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.profile-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 28px;
+
+  padding-top: 22px;
+
+  border-top: 1px solid #edf0f5;
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.profile-cancel-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 42px;
+
+  padding: 8px 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #d8dde7;
+
+  border-radius: 8px;
+
+  color: #4b5563;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  text-decoration: none;
+
+  transition: .2s ease;
+}
+
+.profile-cancel-button:hover {
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+
+  color: #374151;
+}
+
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
+.profile-save-button {
+  min-height: 42px;
+
+  padding: 8px 18px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: #4f46e5;
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px rgba(79, 70, 229, .18);
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.profile-save-button:hover {
+  background: #4338ca;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(79, 70, 229, .24);
+}
+
+.profile-save-button:disabled {
+  opacity: .7;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   DANGER ZONE
+========================================================= */
+
+.profile-danger-zone {
+  margin-top: 30px;
+
+  padding: 20px;
+
+  background: #fffafa;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 11px;
+}
+
+.profile-danger-heading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 7px;
+}
+
+.profile-danger-heading i {
+  color: #dc2626;
+
+  font-size: 16px;
+}
+
+.profile-danger-heading h3 {
+  margin: 0;
+
+  color: #991b1b;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.profile-danger-zone p {
+  margin: 0 0 15px;
+
+  color: #7f1d1d;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+.profile-delete-button {
+  min-height: 38px;
+
+  padding: 7px 13px;
+
+  background: #ffffff;
+
+  border: 1px solid #fca5a5;
+
+  border-radius: 8px;
+
+  color: #dc2626;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.profile-delete-button:hover {
+  background: #dc2626;
+
+  border-color: #dc2626;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .student-profile-page {
+    padding:
+      85px 14px 40px;
   }
 
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 10px;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 10px;
+  .profile-page-top {
+    align-items: flex-start;
+
+    flex-direction: column;
   }
 
-  .back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+  .profile-back-button {
+    width: 100%;
   }
 
-  .back-btn i {
-    font-size: 15px;
+  .student-profile-card {
+    border-radius: 13px;
   }
 
-  .profile-card {
-    max-width: 700px;
-    margin: auto;
-    border-radius: 14px;
+  .profile-card-header {
+    padding: 17px;
   }
 
-  .profile-card .card-header {
-    padding: 20px 25px;
+  .profile-card-body {
+    padding: 20px;
   }
 
-  .profile-card .card-body {
-    padding: 30px;
+  .profile-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
   }
 
-  .form-control {
-    border-radius: 8px;
+  .profile-save-button,
+  .profile-cancel-button {
+    width: 100%;
   }
 
-  .btn-success {
-    min-width: 180px;
+}
+
+
+@media (max-width: 430px) {
+
+  .student-profile-page {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  .logo {
-    width: 55px;
-    height: 55px;
-    object-fit: cover;
+  .profile-page-logo {
+    width: 44px;
+    height: 44px;
   }
+
+  .profile-page-title-text h1 {
+    font-size: 20px;
+  }
+
+  .profile-page-title-text p {
+    font-size: 11px;
+  }
+
+  .profile-card-body {
+    padding: 16px;
+  }
+
+  .profile-password-box {
+    padding: 14px;
+  }
+
+  .profile-danger-zone {
+    padding: 15px;
+  }
+
+}
+
 </style>
 
-<div class="container py-5">
 
-  <div class="card shadow-sm border-0 profile-card">
+<!-- =========================================================
+     STUDENT PROFILE PAGE
+========================================================= -->
 
-    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+<div class="student-profile-page">
 
-      <div class="d-flex align-items-center">
-        <%= image_tag "logo.jpeg", class: "logo rounded-circle me-3" %>
+  <div class="student-profile-container">
 
-        <div>
-          <h3 class="fw-bold mb-0">A One GS Center</h3>
-          <p class="text-muted mb-0">Update Your Profile</p>
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="profile-page-top">
+
+      <div class="profile-page-title">
+
+        <div class="profile-page-logo">
+
+          <%= image_tag(
+            "logo.jpeg",
+            alt: "A One GS Center"
+          ) %>
+
         </div>
+
+        <div class="profile-page-title-text">
+
+          <h1>
+            Edit Profile
+          </h1>
+
+          <p>
+            Manage your account information and security
+          </p>
+
+        </div>
+
       </div>
 
-     <%#  <%= link_to teacher_dashboard_path,
-          class: "btn btn-outline-secondary back-btn" do %>
-       <%#  <i class="bi bi-arrow-left"></i>
-        Back
-      <% end %> 
 
-    </div>
+      <%= link_to(
+        student_dashboard_path,
+        class: "profile-back-button"
+      ) do %>
 
-    <div class="card-body">
+        <i class="bi bi-arrow-left"></i>
 
-      <%= form_with model: resource,
-                    url: user_registration_path,
-                    method: :put,
-                    local: true do |f| %>
-
-        <%= render "devise/shared/error_messages", resource: resource %>
-
-        <!-- Email -->
-        <div class="mb-3">
-          <%= f.label :email, class: "form-label fw-bold" %>
-
-          <%= f.email_field :email,
-              autofocus: true,
-              autocomplete: "email",
-              class: "form-control" %>
-        </div>
-
-        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-          <div class="alert alert-warning">
-            Currently waiting confirmation for
-            <strong><%= resource.unconfirmed_email %></strong>
-          </div>
-        <% end %>
-
-        <!-- Password -->
-        <div class="mb-3">
-          <%= f.label :password, class: "form-label fw-bold" %>
-
-          <%= f.password_field :password,
-              autocomplete: "new-password",
-              class: "form-control",
-              placeholder: "Leave blank if you don't want to change it" %>
-
-          <% if @minimum_password_length %>
-            <small class="text-muted">
-              Minimum <%= @minimum_password_length %> characters
-            </small>
-          <% end %>
-        </div>
-
-        <!-- Password Confirmation -->
-        <div class="mb-3">
-          <%= f.label :password_confirmation, class: "form-label fw-bold" %>
-
-          <%= f.password_field :password_confirmation,
-              autocomplete: "new-password",
-              class: "form-control" %>
-        </div>
-
-        <!-- Current Password -->
-        <div class="mb-4">
-          <%= f.label :current_password, class: "form-label fw-bold" %>
-
-          <%= f.password_field :current_password,
-              autocomplete: "current-password",
-              class: "form-control",
-              placeholder: "Enter your current password" %>
-
-          <small class="text-muted">
-            We need your current password to save your changes.
-          </small>
-        </div>
-
-        <!-- Buttons -->
-        <div class="d-flex justify-content-center gap-3 mt-4">
-
-          <%= f.submit "💾 Update Profile",
-              class: "btn btn-success" %>
-
-          <%= link_to teacher_dashboard_path,
-              class: "btn btn-outline-secondary back-btn" do %>
-            <i class="bi bi-arrow-left"></i>
-            Back
-          <% end %>
-
-        </div>
+        Back to Dashboard
 
       <% end %>
 
-      <hr class="my-4">
+    </div>
 
-      <div class="text-center">
-        <h5 class="text-danger fw-bold">Danger Zone</h5>
 
-        <p class="text-muted">
-          Deleting your account is permanent and cannot be undone.
-        </p>
+    <!-- =====================================================
+         PROFILE CARD
+    ====================================================== -->
 
-        <%= button_to "Delete My Account",
+    <div class="student-profile-card">
+
+
+      <!-- ===================================================
+           HEADER
+      ==================================================== -->
+
+      <div class="profile-card-header">
+
+        <div class="profile-card-header-icon">
+
+          <i class="bi bi-person"></i>
+
+        </div>
+
+        <div class="profile-card-header-content">
+
+          <h2>
+            Account Information
+          </h2>
+
+          <p>
+            Keep your account details up to date.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           BODY
+      ==================================================== -->
+
+      <div class="profile-card-body">
+
+
+        <%= form_with(
+          model: resource,
+          url: user_registration_path,
+          method: :put,
+          local: true
+        ) do |f| %>
+
+
+          <!-- ===============================================
+               DEVise ERRORS
+          ================================================ -->
+
+          <%= render(
+            "devise/shared/error_messages",
+            resource: resource
+          ) %>
+
+
+          <!-- ===============================================
+               ACCOUNT DETAILS
+          ================================================ -->
+
+          <div class="profile-section">
+
+            <div class="profile-section-heading">
+
+              <i class="bi bi-person-vcard"></i>
+
+              <h3>
+                Personal Account
+              </h3>
+
+            </div>
+
+
+            <div class="profile-form-group">
+
+              <%= f.label(
+                :email,
+                "Email Address",
+                class: "profile-form-label"
+              ) %>
+
+              <%= f.email_field(
+                :email,
+                autofocus: true,
+                autocomplete: "email",
+                class: "profile-form-control",
+                placeholder: "Enter your email address"
+              ) %>
+
+            </div>
+
+
+            <% if devise_mapping.confirmable? &&
+                  resource.pending_reconfirmation? %>
+
+              <div class="profile-reconfirmation">
+
+                <i class="bi bi-info-circle me-1"></i>
+
+                Your email change is waiting for confirmation:
+
+                <strong>
+                  <%= resource.unconfirmed_email %>
+                </strong>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+
+          <!-- ===============================================
+               PASSWORD
+          ================================================ -->
+
+          <div class="profile-section">
+
+            <div class="profile-section-heading">
+
+              <i class="bi bi-shield-lock"></i>
+
+              <h3>
+                Change Password
+              </h3>
+
+            </div>
+
+
+            <div class="profile-password-box">
+
+
+              <!-- NEW PASSWORD -->
+
+              <div class="profile-form-group">
+
+                <%= f.label(
+                  :password,
+                  "New Password",
+                  class: "profile-form-label"
+                ) %>
+
+                <%= f.password_field(
+                  :password,
+                  autocomplete: "new-password",
+                  class: "profile-form-control",
+                  placeholder: "Leave blank to keep your current password"
+                ) %>
+
+                <% if @minimum_password_length %>
+
+                  <small class="profile-help-text">
+
+                    Minimum
+                    <%= @minimum_password_length %>
+                    characters.
+
+                  </small>
+
+                <% end %>
+
+              </div>
+
+
+              <!-- CONFIRM PASSWORD -->
+
+              <div class="profile-form-group">
+
+                <%= f.label(
+                  :password_confirmation,
+                  "Confirm New Password",
+                  class: "profile-form-label"
+                ) %>
+
+                <%= f.password_field(
+                  :password_confirmation,
+                  autocomplete: "new-password",
+                  class: "profile-form-control",
+                  placeholder: "Re-enter your new password"
+                ) %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               CURRENT PASSWORD
+          ================================================ -->
+
+          <div class="profile-section">
+
+            <div class="profile-section-heading">
+
+              <i class="bi bi-key"></i>
+
+              <h3>
+                Security Verification
+              </h3>
+
+            </div>
+
+
+            <div class="profile-form-group">
+
+              <%= f.label(
+                :current_password,
+                "Current Password",
+                class: "profile-form-label"
+              ) %>
+
+              <%= f.password_field(
+                :current_password,
+                autocomplete: "current-password",
+                class: "profile-form-control",
+                placeholder: "Enter your current password"
+              ) %>
+
+
+              <div class="profile-security-note">
+
+                <i class="bi bi-shield-check"></i>
+
+                <span>
+                  Enter your current password to securely
+                  save changes to your account.
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               ACTIONS
+          ================================================ -->
+
+          <div class="profile-actions">
+
+
+            <%= link_to(
+              student_dashboard_path,
+              class: "profile-cancel-button"
+            ) do %>
+
+              <i class="bi bi-x-lg"></i>
+
+              Cancel
+
+            <% end %>
+
+
+            <%= f.submit(
+              "Save Changes",
+              class: "profile-save-button"
+            ) %>
+
+
+          </div>
+
+
+        <% end %>
+
+
+        <!-- =================================================
+             DANGER ZONE
+        ================================================== -->
+
+        <div class="profile-danger-zone">
+
+          <div class="profile-danger-heading">
+
+            <i class="bi bi-exclamation-triangle"></i>
+
+            <h3>
+              Danger Zone
+            </h3>
+
+          </div>
+
+
+          <p>
+            Deleting your account is permanent and cannot
+            be undone. Please proceed carefully.
+          </p>
+
+
+          <%= button_to(
             user_registration_path,
             method: :delete,
-            data: { turbo_confirm: "Are you sure you want to delete your account?" },
-            class: "btn btn-danger" %>
+            data: {
+              turbo_confirm:
+                "Are you sure you want to permanently delete your account?"
+            },
+            class: "profile-delete-button"
+          ) do %>
+
+            <i class="bi bi-trash3 me-1"></i>
+
+            Delete My Account
+
+          <% end %>
+
+        </div>
+
+
       </div>
 
     </div>
@@ -185,3 +1106,120 @@
   </div>
 
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =======================================================
+     PASSWORD MATCHING
+  ======================================================= */
+
+  const password =
+    document.querySelector("#user_password");
+
+  const confirmation =
+    document.querySelector(
+      "#user_password_confirmation"
+    );
+
+
+  if (password && confirmation) {
+
+    confirmation.addEventListener(
+      "input",
+      function () {
+
+        if (
+          confirmation.value.length > 0 &&
+          password.value !== confirmation.value
+        ) {
+
+          confirmation.style.borderColor =
+            "#ef4444";
+
+          confirmation.style.boxShadow =
+            "0 0 0 3px rgba(239,68,68,.08)";
+
+        } else {
+
+          confirmation.style.borderColor = "";
+
+          confirmation.style.boxShadow = "";
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     SAVE BUTTON LOADING
+  ======================================================= */
+
+  const form =
+    document.querySelector(
+      ".student-profile-card form"
+    );
+
+  const saveButton =
+    form
+      ? form.querySelector(
+          ".profile-save-button"
+        )
+      : null;
+
+
+  if (form && saveButton) {
+
+    form.addEventListener(
+      "submit",
+      function () {
+
+        saveButton.disabled = true;
+
+        saveButton.innerHTML =
+          '<i class="bi bi-arrow-repeat"></i> Saving...';
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     DELETE CONFIRMATION
+  ======================================================= */
+
+  const deleteButton =
+    document.querySelector(
+      ".profile-delete-button"
+    );
+
+
+  if (deleteButton) {
+
+    deleteButton.addEventListener(
+      "click",
+      function (event) {
+
+        const confirmed =
+          window.confirm(
+            "Are you sure you want to permanently delete your account?"
+          );
+
+        if (!confirmed) {
+
+          event.preventDefault();
+
+        }
+
+      }
+    );
+
+  }
+
+});
+</script>

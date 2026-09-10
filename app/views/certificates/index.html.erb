@@ -1,47 +1,1285 @@
-<h2>🏆 My Certificates</h2>
+<% content_for :title, "My Certificates" %>
 
-<table class="table table-bordered">
+<div class="student-certificates-page">
 
-<thead>
+  <!-- =======================================================
+       PAGE HEADER
+  ======================================================== -->
 
-<tr>
+  <div class="certificates-header">
 
-<th>Certificate No</th>
+    <div class="certificates-header-left">
 
-<th>Course</th>
+      <div class="certificates-header-icon">
+        <i class="bi bi-award-fill"></i>
+      </div>
 
-<th>Date</th>
+      <div>
 
-<th></th>
+        <div class="certificates-breadcrumb">
+          Student Profile
+          <i class="bi bi-chevron-right"></i>
+          My Certificates
+        </div>
 
-</tr>
+        <h1>
+          My Certificates
+        </h1>
 
-</thead>
+        <p>
+          View and access the certificates you have earned from
+          your completed courses.
+        </p>
 
-<tbody>
+      </div>
 
-<% @certificates.each do |certificate| %>
+    </div>
 
-<tr>
 
-<td><%= certificate.certificate_no %></td>
+    <!-- CERTIFICATE COUNT -->
 
-<td><%= certificate.course.Course_name %></td>
+    <div class="certificate-count-card">
 
-<td><%= certificate.issued_on %></td>
+      <div class="certificate-count-icon">
+        <i class="bi bi-patch-check-fill"></i>
+      </div>
 
-<td>
+      <div>
 
-<%= link_to "View",
-    certificate_path(certificate),
-    class:"btn btn-primary btn-sm" %>
+        <span>
+          Certificates Earned
+        </span>
 
-</td>
+        <strong>
+          <%= @certificates&.count || 0 %>
+        </strong>
 
-</tr>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =======================================================
+       CERTIFICATE CONTENT
+  ======================================================== -->
+
+  <% if @certificates.present? %>
+
+    <div class="certificates-section-header">
+
+      <div>
+
+        <h2>
+          <i class="bi bi-trophy-fill"></i>
+          Your Achievements
+        </h2>
+
+        <p>
+          Congratulations! Here are the certificates you have earned.
+        </p>
+
+      </div>
+
+      <span class="certificate-total-badge">
+
+        <%= @certificates.count %>
+
+        <%= @certificates.count == 1 ? "Certificate" : "Certificates" %>
+
+      </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CERTIFICATE GRID
+    ====================================================== -->
+
+    <div class="certificates-grid">
+
+      <% @certificates.each do |certificate| %>
+
+        <div class="certificate-card">
+
+
+          <!-- =================================================
+               CARD TOP
+          ================================================== -->
+
+          <div class="certificate-card-top">
+
+            <div class="certificate-emblem">
+
+              <div class="certificate-emblem-inner">
+
+                <i class="bi bi-award-fill"></i>
+
+              </div>
+
+            </div>
+
+
+            <span class="certificate-status">
+
+              <i class="bi bi-check-circle-fill"></i>
+
+              Verified
+
+            </span>
+
+          </div>
+
+
+
+          <!-- =================================================
+               CERTIFICATE BODY
+          ================================================== -->
+
+          <div class="certificate-card-body">
+
+            <span class="certificate-label">
+              CERTIFICATE OF COMPLETION
+            </span>
+
+
+            <h3>
+              <%= certificate.course.Course_name %>
+            </h3>
+
+
+            <p class="certificate-description">
+
+              This certificate recognizes the successful completion
+              of the course.
+
+            </p>
+
+
+
+            <!-- CERTIFICATE NUMBER -->
+
+            <div class="certificate-info">
+
+              <div class="certificate-info-item">
+
+                <span>
+                  <i class="bi bi-hash"></i>
+                  Certificate No.
+                </span>
+
+                <strong>
+                  <%= certificate.certificate_no %>
+                </strong>
+
+              </div>
+
+
+              <!-- ISSUE DATE -->
+
+              <div class="certificate-info-item">
+
+                <span>
+                  <i class="bi bi-calendar3"></i>
+                  Issued On
+                </span>
+
+                <strong>
+
+                  <%= certificate.issued_on.present? ?
+                        certificate.issued_on.strftime("%d %b %Y") :
+                        "—" %>
+
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================================
+               CARD FOOTER
+          ================================================== -->
+
+          <div class="certificate-card-footer">
+
+            <%= link_to certificate_path(certificate),
+                class: "certificate-view-button" do %>
+
+              <i class="bi bi-eye-fill"></i>
+
+              View Certificate
+
+            <% end %>
+
+
+            <%= link_to certificate_path(certificate),
+                class: "certificate-secondary-button",
+                target: "_blank",
+                rel: "noopener" do %>
+
+              <i class="bi bi-box-arrow-up-right"></i>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+  <% else %>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div class="certificates-empty-state">
+
+      <div class="certificates-empty-icon">
+
+        <i class="bi bi-award"></i>
+
+      </div>
+
+
+      <h2>
+        No Certificates Yet
+      </h2>
+
+
+      <p>
+        Complete your eligible courses to earn certificates.
+        Your certificates will appear here once they are issued.
+      </p>
+
+
+    <% @certificates.each do |certificate| %>
+
+  <!-- your certificate content -->
+
+  <% course = certificate.course %>
+  <% first_video = course.videos.order(:position, :id).first %>
+
+  <% if first_video.present? %>
+    <%= link_to learning_video_path(course, first_video),
+        class: "certificates-learning-button" do %>
+      <i class="bi bi-book-half"></i>
+      Continue Learning
+    <% end %>
+  <% else %>
+    <%= link_to learning_course_path(course),
+        class: "certificates-learning-button" do %>
+      <i class="bi bi-book-half"></i>
+      Open Course
+    <% end %>
+  <% end %>
 
 <% end %>
 
-</tbody>
+    </div>
 
-</table>
+  <% end %>
+
+</div>
+
+
+
+<!-- =========================================================
+     CERTIFICATE PAGE CSS
+========================================================= -->
+
+<style>
+
+.student-certificates-page {
+
+  min-height: calc(100vh - 90px);
+
+  padding: 110px 30px 50px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(124, 58, 237, .10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(99, 102, 241, .08),
+      transparent 30%
+    ),
+    #f6f7fb;
+
+  color: #111827;
+
+  box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.certificates-header {
+
+  max-width: 1250px;
+
+  margin: 0 auto 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+}
+
+
+.certificates-header-left {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+}
+
+
+.certificates-header-icon {
+
+  width: 58px;
+
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  color: #fff;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 12px 28px rgba(99, 102, 241, .22);
+
+}
+
+
+.certificates-breadcrumb {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 6px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+}
+
+
+.certificates-breadcrumb i {
+
+  font-size: 9px;
+
+}
+
+
+.certificates-header h1 {
+
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 28px;
+
+  font-weight: 800;
+
+  letter-spacing: -.4px;
+
+}
+
+
+.certificates-header p {
+
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+
+
+/* =========================================================
+   COUNT CARD
+========================================================= */
+
+.certificate-count-card {
+
+  min-width: 205px;
+
+  padding: 16px 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, .06);
+
+}
+
+
+.certificate-count-icon {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #f3e8ff;
+
+  color: #7c3aed;
+
+  font-size: 19px;
+
+}
+
+
+.certificate-count-card span {
+
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+}
+
+
+.certificate-count-card strong {
+
+  display: block;
+
+  color: #111827;
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+}
+
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.certificates-section-header {
+
+  max-width: 1250px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+}
+
+
+.certificates-section-header h2 {
+
+  margin: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: #111827;
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+}
+
+
+.certificates-section-header h2 i {
+
+  color: #7c3aed;
+
+  font-size: 17px;
+
+}
+
+
+.certificates-section-header p {
+
+  margin: 5px 0 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+}
+
+
+.certificate-total-badge {
+
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+}
+
+
+
+/* =========================================================
+   CERTIFICATE GRID
+========================================================= */
+
+.certificates-grid {
+
+  max-width: 1250px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 22px;
+
+}
+
+
+
+/* =========================================================
+   CERTIFICATE CARD
+========================================================= */
+
+.certificate-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, .06);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+
+}
+
+
+.certificate-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7c3aed,
+      #6366f1,
+      #8b5cf6
+    );
+
+}
+
+
+.certificate-card:hover {
+
+  transform: translateY(-5px);
+
+  border-color: #ddd6fe;
+
+  box-shadow:
+    0 18px 40px rgba(99, 102, 241, .12);
+
+}
+
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.certificate-card-top {
+
+  padding: 22px 22px 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+
+.certificate-emblem {
+
+  width: 56px;
+
+  height: 56px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f5f3ff;
+
+}
+
+
+.certificate-emblem-inner {
+
+  width: 43px;
+
+  height: 43px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  color: #fff;
+
+  font-size: 20px;
+
+}
+
+
+.certificate-status {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
+
+  color: #059669;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+}
+
+
+.certificate-status i {
+
+  font-size: 11px;
+
+}
+
+
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.certificate-card-body {
+
+  padding: 10px 22px 20px;
+
+}
+
+
+.certificate-label {
+
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #7c3aed;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+}
+
+
+.certificate-card-body h3 {
+
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 19px;
+
+  font-weight: 800;
+
+  line-height: 1.35;
+
+}
+
+
+.certificate-description {
+
+  margin: 8px 0 18px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+}
+
+
+
+/* =========================================================
+   CERTIFICATE INFO
+========================================================= */
+
+.certificate-info {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+}
+
+
+.certificate-info-item {
+
+  padding: 11px 12px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 10px;
+
+}
+
+
+.certificate-info-item span {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-bottom: 5px;
+
+  color: #94a3b8;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+}
+
+
+.certificate-info-item strong {
+
+  display: block;
+
+  overflow: hidden;
+
+  color: #334155;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+}
+
+
+.certificate-info-item strong {
+
+  font-family: inherit;
+
+}
+
+
+
+/* =========================================================
+   CARD FOOTER
+========================================================= */
+
+.certificate-card-footer {
+
+  padding: 14px 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  background: #fafbfc;
+
+  border-top: 1px solid #eef2f7;
+
+}
+
+
+.certificate-view-button {
+
+  flex: 1;
+
+  min-height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 15px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  color: #fff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 7px 16px rgba(99, 102, 241, .18);
+
+  transition: .2s ease;
+
+}
+
+
+.certificate-view-button:hover {
+
+  color: #fff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 20px rgba(99, 102, 241, .25);
+
+}
+
+
+.certificate-secondary-button {
+
+  width: 40px;
+
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  color: #64748b;
+
+  text-decoration: none;
+
+  transition: .2s ease;
+
+}
+
+
+.certificate-secondary-button:hover {
+
+  color: #7c3aed;
+
+  border-color: #c4b5fd;
+
+  background: #f5f3ff;
+
+}
+
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.certificates-empty-state {
+
+  max-width: 1250px;
+
+  margin: 20px auto 0;
+
+  padding: 75px 30px;
+
+  text-align: center;
+
+  background: #fff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, .05);
+
+}
+
+
+.certificates-empty-icon {
+
+  width: 78px;
+
+  height: 78px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background: #f3e8ff;
+
+  color: #7c3aed;
+
+  font-size: 32px;
+
+}
+
+
+.certificates-empty-state h2 {
+
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 21px;
+
+  font-weight: 800;
+
+}
+
+
+.certificates-empty-state p {
+
+  max-width: 480px;
+
+  margin: 9px auto 22px;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+}
+
+
+.certificates-learning-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  color: #fff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 18px rgba(99, 102, 241, .18);
+
+}
+
+
+.certificates-learning-button:hover {
+
+  color: #fff;
+
+}
+
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .certificates-header {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+  .certificate-count-card {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+  }
+
+  .certificates-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+
+@media (max-width: 576px) {
+
+  .student-certificates-page {
+
+    padding:
+      95px
+      15px
+      35px;
+
+  }
+
+
+  .certificates-header-left {
+
+    align-items: flex-start;
+
+  }
+
+
+  .certificates-header-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 13px;
+
+    font-size: 21px;
+
+  }
+
+
+  .certificates-header h1 {
+
+    font-size: 22px;
+
+  }
+
+
+  .certificates-header p {
+
+    font-size: 12px;
+
+  }
+
+
+  .certificates-section-header {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+
+  .certificate-total-badge {
+
+    align-self: flex-start;
+
+  }
+
+
+  .certificate-info {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .certificate-card-top {
+
+    padding: 18px 17px 10px;
+
+  }
+
+
+  .certificate-card-body {
+
+    padding:
+      8px
+      17px
+      17px;
+
+  }
+
+
+  .certificate-card-footer {
+
+    padding:
+      12px
+      17px;
+
+  }
+
+}
+
+</style>
