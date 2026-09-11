@@ -67,7 +67,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {
     host: ENV.fetch(
       "APP_HOST",
-      "a-one-gs-center.onrender.com"
+      "aonegscenter.com"
     ),
     protocol: "https"
   }

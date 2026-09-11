@@ -1,20 +1,72 @@
 class SampleController < ApplicationController
-  def homepage
-  @events = Event.order(created_at: :desc)
-  @notifications = Notification.where(status: "Active").order(created_at: :desc)
-  @courses = Course.where(status: "Active")
-  @teachers = Teacher.where(status: "Active")
-  @galleries = Gallery.where(status: "Active").order(created_at: :desc)
-  @achievements=Achievement.where(status: "Active")
-end
 
-def debug_env
-  render plain: <<~TEXT
-    Rails.env: #{Rails.env}
-    GOOGLE_CLIENT_ID: #{ENV["GOOGLE_CLIENT_ID"].inspect}
-    GOOGLE_CLIENT_SECRET: #{ENV["GOOGLE_CLIENT_SECRET"] ? "PRESENT" : "MISSING"}
-  TEXT
-end
+  def homepage
+
+    # =========================================================
+    # EVENTS
+    # Latest 6 events + preload photos
+    # =========================================================
+    @events = Event
+      .with_attached_photo
+      .order(created_at: :desc)
+      .limit(6)
+
+
+    # =========================================================
+    # NOTIFICATIONS
+    # =========================================================
+    @notifications = Notification
+      .where(status: "Active")
+      .order(created_at: :desc)
+
+
+    # =========================================================
+    # COURSES
+    # Active courses + preload course images
+    # =========================================================
+    @courses = Course
+      .where(status: "Active")
+      .with_attached_image
+
+
+    # =========================================================
+    # TEACHERS
+    # Active teachers + preload teacher photos
+    # =========================================================
+    @teachers = Teacher
+      .where(status: "Active")
+      .with_attached_photo
+
+
+    # =========================================================
+    # GALLERIES
+    # Active galleries + preload all gallery photos
+    # =========================================================
+    @galleries = Gallery
+      .where(status: "Active")
+      .with_attached_photos
+      .order(created_at: :desc)
+
+
+    # =========================================================
+    # ACHIEVEMENTS
+    # Active achievements + preload photo & video
+    # =========================================================
+    @achievements = Achievement
+      .active
+      .with_attached_photo
+      .with_attached_video
+
+  end
+
+
+  def debug_env
+    render plain: <<~TEXT
+      Rails.env: #{Rails.env}
+      GOOGLE_CLIENT_ID: #{ENV["GOOGLE_CLIENT_ID"].inspect}
+      GOOGLE_CLIENT_SECRET: #{ENV["GOOGLE_CLIENT_SECRET"] ? "PRESENT" : "MISSING"}
+    TEXT
+  end
 
 
   def cloudinary_check
@@ -25,20 +77,20 @@ end
       api_secret_present: ENV["CLOUDINARY_API_SECRET"].present?
     }.inspect
   end
+
+
   def blob_check
-  teacher = Teacher.first
+    teacher = Teacher.first
 
-  if teacher&.photo&.attached?
-    render plain: {
-      teacher: teacher.name,
-      service_name: teacher.photo.blob.service_name,
-      filename: teacher.photo.filename.to_s
-    }.inspect
-  else
-    render plain: "No photo attached"
+    if teacher&.photo&.attached?
+      render plain: {
+        teacher: teacher.name,
+        service_name: teacher.photo.blob.service_name,
+        filename: teacher.photo.filename.to_s
+      }.inspect
+    else
+      render plain: "No photo attached"
+    end
   end
-end
 
 end
-
-  
