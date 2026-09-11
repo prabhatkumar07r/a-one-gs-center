@@ -26,7 +26,7 @@ class SampleController < ApplicationController
     # =========================================================
     @courses = Course
       .where(status: "Active")
-      .with_attached_image
+      .includes(image_attachment: :blob)
 
 
     # =========================================================
@@ -35,7 +35,7 @@ class SampleController < ApplicationController
     # =========================================================
     @teachers = Teacher
       .where(status: "Active")
-      .with_attached_photo
+      .includes(photo_attachment: :blob)
 
 
     # =========================================================
@@ -43,9 +43,9 @@ class SampleController < ApplicationController
     # Active galleries + preload all gallery photos
     # =========================================================
     @galleries = Gallery
-      .where(status: "Active")
-      .with_attached_photos
-      .order(created_at: :desc)
+     .where(status: "Active")
+     .includes(photos_attachments: :blob)
+     .order(created_at: :desc)
 
 
     # =========================================================
