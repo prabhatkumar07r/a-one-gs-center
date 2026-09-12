@@ -1525,20 +1525,20 @@ body {
 
 /* =========================================================
    A ONE GS CENTER
-   REGISTRATION JAVASCRIPT
+   LOGIN PAGE JAVASCRIPT
    TURBO SAFE
 ========================================================= */
 
 (function () {
 
-  function initializeRegistrationPage() {
+  function initializeLoginPage() {
 
     /* =======================================================
        PASSWORD SHOW / HIDE
     ======================================================= */
 
     const toggleButtons =
-      document.querySelectorAll(".password-toggle");
+      document.querySelectorAll(".aone-password-toggle");
 
     toggleButtons.forEach(function (button) {
 
@@ -1548,15 +1548,17 @@ body {
 
       button.dataset.passwordInitialized = "true";
 
-      button.addEventListener("click", function () {
+      button.addEventListener("click", function (event) {
+
+        event.preventDefault();
 
         const wrapper =
-          button.closest(".input-wrapper");
+          button.closest(".aone-input-wrap");
 
         if (!wrapper) return;
 
         const input =
-          wrapper.querySelector(".password-field");
+          wrapper.querySelector(".aone-password-input");
 
         const icon =
           button.querySelector("i");
@@ -1575,6 +1577,11 @@ body {
             "Hide password"
           );
 
+          button.setAttribute(
+            "title",
+            "Hide password"
+          );
+
         } else {
 
           input.type = "password";
@@ -1587,6 +1594,11 @@ body {
             "Show password"
           );
 
+          button.setAttribute(
+            "title",
+            "Show password"
+          );
+
         }
 
       });
@@ -1595,61 +1607,57 @@ body {
 
 
     /* =======================================================
-       FORM
+       LOGIN FORM
     ======================================================= */
 
     const form =
-      document.querySelector(".register-form");
-
-    const terms =
-      document.querySelector("#terms");
+      document.querySelector(".aone-login-form");
 
 
-    if (form &&
-        form.dataset.registrationInitialized !== "true") {
+    if (
+      form &&
+      form.dataset.loginInitialized !== "true"
+    ) {
 
-      form.dataset.registrationInitialized = "true";
-
-
-      /* =====================================================
-         TERMS VALIDATION
-      ===================================================== */
-
-      if (terms) {
-
-        form.addEventListener("submit", function (event) {
-
-          if (!terms.checked) {
-
-            event.preventDefault();
-
-            terms.focus();
-
-            alert(
-              "Please agree to the Terms & Conditions before creating your account."
-            );
-
-          }
-
-        });
-
-      }
+      form.dataset.loginInitialized = "true";
 
 
       /* =====================================================
          PREVENT DOUBLE SUBMIT
       ===================================================== */
 
-      form.addEventListener("submit", function () {
-
-        const submitButton =
-          form.querySelector(".register-btn");
-
-        if (!submitButton) return;
+      form.addEventListener("submit", function (event) {
 
         /*
-         * Small delay allows browser validation
-         * and normal form submission to happen first.
+         * Do not interfere with browser validation.
+         * Only disable the button after the browser
+         * accepts the form submission.
+         */
+
+        const submitButton =
+          form.querySelector(".aone-login-button");
+
+        if (!submitButton) {
+          return;
+        }
+
+
+        /*
+         * If already disabled, prevent repeated submission.
+         */
+
+        if (submitButton.disabled) {
+
+          event.preventDefault();
+
+          return;
+
+        }
+
+
+        /*
+         * Allow the normal login submission to continue.
+         * Then visually disable the button.
          */
 
         setTimeout(function () {
@@ -1657,7 +1665,7 @@ body {
           submitButton.disabled = true;
 
           submitButton.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            '<i class="fas fa-spinner fa-spin"></i> Logging in...';
 
         }, 50);
 
@@ -1672,8 +1680,9 @@ body {
 
     const inputs =
       document.querySelectorAll(
-        ".register-form .form-control"
+        ".aone-login-form .aone-input"
       );
+
 
     inputs.forEach(function (input) {
 
@@ -1683,24 +1692,30 @@ body {
 
       input.dataset.focusInitialized = "true";
 
+
       input.addEventListener("focus", function () {
 
         const wrapper =
-          input.closest(".input-wrapper");
+          input.closest(".aone-input-wrap");
 
         if (wrapper) {
+
           wrapper.classList.add("focused");
+
         }
 
       });
 
+
       input.addEventListener("blur", function () {
 
         const wrapper =
-          input.closest(".input-wrapper");
+          input.closest(".aone-input-wrap");
 
         if (wrapper) {
+
           wrapper.classList.remove("focused");
+
         }
 
       });
@@ -1711,28 +1726,28 @@ body {
 
 
   /* =========================================================
-     TURBO
+     TURBO NAVIGATION
   ========================================================= */
 
   document.addEventListener(
     "turbo:load",
-    initializeRegistrationPage
+    initializeLoginPage
   );
 
 
   /* =========================================================
-     INITIAL PAGE LOAD
+     NORMAL INITIAL PAGE LOAD
   ========================================================= */
 
   if (document.readyState !== "loading") {
 
-    initializeRegistrationPage();
+    initializeLoginPage();
 
   } else {
 
     document.addEventListener(
       "DOMContentLoaded",
-      initializeRegistrationPage,
+      initializeLoginPage,
       { once: true }
     );
 
@@ -1741,5 +1756,6 @@ body {
 })();
 
 </script>
+
 </body>
 </html>
