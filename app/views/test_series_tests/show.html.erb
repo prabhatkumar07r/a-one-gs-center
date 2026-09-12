@@ -1,7 +1,7 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   /* =========================================================
      EXAM PAGE
   ========================================================== */
@@ -1391,7 +1391,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 
   document.addEventListener(
     "DOMContentLoaded",

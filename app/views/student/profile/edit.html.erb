@@ -1,4 +1,4 @@
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   /* ===============================
      STUDENT EDIT PROFILE PAGE
   =============================== */
@@ -664,10 +664,8 @@
 
 </div>
 
-
-<script>
-  document.addEventListener("turbo:load", () => {
-
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializeStudentProfileEdit() {
     const imageInput =
       document.getElementById("profile_image_upload");
 
@@ -677,15 +675,22 @@
     const placeholder =
       document.getElementById("profileImagePlaceholder");
 
-    if (!imageInput) return;
+    if (!imageInput) {
+      return;
+    }
 
+    if (imageInput.dataset.initialized === "true") {
+      return;
+    }
 
-    imageInput.addEventListener("change", function(event) {
+    imageInput.dataset.initialized = "true";
 
+    imageInput.addEventListener("change", function (event) {
       const file = event.target.files[0];
 
-      if (!file) return;
-
+      if (!file) {
+        return;
+      }
 
       const allowedTypes = [
         "image/jpeg",
@@ -693,9 +698,7 @@
         "image/webp"
       ];
 
-
       if (!allowedTypes.includes(file.type)) {
-
         alert("Please select a JPG, PNG, or WEBP image.");
 
         imageInput.value = "";
@@ -703,33 +706,30 @@
         return;
       }
 
-
       const reader = new FileReader();
 
-
-      reader.onload = function(e) {
-
+      reader.onload = function (e) {
         if (imagePreview) {
-
           imagePreview.src = e.target.result;
-
           imagePreview.classList.remove("d-none");
-
         }
-
 
         if (placeholder) {
-
           placeholder.classList.add("d-none");
-
         }
-
       };
 
-
       reader.readAsDataURL(file);
-
     });
+  }
 
-  });
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeStudentProfileEdit
+  );
+
+  document.addEventListener(
+    "turbo:load",
+    initializeStudentProfileEdit
+  );
 </script>

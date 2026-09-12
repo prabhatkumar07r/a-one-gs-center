@@ -1,4 +1,4 @@
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   .playlist-card{
     max-width:850px;
     margin:auto;
@@ -158,18 +158,32 @@
 
 </div>
 
-<script>
-document.addEventListener("turbo:load", () => {
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializePlaylistForm() {
+    const title = document.getElementById("playlist_title");
 
-  const title = document.getElementById("playlist_title");
-  const position = document.getElementById("playlist_position");
+    if (!title) {
+      return;
+    }
 
-  if(title){
-    title.addEventListener("input",()=>{
-      title.value = title.value.replace(/\s{2,}/g," ");
+    if (title.dataset.initialized === "true") {
+      return;
+    }
+
+    title.dataset.initialized = "true";
+
+    title.addEventListener("input", function () {
+      title.value = title.value.replace(/\s{2,}/g, " ");
     });
   }
 
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializePlaylistForm
+  );
 
-});
+  document.addEventListener(
+    "turbo:load",
+    initializePlaylistForm
+  );
 </script>

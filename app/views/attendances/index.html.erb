@@ -1,6 +1,6 @@
 <% content_for :page_title, "Attendance Management" %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    ADMIN ATTENDANCE DASHBOARD
    Scoped to .admin-attendance-page
@@ -1207,7 +1207,7 @@
 
 </div>
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">>
 document.addEventListener("turbo:load", function () {
 
   const searchInput =

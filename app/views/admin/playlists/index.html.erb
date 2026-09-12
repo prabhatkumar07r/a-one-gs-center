@@ -1,7 +1,7 @@
 
 <% content_for :title, "#{@course.Course_name} Playlists" %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   .playlist-page {
     padding: 10px 0 30px;
   }
@@ -328,26 +328,41 @@
 
 </div>
 
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializePlaylistIndex() {
+    const page = document.querySelector(".playlist-page");
 
-<script>
-  document.addEventListener("turbo:load", function () {
+    if (!page) {
+      return;
+    }
+
+    if (page.dataset.initialized === "true") {
+      return;
+    }
+
+    page.dataset.initialized = "true";
 
     const actionButtons =
-      document.querySelectorAll(".action-buttons .btn");
+      page.querySelectorAll(".action-buttons .btn");
 
     actionButtons.forEach(function (button) {
-
       button.addEventListener("click", function () {
-
         button.style.opacity = "0.65";
 
         setTimeout(function () {
           button.style.opacity = "1";
         }, 500);
-
       });
-
     });
+  }
 
-  });
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializePlaylistIndex
+  );
+
+  document.addEventListener(
+    "turbo:load",
+    initializePlaylistIndex
+  );
 </script>

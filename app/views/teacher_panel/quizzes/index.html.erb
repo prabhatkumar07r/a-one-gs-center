@@ -1,6 +1,6 @@
 <% content_for :hide_footer, true %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    TEACHER QUIZZES PAGE
    Quizwich-inspired dark dashboard
@@ -1432,7 +1432,7 @@
      JAVASCRIPT
 ========================================================= -->
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("DOMContentLoaded", function () {
 
   /* ========================================================

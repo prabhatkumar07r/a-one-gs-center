@@ -477,9 +477,9 @@
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-  <script>
+ <script nonce="<%= content_security_policy_nonce %>">
 
-    document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
 
       const payButton =
         document.getElementById("pay-button");
@@ -642,7 +642,7 @@
 
 
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    PAYMENT PAGE

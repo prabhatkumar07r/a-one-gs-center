@@ -58,7 +58,7 @@
   <%= f.submit class: "btn btn-primary" %>
 
 <% end %>
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("DOMContentLoaded", function () {
   const enrollment = document.getElementById("enrollment_select");
   const totalFee = document.getElementById("total_fee");

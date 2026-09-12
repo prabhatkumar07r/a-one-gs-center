@@ -1,6 +1,6 @@
 <% content_for :title, "Edit Profile" %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    STUDENT PROFILE
@@ -1108,7 +1108,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("DOMContentLoaded", function () {
 
   /* =======================================================

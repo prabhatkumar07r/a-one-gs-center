@@ -383,7 +383,7 @@
      JAVASCRIPT
 ================================================== -->
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -590,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function () {
      CSS
 ================================================== -->
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* ==================================================
    OPTION BOX

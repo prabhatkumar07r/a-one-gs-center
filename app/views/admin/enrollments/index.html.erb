@@ -379,7 +379,7 @@
      CSS
 ============================================================= -->
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 .admin-enrollments-page {
   padding: 25px;
@@ -810,49 +810,101 @@
 <!-- =============================================================
      JAVASCRIPT
 ============================================================= -->
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializeAdminEnrollments() {
 
-<script>
+    const page =
+      document.querySelector(".admin-enrollments-page");
 
-document.addEventListener("DOMContentLoaded", function () {
+    if (!page) {
+      return;
+    }
 
-  const searchInput =
-    document.querySelector(
-      ".admin-enrollments-page .search-input input"
-    );
+    if (page.dataset.initialized === "true") {
+      return;
+    }
 
-  if (searchInput) {
+    page.dataset.initialized = "true";
 
-    searchInput.addEventListener("keydown", function (event) {
 
-      if (event.key === "Escape") {
+    /* =========================================================
+       SEARCH INPUT
+    ========================================================= */
 
-        searchInput.value = "";
-        searchInput.focus();
+    const searchInput =
+      page.querySelector(
+        ".search-input input"
+      );
 
-      }
 
-    });
+    if (searchInput) {
+
+      searchInput.addEventListener(
+        "keydown",
+        function (event) {
+
+          if (event.key === "Escape") {
+
+            searchInput.value = "";
+
+            searchInput.focus();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       ACTION BUTTON CLICK FEEDBACK
+    ========================================================= */
+
+    page
+      .querySelectorAll(".action-btn")
+      .forEach(
+        function (button) {
+
+          button.addEventListener(
+            "click",
+            function () {
+
+              button.classList.add("clicked");
+
+
+              setTimeout(
+                function () {
+
+                  button.classList.remove(
+                    "clicked"
+                  );
+
+                },
+                200
+              );
+
+            }
+          );
+
+        }
+      );
 
   }
 
 
-  document
-    .querySelectorAll(".admin-enrollments-page .action-btn")
-    .forEach(function (button) {
+  /* =========================================================
+     PAGE LOAD
+  ========================================================= */
 
-      button.addEventListener("click", function () {
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeAdminEnrollments
+  );
 
-        button.classList.add("clicked");
 
-        setTimeout(function () {
-          button.classList.remove("clicked");
-        }, 200);
-
-      });
-
-    });
-
-});
-
+  document.addEventListener(
+    "turbo:load",
+    initializeAdminEnrollments
+  );
 </script>
-

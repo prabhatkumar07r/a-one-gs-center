@@ -620,8 +620,8 @@
                 <div class="student-test-series-progress">
 
                   <div
-                    class="student-test-series-progress-fill"
-                    style="width: <%= progress %>%">
+                     class="student-test-series-progress-fill"
+                     data-progress="<%= progress %>">
                   </div>
 
                 </div>
@@ -962,7 +962,7 @@
 
 
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    PAGE
@@ -2207,7 +2207,7 @@
 }
 </style>
 
-  <script nonce="<%= content_security_policy_nonce %>">
+ <script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("DOMContentLoaded", function () {
 
   const tabs = document.querySelectorAll("[data-profile-tab]");
@@ -2215,52 +2215,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!tabs.length || !contents.length) return;
 
-
   tabs.forEach(function (tab) {
 
     tab.addEventListener("click", function () {
 
       const target = this.dataset.profileTab;
 
-
-      /* Remove active from all tabs */
-
       tabs.forEach(function (item) {
-
         item.classList.remove("active");
-
       });
-
-
-      /* Hide all content */
 
       contents.forEach(function (content) {
-
         content.classList.remove("active");
-
       });
 
-
-      /* Activate clicked tab */
-
       this.classList.add("active");
-
-
-      /* Show target */
 
       const targetContent =
         document.querySelector(
           '[data-profile-content="' + target + '"]'
         );
 
-
       if (targetContent) {
-
         targetContent.classList.add("active");
-
       }
 
     });
+
+  });
+
+
+  /* ==========================================
+     TEST SERIES PROGRESS
+  ========================================== */
+
+  document.querySelectorAll(
+    ".student-test-series-progress-fill"
+  ).forEach(function (bar) {
+
+    const progress = bar.dataset.progress;
+
+    if (progress !== undefined) {
+      bar.style.width = `${progress}%`;
+    }
 
   });
 

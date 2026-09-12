@@ -1,5 +1,5 @@
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   /* =========================================================
    ACHIEVEMENT FORM
 ========================================================= */
@@ -968,10 +968,7 @@
 
 <% end %>
 
-<script>
-  <script>
-(function () {
-
+<script nonce="<%= content_security_policy_nonce %>">
   function initializeAchievementForm() {
 
     const form = document.querySelector(".achievement-form");
@@ -1003,7 +1000,9 @@
       form.querySelector('[name="achievement[video]"]');
 
     const submitButton =
-      form.querySelector('input[type="submit"], button[type="submit"]');
+      form.querySelector(
+        'input[type="submit"], button[type="submit"]'
+      );
 
 
     /* =====================================================
@@ -1012,7 +1011,9 @@
 
     [titleInput, studentInput].forEach(function (input) {
 
-      if (!input) return;
+      if (!input) {
+        return;
+      }
 
       input.addEventListener("input", function () {
 
@@ -1032,13 +1033,26 @@
     if (descriptionInput) {
 
       const maxLength =
-        parseInt(descriptionInput.getAttribute("maxlength") || "500");
+        parseInt(
+          descriptionInput.getAttribute("maxlength") || "500",
+          10
+        );
 
-      const counter = document.createElement("small");
+      let counter =
+        descriptionInput.parentNode.querySelector(
+          ".description-counter"
+        );
 
-      counter.className = "form-help description-counter";
+      if (!counter) {
 
-      descriptionInput.parentNode.appendChild(counter);
+        counter = document.createElement("small");
+
+        counter.className =
+          "form-help description-counter";
+
+        descriptionInput.parentNode.appendChild(counter);
+
+      }
 
 
       function updateCounter() {
@@ -1047,9 +1061,13 @@
           descriptionInput.value.length;
 
         counter.textContent =
-          currentLength + " / " + maxLength + " characters";
+          currentLength +
+          " / " +
+          maxLength +
+          " characters";
 
       }
+
 
       descriptionInput.addEventListener(
         "input",
@@ -1057,6 +1075,7 @@
       );
 
       updateCounter();
+
     }
 
 
@@ -1070,7 +1089,9 @@
 
         const file = photoInput.files[0];
 
-        if (!file) return;
+        if (!file) {
+          return;
+        }
 
 
         const allowedTypes = [
@@ -1091,8 +1112,6 @@
           return;
         }
 
-
-        /* 5 MB */
 
         const maxSize =
           5 * 1024 * 1024;
@@ -1135,7 +1154,9 @@
 
         const file = videoInput.files[0];
 
-        if (!file) return;
+        if (!file) {
+          return;
+        }
 
 
         const allowedTypes = [
@@ -1156,13 +1177,6 @@
           return;
         }
 
-
-        /*
-         * 100 MB maximum
-         *
-         * Change this value if your Cloudinary /
-         * ActiveStorage configuration supports larger videos.
-         */
 
         const maxSize =
           100 * 1024 * 1024;
@@ -1204,7 +1218,9 @@
       const container =
         input.closest(".upload-content");
 
-      if (!container) return;
+      if (!container) {
+        return;
+      }
 
 
       let fileName =
@@ -1220,6 +1236,7 @@
           "selected-file-name";
 
         container.appendChild(fileName);
+
       }
 
 
@@ -1233,6 +1250,7 @@
         " (" +
         sizeMB +
         " MB)";
+
     }
 
 
@@ -1245,7 +1263,9 @@
       const section =
         input.closest(".form-section");
 
-      if (!section) return;
+      if (!section) {
+        return;
+      }
 
 
       let previewBox =
@@ -1261,6 +1281,7 @@
           "current-photo new-photo-preview";
 
         section.appendChild(previewBox);
+
       }
 
 
@@ -1286,6 +1307,7 @@
 
 
       reader.readAsDataURL(file);
+
     }
 
 
@@ -1298,7 +1320,9 @@
       const section =
         input.closest(".form-section");
 
-      if (!section) return;
+      if (!section) {
+        return;
+      }
 
 
       let previewBox =
@@ -1314,6 +1338,7 @@
           "current-photo new-video-preview";
 
         section.appendChild(previewBox);
+
       }
 
 
@@ -1365,7 +1390,9 @@
           const card =
             item.nextElementSibling;
 
-          if (!card) return;
+          if (!card) {
+            return;
+          }
 
           card.classList.remove(
             "selected-status"
@@ -1376,6 +1403,7 @@
 
         const selectedCard =
           radio.nextElementSibling;
+
 
         if (selectedCard) {
 
@@ -1395,10 +1423,6 @@
     ====================================================== */
 
     form.addEventListener("submit", function (event) {
-
-      /*
-       * Prevent accidental double-click submission.
-       */
 
       if (form.dataset.submitting === "true") {
 
@@ -1487,7 +1511,4 @@
     "turbo:load",
     initializeAchievementForm
   );
-
-})();
-</script>
 </script>

@@ -1,4 +1,5 @@
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
+
   /* =========================================================
      A ONE GS CENTER
      ADMIN VIDEO FORM
@@ -934,7 +935,8 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
+
   document.addEventListener("turbo:load", function () {
 
     const form = document.getElementById("admin-video-form");

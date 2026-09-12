@@ -1,7 +1,7 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    TEST SERIES PAYMENT PAGE
 ========================================================= */
@@ -790,7 +790,7 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("DOMContentLoaded", function () {
 
   const payButton =

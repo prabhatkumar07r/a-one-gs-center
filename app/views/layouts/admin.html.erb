@@ -15,8 +15,8 @@
 
   <%= javascript_importmap_tags %>
 
-  <style>
-<style>
+  
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    ADMIN BODY
@@ -203,8 +203,6 @@ body.admin-body {
 
 </style>
 
-  </style>
-
 </head>
 
 
@@ -294,7 +292,7 @@ body.admin-body {
        BOOTSTRAP JS
   ======================================================== -->
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+ 
 
 </body>
 </html>

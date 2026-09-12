@@ -226,15 +226,15 @@
   <% end %>
 
 
-  <button type="button"
-          class="course-wishlist-btn"
-          onclick="toggleCourseWishlist(this)">
+ <button type="button"
+        class="course-wishlist-btn"
+        data-course-wishlist>
 
-    <i class="far fa-heart"></i>
+  <i class="far fa-heart"></i>
 
-    <span>Add to Wishlist</span>
+  <span>Add to Wishlist</span>
 
-  </button>
+</button>
 
 </div>
 
@@ -600,7 +600,7 @@
 
               <button type="button"
                       class="chapter-header"
-                      onclick="toggleChapter(this)">
+                      data-chapter-toggle>
 
                 <div class="chapter-number">
                   <%= index + 1 %>
@@ -1359,7 +1359,7 @@
 </main>
 
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   /* =========================================================
    STUDENT COURSE DETAILS
 ========================================================= */
@@ -2532,87 +2532,140 @@ html.night-mode .progress-bar {
   display: block;
 }
 </style>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializeCourseDetails() {
 
-  /* =====================================================
-     COURSE TABS
-  ====================================================== */
+    /* =====================================================
+       COURSE TABS
+    ====================================================== */
 
-  const tabs = document.querySelectorAll(".course-tab");
-  const panels = document.querySelectorAll(".course-tab-panel");
+    const tabs = document.querySelectorAll(".course-tab");
+    const panels = document.querySelectorAll(".course-tab-panel");
 
-  tabs.forEach(function (tab) {
+    tabs.forEach(function (tab) {
 
-    tab.addEventListener("click", function () {
-
-      const target = this.dataset.tab;
-
-      // Remove active from all tabs
-      tabs.forEach(function (item) {
-        item.classList.remove("active");
-      });
-
-      // Hide all tab contents
-      panels.forEach(function (panel) {
-        panel.classList.remove("active");
-      });
-
-      // Activate clicked tab
-      this.classList.add("active");
-
-      // Show selected tab only
-      const selectedPanel = document.getElementById(target);
-
-      if (selectedPanel) {
-        selectedPanel.classList.add("active");
+      if (tab.dataset.tabsInitialized === "true") {
+        return;
       }
+
+      tab.dataset.tabsInitialized = "true";
+
+      tab.addEventListener("click", function () {
+
+        const target = this.dataset.tab;
+
+        tabs.forEach(function (item) {
+          item.classList.remove("active");
+        });
+
+        panels.forEach(function (panel) {
+          panel.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        const selectedPanel = document.getElementById(target);
+
+        if (selectedPanel) {
+          selectedPanel.classList.add("active");
+        }
+
+      });
 
     });
 
-  });
+
+    /* =====================================================
+       CHAPTER ACCORDION
+    ====================================================== */
+
+    const chapterButtons =
+      document.querySelectorAll("[data-chapter-toggle]");
+
+    chapterButtons.forEach(function (button) {
+
+      if (button.dataset.chapterInitialized === "true") {
+        return;
+      }
+
+      button.dataset.chapterInitialized = "true";
+
+      button.addEventListener("click", function () {
+
+        const chapter =
+          this.closest(".chapter-item");
+
+        if (!chapter) {
+          return;
+        }
+
+        chapter.classList.toggle("open");
+
+      });
+
+    });
+
+
+    /* =====================================================
+       COURSE WISHLIST
+    ====================================================== */
+
+    const wishlistButtons =
+      document.querySelectorAll("[data-course-wishlist]");
+
+    wishlistButtons.forEach(function (button) {
+
+      if (button.dataset.wishlistInitialized === "true") {
+        return;
+      }
+
+      button.dataset.wishlistInitialized = "true";
+
+      button.addEventListener("click", function () {
+
+        const icon = this.querySelector("i");
+        const text = this.querySelector("span");
+
+        if (!icon || !text) {
+          return;
+        }
+
+        icon.classList.toggle("far");
+        icon.classList.toggle("fas");
+
+        if (icon.classList.contains("fas")) {
+
+          text.textContent = "Added to Wishlist";
+
+        } else {
+
+          text.textContent = "Add to Wishlist";
+
+        }
+
+      });
+
+    });
+
+  }
 
 
   /* =====================================================
-     CHAPTER ACCORDION
+     NORMAL PAGE LOAD
   ====================================================== */
 
-  window.toggleChapter = function (button) {
-
-    const chapter = button.closest(".chapter-item");
-
-    if (!chapter) return;
-
-    chapter.classList.toggle("open");
-
-  };
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeCourseDetails
+  );
 
 
   /* =====================================================
-     WISHLIST
+     TURBO PAGE LOAD
   ====================================================== */
 
-  window.toggleCourseWishlist = function (button) {
-
-    const icon = button.querySelector("i");
-    const text = button.querySelector("span");
-
-    if (!icon || !text) return;
-
-    icon.classList.toggle("far");
-    icon.classList.toggle("fas");
-
-    if (icon.classList.contains("fas")) {
-
-      text.textContent = "Added to Wishlist";
-
-    } else {
-
-      text.textContent = "Add to Wishlist";
-
-    }
-
-  };
-
-});
+  document.addEventListener(
+    "turbo:load",
+    initializeCourseDetails
+  );
 </script>

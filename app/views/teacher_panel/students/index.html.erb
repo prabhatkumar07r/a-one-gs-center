@@ -1,4 +1,4 @@
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    TEACHER STUDENTS PAGE
    Scoped styles - will not affect other pages
@@ -761,7 +761,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("turbo:load", function () {
 
   const searchInput =

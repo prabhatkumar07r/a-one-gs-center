@@ -1,6 +1,7 @@
 <% content_for :title, "Video Management" %>
 
-<style>
+ <style nonce="<%= content_security_policy_nonce %>">
+
   /* =========================================================
      ADMIN VIDEO MANAGEMENT
   ========================================================= */
@@ -535,7 +536,8 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
+
   document.addEventListener("turbo:load", function () {
 
     /* =======================================================

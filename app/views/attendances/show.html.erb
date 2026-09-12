@@ -1,5 +1,5 @@
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    ADMIN ATTENDANCE SHOW PAGE
    Scoped only to .admin-attendance-show
@@ -600,7 +600,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">>
 document.addEventListener("turbo:load", function () {
 
   /*

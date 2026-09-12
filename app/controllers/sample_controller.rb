@@ -53,9 +53,11 @@ class SampleController < ApplicationController
     # Active achievements + preload photo & video
     # =========================================================
     @achievements = Achievement
-      .active
-      .with_attached_photo
-      .with_attached_video
+       .active
+       .includes(
+        photo_attachment: :blob,
+        video_attachment: :blob
+        )
 
   end
 

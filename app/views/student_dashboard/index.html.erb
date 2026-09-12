@@ -1,6 +1,6 @@
 <% content_for :title, "Student Dashboard" %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    A ONE GS CENTER
@@ -3391,7 +3391,7 @@
 
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 
 document.addEventListener(
   "DOMContentLoaded",

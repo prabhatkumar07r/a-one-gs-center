@@ -1,7 +1,7 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 .ts-payment-failed-page {
   min-height: 100vh;
 

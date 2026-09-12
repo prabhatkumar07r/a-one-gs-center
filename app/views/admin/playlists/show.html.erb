@@ -374,7 +374,7 @@
 
 </div>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    PLAYLIST SHOW PAGE
@@ -1254,83 +1254,75 @@
 }
 
 </style>
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializePlaylistShow() {
+    const deleteButton =
+      document.getElementById("deletePlaylistBtn");
 
-<script>
+    const cancelButton =
+      document.getElementById("cancelDeleteBtn");
 
-document.addEventListener("DOMContentLoaded", function () {
+    const modal =
+      document.getElementById("deletePlaylistModal");
 
-  const deleteButton =
-    document.getElementById("deletePlaylistBtn");
+    if (!deleteButton || !modal) {
+      return;
+    }
 
-  const cancelButton =
-    document.getElementById("cancelDeleteBtn");
+    if (deleteButton.dataset.initialized === "true") {
+      return;
+    }
 
-  const modal =
-    document.getElementById("deletePlaylistModal");
+    deleteButton.dataset.initialized = "true";
 
+    function openDeleteModal() {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
 
-  if (!deleteButton || !modal) {
-    return;
-  }
+    function closeDeleteModal() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
 
-
-  function openDeleteModal() {
-
-    modal.classList.add("active");
-
-    document.body.style.overflow = "hidden";
-
-  }
-
-
-  function closeDeleteModal() {
-
-    modal.classList.remove("active");
-
-    document.body.style.overflow = "";
-
-  }
-
-
-  deleteButton.addEventListener(
-    "click",
-    openDeleteModal
-  );
-
-
-  if (cancelButton) {
-
-    cancelButton.addEventListener(
+    deleteButton.addEventListener(
       "click",
-      closeDeleteModal
+      openDeleteModal
     );
 
+    if (cancelButton) {
+      cancelButton.addEventListener(
+        "click",
+        closeDeleteModal
+      );
+    }
+
+    modal.addEventListener(
+      "click",
+      function (event) {
+        if (event.target === modal) {
+          closeDeleteModal();
+        }
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+        if (event.key === "Escape") {
+          closeDeleteModal();
+        }
+      }
+    );
   }
 
-
-  modal.addEventListener(
-    "click",
-    function (event) {
-
-      if (event.target === modal) {
-        closeDeleteModal();
-      }
-
-    }
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializePlaylistShow
   );
-
 
   document.addEventListener(
-    "keydown",
-    function (event) {
-
-      if (event.key === "Escape") {
-        closeDeleteModal();
-      }
-
-    }
+    "turbo:load",
+    initializePlaylistShow
   );
-
-});
-
 </script>

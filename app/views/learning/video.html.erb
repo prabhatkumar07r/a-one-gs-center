@@ -1,7 +1,6 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
-
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    A ONE GS CENTER - LEARNING PAGE
 ========================================================= */
@@ -4942,7 +4941,7 @@
 
           <script src="https://www.youtube.com/iframe_api"></script>
 
-          <script>
+          <script nonce="<%= content_security_policy_nonce %>">
 
             let player;
 
@@ -5911,7 +5910,7 @@
   </main>
 
 </div>
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 (function () {
 
   function initializeLearningPage() {

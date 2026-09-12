@@ -2,7 +2,7 @@
     TEACHER PANEL - TEST SERIES CREATE / EDIT FORM
 ============================================================ %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   /* ==========================================================
      TEST SERIES FORM
   ========================================================== */
@@ -752,6 +752,10 @@
       flex-shrink: 0;
     }
   }
+
+  .ts-breadcrumb-chevron {
+  font-size: 9px;
+}
 </style>
 
 
@@ -770,8 +774,7 @@
         <%= link_to "Test Series",
               teacher_panel_test_series_index_path %>
 
-        <i class="fas fa-chevron-right"
-           style="font-size: 9px;"></i>
+        <i class="fas fa-chevron-right ts-breadcrumb-chevron"></i>
 
         <span>
           <%= @test_series.persisted? ? "Edit" : "Create" %>
@@ -1434,17 +1437,26 @@
 
 </div>
 
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializeTestSeriesForm() {
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
+    const form =
+      document.getElementById("testSeriesForm");
+
+    if (!form) {
+      return;
+    }
+
+    if (form.dataset.initialized === "true") {
+      return;
+    }
+
+    form.dataset.initialized = "true";
+
 
     /* ========================================================
        ELEMENTS
     ======================================================== */
-
-    const form = document.getElementById("testSeriesForm");
-
-    if (!form) return;
 
     const titleInput =
       document.getElementById("testSeriesTitle");
@@ -1477,18 +1489,23 @@
 
     if (titleInput) {
 
-      titleInput.addEventListener("input", function () {
+      titleInput.addEventListener(
+        "input",
+        function () {
 
-        const preview =
-          document.getElementById("previewTitle");
+          const preview =
+            document.getElementById("previewTitle");
 
-        if (!preview) return;
+          if (!preview) {
+            return;
+          }
 
-        preview.textContent =
-          this.value.trim() ||
-          "Test Series Title";
+          preview.textContent =
+            this.value.trim() ||
+            "Test Series Title";
 
-      });
+        }
+      );
 
     }
 
@@ -1499,18 +1516,23 @@
 
     if (examInput) {
 
-      examInput.addEventListener("input", function () {
+      examInput.addEventListener(
+        "input",
+        function () {
 
-        const preview =
-          document.getElementById("previewExam");
+          const preview =
+            document.getElementById("previewExam");
 
-        if (!preview) return;
+          if (!preview) {
+            return;
+          }
 
-        preview.textContent =
-          this.value.trim() ||
-          "Exam Name";
+          preview.textContent =
+            this.value.trim() ||
+            "Exam Name";
 
-      });
+        }
+      );
 
     }
 
@@ -1521,17 +1543,22 @@
 
     if (statusInput) {
 
-      statusInput.addEventListener("change", function () {
+      statusInput.addEventListener(
+        "change",
+        function () {
 
-        const preview =
-          document.getElementById("previewStatus");
+          const preview =
+            document.getElementById("previewStatus");
 
-        if (!preview) return;
+          if (!preview) {
+            return;
+          }
 
-        preview.textContent =
-          this.options[this.selectedIndex].text;
+          preview.textContent =
+            this.options[this.selectedIndex].text;
 
-      });
+        }
+      );
 
     }
 
@@ -1539,224 +1566,195 @@
     /* ========================================================
        PRICE PREVIEW
     ======================================================== */
-  /* ========================================================
-   AUTOMATIC DISCOUNT CALCULATION
-======================================================== */
 
-const originalPriceInput =
-  document.getElementById("originalPrice");
-
-const sellingPriceInput =
-  document.getElementById("sellingPrice");
-
-const discountInput =
-  document.getElementById("discountPercent");
-
-
-function calculateDiscount() {
-
-  const original =
-    parseFloat(originalPriceInput?.value) || 0;
-
-  const selling =
-    parseFloat(sellingPriceInput?.value) || 0;
-
-  let discount = 0;
-
-
-  /*
-   * Calculate discount only when:
-   * Original price is greater than 0
-   * Selling price is greater than or equal to 0
-   */
-
-  if (original > 0 && selling >= 0) {
-
-    discount =
-      ((original - selling) / original) * 100;
-
-  }
-
-
-  /*
-   * Don't allow negative discount.
-   * If selling price is greater than original price,
-   * discount becomes 0.
-   */
-
-  if (discount < 0) {
-    discount = 0;
-  }
-
-
-  /*
-   * Don't allow more than 100%.
-   */
-
-  if (discount > 100) {
-    discount = 100;
-  }
-
-
-  /*
-   * Round to 2 decimal places.
-   */
-
-  discount =
-    Math.round(discount);
-
-
-  /*
-   * Put calculated value into Rails form field.
-   */
-
-  if (discountInput) {
-
-    discountInput.value =
-      discount;
-
-  }
-
-
-  updatePricePreview(
-    original,
-    selling,
-    discount
-  );
-
-}
-
-
-/* ========================================================
-   PRICE PREVIEW
-======================================================== */
-
-function updatePricePreview(
-  original,
-  selling,
-  discount
-) {
-
-  const preview =
-    document.getElementById("pricePreview");
-
-  if (
-    original > 0 ||
-    selling > 0
-  ) {
-
-    preview?.classList.add("active");
-
-  } else {
-
-    preview?.classList.remove("active");
-
-  }
-
-
-  const originalText =
-    document.getElementById("previewOriginal");
-
-  const discountText =
-    document.getElementById("previewDiscount");
-
-  const sellingText =
-    document.getElementById("previewSelling");
-
-  const cardPrice =
-    document.getElementById("previewCardPrice");
-
-  const cardOriginal =
-    document.getElementById("previewCardOriginal");
-
-
-  if (originalText) {
-
-    originalText.textContent =
-      "₹" + original.toLocaleString("en-IN");
-
-  }
-
-
-  if (discountText) {
-
-    discountText.textContent =
-      discount + "%";
-
-  }
-
-
-  if (sellingText) {
-
-    sellingText.textContent =
-      "₹" + selling.toLocaleString("en-IN");
-
-  }
-
-
-  if (cardPrice) {
-
-    cardPrice.textContent =
-      "₹" + selling.toLocaleString("en-IN");
-
-  }
-
-
-  if (cardOriginal) {
-
-    if (
-      original > 0 &&
-      original > selling
+    function updatePricePreview(
+      original,
+      selling,
+      discount
     ) {
 
-      cardOriginal.textContent =
-        "₹" + original.toLocaleString("en-IN");
+      const preview =
+        document.getElementById("pricePreview");
 
-      cardOriginal.style.display =
-        "inline";
+      if (original > 0 || selling > 0) {
 
-    } else {
+        preview?.classList.add("active");
 
-      cardOriginal.style.display =
-        "none";
+      } else {
+
+        preview?.classList.remove("active");
+
+      }
+
+
+      const originalText =
+        document.getElementById("previewOriginal");
+
+      const discountText =
+        document.getElementById("previewDiscount");
+
+      const sellingText =
+        document.getElementById("previewSelling");
+
+      const cardPrice =
+        document.getElementById("previewCardPrice");
+
+      const cardOriginal =
+        document.getElementById("previewCardOriginal");
+
+
+      if (originalText) {
+
+        originalText.textContent =
+          "₹" +
+          original.toLocaleString("en-IN");
+
+      }
+
+
+      if (discountText) {
+
+        discountText.textContent =
+          discount + "%";
+
+      }
+
+
+      if (sellingText) {
+
+        sellingText.textContent =
+          "₹" +
+          selling.toLocaleString("en-IN");
+
+      }
+
+
+      if (cardPrice) {
+
+        cardPrice.textContent =
+          "₹" +
+          selling.toLocaleString("en-IN");
+
+      }
+
+
+      if (cardOriginal) {
+
+        if (
+          original > 0 &&
+          original > selling
+        ) {
+
+          cardOriginal.textContent =
+            "₹" +
+            original.toLocaleString("en-IN");
+
+          cardOriginal.style.display =
+            "inline";
+
+        } else {
+
+          cardOriginal.style.display =
+            "none";
+
+        }
+
+      }
 
     }
 
-  }
 
-}
+    /* ========================================================
+       AUTOMATIC DISCOUNT CALCULATION
+    ======================================================== */
 
+    function calculateDiscount() {
 
-/* ========================================================
-   LISTEN FOR PRICE CHANGES
-======================================================== */
+      const original =
+        parseFloat(
+          originalPriceInput?.value
+        ) || 0;
 
-if (originalPriceInput) {
+      const selling =
+        parseFloat(
+          sellingPriceInput?.value
+        ) || 0;
 
-  originalPriceInput.addEventListener(
-    "input",
-    calculateDiscount
-  );
-
-}
-
-
-if (sellingPriceInput) {
-
-  sellingPriceInput.addEventListener(
-    "input",
-    calculateDiscount
-  );
-
-}
+      let discount = 0;
 
 
-/* ========================================================
-   INITIAL CALCULATION
-   Important for EDIT page
-======================================================== */
+      if (
+        original > 0 &&
+        selling >= 0
+      ) {
 
-calculateDiscount();
+        discount =
+          ((original - selling) / original) * 100;
+
+      }
+
+
+      if (discount < 0) {
+        discount = 0;
+      }
+
+
+      if (discount > 100) {
+        discount = 100;
+      }
+
+
+      discount =
+        Math.round(discount);
+
+
+      if (discountInput) {
+
+        discountInput.value =
+          discount;
+
+      }
+
+
+      updatePricePreview(
+        original,
+        selling,
+        discount
+      );
+
+    }
+
+
+    /* ========================================================
+       LISTEN FOR PRICE CHANGES
+    ======================================================== */
+
+    if (originalPriceInput) {
+
+      originalPriceInput.addEventListener(
+        "input",
+        calculateDiscount
+      );
+
+    }
+
+
+    if (sellingPriceInput) {
+
+      sellingPriceInput.addEventListener(
+        "input",
+        calculateDiscount
+      );
+
+    }
+
+
+    /* ========================================================
+       INITIAL PRICE CALCULATION
+       Important for EDIT page
+    ======================================================== */
+
+    calculateDiscount();
 
 
     /* ========================================================
@@ -1765,59 +1763,75 @@ calculateDiscount();
 
     if (imageInput) {
 
-      imageInput.addEventListener("change", function () {
+      imageInput.addEventListener(
+        "change",
+        function () {
 
-        const file =
-          this.files && this.files[0];
+          const file =
+            this.files &&
+            this.files[0];
 
-        if (!file) return;
-
-
-        if (!file.type.startsWith("image/")) {
-
-          alert("Please select a valid image file.");
-
-          this.value = "";
-
-          return;
-
-        }
-
-
-        const reader =
-          new FileReader();
-
-
-        reader.onload = function (event) {
-
-          const previewImage =
-            document.getElementById("previewImage");
-
-          const previewIcon =
-            document.getElementById("previewImageIcon");
-
-          if (!previewImage) return;
-
-
-          previewImage.src =
-            event.target.result;
-
-          previewImage.style.display =
-            "block";
-
-          if (previewIcon) {
-
-            previewIcon.style.display =
-              "none";
-
+          if (!file) {
+            return;
           }
 
-        };
+
+          if (!file.type.startsWith("image/")) {
+
+            alert(
+              "Please select a valid image file."
+            );
+
+            this.value = "";
+
+            return;
+          }
 
 
-        reader.readAsDataURL(file);
+          const reader =
+            new FileReader();
 
-      });
+
+          reader.onload =
+            function (event) {
+
+              const previewImage =
+                document.getElementById(
+                  "previewImage"
+                );
+
+              const previewIcon =
+                document.getElementById(
+                  "previewImageIcon"
+                );
+
+
+              if (!previewImage) {
+                return;
+              }
+
+
+              previewImage.src =
+                event.target.result;
+
+              previewImage.style.display =
+                "block";
+
+
+              if (previewIcon) {
+
+                previewIcon.style.display =
+                  "none";
+
+              }
+
+            };
+
+
+          reader.readAsDataURL(file);
+
+        }
+      );
 
     }
 
@@ -1826,7 +1840,10 @@ calculateDiscount();
        DRAG & DROP IMAGE
     ======================================================== */
 
-    if (uploadArea && imageInput) {
+    if (
+      uploadArea &&
+      imageInput
+    ) {
 
       [
         "dragenter",
@@ -1877,16 +1894,27 @@ calculateDiscount();
           const files =
             event.dataTransfer.files;
 
-          if (!files || !files.length) return;
+          if (
+            !files ||
+            !files.length
+          ) {
+            return;
+          }
 
-          const file = files[0];
 
-          if (!file.type.startsWith("image/")) {
+          const file =
+            files[0];
 
-            alert("Please drop a valid image file.");
+
+          if (
+            !file.type.startsWith("image/")
+          ) {
+
+            alert(
+              "Please drop a valid image file."
+            );
 
             return;
-
           }
 
 
@@ -1899,6 +1927,7 @@ calculateDiscount();
 
             imageInput.files =
               dataTransfer.files;
+
 
             imageInput.dispatchEvent(
               new Event("change", {
@@ -1925,27 +1954,36 @@ calculateDiscount();
        SUBMIT BUTTON
     ======================================================== */
 
-    form.addEventListener("submit", function () {
+    form.addEventListener(
+      "submit",
+      function () {
 
-      const submitButton =
-        document.getElementById(
-          "testSeriesSubmit"
+        const submitButton =
+          document.getElementById(
+            "testSeriesSubmit"
+          );
+
+
+        if (!submitButton) {
+          return;
+        }
+
+
+        submitButton.classList.add(
+          "loading"
         );
 
-      if (!submitButton) return;
 
+        submitButton.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> ' +
+          (
+            <%= @test_series.persisted? ?
+              "'Updating...'" :
+              "'Creating...'" %>
+          );
 
-      submitButton.classList.add(
-        "loading"
-      );
-
-      submitButton.innerHTML =
-        '<i class="fas fa-spinner fa-spin"></i> ' +
-        (
-          <%= @test_series.persisted? ? "'Updating...'" : "'Creating...'" %>
-        );
-
-    });
+      }
+    );
 
 
     /* ========================================================
@@ -1958,14 +1996,21 @@ calculateDiscount();
       discountInput
     ].forEach(function (input) {
 
-      if (!input) return;
+      if (!input) {
+        return;
+      }
+
 
       input.addEventListener(
         "input",
         function () {
 
-          if (parseFloat(this.value) < 0) {
+          if (
+            parseFloat(this.value) < 0
+          ) {
+
             this.value = 0;
+
           }
 
         }
@@ -1987,11 +2032,16 @@ calculateDiscount();
           let value =
             parseFloat(this.value);
 
-          if (isNaN(value)) return;
+
+          if (isNaN(value)) {
+            return;
+          }
+
 
           if (value > 100) {
             this.value = 100;
           }
+
 
           if (value < 0) {
             this.value = 0;
@@ -2002,5 +2052,25 @@ calculateDiscount();
 
     }
 
-  });
+  }
+
+
+  /* ========================================================
+     NORMAL PAGE LOAD
+  ======================================================== */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeTestSeriesForm
+  );
+
+
+  /* ========================================================
+     TURBO PAGE LOAD
+  ======================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTestSeriesForm
+  );
 </script>

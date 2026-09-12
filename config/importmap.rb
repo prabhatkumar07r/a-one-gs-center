@@ -7,6 +7,7 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "bootstrap", to: "bootstrap.bundle.min.js"
 
 pin "chartkick", to: "chartkick.js"
+pin "chart.js", to: "https://cdn.jsdelivr.net/npm/chart.js@4.5.0/+esm"
 
 pin "notification", to: "notification.js"
 pin "custom", to: "custom.js"

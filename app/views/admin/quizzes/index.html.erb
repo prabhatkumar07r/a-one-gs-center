@@ -889,7 +889,7 @@
      STYLES
 ========================================================== -->
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    PAGE
@@ -2203,7 +2203,7 @@
      TAB JAVASCRIPT
 ========================================================= -->
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 (function () {
 
   function initializeQuizTabs() {

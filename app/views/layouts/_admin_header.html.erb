@@ -1,4 +1,4 @@
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    A ONE GS CENTER
    ADMIN HEADER
@@ -911,18 +911,18 @@
          SEARCH
     ====================================================== -->
 
-    <form
-      class="admin-search"
-      onsubmit="return false;">
+<form
+  class="admin-search"
+  data-admin-search>
 
-      <i class="bi bi-search"></i>
+  <i class="bi bi-search"></i>
 
-      <input
-        type="text"
-        placeholder="Search..."
-        aria-label="Search">
+  <input
+    type="text"
+    placeholder="Search..."
+    aria-label="Search">
 
-    </form>
+</form>
 
 
     <!-- =====================================================
@@ -1075,3 +1075,31 @@
   </div>
 
 </nav>
+
+
+
+
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializeAdminHeader() {
+    const searchForm = document.querySelector("[data-admin-search]");
+
+    if (!searchForm) {
+      return;
+    }
+
+    if (searchForm.dataset.initialized === "true") {
+      return;
+    }
+
+    searchForm.dataset.initialized = "true";
+
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initializeAdminHeader);
+  document.addEventListener("turbo:load", initializeAdminHeader);
+</script>

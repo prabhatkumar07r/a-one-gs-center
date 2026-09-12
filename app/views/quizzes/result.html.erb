@@ -1,7 +1,7 @@
 <% content_for :show_layout, true %>
 <% content_for :hide_footer, true %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    A ONE GS CENTER
@@ -3519,7 +3519,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 
 document.addEventListener(
   "DOMContentLoaded",

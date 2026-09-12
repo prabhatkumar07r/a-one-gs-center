@@ -21,7 +21,7 @@
   <%= javascript_importmap_tags %>
 
 
-  <style>
+  <style nonce="<%= content_security_policy_nonce %>">
     /* =========================================================
        FLASH / CONTACT TOAST
     ========================================================= */
@@ -261,9 +261,9 @@
       </div>
 
       <button type="button"
-              class="contact-toast-close"
-              onclick="closeContactToast(this)"
-              aria-label="Close notification">
+        class="contact-toast-close"
+        data-close-contact-toast
+        aria-label="Close notification">
 
         <i class="bi bi-x"></i>
 
@@ -294,9 +294,9 @@
       </div>
 
       <button type="button"
-              class="contact-toast-close"
-              onclick="closeContactToast(this)"
-              aria-label="Close notification">
+        class="contact-toast-close"
+        data-close-contact-toast
+        aria-label="Close notification">
 
         <i class="bi bi-x"></i>
 
@@ -326,77 +326,98 @@
   <% end %>
 
 
-  <script>
+  <script nonce="<%= content_security_policy_nonce %>">
 
-    function closeContactToast(button) {
+  function closeContactToast(button) {
 
-      const toast = button.closest("[data-contact-toast]");
+    const toast = button.closest("[data-contact-toast]");
 
-      if (!toast) {
+    if (!toast) {
+      return;
+    }
+
+    toast.classList.add("hide");
+
+    setTimeout(function () {
+      toast.remove();
+    }, 300);
+
+  }
+
+
+  function initializeContactToasts() {
+
+    const toasts =
+      document.querySelectorAll("[data-contact-toast]");
+
+    if (!toasts.length) {
+      return;
+    }
+
+    toasts.forEach(function (toast) {
+
+      if (toast.dataset.toastInitialized === "true") {
         return;
       }
 
-      toast.classList.add("hide");
+      toast.dataset.toastInitialized = "true";
 
       setTimeout(function () {
-        toast.remove();
-      }, 300);
 
-    }
+        if (toast && toast.isConnected) {
 
+          toast.classList.add("hide");
 
-    function initializeContactToasts() {
+          setTimeout(function () {
 
-      const toasts =
-        document.querySelectorAll("[data-contact-toast]");
+            if (toast && toast.isConnected) {
+              toast.remove();
+            }
 
-      if (!toasts.length) {
-        return;
-      }
+          }, 300);
 
-      toasts.forEach(function (toast) {
-
-        if (toast.dataset.toastInitialized === "true") {
-          return;
         }
 
-        toast.dataset.toastInitialized = "true";
+      }, 4000);
 
-        setTimeout(function () {
+    });
 
-          if (toast && toast.isConnected) {
+  }
 
-            toast.classList.add("hide");
 
-            setTimeout(function () {
+  /* =========================================================
+     CLOSE TOAST BUTTON
+  ========================================================= */
 
-              if (toast && toast.isConnected) {
-                toast.remove();
-              }
+  document.addEventListener("click", function (event) {
 
-            }, 300);
+    const button =
+      event.target.closest("[data-close-contact-toast]");
 
-          }
-
-        }, 4000);
-
-      });
-
+    if (!button) {
+      return;
     }
 
+    closeContactToast(button);
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      initializeContactToasts
-    );
+  });
 
-    document.addEventListener(
-      "turbo:load",
-      initializeContactToasts
-    );
 
-  </script>
+  /* =========================================================
+     INITIALIZE TOASTS
+  ========================================================= */
 
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeContactToasts
+  );
+
+  document.addEventListener(
+    "turbo:load",
+    initializeContactToasts
+  );
+
+</script>
 </body>
 
 </html>

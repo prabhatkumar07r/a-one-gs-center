@@ -124,7 +124,7 @@
 <% end %>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
   document.addEventListener("DOMContentLoaded", function () {
 
     const originalFee = document.getElementById("original_fee");

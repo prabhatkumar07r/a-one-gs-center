@@ -1,6 +1,6 @@
 <% content_for :show_layout, true %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
 /* =========================================================
    STUDENT ENROLLMENT - NEW
 ========================================================= */
@@ -508,7 +508,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
 document.addEventListener("DOMContentLoaded", function () {
 
   const form = document.getElementById(

@@ -1,6 +1,6 @@
 <% content_for :title, "Add Video" %>
 
-<style>
+<style nonce="<%= content_security_policy_nonce %>">
   /* =========================================================
      ADMIN VIDEO - ADD PAGE
      A ONE GS CENTER ADMIN DESIGN
@@ -386,7 +386,7 @@
 </div>
 
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
   document.addEventListener("turbo:load", function () {
 
     /* =======================================================

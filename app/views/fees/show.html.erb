@@ -204,17 +204,42 @@
 
       <% end %>
 
-      <button onclick="window.print()"
-              class="btn btn-success">
+      <button type="button"
+        class="btn btn-success"
+        data-print-receipt>
 
-        <i class="bi bi-printer-fill"></i>
+  <i class="bi bi-printer-fill"></i>
 
-        Print Receipt
+  Print Receipt
 
-      </button>
-
+</button>
     </div>
 
   </div>
 
 </div>
+
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+  function initializeFeeReceipt() {
+    const printButton = document.querySelector("[data-print-receipt]");
+
+    if (!printButton) {
+      return;
+    }
+
+    if (printButton.dataset.printInitialized === "true") {
+      return;
+    }
+
+    printButton.dataset.printInitialized = "true";
+
+    printButton.addEventListener("click", function () {
+      window.print();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initializeFeeReceipt);
+  document.addEventListener("turbo:load", initializeFeeReceipt);
+</script>
