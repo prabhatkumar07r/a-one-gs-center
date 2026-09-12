@@ -2,7 +2,7 @@ class QuizzesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
   before_action :set_quiz, only: [:show, :start, :submit, :result]
-  before_action :check_test_series_access, only: [:show, :start, :submit, :result]
+
 
   # ==================================================
   # QUIZ INDEX
@@ -10,10 +10,9 @@ class QuizzesController < ApplicationController
 
   def index
     @course_quizzes =
-      @course.quizzes
-             .where(test_series_id: nil)
-             .includes(:video, :questions)
-             .order(created_at: :desc)
+  @course.quizzes
+         .includes(:video, :questions)
+         .order(created_at: :desc)
   end
 
 
@@ -527,48 +526,5 @@ class QuizzesController < ApplicationController
   # TEST SERIES ACCESS
   # ==================================================
 
-  def check_test_series_access
-
-    # Normal course/video quiz
-    return unless @quiz.test_series.present?
-
-
-    test_series =
-      @quiz.test_series
-
-
-    # --------------------------------------------------
-    # FREE TEST SERIES
-    # --------------------------------------------------
-
-    if test_series.free?
-      return
-    end
-
-
-    # --------------------------------------------------
-    # PAID TEST SERIES
-    # --------------------------------------------------
-
-    purchased =
-      current_user
-        .test_series_purchases
-        .exists?(
-          test_series: test_series,
-          payment_status: "paid",
-          status: "Active"
-        )
-
-
-    return if purchased
-
-
-    # --------------------------------------------------
-    # ACCESS DENIED
-    # --------------------------------------------------
-
-    redirect_to test_series_path(test_series),
-                alert:
-                  "Please purchase this Test Series to access its tests."
-  end
+ 
 end
