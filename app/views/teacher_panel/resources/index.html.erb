@@ -747,41 +747,110 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-  document.addEventListener("turbo:load", function () {
 
-    const search = document.getElementById("searchResource");
+(function () {
+
+  /* =========================================================
+     RESOURCE SEARCH
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
+
+  function initializeResourceSearch() {
+
+    const search =
+      document.getElementById(
+        "searchResource"
+      );
 
     if (!search) return;
 
-    /* Prevent duplicate event listeners with Turbo */
-    if (search.dataset.searchInitialized === "true") return;
 
-    search.dataset.searchInitialized = "true";
+    /* =======================================================
+       PREVENT DUPLICATE LISTENER
+    ======================================================= */
+
+    if (
+      search.dataset.searchInitialized === "true"
+    ) {
+      return;
+    }
+
+    search.dataset.searchInitialized =
+      "true";
 
 
-    search.addEventListener("input", function () {
+    /* =======================================================
+       SEARCH
+    ======================================================= */
 
-      const value = this.value.trim().toLowerCase();
+    search.addEventListener(
+      "input",
+      function () {
 
-      const rows = document.querySelectorAll(
-        "#resourceTable tbody tr"
-      );
+        const value =
+          this.value
+            .trim()
+            .toLowerCase();
 
 
-      rows.forEach(function (row) {
+        const rows =
+          document.querySelectorAll(
+            "#resourceTable tbody tr"
+          );
 
-        const text = row.innerText.toLowerCase();
 
-        row.style.display =
-          text.includes(value)
-            ? ""
-            : "none";
+        rows.forEach(function (row) {
 
-      });
+          const text =
+            (
+              row.textContent || ""
+            ).toLowerCase();
 
-    });
 
-  });
+          row.style.display =
+            text.includes(value)
+              ? ""
+              : "none";
+
+        });
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeResourceSearch
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================= */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeResourceSearch();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeResourceSearch,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

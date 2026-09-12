@@ -59,16 +59,98 @@
 
 <% end %>
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
-  const enrollment = document.getElementById("enrollment_select");
-  const totalFee = document.getElementById("total_fee");
 
-  function updateFee() {
-    const option = enrollment.options[enrollment.selectedIndex];
-    totalFee.value = option.dataset.fee || "";
+(function () {
+
+  function initializeEnrollmentFee() {
+
+    const enrollment =
+      document.getElementById("enrollment_select");
+
+    const totalFee =
+      document.getElementById("total_fee");
+
+
+    if (!enrollment || !totalFee) {
+      return;
+    }
+
+
+    /* =====================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ===================================================== */
+
+    if (enrollment.dataset.feeInitialized === "true") {
+      return;
+    }
+
+    enrollment.dataset.feeInitialized = "true";
+
+
+    /* =====================================================
+       UPDATE TOTAL FEE
+    ===================================================== */
+
+    function updateFee() {
+
+      const option =
+        enrollment.options[
+          enrollment.selectedIndex
+        ];
+
+      totalFee.value =
+        option ? (option.dataset.fee || "") : "";
+
+    }
+
+
+    /* =====================================================
+       CHANGE EVENT
+    ===================================================== */
+
+    enrollment.addEventListener(
+      "change",
+      updateFee
+    );
+
+
+    /* =====================================================
+       INITIAL FEE
+    ===================================================== */
+
+    updateFee();
+
   }
 
-  enrollment.addEventListener("change", updateFee);
-  updateFee();
-});
+
+  /* =======================================================
+     TURBO PAGE LOAD
+  ======================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeEnrollmentFee
+  );
+
+
+  /* =======================================================
+     INITIAL NORMAL PAGE LOAD
+  ======================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeEnrollmentFee();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEnrollmentFee,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

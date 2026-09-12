@@ -903,245 +903,360 @@
 
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
-// =========================================================
-// TEACHER PANEL - ATTENDANCE
-// =========================================================
 
-document.addEventListener("turbo:load", () => {
+(function () {
 
-  const form =
-    document.getElementById("teacherAttendanceForm");
+  // =========================================================
+  // TEACHER PANEL - ATTENDANCE
+  // TURBO SAFE + DUPLICATE SAFE
+  // =========================================================
 
-  if (!form) return;
+  function initializeTeacherAttendance() {
 
+    const form =
+      document.getElementById("teacherAttendanceForm");
 
-  // =======================================================
-  // ELEMENTS
-  // =======================================================
+    if (!form) return;
 
-  const studentSelect =
-    document.getElementById("attendanceStudent");
 
-  const dateInput =
-    document.getElementById("attendanceDate");
+    // =======================================================
+    // ELEMENTS
+    // =======================================================
 
-  const previewStudent =
-    document.getElementById("previewStudent");
+    const studentSelect =
+      document.getElementById("attendanceStudent");
 
-  const previewDate =
-    document.getElementById("previewDate");
+    const dateInput =
+      document.getElementById("attendanceDate");
 
-  const previewStatus =
-    document.getElementById("previewStatus");
+    const previewStudent =
+      document.getElementById("previewStudent");
 
-  const submitButton =
-    document.getElementById("attendanceSubmit");
+    const previewDate =
+      document.getElementById("previewDate");
 
+    const previewStatus =
+      document.getElementById("previewStatus");
 
-  // =======================================================
-  // STUDENT PREVIEW
-  // =======================================================
+    const submitButton =
+      document.getElementById("attendanceSubmit");
 
-  if (studentSelect) {
 
-    studentSelect.addEventListener("change", () => {
-
-      const selected =
-        studentSelect.options[
-          studentSelect.selectedIndex
-        ];
-
-      if (
-        selected &&
-        selected.value
-      ) {
-
-        previewStudent.textContent =
-          selected.text;
-
-      } else {
-
-        previewStudent.textContent =
-          "Not selected";
-
-      }
-
-    });
-
-  }
-
-
-  // =======================================================
-  // DATE PREVIEW
-  // =======================================================
-
-  if (dateInput) {
-
-    dateInput.addEventListener("change", () => {
-
-      if (!dateInput.value) {
-
-        previewDate.textContent =
-          "Not selected";
-
-        return;
-
-      }
-
-
-      const date =
-        new Date(
-          dateInput.value + "T00:00:00"
-        );
-
-
-      const formatted =
-        date.toLocaleDateString(
-          "en-IN",
-          {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-          }
-        );
-
-
-      previewDate.textContent =
-        formatted;
-
-    });
-
-  }
-
-
-  // =======================================================
-  // STATUS PREVIEW
-  // =======================================================
-
-  const statusInputs =
-    form.querySelectorAll(
-      'input[name="attendance[status]"]'
-    );
-
-
-  statusInputs.forEach((input) => {
-
-    input.addEventListener("change", () => {
-
-      if (!input.checked) return;
-
-
-      previewStatus.textContent =
-        input.value;
-
-
-      previewStatus.classList.remove(
-        "preview-present"
-      );
-
-
-      if (input.value === "Present") {
-
-        previewStatus.style.color =
-          "#22c55e";
-
-      }
-
-      else if (input.value === "Absent") {
-
-        previewStatus.style.color =
-          "#ef4444";
-
-      }
-
-      else if (input.value === "Leave") {
-
-        previewStatus.style.color =
-          "#f59e0b";
-
-      }
-
-    });
-
-  });
-
-
-  // =======================================================
-  // FORM VALIDATION
-  // =======================================================
-
-  form.addEventListener("submit", (event) => {
-
-    let valid = true;
-
+    // =======================================================
+    // STUDENT PREVIEW
+    // =======================================================
 
     if (
       studentSelect &&
-      !studentSelect.value
+      studentSelect.dataset.previewInitialized !== "true"
     ) {
 
-      studentSelect.focus();
+      studentSelect.dataset.previewInitialized = "true";
 
-      valid = false;
+      studentSelect.addEventListener("change", function () {
+
+        if (!previewStudent) return;
+
+        const selected =
+          studentSelect.options[
+            studentSelect.selectedIndex
+          ];
+
+        if (
+          selected &&
+          selected.value
+        ) {
+
+          previewStudent.textContent =
+            selected.text;
+
+        } else {
+
+          previewStudent.textContent =
+            "Not selected";
+
+        }
+
+      });
 
     }
 
+
+    // =======================================================
+    // DATE PREVIEW
+    // =======================================================
+
+    if (
+      dateInput &&
+      dateInput.dataset.previewInitialized !== "true"
+    ) {
+
+      dateInput.dataset.previewInitialized = "true";
+
+      dateInput.addEventListener("change", function () {
+
+        if (!previewDate) return;
+
+        if (!dateInput.value) {
+
+          previewDate.textContent =
+            "Not selected";
+
+          return;
+
+        }
+
+
+        const date =
+          new Date(
+            dateInput.value + "T00:00:00"
+          );
+
+
+        const formatted =
+          date.toLocaleDateString(
+            "en-IN",
+            {
+              day: "2-digit",
+              month: "short",
+              year: "numeric"
+            }
+          );
+
+
+        previewDate.textContent =
+          formatted;
+
+      });
+
+    }
+
+
+    // =======================================================
+    // STATUS PREVIEW
+    // =======================================================
+
+    const statusInputs =
+      form.querySelectorAll(
+        'input[name="attendance[status]"]'
+      );
+
+
+    statusInputs.forEach(function (input) {
+
+      if (
+        input.dataset.previewInitialized === "true"
+      ) {
+        return;
+      }
+
+      input.dataset.previewInitialized = "true";
+
+
+      input.addEventListener("change", function () {
+
+        if (!input.checked) return;
+
+        if (!previewStatus) return;
+
+
+        previewStatus.textContent =
+          input.value;
+
+
+        previewStatus.classList.remove(
+          "preview-present"
+        );
+
+
+        if (input.value === "Present") {
+
+          previewStatus.style.color =
+            "#22c55e";
+
+        }
+
+        else if (input.value === "Absent") {
+
+          previewStatus.style.color =
+            "#ef4444";
+
+        }
+
+        else if (input.value === "Leave") {
+
+          previewStatus.style.color =
+            "#f59e0b";
+
+        }
+
+      });
+
+    });
+
+
+    // =======================================================
+    // DEFAULT DATE
+    // =======================================================
 
     if (
       dateInput &&
       !dateInput.value
     ) {
 
-      if (valid) {
-        dateInput.focus();
+      const today =
+        new Date()
+          .toISOString()
+          .split("T")[0];
+
+      dateInput.value = today;
+
+
+      /*
+       * Update preview immediately
+       * if preview element exists.
+       */
+
+      if (previewDate) {
+
+        const todayDate =
+          new Date(today + "T00:00:00");
+
+        previewDate.textContent =
+          todayDate.toLocaleDateString(
+            "en-IN",
+            {
+              day: "2-digit",
+              month: "short",
+              year: "numeric"
+            }
+          );
+
       }
 
-      valid = false;
-
     }
 
 
-    if (!valid) {
+    // =======================================================
+    // FORM SUBMIT
+    // =======================================================
 
-      event.preventDefault();
+    if (
+      form.dataset.submitInitialized !== "true"
+    ) {
 
-      return;
+      form.dataset.submitInitialized = "true";
+
+
+      form.addEventListener("submit", function (event) {
+
+        let valid = true;
+
+
+        // ---------------------------------------------------
+        // STUDENT VALIDATION
+        // ---------------------------------------------------
+
+        if (
+          studentSelect &&
+          !studentSelect.value
+        ) {
+
+          studentSelect.focus();
+
+          valid = false;
+
+        }
+
+
+        // ---------------------------------------------------
+        // DATE VALIDATION
+        // ---------------------------------------------------
+
+        if (
+          dateInput &&
+          !dateInput.value
+        ) {
+
+          if (valid) {
+            dateInput.focus();
+          }
+
+          valid = false;
+
+        }
+
+
+        // ---------------------------------------------------
+        // STOP INVALID SUBMISSION
+        // ---------------------------------------------------
+
+        if (!valid) {
+
+          event.preventDefault();
+
+          return;
+
+        }
+
+
+        // ---------------------------------------------------
+        // PREVENT DOUBLE SUBMISSION
+        // ---------------------------------------------------
+
+        if (submitButton) {
+
+          if (submitButton.disabled) {
+
+            event.preventDefault();
+
+            return;
+
+          }
+
+
+          submitButton.disabled = true;
+
+          submitButton.innerHTML =
+            '<i class="bi bi-hourglass-split"></i> Saving...';
+
+        }
+
+      });
 
     }
-
-
-    // Prevent double submission
-
-    if (submitButton) {
-
-      submitButton.disabled = true;
-
-      submitButton.innerHTML =
-        '<i class="bi bi-hourglass-split"></i> Saving...';
-
-    }
-
-  });
-
-
-  // =======================================================
-  // DEFAULT DATE
-  // =======================================================
-
-  if (
-    dateInput &&
-    !dateInput.value
-  ) {
-
-    const today =
-      new Date()
-        .toISOString()
-        .split("T")[0];
-
-    dateInput.value = today;
 
   }
 
-});
+
+  // =========================================================
+  // TURBO
+  // =========================================================
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherAttendance
+  );
+
+
+  // =========================================================
+  // INITIAL LOAD
+  // =========================================================
+
+  if (document.readyState !== "loading") {
+
+    initializeTeacherAttendance();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherAttendance,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>

@@ -2207,59 +2207,194 @@
 }
 </style>
 
- <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
+<script nonce="<%= content_security_policy_nonce %>">
 
-  const tabs = document.querySelectorAll("[data-profile-tab]");
-  const contents = document.querySelectorAll("[data-profile-content]");
+(function () {
 
-  if (!tabs.length || !contents.length) return;
+  "use strict";
 
-  tabs.forEach(function (tab) {
 
-    tab.addEventListener("click", function () {
+  /* =========================================================
+     STUDENT PROFILE INITIALIZATION
+  ========================================================== */
 
-      const target = this.dataset.profileTab;
+  function initializeStudentProfile() {
 
-      tabs.forEach(function (item) {
-        item.classList.remove("active");
-      });
+    const tabs =
+      document.querySelectorAll(
+        "[data-profile-tab]"
+      );
 
-      contents.forEach(function (content) {
-        content.classList.remove("active");
-      });
+    const contents =
+      document.querySelectorAll(
+        "[data-profile-content]"
+      );
 
-      this.classList.add("active");
 
-      const targetContent =
-        document.querySelector(
-          '[data-profile-content="' + target + '"]'
-        );
+    if (!tabs.length || !contents.length) {
+      return;
+    }
 
-      if (targetContent) {
-        targetContent.classList.add("active");
+
+    /* =======================================================
+       PREVENT DUPLICATE TAB INITIALIZATION
+    ======================================================== */
+
+    tabs.forEach(function (tab) {
+
+      if (
+        tab.dataset.profileTabInitialized === "true"
+      ) {
+        return;
       }
+
+
+      tab.dataset.profileTabInitialized = "true";
+
+
+      tab.addEventListener(
+        "click",
+        function () {
+
+          const target =
+            tab.dataset.profileTab;
+
+
+          if (!target) {
+            return;
+          }
+
+
+          /* Remove active tab */
+
+          tabs.forEach(function (item) {
+
+            item.classList.remove(
+              "active"
+            );
+
+          });
+
+
+          /* Hide all profile contents */
+
+          contents.forEach(function (content) {
+
+            content.classList.remove(
+              "active"
+            );
+
+          });
+
+
+          /* Activate selected tab */
+
+          tab.classList.add(
+            "active"
+          );
+
+
+          /* Show selected content */
+
+          const targetContent =
+            document.querySelector(
+              '[data-profile-content="' +
+              CSS.escape(target) +
+              '"]'
+            );
+
+
+          if (targetContent) {
+
+            targetContent.classList.add(
+              "active"
+            );
+
+          }
+
+        }
+      );
 
     });
 
-  });
+
+    /* =======================================================
+       TEST SERIES PROGRESS
+    ======================================================== */
+
+    const progressBars =
+      document.querySelectorAll(
+        ".student-test-series-progress-fill"
+      );
 
 
-  /* ==========================================
-     TEST SERIES PROGRESS
-  ========================================== */
+    progressBars.forEach(function (bar) {
 
-  document.querySelectorAll(
-    ".student-test-series-progress-fill"
-  ).forEach(function (bar) {
+      const progress =
+        bar.dataset.progress;
 
-    const progress = bar.dataset.progress;
 
-    if (progress !== undefined) {
-      bar.style.width = `${progress}%`;
-    }
+      if (
+        progress === undefined ||
+        progress === null ||
+        progress === ""
+      ) {
+        return;
+      }
 
-  });
 
-});
+      /*
+       * Keep progress safely between 0 and 100.
+       */
+
+      const numericProgress =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            parseFloat(progress) || 0
+          )
+        );
+
+
+      bar.style.width =
+        numericProgress + "%";
+
+    });
+
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeStudentProfile
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeStudentProfile();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeStudentProfile,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

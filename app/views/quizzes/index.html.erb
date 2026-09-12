@@ -629,36 +629,41 @@
   }
 
 </style>
-
-
 <script nonce="<%= content_security_policy_nonce %>">
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function initializeQuizIndex() {
 
     const cards =
       document.querySelectorAll(".quiz-card");
 
+    if (!cards.length) {
+      return;
+    }
 
-    cards.forEach(function (card) {
+    cards.forEach(function(card) {
 
-      card.addEventListener("mouseenter", function () {
+      if (card.dataset.hoverInitialized === "true") {
+        return;
+      }
 
-        card.style.transform =
-          "translateY(-5px)";
+      card.dataset.hoverInitialized = "true";
 
+      card.addEventListener("mouseenter", function() {
+        card.style.transform = "translateY(-5px)";
       });
 
-
-      card.addEventListener("mouseleave", function () {
-
-        card.style.transform =
-          "translateY(0)";
-
+      card.addEventListener("mouseleave", function() {
+        card.style.transform = "translateY(0)";
       });
 
     });
 
+  }
 
-  });
+
+  document.addEventListener(
+    "turbo:load",
+    initializeQuizIndex
+  );
 
 </script>

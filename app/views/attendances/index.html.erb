@@ -1207,128 +1207,188 @@
 
 </div>
 
-<script nonce="<%= content_security_policy_nonce %>">>
-document.addEventListener("turbo:load", function () {
+<script nonce="<%= content_security_policy_nonce %>">
 
-  const searchInput =
-    document.getElementById("attendance_search");
+(function () {
 
-  const courseSelect =
-    document.getElementById("attendance_course");
+  function initializeAttendancePage() {
 
-  const studentSelect =
-    document.getElementById("attendance_student");
+    const searchInput =
+      document.getElementById("attendance_search");
 
-  const dateInput =
-    document.getElementById("attendance_date");
+    const courseSelect =
+      document.getElementById("attendance_course");
 
-  const statusSelect =
-    document.getElementById("attendance_status");
+    const studentSelect =
+      document.getElementById("attendance_student");
 
+    const dateInput =
+      document.getElementById("attendance_date");
 
-  /* =====================================================
-     SEARCH CLEAR
-  ====================================================== */
-
-  if (searchInput) {
-
-    searchInput.addEventListener("keydown", function(event) {
-
-      if (event.key === "Escape") {
-
-        this.value = "";
-
-      }
-
-    });
-
-  }
+    const statusSelect =
+      document.getElementById("attendance_status");
 
 
-  /* =====================================================
-     COURSE -> STUDENT VISUAL HINT
-  ====================================================== */
+    /* =====================================================
+       SEARCH CLEAR + ENTER TO SUBMIT
+    ====================================================== */
 
-  if (courseSelect && studentSelect) {
+    if (searchInput && searchInput.dataset.initialized !== "true") {
 
-    courseSelect.addEventListener("change", function () {
-
-      if (this.value) {
-
-        studentSelect.setAttribute(
-          "title",
-          "Students enrolled in the selected course"
-        );
-
-      } else {
-
-        studentSelect.removeAttribute("title");
-
-      }
-
-    });
-
-  }
+      searchInput.dataset.initialized = "true";
 
 
-  /* =====================================================
-     ENTER TO SUBMIT SEARCH
-  ====================================================== */
+      searchInput.addEventListener("keydown", function (event) {
 
-  if (searchInput) {
+        /* ESC → Clear search */
 
-    searchInput.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
 
-      if (event.key === "Enter") {
+          this.value = "";
 
-        event.preventDefault();
-
-        const form = this.closest("form");
-
-        if (form) {
-          form.submit();
         }
 
-      }
 
-    });
+        /* ENTER → Submit search */
 
-  }
+        if (event.key === "Enter") {
 
+          event.preventDefault();
 
-  /* =====================================================
-     DATE PICKER
-  ====================================================== */
+          const form = this.closest("form");
 
-  if (dateInput) {
+          if (form) {
+            form.requestSubmit();
+          }
 
-    dateInput.addEventListener("change", function () {
-
-      this.classList.toggle(
-        "has-value",
-        this.value !== ""
-      );
-
-    });
-
-  }
-
-
-  /* =====================================================
-     TOOLTIP
-  ====================================================== */
-
-  if (typeof bootstrap !== "undefined") {
-
-    document
-      .querySelectorAll('[title]')
-      .forEach(function (element) {
-
-        new bootstrap.Tooltip(element);
+        }
 
       });
 
+    }
+
+
+    /* =====================================================
+       COURSE → STUDENT VISUAL HINT
+    ====================================================== */
+
+    if (
+      courseSelect &&
+      studentSelect &&
+      courseSelect.dataset.initialized !== "true"
+    ) {
+
+      courseSelect.dataset.initialized = "true";
+
+
+      courseSelect.addEventListener("change", function () {
+
+        if (this.value) {
+
+          studentSelect.setAttribute(
+            "title",
+            "Students enrolled in the selected course"
+          );
+
+        } else {
+
+          studentSelect.removeAttribute("title");
+
+        }
+
+      });
+
+    }
+
+
+    /* =====================================================
+       DATE PICKER
+    ====================================================== */
+
+    if (
+      dateInput &&
+      dateInput.dataset.initialized !== "true"
+    ) {
+
+      dateInput.dataset.initialized = "true";
+
+
+      dateInput.addEventListener("change", function () {
+
+        this.classList.toggle(
+          "has-value",
+          this.value !== ""
+        );
+
+      });
+
+
+      /* Apply class on page load if date already exists */
+
+      dateInput.classList.toggle(
+        "has-value",
+        dateInput.value !== ""
+      );
+
+    }
+
+
+    /* =====================================================
+       BOOTSTRAP TOOLTIPS
+    ====================================================== */
+
+    if (
+      typeof bootstrap !== "undefined" &&
+      bootstrap.Tooltip
+    ) {
+
+      document
+        .querySelectorAll('[title]')
+        .forEach(function (element) {
+
+          if (
+            !bootstrap.Tooltip.getInstance(element)
+          ) {
+
+            new bootstrap.Tooltip(element);
+
+          }
+
+        });
+
+    }
+
   }
 
-});
+
+  /* =====================================================
+     TURBO
+  ====================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeAttendancePage
+  );
+
+
+  /* =====================================================
+     INITIAL LOAD
+  ====================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeAttendancePage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeAttendancePage,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

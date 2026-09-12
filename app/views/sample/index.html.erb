@@ -1241,59 +1241,6 @@ body {
         </div>
     </div>
 
-  <!--   <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Tab switching functionality
-            const authTabs = document.querySelectorAll('.auth-tab');
-            const authForms = document.querySelectorAll('.auth-form');
-
-            authTabs.forEach(tab => {
-                tab.addEventListener('click', function () {
-                    const tabId = this.getAttribute('data-tab');
-
-                    // Update active tab
-                    authTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // Show corresponding form with animation
-                    authForms.forEach(form => {
-                        form.classList.remove('active');
-                        if (form.id === `${tabId}-form`) {
-                            setTimeout(() => {
-                                form.classList.add('active');
-                            }, 10);
-                        }
-                    });
-                });
-            });
-
-            // // Switch between login and register forms
-            // document.querySelector('.switch-to-register').addEventListener('click', function (e) {
-            //     e.preventDefault();
-            //     document.querySelector('[data-tab="register"]').click();
-            // });
-
-            // document.querySelector('.switch-to-login').addEventListener('click', function (e) {
-            //     e.preventDefault();
-            //     document.querySelector('[data-tab="login"]').click();
-            // });
-
-            // // Close button functionality
-            // document.querySelector('.close-auth').addEventListener('click', function () {
-            //     // Redirect back to home page or close modal
-            //     window.location.href = 'index.html';
-            // });
-
-            
-            // Social login buttons
-            document.querySelectorAll('.social-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const platform = this.classList.contains('facebook') ? 'Facebook' : 'Google';
-                    alert(`${platform} login would be implemented here!`);
-                });
-            });
-        });
-    </script> -->
 </body>
 
 </html>

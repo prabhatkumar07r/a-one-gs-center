@@ -599,42 +599,90 @@
 
 </div>
 
+<script nonce="<%= content_security_policy_nonce %>">
 
-<script nonce="<%= content_security_policy_nonce %>">>
-document.addEventListener("turbo:load", function () {
+(function () {
 
-  /*
-   * Admin Attendance Show Page
-   * Delete confirmation
-   */
+  function initializeAttendanceShowPage() {
 
-  const deleteButton =
-    document.querySelector(
-      '[data-attendance-delete="true"]'
-    );
+    /*
+     * Admin Attendance Show Page
+     * Delete confirmation
+     */
 
-  if (!deleteButton) return;
+    const deleteButton =
+      document.querySelector(
+        '[data-attendance-delete="true"]'
+      );
 
+    if (!deleteButton) return;
 
-  deleteButton.addEventListener("click", function (event) {
+    /*
+     * Prevent duplicate event listener
+     */
 
-    const student =
-      "<%= j(@attendance.user&.name.presence || 'this student') %>";
-
-    const course =
-      "<%= j(@attendance.course&.Course_name.presence || 'this course') %>";
-
-    const status =
-      "<%= j(@attendance.status.presence || 'attendance record') %>";
-
-    const message =
-      `Delete attendance for ${student} from ${course} (${status})?`;
-
-    if (!confirm(message)) {
-      event.preventDefault();
+    if (deleteButton.dataset.initialized === "true") {
+      return;
     }
 
-  });
+    deleteButton.dataset.initialized = "true";
 
-});
+
+    deleteButton.addEventListener("click", function (event) {
+
+      const student =
+        "<%= j(@attendance.user&.name.presence || 'this student') %>";
+
+      const course =
+        "<%= j(@attendance.course&.Course_name.presence || 'this course') %>";
+
+      const status =
+        "<%= j(@attendance.status.presence || 'attendance record') %>";
+
+
+      const message =
+        `Delete attendance for ${student} from ${course} (${status})?`;
+
+
+      if (!confirm(message)) {
+
+        event.preventDefault();
+
+      }
+
+    });
+
+  }
+
+
+  /*
+   * Turbo navigation
+   */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeAttendanceShowPage
+  );
+
+
+  /*
+   * Initial page load
+   */
+
+  if (document.readyState !== "loading") {
+
+    initializeAttendanceShowPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeAttendanceShowPage,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

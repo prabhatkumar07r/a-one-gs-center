@@ -3518,100 +3518,141 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
+(function () {
+
+  "use strict";
 
 
-    /* =====================================================
+  /* =========================================================
+     QUIZ RESULT PAGE INITIALIZATION
+  ========================================================== */
+
+  function initializeQuizResultPage() {
+
+    const page =
+      document.querySelector(".quiz-result-page");
+
+
+    /*
+     * If this page does not contain the result
+     * container, do nothing.
+     */
+    if (!page) {
+      return;
+    }
+
+
+    /*
+     * Prevent duplicate initialization
+     * during Turbo navigation.
+     */
+    if (
+      page.dataset.resultInitialized === "true"
+    ) {
+      return;
+    }
+
+
+    page.dataset.resultInitialized = "true";
+
+
+    /* =======================================================
        TAB SWITCHING
-    ===================================================== */
+    ======================================================== */
 
     const tabs =
-      document.querySelectorAll(
+      page.querySelectorAll(
         ".result-tab"
       );
 
     const contents =
-      document.querySelectorAll(
+      page.querySelectorAll(
         ".result-tab-content"
       );
 
 
-    tabs.forEach(
-      function (tab) {
+    tabs.forEach(function (tab) {
 
-        tab.addEventListener(
-          "click",
-          function () {
+      tab.addEventListener(
+        "click",
+        function () {
 
-            const targetId =
-              tab.dataset.tab;
+          const targetId =
+            tab.dataset.tab;
 
 
-            tabs.forEach(
-              function (item) {
+          if (!targetId) {
+            return;
+          }
 
-                item.classList.remove(
-                  "active"
-                );
 
-              }
+          /* Remove active from all tabs */
+
+          tabs.forEach(function (item) {
+
+            item.classList.remove(
+              "active"
+            );
+
+          });
+
+
+          /* Hide all contents */
+
+          contents.forEach(function (content) {
+
+            content.classList.remove(
+              "active"
+            );
+
+          });
+
+
+          /* Activate clicked tab */
+
+          tab.classList.add(
+            "active"
+          );
+
+
+          /* Activate target content */
+
+          const target =
+            page.querySelector(
+              "#" +
+              CSS.escape(targetId)
             );
 
 
-            contents.forEach(
-              function (content) {
+          if (target) {
 
-                content.classList.remove(
-                  "active"
-                );
-
-              }
-            );
-
-
-            tab.classList.add(
+            target.classList.add(
               "active"
             );
 
 
-            const target =
-              document.getElementById(
-                targetId
-              );
-
-
-            if (target) {
-
-              target.classList.add(
-                "active"
-              );
-
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-              });
-
-            }
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
 
           }
-        );
 
-      }
-    );
+        }
+      );
+
+    });
 
 
-    /* =====================================================
+    /* =======================================================
        PRINT RESULT
-    ===================================================== */
+    ======================================================== */
 
     const printButton =
-      document.getElementById(
-        "printResult"
+      page.querySelector(
+        "#printResult"
       );
 
 
@@ -3629,12 +3670,12 @@ document.addEventListener(
     }
 
 
-    /* =====================================================
+    /* =======================================================
        SCORE ANIMATION
-    ===================================================== */
+    ======================================================== */
 
     const score =
-      document.querySelector(
+      page.querySelector(
         ".score-box"
       );
 
@@ -3647,11 +3688,21 @@ document.addEventListener(
         "scale(.85)";
 
       score.style.transition =
-        "all .5s ease";
+        "opacity .5s ease, transform .5s ease";
 
 
       setTimeout(
         function () {
+
+          /*
+           * Turbo may have replaced the page
+           * before the animation fires.
+           */
+
+          if (!document.documentElement.contains(score)) {
+            return;
+          }
+
 
           score.style.opacity = "1";
 
@@ -3665,80 +3716,120 @@ document.addEventListener(
     }
 
 
-    /* =====================================================
+    /* =======================================================
        ANSWER CARD ANIMATION
-    ===================================================== */
+    ======================================================== */
 
     const cards =
-      document.querySelectorAll(
+      page.querySelectorAll(
         ".answer-review-card"
       );
 
 
-    cards.forEach(
-      function (card, index) {
+    cards.forEach(function (card, index) {
 
-        card.style.opacity = "0";
+      card.style.opacity = "0";
 
-        card.style.transform =
-          "translateY(8px)";
+      card.style.transform =
+        "translateY(8px)";
 
-        card.style.transition =
-          "all .3s ease";
-
-
-        setTimeout(
-          function () {
-
-            card.style.opacity = "1";
-
-            card.style.transform =
-              "translateY(0)";
-
-          },
-          80 + (index * 35)
-        );
-
-      }
-    );
+      card.style.transition =
+        "opacity .3s ease, transform .3s ease";
 
 
-    /* =====================================================
+      setTimeout(
+        function () {
+
+          if (!document.documentElement.contains(card)) {
+            return;
+          }
+
+
+          card.style.opacity = "1";
+
+          card.style.transform =
+            "translateY(0)";
+
+        },
+        80 + (index * 35)
+      );
+
+    });
+
+
+    /* =======================================================
        LEADERBOARD CARD ANIMATION
-    ===================================================== */
+    ======================================================== */
 
     const leaderCards =
-      document.querySelectorAll(
+      page.querySelectorAll(
         ".leader-card"
       );
 
 
-    leaderCards.forEach(
-      function (card, index) {
+    leaderCards.forEach(function (card, index) {
 
-        card.style.opacity = "0";
+      card.style.opacity = "0";
 
-        card.style.transform =
-          "translateY(12px)";
+      card.style.transform =
+        "translateY(12px)";
+
+      card.style.transition =
+        "opacity .3s ease, transform .3s ease";
 
 
-        setTimeout(
-          function () {
+      setTimeout(
+        function () {
 
-            card.style.opacity = "1";
+          if (!document.documentElement.contains(card)) {
+            return;
+          }
 
-            card.style.transform =
-              "";
 
-          },
-          100 + (index * 100)
-        );
+          card.style.opacity = "1";
 
-      }
-    );
+          card.style.transform =
+            "translateY(0)";
 
+        },
+        100 + (index * 100)
+      );
+
+    });
 
   }
-);
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeQuizResultPage
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeQuizResultPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuizResultPage,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>

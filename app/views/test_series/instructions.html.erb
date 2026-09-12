@@ -382,10 +382,11 @@
     box-shadow: 0 8px 20px rgba(109, 40, 217, 0.25);
   }
 
-  .start-test-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+.start-test-btn.is-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
   /* =========================
      RESPONSIVE
@@ -730,19 +731,18 @@
           <!-- START -->
 
           <%= link_to test_series_test_series_test_path(
-                @test_series,
-                @test,
-                language: @language
-              ),
-              class: "start-test-btn",
-              id: "startTestBtn",
-              style: "pointer-events: none; opacity: 0.5;" do %>
+      @test_series,
+      @test,
+      language: @language
+    ),
+    class: "start-test-btn is-disabled",
+    id: "startTestBtn" do %>
 
-            I am ready to Start
+  I am ready to Start
 
-            <i class="fas fa-arrow-right"></i>
+  <i class="fas fa-arrow-right"></i>
 
-          <% end %>
+<% end %>
 
         </div>
 
@@ -754,9 +754,10 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-  document.addEventListener("DOMContentLoaded", function () {
+(function () {
+
+  function initializeTestInstructions() {
 
     const checkbox =
       document.getElementById("instructionDeclaration");
@@ -767,6 +768,24 @@
     const languageSelect =
       document.getElementById("test-language");
 
+    if (!checkbox || !startButton || !languageSelect) {
+      return;
+    }
+
+    /* ==========================================
+       PREVENT DUPLICATE INITIALIZATION
+    ========================================== */
+
+    if (checkbox.dataset.initialized === "true") {
+      return;
+    }
+
+    checkbox.dataset.initialized = "true";
+
+
+    /* ==========================================
+       START BUTTON
+    ========================================== */
 
     function updateStartButton() {
 
@@ -785,18 +804,29 @@
     }
 
 
+    /* ==========================================
+       DECLARATION
+    ========================================== */
+
     checkbox.addEventListener(
       "change",
       updateStartButton
     );
 
 
+    /* ==========================================
+       LANGUAGE
+    ========================================== */
+
     languageSelect.addEventListener(
       "change",
       function () {
 
         const url =
-          new URL(startButton.href);
+          new URL(
+            startButton.href,
+            window.location.origin
+          );
 
         url.searchParams.set(
           "language",
@@ -810,7 +840,34 @@
     );
 
 
+    /* ==========================================
+       INITIAL STATE
+    ========================================== */
+
     updateStartButton();
 
-  });
+  }
+
+
+  /* ==========================================
+     TURBO
+  ========================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTestInstructions
+  );
+
+
+  /* ==========================================
+     INITIAL PAGE LOAD
+  ========================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+    initializeTestInstructions();
+  }
+
+})();
 </script>

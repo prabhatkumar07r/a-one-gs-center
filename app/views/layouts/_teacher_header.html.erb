@@ -559,8 +559,6 @@ body,
   </div>
 
 </nav>
-
-
 <!-- =========================================================
      TEACHER MENU JAVASCRIPT
 ========================================================== -->
@@ -569,61 +567,42 @@ body,
 
 (function () {
 
-  /* =====================================================
-     PREVENT DUPLICATE INITIALIZATION
-  ===================================================== */
-
-  if (window.teacherHeaderInitialized) {
-    return;
-  }
-
-  window.teacherHeaderInitialized = true;
+  "use strict";
 
 
-  /* =====================================================
+  /* =========================================================
      CLOSE SIDEBAR
-  ===================================================== */
+  ========================================================== */
 
   function closeSidebar() {
 
     const sidebar =
-      document.querySelector(
-        ".teacher-sidebar"
-      );
+      document.querySelector(".teacher-sidebar");
 
     const button =
-      document.getElementById(
-        "teacherMenuBtn"
-      );
+      document.getElementById("teacherMenuBtn");
 
 
     if (sidebar) {
 
-      sidebar.classList.remove(
-        "open"
-      );
+      sidebar.classList.remove("open");
 
     }
 
 
     if (button) {
 
-      button.classList.remove(
-        "active"
-      );
-
+      button.classList.remove("active");
 
       button.setAttribute(
         "aria-expanded",
         "false"
       );
 
-
       button.setAttribute(
         "aria-label",
         "Open teacher menu"
       );
-
 
       button.textContent = "☰";
 
@@ -632,281 +611,350 @@ body,
   }
 
 
-  /* =====================================================
-     MENU BUTTON
-  ===================================================== */
+  /* =========================================================
+     TEACHER SIDEBAR MENU
+     Global delegated handler
+  ========================================================== */
 
-  document.addEventListener(
-    "click",
-    function (event) {
+  if (!window.teacherHeaderInitialized) {
 
-      const button =
-        event.target.closest(
-          "#teacherMenuBtn"
-        );
+    window.teacherHeaderInitialized = true;
 
 
-      if (!button) {
-        return;
-      }
+    /* =======================================================
+       MENU BUTTON
+    ======================================================== */
 
+    document.addEventListener(
+      "click",
+      function (event) {
 
-      event.preventDefault();
+        const button =
+          event.target.closest("#teacherMenuBtn");
 
-      event.stopPropagation();
 
+        if (!button) {
+          return;
+        }
 
-      const sidebar =
-        document.querySelector(
-          ".teacher-sidebar"
-        );
 
+        event.preventDefault();
+        event.stopPropagation();
 
-      if (!sidebar) {
 
-        console.error(
-          "Teacher sidebar not found."
-        );
+        const sidebar =
+          document.querySelector(".teacher-sidebar");
 
-        return;
 
-      }
+        if (!sidebar) {
 
+          console.error(
+            "Teacher sidebar not found."
+          );
 
-      const isOpen =
-        sidebar.classList.contains(
-          "open"
-        );
+          return;
 
+        }
 
-      if (isOpen) {
 
-        closeSidebar();
+        const isOpen =
+          sidebar.classList.contains("open");
 
-      } else {
 
-        sidebar.classList.add(
-          "open"
-        );
+        if (isOpen) {
 
+          closeSidebar();
 
-        button.classList.add(
-          "active"
-        );
+        } else {
 
+          sidebar.classList.add("open");
 
-        button.setAttribute(
-          "aria-expanded",
-          "true"
-        );
+          button.classList.add("active");
 
+          button.setAttribute(
+            "aria-expanded",
+            "true"
+          );
 
-        button.setAttribute(
-          "aria-label",
-          "Close teacher menu"
-        );
+          button.setAttribute(
+            "aria-label",
+            "Close teacher menu"
+          );
 
+          button.textContent = "×";
 
-        button.textContent = "×";
+        }
 
-
-        console.log(
-          "Teacher sidebar: OPEN"
-        );
-
-      }
-
-    },
-    true
-  );
-
-
-  /* =====================================================
-     CLICK OUTSIDE SIDEBAR
-  ===================================================== */
-
-  document.addEventListener(
-    "click",
-    function (event) {
-
-      const sidebar =
-        event.target.closest(
-          ".teacher-sidebar"
-        );
-
-
-      const button =
-        event.target.closest(
-          "#teacherMenuBtn"
-        );
-
-
-      /*
-       * Do not close when clicking
-       * inside sidebar or menu button.
-       */
-
-      if (sidebar || button) {
-        return;
-      }
-
-
-      closeSidebar();
-
-    }
-  );
-
-
-  /* =====================================================
-     SIDEBAR LINKS
-  ===================================================== */
-
-  document.addEventListener(
-    "click",
-    function (event) {
-
-      const link =
-        event.target.closest(
-          ".teacher-sidebar a"
-        );
-
-
-      if (!link) {
-        return;
-      }
-
-
-      if (window.innerWidth <= 768) {
-
-        closeSidebar();
-
-      }
-
-    }
-  );
-
-
-  /* =====================================================
-     ESCAPE KEY
-  ===================================================== */
-
-  document.addEventListener(
-    "keydown",
-    function (event) {
-
-      if (event.key !== "Escape") {
-        return;
-      }
-
-
-      closeSidebar();
-
-    }
-  );
-
-
-  /* =====================================================
-     RESIZE
-  ===================================================== */
-
-  window.addEventListener(
-    "resize",
-    function () {
-
-      if (window.innerWidth > 768) {
-
-        closeSidebar();
-
-      }
-
-    }
-  );
-
-})();
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const themeToggle =
-    document.getElementById("themeToggle");
-
-  const themeIcon =
-    document.getElementById("themeIcon");
-
-
-  /* =====================================================
-     LOAD SAVED THEME
-  ===================================================== */
-
-  const savedTheme =
-    localStorage.getItem("teacherTheme");
-
-
-  if (savedTheme === "day") {
-
-    document.documentElement.classList.add(
-      "teacher-day-mode"
+      },
+      true
     );
 
-    themeIcon.className =
-      "bi bi-moon-stars-fill";
 
-  } else {
+    /* =======================================================
+       CLICK OUTSIDE SIDEBAR
+    ======================================================== */
 
-    document.documentElement.classList.remove(
-      "teacher-day-mode"
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        const sidebar =
+          event.target.closest(".teacher-sidebar");
+
+        const button =
+          event.target.closest("#teacherMenuBtn");
+
+
+        if (sidebar || button) {
+          return;
+        }
+
+
+        closeSidebar();
+
+      }
     );
 
-    themeIcon.className =
-      "bi bi-sun-fill";
+
+    /* =======================================================
+       SIDEBAR LINKS
+    ======================================================== */
+
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        const link =
+          event.target.closest(
+            ".teacher-sidebar a"
+          );
+
+
+        if (!link) {
+          return;
+        }
+
+
+        if (window.innerWidth <= 768) {
+
+          closeSidebar();
+
+        }
+
+      }
+    );
+
+
+    /* =======================================================
+       ESCAPE KEY
+    ======================================================== */
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (event.key !== "Escape") {
+          return;
+        }
+
+
+        closeSidebar();
+
+      }
+    );
+
+
+    /* =======================================================
+       RESIZE
+    ======================================================== */
+
+    window.addEventListener(
+      "resize",
+      function () {
+
+        if (window.innerWidth > 768) {
+
+          closeSidebar();
+
+        }
+
+      }
+    );
 
   }
 
 
-  /* =====================================================
-     TOGGLE
-  ===================================================== */
+  /* =========================================================
+     TEACHER THEME
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================== */
 
-  themeToggle.addEventListener("click", function () {
+  function applyTeacherTheme() {
+
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+    const themeIcon =
+      document.getElementById("themeIcon");
+
+
+    if (!themeToggle) {
+      return;
+    }
+
+
+    const savedTheme =
+      localStorage.getItem("teacherTheme");
+
 
     const isDay =
-      document.documentElement.classList.toggle(
-        "teacher-day-mode"
-      );
+      savedTheme === "day";
 
 
-    if (isDay) {
+    document.documentElement.classList.toggle(
+      "teacher-day-mode",
+      isDay
+    );
 
-      /* WHITE / DAY MODE */
 
-      localStorage.setItem(
-        "teacherTheme",
-        "day"
-      );
+    if (themeIcon) {
 
       themeIcon.className =
-        "bi bi-moon-stars-fill";
-
-      themeToggle.title =
-        "Switch to Night Mode";
-
-    } else {
-
-      /* DARK / NIGHT MODE */
-
-      localStorage.setItem(
-        "teacherTheme",
-        "night"
-      );
-
-      themeIcon.className =
-        "bi bi-sun-fill";
-
-      themeToggle.title =
-        "Switch to Day Mode";
+        isDay
+          ? "bi bi-moon-stars-fill"
+          : "bi bi-sun-fill";
 
     }
 
-  });
 
-});
+    themeToggle.title =
+      isDay
+        ? "Switch to Night Mode"
+        : "Switch to Day Mode";
+
+
+    themeToggle.setAttribute(
+      "aria-label",
+      isDay
+        ? "Switch to Night Mode"
+        : "Switch to Day Mode"
+    );
+
+  }
+
+
+  /* =========================================================
+     THEME TOGGLE
+     Delegated click = Turbo navigation safe
+  ========================================================== */
+
+  if (!window.teacherThemeHandlerInitialized) {
+
+    window.teacherThemeHandlerInitialized = true;
+
+
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        const themeToggle =
+          event.target.closest("#themeToggle");
+
+
+        if (!themeToggle) {
+          return;
+        }
+
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        const isDay =
+          document.documentElement.classList.toggle(
+            "teacher-day-mode"
+          );
+
+
+        localStorage.setItem(
+          "teacherTheme",
+          isDay ? "day" : "night"
+        );
+
+
+        const themeIcon =
+          document.getElementById("themeIcon");
+
+
+        if (themeIcon) {
+
+          themeIcon.className =
+            isDay
+              ? "bi bi-moon-stars-fill"
+              : "bi bi-sun-fill";
+
+        }
+
+
+        themeToggle.title =
+          isDay
+            ? "Switch to Night Mode"
+            : "Switch to Day Mode";
+
+
+        themeToggle.setAttribute(
+          "aria-label",
+          isDay
+            ? "Switch to Night Mode"
+            : "Switch to Day Mode"
+        );
+
+      },
+      true
+    );
+
+  }
+
+
+  /* =========================================================
+     INITIALIZE THEME
+  ========================================================== */
+
+  function initializeTeacherHeader() {
+
+    applyTeacherTheme();
+
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherHeader
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeTeacherHeader();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherHeader,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

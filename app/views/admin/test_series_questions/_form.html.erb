@@ -716,503 +716,685 @@
 
 <% end %>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  const container =
-    document.getElementById("adminOptionsContainer");
+(function () {
 
-  const addButton =
-    document.getElementById("adminAddOption");
-
-  const form =
-    document.getElementById("adminQuestionForm");
-
-  if (!container || !addButton || !form) {
-    return;
-  }
+  "use strict";
 
 
-  /*
-   * Use a unique index for every nested option.
-   * This prevents collisions after removing and adding options.
-   */
-  let nextIndex =
-    container.querySelectorAll(
-      "[data-admin-option-row]"
-    ).length;
+  function initializeAdminQuestionForm() {
+
+    const container =
+      document.getElementById("adminOptionsContainer");
+
+    const addButton =
+      document.getElementById("adminAddOption");
+
+    const form =
+      document.getElementById("adminQuestionForm");
 
 
-  /* =======================================================
-     GET ACTIVE OPTIONS
-  ======================================================== */
+    /*
+     * ==================================================
+     * REQUIRED ELEMENTS
+     * ==================================================
+     */
 
-  function getActiveRows() {
+    if (!container || !addButton || !form) {
+      return;
+    }
 
-    return Array.from(
+
+    /*
+     * ==================================================
+     * DUPLICATE INITIALIZATION PROTECTION
+     * ==================================================
+     */
+
+    if (
+      form.dataset.adminQuestionInitialized === "true"
+    ) {
+      return;
+    }
+
+    form.dataset.adminQuestionInitialized = "true";
+
+
+    /*
+     * ==================================================
+     * UNIQUE INDEX
+     * ==================================================
+     */
+
+    let nextIndex =
       container.querySelectorAll(
         "[data-admin-option-row]"
-      )
-    ).filter(function (row) {
-
-      return row.style.display !== "none";
-
-    });
-
-  }
+      ).length;
 
 
-  /* =======================================================
-     UPDATE POSITIONS
-  ======================================================== */
+    /*
+     * ==================================================
+     * GET ACTIVE OPTIONS
+     * ==================================================
+     */
 
-  function updatePositions() {
+    function getActiveRows() {
 
-    const rows = getActiveRows();
-
-    rows.forEach(function (row, index) {
-
-      const positionField =
-        row.querySelector(
-          ".admin-option-position"
-        );
-
-      if (positionField) {
-        positionField.value = index + 1;
-      }
-
-    });
-
-  }
-
-
-  /* =======================================================
-     KEEP EXACTLY ONE CORRECT OPTION
-  ======================================================== */
-
-  function enforceSingleCorrect(selectedRadio) {
-
-    const radios =
-      container.querySelectorAll(
-        'input[type="radio"][data-correct-option]'
-      );
-
-    radios.forEach(function (radio) {
-
-      if (radio !== selectedRadio) {
-        radio.checked = false;
-      }
-
-    });
-
-  }
-
-
-  /* =======================================================
-     ADD OPTION
-  ======================================================== */
-
-  addButton.addEventListener(
-    "click",
-    function () {
-
-      const index = nextIndex++;
-
-      const row =
-        document.createElement("div");
-
-      row.className =
-        "admin-ts-option-form";
-
-      row.setAttribute(
-        "data-admin-option-row",
-        ""
-      );
-
-
-      row.innerHTML = `
-
-        <input
-          type="hidden"
-          name="test_series_question[test_series_options_attributes][${index}][position]"
-          value=""
-          class="admin-option-position">
-
-        <input
-          type="hidden"
-          name="test_series_question[test_series_options_attributes][${index}][_destroy]"
-          value="0"
-          class="admin-option-destroy">
-
-        <div class="admin-ts-option-number">
-          Option
-        </div>
-
-        <div class="admin-ts-option-fields">
-
-          <div>
-
-            <label for="admin_option_${index}_english">
-              English
-            </label>
-
-            <input
-              type="text"
-              id="admin_option_${index}_english"
-              name="test_series_question[test_series_options_attributes][${index}][option_text]"
-              class="admin-ts-input"
-              required>
-
-          </div>
-
-          <div>
-
-            <label for="admin_option_${index}_hindi">
-              Hindi
-            </label>
-
-            <input
-              type="text"
-              id="admin_option_${index}_hindi"
-              name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
-              class="admin-ts-input">
-
-          </div>
-
-        </div>
-
-        <div class="admin-ts-option-correct">
-
-          <label>
-
-            <input
-              type="radio"
-              name="admin_correct_option"
-              value="${index}"
-              class="admin-dynamic-correct-radio"
-              data-correct-option>
-
-            Correct Answer
-
-          </label>
-
-        </div>
-
-        <button
-          type="button"
-          class="admin-ts-remove-option"
-          data-remove-admin-option>
-
-          Remove
-
-        </button>
-      `;
-
-
-      container.appendChild(row);
-
-      updatePositions();
-
-    }
-  );
-
-
-  /* =======================================================
-     REMOVE OPTION
-  ======================================================== */
-
-  container.addEventListener(
-    "click",
-    function (event) {
-
-      const removeButton =
-        event.target.closest(
-          "[data-remove-admin-option]"
-        );
-
-      if (!removeButton) {
-        return;
-      }
-
-
-      const row =
-        removeButton.closest(
+      return Array.from(
+        container.querySelectorAll(
           "[data-admin-option-row]"
-        );
+        )
+      ).filter(function (row) {
 
-      if (!row) {
-        return;
-      }
+        return row.style.display !== "none";
+
+      });
+
+    }
 
 
-      const activeRows =
+    /*
+     * ==================================================
+     * UPDATE POSITIONS
+     * ==================================================
+     */
+
+    function updatePositions() {
+
+      const rows =
         getActiveRows();
 
 
-      /*
-       * Prevent removing if only 2 options remain.
-       */
-      if (activeRows.length <= 2) {
+      rows.forEach(function (row, index) {
 
-        alert(
-          "A question must have at least 2 options."
-        );
-
-        return;
-
-      }
-
-
-      const destroyField =
-        row.querySelector(
-          ".admin-option-destroy"
-        );
-
-
-      if (destroyField) {
-
-        /*
-         * Existing database option.
-         * Mark it for destruction rather than
-         * removing it from the submitted params.
-         */
-        destroyField.value = "1";
-
-        row.style.display = "none";
-
-
-      } else {
-
-        /*
-         * Newly added option.
-         * It does not exist in DB, so simply remove it.
-         */
-        row.remove();
-
-      }
-
-
-      updatePositions();
-
-    }
-  );
-
-
-  /* =======================================================
-     CORRECT ANSWER
-  ======================================================== */
-
-  container.addEventListener(
-    "change",
-    function (event) {
-
-      if (
-        !event.target.matches(
-          ".admin-correct-radio, .admin-dynamic-correct-radio"
-        )
-      ) {
-        return;
-      }
-
-
-      const selected =
-        event.target;
-
-
-      /*
-       * Persisted Rails radio buttons and dynamically
-       * created radio buttons need to be synchronized.
-       */
-      container
-        .querySelectorAll(
-          ".admin-correct-radio, .admin-dynamic-correct-radio"
-        )
-        .forEach(function (radio) {
-
-          if (radio !== selected) {
-            radio.checked = false;
-          }
-
-        });
-
-
-      /*
-       * IMPORTANT:
-       * Rails needs is_correct=true on the selected
-       * nested option.
-       */
-      if (
-        selected.classList.contains(
-          "admin-dynamic-correct-radio"
-        )
-      ) {
-
-        const index =
-          selected.value;
-
-        /*
-         * Find the dynamically-created option row.
-         */
-        const row =
-          selected.closest(
-            "[data-admin-option-row]"
-          );
-
-        if (row) {
-
-          /*
-           * Add the actual Rails nested is_correct field.
-           */
-          let correctField =
-            row.querySelector(
-              ".admin-dynamic-is-correct"
-            );
-
-          if (!correctField) {
-
-            correctField =
-              document.createElement(
-                "input"
-              );
-
-            correctField.type = "hidden";
-
-            correctField.name =
-              `test_series_question[test_series_options_attributes][${index}][is_correct]`;
-
-            correctField.value = "true";
-
-            correctField.className =
-              "admin-dynamic-is-correct";
-
-            row.appendChild(correctField);
-
-          } else {
-
-            correctField.value = "true";
-
-          }
-
-        }
-
-      }
-
-    }
-  );
-
-
-  /* =======================================================
-     BEFORE SUBMIT
-  ======================================================== */
-
-  form.addEventListener(
-    "submit",
-    function (event) {
-
-      const activeRows =
-        getActiveRows();
-
-
-      /*
-       * Minimum 2 options.
-       */
-      if (activeRows.length < 2) {
-
-        event.preventDefault();
-
-        alert(
-          "A question must have at least 2 options."
-        );
-
-        return;
-
-      }
-
-
-      /*
-       * Reset all active options to false.
-       *
-       * Then set exactly one selected option to true.
-       */
-      activeRows.forEach(function (row) {
-
-        let correctField =
+        const positionField =
           row.querySelector(
-            ".admin-option-is-correct"
+            ".admin-option-position"
           );
 
-        /*
-         * Persisted Rails radio buttons already
-         * generate the is_correct parameter.
-         *
-         * For dynamically created options, create
-         * the hidden Rails field here.
-         */
-        const radio =
-          row.querySelector(
-            ".admin-correct-radio:checked, .admin-dynamic-correct-radio:checked"
-          );
 
-        if (
-          radio &&
-          radio.classList.contains(
-            "admin-dynamic-correct-radio"
-          )
-        ) {
+        if (positionField) {
 
-          if (!row.querySelector(".admin-dynamic-is-correct")) {
-
-            const hidden =
-              document.createElement("input");
-
-            hidden.type = "hidden";
-
-            hidden.name =
-              radio.name.replace(
-                "admin_correct_option",
-                `test_series_question[test_series_options_attributes][${radio.value}][is_correct]`
-              );
-
-            hidden.value = "true";
-
-            hidden.className =
-              "admin-dynamic-is-correct";
-
-            row.appendChild(hidden);
-
-          }
+          positionField.value =
+            index + 1;
 
         }
 
       });
 
+    }
 
-      /*
-       * Make sure there is exactly one correct answer.
-       */
-      const checked =
+
+    /*
+     * ==================================================
+     * ENFORCE ONE CORRECT RADIO
+     * ==================================================
+     */
+
+    function enforceSingleCorrect(selectedRadio) {
+
+      const radios =
         container.querySelectorAll(
-          ".admin-correct-radio:checked, .admin-dynamic-correct-radio:checked"
+          'input[type="radio"][data-correct-option]'
         );
 
-      if (checked.length !== 1) {
 
-        event.preventDefault();
+      radios.forEach(function (radio) {
 
-        alert(
-          "Please select exactly one correct answer."
-        );
+        if (radio !== selectedRadio) {
 
-        return;
+          radio.checked = false;
 
-      }
+        }
+
+      });
 
     }
+
+
+    /*
+     * ==================================================
+     * ADD OPTION
+     * ==================================================
+     */
+
+    if (
+      addButton.dataset.addInitialized !== "true"
+    ) {
+
+      addButton.dataset.addInitialized = "true";
+
+
+      addButton.addEventListener(
+        "click",
+        function () {
+
+          const index =
+            nextIndex++;
+
+
+          const row =
+            document.createElement("div");
+
+
+          row.className =
+            "admin-ts-option-form";
+
+
+          row.setAttribute(
+            "data-admin-option-row",
+            ""
+          );
+
+
+          row.innerHTML = `
+
+            <input
+              type="hidden"
+              name="test_series_question[test_series_options_attributes][${index}][position]"
+              value=""
+              class="admin-option-position">
+
+            <input
+              type="hidden"
+              name="test_series_question[test_series_options_attributes][${index}][_destroy]"
+              value="0"
+              class="admin-option-destroy">
+
+            <div class="admin-ts-option-number">
+              Option
+            </div>
+
+            <div class="admin-ts-option-fields">
+
+              <div>
+
+                <label for="admin_option_${index}_english">
+                  English
+                </label>
+
+                <input
+                  type="text"
+                  id="admin_option_${index}_english"
+                  name="test_series_question[test_series_options_attributes][${index}][option_text]"
+                  class="admin-ts-input"
+                  required>
+
+              </div>
+
+              <div>
+
+                <label for="admin_option_${index}_hindi">
+                  Hindi
+                </label>
+
+                <input
+                  type="text"
+                  id="admin_option_${index}_hindi"
+                  name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
+                  class="admin-ts-input">
+
+              </div>
+
+            </div>
+
+            <div class="admin-ts-option-correct">
+
+              <label>
+
+                <input
+                  type="radio"
+                  name="admin_correct_option"
+                  value="${index}"
+                  class="admin-dynamic-correct-radio"
+                  data-correct-option>
+
+                Correct Answer
+
+              </label>
+
+            </div>
+
+            <button
+              type="button"
+              class="admin-ts-remove-option"
+              data-remove-admin-option>
+
+              Remove
+
+            </button>
+          `;
+
+
+          container.appendChild(row);
+
+
+          updatePositions();
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ==================================================
+     * REMOVE OPTION
+     * ==================================================
+     */
+
+    if (
+      container.dataset.removeInitialized !== "true"
+    ) {
+
+      container.dataset.removeInitialized = "true";
+
+
+      container.addEventListener(
+        "click",
+        function (event) {
+
+          const removeButton =
+            event.target.closest(
+              "[data-remove-admin-option]"
+            );
+
+
+          if (!removeButton) {
+            return;
+          }
+
+
+          const row =
+            removeButton.closest(
+              "[data-admin-option-row]"
+            );
+
+
+          if (!row) {
+            return;
+          }
+
+
+          const activeRows =
+            getActiveRows();
+
+
+          /*
+           * Minimum 2 options required
+           */
+
+          if (activeRows.length <= 2) {
+
+            alert(
+              "A question must have at least 2 options."
+            );
+
+            return;
+
+          }
+
+
+          const destroyField =
+            row.querySelector(
+              ".admin-option-destroy"
+            );
+
+
+          if (destroyField) {
+
+            /*
+             * Existing database option
+             */
+
+            destroyField.value = "1";
+
+            row.style.display = "none";
+
+
+          } else {
+
+            /*
+             * Newly added option
+             */
+
+            row.remove();
+
+          }
+
+
+          updatePositions();
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ==================================================
+     * CORRECT ANSWER
+     * ==================================================
+     */
+
+    if (
+      container.dataset.correctInitialized !== "true"
+    ) {
+
+      container.dataset.correctInitialized = "true";
+
+
+      container.addEventListener(
+        "change",
+        function (event) {
+
+          const selected =
+            event.target;
+
+
+          if (
+            !selected.matches(
+              ".admin-correct-radio, .admin-dynamic-correct-radio"
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          /*
+           * Keep only one radio selected
+           */
+
+          enforceSingleCorrect(
+            selected
+          );
+
+
+          /*
+           * =============================================
+           * DYNAMIC OPTION
+           * =============================================
+           */
+
+          if (
+            selected.classList.contains(
+              "admin-dynamic-correct-radio"
+            )
+          ) {
+
+            const index =
+              selected.value;
+
+
+            const row =
+              selected.closest(
+                "[data-admin-option-row]"
+              );
+
+
+            if (!row) {
+              return;
+            }
+
+
+            /*
+             * Find/create Rails nested
+             * is_correct hidden field
+             */
+
+            let correctField =
+              row.querySelector(
+                ".admin-dynamic-is-correct"
+              );
+
+
+            if (!correctField) {
+
+              correctField =
+                document.createElement(
+                  "input"
+                );
+
+
+              correctField.type =
+                "hidden";
+
+
+              correctField.name =
+                `test_series_question[test_series_options_attributes][${index}][is_correct]`;
+
+
+              correctField.className =
+                "admin-dynamic-is-correct";
+
+
+              row.appendChild(
+                correctField
+              );
+
+            }
+
+
+            correctField.value =
+              "true";
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ==================================================
+     * BEFORE SUBMIT
+     * ==================================================
+     */
+
+    if (
+      form.dataset.submitInitialized !== "true"
+    ) {
+
+      form.dataset.submitInitialized = "true";
+
+
+      form.addEventListener(
+        "submit",
+        function (event) {
+
+          const activeRows =
+            getActiveRows();
+
+
+          /*
+           * Minimum 2 options
+           */
+
+          if (activeRows.length < 2) {
+
+            event.preventDefault();
+
+            alert(
+              "A question must have at least 2 options."
+            );
+
+            return;
+
+          }
+
+
+          /*
+           * =============================================
+           * FIND SELECTED CORRECT OPTION
+           * =============================================
+           */
+
+          const checked =
+            container.querySelectorAll(
+              ".admin-correct-radio:checked, .admin-dynamic-correct-radio:checked"
+            );
+
+
+          /*
+           * Exactly one correct answer
+           */
+
+          if (checked.length !== 1) {
+
+            event.preventDefault();
+
+            alert(
+              "Please select exactly one correct answer."
+            );
+
+            return;
+
+          }
+
+
+          const selected =
+            checked[0];
+
+
+          /*
+           * =============================================
+           * RESET DYNAMIC is_correct FIELDS
+           * =============================================
+           */
+
+          activeRows.forEach(function (row) {
+
+            const dynamicCorrectField =
+              row.querySelector(
+                ".admin-dynamic-is-correct"
+              );
+
+
+            if (dynamicCorrectField) {
+
+              dynamicCorrectField.value =
+                "false";
+
+            }
+
+          });
+
+
+          /*
+           * =============================================
+           * SELECTED DYNAMIC OPTION
+           * =============================================
+           */
+
+          if (
+            selected.classList.contains(
+              "admin-dynamic-correct-radio"
+            )
+          ) {
+
+            const selectedRow =
+              selected.closest(
+                "[data-admin-option-row]"
+              );
+
+
+            if (selectedRow) {
+
+              let correctField =
+                selectedRow.querySelector(
+                  ".admin-dynamic-is-correct"
+                );
+
+
+              if (!correctField) {
+
+                correctField =
+                  document.createElement(
+                    "input"
+                  );
+
+
+                correctField.type =
+                  "hidden";
+
+
+                correctField.name =
+                  `test_series_question[test_series_options_attributes][${selected.value}][is_correct]`;
+
+
+                correctField.className =
+                  "admin-dynamic-is-correct";
+
+
+                selectedRow.appendChild(
+                  correctField
+                );
+
+              }
+
+
+              correctField.value =
+                "true";
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ==================================================
+     * INITIAL POSITIONS
+     * ==================================================
+     */
+
+    updatePositions();
+
+  }
+
+
+  /*
+   * ==================================================
+   * TURBO NAVIGATION
+   * ==================================================
+   */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeAdminQuestionForm
   );
 
 
-  updatePositions();
+  /*
+   * ==================================================
+   * NORMAL PAGE LOAD
+   * ==================================================
+   */
 
-});
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeAdminQuestionForm();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeAdminQuestionForm,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

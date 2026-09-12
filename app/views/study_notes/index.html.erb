@@ -387,33 +387,108 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded",function(){
+(function () {
 
-const input=document.getElementById("searchInput");
+  "use strict";
 
-if(input){
 
-input.addEventListener("keyup",function(){
+  /* =========================================================
+     SEARCH INITIALIZATION
+  ========================================================== */
 
-const value=this.value.toLowerCase();
+  function initializeSearch() {
 
-document.querySelectorAll("tbody tr").forEach(function(row){
+    const input =
+      document.getElementById("searchInput");
 
-row.style.display=row.innerText.toLowerCase().includes(value)
 
-? ""
+    if (!input) {
+      return;
+    }
 
-: "none";
 
-});
+    /* =======================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ======================================================== */
 
-});
+    if (
+      input.dataset.searchInitialized === "true"
+    ) {
+      return;
+    }
 
-}
 
-});
+    input.dataset.searchInitialized = "true";
+
+
+    /* =======================================================
+       SEARCH
+    ======================================================== */
+
+    input.addEventListener(
+      "input",
+      function () {
+
+        const value =
+          this.value
+            .trim()
+            .toLowerCase();
+
+
+        document
+          .querySelectorAll("tbody tr")
+          .forEach(function (row) {
+
+            const text =
+              (row.textContent || "")
+                .toLowerCase();
+
+
+            row.style.display =
+              text.includes(value)
+                ? ""
+                : "none";
+
+          });
+
+      }
+    );
+
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeSearch
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeSearch();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeSearch,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>

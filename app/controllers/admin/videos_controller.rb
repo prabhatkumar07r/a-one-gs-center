@@ -41,14 +41,14 @@ def new
     @playlist = @course.playlists.find(params[:playlist_id])
 
     @video = @playlist.videos.new(
-      status: "Active"
+      status: "active"
     )
 
     @video.position =
       (@playlist.videos.maximum(:position) || 0) + 1
   else
     @video = @course.videos.new(
-      status: "Active"
+      status: "active"
     )
   end
 
@@ -70,7 +70,7 @@ end
 
         @video = @playlist.videos.new(video_params)
         @video.course = @course
-        @video.status = "Active" if @video.status.blank?
+        @video.status = "active" if @video.status.blank?
 
         # =====================================================
         # IMPORTANT:

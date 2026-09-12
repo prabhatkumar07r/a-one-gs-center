@@ -1427,321 +1427,555 @@
 
 </div>
 
-
 <!-- =========================================================
      JAVASCRIPT
 ========================================================= -->
 
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  /* ========================================================
-     TAB SYSTEM
-  ======================================================== */
+(function () {
 
-  const tabButtons =
-    document.querySelectorAll(".quiz-tab-btn");
+  /* =========================================================
+     QUIZ INDEX
+     TAB + SEARCH + SELECT ALL
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
 
-  const tabContents =
-    document.querySelectorAll(".quiz-tab-content");
+  function initializeQuizIndex() {
 
+    const tabButtons =
+      document.querySelectorAll(
+        ".quiz-tab-btn"
+      );
 
-  tabButtons.forEach(function (button) {
+    const tabContents =
+      document.querySelectorAll(
+        ".quiz-tab-content"
+      );
 
-    button.addEventListener("click", function () {
+    const searchInput =
+      document.getElementById(
+        "quizSearchInput"
+      );
 
-      const target =
-        button.getAttribute("data-tab");
-
-
-      /* Remove active from buttons */
-
-      tabButtons.forEach(function (btn) {
-        btn.classList.remove("active");
-      });
-
-
-      /* Hide all content */
-
-      tabContents.forEach(function (content) {
-        content.classList.remove("active");
-      });
+    const searchButton =
+      document.getElementById(
+        "quizSearchButton"
+      );
 
 
-      /* Activate clicked tab */
+    if (
+      !tabButtons.length &&
+      !tabContents.length &&
+      !searchInput &&
+      !searchButton
+    ) {
+      return;
+    }
 
-      button.classList.add("active");
+
+    /* =======================================================
+       SEARCH / FILTER
+    ======================================================= */
+
+    function filterQuizzes() {
+
+      if (!searchInput) {
+        return;
+      }
 
 
-      const targetContent =
+      const searchTerm =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+
+      const activeContent =
         document.querySelector(
-          '.quiz-tab-content[data-content="' +
-          target +
+          ".quiz-tab-content.active"
+        );
+
+
+      if (!activeContent) {
+        return;
+      }
+
+
+      const rows =
+        activeContent.querySelectorAll(
+          "[data-quiz-row]"
+        );
+
+
+      const noResults =
+        activeContent.querySelector(
+          ".quiz-no-results"
+        );
+
+
+      let visibleCount = 0;
+
+
+      rows.forEach(function (row) {
+
+        const searchableText =
+          (
+            row.getAttribute(
+              "data-search"
+            ) || ""
+          ).toLowerCase();
+
+
+        if (
+          searchTerm === "" ||
+          searchableText.includes(
+            searchTerm
+          )
+        ) {
+
+          row.style.display = "grid";
+
+          visibleCount++;
+
+        } else {
+
+          row.style.display = "none";
+
+        }
+
+      });
+
+
+      if (noResults) {
+
+        noResults.style.display =
+          searchTerm !== "" &&
+          visibleCount === 0
+            ? "block"
+            : "none";
+
+      }
+
+    }
+
+
+    /* =======================================================
+       TAB SYSTEM
+    ======================================================= */
+
+    tabButtons.forEach(function (button) {
+
+      if (
+        button.dataset.tabInitialized === "true"
+      ) {
+        return;
+      }
+
+
+      button.dataset.tabInitialized =
+        "true";
+
+
+      button.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+
+          const target =
+            button.getAttribute(
+              "data-tab"
+            );
+
+
+          /* -----------------------------------------------
+             Remove active from buttons
+          ----------------------------------------------- */
+
+          tabButtons.forEach(
+            function (btn) {
+
+              btn.classList.remove(
+                "active"
+              );
+
+            }
+          );
+
+
+          /* -----------------------------------------------
+             Hide all content
+          ----------------------------------------------- */
+
+          tabContents.forEach(
+            function (content) {
+
+              content.classList.remove(
+                "active"
+              );
+
+            }
+          );
+
+
+          /* -----------------------------------------------
+             Activate clicked tab
+          ----------------------------------------------- */
+
+          button.classList.add(
+            "active"
+          );
+
+
+          const targetContent =
+            document.querySelector(
+              '.quiz-tab-content[data-content="' +
+              target +
+              '"]'
+            );
+
+
+          if (targetContent) {
+
+            targetContent.classList.add(
+              "active"
+            );
+
+          }
+
+
+          /* -----------------------------------------------
+             Re-run search for active tab
+          ----------------------------------------------- */
+
+          filterQuizzes();
+
+        }
+      );
+
+    });
+
+
+    /* =======================================================
+       SEARCH BUTTON
+    ======================================================= */
+
+    if (
+      searchButton &&
+      searchButton.dataset.searchInitialized !== "true"
+    ) {
+
+      searchButton.dataset.searchInitialized =
+        "true";
+
+
+      searchButton.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+          filterQuizzes();
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       SEARCH INPUT
+    ======================================================= */
+
+    if (
+      searchInput &&
+      searchInput.dataset.searchInitialized !== "true"
+    ) {
+
+      searchInput.dataset.searchInitialized =
+        "true";
+
+
+      /* -----------------------------------------------
+         Enter key
+      ----------------------------------------------- */
+
+      searchInput.addEventListener(
+        "keydown",
+        function (event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            event.preventDefault();
+
+            filterQuizzes();
+
+          }
+
+        }
+      );
+
+
+      /* -----------------------------------------------
+         Live search
+      ----------------------------------------------- */
+
+      searchInput.addEventListener(
+        "input",
+        function () {
+
+          filterQuizzes();
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       SELECT ALL / INDIVIDUAL SELECTION
+    ======================================================= */
+
+    function updateSelection(group) {
+
+      if (!group) {
+        return;
+      }
+
+
+      const checkboxes =
+        document.querySelectorAll(
+          '.quiz-checkbox[data-group="' +
+          group +
           '"]'
         );
 
 
-      if (targetContent) {
-        targetContent.classList.add("active");
+      const selectAll =
+        document.querySelector(
+          '.select-all-checkbox[data-group="' +
+          group +
+          '"]'
+        );
+
+
+      const countElement =
+        document.querySelector(
+          '.selected-count[data-group="' +
+          group +
+          '"]'
+        );
+
+
+      const checked =
+        Array.from(checkboxes)
+          .filter(function (checkbox) {
+
+            return checkbox.checked;
+
+          });
+
+
+      /* -----------------------------------------------
+         Selected count
+      ----------------------------------------------- */
+
+      if (countElement) {
+
+        countElement.textContent =
+          checked.length;
+
       }
 
 
-      /* Re-run search for active tab */
+      /* -----------------------------------------------
+         Select-all state
+      ----------------------------------------------- */
+
+      if (selectAll) {
+
+        selectAll.checked =
+          checkboxes.length > 0 &&
+          checked.length ===
+            checkboxes.length;
+
+
+        selectAll.indeterminate =
+          checked.length > 0 &&
+          checked.length <
+            checkboxes.length;
+
+      }
+
+    }
+
+
+    /* =======================================================
+       SELECT ALL CHECKBOXES
+    ======================================================= */
+
+    const selectAllCheckboxes =
+      document.querySelectorAll(
+        ".select-all-checkbox"
+      );
+
+
+    selectAllCheckboxes.forEach(
+      function (selectAll) {
+
+        if (
+          selectAll.dataset.selectionInitialized ===
+          "true"
+        ) {
+          return;
+        }
+
+
+        selectAll.dataset.selectionInitialized =
+          "true";
+
+
+        selectAll.addEventListener(
+          "change",
+          function () {
+
+            const group =
+              selectAll.getAttribute(
+                "data-group"
+              );
+
+
+            const checkboxes =
+              document.querySelectorAll(
+                '.quiz-checkbox[data-group="' +
+                group +
+                '"]'
+              );
+
+
+            checkboxes.forEach(
+              function (checkbox) {
+
+                checkbox.checked =
+                  selectAll.checked;
+
+              }
+            );
+
+
+            updateSelection(group);
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =======================================================
+       INDIVIDUAL QUIZ CHECKBOXES
+    ======================================================= */
+
+    const quizCheckboxes =
+      document.querySelectorAll(
+        ".quiz-checkbox"
+      );
+
+
+    quizCheckboxes.forEach(
+      function (checkbox) {
+
+        if (
+          checkbox.dataset.selectionInitialized ===
+          "true"
+        ) {
+          return;
+        }
+
+
+        checkbox.dataset.selectionInitialized =
+          "true";
+
+
+        checkbox.addEventListener(
+          "change",
+          function () {
+
+            const group =
+              checkbox.getAttribute(
+                "data-group"
+              );
+
+
+            updateSelection(group);
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =======================================================
+       INITIAL STATE
+    ======================================================= */
+
+    updateSelection(
+      "course-wise"
+    );
+
+    updateSelection(
+      "video-wise"
+    );
+
+
+    /* =======================================================
+       INITIAL SEARCH STATE
+    ======================================================= */
+
+    if (searchInput && searchInput.value.trim()) {
 
       filterQuizzes();
 
-    });
-
-  });
-
-
-  /* ========================================================
-     SEARCH
-  ======================================================== */
-
-  const searchInput =
-    document.getElementById("quizSearchInput");
-
-  const searchButton =
-    document.getElementById("quizSearchButton");
-
-
-  function filterQuizzes() {
-
-    if (!searchInput) return;
-
-
-    const searchTerm =
-      searchInput.value
-        .trim()
-        .toLowerCase();
-
-
-    const activeContent =
-      document.querySelector(
-        ".quiz-tab-content.active"
-      );
-
-
-    if (!activeContent) return;
-
-
-    const rows =
-      activeContent.querySelectorAll(
-        "[data-quiz-row]"
-      );
-
-
-    const noResults =
-      activeContent.querySelector(
-        ".quiz-no-results"
-      );
-
-
-    let visibleCount = 0;
-
-
-    rows.forEach(function (row) {
-
-      const searchableText =
-        row.getAttribute("data-search") || "";
-
-
-      if (
-        searchTerm === "" ||
-        searchableText.includes(searchTerm)
-      ) {
-
-        row.style.display = "grid";
-
-        visibleCount++;
-
-      } else {
-
-        row.style.display = "none";
-
-      }
-
-    });
-
-
-    if (noResults) {
-
-      noResults.style.display =
-        searchTerm !== "" && visibleCount === 0
-          ? "block"
-          : "none";
-
     }
 
   }
 
 
-  if (searchButton) {
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
 
-    searchButton.addEventListener(
-      "click",
-      filterQuizzes
+  document.addEventListener(
+    "turbo:load",
+    initializeQuizIndex
+  );
+
+
+  /* =========================================================
+     INITIAL PAGE LOAD
+  ========================================================= */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeQuizIndex();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuizIndex,
+      { once: true }
     );
 
   }
 
+})();
 
-  if (searchInput) {
-
-    searchInput.addEventListener(
-      "keydown",
-      function (event) {
-
-        if (event.key === "Enter") {
-          event.preventDefault();
-          filterQuizzes();
-        }
-
-      }
-    );
-
-
-    searchInput.addEventListener(
-      "input",
-      function () {
-
-        filterQuizzes();
-
-      }
-    );
-
-  }
-
-
-  /* ========================================================
-     SELECT ALL + INDIVIDUAL SELECTION
-  ======================================================== */
-
-  function updateSelection(group) {
-
-    const checkboxes =
-      document.querySelectorAll(
-        '.quiz-checkbox[data-group="' +
-        group +
-        '"]'
-      );
-
-
-    const selectAll =
-      document.querySelector(
-        '.select-all-checkbox[data-group="' +
-        group +
-        '"]'
-      );
-
-
-    const countElement =
-      document.querySelector(
-        '.selected-count[data-group="' +
-        group +
-        '"]'
-      );
-
-
-    const checked =
-      Array.from(checkboxes)
-        .filter(function (checkbox) {
-          return checkbox.checked;
-        });
-
-
-    if (countElement) {
-      countElement.textContent =
-        checked.length;
-    }
-
-
-    if (selectAll) {
-
-      selectAll.checked =
-        checkboxes.length > 0 &&
-        checked.length === checkboxes.length;
-
-      selectAll.indeterminate =
-        checked.length > 0 &&
-        checked.length < checkboxes.length;
-
-    }
-
-  }
-
-
-  const selectAllCheckboxes =
-    document.querySelectorAll(
-      ".select-all-checkbox"
-    );
-
-
-  selectAllCheckboxes.forEach(function (selectAll) {
-
-    selectAll.addEventListener(
-      "change",
-      function () {
-
-        const group =
-          selectAll.getAttribute("data-group");
-
-
-        const checkboxes =
-          document.querySelectorAll(
-            '.quiz-checkbox[data-group="' +
-            group +
-            '"]'
-          );
-
-
-        checkboxes.forEach(function (checkbox) {
-
-          checkbox.checked =
-            selectAll.checked;
-
-        });
-
-
-        updateSelection(group);
-
-      }
-    );
-
-  });
-
-
-  const quizCheckboxes =
-    document.querySelectorAll(
-      ".quiz-checkbox"
-    );
-
-
-  quizCheckboxes.forEach(function (checkbox) {
-
-    checkbox.addEventListener(
-      "change",
-      function () {
-
-        const group =
-          checkbox.getAttribute("data-group");
-
-
-        updateSelection(group);
-
-      }
-    );
-
-  });
-
-
-  /* ========================================================
-     INITIAL STATE
-  ======================================================== */
-
-  updateSelection("course-wise");
-  updateSelection("video-wise");
-
-});
 </script>

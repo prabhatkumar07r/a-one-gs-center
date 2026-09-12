@@ -1077,29 +1077,78 @@
 </nav>
 
 
-
-
-
-
 <script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
   function initializeAdminHeader() {
-    const searchForm = document.querySelector("[data-admin-search]");
+
+    const searchForm =
+      document.querySelector("[data-admin-search]");
+
 
     if (!searchForm) {
       return;
     }
 
-    if (searchForm.dataset.initialized === "true") {
+
+    /* =====================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ===================================================== */
+
+    if (
+      searchForm.dataset.initialized === "true"
+    ) {
       return;
     }
 
     searchForm.dataset.initialized = "true";
 
-    searchForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-    });
+
+    /* =====================================================
+       ADMIN SEARCH
+    ===================================================== */
+
+    searchForm.addEventListener(
+      "submit",
+      function (event) {
+
+        event.preventDefault();
+
+      }
+    );
+
   }
 
-  document.addEventListener("DOMContentLoaded", initializeAdminHeader);
-  document.addEventListener("turbo:load", initializeAdminHeader);
+
+  /* =========================================================
+     TURBO PAGE LOAD
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeAdminHeader
+  );
+
+
+  /* =========================================================
+     INITIAL NORMAL PAGE LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeAdminHeader();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeAdminHeader,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

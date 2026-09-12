@@ -183,27 +183,80 @@
 </div>
 
 </div>
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("turbo:load", function () {
 
-  const search = document.getElementById("searchBox");
+(function () {
 
-  if (!search) return;
+  /* =====================================================
+     NOTES SEARCH
+     TURBO SAFE + DUPLICATE SAFE
+  ===================================================== */
 
-  search.addEventListener("keyup", function () {
+  function initializeNotesSearch() {
 
-    let value = this.value.toLowerCase();
+    const search =
+      document.getElementById("searchBox");
 
-    document.querySelectorAll(".note-card").forEach(function(card){
+    if (!search) return;
 
-      let text = card.innerText.toLowerCase();
+    if (search.dataset.searchInitialized === "true") {
+      return;
+    }
 
-      card.style.display = text.includes(value) ? "" : "none";
+    search.dataset.searchInitialized = "true";
+
+
+    search.addEventListener("input", function () {
+
+      const value =
+        this.value.toLowerCase().trim();
+
+
+      document
+        .querySelectorAll(".note-card")
+        .forEach(function (card) {
+
+          const text =
+            card.innerText.toLowerCase();
+
+          card.style.display =
+            text.includes(value) ? "" : "none";
+
+        });
 
     });
 
-  });
+  }
 
-});
+
+  /* =====================================================
+     TURBO
+  ===================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeNotesSearch
+  );
+
+
+  /* =====================================================
+     INITIAL LOAD
+  ===================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeNotesSearch();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeNotesSearch,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

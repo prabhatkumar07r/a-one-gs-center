@@ -2564,89 +2564,135 @@
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const backBtn =
-    document.getElementById("learningBackBtn");
+  /* =====================================================
+     LEARNING PAGE
+     TURBO SAFE + DUPLICATE SAFE
+  ===================================================== */
+
+  function initializeLearningPage() {
+
+    /* =====================================================
+       BACK BUTTON
+    ===================================================== */
+
+    const backBtn =
+      document.getElementById("learningBackBtn");
+
+    if (
+      backBtn &&
+      backBtn.dataset.initialized !== "true"
+    ) {
+
+      backBtn.dataset.initialized = "true";
+
+      backBtn.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        if (
+          document.referrer &&
+          document.referrer !== window.location.href
+        ) {
+
+          window.history.back();
+
+        } else {
+
+          window.location.href = "/";
+
+        }
+
+      });
+
+    }
 
 
-  if (backBtn) {
+    /* =====================================================
+       PREVENT DOUBLE-CLICKING QUIZ BUTTONS
+    ===================================================== */
 
-    backBtn.addEventListener("click", function () {
+    const quizButtons =
+      document.querySelectorAll(".start-quiz-button");
 
-      if (
-        document.referrer &&
-        document.referrer !== window.location.href
-      ) {
 
-        window.history.back();
+    quizButtons.forEach(function (button) {
 
-      } else {
-
-        window.location.href = "/";
-
+      if (button.dataset.quizInitialized === "true") {
+        return;
       }
+
+      button.dataset.quizInitialized = "true";
+
+
+      button.addEventListener("click", function () {
+
+        if (button.dataset.clicked === "true") {
+          return;
+        }
+
+
+        button.dataset.clicked = "true";
+
+
+        const originalHTML =
+          button.innerHTML;
+
+
+        button.innerHTML =
+          "<span>⏳</span> Starting Quiz...";
+
+
+        setTimeout(function () {
+
+          if (document.body.contains(button)) {
+
+            button.innerHTML =
+              originalHTML;
+
+            button.dataset.clicked =
+              "false";
+
+          }
+
+        }, 5000);
+
+      });
 
     });
 
   }
 
 
-  /*
-   * Prevent double-clicking quiz buttons
-   */
+  /* =====================================================
+     TURBO SUPPORT
+  ===================================================== */
 
-  const quizButtons =
-    document.querySelectorAll(
-      ".start-quiz-button"
+  document.addEventListener(
+    "turbo:load",
+    initializeLearningPage
+  );
+
+
+  /* =====================================================
+     INITIAL PAGE LOAD
+  ===================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeLearningPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeLearningPage,
+      { once: true }
     );
 
+  }
 
-  quizButtons.forEach(function (button) {
-
-    button.addEventListener("click", function () {
-
-      if (
-        button.dataset.clicked === "true"
-      ) {
-
-        return;
-
-      }
-
-
-      button.dataset.clicked = "true";
-
-
-      const originalHTML =
-        button.innerHTML;
-
-
-      button.innerHTML =
-        "<span>⏳</span> Starting Quiz...";
-
-
-      setTimeout(function () {
-
-        if (
-          document.body.contains(button)
-        ) {
-
-          button.innerHTML =
-            originalHTML;
-
-          button.dataset.clicked =
-            "false";
-
-        }
-
-      }, 5000);
-
-    });
-
-  });
-
-
-});
+})();
 
 </script>

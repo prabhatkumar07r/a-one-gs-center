@@ -369,40 +369,73 @@
   </div>
 
 </div>
-
-
 <script nonce="<%= content_security_policy_nonce %>">
-  document.addEventListener("turbo:load", function () {
+(function () {
 
-    const form = document.getElementById("teacher-playlist-form");
-    const title = document.getElementById("playlist_title");
-    const submitButton = document.getElementById("playlist-submit-button");
+  // =========================================================
+  // TEACHER PANEL - PLAYLIST FORM
+  // TURBO SAFE + DUPLICATE SAFE
+  // =========================================================
 
-    /* ---------------------------------------------
-       CLEAN MULTIPLE SPACES IN TITLE
-    --------------------------------------------- */
+  function initializeTeacherPlaylistForm() {
 
-    if (title) {
+    const form =
+      document.getElementById("teacher-playlist-form");
+
+    const title =
+      document.getElementById("playlist_title");
+
+    const submitButton =
+      document.getElementById("playlist-submit-button");
+
+
+    if (!form || !title) return;
+
+
+    // =======================================================
+    // CLEAN MULTIPLE SPACES IN TITLE
+    // =======================================================
+
+    if (
+      title.dataset.inputInitialized !== "true"
+    ) {
+
+      title.dataset.inputInitialized = "true";
 
       title.addEventListener("input", function () {
 
-        this.value = this.value
-          .replace(/\s{2,}/g, " ");
+        this.value =
+          this.value.replace(/\s{2,}/g, " ");
 
       });
 
     }
 
 
-    /* ---------------------------------------------
-       PREVENT EMPTY TITLE
-    --------------------------------------------- */
+    // =======================================================
+    // FORM SUBMIT
+    // =======================================================
 
-    if (form && title) {
+    if (
+      form.dataset.submitInitialized !== "true"
+    ) {
+
+      form.dataset.submitInitialized = "true";
+
 
       form.addEventListener("submit", function (event) {
 
-        title.value = title.value.trim();
+        // -----------------------------------------------
+        // Remove leading/trailing spaces
+        // -----------------------------------------------
+
+        title.value =
+          title.value.trim();
+
+
+        // -----------------------------------------------
+        // PREVENT EMPTY TITLE
+        // -----------------------------------------------
 
         if (title.value.length === 0) {
 
@@ -410,20 +443,47 @@
 
           title.focus();
 
-          alert("Please enter a playlist title.");
+          alert(
+            "Please enter a playlist title."
+          );
 
           return;
 
         }
 
-        /* Prevent double submission */
+
+        // -----------------------------------------------
+        // PREVENT DOUBLE SUBMISSION
+        // -----------------------------------------------
 
         if (submitButton) {
 
+          if (submitButton.disabled) {
+
+            event.preventDefault();
+
+            return;
+
+          }
+
+
           submitButton.disabled = true;
 
-          submitButton.value =
-            "Saving...";
+
+          // Supports both <input> and <button>
+          if (
+            submitButton.tagName === "INPUT"
+          ) {
+
+            submitButton.value =
+              "Saving...";
+
+          } else {
+
+            submitButton.innerHTML =
+              '<i class="bi bi-hourglass-split"></i> Saving...';
+
+          }
 
         }
 
@@ -431,5 +491,36 @@
 
     }
 
-  });
+  }
+
+
+  // =========================================================
+  // TURBO NAVIGATION
+  // =========================================================
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherPlaylistForm
+  );
+
+
+  // =========================================================
+  // INITIAL PAGE LOAD
+  // =========================================================
+
+  if (document.readyState !== "loading") {
+
+    initializeTeacherPlaylistForm();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherPlaylistForm,
+      { once: true }
+    );
+
+  }
+
+})();
 </script>

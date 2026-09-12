@@ -147,5 +147,5 @@ Rails.application.configure do
 
   # IMPORTANT:
   # Keep Report-Only initially so existing pages do not break.
-  config.content_security_policy_report_only = true
+  config.content_security_policy_report_only = false
 end

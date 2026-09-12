@@ -922,72 +922,490 @@
 </div>
 
 <script nonce="<%= content_security_policy_nonce %>">
-  function initializeAdminCourseDetails() {
+(function () {
 
-    const page =
-      document.querySelector(".course-details-page");
+  function initializeAdminCourseForm() {
 
-    if (!page) {
+    const form = document.querySelector("[data-course-form]");
+
+    if (!form) {
       return;
     }
 
-    if (page.dataset.initialized === "true") {
+    /* Prevent duplicate initialization */
+    if (form.dataset.initialized === "true") {
       return;
     }
 
-    page.dataset.initialized = "true";
+    form.dataset.initialized = "true";
 
 
-    /* =====================================================
-       COURSE INFO CARD HOVER
-    ====================================================== */
+    /* =========================================================
+       FEE CALCULATION
+    ========================================================= */
 
-    const cards =
-      page.querySelectorAll(".course-info-item");
+    const originalFee =
+      document.getElementById("course_original_fee");
 
-    cards.forEach(function (card) {
+    const discount =
+      document.getElementById("course_discount_percentage");
 
-      card.addEventListener("mouseenter", function () {
-        card.style.transform = "translateY(-3px)";
-      });
+    const finalFee =
+      document.getElementById("course_fee");
 
-      card.addEventListener("mouseleave", function () {
-        card.style.transform = "";
-      });
-
-    });
+    const feePreview =
+      document.getElementById("feePreview");
 
 
-    /* =====================================================
-       QUICK ACTION / BUTTON CLICK FEEDBACK
-    ====================================================== */
+    function calculateFee() {
 
-    page
-      .querySelectorAll(".quick-action, .course-btn")
-      .forEach(function (link) {
+      if (!originalFee || !discount || !finalFee || !feePreview) {
+        return;
+      }
 
-        link.addEventListener("click", function () {
+      const original =
+        parseFloat(originalFee.value) || 0;
 
-          link.style.transform = "scale(.98)";
+      const discountValue =
+        parseFloat(discount.value) || 0;
 
-          setTimeout(function () {
-            link.style.transform = "";
-          }, 120);
 
-        });
+      if (original <= 0) {
 
-      });
+        feePreview.classList.remove("show");
+
+        return;
+      }
+
+
+      const safeDiscount =
+        Math.min(
+          Math.max(discountValue, 0),
+          100
+        );
+
+
+      const discountAmount =
+        original * safeDiscount / 100;
+
+
+      const calculatedFee =
+        Math.max(
+          original - discountAmount,
+          0
+        );
+
+
+      finalFee.value =
+        Math.round(calculatedFee);
+
+
+      if (safeDiscount > 0) {
+
+        feePreview.innerHTML =
+          "Original Fee: <strong>₹" +
+          original.toLocaleString("en-IN") +
+          "</strong> &nbsp; → &nbsp; " +
+          "Discount: <strong>" +
+          safeDiscount +
+          "%</strong> &nbsp; → &nbsp; " +
+          "Final Fee: <strong>₹" +
+          Math.round(calculatedFee).toLocaleString("en-IN") +
+          "</strong>";
+
+        feePreview.classList.add("show");
+
+      } else {
+
+        feePreview.classList.remove("show");
+
+      }
+
+    }
+
+
+    if (originalFee) {
+
+      originalFee.addEventListener(
+        "input",
+        calculateFee
+      );
+
+    }
+
+
+    if (discount) {
+
+      discount.addEventListener(
+        "input",
+        calculateFee
+      );
+
+    }
+
+
+    calculateFee();
+
+
+    /* =========================================================
+       CHARACTER COUNTER
+    ========================================================= */
+
+    const description =
+      document.getElementById("course_description");
+
+    const descriptionCounter =
+      form.querySelector(
+        '[data-counter-for="course_description"]'
+      );
+
+
+    function updateDescriptionCounter() {
+
+      if (!description || !descriptionCounter) {
+        return;
+      }
+
+      descriptionCounter.textContent =
+        description.value.length + " / 1000";
+
+    }
+
+
+    if (description) {
+
+      description.addEventListener(
+        "input",
+        updateDescriptionCounter
+      );
+
+      updateDescriptionCounter();
+
+    }
+
+
+    /* =========================================================
+       STATUS COLOR
+    ========================================================= */
+
+    const status =
+      document.getElementById("course_status");
+
+
+    function updateStatusStyle() {
+
+      if (!status) {
+        return;
+      }
+
+      status.classList.remove(
+        "status-active",
+        "status-inactive"
+      );
+
+
+      if (status.value === "Active") {
+
+        status.classList.add(
+          "status-active"
+        );
+
+      } else if (status.value === "Inactive") {
+
+        status.classList.add(
+          "status-inactive"
+        );
+
+      }
+
+    }
+
+
+    if (status) {
+
+      status.addEventListener(
+        "change",
+        updateStatusStyle
+      );
+
+      updateStatusStyle();
+
+    }
+
+
+    /* =========================================================
+       COURSE NAME VALIDATION
+    ========================================================= */
+
+    const courseName =
+      document.getElementById(
+        "course_Course_name"
+      );
+
+
+    const nameError =
+      courseName
+        ? courseName.parentElement.querySelector(
+            ".field-error"
+          )
+        : null;
+
+
+    function validateCourseName() {
+
+      if (!courseName) {
+        return true;
+      }
+
+
+      const valid =
+        courseName.value.trim().length > 0;
+
+
+      if (!valid) {
+
+        courseName.classList.add(
+          "is-invalid"
+        );
+
+
+        if (nameError) {
+
+          nameError.classList.add(
+            "show"
+          );
+
+        }
+
+      } else {
+
+        courseName.classList.remove(
+          "is-invalid"
+        );
+
+
+        if (nameError) {
+
+          nameError.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+
+
+      return valid;
+
+    }
+
+
+    if (courseName) {
+
+      courseName.addEventListener(
+        "input",
+        validateCourseName
+      );
+
+      courseName.addEventListener(
+        "blur",
+        validateCourseName
+      );
+
+    }
+
+
+    /* =========================================================
+       COURSE IMAGE VALIDATION
+    ========================================================= */
+
+    const courseImage =
+      form.querySelector(
+        ".course-image-input"
+      );
+
+
+    if (courseImage) {
+
+      courseImage.addEventListener(
+        "change",
+        function () {
+
+          const file =
+            this.files[0];
+
+
+          if (!file) {
+            return;
+          }
+
+
+          const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+          ];
+
+
+          if (!allowedTypes.includes(file.type)) {
+
+            alert(
+              "Please select a JPG, PNG or WEBP image."
+            );
+
+            this.value = "";
+
+            return;
+
+          }
+
+
+          if (file.size > 5 * 1024 * 1024) {
+
+            alert(
+              "Course image must be less than 5 MB."
+            );
+
+            this.value = "";
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       SUBMIT BUTTON
+    ========================================================= */
+
+    const submitButton =
+      form.querySelector(
+        "[data-submit-button]"
+      );
+
+
+    form.addEventListener(
+      "submit",
+      function (event) {
+
+        if (!validateCourseName()) {
+
+          event.preventDefault();
+
+          courseName.focus();
+
+          return;
+
+        }
+
+
+        if (submitButton) {
+
+          submitButton.disabled = true;
+
+          submitButton.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2"></span>' +
+            '<span>Saving...</span>';
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       UNSAVED CHANGES
+    ========================================================= */
+
+    let formChanged = false;
+
+
+    form
+      .querySelectorAll(
+        "input, textarea, select"
+      )
+      .forEach(
+        function (field) {
+
+          field.addEventListener(
+            "change",
+            function () {
+
+              formChanged = true;
+
+            }
+          );
+
+
+          field.addEventListener(
+            "input",
+            function () {
+
+              formChanged = true;
+
+            }
+          );
+
+        }
+      );
+
+
+    form.addEventListener(
+      "submit",
+      function () {
+
+        formChanged = false;
+
+      }
+    );
+
+
+    /* =========================================================
+       BEFORE UNLOAD
+    ========================================================= */
+
+    function handleBeforeUnload(event) {
+
+      if (!formChanged) {
+        return;
+      }
+
+      event.preventDefault();
+
+      event.returnValue = "";
+
+    }
+
+
+    window.addEventListener(
+      "beforeunload",
+      handleBeforeUnload
+    );
 
   }
 
 
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================= */
+
   document.addEventListener(
     "DOMContentLoaded",
-    initializeAdminCourseDetails
+    initializeAdminCourseForm
   );
+
+
+  /* =========================================================
+     TURBO PAGE LOAD
+  ========================================================= */
 
   document.addEventListener(
     "turbo:load",
-    initializeAdminCourseDetails
+    initializeAdminCourseForm
   );
+
+
+})();
 </script>

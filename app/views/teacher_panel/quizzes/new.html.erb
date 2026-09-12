@@ -1392,8 +1392,6 @@
 
 </style>
 
-
-
 <!-- =========================================================
      JAVASCRIPT
 ========================================================= -->
@@ -1402,75 +1400,116 @@
 
 (function () {
 
+  /* =========================================================
+     TEACHER QUIZ FORM
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
+
   function initializeQuizForm() {
 
     const form =
-      document.getElementById("teacherQuizForm");
+      document.getElementById(
+        "teacherQuizForm"
+      );
 
     const courseRadio =
-      document.getElementById("quiz_type_course");
+      document.getElementById(
+        "quiz_type_course"
+      );
 
     const videoRadio =
-      document.getElementById("quiz_type_video");
+      document.getElementById(
+        "quiz_type_video"
+      );
 
     const videoBox =
-      document.getElementById("videoSelectionBox");
+      document.getElementById(
+        "videoSelectionBox"
+      );
 
     const playlistSelect =
-      document.getElementById("quiz_playlist_id");
+      document.getElementById(
+        "quiz_playlist_id"
+      );
 
     const videoSelect =
-      document.getElementById("quiz_video_id");
+      document.getElementById(
+        "quiz_video_id"
+      );
 
     const selectedVideoInfo =
-      document.getElementById("selectedVideoInfo");
+      document.getElementById(
+        "selectedVideoInfo"
+      );
 
     const selectedVideoText =
-      document.getElementById("selectedVideoText");
+      document.getElementById(
+        "selectedVideoText"
+      );
 
 
-    /*
-     * Prevent duplicate event listeners
-     */
+    /* =======================================================
+       REQUIRED ELEMENTS
+    ======================================================= */
 
-    if (!form || form.dataset.initialized === "true") {
-
+    if (
+      !form ||
+      !courseRadio ||
+      !videoRadio ||
+      !videoBox ||
+      !playlistSelect ||
+      !videoSelect
+    ) {
       return;
-
     }
 
 
-    form.dataset.initialized = "true";
+    /* =======================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ======================================================= */
+
+    if (
+      form.dataset.quizInitialized === "true"
+    ) {
+      return;
+    }
+
+    form.dataset.quizInitialized = "true";
 
 
-    /*
-     * -----------------------------------------------------
-     * GET ALL VIDEO OPTIONS
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       GET ALL VIDEO OPTIONS
+    ======================================================= */
 
     const allVideoOptions =
       Array.from(
         videoSelect.querySelectorAll(
           "option[data-playlist-id]"
         )
-      );
+      ).map(function (option) {
+
+        return option.cloneNode(true);
+
+      });
 
 
-    /*
-     * -----------------------------------------------------
-     * LOAD VIDEOS
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       LOAD VIDEOS
+    ======================================================= */
 
-    function loadVideos(playlistId, selectedVideoId) {
+    function loadVideos(
+      playlistId,
+      selectedVideoId = ""
+    ) {
 
-      /*
-       * Remove currently displayed video options
-       */
+      /* -----------------------------------------------
+         Remove currently displayed videos
+      ----------------------------------------------- */
 
       videoSelect
-        .querySelectorAll("option[data-playlist-id]")
+        .querySelectorAll(
+          "option[data-playlist-id]"
+        )
         .forEach(function (option) {
 
           option.remove();
@@ -1478,57 +1517,73 @@
         });
 
 
-      /*
-       * Reset selected value
-       */
+      /* -----------------------------------------------
+         Reset selected video
+      ----------------------------------------------- */
 
       videoSelect.value = "";
 
 
-      /*
-       * Hide selected video information
-       */
+      /* -----------------------------------------------
+         Hide selected video information
+      ----------------------------------------------- */
 
-      selectedVideoInfo.style.display = "none";
+      if (selectedVideoInfo) {
 
-      selectedVideoText.textContent = "";
+        selectedVideoInfo.style.display =
+          "none";
+
+      }
+
+      if (selectedVideoText) {
+
+        selectedVideoText.textContent =
+          "";
+
+      }
 
 
-      /*
-       * No playlist selected
-       */
+      /* -----------------------------------------------
+         No playlist selected
+      ----------------------------------------------- */
 
       if (!playlistId) {
+
+        videoSelect.disabled = true;
 
         return;
 
       }
 
 
-      /*
-       * Add matching videos
-       */
+      /* -----------------------------------------------
+         Add matching videos
+      ----------------------------------------------- */
 
-      allVideoOptions.forEach(function (originalOption) {
+      allVideoOptions.forEach(
+        function (originalOption) {
 
-        const optionPlaylistId =
-          String(
-            originalOption.dataset.playlistId
-          );
+          const optionPlaylistId =
+            String(
+              originalOption.dataset.playlistId
+            );
 
 
-        if (
-          optionPlaylistId ===
-          String(playlistId)
-        ) {
+          if (
+            optionPlaylistId !==
+            String(playlistId)
+          ) {
+            return;
+          }
+
 
           const newOption =
             originalOption.cloneNode(true);
 
 
-          /*
-           * Select existing video when editing
-           */
+          /* -----------------------------------------
+             Select existing video when editing
+          ----------------------------------------- */
 
           if (
             selectedVideoId &&
@@ -1541,29 +1596,39 @@
           }
 
 
-          videoSelect.appendChild(newOption);
+          videoSelect.appendChild(
+            newOption
+          );
 
         }
+      );
 
-      });
+
+      videoSelect.disabled = false;
 
 
-      /*
-       * Show selected video information
-       */
+      /* -----------------------------------------------
+         Update selected video information
+      ----------------------------------------------- */
 
       updateSelectedVideo();
 
     }
 
 
-    /*
-     * -----------------------------------------------------
-     * SELECTED VIDEO
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       UPDATE SELECTED VIDEO
+    ======================================================= */
 
     function updateSelectedVideo() {
+
+      if (
+        !selectedVideoInfo ||
+        !selectedVideoText
+      ) {
+        return;
+      }
+
 
       const selectedOption =
         videoSelect.options[
@@ -1598,11 +1663,9 @@
     }
 
 
-    /*
-     * -----------------------------------------------------
-     * QUIZ TYPE
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       UPDATE QUIZ TYPE
+    ======================================================= */
 
     function updateQuizType() {
 
@@ -1612,20 +1675,28 @@
 
       if (isVideoQuiz) {
 
+        /* -----------------------------------------------
+           Video-wise quiz
+        ----------------------------------------------- */
+
         videoBox.style.display =
           "block";
 
+
+        playlistSelect.disabled =
+          false;
+
         playlistSelect.required =
           true;
+
 
         videoSelect.required =
           true;
 
 
-        /*
-         * If a playlist is already selected,
-         * load its videos.
-         */
+        /* -----------------------------------------------
+           Load videos for existing playlist
+        ----------------------------------------------- */
 
         if (playlistSelect.value) {
 
@@ -1633,17 +1704,39 @@
             videoSelect.value ||
             "<%= @quiz.video_id %>";
 
+
           loadVideos(
             playlistSelect.value,
             currentVideoId
           );
 
+        } else {
+
+          videoSelect.innerHTML =
+            '<option value="">Select a video...</option>';
+
+          videoSelect.disabled =
+            true;
+
+
+          if (selectedVideoInfo) {
+
+            selectedVideoInfo.style.display =
+              "none";
+
+          }
+
         }
 
       } else {
 
+        /* -----------------------------------------------
+           Course-wise quiz
+        ----------------------------------------------- */
+
         videoBox.style.display =
           "none";
+
 
         playlistSelect.required =
           false;
@@ -1652,59 +1745,55 @@
           false;
 
 
-        /*
-         * Clear video when course quiz
-         */
+        playlistSelect.disabled =
+          true;
 
-        playlistSelect.value = "";
+        videoSelect.disabled =
+          true;
 
-        videoSelect.value = "";
 
-        selectedVideoInfo.style.display =
-          "none";
+        playlistSelect.value =
+          "";
+
+        videoSelect.value =
+          "";
+
+
+        if (selectedVideoInfo) {
+
+          selectedVideoInfo.style.display =
+            "none";
+
+        }
 
       }
 
     }
 
 
-    /*
-     * -----------------------------------------------------
-     * COURSE QUIZ RADIO
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       COURSE QUIZ RADIO
+    ======================================================= */
 
     courseRadio.addEventListener(
       "change",
-      function () {
-
-        updateQuizType();
-
-      }
+      updateQuizType
     );
 
 
-    /*
-     * -----------------------------------------------------
-     * VIDEO QUIZ RADIO
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       VIDEO QUIZ RADIO
+    ======================================================= */
 
     videoRadio.addEventListener(
       "change",
-      function () {
-
-        updateQuizType();
-
-      }
+      updateQuizType
     );
 
 
-    /*
-     * -----------------------------------------------------
-     * PLAYLIST CHANGE
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       PLAYLIST CHANGE
+    ======================================================= */
 
     playlistSelect.addEventListener(
       "change",
@@ -1719,11 +1808,9 @@
     );
 
 
-    /*
-     * -----------------------------------------------------
-     * VIDEO CHANGE
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       VIDEO CHANGE
+    ======================================================= */
 
     videoSelect.addEventListener(
       "change",
@@ -1735,24 +1822,22 @@
     );
 
 
-    /*
-     * -----------------------------------------------------
-     * FORM SUBMIT
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       FORM SUBMIT VALIDATION
+    ======================================================= */
 
     form.addEventListener(
       "submit",
       function (event) {
 
-        /*
-         * Course quiz
-         */
+        /* -----------------------------------------------
+           COURSE-WISE QUIZ
+        ----------------------------------------------- */
 
         if (courseRadio.checked) {
 
           /*
-           * Make absolutely sure no video is sent.
+           * Make sure no video is submitted.
            */
 
           videoSelect.value = "";
@@ -1762,99 +1847,100 @@
         }
 
 
-        /*
-         * Video quiz
-         */
+        /* -----------------------------------------------
+           VIDEO-WISE QUIZ
+        ----------------------------------------------- */
 
-        if (videoRadio.checked) {
-
-
-          if (!playlistSelect.value) {
-
-            event.preventDefault();
-
-            alert(
-              "Please select a playlist."
-            );
-
-            playlistSelect.focus();
-
-            return;
-
-          }
+        if (!videoRadio.checked) {
+          return;
+        }
 
 
-          if (!videoSelect.value) {
+        /* -----------------------------------------------
+           Playlist required
+        ----------------------------------------------- */
 
-            event.preventDefault();
+        if (!playlistSelect.value) {
 
-            alert(
-              "Please select a video."
-            );
+          event.preventDefault();
 
-            videoSelect.focus();
-
-            return;
-
-          }
-
-
-          /*
-           * Verify selected video belongs
-           * to selected playlist.
-           */
-
-          const selectedOption =
-            videoSelect.options[
-              videoSelect.selectedIndex
-            ];
-
-
-          if (!selectedOption) {
-
-            event.preventDefault();
-
-            alert(
-              "Please select a valid video."
-            );
-
-            videoSelect.focus();
-
-            return;
-
-          }
-
-
-          const videoPlaylistId =
-            selectedOption.dataset.playlistId;
-
-
-          if (
-            String(videoPlaylistId) !==
-            String(playlistSelect.value)
-          ) {
-
-            event.preventDefault();
-
-            alert(
-              "Selected video does not belong to the selected playlist."
-            );
-
-            videoSelect.focus();
-
-            return;
-
-          }
-
-
-          console.log(
-            "QUIZ SUBMIT:",
-            {
-              quiz_type: "video",
-              playlist_id: playlistSelect.value,
-              video_id: videoSelect.value
-            }
+          alert(
+            "Please select a playlist."
           );
+
+          playlistSelect.focus();
+
+          return;
+
+        }
+
+
+        /* -----------------------------------------------
+           Video required
+        ----------------------------------------------- */
+
+        if (!videoSelect.value) {
+
+          event.preventDefault();
+
+          alert(
+            "Please select a video."
+          );
+
+          videoSelect.focus();
+
+          return;
+
+        }
+
+
+        /* -----------------------------------------------
+           Validate selected option
+        ----------------------------------------------- */
+
+        const selectedOption =
+          videoSelect.options[
+            videoSelect.selectedIndex
+          ];
+
+
+        if (!selectedOption) {
+
+          event.preventDefault();
+
+          alert(
+            "Please select a valid video."
+          );
+
+          videoSelect.focus();
+
+          return;
+
+        }
+
+
+        /* -----------------------------------------------
+           Verify video belongs to playlist
+        ----------------------------------------------- */
+
+        const videoPlaylistId =
+          selectedOption.dataset.playlistId;
+
+
+        if (
+          String(videoPlaylistId) !==
+          String(playlistSelect.value)
+        ) {
+
+          event.preventDefault();
+
+          alert(
+            "Selected video does not belong to the selected playlist."
+          );
+
+          videoSelect.focus();
+
+          return;
 
         }
 
@@ -1862,20 +1948,18 @@
     );
 
 
-    /*
-     * -----------------------------------------------------
-     * INITIAL PAGE LOAD
-     * -----------------------------------------------------
-     */
+    /* =======================================================
+       INITIAL PAGE LOAD
+    ======================================================= */
 
     updateQuizType();
 
   }
 
 
-  /*
-   * Turbo navigation
-   */
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
 
   document.addEventListener(
     "turbo:load",
@@ -1883,15 +1967,25 @@
   );
 
 
-  /*
-   * Normal browser load
-   */
+  /* =========================================================
+     NORMAL BROWSER LOAD
+  ========================================================= */
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeQuizForm
-  );
+  if (
+    document.readyState !== "loading"
+  ) {
 
+    initializeQuizForm();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuizForm,
+      { once: true }
+    );
+
+  }
 
 })();
 

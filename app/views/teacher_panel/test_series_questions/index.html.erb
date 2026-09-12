@@ -1808,202 +1808,257 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-  (function () {
 
-    "use strict";
+(function () {
 
-
-    /* ============================================================
-       INITIALIZE QUESTION PAGE
-    ============================================================ */
-
-    function initializeQuestionPage() {
+  "use strict";
 
 
-      /* ========================================================
-         LANGUAGE BUTTONS
-      ======================================================== */
+  /* =========================================================
+     TEST SERIES QUESTIONS PAGE
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
 
-      const languageButtons =
-        document.querySelectorAll(
-          ".tsq-language-btn"
-        );
+  function initializeQuestionPage() {
 
+    const page =
+      document.querySelector(".tsq-page");
 
-      const languageContent =
-        document.querySelectorAll(
-          "[data-language-content]"
-        );
-
-
-      languageButtons.forEach(
-        function (button) {
-
-          button.addEventListener(
-            "click",
-            function () {
-
-              const language =
-                button.dataset.language;
+    if (!page) {
+      return;
+    }
 
 
-              /* ----------------------------------------------
-                 ACTIVE BUTTON
-              ---------------------------------------------- */
+    /* =======================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ======================================================= */
 
-              languageButtons.forEach(
-                function (btn) {
+    if (
+      page.dataset.questionPageInitialized === "true"
+    ) {
+      return;
+    }
 
-                  btn.classList.toggle(
-                    "active",
-                    btn.dataset.language === language
-                  );
-
-                }
-              );
+    page.dataset.questionPageInitialized =
+      "true";
 
 
-              /* ----------------------------------------------
-                 SHOW LANGUAGE
-              ---------------------------------------------- */
+    /* =======================================================
+       LANGUAGE BUTTONS
+    ======================================================= */
 
-              languageContent.forEach(
-                function (element) {
+    const languageButtons =
+      page.querySelectorAll(
+        ".tsq-language-btn"
+      );
 
-                  const elementLanguage =
-                    element.dataset.languageContent;
-
-
-                  if (
-                    elementLanguage === language
-                  ) {
-
-                    element.style.display = "";
-
-                  } else {
-
-                    element.style.display = "none";
-
-                  }
-
-                }
-              );
-
-            }
-          );
-
-        }
+    const languageContent =
+      page.querySelectorAll(
+        "[data-language-content]"
       );
 
 
-      /* ========================================================
-         SEARCH
-      ======================================================== */
+    languageButtons.forEach(
+      function (button) {
 
-      const searchInput =
-        document.getElementById(
-          "questionSearch"
-        );
+        button.addEventListener(
+          "click",
+          function () {
 
-
-      const questionCards =
-        document.querySelectorAll(
-          "[data-question-card]"
-        );
+            const language =
+              button.dataset.language;
 
 
-      const noSearchResults =
-        document.getElementById(
-          "noSearchResults"
-        );
-
-
-      if (!searchInput) {
-        return;
-      }
-
-
-      function performSearch() {
-
-        const searchTerm =
-          searchInput.value
-            .trim()
-            .toLowerCase();
-
-
-        let visibleCount = 0;
-
-
-        questionCards.forEach(
-          function (card) {
-
-            const questionText =
-              card.dataset.questionText || "";
-
-
-            const matches =
-              questionText.includes(
-                searchTerm
-              );
-
-
-            if (matches) {
-
-              card.style.display = "";
-
-              visibleCount++;
-
-            } else {
-
-              card.style.display = "none";
-
+            if (!language) {
+              return;
             }
+
+
+            /* -----------------------------------------------
+               ACTIVE BUTTON
+            ------------------------------------------------ */
+
+            languageButtons.forEach(
+              function (btn) {
+
+                const isActive =
+                  btn.dataset.language ===
+                  language;
+
+
+                btn.classList.toggle(
+                  "active",
+                  isActive
+                );
+
+              }
+            );
+
+
+            /* -----------------------------------------------
+               SHOW SELECTED LANGUAGE
+            ------------------------------------------------ */
+
+            languageContent.forEach(
+              function (element) {
+
+                const elementLanguage =
+                  element.dataset.languageContent;
+
+
+                element.style.display =
+                  elementLanguage === language
+                    ? ""
+                    : "none";
+
+              }
+            );
 
           }
         );
 
+      }
+    );
 
-        if (noSearchResults) {
 
-          noSearchResults.style.display =
-            visibleCount === 0
-              ? "block"
-              : "none";
+    /* =======================================================
+       QUESTION SEARCH
+    ======================================================= */
+
+    const searchInput =
+      page.querySelector(
+        "#questionSearch"
+      );
+
+    const questionCards =
+      page.querySelectorAll(
+        "[data-question-card]"
+      );
+
+    const noSearchResults =
+      page.querySelector(
+        "#noSearchResults"
+      );
+
+
+    if (!searchInput) {
+      return;
+    }
+
+
+    /* =======================================================
+       SEARCH FUNCTION
+    ======================================================= */
+
+    function performSearch() {
+
+      const searchTerm =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+
+      let visibleCount = 0;
+
+
+      questionCards.forEach(
+        function (card) {
+
+          const questionText =
+            (
+              card.dataset.questionText ||
+              ""
+            ).toLowerCase();
+
+
+          const matches =
+            questionText.includes(
+              searchTerm
+            );
+
+
+          if (matches) {
+
+            card.style.display = "";
+
+            visibleCount++;
+
+          } else {
+
+            card.style.display = "none";
+
+          }
 
         }
+      );
+
+
+      /* -----------------------------------------------------
+         NO SEARCH RESULTS
+      ----------------------------------------------------- */
+
+      if (noSearchResults) {
+
+        noSearchResults.style.display =
+          visibleCount === 0
+            ? "block"
+            : "none";
 
       }
-
-
-      searchInput.addEventListener(
-        "input",
-        performSearch
-      );
 
     }
 
 
-    /* ============================================================
-       DOM READY
-    ============================================================ */
+    /* =======================================================
+       SEARCH EVENT
+    ======================================================= */
+
+    searchInput.addEventListener(
+      "input",
+      performSearch
+    );
+
+
+    /* =======================================================
+       INITIAL SEARCH STATE
+    ======================================================= */
+
+    performSearch();
+
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeQuestionPage
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================= */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeQuestionPage();
+
+  } else {
 
     document.addEventListener(
       "DOMContentLoaded",
-      initializeQuestionPage
+      initializeQuestionPage,
+      { once: true }
     );
 
+  }
 
-    /* ============================================================
-       TURBO
-    ============================================================ */
+})();
 
-    document.addEventListener(
-      "turbo:load",
-      initializeQuestionPage
-    );
-
-
-  })();
 </script>

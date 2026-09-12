@@ -400,31 +400,68 @@
 
 </div>
 
-
 <!-- ==================================================
      JAVASCRIPT
 ================================================== -->
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const radios =
-    document.querySelectorAll(".correct-radio");
-
-  const hiddenFields =
-    document.querySelectorAll(".correct-hidden");
-
-  const optionRows =
-    document.querySelectorAll(".option-row");
+  "use strict";
 
 
-  radios.forEach(function (radio) {
+  function initializeQuestionForm() {
 
-    radio.addEventListener("change", function () {
+    const form =
+      document.getElementById("questionForm");
+
+    const radios =
+      document.querySelectorAll(".correct-radio");
+
+    const hiddenFields =
+      document.querySelectorAll(".correct-hidden");
+
+    const optionRows =
+      document.querySelectorAll(".option-row");
+
+
+    /*
+     * ==================================================
+     * REQUIRED ELEMENTS
+     * ==================================================
+     */
+
+    if (!form || !radios.length) {
+      return;
+    }
+
+
+    /*
+     * ==================================================
+     * DUPLICATE INITIALIZATION PROTECTION
+     * ==================================================
+     */
+
+    if (
+      form.dataset.correctAnswerInitialized === "true"
+    ) {
+      return;
+    }
+
+    form.dataset.correctAnswerInitialized = "true";
+
+
+    /*
+     * ==================================================
+     * SET CORRECT OPTION
+     * ==================================================
+     */
+
+    function setCorrectOption(selectedIndex) {
 
       /*
-       * Reset all options
+       * Reset all hidden values
        */
 
       hiddenFields.forEach(function (hidden) {
@@ -433,6 +470,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       });
 
+
+      /*
+       * Remove selected styling
+       */
 
       optionRows.forEach(function (row) {
 
@@ -444,126 +485,234 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       /*
-       * Selected option
+       * Find selected row
        */
 
-      const index =
-        radio.value;
-
-
       const selectedRow =
-        document.querySelector(
+        form.querySelector(
           '.option-row[data-option-index="' +
-          index +
+          selectedIndex +
           '"]'
         );
 
 
-      if (selectedRow) {
+      if (!selectedRow) {
+        return;
+      }
 
-        selectedRow.classList.add(
-          "correct-selected"
+
+      /*
+       * Add selected styling
+       */
+
+      selectedRow.classList.add(
+        "correct-selected"
+      );
+
+
+      /*
+       * Set selected hidden field
+       */
+
+      const hidden =
+        selectedRow.querySelector(
+          ".correct-hidden"
         );
 
 
-        const hidden =
-          selectedRow.querySelector(
-            ".correct-hidden"
-          );
+      if (hidden) {
 
-
-        if (hidden) {
-
-          hidden.value = "true";
-
-        }
+        hidden.value = "true";
 
       }
 
+    }
+
+
+    /*
+     * ==================================================
+     * RADIO CHANGE
+     * ==================================================
+     */
+
+    radios.forEach(function (radio) {
+
+      if (
+        radio.dataset.correctRadioInitialized === "true"
+      ) {
+        return;
+      }
+
+      radio.dataset.correctRadioInitialized = "true";
+
+
+      radio.addEventListener(
+        "change",
+        function () {
+
+          setCorrectOption(
+            radio.value
+          );
+
+        }
+      );
+
     });
 
-  });
+
+    /*
+     * ==================================================
+     * INITIAL CORRECT ANSWER
+     * ==================================================
+     */
+
+    const initiallySelected =
+      form.querySelector(
+        ".correct-radio:checked"
+      );
+
+
+    if (initiallySelected) {
+
+      setCorrectOption(
+        initiallySelected.value
+      );
+
+    }
+
+
+    /*
+     * ==================================================
+     * FORM VALIDATION
+     * ==================================================
+     */
+
+    if (
+      form.dataset.submitInitialized !== "true"
+    ) {
+
+      form.dataset.submitInitialized = "true";
+
+
+      form.addEventListener(
+        "submit",
+        function (event) {
+
+          const selected =
+            form.querySelector(
+              ".correct-radio:checked"
+            );
+
+
+          /*
+           * No correct answer selected
+           */
+
+          if (!selected) {
+
+            event.preventDefault();
+
+            alert(
+              "Please select exactly one correct answer."
+            );
+
+            return;
+
+          }
+
+
+          /*
+           * =================================================
+           * RESET ALL HIDDEN VALUES
+           * =================================================
+           */
+
+          hiddenFields.forEach(
+            function (hidden) {
+
+              hidden.value = "false";
+
+            }
+          );
+
+
+          /*
+           * =================================================
+           * SET SELECTED OPTION TRUE
+           * =================================================
+           */
+
+          const selectedRow =
+            selected.closest(
+              ".option-row"
+            );
+
+
+          if (selectedRow) {
+
+            selectedRow.classList.add(
+              "correct-selected"
+            );
+
+
+            const selectedHidden =
+              selectedRow.querySelector(
+                ".correct-hidden"
+              );
+
+
+            if (selectedHidden) {
+
+              selectedHidden.value =
+                "true";
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+
+  }
 
 
   /*
    * ==================================================
-   * FORM VALIDATION
+   * TURBO NAVIGATION
    * ==================================================
    */
 
-  const form =
-    document.getElementById(
-      "questionForm"
-    );
+  document.addEventListener(
+    "turbo:load",
+    initializeQuestionForm
+  );
 
 
-  if (form) {
+  /*
+   * ==================================================
+   * NORMAL PAGE LOAD
+   * ==================================================
+   */
 
-    form.addEventListener(
-      "submit",
-      function (event) {
+  if (
+    document.readyState !== "loading"
+  ) {
 
-        const selected =
-          document.querySelector(
-            ".correct-radio:checked"
-          );
+    initializeQuestionForm();
 
+  } else {
 
-        if (!selected) {
-
-          event.preventDefault();
-
-          alert(
-            "Please select exactly one correct answer."
-          );
-
-          return false;
-
-        }
-
-
-        /*
-         * Ensure only selected option is true
-         */
-
-        hiddenFields.forEach(
-          function (hidden) {
-
-            hidden.value = "false";
-
-          }
-        );
-
-
-        const selectedRow =
-          selected.closest(
-            ".option-row"
-          );
-
-
-        if (selectedRow) {
-
-          const selectedHidden =
-            selectedRow.querySelector(
-              ".correct-hidden"
-            );
-
-
-          if (selectedHidden) {
-
-            selectedHidden.value =
-              "true";
-
-          }
-
-        }
-
-      }
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuestionForm,
+      { once: true }
     );
 
   }
 
-});
+})();
 
 </script>
 

@@ -984,311 +984,382 @@
 
 </div>
 
-
 <!-- =========================================================
      JAVASCRIPT
 ========================================================== -->
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("turbo:load", function () {
+(function () {
 
-  const courseQuiz =
-    document.getElementById("course_quiz");
+  /* =========================================================
+     COURSE / VIDEO QUIZ FORM
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
 
-  const videoQuiz =
-    document.getElementById("video_quiz");
+  function initializeQuizForm() {
 
-  const videoBox =
-    document.getElementById("video-selection-box");
+    const courseQuiz =
+      document.getElementById("course_quiz");
 
-  const playlistSelect =
-    document.getElementById("quiz_playlist_id");
+    const videoQuiz =
+      document.getElementById("video_quiz");
 
-  const videoSelect =
-    document.getElementById("quiz_video_id");
+    const videoBox =
+      document.getElementById("video-selection-box");
 
+    const playlistSelect =
+      document.getElementById("quiz_playlist_id");
 
-  if (
-    !courseQuiz ||
-    !videoQuiz ||
-    !videoBox ||
-    !playlistSelect ||
-    !videoSelect
-  ) {
-    return;
-  }
+    const videoSelect =
+      document.getElementById("quiz_video_id");
 
-
-  /* ========================================================
-     ALL COURSE VIDEOS
-  ======================================================== */
-
-  const allVideos = <%= raw(
-    @videos.map do |video|
-      {
-        id: video.id,
-        title: video.title,
-        position: video.position,
-        playlist_id: video.playlist_id
-      }
-    end.to_json
-  ) %>;
+    const form =
+      document.querySelector(
+        'form[data-quiz-form]'
+      );
 
 
-  /* ========================================================
-     LOAD VIDEOS
-  ======================================================== */
+    /* =======================================================
+       REQUIRED ELEMENTS
+    ======================================================= */
 
-  function loadVideos(
-    playlistId,
-    selectedVideoId = ""
-  ) {
-
-    videoSelect.innerHTML =
-      '<option value="">Select a video...</option>';
-
-
-    if (!playlistId) {
-
-      videoSelect.disabled = true;
-
+    if (
+      !courseQuiz ||
+      !videoQuiz ||
+      !videoBox ||
+      !playlistSelect ||
+      !videoSelect
+    ) {
       return;
     }
 
 
-    const filteredVideos =
-      allVideos.filter(function (video) {
+    /* =======================================================
+       ALL COURSE VIDEOS
+    ======================================================= */
 
-        return String(video.playlist_id) ===
-               String(playlistId);
+    const allVideos = <%= raw(
+      @videos.map do |video|
+        {
+          id: video.id,
+          title: video.title,
+          position: video.position,
+          playlist_id: video.playlist_id
+        }
+      end.to_json
+    ) %>;
+
+
+    /* =======================================================
+       LOAD VIDEOS
+    ======================================================= */
+
+    function loadVideos(
+      playlistId,
+      selectedVideoId = ""
+    ) {
+
+      videoSelect.innerHTML =
+        '<option value="">Select a video...</option>';
+
+
+      if (!playlistId) {
+
+        videoSelect.disabled = true;
+
+        return;
+
+      }
+
+
+      const filteredVideos =
+        allVideos.filter(function (video) {
+
+          return String(video.playlist_id) ===
+            String(playlistId);
+
+        });
+
+
+      filteredVideos.forEach(function (video) {
+
+        const option =
+          document.createElement("option");
+
+
+        option.value =
+          video.id;
+
+
+        option.textContent =
+          video.position +
+          ". " +
+          video.title;
+
+
+        if (
+          String(video.id) ===
+          String(selectedVideoId)
+        ) {
+
+          option.selected = true;
+
+        }
+
+
+        videoSelect.appendChild(option);
 
       });
 
 
-    filteredVideos.forEach(function (video) {
+      videoSelect.disabled = false;
 
-      const option =
-        document.createElement("option");
-
-
-      option.value = video.id;
+    }
 
 
-      option.textContent =
-        video.position +
-        ". " +
-        video.title;
+    /* =======================================================
+       UPDATE QUIZ TYPE
+    ======================================================= */
+
+    function updateQuizType() {
+
+      if (videoQuiz.checked) {
+
+        /* -----------------------------------------------
+           VIDEO-WISE QUIZ
+        ----------------------------------------------- */
+
+        videoBox.classList.add("show");
 
 
-      if (
-        String(video.id) ===
-        String(selectedVideoId)
-      ) {
+        playlistSelect.disabled = false;
 
-        option.selected = true;
-
-      }
+        playlistSelect.required = true;
 
 
-      videoSelect.appendChild(option);
-
-    });
-
-
-    videoSelect.disabled = false;
-
-  }
+        const existingVideoId =
+          videoSelect.dataset.selectedVideo || "";
 
 
-  /* ========================================================
-     UPDATE QUIZ TYPE
-  ======================================================== */
+        if (playlistSelect.value) {
 
-  function updateQuizType() {
+          loadVideos(
+            playlistSelect.value,
+            existingVideoId
+          );
 
-    if (videoQuiz.checked) {
+        } else {
 
-      /* Show video section */
+          videoSelect.innerHTML =
+            '<option value="">Select a video...</option>';
 
-      videoBox.classList.add("show");
+          videoSelect.disabled = true;
 
-
-      playlistSelect.disabled = false;
-
-      playlistSelect.required = true;
-
-
-      /*
-       * Existing video when editing
-       */
-
-      const existingVideoId =
-        videoSelect.dataset.selectedVideo || "";
+        }
 
 
-      if (playlistSelect.value) {
-
-        loadVideos(
-          playlistSelect.value,
-          existingVideoId
-        );
+        videoSelect.required = true;
 
       } else {
 
-        videoSelect.innerHTML =
-          '<option value="">Select a video...</option>';
+        /* -----------------------------------------------
+           COURSE-WISE QUIZ
+        ----------------------------------------------- */
+
+        videoBox.classList.remove("show");
+
+
+        playlistSelect.required = false;
+
+        videoSelect.required = false;
+
+
+        playlistSelect.disabled = true;
 
         videoSelect.disabled = true;
 
+
+        playlistSelect.value = "";
+
+        videoSelect.value = "";
+
       }
-
-
-      videoSelect.required = true;
-
-    } else {
-
-      /* Course-wise quiz */
-
-      videoBox.classList.remove("show");
-
-
-      playlistSelect.required = false;
-
-      videoSelect.required = false;
-
-
-      playlistSelect.disabled = true;
-
-      videoSelect.disabled = true;
-
-
-      playlistSelect.value = "";
-
-      videoSelect.value = "";
 
     }
 
-  }
+
+    /* =======================================================
+       PLAYLIST CHANGE
+    ======================================================= */
+
+    if (
+      playlistSelect.dataset.quizInitialized !== "true"
+    ) {
+
+      playlistSelect.dataset.quizInitialized = "true";
 
 
-  /* ========================================================
-     PLAYLIST CHANGE
-  ======================================================== */
+      playlistSelect.addEventListener(
+        "change",
+        function () {
 
-  playlistSelect.addEventListener(
-    "change",
-    function () {
+          loadVideos(
+            this.value,
+            ""
+          );
 
-      loadVideos(
-        this.value,
-        ""
+        }
       );
 
     }
-  );
 
 
-  /* ========================================================
-     VIDEO CHANGE
-  ======================================================== */
+    /* =======================================================
+       VIDEO CHANGE
+    ======================================================= */
 
-  videoSelect.addEventListener(
-    "change",
-    function () {
+    if (
+      videoSelect.dataset.quizInitialized !== "true"
+    ) {
 
-      this.dataset.selectedVideo =
-        this.value;
+      videoSelect.dataset.quizInitialized = "true";
+
+
+      videoSelect.addEventListener(
+        "change",
+        function () {
+
+          this.dataset.selectedVideo =
+            this.value;
+
+        }
+      );
 
     }
+
+
+    /* =======================================================
+       QUIZ TYPE CHANGE
+    ======================================================= */
+
+    if (
+      courseQuiz.dataset.quizInitialized !== "true"
+    ) {
+
+      courseQuiz.dataset.quizInitialized = "true";
+
+
+      courseQuiz.addEventListener(
+        "change",
+        updateQuizType
+      );
+
+    }
+
+
+    if (
+      videoQuiz.dataset.quizInitialized !== "true"
+    ) {
+
+      videoQuiz.dataset.quizInitialized = "true";
+
+
+      videoQuiz.addEventListener(
+        "change",
+        updateQuizType
+      );
+
+    }
+
+
+    /* =======================================================
+       EDIT MODE
+    ======================================================= */
+
+    <% if @quiz.video_id.present? %>
+
+      videoSelect.dataset.selectedVideo =
+        "<%= @quiz.video_id %>";
+
+    <% end %>
+
+
+    /* =======================================================
+       INITIAL LOAD
+    ======================================================= */
+
+    updateQuizType();
+
+
+    /* =======================================================
+       FORM SUBMIT
+    ======================================================= */
+
+    if (
+      form &&
+      form.dataset.quizSubmitInitialized !== "true"
+    ) {
+
+      form.dataset.quizSubmitInitialized =
+        "true";
+
+
+      form.addEventListener(
+        "submit",
+        function () {
+
+          /*
+           * Make sure the selected video
+           * remains synchronized.
+           */
+
+          if (
+            videoQuiz.checked &&
+            videoSelect.value
+          ) {
+
+            videoSelect.dataset.selectedVideo =
+              videoSelect.value;
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeQuizForm
   );
 
 
-  /* ========================================================
-     QUIZ TYPE CHANGE
-  ======================================================== */
+  /* =========================================================
+     INITIAL PAGE LOAD
+  ========================================================= */
 
-  courseQuiz.addEventListener(
-    "change",
-    updateQuizType
-  );
+  if (document.readyState !== "loading") {
 
-  videoQuiz.addEventListener(
-    "change",
-    updateQuizType
-  );
+    initializeQuizForm();
 
+  } else {
 
-  /* ========================================================
-     EDIT MODE
-  ======================================================== */
-
-  <% if @quiz.video_id.present? %>
-
-    videoSelect.dataset.selectedVideo =
-      "<%= @quiz.video_id %>";
-
-  <% end %>
-
-
-  /* ========================================================
-     INITIAL LOAD
-  ======================================================== */
-
-  updateQuizType();
-
-
-  /* ========================================================
-     FORM SUBMIT DEBUG
-  ======================================================== */
-
-  const form =
-    document.querySelector(
-      'form[data-quiz-form]'
-    );
-
-
-  if (form) {
-
-    form.addEventListener(
-      "submit",
-      function () {
-
-        console.log(
-          "========== QUIZ SUBMIT =========="
-        );
-
-        console.log(
-          "Quiz Type:",
-          videoQuiz.checked
-            ? "video"
-            : "course"
-        );
-
-        console.log(
-          "Playlist ID:",
-          playlistSelect.value
-        );
-
-        console.log(
-          "Video ID:",
-          videoSelect.value
-        );
-
-        console.log(
-          "Video disabled:",
-          videoSelect.disabled
-        );
-
-        console.log(
-          "================================="
-        );
-
-      }
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuizForm,
+      { once: true }
     );
 
   }
 
-});
+})();
 
 </script>

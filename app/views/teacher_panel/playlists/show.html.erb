@@ -1602,13 +1602,22 @@
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-/* =========================================================
-   TEACHER PLAYLIST DELETE MODAL
-========================================================= */
-
 (function () {
 
+  /* =========================================================
+     TEACHER PLAYLIST DELETE MODAL
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
+
   function initializeTeacherPlaylistDelete() {
+
+    const modal =
+      document.getElementById(
+        "teacherDeletePlaylistModal"
+      );
+
+    if (!modal) return;
+
 
     const deleteButton =
       document.getElementById(
@@ -1625,22 +1634,26 @@
         "teacherCancelDeleteBtn"
       );
 
-    const modal =
-      document.getElementById(
-        "teacherDeletePlaylistModal"
-      );
 
-
-    if (!modal) {
+    // Prevent duplicate initialization
+    if (
+      modal.dataset.deleteModalInitialized === "true"
+    ) {
       return;
     }
 
+    modal.dataset.deleteModalInitialized = "true";
 
-    /* ======================================================
+
+    /* =======================================================
        OPEN MODAL
-    ====================================================== */
+    ======================================================= */
 
-    function openDeleteModal() {
+    function openDeleteModal(event) {
+
+      if (event) {
+        event.preventDefault();
+      }
 
       modal.classList.add("active");
 
@@ -1654,9 +1667,9 @@
     }
 
 
-    /* ======================================================
+    /* =======================================================
        CLOSE MODAL
-    ====================================================== */
+    ======================================================= */
 
     function closeDeleteModal() {
 
@@ -1672,9 +1685,9 @@
     }
 
 
-    /* ======================================================
+    /* =======================================================
        HEADER DELETE
-    ====================================================== */
+    ======================================================= */
 
     if (deleteButton) {
 
@@ -1686,9 +1699,9 @@
     }
 
 
-    /* ======================================================
+    /* =======================================================
        SIDEBAR DELETE
-    ====================================================== */
+    ======================================================= */
 
     if (deleteAction) {
 
@@ -1700,23 +1713,29 @@
     }
 
 
-    /* ======================================================
+    /* =======================================================
        CANCEL
-    ====================================================== */
+    ======================================================= */
 
     if (cancelButton) {
 
       cancelButton.addEventListener(
         "click",
-        closeDeleteModal
+        function (event) {
+
+          event.preventDefault();
+
+          closeDeleteModal();
+
+        }
       );
 
     }
 
 
-    /* ======================================================
-       CLICK OUTSIDE
-    ====================================================== */
+    /* =======================================================
+       CLICK OUTSIDE MODAL
+    ======================================================= */
 
     modal.addEventListener(
       "click",
@@ -1732,42 +1751,81 @@
     );
 
 
-    /* ======================================================
-       ESCAPE
-    ====================================================== */
+    /* =======================================================
+       ESCAPE KEY
+    ======================================================= */
 
-    document.addEventListener(
-      "keydown",
-      function (event) {
+    if (
+      document.documentElement.dataset
+        .teacherPlaylistDeleteKeyInitialized !== "true"
+    ) {
 
-        if (
-          event.key === "Escape" &&
-          modal.classList.contains("active")
-        ) {
+      document.documentElement.dataset
+        .teacherPlaylistDeleteKeyInitialized = "true";
 
-          closeDeleteModal();
+
+      document.addEventListener(
+        "keydown",
+        function (event) {
+
+          const activeModal =
+            document.getElementById(
+              "teacherDeletePlaylistModal"
+            );
+
+          if (!activeModal) return;
+
+          if (
+            event.key === "Escape" &&
+            activeModal.classList.contains("active")
+          ) {
+
+            activeModal.classList.remove("active");
+
+            activeModal.setAttribute(
+              "aria-hidden",
+              "true"
+            );
+
+            document.body.style.overflow = "";
+
+          }
 
         }
+      );
 
-      }
-    );
+    }
 
   }
 
 
-  /*
-   * Rails/Turbo compatible initialization.
-   */
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeTeacherPlaylistDelete
-  );
+  /* =========================================================
+     TURBO
+  ========================================================= */
 
   document.addEventListener(
     "turbo:load",
     initializeTeacherPlaylistDelete
   );
+
+
+  /* =========================================================
+     INITIAL PAGE LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeTeacherPlaylistDelete();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherPlaylistDelete,
+      { once: true }
+    );
+
+  }
 
 })();
 

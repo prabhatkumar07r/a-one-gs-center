@@ -219,27 +219,78 @@
 
 </div>
 
-
-
 <script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
   function initializeFeeReceipt() {
-    const printButton = document.querySelector("[data-print-receipt]");
+
+    const printButton =
+      document.querySelector("[data-print-receipt]");
+
 
     if (!printButton) {
       return;
     }
 
-    if (printButton.dataset.printInitialized === "true") {
+
+    /* =====================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ===================================================== */
+
+    if (
+      printButton.dataset.printInitialized === "true"
+    ) {
       return;
     }
 
     printButton.dataset.printInitialized = "true";
 
-    printButton.addEventListener("click", function () {
-      window.print();
-    });
+
+    /* =====================================================
+       PRINT RECEIPT
+    ===================================================== */
+
+    printButton.addEventListener(
+      "click",
+      function () {
+
+        window.print();
+
+      }
+    );
+
   }
 
-  document.addEventListener("DOMContentLoaded", initializeFeeReceipt);
-  document.addEventListener("turbo:load", initializeFeeReceipt);
+
+  /* =========================================================
+     TURBO PAGE LOAD
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeFeeReceipt
+  );
+
+
+  /* =========================================================
+     INITIAL NORMAL PAGE LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeFeeReceipt();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeFeeReceipt,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

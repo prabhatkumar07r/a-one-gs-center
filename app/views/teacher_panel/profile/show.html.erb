@@ -1689,44 +1689,143 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  const buttons = document.querySelectorAll(
-    ".teacher-profile-tab-btn"
-  );
+(function () {
 
-  const panes = document.querySelectorAll(
-    ".teacher-profile-tab-pane"
-  );
+  /* =========================================================
+     TEACHER PROFILE TABS
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
 
-  buttons.forEach(function (button) {
+  function initializeTeacherProfileTabs() {
 
-    button.addEventListener("click", function () {
+    const buttons =
+      document.querySelectorAll(
+        ".teacher-profile-tab-btn"
+      );
 
-      buttons.forEach(function (btn) {
-        btn.classList.remove("active");
-      });
+    const panes =
+      document.querySelectorAll(
+        ".teacher-profile-tab-pane"
+      );
 
-      panes.forEach(function (pane) {
-        pane.classList.remove("active");
-      });
 
-      this.classList.add("active");
+    if (!buttons.length || !panes.length) {
+      return;
+    }
 
-      const tab = this.dataset.tab;
 
-      const target =
-        document.getElementById(tab);
+    /* =======================================================
+       TAB BUTTONS
+    ======================================================= */
 
-      if (target) {
-        target.classList.add("active");
+    buttons.forEach(function (button) {
+
+      if (
+        button.dataset.tabInitialized === "true"
+      ) {
+        return;
       }
+
+      button.dataset.tabInitialized = "true";
+
+
+      button.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+
+          /* -----------------------------------------------
+             REMOVE ACTIVE STATE
+          ----------------------------------------------- */
+
+          buttons.forEach(function (btn) {
+
+            btn.classList.remove("active");
+
+            btn.setAttribute(
+              "aria-selected",
+              "false"
+            );
+
+          });
+
+
+          panes.forEach(function (pane) {
+
+            pane.classList.remove("active");
+
+          });
+
+
+          /* -----------------------------------------------
+             ACTIVATE SELECTED TAB
+          ----------------------------------------------- */
+
+          this.classList.add("active");
+
+          this.setAttribute(
+            "aria-selected",
+            "true"
+          );
+
+
+          const tab =
+            this.dataset.tab;
+
+
+          if (!tab) return;
+
+
+          const target =
+            document.getElementById(tab);
+
+
+          if (target) {
+
+            target.classList.add("active");
+
+          }
+
+        }
+      );
 
     });
 
-  });
+  }
 
-});
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherProfileTabs
+  );
+
+
+  /* =========================================================
+     INITIAL PAGE LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeTeacherProfileTabs();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherProfileTabs,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

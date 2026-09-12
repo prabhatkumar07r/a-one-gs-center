@@ -964,18 +964,15 @@ html.test-series-night .test-series-theme-toggle button {
   color: #facc15;
 }
 
-html.test-series-night .ts-card,
-html.test-series-night .test-series-card {
+html.test-series-night .ts-series-card {
   background: #0d1b30;
   border-color: rgba(148, 163, 184, .14);
   color: #f8fafc;
 }
 
-html.test-series-night .ts-card p,
-html.test-series-night .test-series-card p {
+html.test-series-night .ts-series-card p {
   color: #94a3b8;
 }
-
 html.test-series-night .ts-search-box,
 html.test-series-night input,
 html.test-series-night select {
@@ -1001,6 +998,14 @@ html.test-series-night .ts-search-box input::placeholder {
     height: 40px;
     font-size: 16px;
   }
+}
+
+
+.ts-card-price-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 </style>
 
@@ -1317,59 +1322,61 @@ html.test-series-night .ts-search-box input::placeholder {
 
 
               <!-- FOOTER -->
+               <div class="ts-card-footer">
 
-              <div class="ts-card-footer">
+  <div class="ts-card-price-wrapper">
 
-                <div>
+    <% if test_series.free? %>
 
-                  <% if test_series.free? %>
+      <span class="ts-card-price free">
+        FREE
+      </span>
 
-                 <span class="ts-card-price free">
-                  FREE
-                </span>
+    <% else %>
 
-              <% else %>
+      <span class="ts-card-price">
+        ₹<%= test_series.price %>
+      </span>
 
-              <span class="ts-card-price">
-                  ₹<%= test_series.price %>
-               </span>
+      <% if test_series.original_price.present? &&
+            test_series.original_price.to_d >
+            test_series.price.to_d %>
 
-               <% if test_series.original_price.present? &&
-                   test_series.original_price.to_d >
-                   test_series.price.to_d %>
-
-              <span class="ts-original-price">
-               ₹<%= test_series.original_price %>
-             </span>
+        <span class="ts-original-price">
+          ₹<%= test_series.original_price %>
+        </span>
 
         <% discount_percentage =
-         (
-           (
-             test_series.original_price.to_d -
-             test_series.price.to_d
-           ) /
-           test_series.original_price.to_d *
-           100
-         ).round %>
+          (
+            (
+              test_series.original_price.to_d -
+              test_series.price.to_d
+            ) /
+            test_series.original_price.to_d *
+            100
+          ).round
+        %>
 
-    <span class="ts-discount-badge">
-      <%= discount_percentage %>% OFF
-    </span>
+        <span class="ts-discount-badge">
+          <%= discount_percentage %>% OFF
+        </span>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+  <%= link_to test_series_path(test_series),
+              class: "ts-view-btn" do %>
+
+    View Series
+
+    <i class="fas fa-arrow-right"></i>
 
   <% end %>
 
-<% end %>
-
-                <%= link_to test_series_path(test_series),
-                            class: "ts-view-btn" do %>
-
-                  View Series
-
-                  <i class="fas fa-arrow-right"></i>
-
-                <% end %>
-
-              </div>
+</div>
 
             </div>
 
@@ -1412,161 +1419,360 @@ html.test-series-night .ts-search-box input::placeholder {
   </div>
 
 </div>
-
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  const searchInput =
-    document.getElementById("tsSearch");
+(function () {
 
-  const languageFilter =
-    document.getElementById("tsLanguageFilter");
-
-  const tabs =
-    document.querySelectorAll(".ts-filter-tab");
-
-  const cards =
-    document.querySelectorAll(".ts-series-card");
+  "use strict";
 
 
-  let selectedMode = "all";
+  function initializeTestSeriesPage() {
+
+    /* =====================================================
+       FILTER ELEMENTS
+    ===================================================== */
+
+    const searchInput =
+      document.getElementById("tsSearch");
+
+    const languageFilter =
+      document.getElementById("tsLanguageFilter");
+
+    const tabs =
+      document.querySelectorAll(".ts-filter-tab");
+
+    const cards =
+      document.querySelectorAll(".ts-series-card");
 
 
-  function filterSeries() {
+    /* =====================================================
+       THEME ELEMENTS
+    ===================================================== */
 
-    const search =
-      searchInput.value.toLowerCase().trim();
+    const toggle =
+      document.getElementById("testSeriesThemeToggle");
 
-    const language =
-      languageFilter.value.toLowerCase();
-
-
-    cards.forEach(function (card) {
-
-      const title =
-        card.dataset.title || "";
-
-      const cardLanguage =
-        card.dataset.language || "";
-
-      const mode =
-        card.dataset.mode || "";
+    const icon =
+      document.getElementById("testSeriesThemeIcon");
 
 
-      const matchesSearch =
-        title.includes(search) ||
-        cardLanguage.includes(search);
+    /* =====================================================
+       FILTER
+    ===================================================== */
 
+    if (
+      searchInput &&
+      languageFilter &&
+      tabs.length &&
+      cards.length
+    ) {
 
-      const matchesLanguage =
-        language === "all" ||
-        cardLanguage.includes(language);
-
-
-      const matchesMode =
-        selectedMode === "all" ||
-        mode === selectedMode;
-
-
+      /*
+        Prevent duplicate listeners
+        after Turbo navigation
+      */
       if (
-        matchesSearch &&
-        matchesLanguage &&
-        matchesMode
+        searchInput.dataset.testSeriesFilterInitialized !== "true"
       ) {
 
-        card.style.display = "";
+        searchInput.dataset.testSeriesFilterInitialized = "true";
 
-      } else {
-
-        card.style.display = "none";
-
-      }
-
-    });
-
-  }
+        let selectedMode = "all";
 
 
-  searchInput.addEventListener(
-    "input",
-    filterSeries
-  );
+        function filterSeries() {
+
+          const search =
+            searchInput.value
+              .toLowerCase()
+              .trim();
 
 
-  languageFilter.addEventListener(
-    "change",
-    filterSeries
-  );
+          const language =
+            languageFilter.value
+              .toLowerCase()
+              .trim();
 
 
-  tabs.forEach(function (tab) {
+          cards.forEach(function (card) {
 
-    tab.addEventListener(
-      "click",
-      function () {
+            const title =
+              (card.dataset.title || "")
+                .toLowerCase();
 
-        tabs.forEach(function (item) {
-          item.classList.remove("active");
+
+            const cardLanguage =
+              (card.dataset.language || "")
+                .toLowerCase();
+
+
+            const mode =
+              (card.dataset.mode || "")
+                .toLowerCase();
+
+
+            /*
+              Search matches:
+              - title
+              - language
+            */
+            const matchesSearch =
+              title.includes(search) ||
+              cardLanguage.includes(search);
+
+
+            /*
+              Language filter
+            */
+            const matchesLanguage =
+              language === "all" ||
+              cardLanguage.includes(language);
+
+
+            /*
+              Online / Offline / All
+            */
+            const matchesMode =
+              selectedMode === "all" ||
+              mode === selectedMode.toLowerCase();
+
+
+            /*
+              Show / Hide card
+            */
+            card.style.display =
+              matchesSearch &&
+              matchesLanguage &&
+              matchesMode
+                ? ""
+                : "none";
+
+          });
+
+        }
+
+
+        /* =================================================
+           SEARCH
+        ================================================= */
+
+        searchInput.addEventListener(
+          "input",
+          filterSeries
+        );
+
+
+        /* =================================================
+           LANGUAGE
+        ================================================= */
+
+        languageFilter.addEventListener(
+          "change",
+          filterSeries
+        );
+
+
+        /* =================================================
+           MODE TABS
+        ================================================= */
+
+        tabs.forEach(function (tab) {
+
+          if (
+            tab.dataset.modeListenerInitialized === "true"
+          ) {
+            return;
+          }
+
+          tab.dataset.modeListenerInitialized = "true";
+
+
+          tab.addEventListener(
+            "click",
+            function () {
+
+              tabs.forEach(function (item) {
+
+                item.classList.remove(
+                  "active"
+                );
+
+              });
+
+
+              tab.classList.add(
+                "active"
+              );
+
+
+              selectedMode =
+                tab.dataset.mode || "all";
+
+
+              filterSeries();
+
+            }
+          );
+
         });
 
-        tab.classList.add("active");
 
-        selectedMode =
-          tab.dataset.mode || "all";
-
+        /*
+          Initial filtering
+        */
         filterSeries();
 
       }
-    );
 
-  });
-
-});
-</script>
- <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
-
-  const toggle = document.getElementById("testSeriesThemeToggle");
-  const icon = document.getElementById("testSeriesThemeIcon");
-
-  if (!toggle || !icon) return;
-
-  const savedTheme = localStorage.getItem("testSeriesTheme");
-
-  if (savedTheme === "night") {
-    document.documentElement.classList.add("test-series-night");
-
-    icon.className = "bi bi-sun-fill";
-    toggle.title = "Switch to Day Mode";
-  } else {
-    document.documentElement.classList.remove("test-series-night");
-
-    icon.className = "bi bi-moon-stars-fill";
-    toggle.title = "Switch to Night Mode";
-  }
-
-  toggle.addEventListener("click", function () {
-
-    const isNight =
-      document.documentElement.classList.toggle("test-series-night");
-
-    if (isNight) {
-
-      localStorage.setItem("testSeriesTheme", "night");
-
-      icon.className = "bi bi-sun-fill";
-      toggle.title = "Switch to Day Mode";
-
-    } else {
-
-      localStorage.setItem("testSeriesTheme", "day");
-
-      icon.className = "bi bi-moon-stars-fill";
-      toggle.title = "Switch to Night Mode";
     }
 
-  });
 
-});
+    /* =====================================================
+       LIGHT / NIGHT MODE
+    ===================================================== */
+
+    if (toggle && icon) {
+
+      /*
+        Prevent duplicate click listener
+      */
+      if (
+        toggle.dataset.themeInitialized !== "true"
+      ) {
+
+        toggle.dataset.themeInitialized = "true";
+
+
+        function applyTheme(isNight) {
+
+          if (isNight) {
+
+            document.documentElement.classList.add(
+              "test-series-night"
+            );
+
+
+            icon.className =
+              "bi bi-sun-fill";
+
+
+            toggle.title =
+              "Switch to Day Mode";
+
+
+            toggle.setAttribute(
+              "aria-label",
+              "Switch to Day Mode"
+            );
+
+          } else {
+
+            document.documentElement.classList.remove(
+              "test-series-night"
+            );
+
+
+            icon.className =
+              "bi bi-moon-stars-fill";
+
+
+            toggle.title =
+              "Switch to Night Mode";
+
+
+            toggle.setAttribute(
+              "aria-label",
+              "Switch to Night Mode"
+            );
+
+          }
+
+        }
+
+
+        /* ===============================================
+           LOAD SAVED THEME
+        =============================================== */
+
+        const savedTheme =
+          localStorage.getItem(
+            "testSeriesTheme"
+          );
+
+
+        applyTheme(
+          savedTheme === "night"
+        );
+
+
+        /* ===============================================
+           TOGGLE CLICK
+        =============================================== */
+
+        toggle.addEventListener(
+          "click",
+          function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            const isNight =
+              document.documentElement.classList.toggle(
+                "test-series-night"
+              );
+
+
+            localStorage.setItem(
+              "testSeriesTheme",
+              isNight
+                ? "night"
+                : "day"
+            );
+
+
+            applyTheme(isNight);
+
+          }
+        );
+
+      }
+
+    }
+
+  }
+
+
+  /* =====================================================
+     TURBO NAVIGATION
+  ===================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTestSeriesPage
+  );
+
+
+  /* =====================================================
+     NORMAL INITIAL PAGE LOAD
+  ===================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeTestSeriesPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTestSeriesPage,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

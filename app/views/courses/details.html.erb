@@ -2533,14 +2533,21 @@ html.night-mode .progress-bar {
 }
 </style>
 <script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
   function initializeCourseDetails() {
 
     /* =====================================================
        COURSE TABS
     ====================================================== */
 
-    const tabs = document.querySelectorAll(".course-tab");
-    const panels = document.querySelectorAll(".course-tab-panel");
+    const tabs =
+      document.querySelectorAll(".course-tab");
+
+    const panels =
+      document.querySelectorAll(".course-tab-panel");
+
 
     tabs.forEach(function (tab) {
 
@@ -2550,24 +2557,45 @@ html.night-mode .progress-bar {
 
       tab.dataset.tabsInitialized = "true";
 
+
       tab.addEventListener("click", function () {
 
-        const target = this.dataset.tab;
+        const target =
+          this.dataset.tab;
+
+        if (!target) {
+          return;
+        }
+
+
+        /* Remove active state */
 
         tabs.forEach(function (item) {
+
           item.classList.remove("active");
+
         });
 
+
         panels.forEach(function (panel) {
+
           panel.classList.remove("active");
+
         });
+
+
+        /* Activate selected tab */
 
         this.classList.add("active");
 
-        const selectedPanel = document.getElementById(target);
+
+        const selectedPanel =
+          document.getElementById(target);
 
         if (selectedPanel) {
+
           selectedPanel.classList.add("active");
+
         }
 
       });
@@ -2580,28 +2608,51 @@ html.night-mode .progress-bar {
     ====================================================== */
 
     const chapterButtons =
-      document.querySelectorAll("[data-chapter-toggle]");
+      document.querySelectorAll(
+        "[data-chapter-toggle]"
+      );
+
 
     chapterButtons.forEach(function (button) {
 
-      if (button.dataset.chapterInitialized === "true") {
+      if (
+        button.dataset.chapterInitialized === "true"
+      ) {
         return;
       }
 
       button.dataset.chapterInitialized = "true";
 
-      button.addEventListener("click", function () {
 
-        const chapter =
-          this.closest(".chapter-item");
+      button.addEventListener(
+        "click",
+        function () {
 
-        if (!chapter) {
-          return;
+          const chapter =
+            this.closest(".chapter-item");
+
+          if (!chapter) {
+            return;
+          }
+
+
+          chapter.classList.toggle("open");
+
+
+          /*
+           * Accessibility state
+           */
+
+          const isOpen =
+            chapter.classList.contains("open");
+
+          this.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+          );
+
         }
-
-        chapter.classList.toggle("open");
-
-      });
+      );
 
     });
 
@@ -2611,53 +2662,76 @@ html.night-mode .progress-bar {
     ====================================================== */
 
     const wishlistButtons =
-      document.querySelectorAll("[data-course-wishlist]");
+      document.querySelectorAll(
+        "[data-course-wishlist]"
+      );
+
 
     wishlistButtons.forEach(function (button) {
 
-      if (button.dataset.wishlistInitialized === "true") {
+      if (
+        button.dataset.wishlistInitialized === "true"
+      ) {
         return;
       }
 
       button.dataset.wishlistInitialized = "true";
 
-      button.addEventListener("click", function () {
 
-        const icon = this.querySelector("i");
-        const text = this.querySelector("span");
+      button.addEventListener(
+        "click",
+        function () {
 
-        if (!icon || !text) {
-          return;
+          const icon =
+            this.querySelector("i");
+
+          const text =
+            this.querySelector("span");
+
+
+          if (!icon || !text) {
+            return;
+          }
+
+
+          const isAdded =
+            icon.classList.contains("fas");
+
+
+          if (isAdded) {
+
+            icon.classList.remove("fas");
+            icon.classList.add("far");
+
+            text.textContent =
+              "Add to Wishlist";
+
+            this.setAttribute(
+              "aria-pressed",
+              "false"
+            );
+
+          } else {
+
+            icon.classList.remove("far");
+            icon.classList.add("fas");
+
+            text.textContent =
+              "Added to Wishlist";
+
+            this.setAttribute(
+              "aria-pressed",
+              "true"
+            );
+
+          }
+
         }
-
-        icon.classList.toggle("far");
-        icon.classList.toggle("fas");
-
-        if (icon.classList.contains("fas")) {
-
-          text.textContent = "Added to Wishlist";
-
-        } else {
-
-          text.textContent = "Add to Wishlist";
-
-        }
-
-      });
+      );
 
     });
 
   }
-
-
-  /* =====================================================
-     NORMAL PAGE LOAD
-  ====================================================== */
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeCourseDetails
-  );
 
 
   /* =====================================================
@@ -2668,4 +2742,26 @@ html.night-mode .progress-bar {
     "turbo:load",
     initializeCourseDetails
   );
+
+
+  /* =====================================================
+     INITIAL PAGE LOAD
+  ====================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeCourseDetails();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeCourseDetails,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

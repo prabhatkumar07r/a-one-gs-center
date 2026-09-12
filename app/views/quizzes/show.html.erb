@@ -2539,21 +2539,36 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
+(() => {
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
+  function initializeQuizExam() {
+
+    /* =====================================================
+       CLEANUP PREVIOUS INSTANCE
+    ===================================================== */
+
+    if (typeof window.__quizExamCleanup === "function") {
+      window.__quizExamCleanup();
+      window.__quizExamCleanup = null;
+    }
 
 
     /* =====================================================
        ELEMENTS
     ===================================================== */
 
+    const page =
+      document.querySelector(".quiz-exam-page");
+
+    if (!page) {
+      return;
+    }
+
+
     const questionBlocks =
       Array.from(
-        document.querySelectorAll(
+        page.querySelectorAll(
           ".quiz-question-block"
         )
       );
@@ -2561,7 +2576,7 @@ document.addEventListener(
 
     const paletteButtons =
       Array.from(
-        document.querySelectorAll(
+        page.querySelectorAll(
           ".quiz-palette-number"
         )
       );
@@ -2569,145 +2584,101 @@ document.addEventListener(
 
     const optionLabels =
       Array.from(
-        document.querySelectorAll(
+        page.querySelectorAll(
           ".quiz-option"
         )
       );
 
 
     const prevBtn =
-      document.getElementById(
-        "prevBtn"
-      );
+      page.querySelector("#prevBtn");
 
 
     const nextBtn =
-      document.getElementById(
-        "nextBtn"
-      );
+      page.querySelector("#nextBtn");
 
 
     const submitBtn =
-      document.getElementById(
-        "submitBtn"
-      );
+      page.querySelector("#submitBtn");
 
 
     const sidebarSubmitBtn =
-      document.getElementById(
-        "sidebarSubmitBtn"
-      );
+      page.querySelector("#sidebarSubmitBtn");
 
 
     const bookmarkBtn =
-      document.getElementById(
-        "bookmarkBtn"
-      );
+      page.querySelector("#bookmarkBtn");
 
 
     const quizForm =
-      document.getElementById(
-        "quizForm"
-      );
+      page.querySelector("#quizForm");
 
 
     const timer =
-      document.getElementById(
-        "quizTimer"
-      );
+      page.querySelector("#quizTimer");
 
 
     const answeredCount =
-      document.getElementById(
-        "answeredCount"
-      );
+      page.querySelector("#answeredCount");
 
 
     const remainingCount =
-      document.getElementById(
-        "remainingCount"
-      );
+      page.querySelector("#remainingCount");
 
 
     const progressFill =
-      document.getElementById(
-        "progressFill"
-      );
+      page.querySelector("#progressFill");
 
 
     const progressPercent =
-      document.getElementById(
-        "progressPercent"
-      );
+      page.querySelector("#progressPercent");
 
 
     const currentQuestionNumber =
-      document.getElementById(
-        "currentQuestionNumber"
-      );
+      page.querySelector("#currentQuestionNumber");
 
 
     const currentQuestionHeading =
-      document.getElementById(
-        "currentQuestionHeading"
-      );
+      page.querySelector("#currentQuestionHeading");
 
 
     const currentQuestionMarks =
-      document.getElementById(
-        "currentQuestionMarks"
-      );
+      page.querySelector("#currentQuestionMarks");
 
 
     const questionPaperBtn =
-      document.getElementById(
-        "questionPaperBtn"
-      );
+      page.querySelector("#questionPaperBtn");
 
 
     const questionElapsedTime =
-      document.getElementById(
-        "questionElapsedTime"
-      );
+      page.querySelector("#questionElapsedTime");
 
 
     const submitOverlay =
-      document.getElementById(
-        "submitOverlay"
-      );
+      page.querySelector("#submitOverlay");
 
 
     const cancelSubmitBtn =
-      document.getElementById(
-        "cancelSubmitBtn"
-      );
+      page.querySelector("#cancelSubmitBtn");
 
 
     const confirmSubmitBtn =
-      document.getElementById(
-        "confirmSubmitBtn"
-      );
+      page.querySelector("#confirmSubmitBtn");
 
 
     const modalAnswered =
-      document.getElementById(
-        "modalAnswered"
-      );
+      page.querySelector("#modalAnswered");
 
 
     const modalUnanswered =
-      document.getElementById(
-        "modalUnanswered"
-      );
+      page.querySelector("#modalUnanswered");
 
 
     if (
       !questionBlocks.length ||
       !quizForm
     ) {
-
       return;
-
     }
 
 
@@ -2722,6 +2693,14 @@ document.addEventListener(
     let questionStartedAt =
       Date.now();
 
+    let remainingSeconds =
+      <%= @quiz.time_limit.to_i * 60 %>;
+
+
+    let timerInterval = null;
+
+    let questionElapsedInterval = null;
+
 
     const bookmarkedQuestions =
       new Set();
@@ -2732,6 +2711,10 @@ document.addEventListener(
     ===================================================== */
 
     function getSelectedRadio(questionBlock) {
+
+      if (!questionBlock) {
+        return null;
+      }
 
       return questionBlock.querySelector(
         "input[type='radio']:checked"
@@ -2745,10 +2728,6 @@ document.addEventListener(
       const question =
         questionBlocks[index];
 
-      if (!question) {
-        return false;
-      }
-
       return !!getSelectedRadio(
         question
       );
@@ -2757,7 +2736,7 @@ document.addEventListener(
 
 
     /* =====================================================
-       UPDATE OPTION STYLES
+       OPTION STYLES
     ===================================================== */
 
     function updateOptionStyles() {
@@ -2786,7 +2765,7 @@ document.addEventListener(
 
 
     /* =====================================================
-       UPDATE ANSWERED STATUS
+       ANSWERED STATUS
     ===================================================== */
 
     function updateAnswered() {
@@ -2804,9 +2783,7 @@ document.addEventListener(
 
 
           if (selected) {
-
             answered++;
-
           }
 
 
@@ -2840,34 +2817,46 @@ document.addEventListener(
           : 0;
 
 
-      answeredCount.textContent =
-        answered;
+      if (answeredCount) {
+        answeredCount.textContent =
+          answered;
+      }
 
 
-      remainingCount.textContent =
-        remaining;
+      if (remainingCount) {
+        remainingCount.textContent =
+          remaining;
+      }
 
 
-      progressPercent.textContent =
-        percentage + "%";
+      if (progressPercent) {
+        progressPercent.textContent =
+          percentage + "%";
+      }
 
 
-      progressFill.style.width =
-        percentage + "%";
+      if (progressFill) {
+        progressFill.style.width =
+          percentage + "%";
+      }
 
 
-      modalAnswered.textContent =
-        answered;
+      if (modalAnswered) {
+        modalAnswered.textContent =
+          answered;
+      }
 
 
-      modalUnanswered.textContent =
-        remaining;
+      if (modalUnanswered) {
+        modalUnanswered.textContent =
+          remaining;
+      }
 
     }
 
 
     /* =====================================================
-       UPDATE PALETTE CURRENT STATE
+       PALETTE
     ===================================================== */
 
     function updatePalette() {
@@ -2893,7 +2882,7 @@ document.addEventListener(
 
 
     /* =====================================================
-       UPDATE QUESTION HEADER
+       QUESTION HEADER
     ===================================================== */
 
     function updateQuestionHeader() {
@@ -2919,32 +2908,49 @@ document.addEventListener(
         );
 
 
-      currentQuestionNumber.textContent =
-        number;
+      if (currentQuestionNumber) {
+
+        currentQuestionNumber.textContent =
+          number;
+
+      }
 
 
-      currentQuestionHeading.textContent =
-        "Question " +
-        number +
-        " of " +
-        questionBlocks.length;
+      if (currentQuestionHeading) {
+
+        currentQuestionHeading.textContent =
+          "Question " +
+          number +
+          " of " +
+          questionBlocks.length;
+
+      }
 
 
-      currentQuestionMarks.textContent =
-        "+" +
-        marks.toFixed(
-          marks % 1 === 0 ? 1 : 2
-        ) +
-        " Marks";
+      if (currentQuestionMarks) {
+
+        currentQuestionMarks.textContent =
+          "+" +
+          marks.toFixed(
+            marks % 1 === 0 ? 1 : 2
+          ) +
+          " Marks";
+
+      }
 
     }
 
 
     /* =====================================================
-       BOOKMARK UI
+       BOOKMARK BUTTON
     ===================================================== */
 
     function updateBookmarkButton() {
+
+      if (!bookmarkBtn) {
+        return;
+      }
+
 
       const isBookmarked =
         bookmarkedQuestions.has(
@@ -2962,110 +2968,6 @@ document.addEventListener(
         isBookmarked
           ? '<i class="fas fa-bookmark"></i>'
           : '<i class="far fa-bookmark"></i>';
-
-    }
-
-
-    /* =====================================================
-       SHOW QUESTION
-    ===================================================== */
-
-    function showQuestion(index) {
-
-      if (
-        index < 0 ||
-        index >= questionBlocks.length
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-        Save elapsed time for current question
-        visually before changing.
-      */
-
-      updateQuestionElapsed();
-
-
-      currentQuestion =
-        index;
-
-
-      questionStartedAt =
-        Date.now();
-
-
-      questionBlocks.forEach(
-        function(question, i) {
-
-          question.style.display =
-            i === index
-              ? "block"
-              : "none";
-
-        }
-      );
-
-
-      updateQuestionHeader();
-
-      updatePalette();
-
-      updateBookmarkButton();
-
-      updateOptionStyles();
-
-      updateAnswered();
-
-
-      prevBtn.disabled =
-        index === 0;
-
-
-      if (
-        index === questionBlocks.length - 1
-      ) {
-
-        nextBtn.style.display =
-          "none";
-
-
-        submitBtn.style.display =
-          "inline-flex";
-
-      }
-      else {
-
-        nextBtn.style.display =
-          "inline-flex";
-
-
-        submitBtn.style.display =
-          "none";
-
-      }
-
-
-      /*
-        Keep selected answer visible
-        when returning to a question.
-      */
-
-      const current =
-        questionBlocks[index];
-
-
-      if (current) {
-
-        current.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest"
-        });
-
-      }
 
     }
 
@@ -3108,10 +3010,130 @@ document.addEventListener(
     }
 
 
-    setInterval(
-      updateQuestionElapsed,
-      1000
-    );
+    /* =====================================================
+       SHOW QUESTION
+    ===================================================== */
+
+    function showQuestion(index) {
+
+      if (
+        index < 0 ||
+        index >= questionBlocks.length
+      ) {
+        return;
+      }
+
+
+      /* Save visible elapsed time */
+
+      updateQuestionElapsed();
+
+
+      currentQuestion =
+        index;
+
+
+      questionStartedAt =
+        Date.now();
+
+
+      questionBlocks.forEach(
+        function(question, i) {
+
+          question.style.display =
+            i === index
+              ? "block"
+              : "none";
+
+        }
+      );
+
+
+      updateQuestionHeader();
+
+      updatePalette();
+
+      updateBookmarkButton();
+
+      updateOptionStyles();
+
+      updateAnswered();
+
+
+      if (prevBtn) {
+
+        prevBtn.disabled =
+          index === 0;
+
+      }
+
+
+      if (
+        index ===
+        questionBlocks.length - 1
+      ) {
+
+        if (nextBtn) {
+          nextBtn.style.display =
+            "none";
+        }
+
+
+        if (submitBtn) {
+          submitBtn.style.display =
+            "inline-flex";
+        }
+
+      }
+      else {
+
+        if (nextBtn) {
+          nextBtn.style.display =
+            "inline-flex";
+        }
+
+
+        if (submitBtn) {
+          submitBtn.style.display =
+            "none";
+        }
+
+      }
+
+    }
+
+
+    /* =====================================================
+       SUBMIT MODAL
+    ===================================================== */
+
+    function openSubmitModal() {
+
+      updateAnswered();
+
+
+      if (submitOverlay) {
+
+        submitOverlay.classList.add(
+          "show"
+        );
+
+      }
+
+    }
+
+
+    function closeSubmitModal() {
+
+      if (submitOverlay) {
+
+        submitOverlay.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
 
 
     /* =====================================================
@@ -3136,7 +3158,8 @@ document.addEventListener(
             }
 
 
-            radio.checked = true;
+            radio.checked =
+              true;
 
 
             const question =
@@ -3182,54 +3205,66 @@ document.addEventListener(
        SAVE & NEXT
     ===================================================== */
 
-    nextBtn.addEventListener(
-      "click",
-      function() {
+    if (nextBtn) {
 
-        /*
-          The selected radio is already part
-          of the form. Nothing needs to be
-          sent to the server yet.
-        */
+      nextBtn.addEventListener(
+        "click",
+        function() {
 
-        updateAnswered();
+          if (submitted) {
+            return;
+          }
 
 
-        if (
-          currentQuestion <
-          questionBlocks.length - 1
-        ) {
+          updateAnswered();
 
-          showQuestion(
-            currentQuestion + 1
-          );
+
+          if (
+            currentQuestion <
+            questionBlocks.length - 1
+          ) {
+
+            showQuestion(
+              currentQuestion + 1
+            );
+
+          }
 
         }
+      );
 
-      }
-    );
+    }
 
 
     /* =====================================================
        PREVIOUS
     ===================================================== */
 
-    prevBtn.addEventListener(
-      "click",
-      function() {
+    if (prevBtn) {
 
-        if (
-          currentQuestion > 0
-        ) {
+      prevBtn.addEventListener(
+        "click",
+        function() {
 
-          showQuestion(
-            currentQuestion - 1
-          );
+          if (submitted) {
+            return;
+          }
+
+
+          if (
+            currentQuestion > 0
+          ) {
+
+            showQuestion(
+              currentQuestion - 1
+            );
+
+          }
 
         }
+      );
 
-      }
-    );
+    }
 
 
     /* =====================================================
@@ -3243,6 +3278,11 @@ document.addEventListener(
           "click",
           function() {
 
+            if (submitted) {
+              return;
+            }
+
+
             const index =
               parseInt(
                 button.dataset.questionIndex,
@@ -3253,9 +3293,7 @@ document.addEventListener(
             if (
               Number.isNaN(index)
             ) {
-
               return;
-
             }
 
 
@@ -3272,206 +3310,249 @@ document.addEventListener(
        BOOKMARK
     ===================================================== */
 
-    bookmarkBtn.addEventListener(
-      "click",
-      function() {
+    if (bookmarkBtn) {
 
-        if (
-          bookmarkedQuestions.has(
-            currentQuestion
-          )
-        ) {
+      bookmarkBtn.addEventListener(
+        "click",
+        function() {
 
-          bookmarkedQuestions.delete(
-            currentQuestion
-          );
+          if (submitted) {
+            return;
+          }
+
+
+          if (
+            bookmarkedQuestions.has(
+              currentQuestion
+            )
+          ) {
+
+            bookmarkedQuestions.delete(
+              currentQuestion
+            );
+
+          }
+          else {
+
+            bookmarkedQuestions.add(
+              currentQuestion
+            );
+
+          }
+
+
+          updateBookmarkButton();
+
+          updatePalette();
 
         }
-        else {
+      );
 
-          bookmarkedQuestions.add(
-            currentQuestion
-          );
-
-        }
-
-
-        updateBookmarkButton();
-
-        updatePalette();
-
-      }
-    );
+    }
 
 
     /* =====================================================
        QUESTION PAPER
     ===================================================== */
 
-    questionPaperBtn.addEventListener(
-      "click",
-      function() {
+    if (questionPaperBtn) {
 
-        const firstUnanswered =
-          questionBlocks.findIndex(
-            function(question) {
+      questionPaperBtn.addEventListener(
+        "click",
+        function() {
 
-              return !getSelectedRadio(
-                question
-              );
-
-            }
-          );
+          if (submitted) {
+            return;
+          }
 
 
-        if (
-          firstUnanswered >= 0
-        ) {
+          const firstUnanswered =
+            questionBlocks.findIndex(
+              function(question) {
 
-          showQuestion(
-            firstUnanswered
-          );
+                return !getSelectedRadio(
+                  question
+                );
+
+              }
+            );
+
+
+          if (
+            firstUnanswered >= 0
+          ) {
+
+            showQuestion(
+              firstUnanswered
+            );
+
+          }
+          else {
+
+            showQuestion(0);
+
+          }
 
         }
-        else {
-
-          /*
-            If all are answered,
-            open the first question.
-          */
-
-          showQuestion(0);
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       OPEN SUBMIT MODAL
-    ===================================================== */
-
-    function openSubmitModal() {
-
-      updateAnswered();
-
-      submitOverlay.classList.add(
-        "show"
       );
 
     }
 
 
     /* =====================================================
-       CLOSE SUBMIT MODAL
+       SIDEBAR SUBMIT
     ===================================================== */
 
-    function closeSubmitModal() {
+    if (sidebarSubmitBtn) {
 
-      submitOverlay.classList.remove(
-        "show"
+      sidebarSubmitBtn.addEventListener(
+        "click",
+        function() {
+
+          if (submitted) {
+            return;
+          }
+
+
+          openSubmitModal();
+
+        }
       );
 
     }
 
 
-    sidebarSubmitBtn.addEventListener(
-      "click",
-      function() {
+    /* =====================================================
+       SUBMIT BUTTON
+    ===================================================== */
 
-        openSubmitModal();
+    if (submitBtn) {
 
-      }
-    );
+      submitBtn.addEventListener(
+        "click",
+        function(event) {
 
-
-    submitBtn.addEventListener(
-      "click",
-      function(event) {
-
-        /*
-          Submit button is inside form.
-          Stop normal submission first,
-          then show confirmation.
-        */
-
-        event.preventDefault();
-
-        openSubmitModal();
-
-      }
-    );
+          event.preventDefault();
 
 
-    cancelSubmitBtn.addEventListener(
-      "click",
-      function() {
+          if (submitted) {
+            return;
+          }
 
-        closeSubmitModal();
 
-      }
-    );
+          openSubmitModal();
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       CANCEL SUBMIT
+    ===================================================== */
+
+    if (cancelSubmitBtn) {
+
+      cancelSubmitBtn.addEventListener(
+        "click",
+        function() {
+
+          closeSubmitModal();
+
+        }
+      );
+
+    }
 
 
     /* =====================================================
        CONFIRM SUBMIT
     ===================================================== */
 
-    confirmSubmitBtn.addEventListener(
-      "click",
-      function() {
+    if (confirmSubmitBtn) {
 
-        if (submitted) {
-          return;
+      confirmSubmitBtn.addEventListener(
+        "click",
+        function() {
+
+          if (submitted) {
+            return;
+          }
+
+
+          submitted = true;
+
+
+          confirmSubmitBtn.disabled =
+            true;
+
+
+          confirmSubmitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+
+          if (submitBtn) {
+
+            submitBtn.disabled =
+              true;
+
+          }
+
+
+          if (sidebarSubmitBtn) {
+
+            sidebarSubmitBtn.disabled =
+              true;
+
+          }
+
+
+          clearInterval(
+            timerInterval
+          );
+
+
+          clearInterval(
+            questionElapsedInterval
+          );
+
+
+          /*
+            Native submission bypasses
+            the submit event handler.
+          */
+
+          HTMLFormElement.prototype.submit.call(
+            quizForm
+          );
+
         }
+      );
 
-
-        submitted = true;
-
-
-        confirmSubmitBtn.disabled =
-          true;
-
-
-        confirmSubmitBtn.innerHTML =
-          '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-
-
-        submitBtn.disabled =
-          true;
-
-
-        /*
-          Native form submission bypasses
-          this submit event again.
-        */
-
-        HTMLFormElement.prototype.submit.call(
-          quizForm
-        );
-
-      }
-    );
+    }
 
 
     /* =====================================================
-       ESCAPE MODAL
+       ESCAPE KEY
     ===================================================== */
+
+    function handleKeydown(event) {
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        closeSubmitModal();
+
+      }
+
+    }
+
 
     document.addEventListener(
       "keydown",
-      function(event) {
-
-        if (
-          event.key === "Escape"
-        ) {
-
-          closeSubmitModal();
-
-        }
-
-      }
+      handleKeydown
     );
 
 
@@ -3479,14 +3560,12 @@ document.addEventListener(
        TIMER
     ===================================================== */
 
-    let remainingSeconds =
-      <%= @quiz.time_limit.to_i * 60 %>;
-
-
-    let timerInterval;
-
-
     function updateTimer() {
+
+      if (!timer) {
+        return;
+      }
+
 
       const minutes =
         Math.floor(
@@ -3557,22 +3636,26 @@ document.addEventListener(
         submitted = true;
 
 
-        submitBtn.disabled =
-          true;
+        if (submitBtn) {
+
+          submitBtn.disabled =
+            true;
+
+        }
 
 
-        sidebarSubmitBtn.disabled =
-          true;
+        if (sidebarSubmitBtn) {
+
+          sidebarSubmitBtn.disabled =
+            true;
+
+        }
 
 
         alert(
           "Time is over. Your quiz will be submitted automatically."
         );
 
-
-        /*
-          Bypass submit confirmation.
-        */
 
         HTMLFormElement.prototype.submit.call(
           quizForm
@@ -3589,6 +3672,10 @@ document.addEventListener(
     }
 
 
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
     updateTimer();
 
 
@@ -3599,9 +3686,12 @@ document.addEventListener(
       );
 
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
+    questionElapsedInterval =
+      setInterval(
+        updateQuestionElapsed,
+        1000
+      );
+
 
     showQuestion(0);
 
@@ -3613,8 +3703,85 @@ document.addEventListener(
 
     updateOptionStyles();
 
+
+    /* =====================================================
+       CLEANUP FOR TURBO
+    ===================================================== */
+
+    window.__quizExamCleanup =
+      function() {
+
+        clearInterval(
+          timerInterval
+        );
+
+
+        clearInterval(
+          questionElapsedInterval
+        );
+
+
+        document.removeEventListener(
+          "keydown",
+          handleKeydown
+        );
+
+      };
+
   }
 
-);
 
+  /* =======================================================
+     TURBO LOAD
+  ======================================================= */
+
+  if (
+    !window.__quizExamTurboListenerInstalled
+  ) {
+
+    window.__quizExamTurboListenerInstalled =
+      true;
+
+
+    document.addEventListener(
+      "turbo:load",
+      initializeQuizExam
+    );
+
+
+    document.addEventListener(
+      "turbo:before-cache",
+      function() {
+
+        if (
+          typeof window.__quizExamCleanup ===
+          "function"
+        ) {
+
+          window.__quizExamCleanup();
+
+          window.__quizExamCleanup =
+            null;
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     INITIAL LOAD SAFETY
+  ======================================================= */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeQuizExam();
+
+  }
+
+})();
 </script>

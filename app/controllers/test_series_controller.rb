@@ -117,12 +117,11 @@ class TestSeriesController < ApplicationController
   # ==================================================
   # INSTRUCTIONS
   # ==================================================
+     def instructions
+     @test_series = TestSeries.active.find(params[:id])
 
-  def instructions
-  @test_series = TestSeries.active.find(params[:id])
-
-  @test =
-    if params[:test_id].present?
+   @test =
+     if params[:test_id].present?
       @test_series
         .test_series_tests
         .active
@@ -134,6 +133,21 @@ class TestSeriesController < ApplicationController
         .order(test_number: :asc)
         .first
     end
+
+  # ==========================================
+  # TEST LANGUAGE
+  # ==========================================
+
+  @language =
+    if params[:language].to_s.downcase == "hi"
+      "hi"
+    else
+      "en"
+    end
+
+  # ==========================================
+  # NO TEST
+  # ==========================================
 
   if @test.nil?
     redirect_to test_series_path(@test_series),

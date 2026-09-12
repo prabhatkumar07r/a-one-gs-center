@@ -1900,7 +1900,8 @@ html.night-mode .card-footer {
 (function () {
 
     /* =====================================================
-       PREVENT DUPLICATE INITIALIZATION
+       STUDENT HEADER
+       TURBO SAFE + DUPLICATE SAFE
     ===================================================== */
 
     if (window.studentHeaderInitialized) {
@@ -1911,33 +1912,23 @@ html.night-mode .card-footer {
 
 
     /* =====================================================
-       ELEMENTS
+       GET CURRENT ELEMENTS
     ===================================================== */
 
     function getElements() {
 
         return {
-
             profileButton:
-                document.getElementById(
-                    "studentProfileButton"
-                ),
+                document.getElementById("studentProfileButton"),
 
             profileMenu:
-                document.getElementById(
-                    "studentProfileMenu"
-                ),
+                document.getElementById("studentProfileMenu"),
 
             mobileButton:
-                document.getElementById(
-                    "mobileMenuButton"
-                ),
+                document.getElementById("mobileMenuButton"),
 
             mobileNavigation:
-                document.getElementById(
-                    "mobileNavigation"
-                )
-
+                document.getElementById("mobileNavigation")
         };
 
     }
@@ -1971,7 +1962,7 @@ html.night-mode .card-footer {
 
 
     /* =====================================================
-       CLOSE MOBILE
+       CLOSE MOBILE NAV
     ===================================================== */
 
     function closeMobile() {
@@ -2030,7 +2021,6 @@ html.night-mode .card-footer {
             }
 
             event.preventDefault();
-
             event.stopPropagation();
 
             const menu =
@@ -2070,7 +2060,7 @@ html.night-mode .card-footer {
 
 
     /* =====================================================
-       MOBILE MENU
+       MOBILE MENU BUTTON
     ===================================================== */
 
     document.addEventListener(
@@ -2087,7 +2077,6 @@ html.night-mode .card-footer {
             }
 
             event.preventDefault();
-
             event.stopPropagation();
 
             const navigation =
@@ -2100,9 +2089,7 @@ html.night-mode .card-footer {
             }
 
             const isOpen =
-                navigation.classList.contains(
-                    "open"
-                );
+                navigation.classList.contains("open");
 
             closeProfile();
 
@@ -2166,13 +2153,22 @@ html.night-mode .card-footer {
                     "#mobileMenuButton"
                 );
 
+            const themeToggle =
+                event.target.closest(
+                    "#themeToggle"
+                );
 
-            if (!profile) {
+
+            /*
+             * Theme toggle is NOT treated as outside
+             * header interaction.
+             */
+
+            if (!profile && !themeToggle) {
                 closeProfile();
             }
 
-
-            if (!mobile && !mobileButton) {
+            if (!mobile && !mobileButton && !themeToggle) {
                 closeMobile();
             }
 
@@ -2181,7 +2177,7 @@ html.night-mode .card-footer {
 
 
     /* =====================================================
-       ESCAPE
+       ESCAPE KEY
     ===================================================== */
 
     document.addEventListener(
@@ -2201,7 +2197,7 @@ html.night-mode .card-footer {
 
 
     /* =====================================================
-       MOBILE LINKS
+       MOBILE NAVIGATION LINKS
     ===================================================== */
 
     document.addEventListener(
@@ -2232,7 +2228,9 @@ html.night-mode .card-footer {
         function () {
 
             if (window.innerWidth > 850) {
+
                 closeMobile();
+
             }
 
         }
@@ -2241,50 +2239,49 @@ html.night-mode .card-footer {
 })();
 
 
+/* =========================================================
+   DAY / NIGHT THEME
+   TURBO SAFE + DELEGATED CLICK
+========================================================= */
+
 (function () {
 
-    const toggle = document.getElementById("themeToggle");
-    const icon = document.getElementById("themeIcon");
-
-    if (!toggle || !icon) {
-        return;
-    }
-
-    const savedTheme =
-        localStorage.getItem("student-theme") || "day";
-
-    applyTheme(savedTheme);
-
-
-    toggle.addEventListener("click", function () {
-
-        const currentTheme =
-            document.documentElement.classList.contains("night-mode")
-                ? "night"
-                : "day";
-
-        const newTheme =
-            currentTheme === "night"
-                ? "day"
-                : "night";
-
-        applyTheme(newTheme);
-
-        localStorage.setItem(
-            "student-theme",
-            newTheme
-        );
-
-    });
-
+    /* =====================================================
+       APPLY THEME
+    ===================================================== */
 
     function applyTheme(theme) {
 
-        if (theme === "night") {
+        const isNight =
+            theme === "night";
 
-            document.documentElement.classList.add(
-                "night-mode"
+        document.documentElement.classList.toggle(
+            "night-mode",
+            isNight
+        );
+
+
+        const toggle =
+            document.getElementById(
+                "themeToggle"
             );
+
+        const icon =
+            document.getElementById(
+                "themeIcon"
+            );
+
+
+        if (!toggle || !icon) {
+            return;
+        }
+
+
+        /* =================================================
+           NIGHT
+        ================================================= */
+
+        if (isNight) {
 
             icon.className =
                 "bi bi-sun-fill";
@@ -2297,11 +2294,14 @@ html.night-mode .card-footer {
                 "Switch to Day Mode"
             );
 
-        } else {
+        }
 
-            document.documentElement.classList.remove(
-                "night-mode"
-            );
+
+        /* =================================================
+           DAY
+        ================================================= */
+
+        else {
 
             icon.className =
                 "bi bi-moon-stars-fill";
@@ -2318,7 +2318,108 @@ html.night-mode .card-footer {
 
     }
 
-})();
 
+    /* =====================================================
+       INITIALIZE THEME
+    ===================================================== */
+
+    function initializeTheme() {
+
+        let savedTheme =
+            localStorage.getItem(
+                "student-theme"
+            );
+
+
+        if (
+            savedTheme !== "night" &&
+            savedTheme !== "day"
+        ) {
+
+            savedTheme = "day";
+
+        }
+
+
+        applyTheme(savedTheme);
+
+    }
+
+
+    /* =====================================================
+       INSTALL CLICK HANDLER ONLY ONCE
+    ===================================================== */
+
+    if (!window.studentThemeHandlerInitialized) {
+
+        window.studentThemeHandlerInitialized = true;
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const toggle =
+                    event.target.closest(
+                        "#themeToggle"
+                    );
+
+
+                if (!toggle) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                const currentTheme =
+                    document.documentElement.classList.contains(
+                        "night-mode"
+                    )
+                        ? "night"
+                        : "day";
+
+
+                const newTheme =
+                    currentTheme === "night"
+                        ? "day"
+                        : "night";
+
+
+                applyTheme(newTheme);
+
+
+                localStorage.setItem(
+                    "student-theme",
+                    newTheme
+                );
+
+            },
+            true
+        );
+
+    }
+
+
+    /* =====================================================
+       TURBO PAGE LOAD
+    ===================================================== */
+
+    document.addEventListener(
+        "turbo:load",
+        initializeTheme
+    );
+
+
+    /* =====================================================
+       INITIAL PAGE LOAD
+    ===================================================== */
+
+    initializeTheme();
+
+})();
 
 </script>

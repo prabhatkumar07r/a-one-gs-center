@@ -734,567 +734,678 @@
 
 </style>
 
-
-<!-- ============================================================
-     JAVASCRIPT
-============================================================= -->
-
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
+
+  /* =========================================================
+     TEST SERIES QUESTION FORM
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
+
+  function initializeQuestionForm() {
+
+    const form =
+      document.getElementById("questionForm");
+
+    const optionsContainer =
+      document.getElementById("optionsContainer");
+
+    const addOptionBtn =
+      document.getElementById("addOptionBtn");
 
 
-  /* ============================================================
-     ELEMENTS
-  ============================================================ */
-
-  const form =
-    document.getElementById("questionForm");
-
-
-  const optionsContainer =
-    document.getElementById("optionsContainer");
+    if (
+      !form ||
+      !optionsContainer ||
+      !addOptionBtn
+    ) {
+      return;
+    }
 
 
-  const addOptionBtn =
-    document.getElementById("addOptionBtn");
+    /* =======================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ======================================================= */
+
+    if (
+      form.dataset.questionFormInitialized === "true"
+    ) {
+      return;
+    }
+
+    form.dataset.questionFormInitialized =
+      "true";
 
 
-  if (!form || !optionsContainer || !addOptionBtn) {
-    return;
-  }
+    /* =======================================================
+       GET ACTIVE OPTION ROWS
+    ======================================================= */
 
+    function getActiveRows() {
 
-  /* ============================================================
-     GET ACTIVE OPTION ROWS
-  ============================================================ */
-
-  function getActiveRows() {
-
-    return Array.from(
-      optionsContainer.querySelectorAll("[data-option-row]")
-    ).filter(function (row) {
-
-      return row.style.display !== "none";
-
-    });
-
-  }
-
-
-  /* ============================================================
-     UPDATE OPTION NUMBERS / POSITIONS
-  ============================================================ */
-
-  function updateOptionNumbers() {
-
-    const rows =
-      getActiveRows();
-
-
-    rows.forEach(function (row, index) {
-
-
-      const number =
-        row.querySelector(".option-number-value");
-
-
-      const position =
-        row.querySelector(".option-position-field");
-
-
-      if (number) {
-
-        number.textContent =
-          index + 1;
-
-      }
-
-
-      if (position) {
-
-        position.value =
-          index + 1;
-
-      }
-
-    });
-
-  }
-
-
-  /* ============================================================
-     SET CORRECT ANSWER
-  ============================================================ */
-
-  function setCorrectAnswer(selectedRadio) {
-
-
-    const rows =
-      getActiveRows();
-
-
-    rows.forEach(function (row) {
-
-
-      const hidden =
-        row.querySelector(".is-correct-field");
-
-
-      const radio =
-        row.querySelector(".correct-answer-radio");
-
-
-      if (!hidden || !radio) {
-        return;
-      }
-
-
-      if (radio === selectedRadio) {
-
-        hidden.value = "true";
-
-      } else {
-
-        hidden.value = "false";
-
-        radio.checked = false;
-
-      }
-
-    });
-
-  }
-
-
-  /* ============================================================
-     RADIO EVENTS
-  ============================================================ */
-
-  optionsContainer.addEventListener(
-    "change",
-    function (event) {
-
-
-      if (
-        event.target.classList.contains(
-          "correct-answer-radio"
+      return Array.from(
+        optionsContainer.querySelectorAll(
+          "[data-option-row]"
         )
-      ) {
+      ).filter(function (row) {
 
-        setCorrectAnswer(
-          event.target
-        );
+        return row.style.display !== "none";
 
-      }
+      });
 
     }
-  );
 
 
-  /* ============================================================
-     REMOVE OPTION
-  ============================================================ */
+    /* =======================================================
+       UPDATE OPTION NUMBERS / POSITIONS
+    ======================================================= */
 
-  optionsContainer.addEventListener(
-    "click",
-    function (event) {
-
-
-      const removeButton =
-        event.target.closest(
-          ".remove-option-btn"
-        );
-
-
-      if (!removeButton) {
-        return;
-      }
-
+    function updateOptionNumbers() {
 
       const rows =
         getActiveRows();
 
 
-      /* --------------------------------------------------------
-         MINIMUM TWO OPTIONS
-      --------------------------------------------------------- */
+      rows.forEach(function (row, index) {
 
-      if (rows.length <= 2) {
+        const number =
+          row.querySelector(
+            ".option-number-value"
+          );
 
-        alert(
-          "At least two options are required."
-        );
-
-        return;
-
-      }
+        const position =
+          row.querySelector(
+            ".option-position-field"
+          );
 
 
-      const row =
-        removeButton.closest(
-          "[data-option-row]"
-        );
+        if (number) {
+
+          number.textContent =
+            index + 1;
+
+        }
 
 
-      if (!row) {
-        return;
-      }
+        if (position) {
 
+          position.value =
+            index + 1;
 
-      /* --------------------------------------------------------
-         CHECK WHETHER DATABASE OPTION
-      --------------------------------------------------------- */
+        }
 
-      const idField =
-        row.querySelector(
-          'input[name*="[id]"]'
-        );
-
-
-      const destroyField =
-        row.querySelector(
-          'input[name*="_destroy"]'
-        );
-
-
-      if (
-        idField &&
-        idField.value &&
-        destroyField
-      ) {
-
-
-        /*
-         * Existing database option.
-         *
-         * Do NOT remove the DOM element.
-         *
-         * Mark it for destruction so Rails
-         * deletes the record during update.
-         */
-
-        destroyField.value = "1";
-
-        row.style.display = "none";
-
-
-      } else {
-
-
-        /*
-         * Newly added option.
-         *
-         * It does not exist in the database,
-         * so simply remove it from DOM.
-         */
-
-        row.remove();
-
-      }
-
-
-      updateOptionNumbers();
-
-
-      /* --------------------------------------------------------
-         IF REMOVED OPTION WAS CORRECT
-      --------------------------------------------------------- */
-
-      if (
-        row.style.display === "none" &&
-        row.querySelector(".is-correct-field") &&
-        row.querySelector(".is-correct-field").value === "true"
-      ) {
-
-        row.querySelector(
-          ".is-correct-field"
-        ).value = "false";
-
-      }
+      });
 
     }
-  );
 
 
-  /* ============================================================
-     ADD OPTION
-  ============================================================ */
+    /* =======================================================
+       SET CORRECT ANSWER
+    ======================================================= */
 
-  addOptionBtn.addEventListener(
-    "click",
-    function () {
+    function setCorrectAnswer(
+      selectedRadio
+    ) {
 
+      const rows =
+        getActiveRows();
 
-      const index =
-        parseInt(
-          optionsContainer.dataset.nextIndex || "0",
-          10
-        );
 
+      rows.forEach(function (row) {
 
-      const html = `
+        const hidden =
+          row.querySelector(
+            ".is-correct-field"
+          );
 
-        <div
-          class="option-card"
-          data-option-row>
+        const radio =
+          row.querySelector(
+            ".correct-answer-radio"
+          );
 
 
-          <!-- DESTROY -->
+        if (
+          !hidden ||
+          !radio
+        ) {
+          return;
+        }
 
-          <input
-            type="hidden"
-            name="test_series_question[test_series_options_attributes][${index}][_destroy]"
-            value="0"
-            class="destroy-option-field">
 
+        if (
+          radio === selectedRadio
+        ) {
 
-          <!-- POSITION -->
+          hidden.value =
+            "true";
 
-          <input
-            type="hidden"
-            name="test_series_question[test_series_options_attributes][${index}][position]"
-            value="${index + 1}"
-            class="option-position-field">
+          radio.checked =
+            true;
 
+        } else {
 
-          <!-- CORRECT -->
+          hidden.value =
+            "false";
 
-          <input
-            type="hidden"
-            name="test_series_question[test_series_options_attributes][${index}][is_correct]"
-            value="false"
-            class="is-correct-field">
+          radio.checked =
+            false;
 
+        }
 
-          <!-- HEADER -->
+      });
 
-          <div class="option-header">
+    }
 
-            <div class="option-number">
 
-              Option
+    /* =======================================================
+       CORRECT ANSWER RADIO
+    ======================================================= */
 
-              <span class="option-number-value"></span>
+    if (
+      optionsContainer.dataset.radioInitialized !==
+      "true"
+    ) {
 
-            </div>
+      optionsContainer.dataset.radioInitialized =
+        "true";
 
 
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-danger remove-option-btn">
+      optionsContainer.addEventListener(
+        "change",
+        function (event) {
 
-              <i class="fas fa-trash"></i>
+          const radio =
+            event.target.closest(
+              ".correct-answer-radio"
+            );
 
-            </button>
 
-          </div>
+          if (!radio) {
+            return;
+          }
 
 
-          <!-- FIELDS -->
+          setCorrectAnswer(
+            radio
+          );
 
-          <div class="row g-3">
-
-
-            <!-- ENGLISH -->
-
-            <div class="col-lg-5">
-
-              <label class="ts-label">
-
-                Option (English)
-
-              </label>
-
-
-              <input
-                type="text"
-                name="test_series_question[test_series_options_attributes][${index}][option_text]"
-                class="form-control ts-input"
-                placeholder="Enter option...">
-
-            </div>
-
-
-            <!-- HINDI -->
-
-            <div class="col-lg-5">
-
-              <label class="ts-label">
-
-                विकल्प (हिंदी)
-
-              </label>
-
-
-              <input
-                type="text"
-                name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
-                class="form-control ts-input hindi-input"
-                placeholder="हिंदी में विकल्प...">
-
-            </div>
-
-
-            <!-- CORRECT -->
-
-            <div class="col-lg-2">
-
-              <label class="ts-label">
-
-                Correct Answer
-
-              </label>
-
-
-              <div class="correct-answer-wrapper">
-
-                <label class="correct-radio-label">
-
-
-                  <input
-                    type="radio"
-                    name="correct_answer_selector"
-                    class="correct-answer-radio"
-                    value="${index}">
-
-
-                  <span>
-
-                    Correct
-
-                  </span>
-
-
-                </label>
-
-              </div>
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-      `;
-
-
-      optionsContainer.insertAdjacentHTML(
-        "beforeend",
-        html
+        }
       );
 
-
-      optionsContainer.dataset.nextIndex =
-        index + 1;
-
-
-      updateOptionNumbers();
-
     }
-  );
 
 
-  /* ============================================================
-     FORM VALIDATION
-  ============================================================ */
+    /* =======================================================
+       REMOVE OPTION
+    ======================================================= */
 
-  form.addEventListener(
-    "submit",
-    function (event) {
+    if (
+      optionsContainer.dataset.removeInitialized !==
+      "true"
+    ) {
 
-
-      const rows =
-        getActiveRows();
-
-
-      /* --------------------------------------------------------
-         MINIMUM TWO OPTIONS
-      --------------------------------------------------------- */
-
-      if (rows.length < 2) {
-
-        event.preventDefault();
-
-        alert(
-          "At least two options are required."
-        );
-
-        return;
-
-      }
+      optionsContainer.dataset.removeInitialized =
+        "true";
 
 
-      /* --------------------------------------------------------
-         EXACTLY ONE CORRECT ANSWER
-      --------------------------------------------------------- */
+      optionsContainer.addEventListener(
+        "click",
+        function (event) {
 
-      const correctRows =
-        rows.filter(function (row) {
+          const removeButton =
+            event.target.closest(
+              ".remove-option-btn"
+            );
 
 
-          const hidden =
+          if (!removeButton) {
+            return;
+          }
+
+
+          const rows =
+            getActiveRows();
+
+
+          /* -------------------------------------------------
+             MINIMUM TWO OPTIONS
+          ------------------------------------------------- */
+
+          if (
+            rows.length <= 2
+          ) {
+
+            alert(
+              "At least two options are required."
+            );
+
+            return;
+
+          }
+
+
+          const row =
+            removeButton.closest(
+              "[data-option-row]"
+            );
+
+
+          if (!row) {
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             EXISTING DATABASE OPTION
+          ------------------------------------------------- */
+
+          const idField =
+            row.querySelector(
+              'input[name*="[id]"]'
+            );
+
+          const destroyField =
+            row.querySelector(
+              'input[name*="_destroy"]'
+            );
+
+
+          if (
+            idField &&
+            idField.value &&
+            destroyField
+          ) {
+
+            /*
+             * Existing option.
+             *
+             * Keep it in the DOM,
+             * but tell Rails to destroy it.
+             */
+
+            destroyField.value =
+              "1";
+
+            row.style.display =
+              "none";
+
+
+          } else {
+
+            /*
+             * New option.
+             *
+             * It does not exist in DB,
+             * so remove it completely.
+             */
+
+            row.remove();
+
+          }
+
+
+          /* -------------------------------------------------
+             RESET CORRECT ANSWER IF REMOVED
+          ------------------------------------------------- */
+
+          const correctField =
             row.querySelector(
               ".is-correct-field"
             );
 
 
-          return (
-            hidden &&
-            hidden.value === "true"
-          );
+          if (
+            correctField &&
+            correctField.value === "true"
+          ) {
 
-        });
+            correctField.value =
+              "false";
+
+          }
 
 
-      if (correctRows.length !== 1) {
+          updateOptionNumbers();
 
-        event.preventDefault();
-
-        alert(
-          "Please select exactly one correct answer."
-        );
-
-        return;
-
-      }
-
+        }
+      );
 
     }
-  );
 
 
-  /* ============================================================
-     INITIAL STATE
-  ============================================================ */
+    /* =======================================================
+       ADD OPTION
+    ======================================================= */
 
-  updateOptionNumbers();
+    if (
+      addOptionBtn.dataset.addInitialized !==
+      "true"
+    ) {
 
-
-  /*
-   * Existing database option already contains
-   * is_correct = true.
-   *
-   * Find that radio and synchronize all
-   * hidden is_correct fields.
-   */
-
-  const checkedRadio =
-    optionsContainer.querySelector(
-      ".correct-answer-radio:checked"
-    );
+      addOptionBtn.dataset.addInitialized =
+        "true";
 
 
-  if (checkedRadio) {
+      addOptionBtn.addEventListener(
+        "click",
+        function () {
 
-    setCorrectAnswer(
-      checkedRadio
-    );
+          let index =
+            parseInt(
+              optionsContainer.dataset.nextIndex ||
+              "0",
+              10
+            );
+
+
+          if (
+            Number.isNaN(index)
+          ) {
+            index = 0;
+          }
+
+
+          const html = `
+
+            <div
+              class="option-card"
+              data-option-row>
+
+              <!-- DESTROY -->
+
+              <input
+                type="hidden"
+                name="test_series_question[test_series_options_attributes][${index}][_destroy]"
+                value="0"
+                class="destroy-option-field">
+
+
+              <!-- POSITION -->
+
+              <input
+                type="hidden"
+                name="test_series_question[test_series_options_attributes][${index}][position]"
+                value="${index + 1}"
+                class="option-position-field">
+
+
+              <!-- CORRECT -->
+
+              <input
+                type="hidden"
+                name="test_series_question[test_series_options_attributes][${index}][is_correct]"
+                value="false"
+                class="is-correct-field">
+
+
+              <!-- HEADER -->
+
+              <div class="option-header">
+
+                <div class="option-number">
+
+                  Option
+
+                  <span class="option-number-value"></span>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger remove-option-btn">
+
+                  <i class="fas fa-trash"></i>
+
+                </button>
+
+              </div>
+
+
+              <!-- FIELDS -->
+
+              <div class="row g-3">
+
+
+                <!-- ENGLISH -->
+
+                <div class="col-lg-5">
+
+                  <label class="ts-label">
+
+                    Option (English)
+
+                  </label>
+
+
+                  <input
+                    type="text"
+                    name="test_series_question[test_series_options_attributes][${index}][option_text]"
+                    class="form-control ts-input"
+                    placeholder="Enter option...">
+
+                </div>
+
+
+                <!-- HINDI -->
+
+                <div class="col-lg-5">
+
+                  <label class="ts-label">
+
+                    विकल्प (हिंदी)
+
+                  </label>
+
+
+                  <input
+                    type="text"
+                    name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
+                    class="form-control ts-input hindi-input"
+                    placeholder="हिंदी में विकल्प...">
+
+                </div>
+
+
+                <!-- CORRECT -->
+
+                <div class="col-lg-2">
+
+                  <label class="ts-label">
+
+                    Correct Answer
+
+                  </label>
+
+
+                  <div class="correct-answer-wrapper">
+
+                    <label class="correct-radio-label">
+
+                      <input
+                        type="radio"
+                        name="correct_answer_selector"
+                        class="correct-answer-radio"
+                        value="${index}">
+
+                      <span>
+                        Correct
+                      </span>
+
+                    </label>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          `;
+
+
+          optionsContainer.insertAdjacentHTML(
+            "beforeend",
+            html
+          );
+
+
+          optionsContainer.dataset.nextIndex =
+            String(index + 1);
+
+
+          updateOptionNumbers();
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       FORM VALIDATION
+    ======================================================= */
+
+    if (
+      form.dataset.validationInitialized !==
+      "true"
+    ) {
+
+      form.dataset.validationInitialized =
+        "true";
+
+
+      form.addEventListener(
+        "submit",
+        function (event) {
+
+          const rows =
+            getActiveRows();
+
+
+          /* -------------------------------------------------
+             MINIMUM TWO OPTIONS
+          ------------------------------------------------- */
+
+          if (
+            rows.length < 2
+          ) {
+
+            event.preventDefault();
+
+            alert(
+              "At least two options are required."
+            );
+
+            return;
+
+          }
+
+
+          /* -------------------------------------------------
+             EXACTLY ONE CORRECT ANSWER
+          ------------------------------------------------- */
+
+          const correctRows =
+            rows.filter(
+              function (row) {
+
+                const hidden =
+                  row.querySelector(
+                    ".is-correct-field"
+                  );
+
+
+                return (
+                  hidden &&
+                  hidden.value === "true"
+                );
+
+              }
+            );
+
+
+          if (
+            correctRows.length !== 1
+          ) {
+
+            event.preventDefault();
+
+            alert(
+              "Please select exactly one correct answer."
+            );
+
+            return;
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       INITIAL OPTION STATE
+    ======================================================= */
+
+    updateOptionNumbers();
+
+
+    /* =======================================================
+       SYNCHRONIZE EXISTING CORRECT ANSWER
+    ======================================================= */
+
+    const checkedRadio =
+      optionsContainer.querySelector(
+        ".correct-answer-radio:checked"
+      );
+
+
+    if (checkedRadio) {
+
+      setCorrectAnswer(
+        checkedRadio
+      );
+
+    }
 
   }
 
 
-});
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeQuestionForm
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================= */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeQuestionForm();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeQuestionForm,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

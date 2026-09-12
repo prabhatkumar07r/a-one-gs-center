@@ -1385,15 +1385,18 @@
 </div>
 
 
+
 <script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
 
   /* =========================================================
      A ONE GS CENTER
      REGISTRATION JAVASCRIPT
+     TURBO SAFE
   ========================================================= */
 
-  document.addEventListener("DOMContentLoaded", function () {
-
+  function initializeRegistrationPage() {
 
     /* =======================================================
        PASSWORD SHOW / HIDE
@@ -1405,7 +1408,16 @@
 
     toggleButtons.forEach(function (button) {
 
-      button.addEventListener("click", function () {
+      if (button.dataset.initialized === "true") {
+        return;
+      }
+
+      button.dataset.initialized = "true";
+
+
+      button.addEventListener("click", function (event) {
+
+        event.preventDefault();
 
         const wrapper =
           button.closest(".input-wrapper");
@@ -1420,7 +1432,7 @@
           button.querySelector("i");
 
 
-        if (!input) return;
+        if (!input || !icon) return;
 
 
         if (input.type === "password") {
@@ -1428,11 +1440,15 @@
           input.type = "text";
 
           icon.classList.remove("fa-eye");
-
           icon.classList.add("fa-eye-slash");
 
           button.setAttribute(
             "aria-label",
+            "Hide password"
+          );
+
+          button.setAttribute(
+            "title",
             "Hide password"
           );
 
@@ -1441,11 +1457,15 @@
           input.type = "password";
 
           icon.classList.remove("fa-eye-slash");
-
           icon.classList.add("fa-eye");
 
           button.setAttribute(
             "aria-label",
+            "Show password"
+          );
+
+          button.setAttribute(
+            "title",
             "Show password"
           );
 
@@ -1467,23 +1487,35 @@
       document.querySelector("#terms");
 
 
-    if (form && terms) {
+    if (
+      form &&
+      terms &&
+      form.dataset.termsInitialized !== "true"
+    ) {
 
-      form.addEventListener("submit", function (event) {
+      form.dataset.termsInitialized = "true";
 
-        if (!terms.checked) {
 
-          event.preventDefault();
+      form.addEventListener(
+        "submit",
+        function (event) {
 
-          terms.focus();
+          if (!terms.checked) {
 
-          alert(
-            "Please agree to the Terms & Conditions before creating your account."
-          );
+            event.preventDefault();
+
+            terms.focus();
+
+            alert(
+              "Please agree to the Terms & Conditions before creating your account."
+            );
+
+            return;
+
+          }
 
         }
-
-      });
+      );
 
     }
 
@@ -1493,37 +1525,52 @@
     ======================================================= */
 
     const inputs =
-      document.querySelectorAll(".form-control");
+      document.querySelectorAll(
+        ".register-form .form-control"
+      );
 
 
     inputs.forEach(function (input) {
 
-      input.addEventListener("focus", function () {
+      if (input.dataset.focusInitialized === "true") {
+        return;
+      }
 
-        const wrapper =
-          input.closest(".input-wrapper");
-
-        if (wrapper) {
-
-          wrapper.classList.add("focused");
-
-        }
-
-      });
+      input.dataset.focusInitialized = "true";
 
 
-      input.addEventListener("blur", function () {
+      input.addEventListener(
+        "focus",
+        function () {
 
-        const wrapper =
-          input.closest(".input-wrapper");
+          const wrapper =
+            input.closest(".input-wrapper");
 
-        if (wrapper) {
+          if (wrapper) {
 
-          wrapper.classList.remove("focused");
+            wrapper.classList.add("focused");
+
+          }
 
         }
+      );
 
-      });
+
+      input.addEventListener(
+        "blur",
+        function () {
+
+          const wrapper =
+            input.closest(".input-wrapper");
+
+          if (wrapper) {
+
+            wrapper.classList.remove("focused");
+
+          }
+
+        }
+      );
 
     });
 
@@ -1532,32 +1579,96 @@
        PREVENT DOUBLE SUBMIT
     ======================================================= */
 
-    if (form) {
+    if (
+      form &&
+      form.dataset.submitInitialized !== "true"
+    ) {
 
-      form.addEventListener("submit", function () {
-
-        const submitButton =
-          form.querySelector(".register-btn");
-
-        if (!submitButton) return;
+      form.dataset.submitInitialized = "true";
 
 
-        setTimeout(function () {
+      form.addEventListener(
+        "submit",
+        function () {
 
-          submitButton.disabled = true;
+          /*
+           * If Terms & Conditions are not checked,
+           * the validation handler above prevents submission.
+           */
 
-          submitButton.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+          if (
+            terms &&
+            !terms.checked
+          ) {
+            return;
+          }
 
-        }, 50);
 
-      });
+          const submitButton =
+            form.querySelector(".register-btn");
+
+
+          if (!submitButton) {
+            return;
+          }
+
+
+          /*
+           * Prevent repeated clicks/submissions.
+           */
+
+          if (submitButton.disabled) {
+            return;
+          }
+
+
+          setTimeout(function () {
+
+            submitButton.disabled = true;
+
+            submitButton.innerHTML =
+              '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+
+          }, 50);
+
+        }
+      );
 
     }
 
-  });
+  }
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeRegistrationPage
+  );
+
+
+  /* =========================================================
+     NORMAL INITIAL LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeRegistrationPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeRegistrationPage,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>
-
 </body>
 </html>

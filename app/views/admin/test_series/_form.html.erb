@@ -514,61 +514,158 @@ select.admin-ts-input {
 
 <% end %>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  const original =
-    document.getElementById("adminOriginalPrice");
+(function () {
 
-  const selling =
-    document.getElementById("adminSellingPrice");
+  "use strict";
 
-  const discount =
-    document.getElementById("adminDiscount");
 
-  function calculateDiscount() {
+  function initializeAdminPriceDiscount() {
+
+    const original =
+      document.getElementById("adminOriginalPrice");
+
+    const selling =
+      document.getElementById("adminSellingPrice");
+
+    const discount =
+      document.getElementById("adminDiscount");
+
+
+    /*
+     * ==================================================
+     * REQUIRED ELEMENTS
+     * ==================================================
+     */
 
     if (!original || !selling || !discount) {
       return;
     }
 
-    const originalValue =
-      parseFloat(original.value) || 0;
 
-    const sellingValue =
-      parseFloat(selling.value) || 0;
+    /*
+     * ==================================================
+     * DUPLICATE INITIALIZATION PROTECTION
+     * ==================================================
+     */
 
     if (
-      originalValue > 0 &&
-      sellingValue >= 0 &&
-      sellingValue <= originalValue
+      original.dataset.discountInitialized === "true"
     ) {
+      return;
+    }
 
-      discount.value =
-        Math.round(
-          ((originalValue - sellingValue) /
-            originalValue) * 100
-        );
+    original.dataset.discountInitialized = "true";
 
-    } else {
 
-      discount.value = 0;
+    /*
+     * ==================================================
+     * CALCULATE DISCOUNT
+     * ==================================================
+     */
+
+    function calculateDiscount() {
+
+      const originalValue =
+        parseFloat(original.value) || 0;
+
+      const sellingValue =
+        parseFloat(selling.value) || 0;
+
+
+      if (
+        originalValue > 0 &&
+        sellingValue >= 0 &&
+        sellingValue <= originalValue
+      ) {
+
+        discount.value =
+          Math.round(
+            (
+              (originalValue - sellingValue) /
+              originalValue
+            ) * 100
+          );
+
+      } else {
+
+        discount.value = 0;
+
+      }
 
     }
+
+
+    /*
+     * ==================================================
+     * ORIGINAL PRICE
+     * ==================================================
+     */
+
+    original.addEventListener(
+      "input",
+      calculateDiscount
+    );
+
+
+    /*
+     * ==================================================
+     * SELLING PRICE
+     * ==================================================
+     */
+
+    selling.addEventListener(
+      "input",
+      calculateDiscount
+    );
+
+
+    /*
+     * ==================================================
+     * INITIAL CALCULATION
+     * ==================================================
+     */
+
+    calculateDiscount();
+
   }
 
-  original?.addEventListener(
-    "input",
-    calculateDiscount
+
+  /*
+   * ==================================================
+   * TURBO NAVIGATION
+   * ==================================================
+   */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeAdminPriceDiscount
   );
 
-  selling?.addEventListener(
-    "input",
-    calculateDiscount
-  );
 
-  calculateDiscount();
+  /*
+   * ==================================================
+   * NORMAL PAGE LOAD
+   * ==================================================
+   */
 
-});
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeAdminPriceDiscount();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeAdminPriceDiscount,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

@@ -3390,17 +3390,22 @@
 </div>
 
 
-
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
+(function () {
+
+  "use strict";
 
 
-    /* =====================================================
+  /* =========================================================
+     STUDENT DASHBOARD INITIALIZATION
+  ========================================================== */
+
+  function initializeStudentDashboard() {
+
+    /* =======================================================
        ANIMATED COUNTERS
-    ===================================================== */
+    ======================================================== */
 
     const counters =
       document.querySelectorAll(
@@ -3408,72 +3413,86 @@ document.addEventListener(
       );
 
 
-    counters.forEach(
-      function (counter) {
+    counters.forEach(function (counter) {
+
+      if (
+        counter.dataset.counterInitialized === "true"
+      ) {
+        return;
+      }
 
 
-        const target =
-          parseInt(
-            counter.dataset.count || "0",
-            10
-          );
+      counter.dataset.counterInitialized = "true";
 
 
-        if (target <= 0) {
-
-          counter.textContent = "0";
-
-          return;
-
-        }
+      const target =
+        parseInt(
+          counter.dataset.count || "0",
+          10
+        );
 
 
-        let current = 0;
+      if (target <= 0) {
 
+        counter.textContent = "0";
 
-        const increment =
-          Math.max(
-            1,
-            Math.ceil(
-              target / 30
-            )
-          );
-
-
-        const timer =
-          setInterval(
-            function () {
-
-
-              current += increment;
-
-
-              if (current >= target) {
-
-                current = target;
-
-                clearInterval(timer);
-
-              }
-
-
-              counter.textContent =
-                current;
-
-
-            },
-            30
-          );
-
+        return;
 
       }
-    );
 
 
+      let current = 0;
 
-    /* =====================================================
+
+      const increment =
+        Math.max(
+          1,
+          Math.ceil(target / 30)
+        );
+
+
+      const timer =
+        setInterval(function () {
+
+          /*
+           * Stop safely if Turbo has replaced
+           * the dashboard before animation ends.
+           */
+
+          if (
+            !document.documentElement.contains(counter)
+          ) {
+
+            clearInterval(timer);
+
+            return;
+
+          }
+
+
+          current += increment;
+
+
+          if (current >= target) {
+
+            current = target;
+
+            clearInterval(timer);
+
+          }
+
+
+          counter.textContent =
+            current;
+
+        }, 30);
+
+    });
+
+
+    /* =======================================================
        CARD HOVER
-    ===================================================== */
+    ======================================================== */
 
     const cards =
       document.querySelectorAll(
@@ -3483,78 +3502,152 @@ document.addEventListener(
       );
 
 
-    cards.forEach(
-      function (card) {
+    cards.forEach(function (card) {
 
-
-        card.addEventListener(
-          "mouseenter",
-          function () {
-
-            card.style.zIndex = "2";
-
-          }
-        );
-
-
-        card.addEventListener(
-          "mouseleave",
-          function () {
-
-            card.style.zIndex = "1";
-
-          }
-        );
-
-
+      if (
+        card.dataset.hoverInitialized === "true"
+      ) {
+        return;
       }
-    );
 
 
-
-    /* =====================================================
-       SMOOTH INTERNAL LINKS
-    ===================================================== */
-
-    document
-      .querySelectorAll(
-        'a[href^="#"]'
-      )
-      .forEach(
-        function (link) {
+      card.dataset.hoverInitialized = "true";
 
 
-          link.addEventListener(
-            "click",
-            function (event) {
+      card.addEventListener(
+        "mouseenter",
+        function () {
 
-
-              const target =
-                document.querySelector(
-                  link.getAttribute("href")
-                );
-
-
-              if (target) {
-
-                event.preventDefault();
-
-                target.scrollIntoView({
-                  behavior: "smooth"
-                });
-
-              }
-
-
-            }
-          );
-
+          card.style.zIndex = "2";
 
         }
       );
 
 
+      card.addEventListener(
+        "mouseleave",
+        function () {
+
+          card.style.zIndex = "1";
+
+        }
+      );
+
+    });
+
+
+    /* =======================================================
+       SMOOTH INTERNAL LINKS
+    ======================================================== */
+
+    const internalLinks =
+      document.querySelectorAll(
+        'a[href^="#"]'
+      );
+
+
+    internalLinks.forEach(function (link) {
+
+      if (
+        link.dataset.smoothScrollInitialized === "true"
+      ) {
+        return;
+      }
+
+
+      link.dataset.smoothScrollInitialized = "true";
+
+
+      link.addEventListener(
+        "click",
+        function (event) {
+
+          const href =
+            link.getAttribute("href");
+
+
+          /*
+           * Ignore empty "#" links.
+           */
+
+          if (
+            !href ||
+            href === "#"
+          ) {
+            return;
+          }
+
+
+          let target = null;
+
+
+          try {
+
+            target =
+              document.querySelector(href);
+
+          } catch (error) {
+
+            /*
+             * Invalid CSS selector in href.
+             * Let the browser handle the link normally.
+             */
+
+            return;
+
+          }
+
+
+          if (target) {
+
+            event.preventDefault();
+
+
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+          }
+
+        }
+      );
+
+    });
+
   }
-);
+
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeStudentDashboard
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeStudentDashboard();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeStudentDashboard,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>

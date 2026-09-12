@@ -789,156 +789,268 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const payButton =
-    document.getElementById("tsPayButton");
+  /* =========================================================
+     TEST SERIES RAZORPAY PAYMENT
+     Turbo-safe initialization
+  ========================================================= */
 
-  if (!payButton) return;
+  function initializeTestSeriesPayment() {
 
+    const payButton =
+      document.getElementById("tsPayButton");
 
-  payButton.addEventListener("click", function () {
+    if (!payButton) return;
 
-    payButton.disabled = true;
+    /* Prevent duplicate event listeners */
+    if (payButton.dataset.initialized === "true") {
+      return;
+    }
 
-    payButton.innerHTML =
-      '<i class="fas fa-spinner fa-spin"></i> Opening Payment...';
-
-
-    const options = {
-
-      key: "<%= ENV["RAZORPAY_KEY_ID"] %>",
-
-      amount: <%= (@purchase.amount.to_d * 100).to_i %>,
-
-      currency: "INR",
-
-      name: "A One GS Center",
-
-      description: "<%= j @test_series.title %>",
-
-      order_id: "<%= @purchase.razorpay_order_id %>",
+    payButton.dataset.initialized = "true";
 
 
-      handler: function (response) {
+    /* =======================================================
+       PAYMENT BUTTON
+    ======================================================= */
 
-        const form =
-          document.createElement("form");
+    payButton.addEventListener("click", function () {
 
-        form.method = "POST";
+      /* Prevent double click */
+      if (payButton.disabled) {
+        return;
+      }
 
-        form.action =
-          "<%= verify_test_series_payment_path(@purchase) %>";
+      payButton.disabled = true;
 
-
-        const csrfToken =
-          document.querySelector(
-            'meta[name="csrf-token"]'
-          );
-
-
-        function addHiddenInput(name, value) {
-
-          const input =
-            document.createElement("input");
-
-          input.type = "hidden";
-
-          input.name = name;
-
-          input.value = value;
-
-          form.appendChild(input);
-        }
+      payButton.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Opening Payment...';
 
 
-        if (csrfToken) {
+      /* =====================================================
+         RAZORPAY OPTIONS
+      ===================================================== */
+
+      const options = {
+
+        key: "<%= ENV["RAZORPAY_KEY_ID"] %>",
+
+        amount:
+          <%= (@purchase.amount.to_d * 100).to_i %>,
+
+        currency: "INR",
+
+        name: "A One GS Center",
+
+        description:
+          "<%= j @test_series.title %>",
+
+        order_id:
+          "<%= @purchase.razorpay_order_id %>",
+
+
+        /* ===================================================
+           SUCCESS
+        =================================================== */
+
+        handler: function (response) {
+
+          const form =
+            document.createElement("form");
+
+          form.method = "POST";
+
+          form.action =
+            "<%= verify_test_series_payment_path(@purchase) %>";
+
+
+          const csrfToken =
+            document.querySelector(
+              'meta[name="csrf-token"]'
+            );
+
+
+          function addHiddenInput(name, value) {
+
+            const input =
+              document.createElement("input");
+
+            input.type = "hidden";
+
+            input.name = name;
+
+            input.value = value;
+
+            form.appendChild(input);
+          }
+
+
+          /* CSRF */
+
+          if (csrfToken) {
+
+            addHiddenInput(
+              "authenticity_token",
+              csrfToken.content
+            );
+
+          }
+
+
+          /* Razorpay response */
 
           addHiddenInput(
-            "authenticity_token",
-            csrfToken.content
+            "razorpay_payment_id",
+            response.razorpay_payment_id
           );
 
+
+          addHiddenInput(
+            "razorpay_order_id",
+            response.razorpay_order_id
+          );
+
+
+          addHiddenInput(
+            "razorpay_signature",
+            response.razorpay_signature
+          );
+
+
+          document.body.appendChild(form);
+
+          form.submit();
+
+        },
+
+
+        /* ===================================================
+           PREFILL
+        =================================================== */
+
+        prefill: {
+
+          name:
+            "<%= j current_user.respond_to?(:name) ? current_user.name.to_s : "" %>",
+
+          email:
+            "<%= j current_user.email.to_s %>"
+
+        },
+
+
+        /* ===================================================
+           RAZORPAY THEME
+        =================================================== */
+
+        theme: {
+
+          color: "#6d28d9"
+
+        },
+
+
+        /* ===================================================
+           MODAL CLOSED
+        =================================================== */
+
+        modal: {
+
+          ondismiss: function () {
+
+            payButton.disabled = false;
+
+            payButton.innerHTML =
+              '<i class="fas fa-lock"></i> Pay ₹<%= number_with_precision(@purchase.amount, precision: 2) %>';
+
+          }
+
         }
 
+      };
 
-        addHiddenInput(
-          "razorpay_payment_id",
-          response.razorpay_payment_id
+
+      /* =====================================================
+         RAZORPAY INSTANCE
+      ===================================================== */
+
+      if (typeof Razorpay === "undefined") {
+
+        payButton.disabled = false;
+
+        payButton.innerHTML =
+          '<i class="fas fa-lock"></i> Payment Unavailable';
+
+        console.error(
+          "Razorpay checkout.js is not loaded."
         );
 
-
-        addHiddenInput(
-          "razorpay_order_id",
-          response.razorpay_order_id
-        );
-
-
-        addHiddenInput(
-          "razorpay_signature",
-          response.razorpay_signature
-        );
-
-
-        document.body.appendChild(form);
-
-        form.submit();
-
-      },
-
-
-      prefill: {
-
-        name: "<%= j current_user.respond_to?(:name) ? current_user.name.to_s : "" %>",
-
-        email: "<%= j current_user.email.to_s %>"
-
-      },
-
-
-      theme: {
-
-        color: "#6d28d9"
-
-      },
-
-
-      modal: {
-
-        ondismiss: function () {
-
-          payButton.disabled = false;
-
-          payButton.innerHTML =
-            '<i class="fas fa-lock"></i> Pay ₹<%= number_with_precision(@purchase.amount, precision: 2) %>';
-
-        }
+        return;
 
       }
 
-    };
+
+      const razorpay =
+        new Razorpay(options);
 
 
-    const razorpay =
-      new Razorpay(options);
+      /* =====================================================
+         PAYMENT FAILED
+      ===================================================== */
+
+      razorpay.on(
+        "payment.failed",
+        function () {
+
+          window.location.href =
+            "<%= test_series_payment_failed_path(@purchase) %>";
+
+        }
+      );
 
 
-    razorpay.on(
-      "payment.failed",
-      function () {
+      /* =====================================================
+         OPEN CHECKOUT
+      ===================================================== */
 
-        window.location.href =
-          "<%= test_series_payment_failed_path(@purchase) %>";
+      razorpay.open();
 
-      }
+    });
+
+  }
+
+
+  /* =========================================================
+     TURBO SUPPORT
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeTestSeriesPayment
+  );
+
+
+  /* =========================================================
+     DIRECT PAGE LOAD
+  ========================================================= */
+
+  if (
+    document.readyState === "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTestSeriesPayment,
+      { once: true }
     );
 
+  } else {
 
-    razorpay.open();
+    initializeTestSeriesPayment();
 
-  });
+  }
 
-});
+})();
 </script>

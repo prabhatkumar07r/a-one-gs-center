@@ -779,99 +779,229 @@
   </div>
 
 </div>
-
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  const form =
-    document.getElementById("attendance-filter-form");
+(function () {
 
-  const search =
-    document.getElementById("attendance-search");
+  /* =====================================================
+     ATTENDANCE FILTER
+     TURBO SAFE + DUPLICATE SAFE
+  ===================================================== */
 
-  const status =
-    document.getElementById("attendance-status-filter");
+  function initializeAttendanceFilters() {
 
-  const button =
-    document.getElementById("attendance-search-btn");
+    const form =
+      document.getElementById("attendance-filter-form");
+
+    const search =
+      document.getElementById("attendance-search");
+
+    const status =
+      document.getElementById("attendance-status-filter");
+
+    const button =
+      document.getElementById("attendance-search-btn");
 
 
-  if (status && form) {
-
-    status.addEventListener("change", function () {
-      form.submit();
-    });
-
-  }
+    if (!form) return;
 
 
-  if (search && form) {
+    /* ===================================================
+       STATUS FILTER
+    =================================================== */
 
-    search.addEventListener("keydown", function (event) {
+    if (
+      status &&
+      status.dataset.initialized !== "true"
+    ) {
 
-      if (event.key === "Enter") {
+      status.dataset.initialized = "true";
+
+      status.addEventListener("change", function () {
+
+        if (typeof form.requestSubmit === "function") {
+
+          form.requestSubmit();
+
+        } else {
+
+          form.submit();
+
+        }
+
+      });
+
+    }
+
+
+    /* ===================================================
+       SEARCH — ENTER
+    =================================================== */
+
+    if (
+      search &&
+      search.dataset.enterInitialized !== "true"
+    ) {
+
+      search.dataset.enterInitialized = "true";
+
+      search.addEventListener("keydown", function (event) {
+
+        if (event.key !== "Enter") {
+          return;
+        }
 
         event.preventDefault();
 
-        form.submit();
 
-      }
+        if (typeof form.requestSubmit === "function") {
 
-    });
+          form.requestSubmit();
 
-  }
+        } else {
+
+          form.submit();
+
+        }
+
+      });
+
+    }
 
 
-  if (search) {
+    /* ===================================================
+       SEARCH — ESCAPE
+    =================================================== */
 
-    search.addEventListener("keydown", function (event) {
+    if (
+      search &&
+      search.dataset.escapeInitialized !== "true"
+    ) {
 
-      if (event.key === "Escape") {
+      search.dataset.escapeInitialized = "true";
+
+      search.addEventListener("keydown", function (event) {
+
+        if (event.key !== "Escape") {
+          return;
+        }
+
+        event.preventDefault();
 
         search.value = "";
 
         search.focus();
 
+      });
+
+    }
+
+
+    /* ===================================================
+       SUBMIT BUTTON
+    =================================================== */
+
+    if (
+      button &&
+      form.dataset.submitInitialized !== "true"
+    ) {
+
+      form.dataset.submitInitialized = "true";
+
+      form.addEventListener("submit", function () {
+
+        /*
+         * Prevent duplicate submission
+         */
+
+        if (button.disabled) {
+          return;
+        }
+
+
+        button.disabled = true;
+
+        button.innerHTML =
+          '<i class="bi bi-arrow-repeat"></i> Searching...';
+
+      });
+
+    }
+
+
+    /* ===================================================
+       STAT CARDS ANIMATION
+    =================================================== */
+
+    const statCards =
+      document.querySelectorAll(".attendance-stat");
+
+
+    statCards.forEach(function (card, index) {
+
+      if (card.dataset.animationInitialized === "true") {
+        return;
       }
 
-    });
+      card.dataset.animationInitialized = "true";
 
-  }
-
-
-  if (form && button) {
-
-    form.addEventListener("submit", function () {
-
-      button.disabled = true;
-
-      button.innerHTML =
-        '<i class="bi bi-arrow-repeat"></i> Searching...';
-
-    });
-
-  }
-
-
-  document
-    .querySelectorAll(".attendance-stat")
-    .forEach(function (card, index) {
 
       card.style.opacity = "0";
-      card.style.transform = "translateY(10px)";
+
+      card.style.transform =
+        "translateY(10px)";
+
 
       setTimeout(function () {
+
+        if (!document.body.contains(card)) {
+          return;
+        }
+
 
         card.style.transition =
           "opacity .3s ease, transform .3s ease";
 
         card.style.opacity = "1";
-        card.style.transform = "translateY(0)";
+
+        card.style.transform =
+          "translateY(0)";
 
       }, index * 70);
 
     });
 
-});
+  }
+
+
+  /* =====================================================
+     TURBO
+  ===================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeAttendanceFilters
+  );
+
+
+  /* =====================================================
+     INITIAL LOAD
+  ===================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeAttendanceFilters();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeAttendanceFilters,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

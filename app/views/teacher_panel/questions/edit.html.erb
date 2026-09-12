@@ -434,159 +434,245 @@
 
 </div>
 
-
 <!-- ==================================================
      JAVASCRIPT
 ================================================== -->
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const form =
-    document.getElementById("editQuestionForm");
+  /* =========================================================
+     EDIT QUESTION
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
 
-  const radios =
-    document.querySelectorAll(".correct-option");
+  function initializeEditQuestionForm() {
 
-  const boxes =
-    document.querySelectorAll(".option-box");
+    const form =
+      document.getElementById("editQuestionForm");
 
-  const warning =
-    document.getElementById("correctAnswerWarning");
+    const radios =
+      document.querySelectorAll(".correct-option");
+
+    const boxes =
+      document.querySelectorAll(".option-box");
+
+    const warning =
+      document.getElementById("correctAnswerWarning");
 
 
-  /*
-   * ==================================================
-   * UPDATE CORRECT ANSWER
-   * ==================================================
-   */
+    if (!form && !radios.length) {
+      return;
+    }
 
-  function updateCorrectAnswer(selectedRadio) {
+
+    /* =======================================================
+       UPDATE CORRECT ANSWER
+    ======================================================= */
+
+    function updateCorrectAnswer(selectedRadio) {
+
+      radios.forEach(function (radio) {
+
+        const box =
+          radio.closest(".option-box");
+
+        if (!box) {
+          return;
+        }
+
+
+        const hidden =
+          box.querySelector(".correct-value");
+
+
+        if (radio === selectedRadio) {
+
+          if (hidden) {
+            hidden.value = "true";
+          }
+
+          box.classList.add(
+            "selected-option"
+          );
+
+        } else {
+
+          if (hidden) {
+            hidden.value = "false";
+          }
+
+          box.classList.remove(
+            "selected-option"
+          );
+
+        }
+
+      });
+
+    }
+
+
+    /* =======================================================
+       RADIO CHANGE
+    ======================================================= */
 
     radios.forEach(function (radio) {
 
-      const box =
-        radio.closest(".option-box");
-
-      if (!box) {
+      if (
+        radio.dataset.correctInitialized === "true"
+      ) {
         return;
       }
 
-
-      const hidden =
-        box.querySelector(".correct-value");
+      radio.dataset.correctInitialized = "true";
 
 
-      if (radio === selectedRadio) {
+      radio.addEventListener(
+        "change",
+        function () {
 
-        if (hidden) {
-          hidden.value = "true";
+          updateCorrectAnswer(this);
+
+          if (warning) {
+
+            warning.classList.add(
+              "d-none"
+            );
+
+          }
+
         }
-
-        box.classList.add("selected-option");
-
-      } else {
-
-        if (hidden) {
-          hidden.value = "false";
-        }
-
-        box.classList.remove("selected-option");
-
-      }
+      );
 
     });
+
+
+    /* =======================================================
+       RESTORE CURRENT CORRECT ANSWER
+    ======================================================= */
+
+    const checkedRadio =
+      document.querySelector(
+        ".correct-option:checked"
+      );
+
+
+    if (checkedRadio) {
+
+      updateCorrectAnswer(
+        checkedRadio
+      );
+
+    }
+
+
+    /* =======================================================
+       FORM SUBMIT
+    ======================================================= */
+
+    if (
+      form &&
+      form.dataset.correctAnswerInitialized !== "true"
+    ) {
+
+      form.dataset.correctAnswerInitialized =
+        "true";
+
+
+      form.addEventListener(
+        "submit",
+        function (event) {
+
+          const selected =
+            form.querySelector(
+              ".correct-option:checked"
+            );
+
+
+          /* -----------------------------------------------
+             NO CORRECT ANSWER
+          ----------------------------------------------- */
+
+          if (!selected) {
+
+            event.preventDefault();
+
+
+            if (warning) {
+
+              warning.classList.remove(
+                "d-none"
+              );
+
+            }
+
+
+            alert(
+              "Please select one correct answer before updating the question."
+            );
+
+
+            return;
+
+          }
+
+
+          /* -----------------------------------------------
+             SYNCHRONIZE DATABASE VALUES
+          ----------------------------------------------- */
+
+          updateCorrectAnswer(
+            selected
+          );
+
+
+          if (warning) {
+
+            warning.classList.add(
+              "d-none"
+            );
+
+          }
+
+        }
+      );
+
+    }
 
   }
 
 
-  /*
-   * ==================================================
-   * RADIO CHANGE
-   * ==================================================
-   */
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
 
-  radios.forEach(function (radio) {
-
-    radio.addEventListener("change", function () {
-
-      updateCorrectAnswer(this);
-
-    });
-
-  });
+  document.addEventListener(
+    "turbo:load",
+    initializeEditQuestionForm
+  );
 
 
-  /*
-   * ==================================================
-   * RESTORE CURRENT CORRECT ANSWER
-   * ==================================================
-   */
+  /* =========================================================
+     INITIAL PAGE LOAD
+  ========================================================= */
 
-  const checkedRadio =
-    document.querySelector(
-      ".correct-option:checked"
+  if (document.readyState !== "loading") {
+
+    initializeEditQuestionForm();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEditQuestionForm,
+      { once: true }
     );
 
-
-  if (checkedRadio) {
-
-    updateCorrectAnswer(checkedRadio);
-
   }
 
-
-  /*
-   * ==================================================
-   * FORM SUBMIT
-   * ==================================================
-   */
-
-  if (form) {
-
-    form.addEventListener("submit", function (event) {
-
-      const selected =
-        document.querySelector(
-          ".correct-option:checked"
-        );
-
-
-      if (!selected) {
-
-        event.preventDefault();
-
-        if (warning) {
-          warning.classList.remove("d-none");
-        }
-
-        alert(
-          "Please select one correct answer before updating the question."
-        );
-
-        return;
-
-      }
-
-
-      /*
-       * Make absolutely sure database values
-       * are synchronized before submission.
-       */
-
-      updateCorrectAnswer(selected);
-
-
-      if (warning) {
-        warning.classList.add("d-none");
-      }
-
-    });
-
-  }
-
-});
+})();
 
 </script>
 

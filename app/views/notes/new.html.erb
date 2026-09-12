@@ -171,82 +171,220 @@
 
 </div>
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("turbo:load", function(){
 
-const course = document.getElementById("course_select");
-const playlist = document.getElementById("playlist_select");
-const video = document.getElementById("video_select");
+(function () {
 
+  /* =====================================================
+     STUDY NOTES
+     COURSE → PLAYLIST → VIDEO
+     TURBO SAFE + DUPLICATE SAFE
+  ===================================================== */
 
-if(!course) return;
+  function initializeStudyNotesFilters() {
 
+    const course =
+      document.getElementById("course_select");
 
+    const playlist =
+      document.getElementById("playlist_select");
 
-course.addEventListener("change", function(){
-
-
-fetch(`/study_notes/playlists?course_id=${this.value}`)
-
-.then(res=>res.json())
-
-.then(data=>{
-
-
-playlist.innerHTML =
-"<option>Select Playlist</option>";
-
-playlist.disabled=false;
+    const video =
+      document.getElementById("video_select");
 
 
-data.forEach(item=>{
-
-playlist.innerHTML +=
-`<option value="${item.id}">
-${item.title}
-</option>`;
-
-});
+    if (!course || !playlist || !video) {
+      return;
+    }
 
 
-});
+    /* =====================================================
+       COURSE → PLAYLIST
+    ===================================================== */
+
+    if (course.dataset.initialized !== "true") {
+
+      course.dataset.initialized = "true";
+
+      course.addEventListener("change", function () {
+
+        const courseId = this.value;
+
+        playlist.innerHTML =
+          '<option value="">Select Playlist</option>';
+
+        video.innerHTML =
+          '<option value="">Select Video</option>';
+
+        playlist.disabled = true;
+        video.disabled = true;
 
 
-});
+        if (!courseId) {
+          return;
+        }
 
 
+        fetch(
+          `/study_notes/playlists?course_id=${encodeURIComponent(courseId)}`
+        )
+
+          .then(function (response) {
+
+            if (!response.ok) {
+              throw new Error("Failed to load playlists");
+            }
+
+            return response.json();
+
+          })
+
+          .then(function (data) {
+
+            playlist.innerHTML =
+              '<option value="">Select Playlist</option>';
+
+            data.forEach(function (item) {
+
+              const option =
+                document.createElement("option");
+
+              option.value = item.id;
+              option.textContent = item.title;
+
+              playlist.appendChild(option);
+
+            });
+
+            playlist.disabled = false;
+
+          })
+
+          .catch(function (error) {
+
+            console.error(
+              "Playlist loading error:",
+              error
+            );
+
+            playlist.innerHTML =
+              '<option value="">Unable to load playlists</option>';
+
+            playlist.disabled = true;
+
+          });
+
+      });
+
+    }
 
 
+    /* =====================================================
+       PLAYLIST → VIDEO
+    ===================================================== */
 
-playlist.addEventListener("change",function(){
+    if (playlist.dataset.initialized !== "true") {
 
+      playlist.dataset.initialized = "true";
 
-fetch(`/study_notes/videos?playlist_id=${this.value}`)
+      playlist.addEventListener("change", function () {
 
-.then(res=>res.json())
+        const playlistId = this.value;
 
-.then(data=>{
+        video.innerHTML =
+          '<option value="">Select Video</option>';
 
-
-video.innerHTML =
-"<option>Select Video</option>";
-
-video.disabled=false;
-
-
-data.forEach(item=>{
-
-video.innerHTML +=
-`<option value="${item.id}">
-${item.title}
-</option>`;
-
-});
+        video.disabled = true;
 
 
-});
+        if (!playlistId) {
+          return;
+        }
 
 
-});
+        fetch(
+          `/study_notes/videos?playlist_id=${encodeURIComponent(playlistId)}`
+        )
+
+          .then(function (response) {
+
+            if (!response.ok) {
+              throw new Error("Failed to load videos");
+            }
+
+            return response.json();
+
+          })
+
+          .then(function (data) {
+
+            video.innerHTML =
+              '<option value="">Select Video</option>';
+
+            data.forEach(function (item) {
+
+              const option =
+                document.createElement("option");
+
+              option.value = item.id;
+              option.textContent = item.title;
+
+              video.appendChild(option);
+
+            });
+
+            video.disabled = false;
+
+          })
+
+          .catch(function (error) {
+
+            console.error(
+              "Video loading error:",
+              error
+            );
+
+            video.innerHTML =
+              '<option value="">Unable to load videos</option>';
+
+            video.disabled = true;
+
+          });
+
+      });
+
+    }
+
+  }
 
 
-}); </script>
+  /* =====================================================
+     TURBO
+  ===================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeStudyNotesFilters
+  );
+
+
+  /* =====================================================
+     INITIAL LOAD
+  ===================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeStudyNotesFilters();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeStudyNotesFilters,
+      { once: true }
+    );
+
+  }
+
+})();
+
+</script>

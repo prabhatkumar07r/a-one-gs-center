@@ -413,41 +413,127 @@
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const card =
-    document.querySelector(".enrollment-card");
-
-  if (!card) {
-    return;
-  }
+  "use strict";
 
 
-  /*
-   * Small entrance animation
-   */
+  /* =========================================================
+     ENROLLMENT PAGE INITIALIZATION
+  ========================================================== */
 
-  card.classList.add("enrollment-loaded");
+  function initializeEnrollmentPage() {
+
+    const card =
+      document.querySelector(".enrollment-card");
 
 
-  /*
-   * Prevent accidental double-click
-   */
+    if (!card) {
+      return;
+    }
 
-  const buttons =
-    document.querySelectorAll(".primary-button");
 
-  buttons.forEach(function (button) {
+    /*
+     * Prevent duplicate initialization
+     */
 
-    button.addEventListener("click", function () {
+    if (
+      card.dataset.enrollmentInitialized === "true"
+    ) {
+      return;
+    }
 
-      button.classList.add("button-loading");
+
+    card.dataset.enrollmentInitialized = "true";
+
+
+    /* =======================================================
+       ENTRANCE ANIMATION
+    ======================================================== */
+
+    card.classList.add(
+      "enrollment-loaded"
+    );
+
+
+    /* =======================================================
+       PREVENT ACCIDENTAL DOUBLE CLICK
+    ======================================================== */
+
+    const buttons =
+      card.querySelectorAll(
+        ".primary-button"
+      );
+
+
+    buttons.forEach(function (button) {
+
+      if (
+        button.dataset.loadingInitialized === "true"
+      ) {
+        return;
+      }
+
+
+      button.dataset.loadingInitialized = "true";
+
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          /*
+           * Do not interfere with disabled buttons.
+           */
+
+          if (button.disabled) {
+            return;
+          }
+
+
+          button.classList.add(
+            "button-loading"
+          );
+
+        }
+      );
 
     });
 
-  });
+  }
 
-});
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeEnrollmentPage
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeEnrollmentPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEnrollmentPage,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>
 

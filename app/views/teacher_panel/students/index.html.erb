@@ -760,39 +760,117 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("turbo:load", function () {
 
-  const searchInput =
-    document.getElementById("teacherStudentSearch");
+(function () {
 
-  const table =
-    document.getElementById("teacherStudentsTable");
+  /* =========================================================
+     TEACHER STUDENT SEARCH
+     TURBO SAFE + DUPLICATE SAFE
+  ========================================================= */
 
-  if (!searchInput || !table) {
-    return;
+  function initializeTeacherStudentSearch() {
+
+    const searchInput =
+      document.getElementById(
+        "teacherStudentSearch"
+      );
+
+    const table =
+      document.getElementById(
+        "teacherStudentsTable"
+      );
+
+    if (!searchInput || !table) {
+      return;
+    }
+
+
+    /* =======================================================
+       PREVENT DUPLICATE EVENT LISTENER
+    ======================================================= */
+
+    if (
+      searchInput.dataset.searchInitialized === "true"
+    ) {
+      return;
+    }
+
+    searchInput.dataset.searchInitialized =
+      "true";
+
+
+    /* =======================================================
+       SEARCH
+    ======================================================= */
+
+    searchInput.addEventListener(
+      "input",
+      function () {
+
+        const searchValue =
+          this.value
+            .trim()
+            .toLowerCase();
+
+
+        const rows =
+          table.querySelectorAll(
+            "tbody tr"
+          );
+
+
+        rows.forEach(function (row) {
+
+          const text =
+            (
+              row.textContent || ""
+            ).toLowerCase();
+
+
+          row.style.display =
+            text.includes(searchValue)
+              ? ""
+              : "none";
+
+        });
+
+      }
+    );
+
   }
 
-  searchInput.addEventListener("input", function () {
 
-    const searchValue =
-      this.value.toLowerCase().trim();
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================= */
 
-    const rows =
-      table.querySelectorAll("tbody tr");
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherStudentSearch
+  );
 
-    rows.forEach(function (row) {
 
-      const text =
-        row.innerText.toLowerCase();
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================= */
 
-      row.style.display =
-        text.includes(searchValue) ? "" : "none";
+  if (
+    document.readyState !== "loading"
+  ) {
 
-    });
+    initializeTeacherStudentSearch();
 
-  });
+  } else {
 
-});
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherStudentSearch,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

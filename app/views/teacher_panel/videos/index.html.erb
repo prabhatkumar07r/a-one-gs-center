@@ -2039,106 +2039,184 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
+  "use strict";
 
-  const searchInput =
-    document.getElementById("teacherVideoSearch");
+  function initializeTeacherVideoFilter() {
 
-  const statusFilter =
-    document.getElementById("teacherVideoStatusFilter");
+    const searchInput =
+      document.getElementById("teacherVideoSearch");
 
-  const rows =
-    document.querySelectorAll(".teacher-video-row");
+    const statusFilter =
+      document.getElementById("teacherVideoStatusFilter");
 
-  const resultCount =
-    document.getElementById("teacherVideoResultCount");
+    const resultCount =
+      document.getElementById("teacherVideoResultCount");
 
-
-  function filterVideos() {
-
-    const search =
-      searchInput
-        ? searchInput.value
-            .trim()
-            .toLowerCase()
-        : "";
-
-    const status =
-      statusFilter
-        ? statusFilter.value
-        : "all";
-
-    let visibleCount = 0;
+    const rows =
+      document.querySelectorAll(".teacher-video-row");
 
 
-    rows.forEach(function (row) {
-
-      const title =
-        row.dataset.videoTitle || "";
-
-      const rowStatus =
-        row.dataset.videoStatus || "";
-
-
-      const matchesSearch =
-        title.includes(search);
-
-      const matchesStatus =
-        status === "all" ||
-        rowStatus === status;
+    /*
+      Page par required elements nahi hain
+      to initialization stop kar do.
+    */
+    if (!searchInput && !statusFilter && !rows.length) {
+      return;
+    }
 
 
-      if (
-        matchesSearch &&
-        matchesStatus
-      ) {
+    /*
+      Duplicate event listeners prevent karne ke liye
+    */
+    if (
+      searchInput &&
+      searchInput.dataset.videoSearchInitialized === "true" &&
+      statusFilter &&
+      statusFilter.dataset.videoStatusInitialized === "true"
+    ) {
+      return;
+    }
 
-        row.style.display = "";
 
-        visibleCount++;
+    function filterVideos() {
 
-      } else {
+      const search =
+        searchInput
+          ? searchInput.value
+              .trim()
+              .toLowerCase()
+          : "";
 
-        row.style.display = "none";
+      const status =
+        statusFilter
+          ? statusFilter.value
+          : "all";
+
+      let visibleCount = 0;
+
+
+      rows.forEach(function (row) {
+
+        const title =
+          (row.dataset.videoTitle || "")
+            .toLowerCase();
+
+        const rowStatus =
+          row.dataset.videoStatus || "";
+
+
+        const matchesSearch =
+          title.includes(search);
+
+        const matchesStatus =
+          status === "all" ||
+          rowStatus === status;
+
+
+        if (
+          matchesSearch &&
+          matchesStatus
+        ) {
+
+          row.style.display = "";
+
+          visibleCount++;
+
+        } else {
+
+          row.style.display = "none";
+
+        }
+
+      });
+
+
+      if (resultCount) {
+
+        resultCount.textContent =
+          "Showing " +
+          visibleCount +
+          " " +
+          (visibleCount === 1
+            ? "video"
+            : "videos");
 
       }
 
-    });
+    }
 
 
-    if (resultCount) {
+    /*
+      Search listener
+    */
+    if (
+      searchInput &&
+      searchInput.dataset.videoSearchInitialized !== "true"
+    ) {
 
-      resultCount.textContent =
-        "Showing " +
-        visibleCount +
-        " " +
-        (visibleCount === 1 ? "video" : "videos");
+      searchInput.dataset.videoSearchInitialized = "true";
+
+      searchInput.addEventListener(
+        "input",
+        filterVideos
+      );
 
     }
 
+
+    /*
+      Status filter listener
+    */
+    if (
+      statusFilter &&
+      statusFilter.dataset.videoStatusInitialized !== "true"
+    ) {
+
+      statusFilter.dataset.videoStatusInitialized = "true";
+
+      statusFilter.addEventListener(
+        "change",
+        filterVideos
+      );
+
+    }
+
+
+    /*
+      Initial filtering
+      page load par result count bhi correct rahega
+    */
+    filterVideos();
   }
 
 
-  if (searchInput) {
+  /*
+    Turbo navigation support
+  */
+  document.addEventListener(
+    "turbo:load",
+    initializeTeacherVideoFilter
+  );
 
-    searchInput.addEventListener(
-      "input",
-      filterVideos
+
+  /*
+    Normal browser load support
+  */
+  if (document.readyState !== "loading") {
+
+    initializeTeacherVideoFilter();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTeacherVideoFilter,
+      { once: true }
     );
 
   }
 
-
-  if (statusFilter) {
-
-    statusFilter.addEventListener(
-      "change",
-      filterVideos
-    );
-
-  }
-
-});
+})();
 </script>

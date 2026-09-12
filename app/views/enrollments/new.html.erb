@@ -201,85 +201,145 @@
   </div>
 
 </div>
-
-
 <!-- =========================================================
      JAVASCRIPT
 ========================================================= -->
 
 <script nonce="<%= content_security_policy_nonce %>">
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const form =
-    document.getElementById("enrollment-form");
+  function initializeEnrollmentPage() {
 
-  const button =
-    document.getElementById(
-      "confirm-enrollment-button"
+    const form =
+      document.getElementById("enrollment-form");
+
+    const button =
+      document.getElementById(
+        "confirm-enrollment-button"
+      );
+
+    const icon =
+      document.getElementById(
+        "confirm-icon"
+      );
+
+    const text =
+      document.getElementById(
+        "confirm-text"
+      );
+
+
+    if (!form || !button) {
+      return;
+    }
+
+
+    /* =======================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ======================================================= */
+
+    if (form.dataset.enrollmentInitialized === "true") {
+      return;
+    }
+
+    form.dataset.enrollmentInitialized = "true";
+
+
+    /* =======================================================
+       DOUBLE SUBMIT PROTECTION
+    ======================================================= */
+
+    let submitted = false;
+
+
+    form.addEventListener(
+      "submit",
+      function (event) {
+
+        /* -----------------------------------------------
+           Already submitted
+        ----------------------------------------------- */
+
+        if (submitted) {
+
+          event.preventDefault();
+
+          return;
+
+        }
+
+
+        submitted = true;
+
+
+        /* -----------------------------------------------
+           Disable button
+        ----------------------------------------------- */
+
+        button.disabled = true;
+
+        button.classList.add("loading");
+
+
+        /* -----------------------------------------------
+           Loading icon
+        ----------------------------------------------- */
+
+        if (icon) {
+
+          icon.innerHTML =
+            '<i class="bi bi-arrow-repeat"></i>';
+
+        }
+
+
+        /* -----------------------------------------------
+           Loading text
+        ----------------------------------------------- */
+
+        if (text) {
+
+          text.textContent =
+            "Processing Enrollment...";
+
+        }
+
+      }
     );
 
-  const icon =
-    document.getElementById(
-      "confirm-icon"
-    );
-
-  const text =
-    document.getElementById(
-      "confirm-text"
-    );
-
-  if (!form || !button) {
-    return;
   }
 
 
-  form.addEventListener("submit", function () {
+  /* =========================================================
+     TURBO PAGE LOAD
+  ========================================================= */
 
-    button.disabled = true;
-
-    button.classList.add("loading");
-
-
-    if (icon) {
-
-      icon.innerHTML =
-        '<i class="bi bi-arrow-repeat"></i>';
-
-    }
+  document.addEventListener(
+    "turbo:load",
+    initializeEnrollmentPage
+  );
 
 
-    if (text) {
+  /* =========================================================
+     INITIAL NORMAL PAGE LOAD
+  ========================================================= */
 
-      text.textContent =
-        "Processing Enrollment...";
+  if (document.readyState !== "loading") {
 
-    }
+    initializeEnrollmentPage();
 
-  });
+  } else {
 
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEnrollmentPage,
+      { once: true }
+    );
 
-  /*
-    Prevent accidental double-click.
-  */
+  }
 
-  let submitted = false;
-
-  form.addEventListener("submit", function (event) {
-
-    if (submitted) {
-
-      event.preventDefault();
-
-      return;
-
-    }
-
-    submitted = true;
-
-  });
-
-});
+})();
 
 </script>
 

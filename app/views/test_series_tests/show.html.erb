@@ -1390,321 +1390,316 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+  function initializeExamPage() {
 
-      /* =====================================================
-         EXAM TIMER
-      ====================================================== */
+    /* =====================================================
+       EXAM TIMER
+    ====================================================== */
 
-      const timerElement =
-        document.getElementById("timerText");
+    const timerElement =
+      document.getElementById("timerText");
 
-      const timerBox =
-        document.getElementById("examTimer");
+    const timerBox =
+      document.getElementById("examTimer");
 
-      let totalSeconds =
-        <%= @remaining_seconds.to_i %>;
+    if (!timerElement || !timerBox) {
+      return;
+    }
 
-      let timerInterval;
+    let totalSeconds =
+      <%= @remaining_seconds.to_i %>;
+
+    let timerInterval;
 
 
-      function updateTimer() {
+    function updateTimer() {
 
-        if (totalSeconds <= 0) {
+      if (totalSeconds <= 0) {
 
-          totalSeconds = 0;
+        totalSeconds = 0;
 
-          timerElement.textContent = "00:00";
+        timerElement.textContent = "00:00";
 
-          timerBox.classList.add("warning");
+        timerBox.classList.add("warning");
 
-          clearInterval(timerInterval);
+        clearInterval(timerInterval);
 
-          const form =
-            document.getElementById("finishTestForm");
+        const form =
+          document.getElementById("finishTestForm");
 
-          if (form) {
-
-            /*
-             * Native submit intentionally bypasses
-             * the confirmation dialog when time expires.
-             */
-
-            form.submit();
-
-          }
-
-          return;
+        if (form) {
+          form.submit();
         }
 
-
-        const hours =
-          Math.floor(totalSeconds / 3600);
-
-        const minutes =
-          Math.floor(
-            (totalSeconds % 3600) / 60
-          );
-
-        const seconds =
-          totalSeconds % 60;
-
-
-        let display;
-
-
-        if (hours > 0) {
-
-          display =
-            String(hours).padStart(2, "0") +
-            ":" +
-            String(minutes).padStart(2, "0") +
-            ":" +
-            String(seconds).padStart(2, "0");
-
-        } else {
-
-          display =
-            String(minutes).padStart(2, "0") +
-            ":" +
-            String(seconds).padStart(2, "0");
-
-        }
-
-
-        timerElement.textContent =
-          display;
-
-
-        if (totalSeconds <= 300) {
-
-          timerBox.classList.add("warning");
-
-        }
-
-
-        totalSeconds--;
-
+        return;
       }
 
 
-      updateTimer();
+      const hours =
+        Math.floor(totalSeconds / 3600);
 
-
-      timerInterval =
-        setInterval(
-          updateTimer,
-          1000
+      const minutes =
+        Math.floor(
+          (totalSeconds % 3600) / 60
         );
 
-
-      /* =====================================================
-         QUESTION TIMER
-      ====================================================== */
-
-      const questionTimer =
-        document.getElementById("questionTimer");
-
-      let questionSeconds = 0;
+      const seconds =
+        totalSeconds % 60;
 
 
-      function updateQuestionTimer() {
-
-        if (!questionTimer) {
-          return;
-        }
-
-        const minutes =
-          Math.floor(questionSeconds / 60);
-
-        const seconds =
-          questionSeconds % 60;
+      let display;
 
 
-        questionTimer.textContent =
+      if (hours > 0) {
+
+        display =
+          String(hours).padStart(2, "0") +
+          ":" +
           String(minutes).padStart(2, "0") +
           ":" +
           String(seconds).padStart(2, "0");
 
+      } else {
 
-        questionSeconds++;
+        display =
+          String(minutes).padStart(2, "0") +
+          ":" +
+          String(seconds).padStart(2, "0");
 
       }
 
 
-      updateQuestionTimer();
+      timerElement.textContent =
+        display;
 
 
+      if (totalSeconds <= 300) {
+        timerBox.classList.add("warning");
+      }
+
+
+      totalSeconds--;
+    }
+
+
+    updateTimer();
+
+
+    timerInterval =
+      setInterval(
+        updateTimer,
+        1000
+      );
+
+
+    /* =====================================================
+       QUESTION TIMER
+    ====================================================== */
+
+    const questionTimer =
+      document.getElementById("questionTimer");
+
+    let questionSeconds = 0;
+
+    let questionTimerInterval;
+
+
+    function updateQuestionTimer() {
+
+      if (!questionTimer) {
+        return;
+      }
+
+      const minutes =
+        Math.floor(questionSeconds / 60);
+
+      const seconds =
+        questionSeconds % 60;
+
+
+      questionTimer.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+
+      questionSeconds++;
+    }
+
+
+    updateQuestionTimer();
+
+
+    questionTimerInterval =
       setInterval(
         updateQuestionTimer,
         1000
       );
 
 
-      /* =====================================================
-         QUIT CONFIRMATION
-      ====================================================== */
+    /* =====================================================
+       QUIT CONFIRMATION
+    ====================================================== */
 
-      const quitBtn =
-        document.getElementById("quitTestBtn");
-
-
-      if (quitBtn) {
-
-        quitBtn.addEventListener(
-          "click",
-          function (event) {
-
-            const confirmed =
-              confirm(
-                "Are you sure you want to quit this test?"
-              );
+    const quitBtn =
+      document.getElementById("quitTestBtn");
 
 
-            if (!confirmed) {
+    if (quitBtn) {
 
-              event.preventDefault();
-
-            }
-
-          }
-        );
-
-      }
-
-
-      /* =====================================================
-         SUBMIT CONFIRMATION
-      ====================================================== */
-
-      const finishForm =
-        document.getElementById("finishTestForm");
-
-
-      if (finishForm) {
-
-        finishForm.addEventListener(
-          "submit",
-          function (event) {
-
-            const answered =
-              <%= @answered_count.to_i %>;
-
-            const total =
-              <%= @total_questions.to_i %>;
-
-            const remaining =
-              total - answered;
-
-
-            let message =
-              "Are you sure you want to submit the test?";
-
-
-            if (remaining > 0) {
-
-              message =
-                "You still have " +
-                remaining +
-                " unanswered question(s).\n\n" +
-                "Are you sure you want to submit the test?";
-
-            }
-
-
-            if (!confirm(message)) {
-
-              event.preventDefault();
-
-            }
-
-          }
-        );
-
-      }
-
-
-      /* =====================================================
-         OPTION KEYBOARD SHORTCUTS
-      ====================================================== */
-
-      document.addEventListener(
-        "keydown",
+      quitBtn.addEventListener(
+        "click",
         function (event) {
 
-          /*
-           * Do not trigger shortcuts while typing
-           * into an input, textarea, or select.
-           */
-
-          const target =
-            event.target;
-
-          if (
-            target &&
-            (
-              target.tagName === "INPUT" ||
-              target.tagName === "TEXTAREA" ||
-              target.tagName === "SELECT"
-            )
-          ) {
-
-            return;
-
-          }
-
-
-          const key =
-            event.key.toLowerCase();
-
-
-          const letters =
-            ["a", "b", "c", "d"];
-
-
-          if (!letters.includes(key)) {
-
-            return;
-
-          }
-
-
-          const index =
-            letters.indexOf(key);
-
-
-          const radios =
-            document.querySelectorAll(
-              ".option-radio"
+          const confirmed =
+            window.confirm(
+              "Are you sure you want to quit this test?"
             );
 
 
-          if (radios[index]) {
-
-            radios[index].checked =
-              true;
-
-
-            radios[index].dispatchEvent(
-              new Event(
-                "change",
-                {
-                  bubbles: true
-                }
-              )
-            );
-
+          if (!confirmed) {
+            event.preventDefault();
           }
 
         }
       );
 
     }
+
+
+    /* =====================================================
+       SUBMIT CONFIRMATION
+    ====================================================== */
+
+    const finishForm =
+      document.getElementById("finishTestForm");
+
+
+    if (finishForm) {
+
+      finishForm.addEventListener(
+        "submit",
+        function (event) {
+
+          const answered =
+            <%= @answered_count.to_i %>;
+
+          const total =
+            <%= @total_questions.to_i %>;
+
+          const remaining =
+            total - answered;
+
+
+          let message =
+            "Are you sure you want to submit the test?";
+
+
+          if (remaining > 0) {
+
+            message =
+              "You still have " +
+              remaining +
+              " unanswered question(s).\n\n" +
+              "Are you sure you want to submit the test?";
+
+          }
+
+
+          if (!window.confirm(message)) {
+            event.preventDefault();
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       OPTION KEYBOARD SHORTCUTS
+    ====================================================== */
+
+    function examKeyboardHandler(event) {
+
+      const target =
+        event.target;
+
+
+      if (
+        target &&
+        (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT"
+        )
+      ) {
+        return;
+      }
+
+
+      const key =
+        event.key.toLowerCase();
+
+
+      const letters =
+        ["a", "b", "c", "d"];
+
+
+      if (!letters.includes(key)) {
+        return;
+      }
+
+
+      const index =
+        letters.indexOf(key);
+
+
+      const radios =
+        document.querySelectorAll(
+          ".option-radio"
+        );
+
+
+      if (radios[index]) {
+
+        radios[index].checked =
+          true;
+
+
+        radios[index].dispatchEvent(
+          new Event(
+            "change",
+            {
+              bubbles: true
+            }
+          )
+        );
+
+      }
+
+    }
+
+
+    document.addEventListener(
+      "keydown",
+      examKeyboardHandler
+    );
+
+  }
+
+
+  /*
+   * Rails 8 + Turbo
+   *
+   * Use turbo:load instead of DOMContentLoaded.
+   */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeExamPage
   );
 
 </script>

@@ -1107,119 +1107,176 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  /* =======================================================
-     PASSWORD MATCHING
-  ======================================================= */
+(function () {
 
-  const password =
-    document.querySelector("#user_password");
+  function initializeStudentProfilePage() {
 
-  const confirmation =
-    document.querySelector(
-      "#user_password_confirmation"
-    );
+    /* =======================================================
+       PASSWORD MATCHING
+    ======================================================= */
 
+    const password =
+      document.querySelector("#user_password");
 
-  if (password && confirmation) {
-
-    confirmation.addEventListener(
-      "input",
-      function () {
-
-        if (
-          confirmation.value.length > 0 &&
-          password.value !== confirmation.value
-        ) {
-
-          confirmation.style.borderColor =
-            "#ef4444";
-
-          confirmation.style.boxShadow =
-            "0 0 0 3px rgba(239,68,68,.08)";
-
-        } else {
-
-          confirmation.style.borderColor = "";
-
-          confirmation.style.boxShadow = "";
-
-        }
-
-      }
-    );
-
-  }
+    const confirmation =
+      document.querySelector("#user_password_confirmation");
 
 
-  /* =======================================================
-     SAVE BUTTON LOADING
-  ======================================================= */
+    if (
+      password &&
+      confirmation &&
+      confirmation.dataset.initialized !== "true"
+    ) {
 
-  const form =
-    document.querySelector(
-      ".student-profile-card form"
-    );
+      confirmation.dataset.initialized = "true";
 
-  const saveButton =
-    form
-      ? form.querySelector(
-          ".profile-save-button"
-        )
-      : null;
+      confirmation.addEventListener(
+        "input",
+        function () {
 
+          if (
+            confirmation.value.length > 0 &&
+            password.value !== confirmation.value
+          ) {
 
-  if (form && saveButton) {
+            confirmation.style.borderColor =
+              "#ef4444";
 
-    form.addEventListener(
-      "submit",
-      function () {
+            confirmation.style.boxShadow =
+              "0 0 0 3px rgba(239,68,68,.08)";
 
-        saveButton.disabled = true;
+          } else {
 
-        saveButton.innerHTML =
-          '<i class="bi bi-arrow-repeat"></i> Saving...';
+            confirmation.style.borderColor = "";
 
-      }
-    );
+            confirmation.style.boxShadow = "";
 
-  }
-
-
-  /* =======================================================
-     DELETE CONFIRMATION
-  ======================================================= */
-
-  const deleteButton =
-    document.querySelector(
-      ".profile-delete-button"
-    );
-
-
-  if (deleteButton) {
-
-    deleteButton.addEventListener(
-      "click",
-      function (event) {
-
-        const confirmed =
-          window.confirm(
-            "Are you sure you want to permanently delete your account?"
-          );
-
-        if (!confirmed) {
-
-          event.preventDefault();
+          }
 
         }
+      );
 
-      }
+    }
+
+
+    /* =======================================================
+       SAVE BUTTON LOADING
+    ======================================================= */
+
+    const form =
+      document.querySelector(
+        ".student-profile-card form"
+      );
+
+    const saveButton =
+      form
+        ? form.querySelector(
+            ".profile-save-button"
+          )
+        : null;
+
+
+    if (
+      form &&
+      saveButton &&
+      form.dataset.initialized !== "true"
+    ) {
+
+      form.dataset.initialized = "true";
+
+      form.addEventListener(
+        "submit",
+        function () {
+
+          /*
+           * Prevent duplicate submission.
+           */
+
+          if (saveButton.disabled) {
+            return;
+          }
+
+          saveButton.disabled = true;
+
+          saveButton.innerHTML =
+            '<i class="bi bi-arrow-repeat"></i> Saving...';
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       DELETE CONFIRMATION
+    ======================================================= */
+
+    const deleteButton =
+      document.querySelector(
+        ".profile-delete-button"
+      );
+
+
+    if (
+      deleteButton &&
+      deleteButton.dataset.initialized !== "true"
+    ) {
+
+      deleteButton.dataset.initialized = "true";
+
+      deleteButton.addEventListener(
+        "click",
+        function (event) {
+
+          /*
+           * Rails/Turbo confirm already exists through:
+           *
+           * data: {
+           *   turbo_confirm: "..."
+           * }
+           *
+           * Therefore we should NOT add another
+           * window.confirm() here.
+           */
+
+        }
+      );
+
+    }
+
+  }
+
+
+  /* ===========================================================
+     TURBO SUPPORT
+  =========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeStudentProfilePage
+  );
+
+
+  /* ===========================================================
+     INITIAL PAGE LOAD
+  =========================================================== */
+
+  if (document.readyState !== "loading") {
+
+    initializeStudentProfilePage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeStudentProfilePage,
+      { once: true }
     );
 
   }
 
-});
+})();
+
 </script>

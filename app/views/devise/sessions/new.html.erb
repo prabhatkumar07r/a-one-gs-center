@@ -1521,162 +1521,225 @@ body {
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    A ONE GS CENTER
-   LOGIN JAVASCRIPT
+   REGISTRATION JAVASCRIPT
+   TURBO SAFE
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
+  function initializeRegistrationPage() {
 
-    /* =====================================================
+    /* =======================================================
        PASSWORD SHOW / HIDE
-    ===================================================== */
+    ======================================================= */
 
-    const toggle =
-        document.querySelector(
-            "#aone-login-page .aone-password-toggle"
-        );
+    const toggleButtons =
+      document.querySelectorAll(".password-toggle");
 
+    toggleButtons.forEach(function (button) {
 
-    if (toggle) {
+      if (button.dataset.passwordInitialized === "true") {
+        return;
+      }
 
-        toggle.addEventListener("click", function () {
+      button.dataset.passwordInitialized = "true";
 
-            const wrapper =
-                toggle.closest(".aone-input-wrap");
+      button.addEventListener("click", function () {
 
-            if (!wrapper) return;
+        const wrapper =
+          button.closest(".input-wrapper");
 
+        if (!wrapper) return;
 
-            const input =
-                wrapper.querySelector(
-                    ".aone-password-input"
-                );
+        const input =
+          wrapper.querySelector(".password-field");
 
-            const icon =
-                toggle.querySelector("i");
+        const icon =
+          button.querySelector("i");
 
+        if (!input || !icon) return;
 
-            if (!input) return;
+        if (input.type === "password") {
 
+          input.type = "text";
 
-            if (input.type === "password") {
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
 
-                input.type = "text";
+          button.setAttribute(
+            "aria-label",
+            "Hide password"
+          );
 
-                icon.classList.remove("fa-eye");
+        } else {
 
-                icon.classList.add("fa-eye-slash");
+          input.type = "password";
 
-                toggle.setAttribute(
-                    "aria-label",
-                    "Hide password"
-                );
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
 
-            } else {
+          button.setAttribute(
+            "aria-label",
+            "Show password"
+          );
 
-                input.type = "password";
+        }
 
-                icon.classList.remove("fa-eye-slash");
-
-                icon.classList.add("fa-eye");
-
-                toggle.setAttribute(
-                    "aria-label",
-                    "Show password"
-                );
-
-            }
-
-        });
-
-    }
-
-
-    /* =====================================================
-       INPUT FOCUS EFFECT
-    ===================================================== */
-
-    const inputs =
-        document.querySelectorAll(
-            "#aone-login-page .aone-input"
-        );
-
-
-    inputs.forEach(function (input) {
-
-        input.addEventListener("focus", function () {
-
-            const wrapper =
-                input.closest(".aone-input-wrap");
-
-            if (wrapper) {
-
-                wrapper.classList.add("focused");
-
-            }
-
-        });
-
-
-        input.addEventListener("blur", function () {
-
-            const wrapper =
-                input.closest(".aone-input-wrap");
-
-            if (wrapper) {
-
-                wrapper.classList.remove("focused");
-
-            }
-
-        });
+      });
 
     });
 
 
-    /* =====================================================
-       PREVENT DOUBLE LOGIN
-    ===================================================== */
+    /* =======================================================
+       FORM
+    ======================================================= */
 
     const form =
-        document.querySelector(
-            "#aone-login-page .aone-login-form"
-        );
+      document.querySelector(".register-form");
+
+    const terms =
+      document.querySelector("#terms");
 
 
-    if (form) {
+    if (form &&
+        form.dataset.registrationInitialized !== "true") {
 
-        form.addEventListener("submit", function () {
-
-            const button =
-                form.querySelector(
-                    ".aone-login-button"
-                );
-
-            if (!button) return;
+      form.dataset.registrationInitialized = "true";
 
 
-            setTimeout(function () {
+      /* =====================================================
+         TERMS VALIDATION
+      ===================================================== */
 
-                button.disabled = true;
+      if (terms) {
 
-                button.innerHTML =
-                    '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+        form.addEventListener("submit", function (event) {
 
-            }, 50);
+          if (!terms.checked) {
+
+            event.preventDefault();
+
+            terms.focus();
+
+            alert(
+              "Please agree to the Terms & Conditions before creating your account."
+            );
+
+          }
 
         });
 
+      }
+
+
+      /* =====================================================
+         PREVENT DOUBLE SUBMIT
+      ===================================================== */
+
+      form.addEventListener("submit", function () {
+
+        const submitButton =
+          form.querySelector(".register-btn");
+
+        if (!submitButton) return;
+
+        /*
+         * Small delay allows browser validation
+         * and normal form submission to happen first.
+         */
+
+        setTimeout(function () {
+
+          submitButton.disabled = true;
+
+          submitButton.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+
+        }, 50);
+
+      });
+
     }
 
-});
+
+    /* =======================================================
+       INPUT FOCUS EFFECT
+    ======================================================= */
+
+    const inputs =
+      document.querySelectorAll(
+        ".register-form .form-control"
+      );
+
+    inputs.forEach(function (input) {
+
+      if (input.dataset.focusInitialized === "true") {
+        return;
+      }
+
+      input.dataset.focusInitialized = "true";
+
+      input.addEventListener("focus", function () {
+
+        const wrapper =
+          input.closest(".input-wrapper");
+
+        if (wrapper) {
+          wrapper.classList.add("focused");
+        }
+
+      });
+
+      input.addEventListener("blur", function () {
+
+        const wrapper =
+          input.closest(".input-wrapper");
+
+        if (wrapper) {
+          wrapper.classList.remove("focused");
+        }
+
+      });
+
+    });
+
+  }
+
+
+  /* =========================================================
+     TURBO
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeRegistrationPage
+  );
+
+
+  /* =========================================================
+     INITIAL PAGE LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+
+    initializeRegistrationPage();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeRegistrationPage,
+      { once: true }
+    );
+
+  }
+
+})();
 
 </script>
-
 </body>
 </html>

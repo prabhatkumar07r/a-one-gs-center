@@ -124,17 +124,73 @@
 <% end %>
 
 
-<script nonce="<%= content_security_policy_nonce %>">
-  document.addEventListener("DOMContentLoaded", function () {
 
-    const originalFee = document.getElementById("original_fee");
-    const finalFee = document.getElementById("final_fee");
-    const discountPercentage = document.getElementById("discount_percentage");
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  "use strict";
+
+
+  function initializeFeeDiscount() {
+
+    const originalFee =
+      document.getElementById("original_fee");
+
+    const finalFee =
+      document.getElementById("final_fee");
+
+    const discountPercentage =
+      document.getElementById(
+        "discount_percentage"
+      );
+
+
+    /*
+     * ==================================================
+     * REQUIRED ELEMENTS
+     * ==================================================
+     */
+
+    if (
+      !originalFee ||
+      !finalFee ||
+      !discountPercentage
+    ) {
+      return;
+    }
+
+
+    /*
+     * ==================================================
+     * DUPLICATE INITIALIZATION PROTECTION
+     * ==================================================
+     */
+
+    if (
+      originalFee.dataset.discountInitialized === "true"
+    ) {
+      return;
+    }
+
+    originalFee.dataset.discountInitialized = "true";
+
+
+    /*
+     * ==================================================
+     * CALCULATE DISCOUNT
+     * ==================================================
+     */
 
     function calculateDiscount() {
 
-      const original = parseFloat(originalFee.value);
-      const final = parseFloat(finalFee.value);
+      const original =
+        parseFloat(originalFee.value);
+
+      const final =
+        parseFloat(finalFee.value);
+
 
       if (
         !isNaN(original) &&
@@ -143,32 +199,114 @@
         final >= 0
       ) {
 
-        let discount = ((original - final) / original) * 100;
+        let discount =
+          ((original - final) / original) * 100;
 
-        // Prevent negative discount
+
+        /*
+         * Never allow negative discount
+         */
+
         if (discount < 0) {
+
           discount = 0;
+
         }
 
-        // Prevent discount above 100%
+
+        /*
+         * Never allow discount above 100%
+         */
+
         if (discount > 100) {
+
           discount = 100;
+
         }
 
-        discountPercentage.value = discount.toFixed(2);
+
+        discountPercentage.value =
+          discount.toFixed(2);
+
 
       } else {
 
         discountPercentage.value = "";
 
       }
+
     }
 
-    originalFee.addEventListener("input", calculateDiscount);
-    finalFee.addEventListener("input", calculateDiscount);
 
-    // Calculate automatically when editing an existing course
+    /*
+     * ==================================================
+     * ORIGINAL FEE
+     * ==================================================
+     */
+
+    originalFee.addEventListener(
+      "input",
+      calculateDiscount
+    );
+
+
+    /*
+     * ==================================================
+     * FINAL FEE
+     * ==================================================
+     */
+
+    finalFee.addEventListener(
+      "input",
+      calculateDiscount
+    );
+
+
+    /*
+     * ==================================================
+     * INITIAL CALCULATION
+     * ==================================================
+     */
+
     calculateDiscount();
 
-  });
+  }
+
+
+  /*
+   * ==================================================
+   * TURBO NAVIGATION
+   * ==================================================
+   */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeFeeDiscount
+  );
+
+
+  /*
+   * ==================================================
+   * NORMAL PAGE LOAD
+   * ==================================================
+   */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeFeeDiscount();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeFeeDiscount,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

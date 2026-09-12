@@ -196,41 +196,217 @@
 </div>
 
 
-
-
 <script nonce="<%= content_security_policy_nonce %>">
-document.addEventListener("DOMContentLoaded", function () {
 
-  const course = document.getElementById("course_select");
-  const playlist = document.getElementById("playlist_select");
+(function () {
 
-  console.log(course);
-  console.log(playlist);
+  "use strict";
 
-  if (!course || !playlist) return;
 
-  course.addEventListener("change", function () {
+  /* =========================================================
+     STUDY NOTES COURSE → PLAYLIST
+  ========================================================== */
 
-    console.log("Course Changed:", this.value);
+  function initializeStudyNotesPlaylist() {
 
-    fetch("/study_notes/playlists?course_id=" + this.value)
-      .then(response => response.json())
-      .then(data => {
+    const course =
+      document.getElementById("course_select");
 
-        console.log(data);
+    const playlist =
+      document.getElementById("playlist_select");
+
+
+    if (!course || !playlist) {
+      return;
+    }
+
+
+    /* =======================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ======================================================== */
+
+    if (
+      course.dataset.playlistInitialized === "true"
+    ) {
+      return;
+    }
+
+
+    course.dataset.playlistInitialized = "true";
+
+
+    /* =======================================================
+       COURSE CHANGE
+    ======================================================== */
+
+    course.addEventListener(
+      "change",
+      function () {
+
+        const courseId =
+          this.value;
+
+
+        /* Reset playlist */
 
         playlist.innerHTML =
           '<option value="">Select Playlist</option>';
 
-        data.forEach(function(item) {
-          playlist.innerHTML +=
-            `<option value="${item.id}">${item.title}</option>`;
+        playlist.disabled = true;
+
+
+        if (!courseId) {
+          return;
+        }
+
+
+        /* Loading state */
+
+        playlist.innerHTML =
+          '<option value="">Loading playlists...</option>';
+
+
+        fetch(
+          "/study_notes/playlists?course_id=" +
+          encodeURIComponent(courseId),
+          {
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        )
+
+        .then(function (response) {
+
+          if (!response.ok) {
+
+            throw new Error(
+              "Failed to load playlists"
+            );
+
+          }
+
+
+          return response.json();
+
+        })
+
+        .then(function (data) {
+
+          /*
+           * Stop if Turbo has already replaced
+           * the current page.
+           */
+
+          if (
+            !document.documentElement.contains(playlist)
+          ) {
+            return;
+          }
+
+
+          playlist.innerHTML =
+            '<option value="">Select Playlist</option>';
+
+
+          if (
+            !Array.isArray(data) ||
+            data.length === 0
+          ) {
+
+            playlist.innerHTML =
+              '<option value="">No playlists found</option>';
+
+            playlist.disabled = true;
+
+            return;
+
+          }
+
+
+          data.forEach(function (item) {
+
+            const option =
+              document.createElement("option");
+
+
+            option.value =
+              item.id;
+
+
+            option.textContent =
+              item.title;
+
+
+            playlist.appendChild(
+              option
+            );
+
+          });
+
+
+          playlist.disabled = false;
+
+        })
+
+        .catch(function (error) {
+
+          console.error(
+            "Study Notes playlist loading error:",
+            error
+          );
+
+
+          if (
+            !document.documentElement.contains(playlist)
+          ) {
+            return;
+          }
+
+
+          playlist.innerHTML =
+            '<option value="">Unable to load playlists</option>';
+
+          playlist.disabled = true;
+
         });
 
-      })
-      .catch(error => console.log(error));
+      }
+    );
 
-  });
+  }
 
-});
+
+  /* =========================================================
+     TURBO NAVIGATION
+  ========================================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeStudyNotesPlaylist
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================== */
+
+  if (
+    document.readyState !== "loading"
+  ) {
+
+    initializeStudyNotesPlaylist();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeStudyNotesPlaylist,
+      { once: true }
+    );
+
+  }
+
+})();
+
 </script>

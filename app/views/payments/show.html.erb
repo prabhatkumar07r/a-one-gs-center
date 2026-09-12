@@ -472,171 +472,310 @@
 <!-- =========================================================
      RAZORPAY CHECKOUT
 ========================================================= -->
-
 <% if @payment.present? %>
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
- <script nonce="<%= content_security_policy_nonce %>">
+  <script nonce="<%= content_security_policy_nonce %>">
 
-  document.addEventListener("DOMContentLoaded", function () {
+    (function () {
 
-      const payButton =
-        document.getElementById("pay-button");
+      /* =====================================================
+         RAZORPAY PAYMENT PAGE
+         TURBO SAFE + DUPLICATE SAFE
+      ===================================================== */
 
-      if (!payButton) return;
+      function initializePaymentPage() {
 
+        const payButton =
+          document.getElementById("pay-button");
 
-      if (payButton.dataset.initialized === "true") {
-        return;
-      }
-
-      payButton.dataset.initialized = "true";
-
-
-      payButton.addEventListener("click", function () {
-
-        payButton.disabled = true;
-
-        payButton.classList.add("loading");
+        if (!payButton) return;
 
 
-        const options = {
+        /* Prevent duplicate listeners */
 
-          key: "<%= ENV.fetch("RAZORPAY_KEY_ID") %>",
+        if (
+          payButton.dataset.paymentInitialized === "true"
+        ) {
+          return;
+        }
 
-          amount: <%= @payment.amount.to_d * 100 %>,
-
-          currency: "INR",
-
-          name: "A One GS Center",
-
-          description:
-            "<%= j @course.Course_name %>",
-
-          order_id:
-            "<%= @payment.razorpay_order_id %>",
+        payButton.dataset.paymentInitialized = "true";
 
 
-          prefill: {
+        /* ===================================================
+           PAY BUTTON
+        =================================================== */
+
+        payButton.addEventListener("click", function () {
+
+          if (payButton.disabled) {
+            return;
+          }
+
+
+          payButton.disabled = true;
+
+          payButton.classList.add("loading");
+
+
+          /* =================================================
+             CHECK RAZORPAY
+          ================================================= */
+
+          if (typeof Razorpay === "undefined") {
+
+            console.error(
+              "Razorpay checkout.js is not loaded."
+            );
+
+            payButton.disabled = false;
+
+            payButton.classList.remove("loading");
+
+            alert(
+              "Payment service is temporarily unavailable. Please refresh the page and try again."
+            );
+
+            return;
+          }
+
+
+          /* =================================================
+             RAZORPAY OPTIONS
+          ================================================= */
+
+          const options = {
+
+            key:
+              "<%= ENV.fetch("RAZORPAY_KEY_ID") %>",
+
+            amount:
+              <%= (@payment.amount.to_d * 100).to_i %>,
+
+            currency:
+              "INR",
 
             name:
-              "<%= j current_user.name.to_s %>",
+              "A One GS Center",
 
-            email:
-              "<%= j current_user.email.to_s %>"
+            description:
+              "<%= j @course.Course_name %>",
 
-          },
-
-
-          theme: {
-
-            color: "#1261d8"
-
-          },
+            order_id:
+              "<%= @payment.razorpay_order_id %>",
 
 
-          handler: function (response) {
+            /* ===============================================
+               PREFILL
+            =============================================== */
 
-            const form =
-              document.createElement("form");
+            prefill: {
 
-            form.method = "POST";
+              name:
+                "<%= j current_user.name.to_s %>",
 
-            form.action =
-              "<%= verify_payment_path(@enrollment) %>";
+              email:
+                "<%= j current_user.email.to_s %>"
 
-
-            const csrf =
-              document.querySelector(
-                'meta[name="csrf-token"]'
-              );
+            },
 
 
-            function addField(name, value) {
+            /* ===============================================
+               THEME
+            =============================================== */
 
-              const input =
-                document.createElement("input");
+            theme: {
 
-              input.type = "hidden";
+              color:
+                "#1261d8"
 
-              input.name = name;
+            },
 
-              input.value = value;
 
-              form.appendChild(input);
+            /* ===============================================
+               SUCCESS
+            =============================================== */
+
+            handler:
+              function (response) {
+
+                const form =
+                  document.createElement("form");
+
+                form.method =
+                  "POST";
+
+                form.action =
+                  "<%= verify_payment_path(@enrollment) %>";
+
+
+                const csrf =
+                  document.querySelector(
+                    'meta[name="csrf-token"]'
+                  );
+
+
+                function addField(name, value) {
+
+                  const input =
+                    document.createElement("input");
+
+                  input.type =
+                    "hidden";
+
+                  input.name =
+                    name;
+
+                  input.value =
+                    value || "";
+
+                  form.appendChild(input);
+
+                }
+
+
+                addField(
+                  "authenticity_token",
+                  csrf ? csrf.content : ""
+                );
+
+
+                addField(
+                  "razorpay_payment_id",
+                  response.razorpay_payment_id
+                );
+
+
+                addField(
+                  "razorpay_order_id",
+                  response.razorpay_order_id
+                );
+
+
+                addField(
+                  "razorpay_signature",
+                  response.razorpay_signature
+                );
+
+
+                document.body.appendChild(form);
+
+                form.submit();
+
+              },
+
+
+            /* ===============================================
+               MODAL
+            =============================================== */
+
+            modal: {
+
+              ondismiss:
+                function () {
+
+                  payButton.disabled =
+                    false;
+
+                  payButton.classList.remove(
+                    "loading"
+                  );
+
+                }
 
             }
 
+          };
 
-            addField(
-              "authenticity_token",
-              csrf ? csrf.content : ""
+
+          /* =================================================
+             OPEN RAZORPAY
+          ================================================= */
+
+          try {
+
+            const razorpay =
+              new Razorpay(options);
+
+
+            /* ===============================================
+               PAYMENT FAILED
+            =============================================== */
+
+            razorpay.on(
+              "payment.failed",
+              function () {
+
+                window.location.href =
+                  "<%= payment_failed_path(@enrollment) %>";
+
+              }
             );
 
 
-            addField(
-              "razorpay_payment_id",
-              response.razorpay_payment_id
+            razorpay.open();
+
+
+          } catch (error) {
+
+            console.error(
+              "Razorpay initialization failed:",
+              error
             );
 
+            payButton.disabled =
+              false;
 
-            addField(
-              "razorpay_order_id",
-              response.razorpay_order_id
+            payButton.classList.remove(
+              "loading"
             );
 
-
-            addField(
-              "razorpay_signature",
-              response.razorpay_signature
+            alert(
+              "Unable to open payment gateway. Please try again."
             );
-
-
-            document.body.appendChild(form);
-
-            form.submit();
-
-          },
-
-
-          modal: {
-
-            ondismiss: function () {
-
-              payButton.disabled = false;
-
-              payButton.classList.remove("loading");
-
-            }
 
           }
 
-        };
+        });
+
+      }
 
 
-        const razorpay =
-          new Razorpay(options);
+      /* =====================================================
+         TURBO
+      ===================================================== */
+
+      document.addEventListener(
+        "turbo:load",
+        initializePaymentPage
+      );
 
 
-        razorpay.on(
-          "payment.failed",
-          function () {
+      /* =====================================================
+         INITIAL PAGE LOAD
+      ===================================================== */
 
-            window.location.href =
-              "<%= payment_failed_path(@enrollment) %>";
+      if (document.readyState !== "loading") {
 
-          }
+        initializePaymentPage();
+
+      } else {
+
+        document.addEventListener(
+          "DOMContentLoaded",
+          initializePaymentPage,
+          { once: true }
         );
 
+      }
 
-        razorpay.open();
-
-      });
-
-    });
+    })();
 
   </script>
+
+
 
 <% end %>
 
@@ -1546,4 +1685,118 @@
 
 }
 
+
+/* =========================================================
+   PAY BUTTON
+========================================================= */
+
+.pay-button {
+
+  width: 100%;
+
+  min-height: 50px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1261d8,
+      #0754c7
+    );
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 18px rgba(18, 97, 216, .20);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease;
+
+  position: relative;
+
+  z-index: 1;
+
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.pay-button:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(18, 97, 216, .35);
+
+  filter:
+    brightness(1.08);
+
+}
+
+
+/* =========================================================
+   ACTIVE / CLICK
+========================================================= */
+
+.pay-button:active {
+
+  transform: translateY(0);
+
+  box-shadow:
+    0 5px 14px rgba(18, 97, 216, .25);
+
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.pay-button:disabled {
+
+  cursor: wait;
+
+  opacity: .7;
+
+  transform: none;
+
+  filter: none;
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.pay-button.loading {
+
+  opacity: .7;
+
+  transform: none;
+
+  filter: none;
+
+}
 </style>
