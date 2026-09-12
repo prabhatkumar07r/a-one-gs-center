@@ -1390,6 +1390,11 @@
 
 </div>
 
+
+
+
+
+
 <script nonce="<%= content_security_policy_nonce %>">
 
   function initializeExamPage() {
@@ -1429,8 +1434,12 @@
         const form =
           document.getElementById("finishTestForm");
 
+        /*
+         * Timer expiry should submit immediately.
+         * Do NOT show confirmation.
+         */
         if (form) {
-          form.submit();
+          HTMLFormElement.prototype.submit.call(form);
         }
 
         return;
@@ -1576,41 +1585,184 @@
     const finishForm =
       document.getElementById("finishTestForm");
 
+    const submitTestBtn =
+      document.getElementById("submitTestBtn");
 
-    if (finishForm) {
+
+    if (finishForm && submitTestBtn) {
 
       finishForm.addEventListener(
         "submit",
         function (event) {
 
-          const answered =
-            <%= @answered_count.to_i %>;
+          /*
+           * Stop normal browser submission.
+           */
+          event.preventDefault();
 
-          const total =
+
+          /*
+           * Prevent duplicate submission.
+           */
+          if (
+            finishForm.dataset.submitting === "true"
+          ) {
+            return;
+          }
+
+
+          /* =================================================
+             TOTAL QUESTIONS
+          ================================================== */
+
+          const totalQuestions =
             <%= @total_questions.to_i %>;
 
-          const remaining =
-            total - answered;
+
+          /* =================================================
+             COUNT ANSWERED QUESTIONS
+             
+             Use the question palette as the source of
+             truth for already saved answers.
+          ================================================== */
+
+          let answeredQuestions =
+            document.querySelectorAll(
+              ".palette-number.answered"
+            ).length;
 
 
-          let message =
-            "Are you sure you want to submit the test?";
+          /* =================================================
+             CURRENT QUESTION
+             
+             The student may have selected an answer but
+             not clicked "Save Answer" yet.
+
+             In that case the current palette item may
+             still be unanswered, so count the selection.
+          ================================================== */
+
+          const currentSelected =
+            document.querySelector(
+              '#answerForm input[name="option_id"]:checked'
+            );
 
 
-          if (remaining > 0) {
+          const currentPalette =
+            document.querySelector(
+              ".palette-number.current"
+            );
 
-            message =
-              "You still have " +
-              remaining +
-              " unanswered question(s).\n\n" +
+
+          if (
+            currentSelected &&
+            currentPalette &&
+            !currentPalette.classList.contains("answered")
+          ) {
+
+            answeredQuestions++;
+
+          }
+
+
+          /* =================================================
+             SAFETY LIMIT
+          ================================================== */
+
+          answeredQuestions =
+            Math.min(
+              Math.max(answeredQuestions, 0),
+              totalQuestions
+            );
+
+
+          /* =================================================
+             REMAINING QUESTIONS
+          ================================================== */
+
+          const remainingQuestions =
+            Math.max(
+              totalQuestions - answeredQuestions,
+              0
+            );
+
+
+          /* =================================================
+             CONFIRMATION MESSAGE
+          ================================================== */
+
+          let confirmationMessage;
+
+
+          if (remainingQuestions > 0) {
+
+            confirmationMessage =
+              remainingQuestions +
+              " question" +
+              (
+                remainingQuestions === 1
+                  ? ""
+                  : "s"
+              ) +
+              " are still unanswered.\n\n" +
+              "Are you sure you want to submit the test?";
+
+          } else {
+
+            confirmationMessage =
+              "All questions are answered.\n\n" +
               "Are you sure you want to submit the test?";
 
           }
 
 
-          if (!window.confirm(message)) {
-            event.preventDefault();
+          /* =================================================
+             SINGLE CONFIRMATION
+          ================================================== */
+
+          const confirmed =
+            window.confirm(
+              confirmationMessage
+            );
+
+
+          /*
+           * Student cancelled.
+           */
+          if (!confirmed) {
+            return;
           }
+
+
+          /* =================================================
+             FINAL SUBMISSION
+          ================================================= */
+
+          finishForm.dataset.submitting =
+            "true";
+
+
+          /*
+           * Disable submit button.
+           */
+          submitTestBtn.disabled =
+            true;
+
+
+          /*
+           * Loading state.
+           */
+          submitTestBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+
+          /*
+           * Native submission bypasses this event listener.
+           * Therefore confirmation cannot run again.
+           */
+          HTMLFormElement.prototype.submit.call(
+            finishForm
+          );
 
         }
       );
@@ -1628,6 +1780,10 @@
         event.target;
 
 
+      /*
+       * Don't trigger shortcuts while typing
+       * inside form controls.
+       */
       if (
         target &&
         (
@@ -1691,11 +1847,9 @@
   }
 
 
-  /*
-   * Rails 8 + Turbo
-   *
-   * Use turbo:load instead of DOMContentLoaded.
-   */
+  /* =====================================================
+     RAILS 8 + TURBO
+  ====================================================== */
 
   document.addEventListener(
     "turbo:load",
