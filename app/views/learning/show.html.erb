@@ -754,11 +754,6 @@
 
 <style nonce="<%= content_security_policy_nonce %>">
 
-/* =========================================================
-   A ONE GS CENTER — LEARNING PAGE
-   DARK COURSE DETAILS THEME
-   UI ONLY — NO ROUTE / DATABASE CHANGES
-========================================================= */
 
 .learning-page {
   min-height: 100vh;
@@ -766,23 +761,23 @@
 
   background:
     radial-gradient(
-      circle at 10% 0%,
-      rgba(91, 33, 182, .38),
-      transparent 32%
+      circle at 8% 5%,
+      rgba(139, 92, 246, 0.14),
+      transparent 28%
     ),
     radial-gradient(
-      circle at 90% 10%,
-      rgba(37, 99, 235, .22),
-      transparent 30%
+      circle at 92% 8%,
+      rgba(59, 130, 246, 0.10),
+      transparent 26%
     ),
     linear-gradient(
       135deg,
-      #16052f 0%,
-      #0d0b2b 48%,
-      #080c24 100%
+      #f8f7fc 0%,
+      #f1eff8 48%,
+      #ebeaf4 100%
     );
 
-  color: #ffffff;
+  color: #25213a;
 }
 
 
@@ -801,46 +796,53 @@
   align-items: center;
   gap: 11px;
 
-  padding: 14px 25px;
+  padding: 13px 23px;
 
-  border: 1px solid rgba(129, 140, 248, .30);
-  border-radius: 16px;
+  border: 1px solid #e3dfed;
+  border-radius: 15px;
 
   background:
     linear-gradient(
-      135deg,
-      rgba(45, 26, 92, .95),
-      rgba(18, 29, 70, .95)
+      145deg,
+      #ffffff,
+      #eeebf5
     );
 
-  color: #ffffff;
+  color: #342c4d;
 
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
 
   cursor: pointer;
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,.25),
-    inset 0 1px 0 rgba(255,255,255,.05);
+    8px 8px 18px rgba(69, 61, 91, 0.13),
+    -6px -6px 15px rgba(255,255,255,0.90),
+    inset 1px 1px 0 rgba(255,255,255,.9);
 
   transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+    transform .22s ease,
+    box-shadow .22s ease;
 }
 
 .learning-back-btn:hover {
-  transform: translateX(-5px);
-
-  border-color: #8b5cf6;
+  transform: translateX(-4px) translateY(-2px);
 
   box-shadow:
-    0 12px 30px rgba(124,58,237,.25);
+    11px 11px 24px rgba(69,61,91,.16),
+    -7px -7px 17px rgba(255,255,255,.95);
+}
+
+.learning-back-btn:active {
+  transform: translateX(-2px) translateY(1px);
+
+  box-shadow:
+    inset 4px 4px 10px rgba(80,70,100,.14),
+    inset -3px -3px 8px rgba(255,255,255,.9);
 }
 
 .back-arrow {
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1;
 }
 
@@ -864,7 +866,7 @@
 
 
 /* =========================================================
-   LEFT SIDE
+   LEFT
 ========================================================= */
 
 .learning-left {
@@ -873,7 +875,7 @@
 
 
 /* =========================================================
-   COURSE HERO
+   COURSE HERO — 3D
 ========================================================= */
 
 .learning-course-hero {
@@ -889,26 +891,24 @@
 
   padding: 38px;
 
-  border-radius: 25px;
+  border-radius: 27px;
 
   background:
-    radial-gradient(
-      circle at 50% 45%,
-      rgba(109, 40, 217, .35),
-      transparent 45%
-    ),
     linear-gradient(
-      135deg,
-      #35166f 0%,
-      #25124e 48%,
-      #170b35 100%
+      145deg,
+      #ffffff 0%,
+      #f5f2fb 50%,
+      #eae6f3 100%
     );
 
-  border: 1px solid rgba(139, 92, 246, .55);
+  border: 1px solid #e4deef;
 
   box-shadow:
-    0 20px 55px rgba(0,0,0,.28),
-    inset 0 1px 0 rgba(255,255,255,.04);
+    18px 18px 38px rgba(64, 52, 91, .16),
+    -12px -12px 28px rgba(255,255,255,.95),
+    inset 1px 1px 0 rgba(255,255,255,.95);
+
+  transform: translateZ(0);
 }
 
 .learning-course-hero::before {
@@ -916,10 +916,10 @@
 
   position: absolute;
 
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
 
-  left: 50%;
+  left: 40%;
   top: 50%;
 
   transform: translate(-50%, -50%);
@@ -929,8 +929,8 @@
   background:
     radial-gradient(
       circle,
-      rgba(139,92,246,.16),
-      transparent 70%
+      rgba(124,58,237,.10),
+      transparent 68%
     );
 
   pointer-events: none;
@@ -941,16 +941,20 @@
 
   position: absolute;
 
-  width: 220px;
-  height: 220px;
+  width: 210px;
+  height: 210px;
 
-  right: -100px;
-  top: -100px;
+  right: -80px;
+  top: -90px;
 
   border-radius: 50%;
 
   background:
-    rgba(124,58,237,.14);
+    radial-gradient(
+      circle,
+      rgba(124,58,237,.11),
+      transparent 70%
+    );
 
   pointer-events: none;
 }
@@ -966,26 +970,31 @@
   top: 18px;
   left: 22px;
 
-  padding: 10px 17px;
+  padding: 9px 16px;
 
   border-radius: 30px;
 
   background:
-    rgba(5, 2, 20, .85);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #eeeaf7
+    );
 
-  border: 1px solid rgba(139,92,246,.30);
+  border: 1px solid #ddd6eb;
 
-  color: #ffffff;
+  color: #6242a1;
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
 
-  letter-spacing: .4px;
+  letter-spacing: .6px;
 
   z-index: 3;
 
   box-shadow:
-    0 8px 20px rgba(0,0,0,.20);
+    6px 6px 13px rgba(76,65,100,.12),
+    -4px -4px 10px rgba(255,255,255,.95);
 }
 
 
@@ -997,8 +1006,8 @@
   position: relative;
   z-index: 2;
 
-  width: 92px;
-  height: 92px;
+  width: 95px;
+  height: 95px;
 
   flex-shrink: 0;
 
@@ -1008,22 +1017,39 @@
 
   margin-left: auto;
 
-  border-radius: 25px;
+  border-radius: 26px;
 
   background:
     linear-gradient(
-      135deg,
-      #7c3aed,
-      #9333ea
+      145deg,
+      #a78bfa 0%,
+      #7c3aed 48%,
+      #5b21b6 100%
     );
 
   color: #ffffff;
 
-  font-size: 45px;
+  font-size: 44px;
 
   box-shadow:
-    0 15px 35px rgba(124,58,237,.35),
-    inset 0 1px 0 rgba(255,255,255,.15);
+    12px 14px 25px rgba(91,33,182,.25),
+    -5px -5px 12px rgba(255,255,255,.75),
+    inset 2px 2px 5px rgba(255,255,255,.25),
+    inset -4px -5px 8px rgba(45,20,95,.22);
+}
+
+.learning-hero-icon::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 7px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255,255,255,.20);
+
+  pointer-events: none;
 }
 
 
@@ -1047,9 +1073,9 @@
 
   margin-bottom: 9px;
 
-  color: #c4b5fd;
+  color: #7651b9;
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
 
   letter-spacing: 1.5px;
@@ -1058,7 +1084,7 @@
 .learning-hero-content h1 {
   margin: 0;
 
-  color: #ffffff;
+  color: #29233d;
 
   font-size: clamp(28px, 3vw, 43px);
 
@@ -1067,13 +1093,13 @@
   font-weight: 900;
 
   text-shadow:
-    0 5px 20px rgba(0,0,0,.25);
+    2px 3px 5px rgba(75,64,95,.12);
 }
 
 .learning-hero-content p {
   margin: 12px 0 0;
 
-  color: #c4b5fd;
+  color: #77718a;
 
   font-size: 15px;
 
@@ -1094,16 +1120,17 @@
 
   background:
     linear-gradient(
-      135deg,
-      rgba(44, 25, 78, .95),
-      rgba(23, 16, 52, .95)
+      145deg,
+      #ffffff,
+      #efedf6
     );
 
-  border: 1px solid rgba(139,92,246,.30);
+  border: 1px solid #e2ddeb;
 
   box-shadow:
-    0 15px 35px rgba(0,0,0,.22),
-    inset 0 1px 0 rgba(255,255,255,.035);
+    12px 13px 28px rgba(65,54,90,.13),
+    -8px -8px 20px rgba(255,255,255,.95),
+    inset 1px 1px 0 rgba(255,255,255,.95);
 }
 
 .progress-top {
@@ -1117,7 +1144,7 @@
 .progress-label {
   display: block;
 
-  color: #a78bfa;
+  color: #7651b9;
 
   font-size: 10px;
   font-weight: 900;
@@ -1128,11 +1155,14 @@
 .progress-top h3 {
   margin: 6px 0 0;
 
-  color: #ffffff;
+  color: #302a42;
 
   font-size: 16px;
   font-weight: 800;
 }
+
+
+/* 3D PROGRESS CIRCLE */
 
 .progress-circle {
   min-width: 65px;
@@ -1146,12 +1176,13 @@
 
   background:
     linear-gradient(
-      135deg,
-      #4c1d95,
-      #7c3aed
+      145deg,
+      #a78bfa,
+      #7c3aed 52%,
+      #5b21b6
     );
 
-  border: 1px solid rgba(196,181,253,.30);
+  border: 1px solid rgba(255,255,255,.6);
 
   color: #ffffff;
 
@@ -1159,11 +1190,19 @@
   font-weight: 900;
 
   box-shadow:
-    0 8px 25px rgba(124,58,237,.30);
+    9px 10px 19px rgba(91,33,182,.22),
+    -5px -5px 12px rgba(255,255,255,.9),
+    inset 2px 2px 5px rgba(255,255,255,.25),
+    inset -4px -4px 7px rgba(45,20,95,.22);
 }
 
+
+/* =========================================================
+   PROGRESS TRACK
+========================================================= */
+
 .progress-track {
-  height: 9px;
+  height: 11px;
 
   margin-top: 19px;
 
@@ -1171,7 +1210,12 @@
 
   border-radius: 20px;
 
-  background: rgba(255,255,255,.08);
+  background:
+    #e2deeb;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(76,65,100,.14),
+    inset -2px -2px 5px rgba(255,255,255,.9);
 }
 
 .progress-fill {
@@ -1187,7 +1231,8 @@
     );
 
   box-shadow:
-    0 0 15px rgba(168,85,247,.35);
+    3px 2px 8px rgba(124,58,237,.30),
+    inset 1px 1px 2px rgba(255,255,255,.35);
 
   transition: width .5s ease;
 }
@@ -1201,18 +1246,18 @@
 
   margin-top: 11px;
 
-  color: #a1a1aa;
+  color: #888296;
 
   font-size: 11px;
 }
 
 .progress-bottom strong {
-  color: #e9d5ff;
+  color: #5d3c99;
 }
 
 
 /* =========================================================
-   PLAYLIST CARD
+   PLAYLIST CARD — 3D
 ========================================================= */
 
 .learning-playlist-card {
@@ -1225,14 +1270,15 @@
   background:
     linear-gradient(
       145deg,
-      rgba(39, 23, 68, .97),
-      rgba(20, 14, 43, .97)
+      #ffffff,
+      #eeecf5
     );
 
-  border: 1px solid rgba(139,92,246,.27);
+  border: 1px solid #e1dce9;
 
   box-shadow:
-    0 15px 40px rgba(0,0,0,.22);
+    15px 16px 32px rgba(65,54,90,.13),
+    -9px -9px 21px rgba(255,255,255,.95);
 }
 
 
@@ -1250,12 +1296,15 @@
 
   background:
     linear-gradient(
-      135deg,
-      rgba(91,33,182,.16),
-      rgba(30,27,75,.20)
+      145deg,
+      #ffffff,
+      #f1eef8
     );
 
-  border-bottom: 1px solid rgba(139,92,246,.17);
+  border-bottom: 1px solid #e5e0ed;
+
+  box-shadow:
+    inset 0 -3px 7px rgba(75,65,95,.035);
 }
 
 .playlist-number {
@@ -1272,9 +1321,10 @@
 
   background:
     linear-gradient(
-      135deg,
-      #7c3aed,
-      #9333ea
+      145deg,
+      #a78bfa,
+      #7c3aed 55%,
+      #5b21b6
     );
 
   color: #ffffff;
@@ -1283,7 +1333,9 @@
   font-weight: 900;
 
   box-shadow:
-    0 8px 22px rgba(124,58,237,.30);
+    8px 9px 17px rgba(91,33,182,.22),
+    -4px -4px 9px rgba(255,255,255,.85),
+    inset 1px 1px 3px rgba(255,255,255,.25);
 }
 
 .playlist-heading {
@@ -1295,7 +1347,7 @@
 
   margin-bottom: 5px;
 
-  color: #a78bfa;
+  color: #7651b9;
 
   font-size: 9px;
 
@@ -1307,7 +1359,7 @@
 .playlist-heading h2 {
   margin: 0;
 
-  color: #ffffff;
+  color: #302a42;
 
   font-size: 22px;
 
@@ -1317,7 +1369,7 @@
 .playlist-heading p {
   margin: 6px 0 0;
 
-  color: #a1a1aa;
+  color: #858092;
 
   font-size: 12px;
 
@@ -1334,7 +1386,7 @@
 }
 
 .learning-section + .learning-section {
-  border-top: 1px solid rgba(139,92,246,.14);
+  border-top: 1px solid #e6e1ed;
 }
 
 .learning-section-heading {
@@ -1356,23 +1408,37 @@
 
   border-radius: 12px;
 
-  font-size: 20px;
+  border: 1px solid #ddd6e8;
 
-  border: 1px solid rgba(139,92,246,.18);
+  box-shadow:
+    5px 5px 11px rgba(71,61,90,.10),
+    -4px -4px 9px rgba(255,255,255,.9);
+
+  font-size: 20px;
 }
 
 .video-icon {
-  background: rgba(99,102,241,.14);
+  background:
+    linear-gradient(
+      145deg,
+      #f0ecff,
+      #ddd5fa
+    );
 }
 
 .notes-icon {
-  background: rgba(16,185,129,.12);
+  background:
+    linear-gradient(
+      145deg,
+      #ecfff7,
+      #d9f4e9
+    );
 }
 
 .learning-section-heading h3 {
   margin: 0;
 
-  color: #ffffff;
+  color: #332d44;
 
   font-size: 17px;
 
@@ -1384,7 +1450,7 @@
 
   margin-top: 3px;
 
-  color: #8f8aa5;
+  color: #8b8598;
 
   font-size: 11px;
 }
@@ -1399,7 +1465,7 @@
 
   flex-direction: column;
 
-  gap: 10px;
+  gap: 11px;
 }
 
 .learning-video-item {
@@ -1412,31 +1478,41 @@
 
   text-decoration: none;
 
-  border: 1px solid rgba(139,92,246,.16);
+  border: 1px solid #e1dce8;
 
-  border-radius: 13px;
+  border-radius: 14px;
 
   background:
-    rgba(255,255,255,.035);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f0eef5
+    );
+
+  box-shadow:
+    6px 7px 14px rgba(72,61,90,.09),
+    -4px -4px 10px rgba(255,255,255,.9);
 
   transition:
     transform .22s ease,
-    border-color .22s ease,
-    background .22s ease,
-    box-shadow .22s ease;
+    box-shadow .22s ease,
+    border-color .22s ease;
 }
 
 .learning-video-item:hover {
-  transform: translateX(5px);
+  transform:
+    translateY(-3px)
+    translateX(3px);
 
-  background:
-    rgba(124,58,237,.10);
-
-  border-color:
-    rgba(139,92,246,.50);
+  border-color: #c8b8e9;
 
   box-shadow:
-    0 8px 25px rgba(124,58,237,.15);
+    10px 12px 22px rgba(72,61,90,.14),
+    -6px -6px 13px rgba(255,255,255,.95);
+}
+
+.learning-video-item:active {
+  transform: translateY(1px);
 }
 
 .video-position {
@@ -1452,13 +1528,21 @@
   border-radius: 10px;
 
   background:
-    rgba(124,58,237,.18);
+    linear-gradient(
+      145deg,
+      #f0eaff,
+      #ddd3f7
+    );
 
-  color: #c4b5fd;
+  color: #6841a5;
 
   font-size: 12px;
 
   font-weight: 900;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(255,255,255,.8),
+    inset -3px -3px 6px rgba(86,65,120,.10);
 }
 
 .learning-video-info {
@@ -1472,7 +1556,7 @@
 
   overflow: hidden;
 
-  color: #f8fafc;
+  color: #393248;
 
   font-size: 13px;
 
@@ -1488,7 +1572,7 @@
 
   overflow: hidden;
 
-  color: #8f8aa5;
+  color: #8d8798;
 
   font-size: 11px;
 
@@ -1502,14 +1586,19 @@
 
   margin-top: 4px;
 
-  color: #a78bfa;
+  color: #7651b9;
 
   font-size: 10px;
 }
 
+
+/* =========================================================
+   PLAY BUTTON — 3D
+========================================================= */
+
 .video-play {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
 
   flex-shrink: 0;
 
@@ -1521,9 +1610,10 @@
 
   background:
     linear-gradient(
-      135deg,
-      #7c3aed,
-      #9333ea
+      145deg,
+      #a78bfa,
+      #7c3aed 55%,
+      #5b21b6
     );
 
   color: #ffffff;
@@ -1531,7 +1621,9 @@
   font-size: 11px;
 
   box-shadow:
-    0 6px 18px rgba(124,58,237,.30);
+    7px 8px 16px rgba(91,33,182,.22),
+    -3px -3px 8px rgba(255,255,255,.85),
+    inset 1px 1px 3px rgba(255,255,255,.25);
 }
 
 
@@ -1558,12 +1650,20 @@
 
   padding: 13px;
 
-  border: 1px solid rgba(139,92,246,.15);
+  border: 1px solid #e1dce8;
 
   border-radius: 13px;
 
   background:
-    rgba(255,255,255,.035);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f0eef5
+    );
+
+  box-shadow:
+    5px 6px 13px rgba(72,61,90,.08),
+    -4px -4px 9px rgba(255,255,255,.9);
 }
 
 .download-left {
@@ -1588,15 +1688,23 @@
   border-radius: 10px;
 
   background:
-    rgba(16,185,129,.12);
+    linear-gradient(
+      145deg,
+      #edfff7,
+      #d8f4e8
+    );
 
   font-size: 18px;
+
+  box-shadow:
+    4px 4px 9px rgba(60,90,75,.08),
+    -3px -3px 7px rgba(255,255,255,.9);
 }
 
 .download-left h4 {
   margin: 0;
 
-  color: #f8fafc;
+  color: #3b3549;
 
   font-size: 13px;
 
@@ -1606,10 +1714,15 @@
 .download-left p {
   margin: 3px 0 0;
 
-  color: #8f8aa5;
+  color: #8c8696;
 
   font-size: 10px;
 }
+
+
+/* =========================================================
+   DOWNLOAD BUTTON
+========================================================= */
 
 .download-action {
   min-width: 62px;
@@ -1625,9 +1738,9 @@
 
   background:
     linear-gradient(
-      135deg,
-      #059669,
-      #10b981
+      145deg,
+      #34d399,
+      #059669
     );
 
   color: #ffffff;
@@ -1639,7 +1752,9 @@
   font-weight: 800;
 
   box-shadow:
-    0 7px 18px rgba(16,185,129,.18);
+    7px 8px 15px rgba(5,150,105,.18),
+    -3px -3px 7px rgba(255,255,255,.85),
+    inset 1px 1px 3px rgba(255,255,255,.25);
 
   transition: .2s ease;
 }
@@ -1650,7 +1765,8 @@
   transform: translateY(-2px);
 
   box-shadow:
-    0 10px 24px rgba(16,185,129,.30);
+    9px 11px 19px rgba(5,150,105,.24),
+    -4px -4px 8px rgba(255,255,255,.9);
 }
 
 .file-unavailable {
@@ -1658,9 +1774,9 @@
 
   border-radius: 8px;
 
-  background: rgba(255,255,255,.04);
+  background: #ece9f1;
 
-  color: #71717a;
+  color: #9892a2;
 
   font-size: 10px;
 }
@@ -1688,7 +1804,7 @@
 
 
 /* =========================================================
-   SIDE CARD
+   SIDE CARD — 3D
 ========================================================= */
 
 .learning-side-card {
@@ -1699,15 +1815,16 @@
   background:
     linear-gradient(
       145deg,
-      rgba(38,23,68,.96),
-      rgba(17,13,40,.96)
+      #ffffff,
+      #eeecf5
     );
 
-  border: 1px solid rgba(139,92,246,.28);
+  border: 1px solid #e1dce9;
 
   box-shadow:
-    0 15px 35px rgba(0,0,0,.25),
-    inset 0 1px 0 rgba(255,255,255,.035);
+    12px 13px 27px rgba(65,54,90,.13),
+    -8px -8px 20px rgba(255,255,255,.95),
+    inset 1px 1px 0 rgba(255,255,255,.95);
 }
 
 .side-card-header {
@@ -1728,17 +1845,25 @@
   border-radius: 13px;
 
   background:
-    rgba(124,58,237,.16);
+    linear-gradient(
+      145deg,
+      #f0eaff,
+      #ded5f7
+    );
 
-  border: 1px solid rgba(139,92,246,.18);
+  border: 1px solid #ded6eb;
 
   font-size: 21px;
+
+  box-shadow:
+    6px 7px 13px rgba(72,61,90,.10),
+    -4px -4px 9px rgba(255,255,255,.9);
 }
 
 .side-card-header span {
   display: block;
 
-  color: #a78bfa;
+  color: #7651b9;
 
   font-size: 9px;
 
@@ -1750,7 +1875,7 @@
 .side-card-header h3 {
   margin: 3px 0 0;
 
-  color: #ffffff;
+  color: #342e45;
 
   font-size: 18px;
 
@@ -1760,7 +1885,7 @@
 .side-card-description {
   margin: 15px 0 17px;
 
-  color: #9f9aae;
+  color: #858091;
 
   font-size: 12px;
 
@@ -1776,7 +1901,7 @@
   margin-top: 20px;
 
   border-top:
-    1px solid rgba(139,92,246,.15);
+    1px solid #e5e0eb;
 }
 
 .summary-item {
@@ -1788,15 +1913,15 @@
   padding: 13px 0;
 
   border-bottom:
-    1px solid rgba(139,92,246,.10);
+    1px solid #e7e2ed;
 
-  color: #aaa4b9;
+  color: #817b8e;
 
   font-size: 12px;
 }
 
 .summary-item strong {
-  color: #ffffff;
+  color: #5d3c99;
 
   font-size: 14px;
 }
@@ -1808,7 +1933,11 @@
 
 .resource-side-icon {
   background:
-    rgba(16,185,129,.12);
+    linear-gradient(
+      145deg,
+      #ecfff7,
+      #d9f3e8
+    );
 }
 
 .resource-list {
@@ -1833,10 +1962,18 @@
   border-radius: 11px;
 
   background:
-    rgba(255,255,255,.035);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f1eff5
+    );
 
   border:
-    1px solid rgba(139,92,246,.13);
+    1px solid #e2dce8;
+
+  box-shadow:
+    4px 5px 10px rgba(72,61,90,.07),
+    -3px -3px 7px rgba(255,255,255,.9);
 }
 
 .resource-info {
@@ -1862,9 +1999,17 @@
   border-radius: 9px;
 
   background:
-    rgba(255,255,255,.06);
+    linear-gradient(
+      145deg,
+      #f5f2fa,
+      #e7e3ee
+    );
 
   font-size: 15px;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(255,255,255,.9),
+    inset -2px -2px 5px rgba(72,61,90,.08);
 }
 
 .resource-info h4 {
@@ -1872,7 +2017,7 @@
 
   overflow: hidden;
 
-  color: #f1f5f9;
+  color: #40394e;
 
   font-size: 11px;
 
@@ -1888,7 +2033,7 @@
 
   margin-top: 3px;
 
-  color: #8f8aa5;
+  color: #918a9e;
 
   font-size: 8px;
 
@@ -1908,9 +2053,13 @@
   border-radius: 9px;
 
   background:
-    rgba(16,185,129,.14);
+    linear-gradient(
+      145deg,
+      #6ee7b7,
+      #059669
+    );
 
-  color: #34d399;
+  color: #ffffff;
 
   text-decoration: none;
 
@@ -1918,41 +2067,47 @@
 
   font-weight: 900;
 
+  box-shadow:
+    5px 6px 11px rgba(5,150,105,.18),
+    -3px -3px 7px rgba(255,255,255,.85);
+
   transition: .2s ease;
 }
 
 .resource-download:hover {
   color: #ffffff;
 
-  background: #059669;
-
   transform: translateY(-2px);
 }
 
 .resource-disabled {
-  color: #52525b;
+  color: #aaa4b1;
 }
 
 
 /* =========================================================
-   QUIZ CARD
+   QUIZ CENTER — PREMIUM 3D
 ========================================================= */
 
 .quiz-side-card {
   border-color:
-    rgba(139,92,246,.42);
+    #d8ccea;
 
   background:
     linear-gradient(
-      180deg,
-      rgba(48,27,86,.98),
-      rgba(20,13,43,.98)
+      145deg,
+      #ffffff,
+      #eeeaf6
     );
 }
 
 .quiz-side-icon {
   background:
-    rgba(168,85,247,.15);
+    linear-gradient(
+      145deg,
+      #f0e7ff,
+      #ddd0f5
+    );
 }
 
 .quiz-list {
@@ -1969,13 +2124,18 @@
   border-radius: 15px;
 
   background:
-    rgba(255,255,255,.035);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #efedf5
+    );
 
   border:
-    1px solid rgba(139,92,246,.22);
+    1px solid #ddd7e5;
 
   box-shadow:
-    0 7px 20px rgba(0,0,0,.15);
+    7px 8px 16px rgba(72,61,90,.10),
+    -5px -5px 11px rgba(255,255,255,.92);
 }
 
 .quiz-card-top {
@@ -2000,15 +2160,18 @@
 
   background:
     linear-gradient(
-      135deg,
-      #7c3aed,
-      #9333ea
+      145deg,
+      #a78bfa,
+      #7c3aed 55%,
+      #5b21b6
     );
 
   font-size: 16px;
 
   box-shadow:
-    0 7px 17px rgba(124,58,237,.25);
+    6px 7px 14px rgba(91,33,182,.22),
+    -3px -3px 8px rgba(255,255,255,.85),
+    inset 1px 1px 3px rgba(255,255,255,.25);
 }
 
 .quiz-active {
@@ -2017,24 +2180,32 @@
   border-radius: 20px;
 
   background:
-    rgba(16,185,129,.12);
+    linear-gradient(
+      145deg,
+      #e8fff5,
+      #d3f4e4
+    );
 
-  color: #34d399;
+  color: #07835a;
 
   border:
-    1px solid rgba(16,185,129,.18);
+    1px solid #c9eadb;
 
   font-size: 8px;
 
   font-weight: 900;
 
   letter-spacing: .6px;
+
+  box-shadow:
+    3px 3px 7px rgba(40,90,70,.07),
+    -2px -2px 5px rgba(255,255,255,.9);
 }
 
 .quiz-card h4 {
   margin: 0 0 6px;
 
-  color: #ffffff;
+  color: #342e43;
 
   font-size: 15px;
 
@@ -2044,12 +2215,17 @@
 .quiz-card p {
   margin: 0;
 
-  color: #9792a8;
+  color: #898394;
 
   font-size: 10px;
 
   line-height: 1.6;
 }
+
+
+/* =========================================================
+   QUIZ DETAILS
+========================================================= */
 
 .quiz-details {
   display: flex;
@@ -2067,18 +2243,26 @@
   border-radius: 7px;
 
   background:
-    rgba(255,255,255,.045);
+    linear-gradient(
+      145deg,
+      #f7f5fa,
+      #e9e6ee
+    );
 
-  color: #aaa4b9;
+  color: #80798c;
 
   font-size: 9px;
 
   font-weight: 700;
+
+  box-shadow:
+    inset 1px 1px 3px rgba(255,255,255,.9),
+    inset -2px -2px 4px rgba(72,61,90,.06);
 }
 
 
 /* =========================================================
-   START QUIZ BUTTON
+   START QUIZ BUTTON — 3D
 ========================================================= */
 
 .start-quiz-button {
@@ -2096,15 +2280,16 @@
 
   margin-top: 15px;
 
-  border: none;
+  border: 1px solid rgba(255,255,255,.45);
 
   border-radius: 11px;
 
   background:
     linear-gradient(
-      135deg,
-      #7c3aed,
-      #9333ea
+      145deg,
+      #a78bfa 0%,
+      #7c3aed 52%,
+      #5b21b6 100%
     );
 
   color: #ffffff;
@@ -2116,7 +2301,9 @@
   cursor: pointer;
 
   box-shadow:
-    0 9px 22px rgba(124,58,237,.25);
+    7px 8px 17px rgba(91,33,182,.24),
+    -4px -4px 9px rgba(255,255,255,.82),
+    inset 1px 1px 3px rgba(255,255,255,.25);
 
   transition:
     transform .2s ease,
@@ -2126,10 +2313,19 @@
 .start-quiz-button:hover {
   color: #ffffff;
 
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 
   box-shadow:
-    0 13px 28px rgba(124,58,237,.38);
+    10px 12px 22px rgba(91,33,182,.30),
+    -5px -5px 11px rgba(255,255,255,.9);
+}
+
+.start-quiz-button:active {
+  transform: translateY(1px);
+
+  box-shadow:
+    inset 4px 4px 8px rgba(45,20,95,.20),
+    inset -3px -3px 6px rgba(255,255,255,.15);
 }
 
 
@@ -2145,12 +2341,20 @@
   border-radius: 13px;
 
   background:
-    rgba(255,255,255,.035);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #efedf4
+    );
 
   border:
-    1px solid rgba(139,92,246,.12);
+    1px solid #e2dce8;
 
-  color: #8f8aa5;
+  color: #8c8697;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(255,255,255,.9),
+    inset -3px -3px 6px rgba(72,61,90,.06);
 }
 
 .learning-empty span {
@@ -2176,13 +2380,13 @@
 .large-empty h3 {
   margin: 0 0 7px;
 
-  color: #ffffff;
+  color: #3b344a;
 
   font-size: 19px;
 }
 
 .large-empty p {
-  color: #8f8aa5;
+  color: #8f8999;
 }
 
 
@@ -2200,10 +2404,18 @@
   border-radius: 12px;
 
   background:
-    rgba(255,255,255,.035);
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #eeecf3
+    );
 
   border:
-    1px solid rgba(139,92,246,.10);
+    1px solid #e3dde9;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(255,255,255,.9),
+    inset -3px -3px 6px rgba(72,61,90,.06);
 }
 
 .side-empty span {
@@ -2217,7 +2429,7 @@
 .side-empty h4 {
   margin: 0 0 5px;
 
-  color: #ffffff;
+  color: #40394d;
 
   font-size: 13px;
 }
@@ -2225,7 +2437,7 @@
 .side-empty p {
   margin: 0;
 
-  color: #8f8aa5;
+  color: #8f8999;
 
   font-size: 10px;
 }
@@ -2236,7 +2448,7 @@
 
 
 /* =========================================================
-   LEARNING TIP
+   LEARNING TIP — 3D
 ========================================================= */
 
 .learning-tip-card {
@@ -2252,16 +2464,17 @@
 
   background:
     linear-gradient(
-      135deg,
-      rgba(120,53,15,.22),
-      rgba(40,25,20,.65)
+      145deg,
+      #fffaf0,
+      #f4ead8
     );
 
   border:
-    1px solid rgba(245,158,11,.28);
+    1px solid #ead8b6;
 
   box-shadow:
-    0 10px 25px rgba(0,0,0,.18);
+    9px 10px 20px rgba(100,80,45,.10),
+    -5px -5px 12px rgba(255,255,255,.9);
 }
 
 .tip-icon {
@@ -2277,15 +2490,23 @@
   border-radius: 10px;
 
   background:
-    rgba(245,158,11,.12);
+    linear-gradient(
+      145deg,
+      #fff1b8,
+      #f6cf62
+    );
 
   font-size: 19px;
+
+  box-shadow:
+    5px 6px 11px rgba(110,85,30,.13),
+    -3px -3px 7px rgba(255,255,255,.9);
 }
 
 .learning-tip-card h4 {
   margin: 0 0 4px;
 
-  color: #fbbf24;
+  color: #a06d08;
 
   font-size: 13px;
 
@@ -2295,11 +2516,33 @@
 .learning-tip-card p {
   margin: 0;
 
-  color: #d6a84f;
+  color: #92743a;
 
   font-size: 10px;
 
   line-height: 1.6;
+}
+
+
+/* =========================================================
+   GLOBAL 3D INTERACTION
+========================================================= */
+
+.learning-side-card,
+.learning-playlist-card,
+.learning-progress-card,
+.learning-course-hero {
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.learning-side-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    15px 17px 31px rgba(65,54,90,.16),
+    -9px -9px 22px rgba(255,255,255,.98);
 }
 
 
@@ -2312,18 +2555,21 @@
 }
 
 .learning-page::-webkit-scrollbar-track {
-  background: #090719;
+  background: #e8e5ee;
 }
 
 .learning-page::-webkit-scrollbar-thumb {
   background:
     linear-gradient(
       180deg,
-      #7c3aed,
-      #4c1d95
+      #9f7aea,
+      #6841a5
     );
 
   border-radius: 20px;
+
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,.35);
 }
 
 
@@ -2559,6 +2805,7 @@
   }
 
 }
+
 
 </style>
 

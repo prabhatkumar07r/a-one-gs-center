@@ -1,7 +1,46 @@
+
+
 <style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
-   TRANSPARENT FLOATING GLASS HEADER
+   A ONE GS CENTER
+   PREMIUM 3D WHITE / PURPLE GLASS HEADER
+========================================================= */
+
+:root {
+    --aone-purple: #6d28d9;
+    --aone-purple-2: #8b5cf6;
+    --aone-purple-3: #a855f7;
+
+    --aone-text: #21145f;
+    --aone-muted: #687099;
+
+    --aone-white: rgba(255, 255, 255, 0.86);
+
+    --aone-shadow:
+        0 18px 45px rgba(72, 54, 150, 0.15),
+        0 5px 15px rgba(72, 54, 150, 0.08);
+
+    --aone-inner:
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 0 rgba(120, 90, 200, 0.05);
+}
+
+
+/* =========================================================
+   PAGE BACKGROUND
+========================================================= */
+
+html,
+body {
+    transition:
+        background-color .35s ease,
+        color .35s ease;
+}
+
+
+/* =========================================================
+   HEADER OUTER
 ========================================================= */
 
 .header {
@@ -11,77 +50,114 @@
     left: 0;
 
     width: 100%;
-    height: 82px;
+    height: 86px;
 
     background: transparent !important;
 
-    border: none !important;
+    border: 0 !important;
+
     box-shadow: none !important;
 
     z-index: 99999;
 
-    /* IMPORTANT:
-       Header and all controls must remain clickable */
     pointer-events: auto;
 }
 
 
 /* =========================================================
-   OUTER CONTAINER
+   CONTAINER
 ========================================================= */
 
 .header .container {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1500px;
 
     height: 100%;
 
     margin: 0 auto;
 
-    padding: 0 18px;
+    padding: 0 24px;
 }
 
 
 /* =========================================================
-   MAIN GLASS BAR
+   MAIN FLOATING HEADER
 ========================================================= */
 
 .header-content {
     position: relative;
 
     width: 100%;
-    max-width: 1250px;
+    max-width: 1450px;
 
-    height: 64px;
+    height: 68px;
 
-    margin: 8px auto 0;
+    margin: 9px auto 0;
 
-    padding: 5px 8px;
+    padding: 6px 9px;
 
     display: flex;
     align-items: center;
 
-    gap: 18px;
+    gap: 20px;
 
-    background: rgba(8, 10, 16, 0.42);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.92),
+            rgba(247,245,255,.82)
+        );
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255,255,255,.90);
 
-    border-radius: 36px;
+    border-radius: 25px;
 
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
 
     box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.24),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 20px 50px rgba(69,48,145,.13),
+        0 5px 15px rgba(69,48,145,.07),
+        inset 0 1px 0 rgba(255,255,255,.98),
+        inset 0 -1px 0 rgba(110,80,190,.06);
+
+    overflow: visible;
 
     pointer-events: auto;
 
     transition:
-        background 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+        box-shadow .3s ease,
+        background .3s ease,
+        border-color .3s ease;
+}
+
+
+/* =========================================================
+   SUBTLE HEADER GLOW
+========================================================= */
+
+.header-content::before {
+    content: "";
+
+    position: absolute;
+
+    top: -1px;
+    left: 10%;
+
+    width: 40%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(139,92,246,.65),
+            transparent
+        );
+
+    filter: blur(2px);
+
+    pointer-events: none;
 }
 
 
@@ -97,7 +173,7 @@
 
     width: auto;
 
-    padding-left: 6px;
+    padding-left: 5px;
 
     text-decoration: none;
 
@@ -107,22 +183,36 @@
 .header .logo img {
     display: block;
 
-    width: 145px;
+    width: 155px;
 
     max-width: 100%;
 
     height: auto;
 
-    max-height: 52px;
+    max-height: 56px;
 
     object-fit: contain;
 
-    border-radius: 4px;
+    border-radius: 10px;
+
+    transition:
+        transform .25s ease,
+        filter .25s ease;
+}
+
+.header .logo:hover img {
+    transform: translateY(-1px) scale(1.015);
+
+    filter:
+        drop-shadow(
+            0 7px 12px
+            rgba(109,40,217,.18)
+        );
 }
 
 
 /* =========================================================
-   DESKTOP NAVIGATION
+   DESKTOP NAV
 ========================================================= */
 
 .header nav {
@@ -143,21 +233,26 @@
     align-items: center;
     justify-content: center;
 
-    gap: 3px;
+    gap: 4px;
 
     margin: 0;
-    padding: 4px;
+    padding: 5px;
 
     list-style: none;
 
-    background: rgba(0, 0, 0, 0.17);
+    background:
+        rgba(242,239,252,.72);
 
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255,255,255,.95);
 
-    border-radius: 32px;
+    border-radius: 22px;
 
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        inset 2px 2px 5px rgba(94,72,155,.05),
+        inset -2px -2px 5px rgba(255,255,255,.90);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .header nav ul li {
@@ -171,6 +266,8 @@
 ========================================================= */
 
 .header nav ul li a {
+    position: relative;
+
     display: inline-flex;
 
     align-items: center;
@@ -178,11 +275,11 @@
 
     min-height: 44px;
 
-    padding: 0 18px;
+    padding: 0 17px;
 
-    border-radius: 25px;
+    border-radius: 17px;
 
-    color: #9da9bc;
+    color: #40377d;
 
     background: transparent;
 
@@ -190,17 +287,17 @@
 
     font-family: "Poppins", sans-serif;
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 600;
 
     white-space: nowrap;
 
     transition:
-        color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
+        color .25s ease,
+        background .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
 }
 
 
@@ -209,14 +306,25 @@
 ========================================================= */
 
 .header nav ul li a:hover {
-    color: #ffffff;
+    color: var(--aone-purple);
 
-    background: rgba(255, 255, 255, 0.07);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.96),
+            rgba(239,234,255,.86)
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 15px rgba(90,60,170,.10),
+        inset 0 1px 0 rgba(255,255,255,.95);
 }
 
 
 /* =========================================================
-   CONTACT US ACTIVE
+   ACTIVE CONTACT
 ========================================================= */
 
 .header nav ul li.contact-nav-item a {
@@ -224,22 +332,30 @@
 
     background:
         linear-gradient(
-            135deg,
-            #7135e8 0%,
-            #9655f7 100%
+            145deg,
+            #7c3aed 0%,
+            #8b5cf6 52%,
+            #a855f7 100%
         );
 
+    border: 1px solid rgba(255,255,255,.22);
+
     box-shadow:
-        0 8px 25px rgba(124, 58, 237, 0.38);
+        0 8px 20px rgba(109,40,217,.27),
+        0 3px 6px rgba(109,40,217,.14),
+        inset 0 1px 0 rgba(255,255,255,.28),
+        inset 0 -2px 4px rgba(72,28,150,.12);
 }
 
 .header nav ul li.contact-nav-item a:hover {
     color: #ffffff;
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 10px 30px rgba(124, 58, 237, 0.50);
+        0 12px 25px rgba(109,40,217,.34),
+        inset 0 1px 0 rgba(255,255,255,.30);
 }
 
 
@@ -254,6 +370,8 @@
     align-items: center;
 
     flex-shrink: 0;
+
+    gap: 8px;
 
     pointer-events: auto;
 }
@@ -285,19 +403,25 @@
     gap: 9px;
 
     width: auto;
-    min-width: 170px;
 
-    height: 46px;
+    min-width: 175px;
 
-    padding: 4px 10px 4px 5px;
+    height: 48px;
 
-    background: rgba(255, 255, 255, 0.035);
+    padding: 4px 11px 4px 5px;
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.96),
+            rgba(244,241,255,.86)
+        );
 
-    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,.95);
 
-    color: #d8deea;
+    border-radius: 25px;
+
+    color: #34276f;
 
     cursor: pointer;
 
@@ -306,47 +430,56 @@
     appearance: none;
     -webkit-appearance: none;
 
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 
     box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.16);
+        7px 7px 18px rgba(83,64,150,.10),
+        -4px -4px 12px rgba(255,255,255,.90),
+        inset 0 1px 0 rgba(255,255,255,.98);
 
     touch-action: manipulation;
 
     pointer-events: auto;
 
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
 }
 
 .student-profile-button:hover {
-    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-1px);
 
-    border-color: rgba(168, 85, 247, 0.38);
+    border-color: rgba(139,92,246,.25);
 
     box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.20);
+        8px 10px 22px rgba(83,64,150,.14),
+        -4px -4px 12px rgba(255,255,255,.95);
+}
+
+.student-profile-button:active {
+    transform: translateY(1px);
+
+    box-shadow:
+        inset 3px 3px 7px rgba(90,70,150,.10),
+        inset -3px -3px 7px rgba(255,255,255,.85);
 }
 
 .student-profile-button:focus {
     outline: none;
-
-    border-color: rgba(168, 85, 247, 0.45);
 }
 
 
 /* =========================================================
-   HEADER AVATAR
+   AVATAR
 ========================================================= */
 
 .student-header-avatar {
-    width: 38px;
-    height: 38px;
+    width: 39px;
+    height: 39px;
 
-    min-width: 38px;
+    min-width: 39px;
 
     display: flex;
     align-items: center;
@@ -356,13 +489,22 @@
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(
+            145deg,
+            #6d28d9,
+            #a855f7
+        );
 
-    border: 2px solid rgba(255, 255, 255, 0.13);
+    border: 2px solid rgba(255,255,255,.75);
 
-    color: #aab4c5;
+    color: #ffffff;
 
     font-size: 17px;
+
+    box-shadow:
+        0 5px 12px rgba(109,40,217,.25),
+        inset 0 1px 2px rgba(255,255,255,.30);
 }
 
 .student-header-avatar-image {
@@ -380,7 +522,7 @@
 ========================================================= */
 
 .student-header-name {
-    max-width: 100px;
+    max-width: 105px;
 
     overflow: hidden;
 
@@ -388,13 +530,13 @@
 
     white-space: nowrap;
 
-    color: #dce2ec;
+    color: #322568;
 
     font-family: "Poppins", sans-serif;
 
     font-size: 13px;
 
-    font-weight: 600;
+    font-weight: 700;
 }
 
 
@@ -405,11 +547,18 @@
 .student-dropdown-arrow {
     margin-left: auto;
 
-    color: #94a0b4;
+    color: #7569a0;
 
     font-size: 10px;
 
-    transition: transform 0.2s ease;
+    transition:
+        transform .25s ease,
+        color .2s ease;
+}
+
+.student-profile-button:hover
+.student-dropdown-arrow {
+    color: var(--aone-purple);
 }
 
 .student-profile-button.active
@@ -425,25 +574,32 @@
 .student-dropdown-menu {
     position: absolute;
 
-    top: calc(100% + 10px);
+    top: calc(100% + 12px);
     right: 0;
 
-    width: 310px;
+    width: 315px;
     max-width: calc(100vw - 20px);
 
-    padding: 8px;
+    padding: 9px;
 
-    background: rgba(10, 13, 21, 0.94);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.98),
+            rgba(246,243,255,.96)
+        );
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255,255,255,.95);
 
-    border-radius: 18px;
+    border-radius: 20px;
 
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
 
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.38);
+        0 25px 55px rgba(57,40,120,.20),
+        0 8px 20px rgba(57,40,120,.10),
+        inset 0 1px 0 rgba(255,255,255,1);
 
     z-index: 100003;
 
@@ -453,12 +609,16 @@
 
     pointer-events: none;
 
-    transform: translateY(-8px);
+    transform:
+        translateY(-8px)
+        scale(.98);
+
+    transform-origin: top right;
 
     transition:
-        opacity 0.2s ease,
-        transform 0.2s ease,
-        visibility 0.2s ease;
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s ease;
 }
 
 .student-dropdown-menu.open {
@@ -468,7 +628,9 @@
 
     pointer-events: auto;
 
-    transform: translateY(0);
+    transform:
+        translateY(0)
+        scale(1);
 }
 
 
@@ -483,6 +645,15 @@
     gap: 12px;
 
     padding: 13px 12px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.80),
+            rgba(239,234,255,.55)
+        );
 }
 
 
@@ -491,10 +662,10 @@
 ========================================================= */
 
 .student-dropdown-avatar {
-    width: 50px;
-    height: 50px;
+    width: 51px;
+    height: 51px;
 
-    min-width: 50px;
+    min-width: 51px;
 
     display: flex;
     align-items: center;
@@ -504,13 +675,22 @@
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(
+            145deg,
+            #6d28d9,
+            #a855f7
+        );
 
-    border: 2px solid rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255,255,255,.85);
 
-    color: #aab4c5;
+    color: #ffffff;
 
     font-size: 20px;
+
+    box-shadow:
+        0 7px 15px rgba(109,40,217,.22),
+        inset 0 1px 2px rgba(255,255,255,.30);
 }
 
 .student-dropdown-avatar img {
@@ -524,7 +704,7 @@
 
 
 /* =========================================================
-   DROPDOWN USER INFORMATION
+   DROPDOWN INFO
 ========================================================= */
 
 .student-dropdown-info {
@@ -536,7 +716,9 @@
 }
 
 .student-dropdown-info strong {
-    color: #ffffff;
+    color: #26185f;
+
+    font-family: "Poppins", sans-serif;
 
     font-size: 15px;
 
@@ -548,7 +730,9 @@
 .student-dropdown-info small {
     margin-top: 3px;
 
-    color: #9da9bc;
+    color: #747093;
+
+    font-family: "Poppins", sans-serif;
 
     font-size: 12px;
 
@@ -571,37 +755,46 @@
 
     margin-top: 6px;
 
-    padding: 3px 9px;
+    padding: 3px 10px;
 
     background:
         linear-gradient(
             135deg,
-            #7135e8,
-            #9558f7
+            #7c3aed,
+            #a855f7
         );
 
-    color: #ffffff;
+    color: #ffffff !important;
 
     border-radius: 20px;
 
-    font-size: 10px;
+    font-size: 9px;
 
     font-weight: 700;
 
     line-height: 1.3;
+
+    box-shadow:
+        0 4px 10px rgba(109,40,217,.18);
 }
 
 
 /* =========================================================
-   DROPDOWN DIVIDER
+   DIVIDER
 ========================================================= */
 
 .student-dropdown-divider {
     height: 1px;
 
-    margin: 7px 4px;
+    margin: 8px 5px;
 
-    background: rgba(255, 255, 255, 0.09);
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(103,78,160,.15),
+            transparent
+        );
 }
 
 
@@ -617,53 +810,66 @@
 
     width: 100%;
 
-    padding: 11px 13px;
+    padding: 12px 13px;
 
     border: 0;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
     background: transparent;
 
-    color: #c5cedc;
+    color: #514878;
 
     text-decoration: none;
 
     font-family: "Poppins", sans-serif;
 
-    font-size: 14px;
+    font-size: 13px;
 
-    font-weight: 500;
+    font-weight: 600;
 
     cursor: pointer;
 
     text-align: left;
 
     transition:
-        background 0.2s ease,
-        color 0.2s ease;
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
 }
 
 .student-dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.07);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.95),
+            rgba(237,232,255,.80)
+        );
 
-    color: #ffffff;
+    color: var(--aone-purple);
+
+    transform: translateX(2px);
+
+    box-shadow:
+        0 5px 12px rgba(80,60,150,.07);
 }
 
 .student-dropdown-item i {
-    width: 20px;
+    width: 22px;
 
     flex-shrink: 0;
 
-    color: #9da9bc;
+    color: #7567a5;
 
     font-size: 18px;
 
     text-align: center;
+
+    transition: color .2s ease;
 }
 
 .student-dropdown-item:hover i {
-    color: #a855f7;
+    color: var(--aone-purple);
 }
 
 
@@ -672,21 +878,22 @@
 ========================================================= */
 
 .student-logout {
-    color: #f87171;
+    color: #dc3545;
 }
 
 .student-logout i {
-    color: #f87171;
+    color: #dc3545;
 }
 
 .student-logout:hover {
-    background: rgba(239, 68, 68, 0.10);
+    background:
+        rgba(220,53,69,.08);
 
-    color: #f87171;
+    color: #dc3545;
 }
 
 .student-logout:hover i {
-    color: #f87171;
+    color: #dc3545;
 }
 
 .student-logout-form {
@@ -710,16 +917,17 @@
 
     padding: 0 18px;
 
-    border-radius: 25px;
+    border-radius: 22px;
 
     background:
         linear-gradient(
-            135deg,
-            #7135e8,
-            #9558f7
+            145deg,
+            #6d28d9,
+            #8b5cf6 55%,
+            #a855f7
         );
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255,255,255,.28);
 
     color: #ffffff;
 
@@ -729,25 +937,145 @@
 
     font-size: 13px;
 
-    font-weight: 600;
+    font-weight: 700;
 
     white-space: nowrap;
 
     box-shadow:
-        0 7px 22px rgba(124, 58, 237, 0.30);
+        0 8px 20px rgba(109,40,217,.25),
+        inset 0 1px 0 rgba(255,255,255,.25);
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 .auth-btn:hover {
     color: #ffffff;
 
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 
     box-shadow:
-        0 10px 28px rgba(124, 58, 237, 0.45);
+        0 12px 27px rgba(109,40,217,.34),
+        inset 0 1px 0 rgba(255,255,255,.30);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
+
+.header-icon.theme-toggle {
+    position: relative;
+
+    z-index: 100005;
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 3px;
+
+    padding: 0;
+
+    border: 1px solid rgba(255,255,255,.90);
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.96),
+            rgba(241,237,255,.90)
+        );
+
+    color: #f59e0b;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    user-select: none;
+
+    pointer-events: auto !important;
+
+    touch-action: manipulation;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow:
+        6px 6px 14px rgba(79,60,145,.10),
+        -4px -4px 10px rgba(255,255,255,.95),
+        inset 0 1px 0 rgba(255,255,255,.95);
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.header-icon.theme-toggle:hover {
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #eee9ff
+        );
+
+    border-color: rgba(139,92,246,.30);
+
+    color: #f59e0b;
+
+    transform:
+        translateY(-2px)
+        rotate(4deg);
+
+    box-shadow:
+        7px 9px 18px rgba(79,60,145,.13),
+        -4px -4px 10px rgba(255,255,255,.95);
+}
+
+.header-icon.theme-toggle:active {
+    transform: scale(.93);
+}
+
+.header-icon.theme-toggle:focus {
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(139,92,246,.15),
+        6px 6px 14px rgba(79,60,145,.10);
+}
+
+#themeIcon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+
+    line-height: 1;
 }
 
 
@@ -762,8 +1090,8 @@
 
     z-index: 100000;
 
-    width: 42px;
-    height: 42px;
+    width: 43px;
+    height: 43px;
 
     align-items: center;
     justify-content: center;
@@ -772,15 +1100,20 @@
 
     padding: 0;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255,255,255,.90);
 
-    border-radius: 11px;
+    border-radius: 13px;
 
-    background: rgba(255, 255, 255, 0.035);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.96),
+            rgba(240,236,255,.90)
+        );
 
-    color: #e5e7eb;
+    color: #4c3a91;
 
-    font-size: 20px;
+    font-size: 19px;
 
     line-height: 1;
 
@@ -792,12 +1125,18 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
+    box-shadow:
+        5px 5px 13px rgba(79,60,145,.10),
+        -3px -3px 9px rgba(255,255,255,.95);
+
     pointer-events: auto;
 
     transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 .mobile-menu-button:hover,
@@ -806,12 +1145,22 @@
 
     background:
         linear-gradient(
-            135deg,
-            rgba(113, 53, 232, 0.8),
-            rgba(149, 88, 247, 0.8)
+            145deg,
+            #6d28d9,
+            #a855f7
         );
 
-    border-color: rgba(168, 85, 247, 0.45);
+    border-color: rgba(255,255,255,.25);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px rgba(109,40,217,.25),
+        inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+.mobile-menu-button:active {
+    transform: scale(.94);
 }
 
 .mobile-menu-button:focus {
@@ -828,28 +1177,35 @@
 
     position: fixed;
 
-    top: 76px;
+    top: 84px;
 
-    left: 10px;
+    left: 12px;
 
-    width: calc(100% - 20px);
+    width: calc(100% - 24px);
 
-    max-height: calc(100dvh - 88px);
+    max-height: calc(100dvh - 96px);
 
     overflow-x: hidden;
     overflow-y: auto;
 
-    background: rgba(8, 10, 16, 0.88);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.98),
+            rgba(245,242,255,.96)
+        );
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255,255,255,.95);
 
-    border-radius: 18px;
+    border-radius: 20px;
 
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
 
     box-shadow:
-        0 20px 45px rgba(0, 0, 0, 0.38);
+        0 25px 55px rgba(57,40,120,.18),
+        0 8px 20px rgba(57,40,120,.08),
+        inset 0 1px 0 rgba(255,255,255,1);
 
     z-index: 99998;
 
@@ -858,18 +1214,34 @@
 
 .mobile-navigation.open {
     display: block;
+
+    animation:
+        mobileNavIn .2s ease both;
 }
+
+@keyframes mobileNavIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 
 .mobile-navigation ul {
     display: flex;
 
     flex-direction: column;
 
-    gap: 3px;
+    gap: 4px;
 
     margin: 0;
 
-    padding: 9px;
+    padding: 10px;
 
     list-style: none;
 }
@@ -888,13 +1260,13 @@
 
     width: 100%;
 
-    min-height: 45px;
+    min-height: 46px;
 
-    padding: 10px 14px;
+    padding: 10px 15px;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
-    color: #aeb8c9;
+    color: #514878;
 
     text-decoration: none;
 
@@ -905,14 +1277,26 @@
     font-weight: 600;
 
     transition:
-        color 0.2s ease,
-        background 0.2s ease;
+        color .2s ease,
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 .mobile-navigation ul li a:hover {
-    color: #ffffff;
+    color: var(--aone-purple);
 
-    background: rgba(255, 255, 255, 0.07);
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #eeeaff
+        );
+
+    transform: translateX(2px);
+
+    box-shadow:
+        0 5px 12px rgba(80,60,150,.08);
 }
 
 
@@ -926,13 +1310,15 @@ li.contact-mobile-item a {
 
     background:
         linear-gradient(
-            135deg,
-            #7135e8,
-            #9558f7
+            145deg,
+            #6d28d9,
+            #8b5cf6,
+            #a855f7
         );
 
     box-shadow:
-        0 7px 20px rgba(124, 58, 237, 0.30);
+        0 8px 18px rgba(109,40,217,.22),
+        inset 0 1px 0 rgba(255,255,255,.25);
 }
 
 
@@ -940,34 +1326,37 @@ li.contact-mobile-item a {
    TABLET
 ========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 1150px) {
 
     .header .container {
-        padding: 0 14px;
+        padding: 0 15px;
     }
 
     .header-content {
-        max-width: 100%;
-
         gap: 12px;
     }
 
     .header .logo img {
-        width: 130px;
+        width: 135px;
     }
 
     .header nav ul li a {
-        padding: 0 13px;
+        padding: 0 11px;
 
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .student-profile-button {
-        min-width: 150px;
+        min-width: 155px;
     }
 
     .student-header-name {
-        max-width: 75px;
+        max-width: 80px;
+    }
+
+    .header-icon.theme-toggle {
+        width: 42px;
+        height: 42px;
     }
 }
 
@@ -979,7 +1368,7 @@ li.contact-mobile-item a {
 @media (max-width: 850px) {
 
     .header {
-        height: 74px;
+        height: 76px;
     }
 
     .header .container {
@@ -989,7 +1378,7 @@ li.contact-mobile-item a {
     .header-content {
         width: 100%;
 
-        height: 58px;
+        height: 60px;
 
         margin-top: 7px;
 
@@ -997,7 +1386,7 @@ li.contact-mobile-item a {
 
         gap: 7px;
 
-        border-radius: 30px;
+        border-radius: 22px;
     }
 
     .header .logo {
@@ -1024,6 +1413,8 @@ li.contact-mobile-item a {
 
     .student-header-right {
         margin-left: 0;
+
+        gap: 5px;
     }
 
     .student-profile-button {
@@ -1033,21 +1424,30 @@ li.contact-mobile-item a {
 
         height: 43px;
 
-        padding: 3px;
+        padding: 2px;
 
         justify-content: center;
+
+        border-radius: 50%;
     }
 
     .student-header-avatar {
-        width: 36px;
-        height: 36px;
+        width: 37px;
+        height: 37px;
 
-        min-width: 36px;
+        min-width: 37px;
     }
 
     .student-header-name,
     .student-dropdown-arrow {
         display: none;
+    }
+
+    .header-icon.theme-toggle {
+        width: 42px;
+        height: 42px;
+
+        margin-right: 0;
     }
 }
 
@@ -1059,7 +1459,7 @@ li.contact-mobile-item a {
 @media (max-width: 576px) {
 
     .header {
-        height: 68px;
+        height: 69px;
     }
 
     .header .container {
@@ -1067,13 +1467,13 @@ li.contact-mobile-item a {
     }
 
     .header-content {
-        height: 54px;
+        height: 55px;
 
         margin-top: 7px;
 
         gap: 5px;
 
-        border-radius: 28px;
+        border-radius: 19px;
     }
 
     .header .logo img {
@@ -1086,7 +1486,9 @@ li.contact-mobile-item a {
         width: 39px;
         height: 39px;
 
-        font-size: 18px;
+        font-size: 17px;
+
+        border-radius: 11px;
     }
 
     .student-profile-button {
@@ -1103,14 +1505,23 @@ li.contact-mobile-item a {
         min-width: 33px;
     }
 
+    .header-icon.theme-toggle {
+        width: 39px;
+        height: 39px;
+
+        font-size: 14px;
+    }
+
     .mobile-navigation {
-        top: 68px;
+        top: 69px;
 
         left: 8px;
 
         width: calc(100% - 16px);
 
-        max-height: calc(100dvh - 78px);
+        max-height: calc(100dvh - 79px);
+
+        border-radius: 18px;
     }
 
     .auth-btn {
@@ -1124,7 +1535,7 @@ li.contact-mobile-item a {
     .student-dropdown-menu {
         position: fixed;
 
-        top: 72px;
+        top: 73px;
 
         right: 8px;
 
@@ -1136,114 +1547,13 @@ li.contact-mobile-item a {
 
 
 /* =========================================================
-   STUDENT HEADER THEME TOGGLE
-========================================================= */
-
-.header-icon.theme-toggle {
-    position: relative;
-
-    z-index: 100005;
-
-    width: 44px;
-    height: 44px;
-
-    flex-shrink: 0;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    margin-right: 4px;
-
-    padding: 0;
-
-    border: 1px solid rgba(255,255,255,.10);
-
-    border-radius: 50%;
-
-    background: rgba(255,255,255,.05);
-
-    color: #facc15;
-
-    cursor: pointer;
-
-    font-size: 17px;
-
-    line-height: 1;
-
-    text-decoration: none;
-
-    appearance: none;
-    -webkit-appearance: none;
-
-    user-select: none;
-
-    pointer-events: auto !important;
-
-    touch-action: manipulation;
-
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-
-    box-shadow:
-        0 5px 18px rgba(0,0,0,.15);
-
-    transition:
-        background .25s ease,
-        color .25s ease,
-        border-color .25s ease,
-        transform .25s ease,
-        box-shadow .25s ease;
-}
-
-.header-icon.theme-toggle:hover {
-    background: rgba(255,255,255,.10);
-
-    border-color: rgba(168,85,247,.45);
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 7px 22px rgba(124,58,237,.20);
-}
-
-.header-icon.theme-toggle:active {
-    transform: scale(.94);
-}
-
-.header-icon.theme-toggle:focus {
-    outline: none;
-
-    box-shadow:
-        0 0 0 3px rgba(168,85,247,.18);
-}
-
-
-/* =========================================================
-   THEME ICON
-========================================================= */
-
-#themeIcon {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    pointer-events: none;
-
-    line-height: 1;
-}
-
-
-/* =========================================================
    VERY SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 400px) {
 
     .header .logo img {
-        width: 100px;
+        width: 98px;
     }
 
     .header-content {
@@ -1269,6 +1579,11 @@ li.contact-mobile-item a {
         min-width: 31px;
     }
 
+    .header-icon.theme-toggle {
+        width: 37px;
+        height: 37px;
+    }
+
     .student-dropdown-menu {
         top: 70px;
 
@@ -1277,38 +1592,6 @@ li.contact-mobile-item a {
         width: calc(100vw - 14px);
 
         max-width: calc(100vw - 14px);
-    }
-}
-
-
-/* =========================================================
-   THEME TOGGLE - TABLET
-========================================================= */
-
-@media (max-width: 850px) {
-
-    .header-icon.theme-toggle {
-        width: 42px;
-        height: 42px;
-
-        margin-right: 0;
-
-        font-size: 16px;
-    }
-}
-
-
-/* =========================================================
-   THEME TOGGLE - MOBILE
-========================================================= */
-
-@media (max-width: 576px) {
-
-    .header-icon.theme-toggle {
-        width: 39px;
-        height: 39px;
-
-        font-size: 15px;
     }
 }
 
@@ -1327,163 +1610,118 @@ li.contact-mobile-item a {
 
 
 /* =========================================================
-   DAY / NIGHT MODE
-========================================================= */
-
-html,
-body {
-    transition:
-        background-color 0.35s ease,
-        color 0.35s ease;
-}
-
-
-/* =========================================================
-   NIGHT MODE - PAGE
+   NIGHT MODE
 ========================================================= */
 
 html.night-mode,
 html.night-mode body {
-    background: #080b12 !important;
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(109,40,217,.10),
+            transparent 30%
+        ),
+        #080b14 !important;
 
     color: #e5e7eb !important;
 }
 
 
 /* =========================================================
-   COMMON PAGE CONTAINERS
-========================================================= */
-
-html.night-mode main,
-html.night-mode section,
-html.night-mode .student-course-details,
-html.night-mode .course-details-page,
-html.night-mode .course-details-container {
-    color: #e5e7eb;
-}
-
-
-/* =========================================================
-   COURSE CONTENT CARDS
-========================================================= */
-
-html.night-mode .course-details-card,
-html.night-mode .course-info-card,
-html.night-mode .course-content-card,
-html.night-mode .course-action-card {
-    background: rgba(17, 20, 30, 0.88) !important;
-
-    border-color: rgba(255,255,255,.10) !important;
-
-    color: #e5e7eb !important;
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.25);
-}
-
-
-/* =========================================================
-   TEXT
-========================================================= */
-
-html.night-mode h1,
-html.night-mode h2,
-html.night-mode h3,
-html.night-mode h4,
-html.night-mode h5,
-html.night-mode h6 {
-    color: #ffffff !important;
-}
-
-html.night-mode p,
-html.night-mode span,
-html.night-mode li {
-    color: #cbd5e1;
-}
-
-
-/* =========================================================
-   HEADER - NIGHT
+   NIGHT HEADER
 ========================================================= */
 
 html.night-mode .header-content {
-    background: rgba(5, 7, 13, 0.90) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,17,34,.94),
+            rgba(13,15,25,.94)
+        ) !important;
 
-    border-color: rgba(255,255,255,.12) !important;
+    border-color:
+        rgba(255,255,255,.10) !important;
 
     box-shadow:
-        0 10px 40px rgba(0,0,0,.40),
+        0 20px 50px rgba(0,0,0,.42),
+        0 5px 15px rgba(0,0,0,.25),
         inset 0 1px 0 rgba(255,255,255,.06);
 }
 
 
 /* =========================================================
-   HEADER NAV - NIGHT
+   NIGHT NAV
 ========================================================= */
 
 html.night-mode .header nav ul {
-    background: rgba(0,0,0,.38);
+    background:
+        rgba(0,0,0,.30);
 
-    border-color: rgba(255,255,255,.08);
+    border-color:
+        rgba(255,255,255,.08);
 }
 
 html.night-mode .header nav ul li a {
-    color: #aeb8c9;
+    color: #b8b4d0;
 }
 
 html.night-mode .header nav ul li a:hover {
     color: #ffffff;
 
-    background: rgba(255,255,255,.08);
+    background:
+        rgba(255,255,255,.07);
 }
 
 
 /* =========================================================
-   THEME BUTTON - NIGHT
-========================================================= */
-
-html.night-mode .header-icon.theme-toggle {
-    background: rgba(124,58,237,.25) !important;
-
-    border-color: rgba(168,85,247,.45) !important;
-
-    color: #facc15 !important;
-
-    box-shadow:
-        0 5px 20px rgba(124,58,237,.20);
-}
-
-
-/* =========================================================
-   PROFILE BUTTON - NIGHT
+   NIGHT PROFILE
 ========================================================= */
 
 html.night-mode .student-profile-button {
-    background: rgba(255,255,255,.06) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(35,31,52,.92),
+            rgba(22,24,36,.92)
+        ) !important;
 
-    border-color: rgba(255,255,255,.12) !important;
+    border-color:
+        rgba(255,255,255,.10) !important;
 
-    color: #e5e7eb !important;
+    color: #eeeeff !important;
+
+    box-shadow:
+        6px 6px 15px rgba(0,0,0,.30),
+        -3px -3px 9px rgba(255,255,255,.02);
 }
 
-html.night-mode .student-profile-button:hover {
-    background: rgba(255,255,255,.10) !important;
-
-    border-color: rgba(168,85,247,.40) !important;
+html.night-mode .student-header-name {
+    color: #eeeeff;
 }
 
 
 /* =========================================================
-   PROFILE DROPDOWN - NIGHT
+   NIGHT DROPDOWN
 ========================================================= */
 
 html.night-mode .student-dropdown-menu {
-    background: rgba(8,10,17,.97) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,15,29,.98),
+            rgba(10,12,20,.98)
+        ) !important;
 
-    border-color: rgba(255,255,255,.12) !important;
+    border-color:
+        rgba(255,255,255,.10) !important;
 
     box-shadow:
-        0 20px 55px rgba(0,0,0,.55);
+        0 25px 55px rgba(0,0,0,.55);
+}
+
+html.night-mode .student-dropdown-user {
+    background:
+        rgba(255,255,255,.04);
 }
 
 html.night-mode .student-dropdown-info strong {
@@ -1495,7 +1733,8 @@ html.night-mode .student-dropdown-info small {
 }
 
 html.night-mode .student-dropdown-divider {
-    background: rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.08);
 }
 
 html.night-mode .student-dropdown-item {
@@ -1503,51 +1742,84 @@ html.night-mode .student-dropdown-item {
 }
 
 html.night-mode .student-dropdown-item:hover {
-    background: rgba(255,255,255,.07);
-
     color: #ffffff;
+
+    background:
+        rgba(255,255,255,.07);
 }
 
 
 /* =========================================================
-   MOBILE NAV - NIGHT
+   NIGHT MOBILE
 ========================================================= */
 
 html.night-mode .mobile-navigation {
-    background: rgba(8,10,16,.96) !important;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,15,29,.98),
+            rgba(9,11,19,.98)
+        ) !important;
 
-    border-color: rgba(255,255,255,.12) !important;
+    border-color:
+        rgba(255,255,255,.10) !important;
 
     box-shadow:
-        0 20px 50px rgba(0,0,0,.50);
+        0 25px 55px rgba(0,0,0,.55);
 }
 
 html.night-mode .mobile-navigation ul li a {
-    color: #aeb8c9;
+    color: #c2bfd4;
 }
 
 html.night-mode .mobile-navigation ul li a:hover {
     color: #ffffff;
 
-    background: rgba(255,255,255,.08);
+    background:
+        rgba(255,255,255,.07);
 }
 
 
 /* =========================================================
-   MOBILE MENU BUTTON - NIGHT
+   NIGHT MENU BUTTON
 ========================================================= */
 
 html.night-mode .mobile-menu-button {
-    background: rgba(255,255,255,.06) !important;
+    background:
+        rgba(255,255,255,.06) !important;
 
-    border-color: rgba(255,255,255,.12) !important;
+    border-color:
+        rgba(255,255,255,.10) !important;
 
     color: #e5e7eb !important;
 }
 
 
 /* =========================================================
-   FORM / INPUTS - NIGHT
+   NIGHT THEME BUTTON
+========================================================= */
+
+html.night-mode .header-icon.theme-toggle {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(42,31,70,.90),
+            rgba(25,24,39,.90)
+        ) !important;
+
+    border-color:
+        rgba(168,85,247,.35) !important;
+
+    color: #facc15 !important;
+
+    box-shadow:
+        5px 5px 14px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+
+/* =========================================================
+   NIGHT FORM
 ========================================================= */
 
 html.night-mode input,
@@ -1557,7 +1829,8 @@ html.night-mode select {
 
     color: #ffffff !important;
 
-    border-color: rgba(255,255,255,.12) !important;
+    border-color:
+        rgba(255,255,255,.12) !important;
 }
 
 html.night-mode input::placeholder,
@@ -1567,24 +1840,17 @@ html.night-mode textarea::placeholder {
 
 
 /* =========================================================
-   LINKS - NIGHT
-========================================================= */
-
-html.night-mode a {
-    color: #c4b5fd;
-}
-
-
-/* =========================================================
-   BOOTSTRAP CARD SUPPORT
+   NIGHT BOOTSTRAP CARD
 ========================================================= */
 
 html.night-mode .card {
-    background: rgba(17,20,30,.90) !important;
+    background:
+        rgba(17,20,30,.90) !important;
 
     color: #e5e7eb !important;
 
-    border-color: rgba(255,255,255,.10) !important;
+    border-color:
+        rgba(255,255,255,.10) !important;
 }
 
 html.night-mode .card-body,
@@ -1607,12 +1873,846 @@ html.night-mode .card-footer {
     .student-profile-button,
     .student-dropdown-menu,
     .mobile-menu-button,
-    .header-icon.theme-toggle {
+    .header-icon.theme-toggle,
+    .mobile-navigation {
         transition: none !important;
+
+        animation: none !important;
     }
 }
 
+
+
+
+/* =========================================================
+   A ONE GS CENTER
+   FINAL UNIVERSAL HEADER
+   Header stays visible and independent from page background
+========================================================= */
+
+
+/* =========================================================
+   HEADER BASE
+========================================================= */
+
+.header {
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 86px !important;
+
+    z-index: 99999 !important;
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+
+    isolation: isolate !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* =========================================================
+   HEADER CONTAINER
+========================================================= */
+
+.header .container {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 1500px !important;
+
+    height: 100% !important;
+
+    margin: 0 auto !important;
+
+    padding: 0 24px !important;
+
+    z-index: 1 !important;
+}
+
+
+/* =========================================================
+   MAIN HEADER
+   OPAQUE — PAGE BACKGROUND CANNOT BLEED THROUGH
+========================================================= */
+
+.header-content {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 1450px !important;
+
+    height: 68px !important;
+
+    margin: 9px auto 0 !important;
+
+    padding: 6px 9px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 20px !important;
+
+    /*
+       IMPORTANT:
+       No rgba transparency here.
+       This keeps header identical on every page.
+    */
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #fdfcff 45%,
+            #f5f1ff 100%
+        ) !important;
+
+    opacity: 1 !important;
+
+    border: 1px solid #ffffff !important;
+
+    border-radius: 25px !important;
+
+    /*
+       Keep blur for the premium effect,
+       but the opaque background prevents
+       the page from affecting the header.
+    */
+
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+
+    box-shadow:
+        0 20px 50px rgba(69, 48, 145, 0.16),
+        0 7px 20px rgba(69, 48, 145, 0.09),
+        inset 0 1px 0 #ffffff,
+        inset 0 -1px 0 rgba(109, 40, 217, 0.06) !important;
+
+    overflow: visible !important;
+
+    z-index: 2 !important;
+
+    isolation: isolate !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* =========================================================
+   HEADER TOP PURPLE GLOW
+========================================================= */
+
+.header-content::before {
+    content: "" !important;
+
+    position: absolute !important;
+
+    top: -1px !important;
+    left: 10% !important;
+
+    width: 40% !important;
+    height: 2px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(139, 92, 246, 0.65),
+            transparent
+        ) !important;
+
+    filter: blur(2px) !important;
+
+    pointer-events: none !important;
+
+    z-index: 0 !important;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.header .logo {
+    position: relative !important;
+
+    z-index: 5 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    flex-shrink: 0 !important;
+
+    width: auto !important;
+
+    padding-left: 5px !important;
+
+    text-decoration: none !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    pointer-events: auto !important;
+}
+
+.header .logo img {
+    display: block !important;
+
+    width: 155px !important;
+
+    max-width: 100% !important;
+
+    height: auto !important;
+
+    max-height: 56px !important;
+
+    object-fit: contain !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    border-radius: 10px !important;
+
+    filter: none !important;
+
+    position: relative !important;
+
+    z-index: 5 !important;
+}
+
+
+/* =========================================================
+   DESKTOP NAVIGATION
+========================================================= */
+
+.header nav {
+    position: relative !important;
+
+    z-index: 5 !important;
+
+    flex: 1 !important;
+
+    min-width: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* =========================================================
+   NAV PILL
+========================================================= */
+
+.header nav ul {
+    position: relative !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    margin: 0 !important;
+
+    padding: 5px !important;
+
+    list-style: none !important;
+
+    /*
+       Opaque nav background
+    */
+
+    background:
+        linear-gradient(
+            145deg,
+            #faf9ff,
+            #f1edfc
+        ) !important;
+
+    border: 1px solid #ffffff !important;
+
+    border-radius: 22px !important;
+
+    box-shadow:
+        inset 2px 2px 5px rgba(94, 72, 155, 0.06),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.95),
+        0 5px 12px rgba(80, 60, 150, 0.05) !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    isolation: isolate !important;
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.header nav ul li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+.header nav ul li a {
+    position: relative !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    min-height: 44px !important;
+
+    padding: 0 17px !important;
+
+    border-radius: 17px !important;
+
+    /*
+       FORCE DARK TEXT
+       So page CSS cannot make links white.
+    */
+
+    color: #40377d !important;
+
+    background: transparent !important;
+
+    text-decoration: none !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 13px !important;
+
+    font-weight: 600 !important;
+
+    white-space: nowrap !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    text-shadow: none !important;
+
+    transition:
+        color .25s ease,
+        background .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease !important;
+}
+
+
+/* =========================================================
+   NAV HOVER
+========================================================= */
+
+.header nav ul li a:hover {
+    color: #6d28d9 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #eeeaff
+        ) !important;
+
+    transform: translateY(-1px) !important;
+
+    box-shadow:
+        0 7px 15px rgba(90, 60, 170, 0.10),
+        inset 0 1px 0 #ffffff !important;
+}
+
+
+/* =========================================================
+   ACTIVE CONTACT
+========================================================= */
+
+.header nav ul li.contact-nav-item a {
+    color: #ffffff !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #6d28d9 0%,
+            #8b5cf6 52%,
+            #a855f7 100%
+        ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+
+    box-shadow:
+        0 8px 20px rgba(109, 40, 217, 0.28),
+        0 3px 6px rgba(109, 40, 217, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+
+    text-shadow: none !important;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.student-header-right {
+    position: relative !important;
+
+    z-index: 5 !important;
+
+    margin-left: auto !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    flex-shrink: 0 !important;
+
+    gap: 8px !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   PROFILE BUTTON
+========================================================= */
+
+.student-profile-button {
+    position: relative !important;
+
+    z-index: 5 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 9px !important;
+
+    min-width: 175px !important;
+
+    height: 48px !important;
+
+    padding: 4px 11px 4px 5px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f3efff
+        ) !important;
+
+    border: 1px solid #ffffff !important;
+
+    border-radius: 25px !important;
+
+    color: #34276f !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    box-shadow:
+        7px 7px 18px rgba(83, 64, 150, 0.12),
+        -4px -4px 12px rgba(255, 255, 255, 0.95),
+        inset 0 1px 0 #ffffff !important;
+}
+
+
+/* =========================================================
+   PROFILE NAME
+========================================================= */
+
+.student-header-name {
+    color: #322568 !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    text-shadow: none !important;
+}
+
+
+/* =========================================================
+   PROFILE ARROW
+========================================================= */
+
+.student-dropdown-arrow {
+    color: #7569a0 !important;
+
+    opacity: 1 !important;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.student-header-avatar {
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #6d28d9,
+            #a855f7
+        ) !important;
+
+    box-shadow:
+        0 5px 12px rgba(109, 40, 217, 0.25),
+        inset 0 1px 2px rgba(255, 255, 255, 0.30) !important;
+}
+
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.header-icon.theme-toggle {
+    position: relative !important;
+
+    z-index: 10 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f0ebff
+        ) !important;
+
+    color: #f59e0b !important;
+
+    border: 1px solid #ffffff !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   MOBILE BUTTON
+========================================================= */
+
+.mobile-menu-button {
+    position: relative !important;
+
+    z-index: 10 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f0ebff
+        ) !important;
+
+    color: #4c3a91 !important;
+
+    border: 1px solid #ffffff !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+}
+
+
+/* =========================================================
+   PROFILE DROPDOWN
+========================================================= */
+
+.student-dropdown-menu {
+    z-index: 100003 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f6f2ff
+        ) !important;
+
+    border: 1px solid #ffffff !important;
+
+    opacity: 0 !important;
+
+    visibility: hidden !important;
+}
+
+.student-dropdown-menu.open {
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-navigation {
+    z-index: 99998 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f6f2ff
+        ) !important;
+
+    border: 1px solid #ffffff !important;
+
+    opacity: 1 !important;
+}
+
+
+/* =========================================================
+   MOBILE NAV TEXT
+========================================================= */
+
+.mobile-navigation ul li a {
+    color: #514878 !important;
+
+    opacity: 1 !important;
+
+    text-shadow: none !important;
+}
+
+
+/* =========================================================
+   MOBILE ACTIVE CONTACT
+========================================================= */
+
+.mobile-navigation li.contact-mobile-item a {
+    color: #ffffff !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #6d28d9,
+            #8b5cf6,
+            #a855f7
+        ) !important;
+}
+
+
+/* =========================================================
+   VERY IMPORTANT
+   Prevent page-level opacity/filter from affecting header
+========================================================= */
+
+.header,
+.header-content,
+.header-content *,
+.header-content img,
+.header-content a,
+.header-content button {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   PREVENT COMMON PAGE EFFECTS FROM BLEEDING INTO HEADER
+========================================================= */
+
+.header-content {
+    filter: none !important;
+
+    mix-blend-mode: normal !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .header {
+        height: 76px !important;
+    }
+
+    .header .container {
+        padding: 0 10px !important;
+    }
+
+    .header-content {
+        height: 60px !important;
+
+        margin-top: 7px !important;
+
+        padding: 5px 7px !important;
+
+        gap: 7px !important;
+
+        border-radius: 22px !important;
+    }
+
+    .header nav {
+        display: none !important;
+    }
+
+    .mobile-menu-button {
+        display: flex !important;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .header {
+        height: 69px !important;
+    }
+
+    .header .container {
+        padding: 0 8px !important;
+    }
+
+    .header-content {
+        height: 55px !important;
+
+        margin-top: 7px !important;
+
+        gap: 5px !important;
+
+        border-radius: 19px !important;
+    }
+
+    .header .logo img {
+        width: 110px !important;
+
+        max-height: 44px !important;
+    }
+}
+
+
+/* =========================================================
+   NIGHT MODE
+   Still independent from page background
+========================================================= */
+
+html.night-mode .header-content {
+    background:
+        linear-gradient(
+            145deg,
+            #181426 0%,
+            #12101e 50%,
+            #0e0d17 100%
+        ) !important;
+
+    border-color: rgba(255, 255, 255, 0.10) !important;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.45),
+        0 7px 20px rgba(0, 0, 0, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+}
+
+
+html.night-mode .header nav ul {
+    background:
+        linear-gradient(
+            145deg,
+            #211c32,
+            #171522
+        ) !important;
+
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+
+html.night-mode .header nav ul li a {
+    color: #d8d3eb !important;
+}
+
+
+html.night-mode .header nav ul li a:hover {
+    color: #ffffff !important;
+
+    background:
+        rgba(255, 255, 255, 0.08) !important;
+}
+
+
+html.night-mode .student-profile-button {
+    background:
+        linear-gradient(
+            145deg,
+            #27213b,
+            #191725
+        ) !important;
+
+    color: #ffffff !important;
+
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+
+html.night-mode .student-header-name {
+    color: #ffffff !important;
+}
+
+
+html.night-mode .header-icon.theme-toggle,
+html.night-mode .mobile-menu-button {
+    background:
+        linear-gradient(
+            145deg,
+            #29213d,
+            #191725
+        ) !important;
+
+    color: #facc15 !important;
+
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .header-content,
+    .header nav ul li a,
+    .student-profile-button,
+    .student-dropdown-menu,
+    .mobile-menu-button,
+    .header-icon.theme-toggle,
+    .mobile-navigation {
+        animation: none !important;
+
+        transition: none !important;
+    }
+}
 </style>
+
 <!-- =========================================================
      HEADER
 ========================================================= -->

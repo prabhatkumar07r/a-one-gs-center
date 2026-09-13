@@ -57,40 +57,36 @@
       <!-- ===================================================
            STATUS
       ==================================================== -->
+<div class="status-section">
 
-      <div class="status-section">
+  <span class="status-label">
+    Enrollment Status
+  </span>
 
-        <span class="status-label">
-          Enrollment Status
-        </span>
+  <% if @enrollment.status == "Approved" %>
 
-        <% case @enrollment.status %>
+    <span class="status-badge approved">
+      <i class="bi bi-check-circle-fill"></i>
+      Approved
+    </span>
 
-        <% when "Approved" %>
+  <% elsif @enrollment.status == "Pending" %>
 
-          <span class="status-badge approved">
-            <i class="bi bi-check-circle-fill"></i>
-            Approved
-          </span>
+    <span class="status-badge pending">
+      <i class="bi bi-clock-fill"></i>
+      Pending
+    </span>
 
-        <% when "Pending" %>
+  <% else %>
 
-          <span class="status-badge pending">
-            <i class="bi bi-clock-fill"></i>
-            Pending
-          </span>
+    <span class="status-badge cancelled">
+      <i class="bi bi-x-circle-fill"></i>
+      <%= @enrollment.status.presence || "Cancelled" %>
+    </span>
 
-        <% else %>
+  <% end %>
 
-          <span class="status-badge cancelled">
-            <i class="bi bi-x-circle-fill"></i>
-            <%= @enrollment.status.presence || "Cancelled" %>
-          </span>
-
-        <% end %>
-
-      </div>
-
+</div>
 
       <!-- ===================================================
            COURSE INFORMATION
@@ -537,28 +533,39 @@
 
 </script>
 
-
-<!-- =========================================================
-     CSS
-========================================================= -->
-
 <style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
-   PAGE
+   STUDENT ENROLLMENT — PREMIUM 3D SOFT WHITE THEME
 ========================================================= */
 
 .student-enrollment-page {
 
   min-height: 100vh;
 
-  padding: 40px 20px 60px;
+  padding: 42px 20px 65px;
+  padding-top: 100px;
 
+  /*
+   * Soft white background.
+   * Not pure white.
+   */
   background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(219, 231, 255, 0.55),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(226, 235, 255, 0.50),
+      transparent 32%
+    ),
     linear-gradient(
       135deg,
-      #f4f7fb 0%,
-      #eef3ff 100%
+      #f4f7fc 0%,
+      #edf2f8 48%,
+      #f7f9fc 100%
     );
 
   font-family:
@@ -567,6 +574,66 @@
     sans-serif;
 
   box-sizing: border-box;
+
+  color: #263247;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+.student-enrollment-page::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 320px;
+
+  height: 320px;
+
+  top: -150px;
+
+  right: -100px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,0.75),
+      rgba(255,255,255,0)
+    );
+
+  pointer-events: none;
+}
+
+
+.student-enrollment-page::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+
+  height: 260px;
+
+  bottom: -120px;
+
+  left: -100px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,0.65),
+      rgba(255,255,255,0)
+    );
+
+  pointer-events: none;
 }
 
 
@@ -575,6 +642,10 @@
 ========================================================= */
 
 .student-enrollment-wrapper {
+
+  position: relative;
+
+  z-index: 2;
 
   width: 100%;
 
@@ -590,7 +661,7 @@
 
 .enrollment-topbar {
 
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 
@@ -600,17 +671,22 @@
 
   align-items: center;
 
-  gap: 8px;
+  gap: 9px;
 
-  padding: 9px 15px;
+  padding: 10px 16px;
 
-  border-radius: 10px;
+  border-radius: 12px;
 
-  color: #4b5563;
+  color: #4d5a70;
 
-  background: #ffffff;
+  background:
+    linear-gradient(
+      145deg,
+      #fdfefe,
+      #e8edf4
+    );
 
-  border: 1px solid #e5eaf2;
+  border: 1px solid rgba(255,255,255,0.85);
 
   text-decoration: none;
 
@@ -618,7 +694,26 @@
 
   font-weight: 600;
 
-  transition: all 0.2s ease;
+  /*
+   * 3D raised button
+   */
+  box-shadow:
+    5px 5px 11px rgba(37, 50, 73, 0.12),
+    -4px -4px 10px rgba(255,255,255,0.95);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.back-link i {
+
+  font-size: 15px;
+
+  transition:
+    transform 0.2s ease;
 }
 
 
@@ -626,37 +721,75 @@
 
   color: #0d6efd;
 
-  border-color: #b9d3ff;
+  transform:
+    translateY(-2px);
 
-  transform: translateX(-2px);
+  box-shadow:
+    7px 8px 15px rgba(37, 50, 73, 0.15),
+    -5px -5px 11px rgba(255,255,255,0.95);
+}
+
+
+.back-link:hover i {
+
+  transform:
+    translateX(-3px);
+}
+
+
+.back-link:active {
+
+  transform:
+    translateY(1px);
+
+  box-shadow:
+    inset 3px 3px 7px rgba(37, 50, 73, 0.12),
+    inset -3px -3px 7px rgba(255,255,255,0.9);
 }
 
 
 /* =========================================================
-   CARD
+   MAIN CARD
 ========================================================= */
 
 .enrollment-card {
 
-  background: #ffffff;
+  position: relative;
 
-  border: 1px solid #e5eaf2;
+  background:
+    linear-gradient(
+      145deg,
+      #fdfefe 0%,
+      #f5f8fc 48%,
+      #edf2f8 100%
+    );
 
-  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.95);
 
-  padding: 34px;
+  border-radius: 26px;
 
+  padding: 36px;
+
+  /*
+   * Strong 3D depth
+   */
   box-shadow:
-    0 18px 55px
-    rgba(15, 23, 42, 0.10);
+    18px 20px 40px rgba(37, 50, 73, 0.14),
+    7px 9px 18px rgba(37, 50, 73, 0.08),
+    -10px -10px 25px rgba(255,255,255,0.95),
+    inset 1px 1px 0 rgba(255,255,255,0.95);
 
   opacity: 0;
 
-  transform: translateY(12px);
+  transform:
+    translateY(15px)
+    perspective(1000px)
+    rotateX(1deg);
 
   transition:
-    opacity 0.35s ease,
-    transform 0.35s ease;
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    box-shadow 0.3s ease;
 }
 
 
@@ -664,7 +797,40 @@
 
   opacity: 1;
 
-  transform: translateY(0);
+  transform:
+    translateY(0)
+    perspective(1000px)
+    rotateX(0deg);
+}
+
+
+/*
+ * Very subtle top highlight
+ */
+
+.enrollment-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 7%;
+
+  right: 7%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,1),
+      transparent
+    );
+
+  pointer-events: none;
 }
 
 
@@ -678,19 +844,20 @@
 
   align-items: center;
 
-  gap: 18px;
+  gap: 19px;
 
-  padding-bottom: 26px;
+  padding-bottom: 27px;
 
-  border-bottom: 1px solid #edf0f5;
+  border-bottom:
+    1px solid rgba(205, 214, 228, 0.75);
 }
 
 
 .enrollment-icon {
 
-  width: 64px;
+  width: 66px;
 
-  height: 64px;
+  height: 66px;
 
   display: flex;
 
@@ -700,13 +867,45 @@
 
   flex-shrink: 0;
 
-  border-radius: 17px;
+  border-radius: 18px;
 
-  background: #e8f1ff;
+  background:
+    linear-gradient(
+      145deg,
+      #e9f2ff,
+      #d5e4f9
+    );
 
   color: #0d6efd;
 
-  font-size: 26px;
+  font-size: 27px;
+
+  /*
+   * 3D icon block
+   */
+  box-shadow:
+    7px 8px 15px rgba(47, 78, 120, 0.15),
+    -5px -5px 12px rgba(255,255,255,0.95),
+    inset 1px 1px 2px rgba(255,255,255,0.9);
+
+  position: relative;
+}
+
+
+.enrollment-icon::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 5px;
+
+  border-radius: 14px;
+
+  border:
+    1px solid rgba(255,255,255,0.5);
+
+  pointer-events: none;
 }
 
 
@@ -720,15 +919,15 @@
 
   display: block;
 
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 
-  color: #6b7280;
+  color: #7c8799;
 
-  font-size: 11px;
+  font-size: 10px;
 
-  font-weight: 700;
+  font-weight: 800;
 
-  letter-spacing: 1.3px;
+  letter-spacing: 1.5px;
 }
 
 
@@ -745,6 +944,9 @@
   line-height: 1.3;
 
   word-break: break-word;
+
+  text-shadow:
+    0 1px 1px rgba(255,255,255,0.8);
 }
 
 
@@ -752,7 +954,7 @@
 
   margin: 5px 0 0;
 
-  color: #8a93a3;
+  color: #8993a5;
 
   font-size: 13px;
 }
@@ -774,19 +976,24 @@
 
   padding: 20px 0;
 
-  border-bottom: 1px solid #edf0f5;
+  border-bottom:
+    1px solid rgba(205, 214, 228, 0.75);
 }
 
 
 .status-label {
 
-  color: #4b5563;
+  color: #4d596d;
 
   font-size: 14px;
 
-  font-weight: 600;
+  font-weight: 650;
 }
 
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
 
 .status-badge {
 
@@ -796,13 +1003,20 @@
 
   gap: 7px;
 
-  padding: 8px 14px;
+  padding: 8px 15px;
 
   border-radius: 999px;
 
   font-size: 13px;
 
-  font-weight: 700;
+  font-weight: 750;
+
+  border: 1px solid rgba(255,255,255,0.75);
+
+  box-shadow:
+    4px 5px 10px rgba(37, 50, 73, 0.10),
+    -3px -3px 8px rgba(255,255,255,0.90),
+    inset 1px 1px 2px rgba(255,255,255,0.6);
 }
 
 
@@ -810,7 +1024,12 @@
 
   color: #146c43;
 
-  background: #d1e7dd;
+  background:
+    linear-gradient(
+      145deg,
+      #e4f8ec,
+      #cfeedd
+    );
 }
 
 
@@ -818,7 +1037,12 @@
 
   color: #856404;
 
-  background: #fff3cd;
+  background:
+    linear-gradient(
+      145deg,
+      #fff8dc,
+      #f8e9b8
+    );
 }
 
 
@@ -826,7 +1050,12 @@
 
   color: #842029;
 
-  background: #f8d7da;
+  background:
+    linear-gradient(
+      145deg,
+      #ffe6e8,
+      #f4d0d4
+    );
 }
 
 
@@ -837,7 +1066,7 @@
 .course-section,
 .details-section {
 
-  padding-top: 27px;
+  padding-top: 28px;
 }
 
 
@@ -849,13 +1078,13 @@
 
   gap: 9px;
 
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 
-  color: #172033;
+  color: #202b3e;
 
   font-size: 16px;
 
-  font-weight: 700;
+  font-weight: 750;
 }
 
 
@@ -864,11 +1093,16 @@
   color: #0d6efd;
 
   font-size: 17px;
+
+  filter:
+    drop-shadow(
+      2px 3px 2px rgba(13,110,253,0.15)
+    );
 }
 
 
 /* =========================================================
-   COURSE CARD
+   COURSE CARD — 3D
 ========================================================= */
 
 .course-card {
@@ -877,23 +1111,53 @@
 
   align-items: center;
 
-  gap: 16px;
+  gap: 17px;
 
-  padding: 19px;
+  padding: 20px;
 
-  background: #f8fafc;
+  background:
+    linear-gradient(
+      145deg,
+      #f7f9fc,
+      #e9eef5
+    );
 
-  border: 1px solid #e8edf4;
+  border:
+    1px solid rgba(255,255,255,0.95);
 
-  border-radius: 16px;
+  border-radius: 17px;
+
+  box-shadow:
+    8px 9px 18px rgba(37, 50, 73, 0.11),
+    -6px -6px 14px rgba(255,255,255,0.92),
+    inset 1px 1px 2px rgba(255,255,255,0.8);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 
+.course-card:hover {
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    11px 13px 23px rgba(37, 50, 73, 0.14),
+    -7px -7px 16px rgba(255,255,255,0.95);
+}
+
+
+/* =========================================================
+   COURSE ICON
+========================================================= */
+
 .course-icon {
 
-  width: 56px;
+  width: 57px;
 
-  height: 56px;
+  height: 57px;
 
   display: flex;
 
@@ -903,13 +1167,26 @@
 
   flex-shrink: 0;
 
-  border-radius: 14px;
+  border-radius: 15px;
 
-  background: #0d6efd;
+  background:
+    linear-gradient(
+      145deg,
+      #1976ff,
+      #0758c9
+    );
 
   color: #ffffff;
 
   font-size: 23px;
+
+  box-shadow:
+    6px 7px 14px rgba(13,110,253,0.25),
+    -3px -3px 8px rgba(255,255,255,0.75),
+    inset 1px 1px 2px rgba(255,255,255,0.35);
+
+  text-shadow:
+    0 2px 2px rgba(0,0,0,0.18);
 }
 
 
@@ -925,11 +1202,11 @@
 
   margin-bottom: 3px;
 
-  color: #8992a2;
+  color: #8993a4;
 
   font-size: 10px;
 
-  font-weight: 700;
+  font-weight: 750;
 
   letter-spacing: 1px;
 }
@@ -939,7 +1216,7 @@
 
   margin: 0;
 
-  color: #172033;
+  color: #1d293c;
 
   font-size: 19px;
 
@@ -955,7 +1232,7 @@
 
   margin: 5px 0 0;
 
-  color: #6b7280;
+  color: #6d788b;
 
   font-size: 13px;
 }
@@ -980,19 +1257,45 @@
   grid-template-columns:
     repeat(2, minmax(0, 1fr));
 
-  gap: 12px;
+  gap: 13px;
 }
 
 
 .detail-item {
 
-  padding: 16px;
+  padding: 17px;
 
-  border: 1px solid #e8edf4;
+  background:
+    linear-gradient(
+      145deg,
+      #f8fafc,
+      #e9eef4
+    );
 
-  border-radius: 13px;
+  border:
+    1px solid rgba(255,255,255,0.9);
 
-  background: #fbfcfe;
+  border-radius: 14px;
+
+  box-shadow:
+    5px 6px 13px rgba(37, 50, 73, 0.08),
+    -4px -4px 10px rgba(255,255,255,0.92),
+    inset 1px 1px 1px rgba(255,255,255,0.75);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.detail-item:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    7px 8px 16px rgba(37, 50, 73, 0.11),
+    -5px -5px 11px rgba(255,255,255,0.95);
 }
 
 
@@ -1002,15 +1305,15 @@
 
   margin-bottom: 5px;
 
-  color: #8a93a3;
+  color: #8a94a5;
 
-  font-size: 11px;
+  font-size: 10px;
 
-  font-weight: 600;
+  font-weight: 650;
 
   text-transform: uppercase;
 
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
 
@@ -1031,6 +1334,9 @@
   color: #198754;
 
   font-size: 16px;
+
+  text-shadow:
+    0 1px 1px rgba(25,135,84,0.08);
 }
 
 
@@ -1046,13 +1352,18 @@
 
   gap: 13px;
 
-  margin-top: 27px;
+  margin-top: 28px;
 
-  padding: 18px;
+  padding: 19px;
 
-  border-radius: 15px;
+  border-radius: 16px;
 
   border: 1px solid;
+
+  box-shadow:
+    6px 7px 15px rgba(37, 50, 73, 0.09),
+    -4px -4px 10px rgba(255,255,255,0.85),
+    inset 1px 1px 2px rgba(255,255,255,0.6);
 }
 
 
@@ -1064,15 +1375,20 @@
 
   justify-content: center;
 
-  width: 40px;
+  width: 41px;
 
-  height: 40px;
+  height: 41px;
 
   flex-shrink: 0;
 
-  border-radius: 11px;
+  border-radius: 12px;
 
   font-size: 18px;
+
+  box-shadow:
+    4px 5px 9px rgba(37,50,73,0.09),
+    -3px -3px 7px rgba(255,255,255,0.8),
+    inset 1px 1px 1px rgba(255,255,255,0.65);
 }
 
 
@@ -1082,7 +1398,7 @@
 
   font-size: 15px;
 
-  font-weight: 700;
+  font-weight: 750;
 }
 
 
@@ -1096,13 +1412,20 @@
 }
 
 
-/* APPROVED */
+/* =========================================================
+   APPROVED MESSAGE
+========================================================= */
 
 .approved-message {
 
-  background: #f0fdf4;
+  background:
+    linear-gradient(
+      145deg,
+      #f1fcf5,
+      #e0f4e7
+    );
 
-  border-color: #d1fae5;
+  border-color: #d1ead9;
 
   color: #166534;
 }
@@ -1110,19 +1433,31 @@
 
 .approved-message .message-icon {
 
-  background: #dcfce7;
+  background:
+    linear-gradient(
+      145deg,
+      #e4f9eb,
+      #cdebd8
+    );
 
   color: #198754;
 }
 
 
-/* PENDING */
+/* =========================================================
+   PENDING MESSAGE
+========================================================= */
 
 .pending-message {
 
-  background: #fffaf0;
+  background:
+    linear-gradient(
+      145deg,
+      #fffaf0,
+      #f8efd6
+    );
 
-  border-color: #ffe8a1;
+  border-color: #f0dfaa;
 
   color: #856404;
 }
@@ -1130,19 +1465,31 @@
 
 .pending-message .message-icon {
 
-  background: #fff3cd;
+  background:
+    linear-gradient(
+      145deg,
+      #fff8dc,
+      #f2e3b8
+    );
 
   color: #856404;
 }
 
 
-/* CANCELLED */
+/* =========================================================
+   CANCELLED MESSAGE
+========================================================= */
 
 .cancelled-message {
 
-  background: #fff5f5;
+  background:
+    linear-gradient(
+      145deg,
+      #fff7f7,
+      #f6e5e7
+    );
 
-  border-color: #f5c2c7;
+  border-color: #edcdd1;
 
   color: #842029;
 }
@@ -1150,21 +1497,26 @@
 
 .cancelled-message .message-icon {
 
-  background: #f8d7da;
+  background:
+    linear-gradient(
+      145deg,
+      #ffe7e9,
+      #f2d0d4
+    );
 
   color: #842029;
 }
 
 
 /* =========================================================
-   PRIMARY BUTTON
+   PRIMARY BUTTON — 3D
 ========================================================= */
 
 .primary-button {
 
   width: 100%;
 
-  min-height: 54px;
+  min-height: 55px;
 
   display: flex;
 
@@ -1174,15 +1526,15 @@
 
   gap: 9px;
 
-  margin-top: 17px;
+  margin-top: 18px;
 
-  border-radius: 13px;
+  border-radius: 14px;
 
   background:
     linear-gradient(
-      135deg,
-      #0d6efd,
-      #0a58ca
+      145deg,
+      #1877ff,
+      #0759ca
     );
 
   color: #ffffff;
@@ -1193,9 +1545,19 @@
 
   font-weight: 700;
 
+  border:
+    1px solid rgba(255,255,255,0.25);
+
+  /*
+   * Raised 3D button
+   */
   box-shadow:
-    0 8px 20px
-    rgba(13, 110, 253, 0.20);
+    7px 8px 16px rgba(13,110,253,0.24),
+    -3px -3px 8px rgba(255,255,255,0.65),
+    inset 1px 1px 2px rgba(255,255,255,0.30);
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.15);
 
   transition:
     transform 0.2s ease,
@@ -1208,42 +1570,67 @@
 
   color: #ffffff;
 
-  transform: translateY(-2px);
+  transform:
+    translateY(-3px);
 
   box-shadow:
-    0 12px 25px
-    rgba(13, 110, 253, 0.28);
+    10px 12px 23px rgba(13,110,253,0.28),
+    -4px -4px 9px rgba(255,255,255,0.75),
+    inset 1px 1px 2px rgba(255,255,255,0.30);
 }
 
+
+.primary-button:active {
+
+  transform:
+    translateY(1px);
+
+  box-shadow:
+    inset 4px 5px 9px rgba(0,0,0,0.16),
+    inset -2px -2px 5px rgba(255,255,255,0.20);
+}
+
+
+/* =========================================================
+   PAYMENT BUTTON
+========================================================= */
 
 .primary-button.pending-button {
 
   background:
     linear-gradient(
-      135deg,
-      #198754,
-      #157347
+      145deg,
+      #20a765,
+      #147447
     );
 
   box-shadow:
-    0 8px 20px
-    rgba(25, 135, 84, 0.20);
+    7px 8px 16px rgba(25,135,84,0.23),
+    -3px -3px 8px rgba(255,255,255,0.65),
+    inset 1px 1px 2px rgba(255,255,255,0.30);
 }
 
 
 .primary-button.pending-button:hover {
 
   box-shadow:
-    0 12px 25px
-    rgba(25, 135, 84, 0.28);
+    10px 12px 23px rgba(25,135,84,0.28),
+    -4px -4px 9px rgba(255,255,255,0.75),
+    inset 1px 1px 2px rgba(255,255,255,0.30);
 }
 
+
+/* =========================================================
+   BUTTON LOADING
+========================================================= */
 
 .primary-button.button-loading {
 
   opacity: 0.65;
 
   pointer-events: none;
+
+  transform: none;
 }
 
 
@@ -1253,15 +1640,16 @@
 
 .enrollment-footer {
 
-  margin-top: 25px;
+  margin-top: 26px;
 
   padding-top: 18px;
 
-  border-top: 1px solid #edf0f5;
+  border-top:
+    1px solid rgba(205,214,228,0.75);
 
   text-align: center;
 
-  color: #9ca3af;
+  color: #939cac;
 
   font-size: 12px;
 }
@@ -1272,6 +1660,11 @@
   margin-right: 5px;
 
   color: #198754;
+
+  filter:
+    drop-shadow(
+      1px 2px 2px rgba(25,135,84,0.15)
+    );
 }
 
 
@@ -1283,13 +1676,20 @@
 
   .student-enrollment-page {
 
-    padding: 30px 15px 45px;
+    padding: 30px 15px 50px;
   }
 
 
   .enrollment-card {
 
-    padding: 25px;
+    padding: 27px;
+
+    border-radius: 22px;
+
+    box-shadow:
+      12px 14px 30px rgba(37, 50, 73, 0.12),
+      5px 6px 14px rgba(37, 50, 73, 0.07),
+      -8px -8px 20px rgba(255,255,255,0.95);
   }
 
 }
@@ -1303,21 +1703,49 @@
 
   .student-enrollment-page {
 
-    padding: 20px 10px 35px;
+    padding:
+      20px
+      10px
+      38px;
+  }
+
+
+  .enrollment-topbar {
+
+    margin-bottom: 14px;
+  }
+
+
+  .back-link {
+
+    padding: 9px 13px;
+
+    font-size: 13px;
+
+    border-radius: 11px;
   }
 
 
   .enrollment-card {
 
-    padding: 20px 17px;
+    padding:
+      21px
+      16px;
 
-    border-radius: 18px;
+    border-radius: 19px;
+
+    box-shadow:
+      9px 11px 24px rgba(37,50,73,0.12),
+      4px 5px 10px rgba(37,50,73,0.06),
+      -6px -6px 15px rgba(255,255,255,0.95);
   }
 
 
+  /* HEADER */
+
   .enrollment-header {
 
-    gap: 13px;
+    gap: 12px;
 
     padding-bottom: 21px;
   }
@@ -1332,26 +1760,89 @@
     border-radius: 14px;
 
     font-size: 21px;
+
+    box-shadow:
+      5px 6px 11px rgba(47,78,120,0.13),
+      -4px -4px 9px rgba(255,255,255,0.95);
   }
 
 
   .enrollment-heading h1 {
 
-    font-size: 19px;
+    font-size: 18px;
+
+    line-height: 1.35;
   }
 
+
+  .small-label {
+
+    font-size: 9px;
+
+    letter-spacing: 1.2px;
+  }
+
+
+  .enrollment-heading p {
+
+    font-size: 12px;
+  }
+
+
+  /* STATUS */
 
   .status-section {
 
     align-items: flex-start;
 
     flex-direction: column;
+
+    gap: 10px;
+
+    padding: 17px 0;
   }
 
 
+  .status-label {
+
+    font-size: 13px;
+  }
+
+
+  .status-badge {
+
+    padding: 7px 13px;
+
+    font-size: 12px;
+  }
+
+
+  /* SECTIONS */
+
+  .course-section,
+  .details-section {
+
+    padding-top: 23px;
+  }
+
+
+  .section-title {
+
+    margin-bottom: 13px;
+
+    font-size: 15px;
+  }
+
+
+  /* COURSE */
+
   .course-card {
 
+    gap: 12px;
+
     padding: 14px;
+
+    border-radius: 14px;
   }
 
 
@@ -1361,7 +1852,9 @@
 
     height: 47px;
 
-    font-size: 20px;
+    border-radius: 13px;
+
+    font-size: 19px;
   }
 
 
@@ -1371,21 +1864,168 @@
   }
 
 
+  .course-info p {
+
+    font-size: 12px;
+  }
+
+
+  /* DETAILS */
+
   .details-grid {
 
     grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+
+  .detail-item {
+
+    padding: 14px;
+
+    border-radius: 12px;
+  }
+
+
+  .detail-label {
+
+    font-size: 10px;
+  }
+
+
+  .detail-item strong {
+
+    font-size: 13px;
+  }
+
+
+  /* MESSAGE */
+
+  .message-box {
+
+    gap: 11px;
+
+    margin-top: 23px;
+
+    padding: 14px;
+
+    border-radius: 14px;
+  }
+
+
+  .message-icon {
+
+    width: 37px;
+
+    height: 37px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+  }
+
+
+  .message-box h3 {
+
+    font-size: 14px;
+  }
+
+
+  .message-box p {
+
+    font-size: 12px;
+
+    line-height: 1.55;
+  }
+
+
+  /* BUTTON */
+
+  .primary-button {
+
+    min-height: 51px;
+
+    margin-top: 15px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+  }
+
+
+  /* FOOTER */
+
+  .enrollment-footer {
+
+    margin-top: 22px;
+
+    padding-top: 16px;
+
+    font-size: 11px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .student-enrollment-page {
+
+    padding-left: 7px;
+
+    padding-right: 7px;
+  }
+
+
+  .enrollment-card {
+
+    padding:
+      18px
+      13px;
+  }
+
+
+  .enrollment-heading h1 {
+
+    font-size: 17px;
+  }
+
+
+  .course-info h2 {
+
+    font-size: 15px;
   }
 
 
   .message-box {
 
-    padding: 14px;
+    padding: 12px;
   }
 
+}
 
-  .primary-button {
 
-    min-height: 51px;
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .enrollment-card,
+  .back-link,
+  .course-card,
+  .detail-item,
+  .primary-button,
+  .enrollment-icon {
+
+    transition: none !important;
+
+    animation: none !important;
   }
 
 }

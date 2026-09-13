@@ -4,89 +4,216 @@
 /* =========================================================
    STUDENT ENROLLMENT - NEW
 ========================================================= */
+/* =========================================================
+   STUDENT ENROLLMENT — SOFT 3D / PREMIUM UI
+========================================================= */
 
 .student-enrollment-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  background: linear-gradient(135deg, #f4f7fb 0%, #eef3ff 100%);
+  padding: 50px 20px;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(99, 102, 241, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(14, 165, 233, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #eef2f7 0%,
+      #f4f6fa 50%,
+      #e9eef5 100%
+    );
+
   font-family: "Poppins", Arial, sans-serif;
 }
 
+
+/* =========================================================
+   WRAPPER
+========================================================= */
+
 .student-enrollment-wrapper {
   width: 100%;
-  max-width: 560px;
+  max-width: 590px;
+  perspective: 1200px;
 }
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
 
 .student-enrollment-card {
-  background: #ffffff;
-  border-radius: 22px;
-  padding: 32px;
-  border: 1px solid #e8edf5;
-  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
+  position: relative;
+
+  padding: 34px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fafc,
+      #edf1f6
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.75);
+
+  border-radius: 26px;
+
+  box-shadow:
+    18px 18px 40px rgba(15, 23, 42, 0.12),
+    -10px -10px 25px rgba(255, 255, 255, 0.80),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.80);
+
+  transform: translateZ(0);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* HEADER */
+.student-enrollment-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    22px 24px 50px rgba(15, 23, 42, 0.15),
+    -12px -12px 28px rgba(255, 255, 255, 0.85),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .student-enrollment-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 17px;
   margin-bottom: 28px;
 }
 
+
+/* ICON */
+
 .student-enrollment-icon {
-  width: 58px;
-  height: 58px;
+  width: 62px;
+  height: 62px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
-  background: #e8f1ff;
-  color: #0d6efd;
-  font-size: 24px;
-  flex-shrink: 0;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #edf4ff,
+      #dce8f8
+    );
+
+  color: #2563eb;
+
+  font-size: 25px;
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    7px 7px 14px rgba(30, 64, 175, 0.12),
+    -5px -5px 12px rgba(255, 255, 255, 0.85),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 .student-enrollment-header h2 {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
+
+  font-size: 25px;
+  font-weight: 750;
+
+  letter-spacing: -0.3px;
+
   color: #172033;
 }
 
 .student-enrollment-header p {
-  margin: 4px 0 0;
-  color: #6b7280;
-  font-size: 14px;
+  margin: 5px 0 0;
+
+  color: #687386;
+
+  font-size: 13px;
 }
 
-/* COURSE */
+
+/* =========================================================
+   COURSE BOX
+========================================================= */
 
 .student-course-box {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 18px;
-  margin-bottom: 24px;
-  background: #f8fafc;
-  border: 1px solid #edf0f5;
-  border-radius: 16px;
+  gap: 16px;
+
+  padding: 19px;
+
+  margin-bottom: 27px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5f8fc,
+      #e8edf4
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    8px 8px 18px rgba(15, 23, 42, 0.09),
+    -6px -6px 15px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+
+/* COURSE ICON */
+
 .student-course-icon {
-  width: 52px;
-  height: 52px;
+  width: 53px;
+  height: 53px;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0d6efd;
-  color: #ffffff;
-  border-radius: 14px;
-  font-size: 22px;
-  flex-shrink: 0;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #3b82f6,
+      #1d4ed8
+    );
+
+  color: #fff;
+
+  font-size: 21px;
+
+  box-shadow:
+    7px 8px 15px rgba(37, 99, 235, 0.25),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.35);
 }
 
 .student-course-details {
@@ -95,27 +222,45 @@
 
 .student-course-label {
   display: block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #6b7280;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+
+  color: #7a8495;
 }
 
 .student-course-details h3 {
   margin: 4px 0;
+
   font-size: 18px;
   font-weight: 700;
+
+  line-height: 1.4;
+
   color: #172033;
+
   word-break: break-word;
 }
 
 .student-course-details p {
   margin: 0;
-  color: #6b7280;
-  font-size: 13px;
+
+  color: #737d8d;
+
+  font-size: 12px;
 }
 
-/* FORM */
+.student-course-details p i {
+  margin-right: 4px;
+  color: #64748b;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
 
 .student-form-group {
   margin-bottom: 20px;
@@ -123,181 +268,381 @@
 
 .student-form-label {
   display: block;
+
   margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #394457;
 }
 
 .student-form-label i {
-  color: #0d6efd;
-  margin-right: 5px;
+  margin-right: 6px;
+  color: #2563eb;
 }
+
+
+/* =========================================================
+   INPUT
+========================================================= */
 
 .student-form-control {
   width: 100%;
-  min-height: 50px;
-  padding: 12px 14px;
-  border: 1px solid #dfe5ee;
-  border-radius: 11px;
-  background: #f8fafc;
-  color: #172033;
-  font-size: 14px;
+
+  min-height: 51px;
+
+  padding: 12px 15px;
+
   box-sizing: border-box;
+
+  border: 1px solid #dce2ea;
+
+  border-radius: 13px;
+
   outline: none;
+
+  background:
+    linear-gradient(
+      145deg,
+      #edf1f6,
+      #f6f8fa
+    );
+
+  color: #172033;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  box-shadow:
+    inset 4px 4px 8px rgba(15, 23, 42, 0.06),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.75);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .student-form-control:focus {
-  border-color: #86b7fe;
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.10);
+  border-color: #7aa7f7;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(15, 23, 42, 0.05),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.8),
+    0 0 0 3px rgba(37, 99, 235, 0.09);
 }
+
+
+/* STATUS */
 
 .student-status-input {
-  color: #856404;
-  background: #fff8e1;
-  border-color: #ffe69c;
-  font-weight: 600;
+  color: #8a6200;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff8df,
+      #f8edc5
+    );
+
+  border-color: #f1d77b;
+
+  font-weight: 700;
+
+  box-shadow:
+    inset 4px 4px 8px rgba(120, 80, 0, 0.06),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.65);
 }
 
-/* FEE */
+
+/* =========================================================
+   FEE
+========================================================= */
 
 .student-fee-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px;
-  margin: 4px 0 22px;
-  border-radius: 13px;
-  background: #f0fdf4;
-  border: 1px solid #d1fae5;
+
+  padding: 19px;
+
+  margin: 5px 0 24px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #eaf8f0,
+      #dcefe5
+    );
+
+  border: 1px solid #c9e6d5;
+
+  box-shadow:
+    7px 7px 15px rgba(25, 135, 84, 0.10),
+    -5px -5px 12px rgba(255, 255, 255, 0.75),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .student-fee-box span {
-  color: #4b5563;
-  font-size: 14px;
+  color: #52625a;
+
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .student-fee-box strong {
-  color: #198754;
+  color: #16804d;
+
   font-size: 22px;
   font-weight: 800;
+
+  letter-spacing: 0.2px;
 }
 
-/* CONFIRM */
+
+/* =========================================================
+   CONFIRM BUTTON
+========================================================= */
 
 .student-confirm-button {
   width: 100%;
+
   min-height: 56px;
+
   border: none;
-  border-radius: 13px;
-  background: linear-gradient(135deg, #198754, #157347);
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 700;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #22a968,
+      #137b4c
+    );
+
+  color: #fff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+  font-weight: 750;
+
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 10px;
-  box-shadow: 0 8px 20px rgba(25, 135, 84, 0.22);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+
+  box-shadow:
+    8px 10px 20px rgba(21, 115, 71, 0.24),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.35),
+    inset -1px -1px 1px rgba(0, 0, 0, 0.10);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .student-confirm-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(25, 135, 84, 0.28);
+  transform: translateY(-3px);
+
+  box-shadow:
+    10px 14px 25px rgba(21, 115, 71, 0.28),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.student-confirm-button:active {
+  transform: translateY(1px);
+
+  box-shadow:
+    4px 5px 10px rgba(21, 115, 71, 0.20),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.12);
+}
+
+.student-confirm-button.loading {
+  opacity: 0.78;
+  cursor: wait;
+  transform: none;
 }
 
 .student-confirm-button:disabled {
   cursor: wait;
 }
 
-.student-confirm-button.loading {
-  opacity: 0.75;
-  cursor: wait;
-  transform: none;
-}
 
-/* BACK */
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
 .student-back-button {
   width: 100%;
+
   min-height: 48px;
+
   margin-top: 12px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 7px;
-  border-radius: 12px;
-  color: #6b7280;
+
+  border-radius: 13px;
+
+  color: #697586;
+
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  transition: 0.2s ease;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .student-back-button:hover {
   color: #172033;
-  background: #f8fafc;
+
+  background:
+    linear-gradient(
+      145deg,
+      #edf1f6,
+      #f7f9fb
+    );
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    5px 5px 12px rgba(15, 23, 42, 0.07),
+    -4px -4px 10px rgba(255, 255, 255, 0.8);
 }
 
-/* FOOTER */
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .student-enrollment-footer {
-  margin-top: 22px;
+  margin-top: 23px;
+
   padding-top: 18px;
-  border-top: 1px solid #edf0f5;
+
+  border-top: 1px solid #dfe5ec;
+
   text-align: center;
-  color: #9ca3af;
-  font-size: 12px;
+
+  color: #929baa;
+
+  font-size: 11px;
 }
 
 .student-enrollment-footer i {
-  color: #198754;
   margin-right: 5px;
+  color: #198754;
 }
 
-/* MOBILE */
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 576px) {
+
   .student-enrollment-page {
-    padding: 20px 12px;
+    padding: 25px 12px;
+
     align-items: flex-start;
   }
 
+  .student-enrollment-wrapper {
+    margin-top: 15px;
+  }
+
   .student-enrollment-card {
-    margin-top: 20px;
-    padding: 22px 18px;
-    border-radius: 18px;
+    padding: 23px 18px;
+
+    border-radius: 21px;
+  }
+
+  .student-enrollment-header {
+    gap: 13px;
+    margin-bottom: 22px;
+  }
+
+  .student-enrollment-icon {
+    width: 51px;
+    height: 51px;
+
+    border-radius: 15px;
+
+    font-size: 21px;
   }
 
   .student-enrollment-header h2 {
     font-size: 20px;
   }
 
-  .student-enrollment-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 21px;
+  .student-enrollment-header p {
+    font-size: 12px;
   }
 
   .student-course-box {
-    padding: 14px;
+    padding: 15px;
+
+    gap: 12px;
+
+    border-radius: 16px;
   }
 
   .student-course-icon {
-    width: 46px;
-    height: 46px;
-    font-size: 19px;
+    width: 45px;
+    height: 45px;
+
+    border-radius: 13px;
+
+    font-size: 18px;
   }
 
   .student-course-details h3 {
-    font-size: 16px;
+    font-size: 15px;
+  }
+
+  .student-fee-box {
+    padding: 16px;
   }
 
   .student-fee-box strong {
-    font-size: 20px;
+    font-size: 19px;
   }
+
+  .student-confirm-button {
+    min-height: 53px;
+
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .student-enrollment-card,
+  .student-confirm-button,
+  .student-back-button {
+    transition: none;
+  }
+
 }
 </style>
 

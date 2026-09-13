@@ -1,170 +1,792 @@
 <% content_for :show_layout, true %>
 
 <style nonce="<%= content_security_policy_nonce %>">
+
 /* =========================================================
-   STUDENT ENROLLMENTS - INDEX
+   STUDENT ENROLLMENTS - PREMIUM 3D GLASS
 ========================================================= */
 
 .student-enrollments-page {
   min-height: 100vh;
-  padding: 40px 20px;
-  background: linear-gradient(135deg, #f4f7fb 0%, #eef3ff 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 45px 20px 70px;
+  padding-top: 80px;
+
+  background:
+    radial-gradient(circle at 10% 15%, rgba(126, 87, 255, 0.32), transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(0, 183, 255, 0.25), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(180, 70, 255, 0.28), transparent 35%),
+    linear-gradient(
+      135deg,
+      #17133d 0%,
+      #27206b 35%,
+      #30208a 65%,
+      #17154a 100%
+    );
+
   font-family: "Poppins", Arial, sans-serif;
+  perspective: 1400px;
 }
+
+
+/* =========================================================
+   BACKGROUND 3D ORBS
+========================================================= */
+
+.student-enrollments-page::before,
+.student-enrollments-page::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+  z-index: 0;
+}
+
+.student-enrollments-page::before {
+  width: 260px;
+  height: 260px;
+  top: 80px;
+  left: -90px;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,255,255,0.35),
+      rgba(125,80,255,0.25) 35%,
+      rgba(74,45,180,0.05) 70%,
+      transparent 72%
+    );
+
+  box-shadow:
+    30px 30px 80px rgba(0,0,0,0.25);
+
+  animation: floatOrbOne 8s ease-in-out infinite;
+}
+
+.student-enrollments-page::after {
+  width: 320px;
+  height: 320px;
+  right: -120px;
+  bottom: 30px;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,255,255,0.30),
+      rgba(45,180,255,0.20) 38%,
+      rgba(80,50,190,0.04) 70%,
+      transparent 72%
+    );
+
+  box-shadow:
+    -30px -20px 90px rgba(0,0,0,0.30);
+
+  animation: floatOrbTwo 10s ease-in-out infinite;
+}
+
+@keyframes floatOrbOne {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(35px, 25px, 20px);
+  }
+}
+
+@keyframes floatOrbTwo {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-30px, -25px, 30px);
+  }
+}
+
+
+/* =========================================================
+   MAIN WRAPPER
+========================================================= */
 
 .student-enrollments-wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1250px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
+
+/* =========================================================
+   HEADER - 3D GLASS
+========================================================= */
+
 .student-enrollments-header {
+  position: relative;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 30px;
+
+  gap: 25px;
+  margin-bottom: 38px;
+  padding: 28px 32px;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.07)
+    );
+
+  border: 1px solid rgba(255,255,255,0.22);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.30),
+    inset 0 -1px 2px rgba(0,0,0,0.18),
+    0 25px 60px rgba(0,0,0,0.28),
+    0 8px 20px rgba(87,58,220,0.25);
+
+  transform: translateZ(25px);
 }
+
+
+/* top shine */
+
+.student-enrollments-header::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 0;
+
+  height: 2px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.65),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
 
 .student-enrollments-title {
   margin: 0;
-  color: #172033;
-  font-size: 30px;
+
+  color: #f7f5ff;
+
+  font-size: 32px;
   font-weight: 800;
+  letter-spacing: -0.6px;
+
+  text-shadow:
+    0 3px 8px rgba(0,0,0,0.35),
+    0 0 25px rgba(156,130,255,0.25);
 }
 
 .student-enrollments-subtitle {
-  margin: 7px 0 0;
-  color: #6b7280;
+  margin: 8px 0 0;
+
+  color: rgba(239,237,255,0.76);
+
   font-size: 14px;
+  font-weight: 400;
 }
+
+
+/* =========================================================
+   CARD GRID
+========================================================= */
 
 .student-enrollment-card {
   height: 100%;
-  background: #ffffff;
-  border: 1px solid #e7ecf3;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+
+  padding: 25px;
+
+  border-radius: 25px;
+
+  /*
+     NOT PURE WHITE
+     Soft lavender/blue 3D surface
+  */
+  background:
+    linear-gradient(
+      145deg,
+      rgba(238,235,255,0.96),
+      rgba(210,219,255,0.91)
+    );
+
+  border: 1px solid rgba(255,255,255,0.65);
+
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,0.85),
+    inset 0 -5px 12px rgba(93,73,180,0.08),
+    0 20px 35px rgba(0,0,0,0.25),
+    0 7px 15px rgba(81,57,190,0.20);
+
+  transform:
+    translateZ(0)
+    rotateX(0deg)
+    rotateY(0deg);
+
+  transition:
+    transform 0.35s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.35s ease;
+
+  overflow: hidden;
 }
+
+
+/* Card top glass shine */
+
+.student-enrollment-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.34),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* Card bottom 3D shadow */
+
+.student-enrollment-card::after {
+  content: "";
+
+  position: absolute;
+
+  left: 12%;
+  right: 12%;
+  bottom: -15px;
+
+  height: 25px;
+
+  border-radius: 50%;
+
+  background: rgba(0,0,0,0.28);
+
+  filter: blur(12px);
+
+  z-index: -1;
+}
+
+
+/* =========================================================
+   CARD HOVER 3D
+========================================================= */
 
 .student-enrollment-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.13);
+  transform:
+    translateY(-12px)
+    translateZ(35px)
+    rotateX(2deg)
+    rotateY(-2deg)
+    scale(1.015);
+
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,0.9),
+    0 35px 60px rgba(0,0,0,0.32),
+    0 12px 30px rgba(102,75,230,0.30);
 }
 
+
+/* =========================================================
+   COURSE ICON - 3D
+========================================================= */
+
 .student-course-icon {
-  width: 56px;
-  height: 56px;
+  width: 62px;
+  height: 62px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 15px;
-  background: #e8f1ff;
-  color: #0d6efd;
-  font-size: 24px;
+
   margin-bottom: 18px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #8170ff,
+      #4931d6
+    );
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  border: 1px solid rgba(255,255,255,0.45);
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.35),
+    inset 0 -5px 8px rgba(24,12,100,0.30),
+    0 10px 18px rgba(63,39,180,0.35);
+
+  transform: translateZ(22px);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
+.student-enrollment-card:hover .student-course-icon {
+  transform:
+    translateY(-4px)
+    translateZ(45px)
+    rotate(-4deg);
+
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.4),
+    0 15px 28px rgba(62,42,190,0.42);
+}
+
+
+/* =========================================================
+   COURSE NAME
+========================================================= */
 
 .student-course-name {
-  color: #172033;
+  position: relative;
+
+  color: #201b55;
+
   font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  word-break: break-word;
+  font-weight: 800;
+
+  margin-bottom: 13px;
+
+  line-height: 1.35;
+
+  text-shadow:
+    0 1px 1px rgba(255,255,255,0.8);
 }
 
-.student-enrollment-meta {
-  color: #6b7280;
-  font-size: 13px;
-  margin: 15px 0;
-}
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 .student-enrollment-status {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
+  gap: 7px;
+
+  padding: 8px 14px;
+
   border-radius: 30px;
+
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+
+  border: 1px solid rgba(255,255,255,0.5);
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.55),
+    0 5px 10px rgba(0,0,0,0.12);
+
+  transform: translateZ(15px);
 }
+
+
+/* APPROVED */
 
 .student-status-approved {
-  color: #146c43;
-  background: #d1e7dd;
+  color: #075d3d;
+
+  background:
+    linear-gradient(
+      145deg,
+      #a9f4cc,
+      #65dba4
+    );
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.65),
+    0 6px 15px rgba(20,160,100,0.22);
 }
+
+
+/* PENDING */
 
 .student-status-pending {
-  color: #856404;
-  background: #fff3cd;
+  color: #704800;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffe9a6,
+      #ffc94f
+    );
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.65),
+    0 6px 15px rgba(220,160,30,0.22);
 }
 
+
+/* OTHER / REJECTED */
+
 .student-status-other {
-  color: #842029;
-  background: #f8d7da;
+  color: #8a1535;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffc1d0,
+      #f783a1
+    );
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.65),
+    0 6px 15px rgba(210,40,90,0.20);
 }
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.student-enrollment-meta {
+  color: #4d4b75;
+
+  font-size: 13px;
+
+  margin: 18px 0;
+
+  line-height: 1.7;
+}
+
+.student-enrollment-meta i {
+  color: #5545d9;
+  margin-right: 5px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
 
 .student-enrollment-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
+
+  gap: 10px;
+
+  margin-top: 22px;
 }
+
+
+/* ALL BUTTONS */
 
 .student-enrollment-actions a {
-  border-radius: 9px;
+  position: relative;
+
+  border-radius: 13px !important;
+
+  padding: 9px 15px;
+
+  font-weight: 700;
+
+  border-width: 1px;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  box-shadow:
+    0 7px 14px rgba(0,0,0,0.14),
+    inset 0 1px 2px rgba(255,255,255,0.5);
 }
+
+
+/* Button hover */
+
+.student-enrollment-actions a:hover {
+  transform:
+    translateY(-4px)
+    translateZ(15px);
+
+  box-shadow:
+    0 12px 22px rgba(0,0,0,0.22),
+    inset 0 1px 3px rgba(255,255,255,0.65);
+}
+
+
+/* =========================================================
+   VIEW BUTTON
+========================================================= */
+
+.student-enrollment-actions .btn-outline-primary {
+  color: #4335bd;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.62),
+      rgba(203,207,255,0.70)
+    );
+
+  border-color: #8175ff;
+}
+
+
+/* =========================================================
+   START LEARNING
+========================================================= */
+
+.student-enrollment-actions .btn-success {
+  background:
+    linear-gradient(
+      145deg,
+      #35d98b,
+      #0a9f5b
+    );
+
+  border: none;
+
+  color: #ffffff;
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.30),
+    0 8px 18px rgba(10,150,85,0.30);
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.student-enrollment-actions .btn-warning {
+  background:
+    linear-gradient(
+      145deg,
+      #ffd866,
+      #f3a900
+    );
+
+  border: none;
+
+  color: #4d3100;
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.45),
+    0 8px 18px rgba(210,140,10,0.30);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
 
 .student-empty {
-  background: #ffffff;
-  border: 1px solid #e7ecf3;
-  border-radius: 20px;
-  padding: 60px 25px;
+  position: relative;
+
+  padding: 70px 25px;
+
   text-align: center;
-  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(229,226,255,0.96),
+      rgba(198,210,255,0.91)
+    );
+
+  border: 1px solid rgba(255,255,255,0.65);
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.75),
+    inset 0 -8px 15px rgba(80,65,170,0.08),
+    0 25px 50px rgba(0,0,0,0.25);
+
+  transform: translateZ(20px);
 }
 
+
+/* =========================================================
+   EMPTY ICON
+========================================================= */
+
 .student-empty-icon {
-  width: 75px;
-  height: 75px;
-  margin: 0 auto 20px;
+  width: 85px;
+  height: 85px;
+
+  margin: 0 auto 22px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
-  background: #e8f1ff;
-  color: #0d6efd;
-  font-size: 32px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #8173ff,
+      #4b35d3
+    );
+
+  color: #ffffff;
+
+  font-size: 35px;
+
+  border: 1px solid rgba(255,255,255,0.45);
+
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.35),
+    inset 0 -7px 10px rgba(20,10,90,0.25),
+    0 15px 28px rgba(55,40,170,0.35);
+
+  animation: floatingBook 4s ease-in-out infinite;
 }
 
+@keyframes floatingBook {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(-3deg);
+  }
+}
+
+
+/* =========================================================
+   EMPTY TEXT
+========================================================= */
+
 .student-empty h3 {
-  color: #172033;
-  font-weight: 700;
+  color: #211b61;
+
+  font-weight: 800;
+
+  font-size: 25px;
+
+  text-shadow:
+    0 1px 1px rgba(255,255,255,0.8);
 }
 
 .student-empty p {
-  color: #6b7280;
+  color: #5c5980;
+
+  margin-bottom: 20px;
 }
 
+
+/* =========================================================
+   BROWSE COURSES BUTTON
+========================================================= */
+
+.student-empty .btn-primary {
+  border: none;
+
+  border-radius: 15px;
+
+  padding: 11px 22px;
+
+  font-weight: 700;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7567ff,
+      #4430d1
+    );
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.35),
+    0 10px 22px rgba(65,45,190,0.35);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.student-empty .btn-primary:hover {
+  transform:
+    translateY(-5px)
+    scale(1.02);
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.4),
+    0 16px 30px rgba(65,45,190,0.45);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media (max-width: 768px) {
+
   .student-enrollments-page {
-    padding: 25px 14px;
+    padding: 25px 14px 50px;
   }
 
   .student-enrollments-header {
     display: block;
+
+    padding: 24px;
+
+    border-radius: 22px;
   }
 
   .student-enrollments-title {
-    font-size: 25px;
+    font-size: 27px;
+  }
+
+  .student-enrollment-card {
+    padding: 22px;
   }
 }
 
+
 @media (max-width: 576px) {
+
+  .student-enrollments-title {
+    font-size: 24px;
+  }
+
+  .student-enrollments-subtitle {
+    font-size: 13px;
+  }
+
   .student-enrollment-card {
     padding: 20px;
+
+    border-radius: 21px;
   }
 
   .student-enrollment-actions {
@@ -173,9 +795,38 @@
 
   .student-enrollment-actions a {
     width: 100%;
+    text-align: center;
+  }
+
+  .student-empty {
+    padding: 55px 20px;
   }
 }
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .student-enrollment-card,
+  .student-course-icon,
+  .student-empty .btn-primary,
+  .student-enrollment-actions a {
+    transition: none;
+  }
+
+  .student-enrollments-page::before,
+  .student-enrollments-page::after,
+  .student-empty-icon {
+    animation: none;
+  }
+}
+
 </style>
+
+
 
 
 <div class="student-enrollments-page">
@@ -274,7 +925,7 @@
 
               <div class="student-enrollment-actions">
 
-                <%= link_to enrollment_path(enrollment),
+                <%= link_to student_enrollment_path(enrollment),
                       class: "btn btn-outline-primary btn-sm" do %>
 
                   <i class="bi bi-eye"></i>
