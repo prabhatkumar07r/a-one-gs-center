@@ -1,0 +1,338 @@
+<% content_for :hide_footer, true %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(239,68,68,.09), transparent 25%),
+      radial-gradient(circle at 90% 85%, rgba(124,58,237,.10), transparent 25%),
+      #f4f7fc;
+    color: #172033;
+  }
+
+  .ebook-failed-page {
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .study-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .study-bg span {
+    position: absolute;
+    font-size: 60px;
+    opacity: .07;
+    animation: floatStudy 7s ease-in-out infinite;
+  }
+
+  .study-bg span:nth-child(1) {
+    top: 15%;
+    left: 7%;
+  }
+
+  .study-bg span:nth-child(2) {
+    top: 65%;
+    left: 10%;
+    animation-delay: 1s;
+  }
+
+  .study-bg span:nth-child(3) {
+    top: 18%;
+    right: 8%;
+    animation-delay: 2s;
+  }
+
+  .study-bg span:nth-child(4) {
+    bottom: 12%;
+    right: 10%;
+    animation-delay: 3s;
+  }
+
+  @keyframes floatStudy {
+    0%, 100% {
+      transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+      transform: translateY(-18px) rotate(5deg);
+    }
+  }
+
+  .failed-card {
+    width: min(680px, 100%);
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    background: rgba(255,255,255,.97);
+    border-radius: 30px;
+    padding: 45px 35px;
+    border: 1px solid rgba(255,255,255,.95);
+    box-shadow:
+      0 30px 70px rgba(31,41,55,.14),
+      0 10px 25px rgba(239,68,68,.06);
+    transform-style: preserve-3d;
+    animation: failedAppear .55s ease;
+  }
+
+  @keyframes failedAppear {
+    from {
+      opacity: 0;
+      transform: translateY(25px) scale(.97);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .failed-icon {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    background: #fee2e2;
+    box-shadow:
+      0 15px 30px rgba(220,38,38,.12),
+      inset 0 2px 5px rgba(255,255,255,.8);
+  }
+
+  .failed-title {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 5vw, 44px);
+    color: #991b1b;
+    font-weight: 900;
+  }
+
+  .failed-subtitle {
+    margin: 0 auto 25px;
+    max-width: 530px;
+    color: #667085;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .ebook-name {
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .warning-box {
+    padding: 16px 18px;
+    border-radius: 15px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 25px 0;
+  }
+
+  .failed-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .failed-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: .2s ease;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+  }
+
+  .failed-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .retry-btn {
+    color: #fff;
+    background: linear-gradient(135deg, #dc2626, #ea580c);
+    box-shadow: 0 12px 25px rgba(220,38,38,.20);
+  }
+
+  .secondary-btn {
+    color: #4f46e5;
+    background: #eef2ff;
+  }
+
+  .security-note {
+    margin-top: 22px;
+    color: #7a8497;
+    font-size: 13px;
+  }
+
+  @media (max-width: 520px) {
+
+    .ebook-failed-page {
+      padding: 100px 12px 35px;
+    }
+
+    .failed-card {
+      padding: 35px 20px;
+      border-radius: 22px;
+    }
+
+    .failed-actions {
+      flex-direction: column;
+    }
+
+    .failed-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="ebook-failed-page">
+
+  <div class="study-bg" aria-hidden="true">
+    <span>📚</span>
+    <span>✏️</span>
+    <span>🎓</span>
+    <span>📝</span>
+  </div>
+
+  <div class="failed-card" id="ebookFailedCard">
+
+    <div class="failed-icon">
+      ❌
+    </div>
+
+    <h1 class="failed-title">
+      Payment Failed
+    </h1>
+
+    <p class="failed-subtitle">
+      We couldn't complete your E-Book payment.
+      Don't worry — your account has not been charged through this
+      failed transaction.
+    </p>
+
+    <div class="ebook-name">
+      📖 <%= @ebook.title %>
+    </div>
+
+    <div class="warning-box">
+      ⚠️ Please try the payment again. If your bank account was
+      debited but the payment still shows as failed, please wait
+      for the payment status to update or contact support.
+    </div>
+
+    <div class="failed-actions">
+
+      <%= button_to buy_ebook_path(@ebook),
+                    method: :post,
+                    class: "failed-btn retry-btn" do %>
+
+        🔄 Try Payment Again
+
+      <% end %>
+
+      <%= link_to "📚 Back to E-Books",
+                  ebooks_path,
+                  class: "failed-btn secondary-btn" %>
+
+    </div>
+
+    <div class="security-note">
+      🔒 Your payment information is securely handled by Razorpay.
+    </div>
+
+  </div>
+
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function () {
+
+  function initializeEbookFailed() {
+
+    const card = document.getElementById("ebookFailedCard");
+
+    if (!card || card.dataset.initialized === "true") {
+      return;
+    }
+
+    card.dataset.initialized = "true";
+
+    card.addEventListener("mousemove", function (event) {
+
+      const rect = card.getBoundingClientRect();
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const rotateY = ((x / rect.width) - 0.5) * 3;
+      const rotateX = ((y / rect.height) - 0.5) * -3;
+
+      card.style.transform =
+        "perspective(1200px) rotateX(" +
+        rotateX +
+        "deg) rotateY(" +
+        rotateY +
+        "deg)";
+
+    });
+
+    card.addEventListener("mouseleave", function () {
+
+      card.style.transform =
+        "perspective(1200px) rotateX(0deg) rotateY(0deg)";
+
+    });
+
+  }
+
+  document.addEventListener(
+    "turbo:load",
+    initializeEbookFailed
+  );
+
+  if (document.readyState !== "loading") {
+    initializeEbookFailed();
+  } else {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEbookFailed,
+      { once: true }
+    );
+  }
+
+})();
+</script>

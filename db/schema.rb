@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_165946) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_121526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -170,6 +170,38 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_165946) do
     t.string "name"
     t.date "start_date"
     t.string "status"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ebook_purchases", force: :cascade do |t|
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.bigint "ebook_id", null: false
+    t.string "payment_status"
+    t.string "razorpay_order_id"
+    t.string "razorpay_payment_id"
+    t.string "razorpay_signature"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["ebook_id"], name: "index_ebook_purchases_on_ebook_id"
+    t.index ["user_id"], name: "index_ebook_purchases_on_user_id"
+  end
+
+  create_table "ebooks", force: :cascade do |t|
+    t.string "author"
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.decimal "discount_percentage", precision: 5, scale: 2, default: "0.0"
+    t.string "exam_name"
+    t.boolean "is_free", default: true, null: false
+    t.string "language"
+    t.decimal "original_price", precision: 10, scale: 2, default: "0.0"
+    t.decimal "price", precision: 10, scale: 2, default: "0.0"
+    t.datetime "published_at"
+    t.string "status", default: "draft", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
   end
 
@@ -583,6 +615,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_165946) do
   add_foreign_key "course_discounts", "courses"
   add_foreign_key "course_discounts", "discounts"
   add_foreign_key "courses", "teachers"
+  add_foreign_key "ebook_purchases", "ebooks"
+  add_foreign_key "ebook_purchases", "users"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
   add_foreign_key "fee_payments", "fees"

@@ -1,0 +1,369 @@
+<% content_for :hide_footer, true %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(124, 58, 237, .12), transparent 25%),
+      radial-gradient(circle at 90% 85%, rgba(37, 99, 235, .10), transparent 25%),
+      #f4f7fc;
+    color: #172033;
+  }
+
+  .ebook-success-page {
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .study-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .study-bg span {
+    position: absolute;
+    font-size: 60px;
+    opacity: .07;
+    animation: floatStudy 7s ease-in-out infinite;
+  }
+
+  .study-bg span:nth-child(1) {
+    top: 15%;
+    left: 7%;
+  }
+
+  .study-bg span:nth-child(2) {
+    top: 65%;
+    left: 10%;
+    animation-delay: 1s;
+  }
+
+  .study-bg span:nth-child(3) {
+    top: 18%;
+    right: 8%;
+    animation-delay: 2s;
+  }
+
+  .study-bg span:nth-child(4) {
+    bottom: 12%;
+    right: 10%;
+    animation-delay: 3s;
+  }
+
+  @keyframes floatStudy {
+    0%, 100% {
+      transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+      transform: translateY(-18px) rotate(5deg);
+    }
+  }
+
+  .success-card {
+    width: min(680px, 100%);
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    background: rgba(255,255,255,.97);
+    border-radius: 30px;
+    padding: 45px 35px;
+    border: 1px solid rgba(255,255,255,.95);
+    box-shadow:
+      0 30px 70px rgba(31,41,55,.14),
+      0 10px 25px rgba(124,58,237,.08);
+    transform-style: preserve-3d;
+    animation: successAppear .55s ease;
+  }
+
+  @keyframes successAppear {
+    from {
+      opacity: 0;
+      transform: translateY(25px) scale(.97);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .success-icon {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    background: #dcfce7;
+    box-shadow:
+      0 15px 30px rgba(22,163,74,.15),
+      inset 0 2px 5px rgba(255,255,255,.8);
+  }
+
+  .success-title {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 5vw, 44px);
+    color: #172033;
+    font-weight: 900;
+  }
+
+  .success-subtitle {
+    margin: 0 auto 25px;
+    max-width: 530px;
+    color: #667085;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .ebook-name {
+    margin: 20px 0;
+    padding: 16px 20px;
+    border-radius: 16px;
+    background: #f5f3ff;
+    border: 1px solid #e9d5ff;
+    color: #5b21b6;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .payment-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+  }
+
+  .info-box {
+    padding: 14px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e7eaf0;
+  }
+
+  .info-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: #8b95a7;
+    margin-bottom: 5px;
+  }
+
+  .info-value {
+    color: #263047;
+    font-weight: 800;
+  }
+
+  .success-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .success-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: .2s ease;
+  }
+
+  .success-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .primary-btn {
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    box-shadow: 0 12px 25px rgba(99,102,241,.25);
+  }
+
+  .secondary-btn {
+    color: #4f46e5;
+    background: #eef2ff;
+  }
+
+  .security-note {
+    margin-top: 22px;
+    color: #7a8497;
+    font-size: 13px;
+  }
+
+  @media (max-width: 520px) {
+    .ebook-success-page {
+      padding: 100px 12px 35px;
+    }
+
+    .success-card {
+      padding: 35px 20px;
+      border-radius: 22px;
+    }
+
+    .payment-info {
+      grid-template-columns: 1fr;
+    }
+
+    .success-actions {
+      flex-direction: column;
+    }
+
+    .success-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="ebook-success-page">
+
+  <div class="study-bg" aria-hidden="true">
+    <span>📚</span>
+    <span>✏️</span>
+    <span>🎓</span>
+    <span>📝</span>
+  </div>
+
+  <div class="success-card" id="ebookSuccessCard">
+
+    <div class="success-icon">
+      ✅
+    </div>
+
+    <h1 class="success-title">
+      Payment Successful!
+    </h1>
+
+    <p class="success-subtitle">
+      Congratulations! Your E-Book purchase has been completed successfully.
+      You now have access to this premium study material.
+    </p>
+
+    <div class="ebook-name">
+      📖 <%= @ebook.title %>
+    </div>
+
+    <div class="payment-info">
+
+      <div class="info-box">
+        <span class="info-label">Amount Paid</span>
+
+        <span class="info-value">
+          ₹<%= number_with_precision(@purchase.amount, precision: 0) %>
+        </span>
+      </div>
+
+      <div class="info-box">
+        <span class="info-label">Payment Status</span>
+
+        <span class="info-value">
+          ✅ Paid
+        </span>
+      </div>
+
+    </div>
+
+    <div class="success-actions">
+
+      <% if @ebook.pdf_file.attached? %>
+
+        <%= link_to "📖 Read E-Book",
+                    download_ebook_path(@ebook),
+                    target: "_blank",
+                    rel: "noopener",
+                    class: "success-btn primary-btn" %>
+
+      <% end %>
+
+      <%= link_to "📚 Back to E-Books",
+                  ebooks_path,
+                  class: "success-btn secondary-btn" %>
+
+    </div>
+
+    <div class="security-note">
+      🔒 Your premium E-Book access is linked to your account.
+    </div>
+
+  </div>
+
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function () {
+
+  function initializeEbookSuccess() {
+
+    const card = document.getElementById("ebookSuccessCard");
+
+    if (!card || card.dataset.initialized === "true") {
+      return;
+    }
+
+    card.dataset.initialized = "true";
+
+    card.addEventListener("mousemove", function (event) {
+
+      const rect = card.getBoundingClientRect();
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const rotateY = ((x / rect.width) - 0.5) * 3;
+      const rotateX = ((y / rect.height) - 0.5) * -3;
+
+      card.style.transform =
+        "perspective(1200px) rotateX(" +
+        rotateX +
+        "deg) rotateY(" +
+        rotateY +
+        "deg)";
+
+    });
+
+    card.addEventListener("mouseleave", function () {
+
+      card.style.transform =
+        "perspective(1200px) rotateX(0deg) rotateY(0deg)";
+
+    });
+
+  }
+
+  document.addEventListener(
+    "turbo:load",
+    initializeEbookSuccess
+  );
+
+  if (document.readyState !== "loading") {
+    initializeEbookSuccess();
+  } else {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEbookSuccess,
+      { once: true }
+    );
+  }
+
+})();
+</script>

@@ -1,0 +1,223 @@
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  function initializeEbook3D() {
+    initializeEbookPricing();
+
+    const cards =
+      document.querySelectorAll(".ebook-card");
+
+    cards.forEach(function (card) {
+
+      if (card.dataset.tiltInitialized === "true") {
+        return;
+      }
+
+      card.dataset.tiltInitialized = "true";
+
+      card.addEventListener("mousemove", function (event) {
+
+        const rect =
+          card.getBoundingClientRect();
+
+        const x =
+          event.clientX - rect.left;
+
+        const y =
+          event.clientY - rect.top;
+
+        const centerX =
+          rect.width / 2;
+
+        const centerY =
+          rect.height / 2;
+
+        const rotateY =
+          ((x - centerX) / centerX) * 4;
+
+        const rotateX =
+          ((centerY - y) / centerY) * 4;
+
+        card.style.transform =
+          "perspective(1000px) " +
+          "rotateX(" + rotateX + "deg) " +
+          "rotateY(" + rotateY + "deg) " +
+          "translateY(-8px)";
+
+      });
+
+
+      card.addEventListener("mouseleave", function () {
+
+        card.style.transform =
+          "";
+
+      });
+
+    });
+
+
+    /* =====================================================
+       FORM FILE NAME PREVIEW
+    ===================================================== */
+
+    const fileInputs =
+      document.querySelectorAll(
+        '.ebook-form-group input[type="file"]'
+      );
+
+    fileInputs.forEach(function (input) {
+
+      if (input.dataset.previewInitialized === "true") {
+        return;
+      }
+
+      input.dataset.previewInitialized = "true";
+
+      input.addEventListener("change", function () {
+
+        if (!input.files.length) {
+          return;
+        }
+
+        const file =
+          input.files[0];
+
+        const existing =
+          input.parentElement.querySelector(
+            ".ebook-file-selected"
+          );
+
+        if (existing) {
+          existing.remove();
+        }
+
+        const message =
+          document.createElement("div");
+
+        message.className =
+          "ebook-file-selected";
+
+        message.style.marginTop = "8px";
+        message.style.fontSize = "12px";
+        message.style.fontWeight = "700";
+        message.style.color = "#6d28d9";
+
+        message.textContent =
+          "✓ Selected: " + file.name;
+
+        input.parentElement.appendChild(message);
+
+      });
+
+    });
+
+  }
+
+
+  document.addEventListener(
+    "turbo:load",
+    initializeEbook3D
+  );
+
+
+  if (
+    document.readyState !== "loading"
+  ) {
+    initializeEbook3D();
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEbook3D,
+      { once: true }
+    );
+
+  }
+
+})();
+
+
+
+
+
+
+function initializeEbookPricing() {
+
+  const accessType =
+    document.getElementById("ebook_access_type");
+
+  const originalPrice =
+    document.getElementById("ebook_original_price");
+
+  const price =
+    document.getElementById("ebook_price");
+
+  const discount =
+    document.getElementById("ebook_discount");
+
+  if (
+    !accessType ||
+    !originalPrice ||
+    !price ||
+    !discount
+  ) {
+    return;
+  }
+
+
+  function updatePricing() {
+
+    const isFree =
+      accessType.value === "true";
+
+
+    if (isFree) {
+
+      originalPrice.value = "0";
+      price.value = "0";
+      discount.value = "0";
+
+      originalPrice.disabled = true;
+      price.disabled = true;
+      discount.disabled = true;
+
+      originalPrice.style.opacity = "0.55";
+      price.style.opacity = "0.55";
+      discount.style.opacity = "0.55";
+
+    } else {
+
+      originalPrice.disabled = false;
+      price.disabled = false;
+      discount.disabled = false;
+
+      originalPrice.style.opacity = "1";
+      price.style.opacity = "1";
+      discount.style.opacity = "1";
+
+    }
+
+  }
+
+
+  if (
+    accessType.dataset.pricingInitialized !== "true"
+  ) {
+
+    accessType.dataset.pricingInitialized = "true";
+
+    accessType.addEventListener(
+      "change",
+      updatePricing
+    );
+
+  }
+
+
+  updatePricing();
+
+}
+
+</script>

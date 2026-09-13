@@ -136,6 +136,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
 
+    resources :ebooks
+
     # ==================================================
     # ADMIN TEST SERIES
     # ==================================================
@@ -338,6 +340,31 @@ Rails.application.routes.draw do
   end
 
 
+      resources :ebooks, only: [:index, :show]
+      get "/ebooks/:id/download",
+    to: "ebooks#download",
+    as: :download_ebook
+
+# E-BOOK PAYMENT
+post "/ebooks/:ebook_id/buy",
+     to: "ebook_payments#create",
+     as: :buy_ebook
+
+get "/ebook-payments/:id",
+    to: "ebook_payments#show",
+    as: :ebook_payment
+
+post "/ebook-payments/:id/verify",
+     to: "ebook_payments#verify",
+     as: :verify_ebook_payment
+
+get "/ebook-payments/:id/success",
+    to: "ebook_payments#success",
+    as: :ebook_payment_success
+
+get "/ebook-payments/:id/failed",
+    to: "ebook_payments#failed",
+    as: :ebook_payment_failed
   # ==================================================
   # STUDENT NOTES
   # ==================================================

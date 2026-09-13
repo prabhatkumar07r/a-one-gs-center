@@ -28,6 +28,7 @@ class User < ApplicationRecord
          source: :test_series
   has_many :test_series_attempts, dependent: :destroy
 has_many :test_series_answers, through: :test_series_attempts
+has_many :ebook_purchases, dependent: :restrict_with_error
   # ================= GOOGLE LOGIN =================
 
   def self.from_omniauth(auth)

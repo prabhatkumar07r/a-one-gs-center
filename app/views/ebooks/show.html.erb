@@ -1,0 +1,607 @@
+<% content_for :hide_footer, true %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.10), transparent 25%),
+      radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.10), transparent 25%),
+      #f4f7fc;
+    color: #172033;
+  }
+
+  .ebook-show-page {
+    min-height: 100vh;
+    padding: 110px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .study-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .study-bg span {
+    position: absolute;
+    font-size: 55px;
+    opacity: .07;
+    animation: floatBook 7s ease-in-out infinite;
+  }
+
+  .study-bg span:nth-child(1) {
+    top: 15%;
+    left: 5%;
+  }
+
+  .study-bg span:nth-child(2) {
+    top: 65%;
+    left: 8%;
+    animation-delay: 1s;
+  }
+
+  .study-bg span:nth-child(3) {
+    top: 20%;
+    right: 7%;
+    animation-delay: 2s;
+  }
+
+  .study-bg span:nth-child(4) {
+    bottom: 10%;
+    right: 12%;
+    animation-delay: 3s;
+  }
+
+  @keyframes floatBook {
+    0%, 100% {
+      transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+      transform: translateY(-18px) rotate(5deg);
+    }
+  }
+
+  .ebook-container {
+    width: min(1180px, 100%);
+    margin: auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #5b21b6;
+    background: rgba(255,255,255,.9);
+    border: 1px solid rgba(124,58,237,.12);
+    padding: 11px 18px;
+    border-radius: 14px;
+    font-weight: 700;
+    box-shadow: 0 8px 22px rgba(31,41,55,.08);
+    margin-bottom: 25px;
+  }
+
+  .ebook-card {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 45px;
+    background: rgba(255,255,255,.96);
+    border-radius: 30px;
+    padding: 35px;
+    box-shadow:
+      0 25px 60px rgba(31,41,55,.13),
+      0 8px 20px rgba(124,58,237,.08);
+    border: 1px solid rgba(255,255,255,.9);
+    transform-style: preserve-3d;
+    transition: transform .18s ease;
+  }
+
+  .ebook-cover-wrap {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(145deg, #ede9fe, #f8fafc);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.9),
+      0 18px 35px rgba(79,70,229,.12);
+  }
+
+  .ebook-cover {
+    width: 100%;
+    max-width: 310px;
+    max-height: 430px;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow:
+      15px 20px 30px rgba(0,0,0,.20),
+      -5px -5px 15px rgba(255,255,255,.8);
+    transform: translateZ(35px);
+  }
+
+  .no-cover {
+    width: 240px;
+    height: 340px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #6d28d9, #2563eb);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 25px;
+    font-weight: 800;
+    box-shadow: 15px 20px 30px rgba(0,0,0,.2);
+    transform: translateZ(35px);
+  }
+
+  .no-cover .book-icon {
+    font-size: 65px;
+    margin-bottom: 15px;
+  }
+
+  .ebook-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .ebook-badge {
+    display: inline-flex;
+    width: fit-content;
+    padding: 8px 15px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 15px;
+  }
+
+  .free-badge {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  .paid-badge {
+    background: #ede9fe;
+    color: #6d28d9;
+  }
+
+  .ebook-title {
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.12;
+    margin: 0 0 15px;
+    color: #17142f;
+  }
+
+  .ebook-description {
+    color: #667085;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+  }
+
+  .ebook-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .meta-item {
+    background: #f8fafc;
+    border: 1px solid #e7eaf0;
+    border-radius: 14px;
+    padding: 13px 15px;
+  }
+
+  .meta-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: #8b95a7;
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    font-weight: 700;
+    color: #263047;
+  }
+
+  .price-box {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 5px 0 25px;
+  }
+
+  .current-price {
+    font-size: 34px;
+    font-weight: 900;
+    color: #6d28d9;
+  }
+
+  .original-price {
+    font-size: 18px;
+    color: #98a2b3;
+    text-decoration: line-through;
+  }
+
+  .discount {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 6px 10px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .free-price {
+    font-size: 30px;
+    font-weight: 900;
+    color: #15803d;
+  }
+
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .ebook-action {
+    border: 0;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 24px;
+    border-radius: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .ebook-action:hover {
+    transform: translateY(-3px);
+  }
+
+  .primary-action {
+    color: white;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    box-shadow: 0 12px 25px rgba(99,102,241,.25);
+  }
+
+  .secondary-action {
+    color: #4f46e5;
+    background: #eef2ff;
+  }
+
+  .login-action {
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+  }
+
+  .security-note {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #7a8497;
+  }
+
+  @media (max-width: 850px) {
+    .ebook-card {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding: 22px;
+    }
+
+    .ebook-cover-wrap {
+      min-height: 390px;
+    }
+
+    .ebook-title {
+      font-size: 34px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .ebook-show-page {
+      padding: 95px 12px 35px;
+    }
+
+    .ebook-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .ebook-cover-wrap {
+      min-height: 340px;
+    }
+
+    .ebook-card {
+      border-radius: 22px;
+    }
+
+    .action-row {
+      flex-direction: column;
+    }
+
+    .ebook-action {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="ebook-show-page">
+
+  <div class="study-bg" aria-hidden="true">
+    <span>📚</span>
+    <span>✏️</span>
+    <span>🎓</span>
+    <span>📝</span>
+  </div>
+
+  <div class="ebook-container">
+
+    <%= link_to ebooks_path, class: "back-btn" do %>
+      ← Back to E-Books
+    <% end %>
+
+    <div class="ebook-card" id="ebook3dCard">
+
+      <!-- COVER -->
+      <div class="ebook-cover-wrap">
+
+        <% if @ebook.cover_image.attached? %>
+
+          <%= image_tag @ebook.cover_image,
+                        class: "ebook-cover",
+                        alt: @ebook.title %>
+
+        <% else %>
+
+          <div class="no-cover">
+            <div class="book-icon">📖</div>
+            <div><%= @ebook.title %></div>
+          </div>
+
+        <% end %>
+
+      </div>
+
+      <!-- INFO -->
+      <div class="ebook-info">
+
+        <% if @ebook.free? %>
+
+          <div class="ebook-badge free-badge">
+            🆓 FREE E-BOOK
+          </div>
+
+        <% else %>
+
+          <div class="ebook-badge paid-badge">
+            💎 PREMIUM E-BOOK
+          </div>
+
+        <% end %>
+
+        <h1 class="ebook-title">
+          <%= @ebook.title %>
+        </h1>
+
+        <% if @ebook.description.present? %>
+          <div class="ebook-description">
+            <%= simple_format(@ebook.description) %>
+          </div>
+        <% end %>
+
+        <div class="ebook-meta">
+
+          <% if @ebook.author.present? %>
+            <div class="meta-item">
+              <span class="meta-label">Author</span>
+              <span class="meta-value">
+                <%= @ebook.author %>
+              </span>
+            </div>
+          <% end %>
+
+          <% if @ebook.category.present? %>
+            <div class="meta-item">
+              <span class="meta-label">Category</span>
+              <span class="meta-value">
+                <%= @ebook.category %>
+              </span>
+            </div>
+          <% end %>
+
+          <% if @ebook.language.present? %>
+            <div class="meta-item">
+              <span class="meta-label">Language</span>
+              <span class="meta-value">
+                <%= @ebook.language %>
+              </span>
+            </div>
+          <% end %>
+
+          <% if @ebook.exam_name.present? %>
+            <div class="meta-item">
+              <span class="meta-label">Exam</span>
+              <span class="meta-value">
+                <%= @ebook.exam_name %>
+              </span>
+            </div>
+          <% end %>
+
+        </div>
+
+        <!-- PRICE -->
+        <% if @ebook.free? %>
+
+          <div class="price-box">
+            <span class="free-price">
+              FREE
+            </span>
+          </div>
+
+        <% else %>
+
+          <div class="price-box">
+
+            <span class="current-price">
+              ₹<%= number_with_precision(@ebook.price, precision: 0) %>
+            </span>
+
+            <% if @ebook.original_price.to_f > @ebook.price.to_f %>
+              <span class="original-price">
+                ₹<%= number_with_precision(@ebook.original_price, precision: 0) %>
+              </span>
+            <% end %>
+
+            <% if @ebook.discount_percentage.to_f > 0 %>
+              <span class="discount">
+                <%= @ebook.discount_percentage.to_i %>% OFF
+              </span>
+            <% end %>
+
+          </div>
+
+        <% end %>
+
+        <!-- ACTIONS -->
+        <div class="action-row">
+
+          <% if @ebook.free? %>
+
+            <% if @ebook.pdf_file.attached? %>
+
+              <%= link_to "📖 Read E-Book",
+            download_ebook_path(@ebook),
+            target: "_blank",
+            rel: "noopener",
+            class: "ebook-action primary-action" %>
+
+        <%= link_to "⬇️ Download",
+            download_ebook_path(@ebook),
+            class: "ebook-action secondary-action" %>
+
+            <% else %>
+
+              <span class="ebook-action secondary-action">
+                📚 PDF Coming Soon
+              </span>
+
+            <% end %>
+
+          <% else %>
+
+           <% if user_signed_in? %>
+
+  <%= button_to buy_ebook_path(@ebook),
+                method: :post,
+                class: "ebook-action primary-action",
+                form: {
+                  data: {
+                    turbo_confirm: "Buy #{@ebook.title} for ₹#{number_with_precision(@ebook.price, precision: 0)}?"
+                  }
+                } do %>
+
+    💳 Buy Now
+
+  <% end %>
+
+<% else %>
+
+              <%= link_to "🔐 Login to Buy",
+                          new_user_session_path,
+                          class: "ebook-action login-action" %>
+
+            <% end %>
+
+          <% end %>
+
+        </div>
+
+        <% unless @ebook.free? %>
+          <div class="security-note">
+            🔒 Premium PDF access will be available only after successful payment.
+          </div>
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function () {
+
+  function initializeEbookShow() {
+
+    const card = document.getElementById("ebook3dCard");
+
+    if (!card || card.dataset.initialized === "true") {
+      return;
+    }
+
+    card.dataset.initialized = "true";
+
+    card.addEventListener("mousemove", function (event) {
+
+      const rect = card.getBoundingClientRect();
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const rotateY = ((x / rect.width) - 0.5) * 5;
+      const rotateX = ((y / rect.height) - 0.5) * -5;
+
+      card.style.transform =
+        "perspective(1200px) rotateX(" +
+        rotateX +
+        "deg) rotateY(" +
+        rotateY +
+        "deg)";
+
+    });
+
+    card.addEventListener("mouseleave", function () {
+      card.style.transform =
+        "perspective(1200px) rotateX(0deg) rotateY(0deg)";
+    });
+
+  }
+
+  document.addEventListener("turbo:load", initializeEbookShow);
+
+  if (document.readyState !== "loading") {
+    initializeEbookShow();
+  } else {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEbookShow,
+      { once: true }
+    );
+  }
+
+})();
+</script>

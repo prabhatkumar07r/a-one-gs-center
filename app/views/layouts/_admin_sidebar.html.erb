@@ -638,7 +638,7 @@
         class="nav-link"
         data-bs-toggle="collapse"
         role="button"
-        aria-expanded="<%= controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series') %>"
+        aria-expanded="<%= controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series', 'admin/ebooks') %>"
         aria-controls="academicMenu">
 
         <i class="bi bi-mortarboard"></i>
@@ -651,7 +651,7 @@
 
 
       <div
-        class="collapse <%= 'show' if controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series') %>"
+        class="collapse <%= 'show' if controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series','admin/ebooks') %>"
         id="academicMenu">
 
         <ul class="nav flex-column submenu">
@@ -687,6 +687,23 @@
             <% end %>
 
           </li>
+
+          <!-- =====================================================
+     E-BOOKS
+====================================================== -->
+
+<li class="nav-item">
+
+  <%= link_to admin_ebooks_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/ebooks')}" do %>
+
+    <i class="bi bi-book-half"></i>
+
+    <span>E-Books</span>
+
+  <% end %>
+
+</li>
 
 
           <!-- Test Series -->

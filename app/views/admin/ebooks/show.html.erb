@@ -1,0 +1,180 @@
+<%= render "ebook_3d_style" %>
+
+<div class="ebook-3d-page">
+
+  <div class="ebook-study-background">
+    <div class="study-object study-book">📚</div>
+    <div class="study-object study-pencil">✏️</div>
+    <div class="study-object study-graduation">🎓</div>
+    <div class="study-object study-notes">📝</div>
+  </div>
+
+  <div class="ebook-3d-content">
+
+    <div class="ebook-page-header">
+
+      <div>
+        <h1 class="ebook-page-title">
+          📚 E-Book Details
+        </h1>
+
+        <p class="ebook-page-subtitle">
+          Explore this study material.
+        </p>
+      </div>
+
+      <%= link_to "← All E-Books",
+          admin_ebooks_path,
+          class: "ebook-3d-btn" %>
+
+    </div>
+
+
+    <div class="ebook-detail-card">
+
+      <div>
+
+        <% if @ebook.cover_image.attached? %>
+
+          <%= image_tag @ebook.cover_image,
+              class: "ebook-detail-cover",
+              alt: @ebook.title %>
+
+        <% else %>
+
+          <div class="ebook-detail-cover"
+               style="display:flex;align-items:center;justify-content:center;font-size:100px;background:#ede9fe;">
+            📖
+          </div>
+
+        <% end %>
+
+      </div>
+
+
+      <div>
+
+        <h2 class="ebook-detail-title">
+          <%= @ebook.title %>
+        </h2>
+
+        <% if @ebook.author.present? %>
+          <div class="ebook-card-author">
+            ✍️ Written by <strong><%= @ebook.author %></strong>
+          </div>
+        <% end %>
+
+
+        <div class="ebook-card-meta">
+
+          <% if @ebook.free? %>
+
+            <span class="ebook-price-badge">
+              FREE E-BOOK
+            </span>
+
+          <% else %>
+
+            <span class="ebook-price-badge paid">
+              ₹<%= @ebook.price %>
+            </span>
+
+          <% end %>
+
+        </div>
+
+
+        <% if @ebook.description.present? %>
+
+          <div class="ebook-detail-description">
+            <%= simple_format @ebook.description %>
+          </div>
+
+        <% end %>
+
+
+        <div class="ebook-info-grid">
+
+          <div class="ebook-info-item">
+            <span class="ebook-info-label">
+              Category
+            </span>
+
+            <span class="ebook-info-value">
+              <%= @ebook.category.presence || "—" %>
+            </span>
+          </div>
+
+
+          <div class="ebook-info-item">
+            <span class="ebook-info-label">
+              Language
+            </span>
+
+            <span class="ebook-info-value">
+              <%= @ebook.language.presence || "—" %>
+            </span>
+          </div>
+
+
+          <div class="ebook-info-item">
+            <span class="ebook-info-label">
+              Exam
+            </span>
+
+            <span class="ebook-info-value">
+              <%= @ebook.exam_name.presence || "—" %>
+            </span>
+          </div>
+
+
+          <div class="ebook-info-item">
+            <span class="ebook-info-label">
+              Status
+            </span>
+
+            <span class="ebook-info-value">
+              <%= @ebook.status.to_s.titleize %>
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="ebook-card-actions">
+
+          <%= link_to "✏️ Edit",
+              edit_admin_ebook_path(@ebook),
+              class: "ebook-action edit" %>
+
+          <% if @ebook.pdf_file.attached? %>
+
+            <%= link_to "📄 Open PDF",
+                rails_blob_path(@ebook.pdf_file,
+                                disposition: "inline"),
+                target: "_blank",
+                rel: "noopener",
+                class: "ebook-action view" %>
+
+          <% end %>
+
+          <%= button_to "🗑 Delete",
+              admin_ebook_path(@ebook),
+              method: :delete,
+              class: "ebook-action delete",
+              form: {
+                data: {
+                  turbo_confirm: "Delete this E-Book?"
+                }
+              } %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<%= render "ebook_3d_script" %>

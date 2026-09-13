@@ -1,0 +1,168 @@
+<%= render "ebook_3d_style" %>
+
+<div class="ebook-3d-page">
+
+  <div class="ebook-study-background">
+    <div class="study-object study-book">📚</div>
+    <div class="study-object study-pencil">✏️</div>
+    <div class="study-object study-graduation">🎓</div>
+    <div class="study-object study-notes">📝</div>
+  </div>
+
+  <div class="ebook-3d-content">
+
+    <div class="ebook-page-header">
+
+      <div>
+        <h1 class="ebook-page-title">
+          📚 E-Books
+        </h1>
+
+        <p class="ebook-page-subtitle">
+          Build knowledge. Read more. Grow more.
+        </p>
+      </div>
+
+      <%= link_to new_admin_ebook_path,
+          class: "ebook-3d-btn" do %>
+        ➕ Add New E-Book
+      <% end %>
+
+    </div>
+
+
+    <% if @ebooks.any? %>
+
+      <div class="ebook-grid">
+
+        <% @ebooks.each do |ebook| %>
+
+          <div class="ebook-card">
+
+            <div class="ebook-cover">
+
+              <% if ebook.cover_image.attached? %>
+
+                <%= image_tag ebook.cover_image,
+                    alt: ebook.title %>
+
+              <% else %>
+
+                <div class="ebook-cover-placeholder">
+                  📖
+                </div>
+
+              <% end %>
+
+
+              <% if ebook.free? %>
+
+                <span class="ebook-price-badge">
+                  FREE
+                </span>
+
+              <% else %>
+
+                <span class="ebook-price-badge paid">
+                  ₹<%= ebook.price %>
+                </span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="ebook-card-body">
+
+              <h2 class="ebook-card-title">
+                <%= ebook.title %>
+              </h2>
+
+              <% if ebook.author.present? %>
+                <div class="ebook-card-author">
+                  ✍️ <%= ebook.author %>
+                </div>
+              <% end %>
+
+
+              <div class="ebook-card-meta">
+
+                <% if ebook.category.present? %>
+                  <span class="ebook-meta-pill">
+                    📂 <%= ebook.category %>
+                  </span>
+                <% end %>
+
+                <% if ebook.language.present? %>
+                  <span class="ebook-meta-pill">
+                    🌐 <%= ebook.language %>
+                  </span>
+                <% end %>
+
+                <% if ebook.exam_name.present? %>
+                  <span class="ebook-meta-pill">
+                    🎯 <%= ebook.exam_name %>
+                  </span>
+                <% end %>
+
+              </div>
+
+
+              <div class="ebook-card-actions">
+
+                <%= link_to "View",
+                    admin_ebook_path(ebook),
+                    class: "ebook-action view" %>
+
+                <%= link_to "Edit",
+                    edit_admin_ebook_path(ebook),
+                    class: "ebook-action edit" %>
+
+                <%= button_to "Delete",
+                    admin_ebook_path(ebook),
+                    method: :delete,
+                    class: "ebook-action delete",
+                    form: {
+                      data: {
+                        turbo_confirm: "Are you sure you want to delete this E-Book?"
+                      }
+                    } %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="ebook-empty">
+
+        <div class="ebook-empty-icon">
+          📚
+        </div>
+
+        <h3>
+          No E-Books Yet
+        </h3>
+
+        <p>
+          Start building your digital library today.
+        </p>
+
+        <%= link_to "Create Your First E-Book",
+            new_admin_ebook_path,
+            class: "ebook-3d-btn" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+<%= render "ebook_3d_script" %>

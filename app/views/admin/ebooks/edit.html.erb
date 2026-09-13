@@ -1,0 +1,43 @@
+<%= render "ebook_3d_style" %>
+
+<div class="ebook-3d-page">
+
+  <div class="ebook-study-background">
+    <div class="study-object study-book">📚</div>
+    <div class="study-object study-pencil">✏️</div>
+    <div class="study-object study-graduation">🎓</div>
+    <div class="study-object study-notes">📝</div>
+  </div>
+
+  <div class="ebook-3d-content">
+
+    <div class="ebook-page-header">
+
+      <div>
+        <h1 class="ebook-page-title">
+          ✏️ Edit E-Book
+        </h1>
+
+        <p class="ebook-page-subtitle">
+          Improve your study material and keep your library updated.
+        </p>
+      </div>
+
+      <%= link_to "← Back",
+          admin_ebooks_path,
+          class: "ebook-3d-btn" %>
+
+    </div>
+
+
+    <div class="ebook-form-card">
+
+      <%= render "form",
+          ebook: @ebook %>
+
+    </div>
+
+  </div>
+
+</div>
+<%= render "ebook_3d_script" %>

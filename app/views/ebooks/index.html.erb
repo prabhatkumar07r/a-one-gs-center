@@ -1,0 +1,852 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+  .public-ebooks-page {
+    min-height: 100vh;
+    padding: 45px 20px 80px;
+
+    background:
+      radial-gradient(
+        circle at 10% 10%,
+        rgba(124, 58, 237, .14),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at 90% 30%,
+        rgba(37, 99, 235, .12),
+        transparent 30%
+      ),
+      linear-gradient(
+        135deg,
+        #f8f9ff,
+        #eef2ff,
+        #f8fafc
+      );
+
+    position: relative;
+    overflow: hidden;
+  }
+
+
+  .ebooks-background {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .ebooks-bg-item {
+    position: absolute;
+    opacity: .07;
+    font-size: 90px;
+    animation: ebookFloat 9s ease-in-out infinite;
+  }
+
+  .ebooks-bg-item:nth-child(1) {
+    top: 15%;
+    left: 5%;
+  }
+
+  .ebooks-bg-item:nth-child(2) {
+    top: 28%;
+    right: 5%;
+    animation-delay: 2s;
+  }
+
+  .ebooks-bg-item:nth-child(3) {
+    bottom: 12%;
+    left: 12%;
+    animation-delay: 4s;
+  }
+
+  .ebooks-bg-item:nth-child(4) {
+    bottom: 8%;
+    right: 15%;
+    animation-delay: 1s;
+  }
+
+  @keyframes ebookFloat {
+    0%, 100% {
+      transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+      transform: translateY(-18px) rotate(5deg);
+    }
+  }
+
+
+  .ebooks-container {
+    max-width: 1250px;
+    margin: auto;
+    position: relative;
+    z-index: 2;
+  }
+
+
+  /* =====================================================
+     HERO
+  ====================================================== */
+
+  .ebooks-hero {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+  .ebooks-hero-icon {
+    font-size: 58px;
+    margin-bottom: 10px;
+  }
+
+  .ebooks-hero h1 {
+    margin: 0;
+
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900;
+
+    background:
+      linear-gradient(
+        135deg,
+        #4c1d95,
+        #2563eb
+      );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .ebooks-hero p {
+    max-width: 650px;
+    margin: 12px auto 0;
+
+    color: #667085;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+
+  /* =====================================================
+     SEARCH
+  ====================================================== */
+
+  .ebooks-filter {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    margin-bottom: 35px;
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, .9);
+
+    box-shadow:
+      0 20px 45px rgba(15, 23, 42, .08);
+  }
+
+  .ebooks-search {
+    flex: 1;
+    min-width: 220px;
+
+    padding: 13px 16px;
+
+    border: 1px solid #d9def0;
+    border-radius: 13px;
+
+    background: #fafbff;
+    outline: none;
+  }
+
+  .ebooks-search:focus {
+    border-color: #7c3aed;
+
+    box-shadow:
+      0 0 0 4px rgba(124, 58, 237, .1);
+  }
+
+  .ebooks-category {
+    min-width: 180px;
+
+    padding: 13px 15px;
+
+    border: 1px solid #d9def0;
+    border-radius: 13px;
+
+    background: #fafbff;
+  }
+
+  .ebooks-search-btn {
+    padding: 13px 22px;
+
+    border: 0;
+    border-radius: 13px;
+
+    color: white;
+    background:
+      linear-gradient(
+        135deg,
+        #6d28d9,
+        #2563eb
+      );
+
+    font-weight: 800;
+
+    cursor: pointer;
+  }
+
+
+  /* =====================================================
+     GRID
+  ====================================================== */
+
+  .ebooks-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(auto-fill, minmax(270px, 1fr));
+
+    gap: 28px;
+  }
+
+
+  /* =====================================================
+     CARD
+  ====================================================== */
+
+  .public-ebook-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, .94);
+
+    border: 1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+      0 25px 55px rgba(15,23,42,.11);
+
+    transform-style: preserve-3d;
+
+    transition:
+      transform .25s ease,
+      box-shadow .25s ease;
+  }
+
+  .public-ebook-card:hover {
+    transform:
+      perspective(1000px)
+      rotateX(3deg)
+      rotateY(-4deg)
+      translateY(-9px);
+
+    box-shadow:
+      0 35px 70px rgba(15,23,42,.17);
+  }
+
+
+  /* =====================================================
+     COVER
+  ====================================================== */
+
+  .public-ebook-cover {
+    height: 280px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    background:
+      linear-gradient(
+        135deg,
+        #ddd6fe,
+        #bfdbfe
+      );
+  }
+
+  .public-ebook-cover img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform .4s ease;
+  }
+
+  .public-ebook-card:hover
+  .public-ebook-cover img {
+    transform: scale(1.06);
+  }
+
+  .public-ebook-placeholder {
+    font-size: 80px;
+    opacity: .45;
+  }
+
+
+  /* =====================================================
+     BADGE
+  ====================================================== */
+
+  .public-ebook-badge {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    color: white;
+
+    background:
+      linear-gradient(
+        135deg,
+        #16a34a,
+        #059669
+      );
+
+    font-size: 11px;
+    font-weight: 900;
+
+    box-shadow:
+      0 8px 20px rgba(5,150,105,.3);
+  }
+
+  .public-ebook-badge.paid {
+    background:
+      linear-gradient(
+        135deg,
+        #7c3aed,
+        #2563eb
+      );
+  }
+
+
+  /* =====================================================
+     BODY
+  ====================================================== */
+
+  .public-ebook-body {
+    padding: 21px;
+  }
+
+  .public-ebook-title {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 19px;
+    font-weight: 900;
+
+    line-height: 1.35;
+  }
+
+  .public-ebook-author {
+    margin-top: 7px;
+
+    color: #667085;
+    font-size: 13px;
+  }
+
+  .public-ebook-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+
+    margin-top: 14px;
+  }
+
+  .public-ebook-pill {
+    padding: 6px 9px;
+
+    border-radius: 9px;
+
+    color: #5b21b6;
+    background: #f1efff;
+
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+
+  /* =====================================================
+     PRICE
+  ====================================================== */
+
+  .public-ebook-price {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 18px;
+  }
+
+  .ebook-current-price {
+    color: #172033;
+    font-size: 22px;
+    font-weight: 900;
+  }
+
+  .ebook-original-price {
+    color: #98a2b3;
+    text-decoration: line-through;
+    font-size: 13px;
+  }
+
+  .ebook-discount {
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    color: #047857;
+    background: #d1fae5;
+
+    font-size: 10px;
+    font-weight: 900;
+  }
+
+
+  /* =====================================================
+     VIEW BUTTON
+  ====================================================== */
+
+  .public-ebook-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    margin-top: 18px;
+    padding: 12px;
+
+    border-radius: 12px;
+
+    color: white;
+
+    background:
+      linear-gradient(
+        135deg,
+        #6d28d9,
+        #2563eb
+      );
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    box-shadow:
+      0 7px 0 rgba(76,29,149,.2);
+
+    transition: .2s ease;
+  }
+
+  .public-ebook-btn:hover {
+    color: white;
+    transform: translateY(-3px);
+  }
+
+
+  /* =====================================================
+     EMPTY
+  ====================================================== */
+
+  .ebooks-empty {
+    padding: 80px 20px;
+
+    text-align: center;
+
+    border-radius: 25px;
+
+    background: rgba(255,255,255,.9);
+
+    box-shadow:
+      0 20px 50px rgba(15,23,42,.08);
+  }
+
+  .ebooks-empty-icon {
+    font-size: 70px;
+  }
+
+  .ebooks-empty h2 {
+    color: #172033;
+  }
+
+  .ebooks-empty p {
+    color: #667085;
+  }
+
+
+  @media (max-width: 600px) {
+
+    .public-ebooks-page {
+      padding: 30px 15px 60px;
+    }
+
+    .ebooks-filter {
+      flex-direction: column;
+    }
+
+    .ebooks-search,
+    .ebooks-category,
+    .ebooks-search-btn {
+      width: 100%;
+    }
+
+    .public-ebook-cover {
+      height: 250px;
+    }
+
+  }
+
+</style>
+
+
+<div class="public-ebooks-page">
+
+  <div class="ebooks-background">
+
+    <div class="ebooks-bg-item">📚</div>
+    <div class="ebooks-bg-item">✏️</div>
+    <div class="ebooks-bg-item">🎓</div>
+    <div class="ebooks-bg-item">📝</div>
+
+  </div>
+
+
+  <div class="ebooks-container">
+
+
+    <!-- ===================================================
+         HERO
+    ==================================================== -->
+
+    <div class="ebooks-hero">
+
+      <div class="ebooks-hero-icon">
+        📚
+      </div>
+
+      <h1>
+        E-Book Library
+      </h1>
+
+      <p>
+        Read. Learn. Practice. Grow.
+        Discover quality study materials designed
+        to help you prepare smarter.
+      </p>
+
+    </div>
+
+
+    <!-- ===================================================
+         FILTER
+    ==================================================== -->
+
+    <%= form_with url: ebooks_path,
+                  method: :get,
+                  local: true,
+                  class: "ebooks-filter" do |form| %>
+
+      <%= form.search_field :q,
+          value: params[:q],
+          placeholder: "🔎 Search books, authors, exams...",
+          class: "ebooks-search" %>
+
+
+      <%= form.select :category,
+          options_for_select(
+            Ebook.published
+                 .where.not(category: [nil, ""])
+                 .distinct
+                 .order(:category)
+                 .pluck(:category),
+            params[:category]
+          ),
+          { include_blank: "📂 All Categories" },
+          class: "ebooks-category" %>
+
+
+      <%= form.submit "Search",
+          class: "ebooks-search-btn" %>
+
+    <% end %>
+
+
+    <!-- ===================================================
+         BOOKS
+    ==================================================== -->
+
+    <% if @ebooks.any? %>
+
+      <div class="ebooks-grid">
+
+        <% @ebooks.each do |ebook| %>
+
+          <article class="public-ebook-card">
+
+
+            <div class="public-ebook-cover">
+
+              <% if ebook.cover_image.attached? %>
+
+                <%= image_tag ebook.cover_image,
+                    alt: ebook.title %>
+
+              <% else %>
+
+                <div class="public-ebook-placeholder">
+                  📖
+                </div>
+
+              <% end %>
+
+
+              <% if ebook.free? %>
+
+                <span class="public-ebook-badge">
+                  FREE
+                </span>
+
+              <% else %>
+
+                <span class="public-ebook-badge paid">
+                  PAID
+                </span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="public-ebook-body">
+
+              <h2 class="public-ebook-title">
+                <%= ebook.title %>
+              </h2>
+
+
+              <% if ebook.author.present? %>
+
+                <div class="public-ebook-author">
+                  ✍️ <%= ebook.author %>
+                </div>
+
+              <% end %>
+
+
+              <div class="public-ebook-meta">
+
+                <% if ebook.category.present? %>
+
+                  <span class="public-ebook-pill">
+                    📂 <%= ebook.category %>
+                  </span>
+
+                <% end %>
+
+
+                <% if ebook.language.present? %>
+
+                  <span class="public-ebook-pill">
+                    🌐 <%= ebook.language %>
+                  </span>
+
+                <% end %>
+
+
+                <% if ebook.exam_name.present? %>
+
+                  <span class="public-ebook-pill">
+                    🎯 <%= ebook.exam_name %>
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <% unless ebook.free? %>
+
+                <div class="public-ebook-price">
+
+                  <span class="ebook-current-price">
+                    ₹<%= ebook.price.to_i %>
+                  </span>
+
+
+                  <% if ebook.original_price.to_f >
+                             ebook.price.to_f %>
+
+                    <span class="ebook-original-price">
+                      ₹<%= ebook.original_price.to_i %>
+                    </span>
+
+                  <% end %>
+
+
+                  <% if ebook.discount_percentage.to_f > 0 %>
+
+                    <span class="ebook-discount">
+                      <%= ebook.discount_percentage.to_i %>% OFF
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+              <% else %>
+
+                <div class="public-ebook-price">
+
+                  <span class="ebook-current-price">
+                    FREE
+                  </span>
+
+                </div>
+
+              <% end %>
+
+
+              <%= link_to ebook_path(ebook),
+                  class: "public-ebook-btn" do %>
+
+                📖 View E-Book
+
+              <% end %>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+
+    <% else %>
+
+      <div class="ebooks-empty">
+
+        <div class="ebooks-empty-icon">
+          📚
+        </div>
+
+        <h2>
+          No E-Books Found
+        </h2>
+
+        <p>
+          Try another search or category.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  function initializePublicEbooks() {
+
+    const cards =
+      document.querySelectorAll(
+        ".public-ebook-card"
+      );
+
+    cards.forEach(function (card) {
+
+      if (
+        card.dataset.tiltInitialized === "true"
+      ) {
+        return;
+      }
+
+      card.dataset.tiltInitialized = "true";
+
+
+      card.addEventListener(
+        "mousemove",
+        function (event) {
+
+          const rect =
+            card.getBoundingClientRect();
+
+          const x =
+            event.clientX - rect.left;
+
+          const y =
+            event.clientY - rect.top;
+
+          const centerX =
+            rect.width / 2;
+
+          const centerY =
+            rect.height / 2;
+
+          const rotateY =
+            ((x - centerX) / centerX) * 4;
+
+          const rotateX =
+            ((centerY - y) / centerY) * 4;
+
+          card.style.transform =
+            "perspective(1000px) " +
+            "rotateX(" + rotateX + "deg) " +
+            "rotateY(" + rotateY + "deg) " +
+            "translateY(-9px)";
+
+        }
+      );
+
+
+      card.addEventListener(
+        "mouseleave",
+        function () {
+
+          card.style.transform = "";
+
+        }
+      );
+
+    });
+
+  }
+
+
+  document.addEventListener(
+    "turbo:load",
+    initializePublicEbooks
+  );
+
+
+  if (document.readyState !== "loading") {
+
+    initializePublicEbooks();
+
+  } else {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializePublicEbooks,
+      { once: true }
+    );
+
+  }
+
+})();
+
+</script>

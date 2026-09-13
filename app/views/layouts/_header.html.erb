@@ -2739,43 +2739,48 @@ html.night-mode .mobile-menu-button {
       <!-- =====================================================
            DESKTOP NAVIGATION
       ====================================================== -->
+<nav>
 
-      <nav>
+  <ul>
 
-        <ul>
+    <li>
+      <%= link_to "Home",
+          homepage_path %>
+    </li>
 
-          <li>
-            <%= link_to "Home",
-                homepage_path %>
-          </li>
+    <li>
+      <%= link_to "Courses",
+          homepage_path(anchor: "courses") %>
+    </li>
 
-          <li>
-            <%= link_to "Courses",
-                homepage_path(anchor: "courses") %>
-          </li>
-          <li>
-            <%= link_to "Test Series", test_series_index_path %>
-          </li>
+    <li>
+      <%= link_to "E-Books",
+          ebooks_path %>
+    </li>
 
-          <li class="contact-nav-item">
-            <%= link_to "Contact Us",
-                homepage_path(anchor: "contact") %>
-          </li>
+    <li>
+      <%= link_to "Test Series",
+          test_series_index_path %>
+    </li>
 
-          <li>
-            <%= link_to "Gallery",
-                homepage_path(anchor: "gallery") %>
-          </li>
+    <li class="contact-nav-item">
+      <%= link_to "Contact Us",
+          homepage_path(anchor: "contact") %>
+    </li>
 
-          <li>
-            <%= link_to "Teachers",
-                homepage_path(anchor: "teachers") %>
-          </li>
+    <li>
+      <%= link_to "Gallery",
+          homepage_path(anchor: "gallery") %>
+    </li>
 
-        </ul>
+    <li>
+      <%= link_to "Teachers",
+          homepage_path(anchor: "teachers") %>
+    </li>
 
-      </nav>
+  </ul>
 
+</nav>
 
 
       <!-- =====================================================
@@ -2974,6 +2979,12 @@ html.night-mode .mobile-menu-button {
       <%= link_to "Courses",
           homepage_path(anchor: "courses") %>
     </li>
+
+    <li>
+      <%= link_to "E-Books",
+          ebooks_path %>
+    </li>
+
 
        <li>
       <%= link_to "Test Series",

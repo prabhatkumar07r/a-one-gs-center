@@ -1,0 +1,324 @@
+<%= render "ebook_3d_style" %>
+
+
+<%= form_with model: [:admin, ebook],
+              local: true,
+              multipart: true do |form| %>
+
+  <% if ebook.errors.any? %>
+
+    <div style="
+      margin-bottom: 25px;
+      padding: 16px 18px;
+      border-radius: 15px;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      color: #9f1239;
+    ">
+
+      <strong>
+        Please fix the following errors:
+      </strong>
+
+      <ul style="margin: 8px 0 0 20px;">
+        <% ebook.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <div class="ebook-form-grid">
+
+
+    <!-- =====================================================
+         TITLE
+    ====================================================== -->
+
+    <div class="ebook-form-group full">
+
+      <%= form.label :title, "E-Book Title *" %>
+
+      <%= form.text_field :title,
+          placeholder: "Example: Indian Geography Complete Notes",
+          required: true %>
+
+    </div>
+
+
+    <!-- =====================================================
+         AUTHOR
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :author, "Author" %>
+
+      <%= form.text_field :author,
+          placeholder: "Example: AT Sir" %>
+
+    </div>
+
+
+    <!-- =====================================================
+         CATEGORY
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :category, "Category" %>
+
+      <%= form.text_field :category,
+          placeholder: "Example: Geography" %>
+
+    </div>
+
+
+    <!-- =====================================================
+         LANGUAGE
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :language, "Language" %>
+
+      <%= form.select :language,
+          [
+            ["Hindi", "Hindi"],
+            ["English", "English"],
+            ["Hindi + English", "Hindi + English"]
+          ],
+          { include_blank: "Select Language" } %>
+
+    </div>
+
+
+    <!-- =====================================================
+         EXAM
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :exam_name, "Exam" %>
+
+      <%= form.text_field :exam_name,
+          placeholder: "Example: BPSC / UPSC / SSC" %>
+
+    </div>
+
+
+    <!-- =====================================================
+         DESCRIPTION
+    ====================================================== -->
+
+    <div class="ebook-form-group full">
+
+      <%= form.label :description, "Description" %>
+
+      <%= form.text_area :description,
+          placeholder: "Write a short description about this study material..." %>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORIGINAL PRICE
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :original_price, "Original Price (₹)" %>
+
+      <%= form.number_field :original_price,
+          min: 0,
+          step: 0.01,
+          placeholder: "499" %>
+          id: "ebook_original_price" %>
+
+    </div>
+
+
+    <!-- =====================================================
+         SELLING PRICE
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :price, "Selling Price (₹)" %>
+
+      <%= form.number_field :price,
+          min: 0,
+          step: 0.01,
+          placeholder: "299" %>
+          id: "ebook_price" %>
+
+    </div>
+
+
+    <div id="ebook-discount-preview"
+     style="
+       margin-top: 10px;
+       padding: 10px 14px;
+       border-radius: 12px;
+       background: #f5f3ff;
+       color: #6d28d9;
+       font-size: 13px;
+       font-weight: 800;
+     ">
+  🏷️ Discount: 0%
+</div>
+
+
+
+
+    <!-- =====================================================
+         FREE / PAID
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :is_free, "Access Type" %>
+
+      <%= form.select :is_free,
+          [
+            ["Free E-Book", true],
+            ["Paid E-Book", false]
+          ],
+          {},
+          {
+            id: "ebook_access_type"
+          } %>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATUS
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :status, "Status" %>
+
+      <%= form.select :status,
+          [
+            ["Draft", "draft"],
+            ["Published", "published"]
+          ] %>
+
+    </div>
+
+
+    <!-- =====================================================
+         PUBLISHED DATE
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :published_at, "Published At" %>
+
+      <%= form.datetime_local_field :published_at %>
+
+    </div>
+
+
+    <!-- =====================================================
+         COVER IMAGE
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :cover_image, "Book Cover" %>
+
+      <%= form.file_field :cover_image,
+          accept: "image/png,image/jpeg,image/webp" %>
+
+      <% if ebook.cover_image.attached? %>
+
+        <div style="
+          margin-top: 12px;
+          font-size: 12px;
+          color: #667085;
+        ">
+
+          Current Cover:
+
+          <strong>
+            <%= ebook.cover_image.filename.to_s %>
+          </strong>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- =====================================================
+         PDF
+    ====================================================== -->
+
+    <div class="ebook-form-group">
+
+      <%= form.label :pdf_file, "E-Book PDF" %>
+
+      <%= form.file_field :pdf_file,
+          accept: "application/pdf" %>
+
+      <% if ebook.pdf_file.attached? %>
+
+        <div style="
+          margin-top: 12px;
+          font-size: 12px;
+          color: #667085;
+        ">
+
+          Current PDF:
+
+          <strong>
+            <%= ebook.pdf_file.filename.to_s %>
+          </strong>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =====================================================
+       SUBMIT
+  ====================================================== -->
+
+  <div style="
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #eaecf0;
+  ">
+
+    <%= link_to "Cancel",
+        admin_ebooks_path,
+        class: "ebook-action view",
+        style: "padding: 12px 20px;" %>
+
+
+    <%= form.submit(
+          ebook.persisted? ?
+            "💾 Update E-Book" :
+            "🚀 Create E-Book",
+          class: "ebook-3d-btn"
+        ) %>
+
+  </div>
+
+<% end %>
+<%= render "ebook_3d_script" %>
