@@ -1,0 +1,2782 @@
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+.admin-pdf-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(99, 102, 241, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(139, 92, 246, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f7f9ff 0%,
+      #eef3ff 50%,
+      #f9faff 100%
+    );
+
+  padding: 35px 30px 70px;
+}
+
+
+/* =========================================================
+   BACKGROUND SHAPES
+========================================================= */
+
+.pdf-bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.pdf-bg-shape-1 {
+  width: 420px;
+  height: 420px;
+
+  top: -180px;
+  right: -130px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(99, 102, 241, 0.15),
+      transparent 70%
+    );
+}
+
+.pdf-bg-shape-2 {
+  width: 350px;
+  height: 350px;
+
+  bottom: -150px;
+  left: -130px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.12),
+      transparent 70%
+    );
+}
+
+.pdf-bg-shape-3 {
+  width: 180px;
+  height: 180px;
+
+  top: 42%;
+  right: 5%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(168, 85, 247, 0.08),
+      transparent 70%
+    );
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.pdf-page-container {
+  width: 100%;
+  max-width: 1350px;
+
+  margin: 0 auto;
+
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.pdf-topbar {
+  margin-bottom: 22px;
+}
+
+
+.pdf-back-button {
+  display: inline-flex;
+
+  align-items: center;
+  gap: 10px;
+
+  padding: 11px 18px;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  border-radius: 14px;
+
+  color: #273b88;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 25px rgba(30, 64, 175, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+
+.pdf-back-button:hover {
+  color: #1d4ed8;
+
+  transform: translateY(-2px);
+
+  background: #ffffff;
+
+  box-shadow:
+    0 12px 30px rgba(30, 64, 175, 0.13);
+}
+
+
+.back-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #e0e7ff
+    );
+
+  color: #4f46e5;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.pdf-hero {
+
+  min-height: 330px;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 40px;
+
+  padding: 55px 65px;
+
+  margin-bottom: 28px;
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  border: 1px solid rgba(255,255,255,0.8);
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,0.96),
+      rgba(238,242,255,0.92)
+    );
+
+  box-shadow:
+    0 30px 70px rgba(30, 64, 175, 0.10),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+
+.pdf-hero::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  right: -160px;
+  top: -220px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(99,102,241,0.12),
+      transparent 70%
+    );
+}
+
+
+.pdf-hero-content {
+
+  position: relative;
+
+  z-index: 3;
+
+  max-width: 650px;
+}
+
+
+.pdf-kicker {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #e0e7ff
+    );
+
+  color: #4338ca;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  margin-bottom: 18px;
+
+  border: 1px solid #dbe3ff;
+}
+
+
+.pdf-kicker i {
+  font-size: 15px;
+}
+
+
+.pdf-hero h1 {
+
+  margin: 0 0 12px;
+
+  font-size: clamp(38px, 4vw, 58px);
+
+  line-height: 1.05;
+
+  letter-spacing: -2px;
+
+  color: #172554;
+
+  font-weight: 800;
+}
+
+
+.pdf-hero p {
+
+  max-width: 600px;
+
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+.pdf-hero-features {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+
+.pdf-hero-features span {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  border-radius: 12px;
+
+  background: rgba(255,255,255,0.75);
+
+  border: 1px solid #e2e8f0;
+
+  color: #475569;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.pdf-hero-features i {
+  color: #4f46e5;
+}
+
+
+/* =========================================================
+   3D VISUAL
+========================================================= */
+
+.pdf-hero-visual {
+
+  width: 380px;
+  height: 260px;
+
+  position: relative;
+
+  flex-shrink: 0;
+}
+
+
+.pdf-orbit {
+
+  position: absolute;
+
+  border: 1px dashed rgba(99,102,241,0.25);
+
+  border-radius: 50%;
+
+  transform: rotate(-20deg);
+}
+
+
+.orbit-1 {
+
+  width: 320px;
+  height: 170px;
+
+  top: 40px;
+  left: 30px;
+}
+
+
+.orbit-2 {
+
+  width: 260px;
+  height: 130px;
+
+  top: 60px;
+  left: 60px;
+
+  transform: rotate(25deg);
+}
+
+
+.pdf-floating-star {
+
+  position: absolute;
+
+  color: #6366f1;
+
+  font-size: 30px;
+
+  animation: floatingStar 3s ease-in-out infinite;
+}
+
+
+.star-1 {
+  top: 15px;
+  right: 70px;
+}
+
+
+.star-2 {
+
+  bottom: 35px;
+  left: 20px;
+
+  font-size: 20px;
+
+  animation-delay: 1s;
+}
+
+
+@keyframes floatingStar {
+
+  0%,100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(12deg);
+  }
+
+}
+
+
+/* =========================================================
+   3D BOOK
+========================================================= */
+
+.pdf-book-3d {
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  left: 80px;
+  top: 20px;
+
+  transform:
+    perspective(800px)
+    rotateY(-12deg)
+    rotateX(5deg);
+
+  filter:
+    drop-shadow(
+      0 25px 25px rgba(30,64,175,0.18)
+    );
+}
+
+
+.pdf-book-back {
+
+  position: absolute;
+
+  width: 145px;
+  height: 190px;
+
+  left: 48px;
+  top: 20px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #2563eb
+    );
+
+  transform:
+    translateZ(-20px)
+    rotate(-7deg);
+
+  box-shadow:
+    0 12px 20px rgba(37,99,235,0.25);
+}
+
+
+.pdf-book {
+
+  position: absolute;
+
+  width: 145px;
+  height: 190px;
+
+  left: 32px;
+  top: 5px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #eef2ff
+    );
+
+  border: 1px solid #dbe3ff;
+
+  transform:
+    rotate(-7deg);
+
+  overflow: hidden;
+
+  box-shadow:
+    inset -5px 0 0 #e0e7ff,
+    0 15px 25px rgba(30,64,175,0.16);
+}
+
+
+.pdf-book::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 13px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #6366f1,
+      #3b82f6
+    );
+}
+
+
+.pdf-symbol {
+
+  position: absolute;
+
+  top: 48px;
+  left: 35px;
+
+  width: 75px;
+  height: 85px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  color: #ef4444;
+
+  background: white;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 8px 20px rgba(15,23,42,0.10);
+}
+
+
+.pdf-symbol i {
+
+  font-size: 38px;
+}
+
+
+.pdf-symbol strong {
+
+  font-size: 12px;
+
+  letter-spacing: 1px;
+}
+
+
+.pdf-page-lines {
+
+  position: absolute;
+
+  left: 30px;
+
+  bottom: 18px;
+
+  width: 85px;
+}
+
+
+.pdf-page-lines span {
+
+  display: block;
+
+  height: 3px;
+
+  margin-bottom: 6px;
+
+  border-radius: 10px;
+
+  background: #dbe4ff;
+}
+
+
+.pdf-page-lines span:nth-child(2) {
+  width: 65px;
+}
+
+
+.pdf-page-lines span:nth-child(3) {
+  width: 75px;
+}
+
+
+.pdf-page-lines span:nth-child(4) {
+  width: 50px;
+}
+
+
+/* =========================================================
+   CLOUD
+========================================================= */
+
+.pdf-upload-cloud {
+
+  position: absolute;
+
+  right: 15px;
+  bottom: 20px;
+
+  width: 75px;
+  height: 75px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #2563eb
+    );
+
+  color: white;
+
+  font-size: 34px;
+
+  box-shadow:
+    0 15px 30px rgba(37,99,235,0.30);
+
+  transform: rotate(5deg);
+
+  animation: cloudFloat 4s ease-in-out infinite;
+}
+
+
+@keyframes cloudFloat {
+
+  0%,100% {
+    transform: translateY(0) rotate(5deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.pdf-form-card {
+
+  position: relative;
+
+  padding: 38px;
+
+  border-radius: 28px;
+
+  background: rgba(255,255,255,0.97);
+
+  border: 1px solid rgba(226,232,240,0.9);
+
+  box-shadow:
+    0 25px 70px rgba(30,64,175,0.10),
+    0 5px 15px rgba(15,23,42,0.03);
+}
+
+
+/* =========================================================
+   FORM HEADER
+========================================================= */
+
+.pdf-form-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding-bottom: 28px;
+
+  margin-bottom: 30px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+
+.pdf-form-header-icon {
+
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #e0e7ff
+    );
+
+  color: #4f46e5;
+
+  font-size: 24px;
+
+  box-shadow:
+    0 8px 20px rgba(79,70,229,0.10);
+}
+
+
+.pdf-form-header h2 {
+
+  margin: 0 0 5px;
+
+  color: #172554;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+
+.pdf-form-header p {
+
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.pdf-error-box {
+
+  display: flex;
+
+  gap: 14px;
+
+  padding: 17px 20px;
+
+  margin-bottom: 28px;
+
+  border-radius: 15px;
+
+  background: #fff7f7;
+
+  border: 1px solid #fecaca;
+
+  color: #991b1b;
+}
+
+
+.pdf-error-icon {
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+
+.pdf-error-box strong {
+  font-size: 14px;
+}
+
+
+.pdf-error-box ul {
+
+  margin: 7px 0 0;
+
+  padding-left: 18px;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.pdf-form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 2fr)
+    minmax(220px, 1fr);
+
+  gap: 25px;
+
+  margin-bottom: 25px;
+}
+
+
+.description-grid {
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.pdf-field {
+
+  min-width: 0;
+}
+
+
+.pdf-field label {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+
+  color: #1e293b;
+
+  font-size: 14px;
+
+  font-weight: 750;
+}
+
+
+.field-icon {
+
+  width: 28px;
+  height: 28px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #f1f5ff;
+
+  color: #4f46e5;
+
+  font-size: 13px;
+}
+
+
+.required-star {
+  color: #ef4444;
+}
+
+
+.pdf-input-wrapper,
+.pdf-textarea-wrapper {
+
+  position: relative;
+}
+
+
+.pdf-input-wrapper input,
+.pdf-textarea-wrapper textarea {
+
+  width: 100%;
+
+  border: 1px solid #dbe3ef;
+
+  border-radius: 14px;
+
+  background: #fbfdff;
+
+  color: #1e293b;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.pdf-input-wrapper input {
+
+  height: 52px;
+
+  padding: 0 16px;
+}
+
+
+.pdf-textarea-wrapper textarea {
+
+  min-height: 145px;
+
+  padding: 15px 16px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+.pdf-input-wrapper input:focus,
+.pdf-textarea-wrapper textarea:focus {
+
+  border-color: #818cf8;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(99,102,241,0.09);
+}
+
+
+.pdf-field small {
+
+  display: block;
+
+  margin-top: 8px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   POSITION
+========================================================= */
+
+.position-input input {
+
+  padding-right: 75px;
+}
+
+
+.input-suffix {
+
+  position: absolute;
+
+  right: 15px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #94a3b8;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.textarea-counter {
+
+  position: absolute;
+
+  right: 14px;
+  bottom: 12px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-select-wrapper {
+
+  position: relative;
+}
+
+
+.modern-status-select {
+
+  width: 100%;
+
+  height: 52px;
+
+  padding: 0 45px 0 16px;
+
+  appearance: none;
+
+  border: 1px solid #dbe3ef;
+
+  border-radius: 14px;
+
+  background: #fbfdff;
+
+  color: #334155;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+
+.modern-status-select:focus {
+
+  border-color: #818cf8;
+
+  box-shadow:
+    0 0 0 4px rgba(99,102,241,0.09);
+}
+
+
+.status-select-wrapper > i {
+
+  position: absolute;
+
+  right: 16px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #64748b;
+
+  pointer-events: none;
+}
+
+
+.status-info {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 12px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+.status-dot {
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 4px rgba(34,197,94,0.12);
+}
+
+
+/* =========================================================
+   UPLOAD SECTION
+========================================================= */
+
+.pdf-upload-section {
+
+  margin-top: 35px;
+
+  padding-top: 32px;
+
+  border-top: 1px solid #eef2f7;
+}
+
+
+.pdf-upload-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+}
+
+
+.upload-title-icon {
+
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef2ff,
+      #e0e7ff
+    );
+
+  color: #4f46e5;
+
+  font-size: 20px;
+}
+
+
+.pdf-upload-title label {
+
+  display: block;
+
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 15px;
+
+  font-weight: 800;
+}
+
+
+.pdf-upload-title p {
+
+  margin: 4px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   DROPZONE
+========================================================= */
+
+.modern-dropzone {
+
+  position: relative;
+
+  min-height: 245px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 28px;
+
+  border: 2px dashed #c7d2fe;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fafbff,
+      #f5f7ff
+    );
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.modern-dropzone::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  top: -140px;
+  right: -100px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(99,102,241,0.10),
+      transparent 70%
+    );
+}
+
+
+.modern-dropzone:hover,
+.modern-dropzone.dragover {
+
+  border-color: #6366f1;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8f9ff,
+      #eef2ff
+    );
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 35px rgba(79,70,229,0.08);
+}
+
+
+.dropzone-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  text-align: center;
+
+  width: 100%;
+}
+
+
+.dropzone-icon {
+
+  width: 65px;
+  height: 65px;
+
+  position: relative;
+
+  margin: 0 auto 15px;
+}
+
+
+.cloud-back {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #c7d2fe;
+
+  font-size: 60px;
+}
+
+
+.cloud-arrow {
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -40%);
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #2563eb
+    );
+
+  color: white;
+
+  font-size: 16px;
+
+  box-shadow:
+    0 8px 20px rgba(37,99,235,0.25);
+}
+
+
+.dropzone-content h3 {
+
+  margin: 0 0 8px;
+
+  color: #1e293b;
+
+  font-size: 16px;
+
+  font-weight: 800;
+}
+
+
+.dropzone-content p {
+
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+}
+
+
+.dropzone-content p label {
+
+  display: inline;
+
+  margin: 0;
+
+  color: #4f46e5;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.upload-limit {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 17px;
+
+  padding: 8px 13px;
+
+  border-radius: 10px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.upload-limit span {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+
+.upload-limit i {
+
+  color: #6366f1;
+}
+
+
+.upload-divider {
+
+  width: 1px;
+  height: 14px;
+
+  background: #e2e8f0;
+}
+
+
+.hidden-pdf-input {
+
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SELECTED FILE
+========================================================= */
+
+.selected-pdf-file {
+
+  position: absolute;
+
+  left: 20px;
+  right: 20px;
+  bottom: 18px;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 15px;
+
+  border-radius: 14px;
+
+  background: white;
+
+  border: 1px solid #dbe3ff;
+
+  box-shadow:
+    0 10px 25px rgba(30,64,175,0.10);
+
+  z-index: 10;
+}
+
+
+.selected-pdf-icon {
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #fee2e2;
+
+  color: #ef4444;
+
+  font-size: 20px;
+}
+
+
+.selected-pdf-info {
+
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 3px;
+}
+
+
+.selected-pdf-info strong {
+
+  max-width: 100%;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #334155;
+
+  font-size: 13px;
+}
+
+
+.selected-pdf-info span {
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+.remove-pdf {
+
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: #fef2f2;
+
+  color: #ef4444;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.remove-pdf:hover {
+
+  background: #fee2e2;
+
+  transform: scale(1.05);
+}
+
+
+.upload-note {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 10px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+.upload-note i {
+  color: #6366f1;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.pdf-form-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 35px;
+
+  padding-top: 28px;
+
+  border-top: 1px solid #eef2f7;
+}
+
+
+.pdf-cancel-button,
+.pdf-save-button {
+
+  min-height: 50px;
+
+  padding: 0 24px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  border-radius: 13px;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.pdf-cancel-button {
+
+  color: #475569;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+}
+
+
+.pdf-cancel-button:hover {
+
+  color: #334155;
+
+  background: #f1f5f9;
+
+  transform: translateY(-2px);
+}
+
+
+.pdf-save-button {
+
+  border: none;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #2563eb
+    );
+
+  box-shadow:
+    0 10px 25px rgba(37,99,235,0.25);
+}
+
+
+.pdf-save-button:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 32px rgba(37,99,235,0.32);
+}
+
+
+.pdf-save-button:active {
+
+  transform: translateY(0);
+
+}
+
+
+/* =========================================================
+   BOTTOM INFO
+========================================================= */
+
+.pdf-bottom-info {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 20px;
+
+  padding: 16px 20px;
+
+  border-radius: 16px;
+
+  background: rgba(255,255,255,0.65);
+
+  border: 1px solid rgba(226,232,240,0.8);
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+.pdf-bottom-info > div {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.pdf-bottom-info > div > i {
+
+  color: #f59e0b;
+}
+
+
+.pdf-bottom-info strong {
+  color: #334155;
+}
+
+
+.secure-label {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #16a34a;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .pdf-hero {
+
+    padding: 45px;
+
+  }
+
+
+  .pdf-hero-visual {
+
+    width: 300px;
+
+    transform: scale(0.85);
+
+    margin-right: -30px;
+
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .admin-pdf-page {
+
+    padding: 25px 18px 50px;
+
+  }
+
+
+  .pdf-hero {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    padding: 40px 30px;
+
+  }
+
+
+  .pdf-hero-content {
+
+    max-width: 100%;
+
+  }
+
+
+  .pdf-hero-visual {
+
+    align-self: center;
+
+    margin: -10px 0 -20px;
+
+  }
+
+
+  .pdf-form-card {
+
+    padding: 28px 22px;
+
+  }
+
+
+  .pdf-form-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .admin-pdf-page {
+
+    padding: 18px 12px 40px;
+
+  }
+
+
+  .pdf-hero {
+
+    padding: 30px 22px;
+
+    border-radius: 22px;
+
+  }
+
+
+  .pdf-hero h1 {
+
+    font-size: 36px;
+
+    letter-spacing: -1.5px;
+
+  }
+
+
+  .pdf-hero p {
+
+    font-size: 14px;
+
+  }
+
+
+  .pdf-hero-features {
+
+    gap: 7px;
+
+  }
+
+
+  .pdf-hero-features span {
+
+    font-size: 10px;
+
+    padding: 7px 9px;
+
+  }
+
+
+  .pdf-hero-visual {
+
+    width: 290px;
+
+    height: 240px;
+
+    transform: scale(0.8);
+
+    transform-origin: center;
+
+    margin-left: -15px;
+
+  }
+
+
+  .pdf-form-card {
+
+    padding: 22px 16px;
+
+    border-radius: 22px;
+
+  }
+
+
+  .pdf-form-header {
+
+    align-items: flex-start;
+
+  }
+
+
+  .pdf-upload-title {
+
+    align-items: flex-start;
+
+  }
+
+
+  .modern-dropzone {
+
+    min-height: 220px;
+
+    padding: 20px 12px;
+
+  }
+
+
+  .upload-limit {
+
+    gap: 7px;
+
+    font-size: 9px;
+
+  }
+
+
+  .pdf-form-actions {
+
+    flex-direction: column-reverse;
+
+  }
+
+
+  .pdf-cancel-button,
+  .pdf-save-button {
+
+    width: 100%;
+
+  }
+
+
+  .pdf-bottom-info {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+  }
+
+}
+</style>
+
+
+
+<div class="admin-pdf-page">
+
+  <!-- =====================================================
+       BACKGROUND DECORATIONS
+  ====================================================== -->
+
+  <div class="pdf-bg-shape pdf-bg-shape-1"></div>
+  <div class="pdf-bg-shape pdf-bg-shape-2"></div>
+  <div class="pdf-bg-shape pdf-bg-shape-3"></div>
+
+
+  <div class="pdf-page-container">
+
+    <!-- =====================================================
+         BACK BUTTON
+    ====================================================== -->
+
+    <div class="pdf-topbar">
+
+      <%= link_to admin_ebook_path(@ebook),
+                  class: "pdf-back-button" do %>
+
+        <span class="back-icon">
+          <i class="bi bi-arrow-left"></i>
+        </span>
+
+        <span>
+          Back to E-Book
+        </span>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="pdf-hero">
+
+      <div class="pdf-hero-content">
+
+        <span class="pdf-kicker">
+          <i class="bi bi-book-half"></i>
+
+          <%= @ebook.title %>
+        </span>
+
+
+        <h1>
+          Add PDF File
+        </h1>
+
+
+        <p>
+          Add another PDF chapter or learning resource
+          to this E-Book.
+        </p>
+
+
+        <div class="pdf-hero-features">
+
+          <span>
+            <i class="bi bi-file-earmark-pdf"></i>
+            PDF Only
+          </span>
+
+          <span>
+            <i class="bi bi-cloud-arrow-up"></i>
+            Easy Upload
+          </span>
+
+          <span>
+            <i class="bi bi-shield-check"></i>
+            Secure Storage
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           3D PDF ILLUSTRATION
+      ====================================================== -->
+
+      <div class="pdf-hero-visual">
+
+        <div class="pdf-orbit orbit-1"></div>
+        <div class="pdf-orbit orbit-2"></div>
+
+
+        <div class="pdf-floating-star star-1">
+          ✦
+        </div>
+
+        <div class="pdf-floating-star star-2">
+          ✦
+        </div>
+
+
+        <div class="pdf-book-3d">
+
+          <div class="pdf-book-shadow"></div>
+
+
+          <div class="pdf-book-back"></div>
+
+
+          <div class="pdf-book">
+
+            <div class="pdf-page-lines">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+
+            <div class="pdf-symbol">
+
+              <i class="bi bi-file-earmark-pdf-fill"></i>
+
+              <strong>
+                PDF
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="pdf-upload-cloud">
+
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MAIN FORM CARD
+    ====================================================== -->
+
+    <section class="pdf-form-card">
+
+
+      <!-- ===================================================
+           FORM HEADER
+      ==================================================== -->
+
+      <div class="pdf-form-header">
+
+        <div class="pdf-form-header-icon">
+
+          <i class="bi bi-file-earmark-plus-fill"></i>
+
+        </div>
+
+
+        <div>
+
+          <h2>
+            PDF Information
+          </h2>
+
+          <p>
+            Enter the details of your PDF resource.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           ERRORS
+      ==================================================== -->
+
+      <% if @ebook_file.errors.any? %>
+
+        <div class="pdf-error-box">
+
+          <div class="pdf-error-icon">
+
+            <i class="bi bi-exclamation-triangle-fill"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Please fix the following:
+            </strong>
+
+
+            <ul>
+
+              <% @ebook_file.errors.full_messages.each do |message| %>
+
+                <li>
+                  <%= message %>
+                </li>
+
+              <% end %>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+
+      <!-- ===================================================
+           FORM
+      ==================================================== -->
+
+      <%= form_with model: [
+                    :admin,
+                    @ebook,
+                    @ebook_file
+                  ],
+                  local: true,
+                  multipart: true,
+                  class: "modern-pdf-form" do |form| %>
+
+
+
+        <!-- =================================================
+             TITLE + POSITION
+        ================================================== -->
+
+        <div class="pdf-form-grid">
+
+
+          <!-- PDF TITLE -->
+
+          <div class="pdf-field">
+
+            <%= form.label :title do %>
+
+              <span class="field-icon">
+                <i class="bi bi-file-text"></i>
+              </span>
+
+              PDF Title
+
+              <span class="required-star">
+                *
+              </span>
+
+            <% end %>
+
+
+            <div class="pdf-input-wrapper">
+
+              <%= form.text_field :title,
+                                  placeholder: "Example: Chapter 1 - Physical Geography",
+                                  required: true,
+                                  autocomplete: "off" %>
+
+            </div>
+
+
+            <small>
+              Give your PDF a clear and descriptive title.
+            </small>
+
+          </div>
+
+
+
+          <!-- POSITION -->
+
+          <div class="pdf-field">
+
+            <%= form.label :position do %>
+
+              <span class="field-icon">
+                <i class="bi bi-arrow-down-up"></i>
+              </span>
+
+              Position
+
+              <span class="required-star">
+                *
+              </span>
+
+            <% end %>
+
+
+            <div class="pdf-input-wrapper position-input">
+
+              <%= form.number_field :position,
+                                    min: 1,
+                                    required: true,
+                                    placeholder: "1" %>
+
+              <span class="input-suffix">
+                Order
+              </span>
+
+            </div>
+
+
+            <small>
+              Set the chapter display order.
+            </small>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DESCRIPTION + STATUS
+        ================================================== -->
+
+        <div class="pdf-form-grid description-grid">
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="pdf-field">
+
+            <%= form.label :description do %>
+
+              <span class="field-icon">
+                <i class="bi bi-chat-left-text"></i>
+              </span>
+
+              Description
+
+            <% end %>
+
+
+            <div class="pdf-textarea-wrapper">
+
+              <%= form.text_area :description,
+                                 rows: 5,
+                                 maxlength: 500,
+                                 placeholder: "Write a short description about this PDF..." %>
+
+              <span class="textarea-counter">
+                Optional
+              </span>
+
+            </div>
+
+
+            <small>
+              Help students understand what this PDF contains.
+            </small>
+
+          </div>
+
+
+
+          <!-- STATUS -->
+
+          <div class="pdf-field">
+
+            <%= form.label :status do %>
+
+              <span class="field-icon">
+                <i class="bi bi-toggle2-on"></i>
+              </span>
+
+              Status
+
+            <% end %>
+
+
+            <div class="status-select-wrapper">
+
+              <%= form.select :status,
+                              [
+                                ["Active", "active"],
+                                ["Inactive", "inactive"]
+                              ],
+                              {},
+                              class: "modern-status-select" %>
+
+              <i class="bi bi-chevron-down"></i>
+
+            </div>
+
+
+            <div class="status-info">
+
+              <span class="status-dot"></span>
+
+              Active PDFs are visible to students.
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PDF UPLOAD
+        ================================================== -->
+
+        <div class="pdf-upload-section">
+
+
+          <div class="pdf-upload-title">
+
+            <div class="upload-title-icon">
+
+              <i class="bi bi-cloud-arrow-up-fill"></i>
+
+            </div>
+
+
+            <div>
+
+              <%= form.label :pdf do %>
+
+                Upload PDF
+
+                <span class="required-star">
+                  *
+                </span>
+
+              <% end %>
+
+              <p>
+                Upload the PDF file for this chapter or resource.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- DROPZONE -->
+
+          <div class="modern-dropzone"
+               id="pdfDropzone">
+
+
+            <div class="dropzone-content">
+
+
+              <!-- ICON -->
+
+              <div class="dropzone-icon">
+
+                <div class="cloud-back">
+
+                  <i class="bi bi-cloud-fill"></i>
+
+                </div>
+
+                <div class="cloud-arrow">
+
+                  <i class="bi bi-arrow-up"></i>
+
+                </div>
+
+              </div>
+
+
+              <h3>
+                Drag & Drop your PDF here
+              </h3>
+
+
+              <p>
+                or
+                <label for="ebook_file_pdf">
+                  browse from your computer
+                </label>
+              </p>
+
+
+              <div class="upload-limit">
+
+                <span>
+                  <i class="bi bi-file-earmark-pdf"></i>
+                  PDF only
+                </span>
+
+                <span class="upload-divider"></span>
+
+                <span>
+                  <i class="bi bi-shield-check"></i>
+                  Secure upload
+                </span>
+
+              </div>
+
+
+              <!-- REAL RAILS FILE INPUT -->
+
+              <%= form.file_field :pdf,
+                                  accept: "application/pdf,.pdf",
+                                  required: true,
+                                  class: "hidden-pdf-input",
+                                  id: "ebook_file_pdf" %>
+
+
+            </div>
+
+
+            <!-- SELECTED FILE -->
+
+            <div class="selected-pdf-file"
+                 id="selectedPdfFile"
+                 style="display:none;">
+
+              <div class="selected-pdf-icon">
+
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+
+              </div>
+
+
+              <div class="selected-pdf-info">
+
+                <strong id="selectedPdfName">
+                  PDF File
+                </strong>
+
+                <span id="selectedPdfSize">
+                  0 MB
+                </span>
+
+              </div>
+
+
+              <button type="button"
+                      class="remove-pdf"
+                      id="removePdf">
+
+                <i class="bi bi-x-lg"></i>
+
+              </button>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="upload-note">
+
+            <i class="bi bi-info-circle"></i>
+
+            <span>
+              Only PDF files are allowed.
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FORM ACTIONS
+        ================================================== -->
+
+        <div class="pdf-form-actions">
+
+
+          <%= link_to admin_ebook_path(@ebook),
+                      class: "pdf-cancel-button" do %>
+
+            <i class="bi bi-x-lg"></i>
+
+            Cancel
+
+          <% end %>
+
+
+
+          <%= form.submit "Add PDF",
+                          class: "pdf-save-button" do %>
+
+          <% end %>
+
+
+        </div>
+
+
+      <% end %>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         BOTTOM INFO
+    ====================================================== -->
+
+    <div class="pdf-bottom-info">
+
+      <div>
+
+        <i class="bi bi-lightbulb-fill"></i>
+
+        <span>
+          <strong>Tip:</strong>
+          Use clear chapter names so students can easily
+          find the right PDF.
+        </span>
+
+      </div>
+
+
+      <span class="secure-label">
+
+        <i class="bi bi-shield-lock-fill"></i>
+
+        Secure Admin Area
+
+      </span>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     PDF UPLOAD JAVASCRIPT
+========================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const dropzone = document.getElementById("pdfDropzone");
+  const fileInput = document.getElementById("ebook_file_pdf");
+
+  const selectedFile = document.getElementById("selectedPdfFile");
+  const selectedName = document.getElementById("selectedPdfName");
+  const selectedSize = document.getElementById("selectedPdfSize");
+
+  const removeButton = document.getElementById("removePdf");
+
+
+  if (!dropzone || !fileInput) return;
+
+
+  function showFile(file) {
+
+    if (!file) return;
+
+
+    if (
+      file.type !== "application/pdf" &&
+      !file.name.toLowerCase().endsWith(".pdf")
+    ) {
+
+      alert("Please select a PDF file only.");
+
+      fileInput.value = "";
+
+      return;
+
+    }
+
+
+    selectedName.textContent = file.name;
+
+
+    const sizeMB =
+      (file.size / (1024 * 1024)).toFixed(2);
+
+
+    selectedSize.textContent =
+      sizeMB + " MB";
+
+
+    selectedFile.style.display = "flex";
+
+    dropzone.classList.add("has-file");
+
+  }
+
+
+
+  fileInput.addEventListener("change", function () {
+
+    if (this.files.length > 0) {
+
+      showFile(this.files[0]);
+
+    }
+
+  });
+
+
+
+  dropzone.addEventListener("dragover", function (event) {
+
+    event.preventDefault();
+
+    dropzone.classList.add("dragover");
+
+  });
+
+
+
+  dropzone.addEventListener("dragleave", function () {
+
+    dropzone.classList.remove("dragover");
+
+  });
+
+
+
+  dropzone.addEventListener("drop", function (event) {
+
+    event.preventDefault();
+
+    dropzone.classList.remove("dragover");
+
+
+    const files = event.dataTransfer.files;
+
+
+    if (files.length > 0) {
+
+      const file = files[0];
+
+      showFile(file);
+
+
+      try {
+
+        const dataTransfer = new DataTransfer();
+
+        dataTransfer.items.add(file);
+
+        fileInput.files = dataTransfer.files;
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    }
+
+  });
+
+
+
+  removeButton.addEventListener("click", function () {
+
+    fileInput.value = "";
+
+    selectedFile.style.display = "none";
+
+    dropzone.classList.remove("has-file");
+
+  });
+
+});
+
+</script>

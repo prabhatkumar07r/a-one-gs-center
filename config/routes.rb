@@ -134,104 +134,135 @@ Rails.application.routes.draw do
   # ADMIN
   # ==================================================
 
-  namespace :admin do
+namespace :admin do
 
-    resources :ebooks
+  # ==================================================
+  # E-BOOK PAYMENTS
+  # ==================================================
 
-    # ==================================================
-    # ADMIN TEST SERIES
-    # ==================================================
+  resources :ebook_purchases,
+            only: [:index, :show] do
 
-    resources :test_series do
-
-      resources :test_series_tests,
-                as: :tests do
-
-        resources :test_series_questions,
-                  as: :questions do
-
-          resources :test_series_options,
-                    as: :options
-
-        end
-
-      end
-
+    member do
+      post :verify_payment
     end
-
-
-    # ==================================================
-    # ADMIN PROFILE
-    # ==================================================
-
-    resource :profile,
-             only: [:show, :edit, :update]
-
-
-    # ==================================================
-    # ADMIN SETTINGS
-    # ==================================================
-
-    get "settings",
-        to: "settings#index"
-
-    get "settings/notifications",
-        to: "settings#notifications",
-        as: :settings_notifications
-
-    patch "settings/notifications",
-          to: "settings#update_notifications",
-          as: :update_settings_notifications
-
-    get "settings/website",
-        to: "settings#website",
-        as: :settings_website
-
-    patch "settings/website",
-          to: "settings#update_website",
-          as: :update_settings_website
-
-    get "settings/security",
-        to: "settings#security",
-        as: :settings_security
-
-    get "settings/password",
-        to: "settings#password",
-        as: :settings_password
-
-    patch "settings/password",
-          to: "settings#update_password",
-          as: :update_settings_password
-
-
-    # ==================================================
-    # ADMIN COURSES
-    # ==================================================
-
-    resources :courses do
-
-      resources :quizzes do
-        resources :questions
-      end
-
-      resources :playlists do
-        resources :videos
-        resources :course_resources
-      end
-
-      resources :students,
-                only: [:index]
-
-    end
-
-
-    # ==================================================
-    # ADMIN ENROLLMENTS
-    # ==================================================
-
-    resources :enrollments
 
   end
+
+
+  # ==================================================
+  # E-BOOKS
+  # ==================================================
+
+  resources :ebooks do
+
+    resources :ebook_files,
+              only: [
+                :index,
+                :new,
+                :create,
+                :edit,
+                :update,
+                :destroy
+              ]
+
+  end
+
+
+  # ==================================================
+  # ADMIN TEST SERIES
+  # ==================================================
+
+  resources :test_series do
+
+    resources :test_series_tests,
+              as: :tests do
+
+      resources :test_series_questions,
+                as: :questions do
+
+        resources :test_series_options,
+                  as: :options
+
+      end
+
+    end
+
+  end
+
+
+  # ==================================================
+  # ADMIN PROFILE
+  # ==================================================
+
+  resource :profile,
+           only: [:show, :edit, :update]
+
+
+  # ==================================================
+  # ADMIN SETTINGS
+  # ==================================================
+
+  get "settings",
+      to: "settings#index"
+
+  get "settings/notifications",
+      to: "settings#notifications",
+      as: :settings_notifications
+
+  patch "settings/notifications",
+        to: "settings#update_notifications",
+        as: :update_settings_notifications
+
+  get "settings/website",
+      to: "settings#website",
+      as: :settings_website
+
+  patch "settings/website",
+        to: "settings#update_website",
+        as: :update_settings_website
+
+  get "settings/security",
+      to: "settings#security",
+      as: :settings_security
+
+  get "settings/password",
+      to: "settings#password",
+      as: :settings_password
+
+  patch "settings/password",
+        to: "settings#update_password",
+        as: :update_settings_password
+
+
+  # ==================================================
+  # ADMIN COURSES
+  # ==================================================
+
+  resources :courses do
+
+    resources :quizzes do
+      resources :questions
+    end
+
+    resources :playlists do
+      resources :videos
+      resources :course_resources
+    end
+
+    resources :students,
+              only: [:index]
+
+  end
+
+
+  # ==================================================
+  # ADMIN ENROLLMENTS
+  # ==================================================
+
+  resources :enrollments
+
+end
 
 
   # ==================================================
@@ -378,6 +409,16 @@ get "/ebook-payments/:id/failed",
     end
 
   end
+
+
+  resources :ebook_files,
+          only: [:show] do
+
+  member do
+    get :download
+  end
+
+end
 
 
   # ==================================================

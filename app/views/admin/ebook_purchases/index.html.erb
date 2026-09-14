@@ -1,0 +1,848 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+  /* =========================================================
+     A ONE GS CENTER
+     ADMIN — E-BOOK PAYMENTS
+  ========================================================= */
+
+  .ebook-purchases-page {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+
+  /* =========================================================
+     PAGE HEADER
+  ========================================================= */
+
+  .ebook-purchases-page .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .ebook-purchases-page .breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #8a94a6;
+    font-size: 12px;
+  }
+
+  .ebook-purchases-page .breadcrumb i {
+    font-size: 8px;
+  }
+
+  .ebook-purchases-page .page-header h1 {
+    margin: 0;
+    color: #202938;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .ebook-purchases-page .page-header p {
+    margin: 8px 0 0;
+    color: #7a8495;
+    font-size: 14px;
+  }
+
+
+  /* =========================================================
+     STATISTICS
+  ========================================================= */
+
+  .ebook-purchases-page .payment-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .ebook-purchases-page .payment-stat-card {
+    min-width: 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.05);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ebook-purchases-page .payment-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(31, 41, 55, 0.08);
+  }
+
+  .ebook-purchases-page .payment-stat-card span {
+    display: block;
+    margin-bottom: 9px;
+    color: #7b8494;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .ebook-purchases-page .payment-stat-card strong {
+    display: block;
+    color: #273142;
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .ebook-purchases-page .payment-stat-card.success strong {
+    color: #15803d;
+  }
+
+  .ebook-purchases-page .payment-stat-card.warning strong {
+    color: #b45309;
+  }
+
+  .ebook-purchases-page .payment-stat-card.danger strong {
+    color: #dc2626;
+  }
+
+  .ebook-purchases-page .payment-stat-card.revenue strong {
+    color: #6d28d9;
+  }
+
+
+  /* =========================================================
+     SEARCH / FILTER TOOLBAR
+  ========================================================= */
+
+  .ebook-purchases-page .payment-toolbar {
+    width: 100%;
+    margin-bottom: 18px;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(31, 41, 55, 0.04);
+    box-sizing: border-box;
+  }
+
+  .ebook-purchases-page .payment-search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .ebook-purchases-page .search-box {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ebook-purchases-page .search-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    z-index: 1;
+    color: #98a2b3;
+    font-size: 13px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .ebook-purchases-page .search-box input {
+    width: 100%;
+    height: 44px;
+    padding: 0 15px 0 39px;
+    color: #273142;
+    background: #ffffff;
+    border: 1px solid #dce1e9;
+    border-radius: 10px;
+    outline: none;
+    font-size: 13px;
+    box-sizing: border-box;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ebook-purchases-page .search-box input::placeholder {
+    color: #a3aab6;
+  }
+
+  .ebook-purchases-page .search-box input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+  }
+
+  .ebook-purchases-page .payment-filter {
+    flex: 0 0 auto;
+    height: 44px;
+    min-width: 145px;
+    padding: 0 12px;
+    color: #344054;
+    background: #ffffff;
+    border: 1px solid #dce1e9;
+    border-radius: 10px;
+    outline: none;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .ebook-purchases-page .payment-filter:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+  }
+
+  .ebook-purchases-page .payment-filter-button,
+  .ebook-purchases-page .payment-reset-button {
+    flex: 0 0 auto;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  .ebook-purchases-page .payment-filter-button {
+    color: #ffffff;
+    background: #4f46e5;
+    border: 1px solid #4f46e5;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .ebook-purchases-page .payment-filter-button:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+  }
+
+  .ebook-purchases-page .payment-reset-button {
+    color: #4f46e5;
+    background: #eef2ff;
+    border: 1px solid #e0e7ff;
+  }
+
+  .ebook-purchases-page .payment-reset-button:hover {
+    background: #e0e7ff;
+  }
+
+
+  /* =========================================================
+     TABLE CARD
+  ========================================================= */
+
+  .ebook-purchases-page .payment-table-card {
+    width: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.05);
+  }
+
+  .ebook-purchases-page .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ebook-purchases-page .payment-table {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .ebook-purchases-page .payment-table thead th {
+    padding: 14px 13px;
+    color: #667085;
+    background: #f8f9fc;
+    border-bottom: 1px solid #e8ebf1;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .ebook-purchases-page .payment-table tbody td {
+    padding: 15px 13px;
+    color: #344054;
+    border-bottom: 1px solid #edf0f4;
+    font-size: 12px;
+    vertical-align: middle;
+  }
+
+  .ebook-purchases-page .payment-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .ebook-purchases-page .payment-table tbody tr {
+    transition: background 0.15s ease;
+  }
+
+  .ebook-purchases-page .payment-table tbody tr:hover {
+    background: #fafbff;
+  }
+
+
+  /* =========================================================
+     STUDENT
+  ========================================================= */
+
+  .ebook-purchases-page .student-payment-info strong {
+    display: block;
+    color: #273142;
+    font-size: 12px;
+    font-weight: 750;
+  }
+
+  .ebook-purchases-page .student-payment-info span {
+    display: block;
+    max-width: 190px;
+    margin-top: 4px;
+    overflow: hidden;
+    color: #98a2b3;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  /* =========================================================
+     E-BOOK TITLE
+  ========================================================= */
+
+  .ebook-purchases-page .payment-table td:nth-child(3) strong {
+    display: block;
+    max-width: 210px;
+    color: #273142;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+
+  /* =========================================================
+     AMOUNT
+  ========================================================= */
+
+  .ebook-purchases-page .payment-table td:nth-child(4) strong {
+    color: #273142;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+
+  /* =========================================================
+     STATUS BADGES
+  ========================================================= */
+
+  .ebook-purchases-page .payment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ebook-purchases-page .payment-status i {
+    font-size: 10px;
+  }
+
+  .ebook-purchases-page .payment-status.paid {
+    color: #15803d;
+    background: #dcfce7;
+  }
+
+  .ebook-purchases-page .payment-status.pending {
+    color: #b45309;
+    background: #fef3c7;
+  }
+
+  .ebook-purchases-page .payment-status.failed {
+    color: #dc2626;
+    background: #fee2e2;
+  }
+
+
+  /* =========================================================
+     RAZORPAY IDs
+  ========================================================= */
+
+  .ebook-purchases-page .payment-table code {
+    display: inline-block;
+    max-width: 175px;
+    overflow: hidden;
+    padding: 5px 7px;
+    color: #475467;
+    background: #f8f9fc;
+    border: 1px solid #edf0f5;
+    border-radius: 6px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .ebook-purchases-page .muted-text {
+    color: #a0a8b5;
+    font-size: 11px;
+  }
+
+
+  /* =========================================================
+     DATE
+  ========================================================= */
+
+  .ebook-purchases-page .payment-table td:nth-child(8) {
+    white-space: nowrap;
+  }
+
+  .ebook-purchases-page .payment-table td:nth-child(8) small {
+    display: block;
+    margin-top: 4px;
+    color: #98a2b3;
+    font-size: 10px;
+  }
+
+
+  /* =========================================================
+     VIEW BUTTON
+  ========================================================= */
+
+  .ebook-purchases-page .payment-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 70px;
+    padding: 8px 11px;
+    color: #4f46e5;
+    background: #eef2ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 750;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .ebook-purchases-page .payment-view-button:hover {
+    color: #4338ca;
+    background: #e0e7ff;
+    transform: translateY(-1px);
+  }
+
+
+  /* =========================================================
+     EMPTY STATE
+  ========================================================= */
+
+  .ebook-purchases-page .payment-empty-state {
+    padding: 75px 20px;
+    text-align: center;
+  }
+
+  .ebook-purchases-page .payment-empty-state > i {
+    color: #c5cbd5;
+    font-size: 44px;
+  }
+
+  .ebook-purchases-page .payment-empty-state h3 {
+    margin: 16px 0 6px;
+    color: #273142;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .ebook-purchases-page .payment-empty-state p {
+    margin: 0;
+    color: #98a2b3;
+    font-size: 13px;
+  }
+
+
+  /* =========================================================
+     MOBILE / TABLET
+  ========================================================= */
+
+  @media (max-width: 1200px) {
+
+    .ebook-purchases-page .payment-stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+  }
+
+
+  @media (max-width: 850px) {
+
+    .ebook-purchases-page {
+      padding: 20px;
+    }
+
+    .ebook-purchases-page .payment-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ebook-purchases-page .payment-search-form {
+      flex-wrap: wrap;
+    }
+
+    .ebook-purchases-page .search-box {
+      flex: 1 1 100%;
+    }
+
+    .ebook-purchases-page .payment-filter {
+      flex: 1;
+    }
+
+    .ebook-purchases-page .payment-filter-button,
+    .ebook-purchases-page .payment-reset-button {
+      flex: 0 0 auto;
+    }
+
+  }
+
+
+  @media (max-width: 550px) {
+
+    .ebook-purchases-page {
+      padding: 15px;
+    }
+
+    .ebook-purchases-page .page-header h1 {
+      font-size: 24px;
+    }
+
+    .ebook-purchases-page .page-header p {
+      font-size: 12px;
+    }
+
+    .ebook-purchases-page .payment-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .ebook-purchases-page .payment-search-form {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .ebook-purchases-page .payment-filter,
+    .ebook-purchases-page .payment-filter-button,
+    .ebook-purchases-page .payment-reset-button {
+      width: 100%;
+    }
+
+    .ebook-purchases-page .payment-table {
+      min-width: 1100px;
+    }
+
+  }
+
+</style>
+
+
+<div class="admin-page ebook-purchases-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+      <div class="breadcrumb">
+        Admin Panel
+        <i class="fas fa-chevron-right"></i>
+        E-Book Payments
+      </div>
+
+      <h1>
+        E-Book Payments
+      </h1>
+
+      <p>
+        Monitor E-Book purchases and verify payments directly with Razorpay.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
+
+  <div class="payment-stats">
+
+    <div class="payment-stat-card">
+      <span>Total Purchases</span>
+      <strong><%= number_with_delimiter(@total_purchases) %></strong>
+    </div>
+
+    <div class="payment-stat-card success">
+      <span>Paid</span>
+      <strong><%= number_with_delimiter(@paid_purchases) %></strong>
+    </div>
+
+    <div class="payment-stat-card warning">
+      <span>Pending</span>
+      <strong><%= number_with_delimiter(@pending_purchases) %></strong>
+    </div>
+
+    <div class="payment-stat-card danger">
+      <span>Failed</span>
+      <strong><%= number_with_delimiter(@failed_purchases) %></strong>
+    </div>
+
+    <div class="payment-stat-card revenue">
+      <span>Total Revenue</span>
+      <strong>
+        ₹<%= number_with_delimiter(@total_revenue.to_i) %>
+      </strong>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       SEARCH / FILTER
+  ====================================================== -->
+
+  <div class="payment-toolbar">
+
+    <%= form_with url: admin_ebook_purchases_path,
+                  method: :get,
+                  local: true,
+                  class: "payment-search-form" do %>
+
+      <div class="search-box">
+
+        <i class="fas fa-search"></i>
+
+        <%= text_field_tag :q,
+                           params[:q],
+                           placeholder:
+                             "Search student, E-Book, order or payment ID..." %>
+
+      </div>
+
+      <%= select_tag :status,
+                     options_for_select(
+                       [
+                         ["All Payments", ""],
+                         ["Paid", "paid"],
+                         ["Pending", "pending"],
+                         ["Failed", "failed"]
+                       ],
+                       params[:status]
+                     ),
+                     class: "payment-filter" %>
+
+      <button type="submit"
+              class="payment-filter-button">
+        <i class="fas fa-filter"></i>
+        Filter
+      </button>
+
+      <% if params[:q].present? || params[:status].present? %>
+        <%= link_to admin_ebook_purchases_path,
+                    class: "payment-reset-button" do %>
+          Reset
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       TABLE
+  ====================================================== -->
+
+  <div class="payment-table-card">
+
+    <% if @ebook_purchases.any? %>
+
+      <div class="table-responsive">
+
+        <table class="payment-table">
+
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Student</th>
+              <th>E-Book</th>
+              <th>Amount</th>
+              <th>Payment Status</th>
+              <th>Razorpay Payment</th>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% @ebook_purchases.each do |purchase| %>
+
+              <tr>
+
+                <td>
+                  <strong>
+                    #<%= purchase.id %>
+                  </strong>
+                </td>
+
+                <td>
+                  <div class="student-payment-info">
+
+                    <strong>
+                      <%= purchase.user.name.presence || "User ##{purchase.user_id}" %>
+                    </strong>
+
+                    <span>
+                      <%= purchase.user.email %>
+                    </span>
+
+                  </div>
+                </td>
+
+                <td>
+                  <strong>
+                    <%= purchase.ebook.title %>
+                  </strong>
+                </td>
+
+                <td>
+                  <strong>
+                    ₹<%= number_with_delimiter(purchase.amount.to_i) %>
+                  </strong>
+                </td>
+
+                <td>
+
+                  <% if purchase.paid? %>
+
+                    <span class="payment-status paid">
+                      <i class="fas fa-check-circle"></i>
+                      Paid
+                    </span>
+
+                  <% elsif purchase.payment_status.to_s.downcase == "failed" %>
+
+                    <span class="payment-status failed">
+                      <i class="fas fa-times-circle"></i>
+                      Failed
+                    </span>
+
+                  <% else %>
+
+                    <span class="payment-status pending">
+                      <i class="fas fa-clock"></i>
+                      Pending
+                    </span>
+
+                  <% end %>
+
+                </td>
+
+                <td>
+                  <% if purchase.razorpay_payment_id.present? %>
+                    <code>
+                      <%= purchase.razorpay_payment_id %>
+                    </code>
+                  <% else %>
+                    <span class="muted-text">
+                      Not available
+                    </span>
+                  <% end %>
+                </td>
+
+                <td>
+                  <% if purchase.razorpay_order_id.present? %>
+                    <code>
+                      <%= purchase.razorpay_order_id %>
+                    </code>
+                  <% else %>
+                    <span class="muted-text">
+                      Not available
+                    </span>
+                  <% end %>
+                </td>
+
+                <td>
+                  <%= purchase.created_at.strftime("%d %b %Y") %>
+                  <small>
+                    <%= purchase.created_at.strftime("%I:%M %p") %>
+                  </small>
+                </td>
+
+                <td>
+
+                  <%= link_to admin_ebook_purchase_path(purchase),
+                              class: "payment-view-button" do %>
+
+                    <i class="fas fa-eye"></i>
+                    View
+
+                  <% end %>
+
+                </td>
+
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    <% else %>
+
+      <div class="payment-empty-state">
+
+        <i class="fas fa-receipt"></i>
+
+        <h3>
+          No E-Book payments found
+        </h3>
+
+        <p>
+          No purchases match your current search or filter.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

@@ -5,6 +5,9 @@ class Ebook < ApplicationRecord
   before_validation :calculate_discount
 
   validates :title, presence: true
+  has_many :ebook_files,
+         -> { order(:position, :id) },
+         dependent: :destroy
 
   validates :price,
             numericality: {
@@ -25,6 +28,8 @@ class Ebook < ApplicationRecord
   scope :published, -> { where(status: "published") }
   scope :free, -> { where(is_free: true) }
   scope :paid, -> { where(is_free: false) }
+  
+
 
   def free?
     is_free?

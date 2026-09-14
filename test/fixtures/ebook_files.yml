@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ebook: one
+  title: MyString
+  description: MyText
+  position: 1
+  status: MyString
+
+two:
+  ebook: two
+  title: MyString
+  description: MyText
+  position: 1
+  status: MyString

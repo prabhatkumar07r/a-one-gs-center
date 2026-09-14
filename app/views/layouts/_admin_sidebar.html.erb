@@ -706,6 +706,24 @@
 </li>
 
 
+       <!-- =====================================================
+     E-BOOK PAYMENTS
+====================================================== -->
+
+<li class="nav-item">
+
+  <%= link_to admin_ebook_purchases_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/ebook_purchases')}" do %>
+
+    <i class="bi bi-credit-card"></i>
+
+    <span>E-Book Payments</span>
+
+  <% end %>
+
+</li>
+
+
           <!-- Test Series -->
 
           <li class="nav-item">

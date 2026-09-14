@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_121526) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_112836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -171,6 +171,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_121526) do
     t.date "start_date"
     t.string "status"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ebook_files", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.bigint "ebook_id", null: false
+    t.integer "position", default: 1, null: false
+    t.string "status", default: "active", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ebook_id", "position"], name: "index_ebook_files_on_ebook_id_and_position", unique: true
+    t.index ["ebook_id", "status"], name: "index_ebook_files_on_ebook_id_and_status"
+    t.index ["ebook_id"], name: "index_ebook_files_on_ebook_id"
   end
 
   create_table "ebook_purchases", force: :cascade do |t|
@@ -615,6 +628,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_121526) do
   add_foreign_key "course_discounts", "courses"
   add_foreign_key "course_discounts", "discounts"
   add_foreign_key "courses", "teachers"
+  add_foreign_key "ebook_files", "ebooks"
   add_foreign_key "ebook_purchases", "ebooks"
   add_foreign_key "ebook_purchases", "users"
   add_foreign_key "enrollments", "courses"

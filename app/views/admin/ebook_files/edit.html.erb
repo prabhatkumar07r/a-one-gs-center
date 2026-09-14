@@ -1,0 +1,179 @@
+<% content_for :page_title, "Edit PDF" %>
+
+<div class="admin-ebook-file-page">
+
+  <div class="admin-ebook-file-wrapper">
+
+    <%= link_to admin_ebook_path(@ebook),
+                class: "ebook-back-link" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      Back to E-Book
+
+    <% end %>
+
+
+    <div class="ebook-file-form-card">
+
+      <div class="form-header">
+
+        <div class="form-icon">
+          <i class="bi bi-pencil-square"></i>
+        </div>
+
+        <div>
+
+          <span class="form-kicker">
+            <%= @ebook.title %>
+          </span>
+
+          <h1>
+            Edit PDF
+          </h1>
+
+        </div>
+
+      </div>
+
+
+      <%= form_with model: [
+                    :admin,
+                    @ebook,
+                    @ebook_file
+                  ],
+                  local: true,
+                  multipart: true do |form| %>
+
+
+        <% if @ebook_file.errors.any? %>
+
+          <div class="form-errors">
+
+            <ul>
+
+              <% @ebook_file.errors.full_messages.each do |message| %>
+
+                <li>
+                  <%= message %>
+                </li>
+
+              <% end %>
+
+            </ul>
+
+          </div>
+
+        <% end %>
+
+
+        <div class="form-group">
+
+          <%= form.label :title,
+                        "PDF Title" %>
+
+          <%= form.text_field :title,
+                              required: true %>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <%= form.label :description,
+                        "Description" %>
+
+          <%= form.text_area :description,
+                             rows: 4 %>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <%= form.label :position,
+                          "Position" %>
+
+            <%= form.number_field :position,
+                                  min: 1,
+                                  required: true %>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <%= form.label :status,
+                          "Status" %>
+
+            <%= form.select :status,
+                            [
+                              ["Active", "active"],
+                              ["Inactive", "inactive"]
+                            ] %>
+
+          </div>
+
+        </div>
+
+
+        <% if @ebook_file.pdf.attached? %>
+
+          <div class="existing-pdf">
+
+            <i class="bi bi-file-earmark-pdf-fill"></i>
+
+            <div>
+
+              <strong>
+                Current PDF
+              </strong>
+
+              <span>
+                <%= @ebook_file.pdf.filename.to_s %>
+              </span>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+
+        <div class="pdf-upload-box">
+
+          <i class="bi bi-arrow-repeat"></i>
+
+          <h3>
+            Replace PDF
+          </h3>
+
+          <p>
+            Leave empty to keep the existing PDF.
+          </p>
+
+          <%= form.file_field :pdf,
+                              accept: "application/pdf,.pdf" %>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <%= link_to "Cancel",
+                      admin_ebook_path(@ebook),
+                      class: "cancel-btn" %>
+
+          <%= form.submit "Save Changes",
+                          class: "save-btn" %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

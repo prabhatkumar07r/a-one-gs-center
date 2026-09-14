@@ -1,0 +1,712 @@
+<div class="admin-page ebook-payment-details-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="breadcrumb">
+        <%= link_to "Admin Panel", dashboard_path %>
+        <i class="fas fa-chevron-right"></i>
+        <%= link_to "E-Book Payments",
+                    admin_ebook_purchases_path %>
+        <i class="fas fa-chevron-right"></i>
+        Payment #<%= @purchase.id %>
+      </div>
+
+      <h1>
+        Payment Details
+      </h1>
+
+      <p>
+        Verify the actual Razorpay transaction for this E-Book purchase.
+      </p>
+
+    </div>
+
+    <%= link_to admin_ebook_purchases_path,
+                class: "back-button" do %>
+      <i class="fas fa-arrow-left"></i>
+      Back to Payments
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       PAYMENT STATUS
+  ====================================================== -->
+
+  <div class="payment-verification-banner">
+
+    <% if @purchase.paid? %>
+
+      <div class="verification-icon success">
+        <i class="fas fa-check-circle"></i>
+      </div>
+
+      <div>
+        <strong>
+          Payment marked as Paid
+        </strong>
+
+        <span>
+          This purchase is currently active.
+        </span>
+      </div>
+
+    <% else %>
+
+      <div class="verification-icon pending">
+        <i class="fas fa-clock"></i>
+      </div>
+
+      <div>
+        <strong>
+          Payment requires verification
+        </strong>
+
+        <span>
+          Use the button below to check the transaction directly with Razorpay.
+        </span>
+      </div>
+
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       PURCHASE INFORMATION
+  ====================================================== -->
+
+  <div class="payment-details-grid">
+
+    <div class="payment-details-card">
+
+      <div class="details-card-header">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Purchase Information</h2>
+      </div>
+
+      <div class="details-list">
+
+        <div>
+          <span>Purchase ID</span>
+          <strong>#<%= @purchase.id %></strong>
+        </div>
+
+        <div>
+          <span>Student</span>
+          <strong>
+            <%= @purchase.user.name.presence || "User ##{@purchase.user_id}" %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Email</span>
+          <strong>
+            <%= @purchase.user.email %>
+          </strong>
+        </div>
+
+        <div>
+          <span>E-Book</span>
+          <strong>
+            <%= @purchase.ebook.title %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Purchase Amount</span>
+          <strong class="amount-highlight">
+            ₹<%= number_with_delimiter(@purchase.amount.to_i) %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Created</span>
+          <strong>
+            <%= @purchase.created_at.strftime("%d %b %Y, %I:%M %p") %>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         DATABASE PAYMENT
+    ==================================================== -->
+
+    <div class="payment-details-card">
+
+      <div class="details-card-header">
+        <i class="fas fa-database"></i>
+        <h2>Database Payment</h2>
+      </div>
+
+      <div class="details-list">
+
+        <div>
+          <span>Payment Status</span>
+
+          <strong>
+            <%= @purchase.payment_status.to_s.upcase %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Purchase Status</span>
+
+          <strong>
+            <%= @purchase.status.to_s.upcase %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Razorpay Order ID</span>
+
+          <strong class="mono">
+            <%= @purchase.razorpay_order_id.presence || "Not available" %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Razorpay Payment ID</span>
+
+          <strong class="mono">
+            <%= @purchase.razorpay_payment_id.presence || "Not available" %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Signature Stored</span>
+
+          <strong>
+            <%= @purchase.razorpay_signature.present? ? "Yes" : "No" %>
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       RAZORPAY VERIFICATION
+  ====================================================== -->
+
+  <div class="payment-details-card razorpay-verification-card">
+
+    <div class="details-card-header">
+
+      <i class="fas fa-shield-alt"></i>
+
+      <div>
+        <h2>
+          Razorpay Verification
+        </h2>
+
+        <p>
+          Live information fetched from Razorpay.
+        </p>
+      </div>
+
+    </div>
+
+
+    <% if @razorpay_error.present? %>
+
+      <div class="razorpay-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <%= @razorpay_error %>
+      </div>
+
+    <% end %>
+
+
+    <% if @razorpay_payment.present? %>
+
+      <div class="verification-grid">
+
+        <div>
+          <span>Payment ID</span>
+          <strong class="mono">
+            <%= @razorpay_payment.id %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Order ID</span>
+          <strong class="mono">
+            <%= @razorpay_payment.order_id %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Amount</span>
+          <strong>
+            ₹<%= number_with_delimiter(
+                  @razorpay_payment.amount.to_i / 100
+                ) %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Currency</span>
+          <strong>
+            <%= @razorpay_payment.currency %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+
+          <strong class="razorpay-status">
+            <%= @razorpay_payment.status.to_s.upcase %>
+          </strong>
+        </div>
+
+        <div>
+          <span>Method</span>
+
+          <strong>
+            <%= @razorpay_payment.method.presence || "—" %>
+          </strong>
+        </div>
+
+      </div>
+
+    <% else %>
+
+      <div class="verification-empty">
+
+        <i class="fas fa-search-dollar"></i>
+
+        <p>
+          Razorpay payment information is not currently available.
+        </p>
+
+      </div>
+
+    <% end %>
+
+
+    <!-- ===================================================
+         VERIFY BUTTON
+    ==================================================== -->
+
+    <% if @purchase.razorpay_payment_id.present? %>
+
+      <div class="verify-payment-action">
+
+        <%= button_to verify_payment_admin_ebook_purchase_path(@purchase),
+                      method: :post,
+                      class: "verify-payment-button",
+                      data: {
+                        turbo_confirm:
+                          "Verify this payment directly with Razorpay?"
+                      } do %>
+
+          <i class="fas fa-shield-check"></i>
+          Verify Payment with Razorpay
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+  .ebook-payment-details-page {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+  }
+
+  .ebook-payment-details-page .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .ebook-payment-details-page .breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #8a94a6;
+    font-size: 12px;
+  }
+
+  .ebook-payment-details-page .breadcrumb a {
+    color: #6366f1;
+    text-decoration: none;
+  }
+
+  .ebook-payment-details-page .breadcrumb i {
+    font-size: 8px;
+  }
+
+  .ebook-payment-details-page .page-header h1 {
+    margin: 0;
+    color: #202938;
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .ebook-payment-details-page .page-header p {
+    margin: 8px 0 0;
+    color: #7a8495;
+    font-size: 14px;
+  }
+
+  .ebook-payment-details-page .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    color: #4f46e5;
+    background: #eef2ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 750;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* =========================================================
+     VERIFICATION BANNER
+  ========================================================= */
+
+  .ebook-payment-details-page .payment-verification-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(31, 41, 55, 0.05);
+  }
+
+  .ebook-payment-details-page .verification-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+
+  .ebook-payment-details-page .verification-icon.success {
+    color: #15803d;
+    background: #dcfce7;
+  }
+
+  .ebook-payment-details-page .verification-icon.pending {
+    color: #b45309;
+    background: #fef3c7;
+  }
+
+  .ebook-payment-details-page .payment-verification-banner strong {
+    display: block;
+    color: #273142;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .ebook-payment-details-page .payment-verification-banner span {
+    display: block;
+    margin-top: 4px;
+    color: #7a8495;
+    font-size: 12px;
+  }
+
+  /* =========================================================
+     DETAILS GRID
+  ========================================================= */
+
+  .ebook-payment-details-page .payment-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .ebook-payment-details-page .payment-details-card {
+    margin-bottom: 18px;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(31, 41, 55, 0.05);
+    box-sizing: border-box;
+  }
+
+  .ebook-payment-details-page .details-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .ebook-payment-details-page .details-card-header > i {
+    margin-top: 2px;
+    color: #4f46e5;
+    font-size: 18px;
+  }
+
+  .ebook-payment-details-page .details-card-header h2 {
+    margin: 0;
+    color: #273142;
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .ebook-payment-details-page .details-card-header p {
+    margin: 4px 0 0;
+    color: #98a2b3;
+    font-size: 11px;
+  }
+
+  /* =========================================================
+     DETAIL ROWS
+  ========================================================= */
+
+  .ebook-payment-details-page .details-list > div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f5;
+  }
+
+  .ebook-payment-details-page .details-list > div:last-child {
+    border-bottom: 0;
+  }
+
+  .ebook-payment-details-page .details-list span {
+    color: #667085;
+    font-size: 12px;
+  }
+
+  .ebook-payment-details-page .details-list strong {
+    max-width: 65%;
+    color: #273142;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: right;
+    word-break: break-word;
+  }
+
+  .ebook-payment-details-page .amount-highlight {
+    color: #6d28d9 !important;
+    font-size: 17px !important;
+  }
+
+  .ebook-payment-details-page .mono {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10px !important;
+  }
+
+  /* =========================================================
+     RAZORPAY VERIFICATION
+  ========================================================= */
+
+  .ebook-payment-details-page .razorpay-verification-card {
+    margin-top: 0;
+  }
+
+  .ebook-payment-details-page .verification-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .ebook-payment-details-page .verification-grid > div {
+    min-width: 0;
+    padding: 15px;
+    background: #f8f9fc;
+    border: 1px solid #edf0f5;
+    border-radius: 11px;
+  }
+
+  .ebook-payment-details-page .verification-grid span {
+    display: block;
+    margin-bottom: 7px;
+    color: #7a8495;
+    font-size: 10px;
+    font-weight: 650;
+  }
+
+  .ebook-payment-details-page .verification-grid strong {
+    display: block;
+    color: #273142;
+    font-size: 12px;
+    font-weight: 800;
+    word-break: break-word;
+  }
+
+  .ebook-payment-details-page .verification-grid .mono {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10px;
+  }
+
+  .ebook-payment-details-page .razorpay-status {
+    color: #15803d !important;
+  }
+
+  /* =========================================================
+     ERROR
+  ========================================================= */
+
+  .ebook-payment-details-page .razorpay-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 15px;
+    padding: 13px 14px;
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .ebook-payment-details-page .verification-empty {
+    padding: 30px 15px;
+    color: #98a2b3;
+    text-align: center;
+  }
+
+  .ebook-payment-details-page .verification-empty i {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 30px;
+  }
+
+  .ebook-payment-details-page .verification-empty p {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  /* =========================================================
+     VERIFY BUTTON
+  ========================================================= */
+
+  .ebook-payment-details-page .verify-payment-action {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #edf0f5;
+  }
+
+  .ebook-payment-details-page .verify-payment-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    border: 0;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(21, 128, 61, 0.18);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ebook-payment-details-page .verify-payment-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(21, 128, 61, 0.24);
+  }
+
+  @media (max-width: 900px) {
+
+    .ebook-payment-details-page {
+      padding: 20px;
+    }
+
+    .ebook-payment-details-page .payment-details-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ebook-payment-details-page .verification-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+  }
+
+  @media (max-width: 600px) {
+
+    .ebook-payment-details-page {
+      padding: 15px;
+    }
+
+    .ebook-payment-details-page .page-header {
+      flex-direction: column;
+    }
+
+    .ebook-payment-details-page .page-header h1 {
+      font-size: 24px;
+    }
+
+    .ebook-payment-details-page .page-header p {
+      font-size: 12px;
+    }
+
+    .ebook-payment-details-page .payment-verification-banner {
+      padding: 15px;
+    }
+
+    .ebook-payment-details-page .payment-details-card {
+      padding: 17px;
+    }
+
+    .ebook-payment-details-page .verification-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ebook-payment-details-page .details-list > div {
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ebook-payment-details-page .details-list strong {
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .ebook-payment-details-page .verify-payment-button {
+      width: 100%;
+    }
+
+  }
+
+</style>
