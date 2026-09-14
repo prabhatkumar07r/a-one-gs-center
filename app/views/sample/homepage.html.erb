@@ -1998,115 +1998,187 @@ a {
 
     object-fit: contain;
 }
-
 /* =========================================================
-   NOTIFICATION TICKER — RIGHT TO LEFT
+   NOTIFICATIONS
 ========================================================= */
 
-.notification-ticker-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
+.notifications {
+  position: relative;
+  padding: 70px 0;
+  overflow: hidden;
 }
 
+.notif-showcase {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ticker-glass-panel {
+  position: relative;
+  width: 100%;
+  padding: 18px 0;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.notification-ticker-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
 
 /* =========================================================
-   TICKER TRACK
+   MOVING TRACK
 ========================================================= */
 
 .notification-ticker {
-    display: flex;
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  width: max-content;
+  will-change: transform;
 
-    flex-direction: row;
-
-    align-items: stretch;
-
-    gap: 20px;
-
-    width: max-content;
-
-    margin: 0;
-
-    padding: 0;
-
-    will-change: transform;
-
-    animation:
-        notificationScroll 35s linear infinite;
+  animation-name: notificationTickerMove;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 35s;
 }
 
+/* Your JavaScript also sets animationDuration = 35s */
 
-/* =========================================================
-   NOTIFICATION CARD
-========================================================= */
+@keyframes notificationTickerMove {
+  from {
+    transform: translateX(0);
+  }
 
-.notification-ticker .notification-card {
-    position: relative;
-
-    flex: 0 0 330px;
-
-    width: 330px;
-    min-width: 330px;
-
-    min-height: 270px;
-
-    margin: 0;
-
-    opacity: 1;
-
-    visibility: visible;
-
-    transform: none;
-
-    box-sizing: border-box;
+  to {
+    transform: translateX(-50%);
+  }
 }
-
-
-/* =========================================================
-   RIGHT → LEFT
-========================================================= */
-
-@keyframes notificationScroll {
-
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-50%);
-    }
-
-}
-
 
 /* =========================================================
    PAUSE ON HOVER
 ========================================================= */
 
 .notification-ticker:hover {
-    animation-play-state: paused;
+  animation-play-state: paused;
 }
 
+/* =========================================================
+   CARD
+========================================================= */
+
+.notification-card {
+  position: relative;
+
+  flex: 0 0 350px;
+
+  min-width: 350px;
+  max-width: 350px;
+
+  min-height: 220px;
+
+  padding: 22px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.notification-card h5 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0 0 14px;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.notification-card h5 i {
+  font-size: 20px;
+}
+
+.notification-card p {
+  margin: 8px 0;
+
+  line-height: 1.6;
+
+  font-size: 14px;
+}
+
+.notification-card small {
+  display: block;
+
+  margin-top: 15px;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+  font-size: 12px;
+
+  opacity: 0.85;
+}
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
-    .notification-ticker {
-        gap: 14px;
+  .notifications {
+    padding: 50px 0;
+  }
 
-        animation-duration: 28s;
-    }
+  .notification-ticker {
+    gap: 14px;
+  }
 
-    .notification-ticker .notification-card {
-        flex: 0 0 285px;
+  .notification-card {
+    flex-basis: 280px;
 
-        width: 285px;
+    min-width: 280px;
+    max-width: 280px;
 
-        min-width: 285px;
-    }
+    min-height: 210px;
+
+    padding: 18px;
+  }
+
+  .notification-card h5 {
+    font-size: 16px;
+  }
+
+  .notification-card p {
+    font-size: 13px;
+  }
 
 }
 
@@ -6161,160 +6233,2060 @@ textarea:focus-visible {
 
 
 
+
+/* =========================================================
+   A ONE GS CENTER — HERO SECTION
+========================================================= */
+
+.hero-education {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 700px;
+
+  padding: 75px 35px 35px;
+
+  background:
+    radial-gradient(
+      circle at 12% 45%,
+      rgba(59, 130, 246, 0.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 72% 40%,
+      rgba(96, 165, 250, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f7fbff 50%,
+      #edf5ff 100%
+    );
+
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.hero-bg-shape {
+  position: absolute;
+
+  pointer-events: none;
+
+  border-radius: 50%;
+
+  z-index: 0;
+}
+
+.hero-bg-shape-1 {
+  width: 420px;
+  height: 420px;
+
+  left: -240px;
+  top: 130px;
+
+  background: rgba(59, 130, 246, .07);
+
+  filter: blur(4px);
+}
+
+.hero-bg-shape-2 {
+  width: 500px;
+  height: 500px;
+
+  right: -280px;
+  bottom: -250px;
+
+  background: rgba(96, 165, 250, .09);
+
+  filter: blur(5px);
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.hero-education-container {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 1500px;
+
+  min-height: 625px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(520px, .92fr)
+    minmax(600px, 1.08fr);
+
+  align-items: center;
+
+  gap: 35px;
+}
+
+
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
+.hero-education-content {
+  position: relative;
+
+  z-index: 10;
+
+  padding:
+    10px 0 15px;
+}
+
+
+/* =========================================================
+   TOP BADGE
+========================================================= */
+
+.hero-education-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding:
+    9px 20px;
+
+  margin-bottom: 20px;
+
+  border-radius: 40px;
+
+  background:
+    rgba(234, 243, 255, .90);
+
+  color: #1765c0;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  box-shadow:
+    0 8px 25px rgba(37, 99, 235, .07);
+}
+
+.hero-education-badge i {
+  color: #1261d8;
+
+  font-size: 28px;
+}
+
+.hero-education-badge strong {
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MAIN HEADING
+========================================================= */
+
+.hero-education-title {
+  margin:
+    20px 0 22px;
+
+  color: #102d60;
+
+  font-size:
+    clamp(52px, 5vw, 78px);
+
+  line-height: .98;
+
+  font-weight: 900;
+
+  letter-spacing: -3px;
+}
+
+.hero-education-title span {
+  display: block;
+
+  color: #1464d8;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.hero-education-description {
+  max-width: 760px;
+
+  margin:
+    0 0 30px;
+
+  color: #24436d;
+
+  font-size: 17px;
+
+  line-height: 1.65;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.hero-education-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 38px;
+}
+
+.hero-education-btn {
+  min-height: 58px;
+
+  padding:
+    0 25px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  border-radius: 32px;
+
+  text-decoration: none;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    background .25s ease;
+}
+
+
+/* PRIMARY */
+
+.hero-education-btn-primary {
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1764dc,
+      #2563eb
+    );
+
+  box-shadow:
+    0 12px 28px
+    rgba(37, 99, 235, .25);
+}
+
+.hero-education-btn-primary:hover {
+  color: #fff;
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    0 18px 38px
+    rgba(37, 99, 235, .38);
+}
+
+
+/* SECONDARY */
+
+.hero-education-btn-outline {
+  color: #1261d8;
+
+  background: #fff;
+
+  border:
+    2px solid #1261d8;
+
+  box-shadow:
+    0 6px 18px
+    rgba(37, 99, 235, .07);
+}
+
+.hero-education-btn-outline:hover {
+  color: #fff;
+
+  background: #1261d8;
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    0 15px 30px
+    rgba(37, 99, 235, .25);
+}
+
+
+/* =========================================================
+   FOUR FEATURE ATTRIBUTES
+========================================================= */
+
+.hero-education-features {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+
+/* INDIVIDUAL FEATURE */
+
+.hero-education-feature {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 135px;
+
+  color: #102d60;
+
+  cursor: default;
+
+  transition:
+    transform .25s ease,
+    filter .25s ease;
+}
+
+
+/* HOVER LIGHT EFFECT */
+
+.hero-education-feature:hover {
+  transform:
+    translateY(-5px);
+
+  filter:
+    drop-shadow(
+      0 7px 15px
+      rgba(37, 99, 235, .28)
+    );
+}
+
+
+/* ICON CIRCLE */
+
+.hero-feature-icon {
+  width: 48px;
+  height: 48px;
+
+  flex:
+    0 0 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #eef6ff,
+      #dcecff
+    );
+
+  border:
+    1px solid
+    rgba(37, 99, 235, .12);
+
+  color: #1261d8;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 6px 18px
+    rgba(37, 99, 235, .10);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    color .25s ease,
+    box-shadow .25s ease;
+}
+
+
+/* ICON HOVER */
+
+.hero-education-feature:hover .hero-feature-icon {
+  transform:
+    scale(1.1);
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1261d8,
+      #3b82f6
+    );
+
+  box-shadow:
+    0 10px 25px
+    rgba(37, 99, 235, .30);
+}
+
+
+/* FEATURE TEXT */
+
+.hero-education-feature strong,
+.hero-education-feature span {
+  display: block;
+
+  line-height: 1.35;
+}
+
+.hero-education-feature strong {
+  color: #102d60;
+
+  font-size: 14px;
+
+  font-weight: 850;
+}
+
+.hero-education-feature span {
+  color: #23456f;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+
+/* DIVIDER */
+
+.hero-feature-divider {
+  width: 1px;
+
+  height: 46px;
+
+  background:
+    rgba(37, 99, 235, .22);
+}
+
+
+/* =========================================================
+   RIGHT VISUAL
+========================================================= */
+
+.hero-education-visual {
+  position: relative;
+
+  min-height: 610px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================================
+   YELLOW CIRCLE BEHIND IMAGE
+========================================================= */
+
+.hero-student-circle {
+  position: absolute;
+
+  width: 485px;
+  height: 485px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff2bd,
+      #ffd86d
+    );
+
+  z-index: 1;
+
+  opacity: .95;
+}
+
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
+
+.hero-student-image {
+  position: relative;
+
+  z-index: 3;
+
+  width: min(100%, 820px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.hero-student-photo {
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 20px;
+
+  filter:
+    drop-shadow(
+      0 30px 35px
+      rgba(15, 23, 42, .18)
+    );
+
+  transition:
+    transform .45s ease,
+    filter .45s ease;
+}
+
+.hero-student-image:hover .hero-student-photo {
+  transform:
+    translateY(-7px)
+    scale(1.015);
+
+  filter:
+    drop-shadow(
+      0 38px 45px
+      rgba(37, 99, 235, .25)
+    );
+}
+
+
+/* =========================================================
+   MOTIVATIONAL TEXT
+========================================================= */
+
+.hero-motivation-text {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 2%;
+
+  top: 30%;
+
+  color: #16447d;
+
+  font-family:
+    "Comic Sans MS",
+    cursive;
+
+  font-size: 25px;
+
+  line-height: 1.15;
+
+  transform:
+    rotate(-8deg);
+
+  text-align: center;
+}
+
+.hero-motivation-text strong {
+  color: #1261d8;
+}
+
+
+/* =========================================================
+   EXAM PILLS
+========================================================= */
+
+.hero-exams {
+  position: absolute;
+
+  z-index: 8;
+
+  right: -10px;
+
+  top: 13%;
+
+  width: 255px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* EACH EXAM */
+
+.hero-exam {
+  min-height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding:
+    7px 18px;
+
+  border-radius: 35px;
+
+  background: #fff;
+
+  box-shadow:
+    0 8px 20px
+    rgba(15, 23, 42, .07);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.hero-exam:hover {
+  transform:
+    translateX(-8px);
+
+  box-shadow:
+    0 14px 30px
+    rgba(37, 99, 235, .16);
+}
+
+
+/* EXAM ICON */
+
+.hero-exam-icon {
+  width: 44px;
+  height: 44px;
+
+  flex:
+    0 0 44px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #fff;
+
+  font-size: 19px;
+}
+
+.hero-exam strong {
+  font-size: 15px;
+}
+
+
+/* COLORS */
+
+.hero-exam-blue {
+  color: #1261d8;
+  background: #eaf2ff;
+}
+
+.hero-exam-blue .hero-exam-icon {
+  background: #1261d8;
+}
+
+.hero-exam-green {
+  color: #248c59;
+  background: #eaf8f0;
+}
+
+.hero-exam-green .hero-exam-icon {
+  background: #35a66d;
+}
+
+.hero-exam-orange {
+  color: #d96c18;
+  background: #fff0df;
+}
+
+.hero-exam-orange .hero-exam-icon {
+  background: #ed7d22;
+}
+
+.hero-exam-purple {
+  color: #6743b8;
+  background: #f0eaff;
+}
+
+.hero-exam-purple .hero-exam-icon {
+  background: #7552c7;
+}
+
+.hero-exam-red {
+  color: #c52d39;
+  background: #ffe9eb;
+}
+
+.hero-exam-red .hero-exam-icon {
+  background: #d83445;
+}
+
+.hero-exam-light {
+  color: #478bcf;
+  background: #edf6ff;
+}
+
+.hero-exam-light .hero-exam-icon {
+  background: #5798d5;
+}
+
+
+/* =========================================================
+   STUDY DECORATION
+========================================================= */
+
+.hero-study-decoration {
+  position: absolute;
+
+  right: 4%;
+
+  bottom: 4%;
+
+  z-index: 2;
+
+  display: flex;
+
+  gap: 15px;
+
+  color: #8db7e4;
+
+  font-size: 58px;
+
+  opacity: .28;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1150px) {
+
+  .hero-education {
+    padding:
+      65px 25px 40px;
+  }
+
+  .hero-education-container {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    text-align: center;
+  }
+
+  .hero-education-content {
+    max-width: 900px;
+
+    margin: auto;
+  }
+
+  .hero-education-badge {
+    justify-content: center;
+  }
+
+  .hero-education-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-education-buttons,
+  .hero-education-features {
+    justify-content: center;
+  }
+
+  .hero-education-visual {
+    min-height: 570px;
+  }
+
+  .hero-exams {
+    right: 0;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .hero-education {
+    min-height: auto;
+
+    padding:
+      55px 15px 35px;
+  }
+
+  .hero-education-title {
+    font-size: 44px;
+
+    letter-spacing: -1.5px;
+  }
+
+  .hero-education-description {
+    font-size: 14px;
+  }
+
+  .hero-education-buttons {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+  .hero-education-btn {
+    width: 100%;
+  }
+
+  .hero-education-features {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 20px;
+
+    text-align: left;
+  }
+
+  .hero-feature-divider {
+    display: none;
+  }
+
+  .hero-education-feature {
+    min-width: 0;
+  }
+
+  .hero-education-visual {
+    min-height: 430px;
+  }
+
+  .hero-student-circle {
+    width: 310px;
+    height: 310px;
+  }
+
+  .hero-student-image {
+    width: 100%;
+  }
+
+  .hero-exams {
+    width: 155px;
+
+    right: -3px;
+
+    gap: 6px;
+  }
+
+  .hero-exam {
+    min-height: 40px;
+
+    padding:
+      4px 8px;
+
+    gap: 7px;
+  }
+
+  .hero-exam-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+
+    font-size: 13px;
+  }
+
+  .hero-exam strong {
+    font-size: 10px;
+  }
+
+  .hero-motivation-text {
+    display: none;
+  }
+
+  .hero-study-decoration {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .hero-education-title {
+    font-size: 36px;
+  }
+
+  .hero-education-features {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-education-visual {
+    min-height: 350px;
+  }
+
+  .hero-student-circle {
+    width: 250px;
+    height: 250px;
+  }
+
+  .hero-exams {
+    position: relative;
+
+    right: auto;
+    top: auto;
+
+    width: 100%;
+
+    margin-top: 15px;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+/* =========================================================
+   HERO PHOTO — CIRCULAR
+========================================================= */
+
+.hero-visual {
+  position: relative;
+  min-height: 560px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 0;
+}
+
+
+/* Yellow circular background */
+
+.hero-visual::before {
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #ffe89a 0%,
+      #ffe28a 65%,
+      rgba(255,226,138,.25) 100%
+    );
+
+  z-index: 0;
+}
+
+
+/* =========================================================
+   CIRCULAR PHOTO FRAME
+========================================================= */
+
+.hero-image-card {
+  position: relative;
+
+  z-index: 2;
+
+  width: 480px;
+  height: 480px;
+
+  margin-right: 170px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  border: 10px solid rgba(255,255,255,.95);
+
+  box-shadow:
+    0 0 0 5px rgba(251,191,36,.45),
+    0 25px 60px rgba(15,23,42,.22);
+
+  background: #fff;
+
+  transform:
+    perspective(1200px)
+    rotateY(-3deg);
+
+  transition:
+    transform .45s ease,
+    box-shadow .45s ease;
+}
+
+
+.hero-image-card:hover {
+  transform:
+    perspective(1200px)
+    rotateY(0deg)
+    translateY(-7px);
+
+  box-shadow:
+    0 0 0 5px rgba(124,58,237,.30),
+    0 35px 75px rgba(15,23,42,.28);
+}
+
+
+/* =========================================================
+   HERO.JPEG INSIDE CIRCLE
+========================================================= */
+
+.hero-3d-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  border-radius: 50%;
+}
+
+
+/* =========================================================
+   EXAM PILLS
+========================================================= */
+
+.hero-exam-pills {
+  position: absolute;
+
+  z-index: 10;
+
+  right: 0;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 220px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* Individual pill */
+
+.hero-exam-pill {
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 8px 18px 8px 10px;
+
+  border-radius: 40px;
+
+  box-shadow:
+    0 10px 25px rgba(15,23,42,.10);
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease,
+    filter .3s ease;
+}
+
+
+/* Hover light effect */
+
+.hero-exam-pill:hover {
+  transform: translateX(-8px) scale(1.03);
+
+  filter: brightness(1.06);
+
+  box-shadow:
+    0 15px 35px rgba(79,70,229,.20);
+}
+
+
+/* Icon */
+
+.hero-exam-icon {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: white;
+
+  font-size: 18px;
+}
+
+
+/* Text */
+
+.hero-exam-pill strong {
+  font-size: 14px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   EXAM COLORS
+========================================================= */
+
+.hero-exam-pill.ssc {
+  background: #e7f0ff;
+  color: #1559c7;
+}
+
+.hero-exam-pill.ssc .hero-exam-icon {
+  background: #1769df;
+}
+
+
+.hero-exam-pill.banking {
+  background: #e7f7ee;
+  color: #16834b;
+}
+
+.hero-exam-pill.banking .hero-exam-icon {
+  background: #2da76b;
+}
+
+
+.hero-exam-pill.railway {
+  background: #fff0df;
+  color: #d76b14;
+}
+
+.hero-exam-pill.railway .hero-exam-icon {
+  background: #f07818;
+}
+
+
+.hero-exam-pill.bpsc {
+  background: #eee7ff;
+  color: #6541b7;
+}
+
+.hero-exam-pill.bpsc .hero-exam-icon {
+  background: #7451cb;
+}
+
+
+.hero-exam-pill.police {
+  background: #ffe7eb;
+  color: #cf2739;
+}
+
+.hero-exam-pill.police .hero-exam-icon {
+  background: #df3047;
+}
+
+
+.hero-exam-pill.more {
+  background: #e7f2ff;
+  color: #4389d5;
+}
+
+.hero-exam-pill.more .hero-exam-icon {
+  background: #5799d8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .hero-image-card {
+    width: 400px;
+    height: 400px;
+
+    margin-right: 145px;
+  }
+
+  .hero-visual::before {
+    width: 420px;
+    height: 420px;
+  }
+
+  .hero-exam-pills {
+    width: 190px;
+  }
+
+  .hero-exam-pill {
+    min-height: 52px;
+  }
+
+  .hero-exam-icon {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+  }
+
+  .hero-exam-pill strong {
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .hero-visual {
+    min-height: auto;
+
+    flex-direction: column;
+
+    padding: 30px 10px 60px;
+  }
+
+  .hero-visual::before {
+    width: 340px;
+    height: 340px;
+  }
+
+  .hero-image-card {
+    width: min(88vw, 420px);
+    height: min(88vw, 420px);
+
+    margin-right: 0;
+
+    border-width: 7px;
+
+    transform: none;
+  }
+
+  .hero-image-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .hero-exam-pills {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    transform: none;
+
+    width: 100%;
+    max-width: 500px;
+
+    margin-top: 25px;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 500px) {
+
+  .hero-image-card {
+    width: 310px;
+    height: 310px;
+  }
+
+  .hero-exam-pills {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-exam-pill {
+    width: 100%;
+  }
+}
+
+
+
+/* =========================================================
+   HERO — LOGO ONLY
+========================================================= */
+
+.hero-education-visual {
+  position: relative;
+
+  min-height: 610px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   CIRCULAR LOGO
+========================================================= */
+
+.hero-logo-circle {
+  position: relative;
+
+  width: 390px;
+  height: 390px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 10px solid rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 0 0 6px rgba(37, 99, 235, 0.14),
+    0 30px 70px rgba(15, 23, 42, 0.18);
+
+  transition:
+    transform .4s ease,
+    box-shadow .4s ease;
+}
+
+
+.hero-logo-circle img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+}
+
+
+.hero-logo-circle:hover {
+  transform: translateY(-8px) scale(1.03);
+
+  box-shadow:
+    0 0 0 7px rgba(37, 99, 235, 0.20),
+    0 38px 80px rgba(15, 23, 42, 0.24);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1150px) {
+
+  .hero-education-visual {
+    min-height: 500px;
+  }
+
+  .hero-logo-circle {
+    width: 330px;
+    height: 330px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .hero-education-visual {
+    min-height: 350px;
+  }
+
+  .hero-logo-circle {
+    width: 260px;
+    height: 260px;
+
+    border-width: 7px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .hero-education-visual {
+    min-height: 290px;
+  }
+
+  .hero-logo-circle {
+    width: 210px;
+    height: 210px;
+  }
+}
+
+
+
+```css
+/* =========================================================
+   HERO RIGHT VISUAL
+========================================================= */
+
+.hero-education-visual {
+  position: relative;
+
+  min-height: 610px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   CIRCULAR PHOTO
+========================================================= */
+
+.hero-logo-circle {
+  position: relative;
+
+  width: 390px;
+  height: 390px;
+
+  /* photo ko thoda LEFT */
+  transform: translateX(-55px);
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 9px solid rgba(255, 255, 255, .95);
+
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, .16),
+    0 28px 65px rgba(15, 23, 42, .20);
+
+  transition:
+    transform .4s ease,
+    box-shadow .4s ease;
+}
+
+
+.hero-logo-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  border-radius: 50%;
+}
+
+
+.hero-logo-circle:hover {
+  transform: translateX(-55px) translateY(-7px) scale(1.02);
+}
+
+
+/* =========================================================
+   MOTIVATIONAL TEXT — PHOTO KE NICHE
+========================================================= */
+
+.hero-motivation-text {
+  position: relative;
+
+  z-index: 5;
+
+  margin-top: 22px;
+
+  transform: translateX(-55px);
+
+  text-align: center;
+
+  color: #16447d;
+
+  font-family:
+    "Comic Sans MS",
+    cursive;
+
+  font-size: 23px;
+
+  line-height: 1.3;
+
+  font-weight: 700;
+}
+
+
+.hero-motivation-text strong {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #1261d8;
+
+  font-size: 27px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1150px) {
+
+  .hero-logo-circle {
+    width: 340px;
+    height: 340px;
+
+    transform: translateX(-35px);
+  }
+
+  .hero-logo-circle:hover {
+    transform:
+      translateX(-35px)
+      translateY(-7px)
+      scale(1.02);
+  }
+
+  .hero-motivation-text {
+    transform: translateX(-35px);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .hero-education-visual {
+    min-height: 400px;
+  }
+
+  .hero-logo-circle {
+    width: 270px;
+    height: 270px;
+
+    transform: none;
+  }
+
+  .hero-logo-circle:hover {
+    transform: translateY(-5px) scale(1.02);
+  }
+
+  .hero-motivation-text {
+    transform: none;
+
+    margin-top: 18px;
+
+    font-size: 18px;
+  }
+
+  .hero-motivation-text strong {
+    font-size: 22px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .hero-logo-circle {
+    width: 220px;
+    height: 220px;
+  }
+
+  .hero-motivation-text {
+    font-size: 16px;
+  }
+
+  .hero-motivation-text strong {
+    font-size: 20px;
+  }
+}
+
+
+.hero-photo-frame {
+  width: 390px;
+  height: 390px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  border: 8px solid #fff;
+
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.18),
+    0 25px 60px rgba(15, 23, 42, 0.20);
+
+  transform: translateX(-55px);
+}
+
+.hero-student-photo {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  border-radius: 50%;
+
+  display: block;
+}
+
+
+.hero-student-photo {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  /* image ko thoda left shift */
+  object-position: 65% center;
+
+  border-radius: 50%;
+}
+
+
+
+
+
+/* =========================================================
+   MOTIVATIONAL TEXT — BELOW CIRCLE PHOTO
+========================================================= */
+
+.hero-motivation-text {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 50%;
+  top: auto;
+  bottom: 8px;
+
+  transform: translateX(-50%) rotate(-3deg);
+
+  width: 100%;
+
+  text-align: center;
+
+  color: #16447d;
+
+  font-family:
+    "Comic Sans MS",
+    "Segoe Print",
+    cursive;
+
+  font-size: 25px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  pointer-events: none;
+
+  text-shadow:
+    0 3px 8px rgba(37, 99, 235, .12);
+
+  transition:
+    transform .3s ease,
+    filter .3s ease;
+}
+
+.hero-motivation-text strong {
+  color: #1261d8;
+
+  font-weight: 900;
+
+  display: inline-block;
+}
+
+
+/* =========================================================
+   LIGHT EFFECT
+========================================================= */
+
+.hero-motivation-text::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -8px;
+
+  width: 150px;
+  height: 3px;
+
+  transform: translateX(-50%);
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #3b82f6,
+      transparent
+    );
+
+  opacity: .65;
+}
 </style>
 
 
 <!-- =========================================================
-     BOOTSTRAP ICONS
+     PREMIUM EDUCATION HERO
 ========================================================= -->
 
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<section class="hero hero-education" id="home">
 
-<section class="hero" id="home">
+  <!-- =====================================================
+       BACKGROUND DECORATION
+  ====================================================== -->
 
-  <div class="hero-study-bg">
-    <span>📚</span>
-    <span>✏️</span>
-    <span>🎓</span>
-    <span>📝</span>
-    <span>📖</span>
-    <span>🏆</span>
-  </div>
+  <div class="hero-bg-shape hero-bg-shape-1"></div>
+  <div class="hero-bg-shape hero-bg-shape-2"></div>
 
 
-  <div class="hero-container">
+  <div class="hero-education-container">
 
-    <div class="hero-content">
+    <!-- =====================================================
+         LEFT CONTENT
+    ====================================================== -->
 
-      <!-- SMALL BADGE -->
-      <div class="hero-badge">
-        <i class="bi bi-mortarboard-fill"></i>
-        A ONE GS CENTER
+    <div class="hero-education-content">
+
+      <!-- Small badge -->
+      <div class="hero-education-badge">
+        <i class="bi bi-bullseye"></i>
+
+        <span>
+          Your Preparation.
+          <strong>Our Guidance.</strong>
+          <strong>Your Success.</strong>
+        </span>
       </div>
 
 
-      <!-- HERO IMAGE / LOGO -->
-      <div class="hero-visual">
-
-        <div class="hero-visual-glow"></div>
-
-        <div class="hero-image-card">
-
-          <div class="hero-image-shine"></div>
-
-          <%= image_tag "hero.jpeg",
-              class: "hero-3d-image",
-              alt: "A ONE GS Center Education Banner" %>
-
-        </div>
-
-      </div>
+      <!-- Heading -->
+      <h1 class="hero-education-title">
+        Learn Today.
+        <span>Achieve Tomorrow.</span>
+      </h1>
 
 
-      <!-- SUBTITLE -->
-      <p class="hero-subtitle">
-        Empowering Students to Learn, Prepare &amp; Succeed
+      <!-- Description -->
+      <p class="hero-education-description">
+        Join A One GS Center and build strong fundamentals with
+        comprehensive courses, expert teachers, practice tests
+        and exam-oriented study material.
       </p>
 
 
-      <!-- FEATURES -->
-      <div class="hero-features">
+      <!-- ===================================================
+           BUTTONS
+      ==================================================== -->
 
-        <div class="hero-feature">
-          <i class="bi bi-person-workspace"></i>
-          <span>Expert Faculty</span>
-        </div>
-
-        <div class="hero-feature">
-          <i class="bi bi-journal-check"></i>
-          <span>Weekly Test Series</span>
-        </div>
-
-        <div class="hero-feature">
-          <i class="bi bi-laptop"></i>
-          <span>Online &amp; Offline Classes</span>
-        </div>
-
-      </div>
-
-
-      <!-- BUTTONS -->
-      <div class="hero-buttons">
+      <div class="hero-education-buttons">
 
         <%= link_to homepage_path(anchor: "courses"),
-            class: "hero-btn hero-btn-primary" do %>
+            class: "hero-education-btn hero-education-btn-primary" do %>
+
+          <i class="bi bi-mortarboard-fill"></i>
+
           <span>Explore Courses</span>
-          <i class="bi bi-arrow-right"></i>
+
+          <i class="bi bi-chevron-right"></i>
+
         <% end %>
 
+
         <%= link_to homepage_path(anchor: "contact"),
-            class: "hero-btn hero-btn-secondary" do %>
-          <i class="bi bi-telephone"></i>
-          <span>Contact Us</span>
+            class: "hero-education-btn hero-education-btn-outline" do %>
+
+          <span>Join Now</span>
+
+          <i class="bi bi-chevron-right"></i>
+
         <% end %>
 
       </div>
 
 
-      <!-- SOCIAL -->
-      <div class="hero-social">
+      <!-- ===================================================
+           FEATURE ATTRIBUTES
+      ==================================================== -->
 
-        <span>Follow us</span>
+      <div class="hero-education-features">
 
-        <%= link_to "https://www.youtube.com/@Aonegs77",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            class: "youtube",
-            aria: { label: "A ONE GS Center YouTube" } do %>
-          <i class="bi bi-youtube"></i>
-        <% end %>
 
-        <%= link_to "https://www.instagram.com/atsirshorts/",
-            target: "_blank",
-            rel: "noopener noreferrer",
-            class: "instagram",
-            aria: { label: "A ONE GS Center Instagram" } do %>
-          <i class="bi bi-instagram"></i>
-        <% end %>
+        <!-- Expert Teachers -->
+
+        <div class="hero-education-feature">
+
+          <div class="hero-feature-icon">
+            <i class="bi bi-person-workspace"></i>
+          </div>
+
+          <div>
+            <strong>Expert</strong>
+            <span>Teachers</span>
+          </div>
+
+        </div>
+
+
+        <div class="hero-feature-divider"></div>
+
+
+        <!-- Mock Tests -->
+
+        <div class="hero-education-feature">
+
+          <div class="hero-feature-icon">
+            <i class="bi bi-clipboard-check"></i>
+          </div>
+
+          <div>
+            <strong>Mock</strong>
+            <span>Tests</span>
+          </div>
+
+        </div>
+
+
+        <div class="hero-feature-divider"></div>
+
+
+        <!-- Study Material -->
+
+        <div class="hero-education-feature">
+
+          <div class="hero-feature-icon">
+            <i class="bi bi-book"></i>
+          </div>
+
+          <div>
+            <strong>Quality</strong>
+            <span>Study Material</span>
+          </div>
+
+        </div>
+
+
+        <div class="hero-feature-divider"></div>
+
+
+        <!-- Exam Focused -->
+
+        <div class="hero-education-feature">
+
+          <div class="hero-feature-icon">
+            <i class="bi bi-bullseye"></i>
+          </div>
+
+          <div>
+            <strong>Exam-Focused</strong>
+            <span>Learning</span>
+          </div>
+
+        </div>
 
       </div>
 
     </div>
 
 
-    <!-- BOTTOM ATTRIBUTES -->
-    <div class="hero-bottom">
+<!-- =====================================================
+     RIGHT VISUAL
+====================================================== -->
 
-      <div>
-        <i class="bi bi-book"></i>
-        <span>Quality<br>Courses</span>
+<div class="hero-education-visual">
+
+  <!-- Circular Photo -->
+  <div class="hero-logo-circle">
+
+    <%= image_tag "herosec.jpeg",
+        alt: "A One GS Center",
+        class: "hero-logo-image" %>
+
+  </div>
+
+
+  <!-- Motivation Text -->
+  <div class="hero-motivation-text">
+
+    Better Preparation
+    <strong>Brighter Future</strong>
+
+  </div>
+
+</div>
+
+
+      <!-- =================================================
+           EXAM PILLS
+      ================================================== -->
+
+      <div class="hero-exams">
+
+
+        <!-- SSC -->
+
+        <div class="hero-exam hero-exam-blue">
+
+          <div class="hero-exam-icon">
+            <i class="bi bi-award-fill"></i>
+          </div>
+
+          <strong>SSC</strong>
+
+        </div>
+
+
+        <!-- Banking -->
+
+        <div class="hero-exam hero-exam-green">
+
+          <div class="hero-exam-icon">
+            <i class="bi bi-bank"></i>
+          </div>
+
+          <strong>Banking</strong>
+
+        </div>
+
+
+        <!-- Railway -->
+
+        <div class="hero-exam hero-exam-orange">
+
+          <div class="hero-exam-icon">
+            <i class="bi bi-train-front-fill"></i>
+          </div>
+
+          <strong>Railway</strong>
+
+        </div>
+
+
+        <!-- BPSC -->
+
+        <div class="hero-exam hero-exam-purple">
+
+          <div class="hero-exam-icon">
+            <i class="bi bi-building"></i>
+          </div>
+
+          <strong>BPSC</strong>
+
+        </div>
+
+
+        <!-- Bihar Police -->
+
+        <div class="hero-exam hero-exam-red">
+
+          <div class="hero-exam-icon">
+            <i class="bi bi-shield-fill"></i>
+          </div>
+
+          <strong>Bihar Police</strong>
+
+        </div>
+
+
+        <!-- More -->
+
+        <div class="hero-exam hero-exam-light">
+
+          <div class="hero-exam-icon">
+            <i class="bi bi-list-check"></i>
+          </div>
+
+          <strong>&amp; More</strong>
+
+        </div>
+
       </div>
 
-      <div>
-        <i class="bi bi-camera-video"></i>
-        <span>Live &amp;<br>Recorded Classes</span>
-      </div>
 
-      <div>
-        <i class="bi bi-pencil-square"></i>
-        <span>Test Series &amp;<br>Practice</span>
-      </div>
+      <!-- =================================================
+           STUDY DECORATION
+      ================================================== -->
 
-      <div>
-        <i class="bi bi-file-earmark-pdf"></i>
-        <span>Study<br>Material</span>
-      </div>
+      <div class="hero-study-decoration">
 
-      <div>
-        <i class="bi bi-people"></i>
-        <span>Expert<br>Teachers</span>
-      </div>
+        <i class="bi bi-book-half"></i>
 
-      <div>
-        <i class="bi bi-graph-up-arrow"></i>
-        <span>Your<br>Success</span>
+        <i class="bi bi-pencil"></i>
+
       </div>
 
     </div>
@@ -6760,21 +8732,23 @@ textarea:focus-visible {
 </section>
 
 
+
 <!-- =========================================================
      NOTIFICATIONS
      AUTOMATIC RUNNING
 ========================================================= -->
 
-<section class="notifications" id="notifications">
+<section
+  class="notifications"
+  id="notifications"
+  data-turbo-cache="false"
+>
 
     <div class="container">
 
         <h2 class="section-title">
-
             <i class="bi bi-bell-fill"></i>
-
             Latest Notifications
-
         </h2>
 
         <div class="notif-showcase">
@@ -6783,7 +8757,10 @@ textarea:focus-visible {
 
                 <div class="notification-ticker-container">
 
-                    <div class="notification-ticker" id="notificationTicker">
+                    <div
+                        class="notification-ticker"
+                        id="notificationTicker"
+                    >
 
                         <% if @notifications.present? %>
 
@@ -6792,11 +8769,8 @@ textarea:focus-visible {
                                 <div class="notification-card">
 
                                     <h5>
-
                                         <i class="bi bi-megaphone-fill"></i>
-
                                         <%= notification.title %>
-
                                     </h5>
 
                                     <p>
@@ -6807,39 +8781,19 @@ textarea:focus-visible {
                                     </p>
 
                                     <p>
-
-                                        <strong>
-                                            📅 Start:
-                                        </strong>
-
-                                        <%= notification.start_date.strftime(
-                                            "%d %b %Y"
-                                        ) if notification.start_date.present? %>
-
+                                        <strong>📅 Start:</strong>
+                                        <%= notification.start_date.strftime("%d %b %Y") if notification.start_date.present? %>
                                     </p>
 
                                     <p>
-
-                                        <strong>
-                                            📅 End:
-                                        </strong>
-
-                                        <%= notification.end_date.strftime(
-                                            "%d %b %Y"
-                                        ) if notification.end_date.present? %>
-
+                                        <strong>📅 End:</strong>
+                                        <%= notification.end_date.strftime("%d %b %Y") if notification.end_date.present? %>
                                     </p>
 
                                     <small>
-
                                         <i class="bi bi-calendar-event"></i>
-
                                         Posted:
-
-                                        <%= notification.created_at.strftime(
-                                            "%d %b %Y"
-                                        ) %>
-
+                                        <%= notification.created_at.strftime("%d %b %Y") %>
                                     </small>
 
                                 </div>
@@ -7732,15 +9686,11 @@ textarea:focus-visible {
 <script nonce="<%= content_security_policy_nonce %>">
 (function () {
 
-  /* =========================================================
-     MAIN INITIALIZATION
-  ========================================================= */
+  
 
   function initializeHomepage() {
 
-    /* =======================================================
-       GLOBAL HORIZONTAL OVERFLOW PROTECTION
-    ======================================================= */
+   
 
     document.documentElement.style.overflowX = "hidden";
     document.body.style.overflowX = "hidden";
@@ -7787,7 +9737,7 @@ textarea:focus-visible {
 
 
     /* =========================================================
-       AUTOMATIC NOTIFICATION TICKER
+       NOTIFICATION TICKER
     ========================================================= */
 
     initializeNotificationTicker();
@@ -7846,24 +9796,35 @@ textarea:focus-visible {
     const ticker =
       document.getElementById("notificationTicker");
 
-
     if (!ticker) {
       return;
     }
 
 
+    /*
+     * Prevent duplicate initialization
+     */
     if (
       ticker.dataset.tickerInitialized === "true"
     ) {
       return;
     }
 
-
     ticker.dataset.tickerInitialized = "true";
 
 
+    /*
+     * Get ONLY notifications rendered by Rails.
+     *
+     * This prevents JavaScript from creating
+     * any notification from old/static data.
+     */
     const originalCards =
-      Array.from(ticker.children);
+      Array.from(
+        ticker.querySelectorAll(
+          ":scope > .notification-card"
+        )
+      );
 
 
     if (originalCards.length === 0) {
@@ -7871,34 +9832,95 @@ textarea:focus-visible {
     }
 
 
-    /* ========================================================
-       DUPLICATE CARDS FOR CONTINUOUS LOOP
-    ======================================================== */
-
-    originalCards.forEach(function (card) {
-
-      const clone = card.cloneNode(true);
-
-      clone.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-      ticker.appendChild(clone);
-
-    });
+    /*
+     * Debug
+     */
+    console.log(
+      "SERVER NOTIFICATION CARDS:",
+      originalCards.map(function (card) {
+        return card.innerText;
+      })
+    );
 
 
-    /* ========================================================
-       SPEED
-    ======================================================== */
+    /*
+     * ========================================================
+     * ONE NOTIFICATION
+     * ========================================================
+     *
+     * If there is only one active notification,
+     * DO NOT clone it.
+     *
+     * This prevents:
+     *
+     * Notification 1
+     * Notification 1
+     *
+     * ========================================================
+     */
 
-    ticker.style.animationDuration = "35s";
+    if (originalCards.length === 1) {
+
+      ticker.style.animation = "none";
+      ticker.style.transform = "none";
+
+    }
 
 
-    /* ========================================================
-       TOUCH PAUSE
-    ======================================================== */
+    /*
+     * ========================================================
+     * MULTIPLE NOTIFICATIONS
+     * ========================================================
+     *
+     * If there are 2 or more notifications,
+     * clone them for continuous ticker animation.
+     *
+     * Example:
+     *
+     * Notification 1
+     * Notification 2
+     * Notification 3
+     *
+     * becomes:
+     *
+     * Notification 1
+     * Notification 2
+     * Notification 3
+     * Notification 1
+     * Notification 2
+     * Notification 3
+     *
+     * ========================================================
+     */
+
+    if (originalCards.length > 1) {
+
+      originalCards.forEach(function (card) {
+
+        const clone =
+          card.cloneNode(true);
+
+        clone.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+        ticker.appendChild(clone);
+
+      });
+
+
+      ticker.style.animationDuration =
+        "35s";
+
+    }
+
+
+    /*
+     * ========================================================
+     * TOUCH PAUSE
+     * ========================================================
+     */
 
     ticker.addEventListener(
       "touchstart",
@@ -8307,9 +10329,6 @@ textarea:focus-visible {
     startAutoPlay();
 
   }
-
-
-
 
 
   /* ============================================================
@@ -8768,38 +10787,83 @@ textarea:focus-visible {
 })();
 
 
+/* ============================================================
+   ACHIEVEMENT SLIDER
+============================================================ */
+
 function initializeAchievementSlider() {
 
-  const viewport = document.getElementById("achievementsSlider");
-  const track = viewport
-    ? viewport.querySelector(".achievements-track")
-    : null;
+  const viewport =
+    document.getElementById(
+      "achievementsSlider"
+    );
 
-  const prevButton = document.getElementById("achievementPrev");
-  const nextButton = document.getElementById("achievementNext");
 
-  if (!viewport || !track || !prevButton || !nextButton) {
+  const track =
+    viewport
+      ? viewport.querySelector(
+          ".achievements-track"
+        )
+      : null;
+
+
+  const prevButton =
+    document.getElementById(
+      "achievementPrev"
+    );
+
+
+  const nextButton =
+    document.getElementById(
+      "achievementNext"
+    );
+
+
+  if (
+    !viewport ||
+    !track ||
+    !prevButton ||
+    !nextButton
+  ) {
     return;
   }
 
-  if (viewport.dataset.achievementSliderReady === "true") {
+
+  if (
+    viewport.dataset.achievementSliderReady ===
+    "true"
+  ) {
     return;
   }
 
-  viewport.dataset.achievementSliderReady = "true";
 
-  const cards = Array.from(
-    track.querySelectorAll(".topper-card")
-  );
+  viewport.dataset.achievementSliderReady =
+    "true";
 
-  if (cards.length <= 1) {
+
+  const cards =
+    Array.from(
+      track.querySelectorAll(
+        ".topper-card"
+      )
+    );
+
+
+  if (
+    cards.length <= 1
+  ) {
     return;
   }
+
 
   let currentIndex = 0;
+
   let visibleCards = 3;
+
   let autoPlayTimer = null;
+
   let resizeTimer = null;
+
   let isMoving = false;
 
 
@@ -8809,15 +10873,26 @@ function initializeAchievementSlider() {
 
   function getVisibleCards() {
 
-    if (window.innerWidth <= 700) {
+    if (
+      window.innerWidth <= 700
+    ) {
+
       return 1;
+
     }
 
-    if (window.innerWidth <= 1100) {
+
+    if (
+      window.innerWidth <= 1100
+    ) {
+
       return 2;
+
     }
+
 
     return 3;
+
   }
 
 
@@ -8827,42 +10902,73 @@ function initializeAchievementSlider() {
 
   function setupSlider() {
 
-    visibleCards = getVisibleCards();
+    visibleCards =
+      getVisibleCards();
 
-    const viewportWidth = viewport.clientWidth;
 
-    const styles = window.getComputedStyle(track);
+    const viewportWidth =
+      viewport.clientWidth;
+
+
+    const styles =
+      window.getComputedStyle(
+        track
+      );
+
 
     const gap =
-      parseFloat(styles.columnGap) ||
-      parseFloat(styles.gap) ||
+      parseFloat(
+        styles.columnGap
+      ) ||
+      parseFloat(
+        styles.gap
+      ) ||
       0;
+
 
     const cardWidth =
       (
         viewportWidth -
-        gap * (visibleCards - 1)
-      ) / visibleCards;
+        gap *
+        (visibleCards - 1)
+      ) /
+      visibleCards;
 
 
-    cards.forEach(function(card) {
+    cards.forEach(
+      function (card) {
 
-      card.style.width = cardWidth + "px";
-      card.style.minWidth = cardWidth + "px";
-      card.style.maxWidth = cardWidth + "px";
+        card.style.width =
+          cardWidth + "px";
 
-      card.style.flex =
-        "0 0 " + cardWidth + "px";
 
-      card.style.boxSizing =
-        "border-box";
+        card.style.minWidth =
+          cardWidth + "px";
 
-    });
+
+        card.style.maxWidth =
+          cardWidth + "px";
+
+
+        card.style.flex =
+          "0 0 " +
+          cardWidth +
+          "px";
+
+
+        card.style.boxSizing =
+          "border-box";
+
+      }
+    );
 
 
     currentIndex = 0;
 
-    track.style.transition = "none";
+
+    track.style.transition =
+      "none";
+
 
     track.style.transform =
       "translate3d(0,0,0)";
@@ -8885,7 +10991,8 @@ function initializeAchievementSlider() {
 
     return Math.max(
       0,
-      cards.length - visibleCards
+      cards.length -
+      visibleCards
     );
 
   }
@@ -8895,22 +11002,35 @@ function initializeAchievementSlider() {
      MOVE
   ========================================================= */
 
-  function moveSlider(index, animate) {
+  function moveSlider(
+    index,
+    animate
+  ) {
 
-    const maxIndex = getMaxIndex();
+    const maxIndex =
+      getMaxIndex();
 
 
-    if (index > maxIndex) {
+    if (
+      index > maxIndex
+    ) {
+
       index = 0;
+
     }
 
 
-    if (index < 0) {
+    if (
+      index < 0
+    ) {
+
       index = maxIndex;
+
     }
 
 
-    currentIndex = index;
+    currentIndex =
+      index;
 
 
     const targetCard =
@@ -8929,6 +11049,7 @@ function initializeAchievementSlider() {
     if (animate) {
 
       isMoving = true;
+
 
       track.style.transition =
         "transform 0.7s ease";
@@ -8950,8 +11071,10 @@ function initializeAchievementSlider() {
     if (animate) {
 
       window.setTimeout(
-        function() {
+        function () {
+
           isMoving = false;
+
         },
         750
       );
@@ -9005,7 +11128,7 @@ function initializeAchievementSlider() {
 
   nextButton.addEventListener(
     "click",
-    function() {
+    function () {
 
       nextAchievement();
 
@@ -9017,7 +11140,7 @@ function initializeAchievementSlider() {
 
   prevButton.addEventListener(
     "click",
-    function() {
+    function () {
 
       previousAchievement();
 
@@ -9038,7 +11161,7 @@ function initializeAchievementSlider() {
 
     autoPlayTimer =
       window.setInterval(
-        function() {
+        function () {
 
           nextAchievement();
 
@@ -9051,13 +11174,17 @@ function initializeAchievementSlider() {
 
   function stopAutoPlay() {
 
-    if (autoPlayTimer !== null) {
+    if (
+      autoPlayTimer !== null
+    ) {
 
       window.clearInterval(
         autoPlayTimer
       );
 
-      autoPlayTimer = null;
+
+      autoPlayTimer =
+        null;
 
     }
 
@@ -9096,14 +11223,18 @@ function initializeAchievementSlider() {
   viewport.addEventListener(
     "touchstart",
     stopAutoPlay,
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
 
   viewport.addEventListener(
     "touchend",
     startAutoPlay,
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
 
@@ -9113,7 +11244,7 @@ function initializeAchievementSlider() {
 
   window.addEventListener(
     "resize",
-    function() {
+    function () {
 
       window.clearTimeout(
         resizeTimer
@@ -9122,14 +11253,16 @@ function initializeAchievementSlider() {
 
       resizeTimer =
         window.setTimeout(
-          function() {
+          function () {
 
             setupSlider();
+
 
             moveSlider(
               0,
               false
             );
+
 
             startAutoPlay();
 
@@ -9147,10 +11280,12 @@ function initializeAchievementSlider() {
 
   setupSlider();
 
+
   moveSlider(
     0,
     false
   );
+
 
   startAutoPlay();
 

@@ -22,6 +22,11 @@
   <%= javascript_importmap_tags %>
 
 
+  <% if controller_name == "sample" && action_name == "homepage" %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
+
   <style nonce="<%= content_security_policy_nonce %>">
     /* =========================================================
        FLASH / CONTACT TOAST
