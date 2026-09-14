@@ -1163,6 +1163,128 @@
 
 }
 
+
+
+/* =========================================================
+   E-BOOK COVER
+========================================================= */
+
+.ebook-cover-wrap {
+  width: 100%;
+  max-width: 360px;
+  height: 460px;
+
+  margin: 0 auto;
+
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: #f3f4f6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* Actual uploaded image */
+.ebook-cover {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  /*
+    cover = full box fill karega,
+    lekin image ke edges thode crop ho sakte hain.
+  */
+  object-fit: cover;
+  object-position: center;
+}
+
+/* If you don't want ANY cropping */
+.ebook-cover.contain {
+  object-fit: contain;
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   NO COVER
+========================================================= */
+
+.no-cover {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 25px;
+
+  color: #555;
+}
+
+.book-icon {
+  font-size: 70px;
+  margin-bottom: 15px;
+}
+
+
+
+
+
+
+
+.purchased-price-box {
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.purchased-badge {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+
+padding: 9px 16px;
+border-radius: 999px;
+
+font-size: 16px;
+font-weight: 800;
+
+background: rgba(34, 197, 94, 0.12);
+color: #15803d;
+border: 1px solid rgba(34, 197, 94, 0.30);
+}
+
+.purchased-message {
+font-size: 14px;
+font-weight: 600;
+color: #64748b;
+}
+
+.purchased-security-note {
+color: #15803d;
+}
+
+@media (max-width: 600px) {
+.purchased-price-box {
+align-items: flex-start;
+flex-direction: column;
+}
+
+.purchased-badge {
+font-size: 14px;
+}
+}
 </style>
 
 
@@ -1369,171 +1491,199 @@
 
 
 
+        <%
+ebook_owned =
+user_signed_in? &&
+current_user
+.ebook_purchases
+.paid
+.exists?(ebook_id: @ebook.id)
+%>
+
+
+
         <!-- =================================================
              PRICE
         ================================================== -->
 
-        <% if @ebook.free? %>
+       <% if ebook_owned %>
 
-          <div class="price-box">
+<!-- PURCHASED STATE -->
 
-            <span class="free-price">
-              FREE
-            </span>
+<div class="price-box purchased-price-box">
 
-          </div>
+<span class="purchased-badge">
+  ✓ Purchased
+</span>
 
-        <% else %>
+<span class="purchased-message">
+  You already own this E-Book
+</span>
 
-          <div class="price-box">
+</div>
 
+<% elsif @ebook.free? %>
 
-            <span class="current-price">
+<div class="price-box">
 
-              ₹<%= number_with_precision(
-                    @ebook.price,
-                    precision: 0
-                  ) %>
+<span class="free-price">
+  FREE
+</span>
 
-            </span>
+</div>
 
+<% else %>
 
+<div class="price-box">
 
-            <% if @ebook.original_price.to_f > @ebook.price.to_f %>
+<span class="current-price">
+  ₹<%= number_with_precision(
+        @ebook.price,
+        precision: 0
+      ) %>
+</span>
 
-              <span class="original-price">
+<% if @ebook.original_price.to_f > @ebook.price.to_f %>
 
-                ₹<%= number_with_precision(
-                      @ebook.original_price,
-                      precision: 0
-                    ) %>
+  <span class="original-price">
+    ₹<%= number_with_precision(
+          @ebook.original_price,
+          precision: 0
+        ) %>
+  </span>
 
-              </span>
+<% end %>
 
-            <% end %>
+<% if @ebook.discount_percentage.to_f > 0 %>
 
+  <span class="discount">
+    <%= @ebook.discount_percentage.to_i %>% OFF
+  </span>
 
+<% end %>
 
-            <% if @ebook.discount_percentage.to_f > 0 %>
+</div>
 
-              <span class="discount">
-
-                <%= @ebook.discount_percentage.to_i %>% OFF
-
-              </span>
-
-            <% end %>
-
-
-          </div>
-
-        <% end %>
+<% end %>
 
 
 
         <!-- =================================================
              BUY / READ ACTIONS
         ================================================== -->
+<div class="action-row">
 
-        <div class="action-row">
+<% if ebook_owned %>
 
+<!-- =============================================
+     ALREADY PURCHASED
+============================================== -->
 
-          <% if @ebook.free? %>
+<% if @ebook.ebook_files.active.any? %>
 
+  <span class="ebook-action primary-action">
+    📚 Read PDFs Below
+  </span>
 
-            <% if @ebook.pdf_file.attached? %>
+<% elsif @ebook.pdf_file.attached? %>
 
+  <%= link_to "📖 Read E-Book",
+      download_ebook_path(@ebook),
+      target: "_blank",
+      rel: "noopener",
+      class: "ebook-action primary-action" %>
 
-              <%= link_to "📖 Read E-Book",
-                  download_ebook_path(@ebook),
-                  target: "_blank",
-                  rel: "noopener",
-                  class: "ebook-action primary-action" %>
+  <%= link_to "⬇️ Download",
+      download_ebook_path(@ebook),
+      class: "ebook-action secondary-action" %>
 
+<% else %>
 
+  <span class="ebook-action secondary-action">
+    📚 PDF Coming Soon
+  </span>
 
-              <%= link_to "⬇️ Download",
-                  download_ebook_path(@ebook),
-                  class: "ebook-action secondary-action" %>
+<% end %>
 
+<% elsif @ebook.free? %>
 
-            <% elsif @ebook.ebook_files.active.any? %>
+<% if @ebook.pdf_file.attached? %>
 
+  <%= link_to "📖 Read E-Book",
+      download_ebook_path(@ebook),
+      target: "_blank",
+      rel: "noopener",
+      class: "ebook-action primary-action" %>
 
-              <span class="ebook-action secondary-action">
-                📚 See PDF Files Below
-              </span>
+  <%= link_to "⬇️ Download",
+      download_ebook_path(@ebook),
+      class: "ebook-action secondary-action" %>
 
+<% elsif @ebook.ebook_files.active.any? %>
 
-            <% else %>
+  <span class="ebook-action secondary-action">
+    📚 See PDF Files Below
+  </span>
 
+<% else %>
 
-              <span class="ebook-action secondary-action">
-                📚 PDF Coming Soon
-              </span>
+  <span class="ebook-action secondary-action">
+    📚 PDF Coming Soon
+  </span>
 
+<% end %>
 
-            <% end %>
+<% else %>
 
+<% if user_signed_in? %>
 
+  <%= button_to buy_ebook_path(@ebook),
+      method: :post,
+      class: "ebook-action primary-action",
+      form: {
+        data: {
+          turbo_confirm:
+            "Buy #{@ebook.title} for ₹#{number_with_precision(@ebook.price, precision: 0)}?"
+        }
+      } do %>
 
-          <% else %>
+    💳 Buy Now
 
+  <% end %>
 
-            <% if user_signed_in? %>
+<% else %>
 
+  <%= link_to "🔐 Login to Buy",
+      new_user_session_path,
+      class: "ebook-action login-action" %>
 
-              <%= button_to buy_ebook_path(@ebook),
-                  method: :post,
-                  class: "ebook-action primary-action",
-                  form: {
-                    data: {
-                      turbo_confirm:
-                        "Buy #{@ebook.title} for ₹#{number_with_precision(@ebook.price, precision: 0)}?"
-                    }
-                  } do %>
+<% end %>
 
-                💳 Buy Now
+<% end %>
 
-              <% end %>
-
-
-            <% else %>
-
-
-              <%= link_to "🔐 Login to Buy",
-                  new_user_session_path,
-                  class: "ebook-action login-action" %>
-
-
-            <% end %>
-
-
-          <% end %>
-
-
-        </div>
-
+</div>
 
 
         <!-- SECURITY -->
 
-        <% unless @ebook.free? %>
+      <% unless @ebook.free? %>
 
-          <div class="security-note">
+<% if ebook_owned %>
 
-            🔒 Premium PDF access will be available only
-            after successful payment.
+<div class="security-note purchased-security-note">
+  🔒 Purchased — your premium PDF access is active.
+</div>
 
-          </div>
+<% else %>
 
-        <% end %>
+<div class="security-note">
+  🔒 Premium PDF access will be available only
+  after successful payment.
+</div>
 
+<% end %>
 
-      </div>
-
-
-    </div>
+<% end %>
 
 
 
