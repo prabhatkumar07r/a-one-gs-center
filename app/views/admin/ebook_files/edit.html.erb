@@ -1,138 +1,1147 @@
+
+
+
+
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   BOOK KHAJANA - EDIT PDF PAGE
+   A ONE GS CENTER
+========================================================= */
+
+.admin-ebook-file-page {
+  min-height: 100vh;
+  padding: 32px 20px 60px;
+  background: #f6f8fc;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+.admin-ebook-file-wrapper {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   BACK LINK
+========================================================= */
+
+.ebook-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+
+  color: #475569;
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition: all 0.2s ease;
+}
+
+.ebook-back-link:hover {
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  transform: translateX(-2px);
+}
+
+.ebook-back-link i {
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.ebook-file-form-card {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06),
+    0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+
+/* =========================================================
+   FORM HEADER
+========================================================= */
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 30px 34px;
+
+  background: linear-gradient(
+    135deg,
+    #eff6ff 0%,
+    #ffffff 65%
+  );
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.form-icon {
+  flex: 0 0 62px;
+
+  width: 62px;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #dc2626;
+  background: #fee2e2;
+
+  border: 1px solid #fecaca;
+  border-radius: 16px;
+}
+
+.form-icon i {
+  font-size: 29px;
+}
+
+.form-header-content {
+  min-width: 0;
+}
+
+.form-kicker {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #2563eb;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.form-header h1 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.form-header p {
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   E-BOOK CONTEXT
+========================================================= */
+
+.ebook-context-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin: 24px 34px 0;
+  padding: 16px 18px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.context-icon {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #2563eb;
+  background: #dbeafe;
+
+  border-radius: 11px;
+}
+
+.context-icon i {
+  font-size: 20px;
+}
+
+.context-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.context-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.context-content strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #1e293b;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.context-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 12px;
+
+  color: #2563eb;
+  background: #ffffff;
+
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: all 0.2s ease;
+}
+
+.context-view-btn:hover {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+
+/* =========================================================
+   FORM SECTION
+========================================================= */
+
+.form-section {
+  margin: 26px 34px 0;
+  padding: 26px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+
+  margin-bottom: 25px;
+}
+
+.section-heading-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #2563eb;
+  background: #eff6ff;
+
+  border-radius: 10px;
+}
+
+.section-heading-icon i {
+  font-size: 17px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.section-heading p {
+  margin: 4px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group > label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form-group > label span {
+  margin-left: 2px;
+
+  color: #dc2626;
+}
+
+.form-group small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  color: #1e293b;
+  background: #ffffff;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+  height: 46px;
+  padding: 0 13px;
+}
+
+.form-group textarea {
+  min-height: 120px;
+  padding: 12px 13px;
+
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a1aab8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #60a5fa;
+
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.10);
+}
+
+
+/* =========================================================
+   INPUT WITH ICON
+========================================================= */
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper > i {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+
+  z-index: 2;
+
+  color: #94a3b8;
+
+  font-size: 15px;
+
+  pointer-events: none;
+
+  transform: translateY(-50%);
+}
+
+.input-wrapper input,
+.input-wrapper select {
+  padding-left: 40px !important;
+}
+
+.select-wrapper select {
+  appearance: auto;
+}
+
+
+/* =========================================================
+   FORM ROW
+========================================================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+
+/* =========================================================
+   CURRENT PDF CARD
+========================================================= */
+
+.current-pdf-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 16px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+  border-radius: 13px;
+}
+
+.pdf-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #dc2626;
+  background: #ffffff;
+
+  border: 1px solid #fecaca;
+  border-radius: 11px;
+}
+
+.pdf-icon i {
+  font-size: 24px;
+}
+
+.pdf-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.pdf-details strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #334155;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  margin-top: 6px;
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+.pdf-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
+/* =========================================================
+   PDF UPLOAD BOX
+========================================================= */
+
+.pdf-upload-box {
+  position: relative;
+
+  padding: 34px 25px;
+
+  text-align: center;
+
+  background: #f8fafc;
+
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.pdf-upload-box:hover {
+  background: #f8fbff;
+  border-color: #93c5fd;
+}
+
+.upload-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 13px;
+
+  color: #2563eb;
+  background: #dbeafe;
+
+  border-radius: 15px;
+}
+
+.upload-icon i {
+  font-size: 27px;
+}
+
+.pdf-upload-box h3 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.pdf-upload-box > p {
+  margin: 7px 0 18px;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+.pdf-file-input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.browse-file-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  color: #ffffff;
+  background: #2563eb;
+
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.browse-file-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.browse-file-btn i {
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   UPLOAD INFO
+========================================================= */
+
+.upload-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-top: 18px;
+}
+
+.upload-info span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.upload-info i {
+  color: #2563eb;
+}
+
+.upload-note {
+  margin-top: 13px !important;
+  margin-bottom: 0 !important;
+
+  color: #94a3b8 !important;
+
+  font-size: 11px !important;
+}
+
+
+/* =========================================================
+   SELECTED FILE
+========================================================= */
+
+.selected-file-name {
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  max-width: 100%;
+
+  margin: 15px auto 0;
+  padding: 9px 13px;
+
+  color: #166534;
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  word-break: break-word;
+}
+
+.selected-file-name:not(:empty) {
+  display: inline-flex;
+}
+
+.selected-file-name i {
+  color: #dc2626;
+}
+
+
+/* =========================================================
+   FORM ERRORS
+========================================================= */
+
+.form-errors {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  margin: 24px 34px 0;
+  padding: 15px 17px;
+
+  color: #991b1b;
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+}
+
+.error-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: #dc2626;
+}
+
+.error-icon i {
+  font-size: 18px;
+}
+
+.form-errors strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 13px;
+}
+
+.form-errors ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.form-errors li {
+  margin: 3px 0;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 11px;
+
+  margin-top: 26px;
+  padding: 22px 34px;
+
+  background: #f8fafc;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.cancel-btn,
+.save-btn {
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  color: #475569;
+  background: #ffffff;
+
+  border: 1px solid #cbd5e1;
+
+  text-decoration: none;
+}
+
+.cancel-btn:hover {
+  color: #1e293b;
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.save-btn {
+  color: #ffffff;
+  background: #2563eb;
+
+  border: 1px solid #2563eb;
+
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+}
+
+.save-btn:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.22);
+}
+
+.save-btn:active,
+.cancel-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-ebook-file-page {
+    padding: 20px 14px 40px;
+  }
+
+  .ebook-file-form-card {
+    border-radius: 15px;
+  }
+
+  .form-header {
+    padding: 22px 20px;
+    gap: 13px;
+  }
+
+  .form-icon {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+    border-radius: 13px;
+  }
+
+  .form-icon i {
+    font-size: 23px;
+  }
+
+  .form-header h1 {
+    font-size: 22px;
+  }
+
+  .form-header p {
+    font-size: 12px;
+  }
+
+  .ebook-context-card {
+    margin: 18px 20px 0;
+    padding: 13px;
+  }
+
+  .context-view-btn {
+    padding: 7px 9px;
+  }
+
+  .form-section {
+    margin: 18px 20px 0;
+    padding: 19px;
+    border-radius: 13px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-errors {
+    margin: 18px 20px 0;
+  }
+
+  .form-actions {
+    margin-top: 18px;
+    padding: 17px 20px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .admin-ebook-file-page {
+    padding: 14px 10px 30px;
+  }
+
+  .ebook-back-link {
+    margin-bottom: 14px;
+    padding: 8px 11px;
+    font-size: 12px;
+  }
+
+  .form-header {
+    padding: 19px 15px;
+  }
+
+  .form-icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .form-icon i {
+    font-size: 20px;
+  }
+
+  .form-header h1 {
+    font-size: 19px;
+  }
+
+  .form-header p {
+    display: none;
+  }
+
+  .ebook-context-card {
+    margin: 14px 15px 0;
+  }
+
+  .context-content strong {
+    font-size: 13px;
+  }
+
+  .context-view-btn span {
+    display: none;
+  }
+
+  .form-section {
+    margin: 14px 15px 0;
+    padding: 15px;
+  }
+
+  .section-heading {
+    gap: 9px;
+    margin-bottom: 20px;
+  }
+
+  .section-heading-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .section-heading h2 {
+    font-size: 15px;
+  }
+
+  .section-heading p {
+    font-size: 11px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group select {
+    height: 43px;
+  }
+
+  .pdf-upload-box {
+    padding: 25px 14px;
+  }
+
+  .current-pdf-card {
+    padding: 12px;
+  }
+
+  .pdf-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .pdf-details strong {
+    font-size: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    padding: 15px;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+
+}
+</style>
 <% content_for :page_title, "Edit PDF" %>
 
 <div class="admin-ebook-file-page">
 
   <div class="admin-ebook-file-wrapper">
 
-    <%= link_to admin_ebook_path(@ebook),
-                class: "ebook-back-link" do %>
-
+    <!-- Back -->
+    <%= link_to admin_ebook_path(@ebook), class: "ebook-back-link" do %>
       <i class="bi bi-arrow-left"></i>
-      Back to E-Book
-
+      <span>Back to E-Book</span>
     <% end %>
 
 
+    <!-- Main Card -->
     <div class="ebook-file-form-card">
+
+      <!-- ================================
+           HEADER
+      ================================= -->
 
       <div class="form-header">
 
         <div class="form-icon">
-          <i class="bi bi-pencil-square"></i>
+          <i class="bi bi-file-earmark-pdf-fill"></i>
         </div>
 
-        <div>
+        <div class="form-header-content">
 
           <span class="form-kicker">
-            <%= @ebook.title %>
+            BOOK KHAJANA
           </span>
 
           <h1>
             Edit PDF
           </h1>
 
+          <p>
+            Update your PDF title, description, order and file.
+          </p>
+
         </div>
 
       </div>
 
 
-      <%= form_with model: [
-                    :admin,
-                    @ebook,
-                    @ebook_file
-                  ],
-                  local: true,
-                  multipart: true do |form| %>
+      <!-- ================================
+           CURRENT E-BOOK
+      ================================= -->
 
+      <div class="ebook-context-card">
+
+        <div class="context-icon">
+          <i class="bi bi-book"></i>
+        </div>
+
+        <div class="context-content">
+
+          <span class="context-label">
+            E-BOOK
+          </span>
+
+          <strong>
+            <%= @ebook.title %>
+          </strong>
+
+        </div>
+
+        <%= link_to admin_ebook_path(@ebook),
+                    class: "context-view-btn" do %>
+          View
+          <i class="bi bi-arrow-up-right"></i>
+        <% end %>
+
+      </div>
+
+
+      <!-- ================================
+           FORM
+      ================================= -->
+
+      <%= form_with model: [:admin, @ebook, @ebook_file],
+                    local: true,
+                    multipart: true do |form| %>
+
+
+        <!-- Errors -->
 
         <% if @ebook_file.errors.any? %>
 
           <div class="form-errors">
 
-            <ul>
-
-              <% @ebook_file.errors.full_messages.each do |message| %>
-
-                <li>
-                  <%= message %>
-                </li>
-
-              <% end %>
-
-            </ul>
-
-          </div>
-
-        <% end %>
-
-
-        <div class="form-group">
-
-          <%= form.label :title,
-                        "PDF Title" %>
-
-          <%= form.text_field :title,
-                              required: true %>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <%= form.label :description,
-                        "Description" %>
-
-          <%= form.text_area :description,
-                             rows: 4 %>
-
-        </div>
-
-
-        <div class="form-row">
-
-          <div class="form-group">
-
-            <%= form.label :position,
-                          "Position" %>
-
-            <%= form.number_field :position,
-                                  min: 1,
-                                  required: true %>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <%= form.label :status,
-                          "Status" %>
-
-            <%= form.select :status,
-                            [
-                              ["Active", "active"],
-                              ["Inactive", "inactive"]
-                            ] %>
-
-          </div>
-
-        </div>
-
-
-        <% if @ebook_file.pdf.attached? %>
-
-          <div class="existing-pdf">
-
-            <i class="bi bi-file-earmark-pdf-fill"></i>
+            <div class="error-icon">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
 
             <div>
 
               <strong>
-                Current PDF
+                Please fix the following errors:
               </strong>
 
-              <span>
-                <%= @ebook_file.pdf.filename.to_s %>
-              </span>
+              <ul>
+
+                <% @ebook_file.errors.full_messages.each do |message| %>
+
+                  <li>
+                    <%= message %>
+                  </li>
+
+                <% end %>
+
+              </ul>
 
             </div>
 
@@ -141,34 +1150,312 @@
         <% end %>
 
 
-        <div class="pdf-upload-box">
+        <!-- ================================
+             PDF INFORMATION
+        ================================= -->
 
-          <i class="bi bi-arrow-repeat"></i>
+        <div class="form-section">
 
-          <h3>
-            Replace PDF
-          </h3>
+          <div class="section-heading">
 
-          <p>
-            Leave empty to keep the existing PDF.
-          </p>
+            <div class="section-heading-icon">
+              <i class="bi bi-info-circle"></i>
+            </div>
 
-          <%= form.file_field :pdf,
-                              accept: "application/pdf,.pdf" %>
+            <div>
+
+              <h2>
+                PDF Information
+              </h2>
+
+              <p>
+                Update the basic information of this PDF.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- PDF Title -->
+
+          <div class="form-group">
+
+            <%= form.label :title do %>
+
+              PDF Title
+              <span>*</span>
+
+            <% end %>
+
+            <div class="input-wrapper">
+
+              <i class="bi bi-type"></i>
+
+              <%= form.text_field :title,
+                                  required: true,
+                                  placeholder: "e.g. Class 12 History - Complete Study Material" %>
+
+            </div>
+
+            <small>
+              Use a clear and descriptive title so students can easily identify the PDF.
+            </small>
+
+          </div>
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <%= form.label :description, "Description" %>
+
+            <%= form.text_area :description,
+                               rows: 5,
+                               placeholder: "Write a short description about this PDF..." %>
+
+            <small>
+              Optional. Add useful information about the content of this PDF.
+            </small>
+
+          </div>
+
+
+          <!-- Position + Status -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <%= form.label :position do %>
+                Display Order
+                <span>*</span>
+              <% end %>
+
+              <div class="input-wrapper">
+
+                <i class="bi bi-sort-numeric-down"></i>
+
+                <%= form.number_field :position,
+                                      min: 1,
+                                      required: true,
+                                      placeholder: "1" %>
+
+              </div>
+
+              <small>
+                Lower numbers appear first.
+              </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <%= form.label :status do %>
+                Status
+              <% end %>
+
+              <div class="input-wrapper select-wrapper">
+
+                <i class="bi bi-toggle-on"></i>
+
+                <%= form.select :status,
+                                [
+                                  ["Active", "active"],
+                                  ["Inactive", "inactive"]
+                                ] %>
+
+              </div>
+
+              <small>
+                Only active PDFs are visible to students.
+              </small>
+
+            </div>
+
+          </div>
 
         </div>
 
 
+        <!-- ================================
+             CURRENT PDF
+        ================================= -->
+
+        <% if @ebook_file.pdf.attached? %>
+
+          <div class="form-section">
+
+            <div class="section-heading">
+
+              <div class="section-heading-icon">
+                <i class="bi bi-file-earmark-check"></i>
+              </div>
+
+              <div>
+
+                <h2>
+                  Current PDF
+                </h2>
+
+                <p>
+                  This file is currently attached to the E-Book.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="current-pdf-card">
+
+              <div class="pdf-icon">
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+              </div>
+
+
+              <div class="pdf-details">
+
+                <strong>
+                  <%= @ebook_file.pdf.filename.to_s %>
+                </strong>
+
+                <div class="pdf-meta">
+
+                  <span>
+                    <i class="bi bi-filetype-pdf"></i>
+                    PDF Document
+                  </span>
+
+                  <% if @ebook_file.pdf.blob.byte_size.present? %>
+
+                    <span>
+                      <i class="bi bi-hdd"></i>
+                      <%= number_to_human_size(@ebook_file.pdf.blob.byte_size) %>
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+
+        <!-- ================================
+             REPLACE PDF
+        ================================= -->
+
+        <div class="form-section">
+
+          <div class="section-heading">
+
+            <div class="section-heading-icon">
+              <i class="bi bi-cloud-arrow-up"></i>
+            </div>
+
+            <div>
+
+              <h2>
+                Replace PDF
+              </h2>
+
+              <p>
+                Upload a new PDF if you want to replace the current file.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="pdf-upload-box">
+
+            <div class="upload-icon">
+
+              <i class="bi bi-cloud-arrow-up-fill"></i>
+
+            </div>
+
+            <h3>
+              Upload New PDF
+            </h3>
+
+            <p>
+              Drag & drop your PDF here or choose a file from your computer.
+            </p>
+
+
+            <%= form.file_field :pdf,
+                                accept: "application/pdf,.pdf",
+                                class: "pdf-file-input" %>
+
+
+            <label for="<%= form.object_name %>_pdf"
+                   class="browse-file-btn">
+
+              <i class="bi bi-folder2-open"></i>
+              Choose PDF
+
+            </label>
+
+
+            <div class="upload-info">
+
+              <span>
+                <i class="bi bi-filetype-pdf"></i>
+                PDF only
+              </span>
+
+              <span>
+                <i class="bi bi-shield-check"></i>
+                Secure upload
+              </span>
+
+            </div>
+
+
+            <div class="selected-file-name"
+                 data-pdf-file-name>
+            </div>
+
+
+            <p class="upload-note">
+              Leave this field empty to keep the existing PDF.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================
+             ACTIONS
+        ================================= -->
+
         <div class="form-actions">
 
-          <%= link_to "Cancel",
-                      admin_ebook_path(@ebook),
-                      class: "cancel-btn" %>
+          <%= link_to admin_ebook_path(@ebook),
+                      class: "cancel-btn" do %>
+
+            <i class="bi bi-x-lg"></i>
+            Cancel
+
+          <% end %>
+
 
           <%= form.submit "Save Changes",
                           class: "save-btn" %>
 
         </div>
+
 
       <% end %>
 
@@ -177,3 +1464,30 @@
   </div>
 
 </div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    function initializePdfFileInput() {
+      const input = document.querySelector(".pdf-file-input");
+      const fileName = document.querySelector("[data-pdf-file-name]");
+
+      if (!input || !fileName) return;
+
+      // Prevent duplicate listeners when Turbo loads the page again
+      if (input.dataset.pdfInitialized === "true") return;
+
+      input.dataset.pdfInitialized = "true";
+
+      input.addEventListener("change", () => {
+        if (input.files && input.files.length > 0) {
+          fileName.textContent = `📄 ${input.files[0].name}`;
+        } else {
+          fileName.textContent = "";
+        }
+      });
+    }
+
+    document.addEventListener("turbo:load", initializePdfFileInput);
+    document.addEventListener("DOMContentLoaded", initializePdfFileInput);
+  })();
+</script>
