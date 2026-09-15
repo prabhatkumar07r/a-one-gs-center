@@ -420,31 +420,34 @@
              LEGACY PDF SUPPORT KEPT
         ====================================================== -->
 
-        <div class="ebook-card-actions">
+     <!-- =====================================================
+     E-BOOK ACTIONS
+====================================================== -->
+
+<div class="ebook-card-actions">
 
 
-          <!-- EDIT E-BOOK -->
+  <!-- EDIT E-BOOK -->
 
-          <%= link_to "✏️ Edit",
-              edit_admin_ebook_path(@ebook),
-              class: "ebook-action edit" %>
+  <%= link_to "✏️ Edit",
+      edit_admin_ebook_path(@ebook),
+      class: "ebook-action edit" %>
 
 
+  <!-- DELETE E-BOOK -->
 
-          <!-- LEGACY PDF -->
+  <%= button_to "🗑 Delete",
+      admin_ebook_path(@ebook),
+      method: :delete,
+      class: "ebook-action delete",
+      form: {
+        data: {
+          turbo_confirm: "Delete this E-Book?"
+        }
+      } %>
 
-          <% if @ebook.pdf_file.attached? %>
 
-            <%= link_to "📄 Open PDF",
-                rails_blob_path(
-                  @ebook.pdf_file,
-                  disposition: "inline"
-                ),
-                target: "_blank",
-                rel: "noopener",
-                class: "ebook-action view" %>
-
-          <% end %>
+</div>
 
 
 

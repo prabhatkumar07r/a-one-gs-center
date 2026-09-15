@@ -12,6 +12,9 @@ class Admin::EbooksController < AdminController
 
     @ebooks =
       Ebook
+        .includes(
+          cover_image_attachment: :blob
+        )
         .order(created_at: :desc)
 
   end
@@ -31,8 +34,7 @@ class Admin::EbooksController < AdminController
 
   def new
 
-    @ebook =
-      Ebook.new
+    @ebook = Ebook.new
 
   end
 
@@ -117,7 +119,6 @@ class Admin::EbooksController < AdminController
       Ebook
         .includes(
           cover_image_attachment: :blob,
-          pdf_file_attachment: :blob,
           ebook_files: {
             pdf_attachment: :blob
           }
@@ -148,8 +149,7 @@ class Admin::EbooksController < AdminController
         :is_free,
         :status,
         :published_at,
-        :cover_image,
-        :pdf_file
+        :cover_image
       )
 
   end
