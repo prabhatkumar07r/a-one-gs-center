@@ -1,95 +1,159 @@
 class EbooksController < ApplicationController
+
+  # ==========================================================
+  # E-BOOK LISTING
+  # ==========================================================
+
   def index
-    @ebooks = Ebook.published
-                   .order(published_at: :desc, created_at: :desc)
+    @ebooks =
+      Ebook
+        .published
+        .includes(
+          :ebook_files,
+          cover_image_attachment: :blob
+        )
+        .order(
+          published_at: :desc,
+          created_at: :desc
+        )
+
+    @categories =
+      Ebook
+        .published
+        .where.not(category: [nil, ""])
+        .distinct
+        .order(:category)
+        .pluck(:category)
+
+    # --------------------------------------------------------
+    # SEARCH
+    # --------------------------------------------------------
 
     if params[:q].present?
       search = "%#{params[:q].strip}%"
 
-      @ebooks = @ebooks.where(
-        "title ILIKE :search
-         OR author ILIKE :search
-         OR category ILIKE :search
-         OR exam_name ILIKE :search",
-        search: search
-      )
+      @ebooks =
+        @ebooks.where(
+          "title ILIKE :search
+           OR author ILIKE :search
+           OR category ILIKE :search
+           OR exam_name ILIKE :search",
+          search: search
+        )
     end
+
+    # --------------------------------------------------------
+    # CATEGORY FILTER
+    # --------------------------------------------------------
 
     if params[:category].present?
-      @ebooks = @ebooks.where(category: params[:category])
+      @ebooks =
+        @ebooks.where(
+          category: params[:category]
+        )
     end
   end
 
-  def show
-    @ebook = Ebook.published.find(params[:id])
-  end
 
   # ==========================================================
-  # READ / DOWNLOAD E-BOOK
+  # E-BOOK DETAIL
   # ==========================================================
 
-  def download
-    @ebook = Ebook.published.find(params[:id])
+def show
+  @ebook =
+    Ebook
+      .published
+      .includes(
+        cover_image_attachment: :blob,
+        ebook_files: {
+          pdf_attachment: :blob
+        }
+      )
+      .find(params[:id])
 
-    # --------------------------------------------------------
-    # PDF CHECK
-    # --------------------------------------------------------
+  @active_ebook_files =
+    @ebook
+      .ebook_files
+      .select { |file| file.status == "active" }
+end
 
-    unless @ebook.pdf_file.attached?
-      redirect_to ebook_path(@ebook),
-                  alert: "E-Book PDF is not available yet."
+
+  # ==========================================================
+  # MY E-BOOKS
+  # ==========================================================
+
+  def my
+    unless user_signed_in?
+      redirect_to new_user_session_path,
+                  alert: "Please login to view your E-Books."
       return
     end
 
-    # --------------------------------------------------------
-    # PAID E-BOOK SECURITY
-    # --------------------------------------------------------
+    @purchases =
+      current_user
+        .ebook_purchases
+        .paid
+        .includes(
+          ebook: {
+            ebook_files: {
+              pdf_attachment: :blob
+            }
+          }
+        )
+        .order(created_at: :desc)
+  end
 
-    if @ebook.paid?
 
-      unless user_signed_in?
-        redirect_to new_user_session_path,
-                    alert: "Please login to access this E-Book."
-        return
-      end
+  # ==========================================================
+  # E-BOOK ACCESS
+  # ==========================================================
+def access
+  @ebook =
+    Ebook
+      .published
+      .includes(
+        ebook_files: {
+          pdf_attachment: :blob
+        }
+      )
+      .find(params[:id])
 
-      purchase = current_user.ebook_purchases
-                             .paid
-                             .find_by(ebook_id: @ebook.id)
+  # Load only active PDF/chapter files
+  @ebook_files =
+    @ebook
+      .ebook_files
+      .with_attached_pdf
+      .where(status: "active")
+      .order(:position, :id)
 
-      unless purchase
-        redirect_to ebook_path(@ebook),
-                    alert: "Please purchase this E-Book to access the PDF."
-        return
-      end
+  # Remove files without an actual PDF
+  @ebook_files =
+    @ebook_files.select do |ebook_file|
+      ebook_file.pdf.attached?
     end
 
-    # --------------------------------------------------------
-    # READ vs DOWNLOAD
-    # --------------------------------------------------------
+  # Free E-Book
+  return if @ebook.free?
 
-    disposition =
-      params[:download].to_s == "true" ? "attachment" : "inline"
-
-    send_data @ebook.pdf_file.download,
-              filename: "#{@ebook.title.parameterize}.pdf",
-              type: @ebook.pdf_file.content_type.presence || "application/pdf",
-              disposition: disposition
-
-  rescue ActiveRecord::RecordNotFound
-    redirect_to ebooks_path,
-                alert: "E-Book not found."
-
-  rescue ActiveStorage::FileNotFoundError
-    redirect_to ebook_path(@ebook),
-                alert: "E-Book PDF file could not be found."
-
-  rescue StandardError => e
-    Rails.logger.error(
-      "EBOOK PDF ACCESS ERROR: #{e.class} - #{e.message}"
-    )
-
-    redirect_to ebook_path(@ebook),
-                alert: "Unable to open the E-Book right now."
+  # Paid E-Book requires login
+  unless user_signed_in?
+    redirect_to new_user_session_path,
+                alert: "Please login to access this E-Book."
+    return
   end
+
+  # Check successful purchase
+  purchase =
+    current_user
+      .ebook_purchases
+      .paid
+      .find_by(ebook_id: @ebook.id)
+
+  unless purchase
+    redirect_to ebook_path(@ebook),
+                alert: "You do not have access to this E-Book."
+    return
+  end
+end
+
 end

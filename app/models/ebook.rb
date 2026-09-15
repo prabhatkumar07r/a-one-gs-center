@@ -1,13 +1,17 @@
 class Ebook < ApplicationRecord
   has_one_attached :cover_image
-  has_one_attached :pdf_file
- has_many :ebook_purchases, dependent: :restrict_with_error
+
+  has_many :ebook_files,
+           -> { order(:position, :id) },
+           dependent: :destroy
+
+  has_many :ebook_purchases,
+           dependent: :restrict_with_error
+
   before_validation :calculate_discount
 
-  validates :title, presence: true
-  has_many :ebook_files,
-         -> { order(:position, :id) },
-         dependent: :destroy
+  validates :title,
+            presence: true
 
   validates :price,
             numericality: {
@@ -25,11 +29,14 @@ class Ebook < ApplicationRecord
               less_than_or_equal_to: 100
             }
 
-  scope :published, -> { where(status: "published") }
-  scope :free, -> { where(is_free: true) }
-  scope :paid, -> { where(is_free: false) }
-  
+  scope :published,
+        -> { where(status: "published") }
 
+  scope :free,
+        -> { where(is_free: true) }
+
+  scope :paid,
+        -> { where(is_free: false) }
 
   def free?
     is_free?
@@ -52,7 +59,10 @@ class Ebook < ApplicationRecord
     original = original_price.to_f
     selling = price.to_f
 
-    if original > 0 && selling >= 0 && selling <= original
+    if original > 0 &&
+       selling >= 0 &&
+       selling <= original
+
       self.discount_percentage =
         (((original - selling) / original) * 100).round
     else

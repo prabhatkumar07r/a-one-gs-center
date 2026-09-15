@@ -1466,28 +1466,173 @@
 </div>
 
 <script nonce="<%= content_security_policy_nonce %>">
-  (() => {
-    function initializePdfFileInput() {
-      const input = document.querySelector(".pdf-file-input");
-      const fileName = document.querySelector("[data-pdf-file-name]");
+(() => {
+  function initializePdfFileInput() {
+    const input = document.querySelector(".pdf-file-input");
+    const uploadBox = document.querySelector(".pdf-upload-box");
+    const fileNameBox = document.querySelector("[data-pdf-file-name]");
 
-      if (!input || !fileName) return;
+    if (!input || !uploadBox || !fileNameBox) return;
 
-      // Prevent duplicate listeners when Turbo loads the page again
-      if (input.dataset.pdfInitialized === "true") return;
+    // Prevent duplicate initialization with Turbo
+    if (uploadBox.dataset.pdfInitialized === "true") return;
 
-      input.dataset.pdfInitialized = "true";
+    uploadBox.dataset.pdfInitialized = "true";
 
-      input.addEventListener("change", () => {
-        if (input.files && input.files.length > 0) {
-          fileName.textContent = `📄 ${input.files[0].name}`;
-        } else {
-          fileName.textContent = "";
-        }
-      });
+    /* =========================================================
+       HELPERS
+    ========================================================= */
+
+    function showSelectedFile(file) {
+      if (!file) {
+        fileNameBox.textContent = "";
+        return;
+      }
+
+      const isPdf =
+        file.type === "application/pdf" ||
+        file.name.toLowerCase().endsWith(".pdf");
+
+      if (!isPdf) {
+        fileNameBox.textContent =
+          "⚠️ Please select a valid PDF file.";
+
+        fileNameBox.style.color = "#991b1b";
+        fileNameBox.style.background = "#fef2f2";
+        fileNameBox.style.borderColor = "#fecaca";
+
+        input.value = "";
+        return;
+      }
+
+      const size =
+        file.size >= 1024 * 1024
+          ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
+          : `${Math.max(1, Math.round(file.size / 1024))} KB`;
+
+      fileNameBox.innerHTML = "";
+
+      const icon = document.createElement("i");
+      icon.className = "bi bi-file-earmark-pdf-fill";
+
+      const text = document.createElement("span");
+      text.textContent = `${file.name} • ${size}`;
+
+      fileNameBox.appendChild(icon);
+      fileNameBox.appendChild(text);
+
+      fileNameBox.style.color = "#166534";
+      fileNameBox.style.background = "#f0fdf4";
+      fileNameBox.style.borderColor = "#bbf7d0";
     }
 
-    document.addEventListener("turbo:load", initializePdfFileInput);
-    document.addEventListener("DOMContentLoaded", initializePdfFileInput);
-  })();
+
+    function assignFile(file) {
+      if (!file) return;
+
+      const dataTransfer = new DataTransfer();
+
+      dataTransfer.items.add(file);
+
+      input.files = dataTransfer.files;
+
+      showSelectedFile(file);
+    }
+
+
+    /* =========================================================
+       NORMAL FILE PICKER
+    ========================================================= */
+
+    input.addEventListener("change", () => {
+      if (input.files && input.files.length > 0) {
+        showSelectedFile(input.files[0]);
+      } else {
+        fileNameBox.textContent = "";
+      }
+    });
+
+
+    /* =========================================================
+       DRAG ENTER
+    ========================================================= */
+
+    uploadBox.addEventListener("dragenter", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      uploadBox.classList.add("is-dragging");
+    });
+
+
+    /* =========================================================
+       DRAG OVER
+    ========================================================= */
+
+    uploadBox.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      uploadBox.classList.add("is-dragging");
+    });
+
+
+    /* =========================================================
+       DRAG LEAVE
+    ========================================================= */
+
+    uploadBox.addEventListener("dragleave", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Only remove when leaving the actual upload box
+      if (!uploadBox.contains(event.relatedTarget)) {
+        uploadBox.classList.remove("is-dragging");
+      }
+    });
+
+
+    /* =========================================================
+       DROP
+    ========================================================= */
+
+    uploadBox.addEventListener("drop", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      uploadBox.classList.remove("is-dragging");
+
+      const files = event.dataTransfer.files;
+
+      if (!files || files.length === 0) return;
+
+      assignFile(files[0]);
+    });
+  }
+
+
+  /* =========================================================
+     TURBO
+  ========================================================= */
+
+  document.addEventListener(
+    "turbo:load",
+    initializePdfFileInput
+  );
+
+
+  /* =========================================================
+     NORMAL PAGE LOAD
+  ========================================================= */
+
+  if (document.readyState !== "loading") {
+    initializePdfFileInput();
+  } else {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializePdfFileInput,
+      { once: true }
+    );
+  }
+})();
 </script>

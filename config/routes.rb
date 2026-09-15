@@ -134,135 +134,135 @@ Rails.application.routes.draw do
   # ADMIN
   # ==================================================
 
-namespace :admin do
+  namespace :admin do
 
-  # ==================================================
-  # E-BOOK PAYMENTS
-  # ==================================================
+    # ==================================================
+    # E-BOOK PAYMENTS
+    # ==================================================
 
-  resources :ebook_purchases,
-            only: [:index, :show] do
+    resources :ebook_purchases,
+              only: [:index, :show] do
 
-    member do
-      post :verify_payment
+      member do
+        post :verify_payment
+      end
+
     end
 
-  end
+
+    # ==================================================
+    # E-BOOKS
+    # ==================================================
+
+    resources :ebooks do
+
+      resources :ebook_files,
+                only: [
+                  :index,
+                  :new,
+                  :create,
+                  :edit,
+                  :update,
+                  :destroy
+                ]
+
+    end
 
 
-  # ==================================================
-  # E-BOOKS
-  # ==================================================
+    # ==================================================
+    # ADMIN TEST SERIES
+    # ==================================================
 
-  resources :ebooks do
+    resources :test_series do
 
-    resources :ebook_files,
-              only: [
-                :index,
-                :new,
-                :create,
-                :edit,
-                :update,
-                :destroy
-              ]
+      resources :test_series_tests,
+                as: :tests do
 
-  end
+        resources :test_series_questions,
+                  as: :questions do
 
+          resources :test_series_options,
+                    as: :options
 
-  # ==================================================
-  # ADMIN TEST SERIES
-  # ==================================================
-
-  resources :test_series do
-
-    resources :test_series_tests,
-              as: :tests do
-
-      resources :test_series_questions,
-                as: :questions do
-
-        resources :test_series_options,
-                  as: :options
+        end
 
       end
 
     end
 
-  end
+
+    # ==================================================
+    # ADMIN PROFILE
+    # ==================================================
+
+    resource :profile,
+             only: [:show, :edit, :update]
 
 
-  # ==================================================
-  # ADMIN PROFILE
-  # ==================================================
+    # ==================================================
+    # ADMIN SETTINGS
+    # ==================================================
 
-  resource :profile,
-           only: [:show, :edit, :update]
+    get "settings",
+        to: "settings#index"
 
+    get "settings/notifications",
+        to: "settings#notifications",
+        as: :settings_notifications
 
-  # ==================================================
-  # ADMIN SETTINGS
-  # ==================================================
+    patch "settings/notifications",
+          to: "settings#update_notifications",
+          as: :update_settings_notifications
 
-  get "settings",
-      to: "settings#index"
+    get "settings/website",
+        to: "settings#website",
+        as: :settings_website
 
-  get "settings/notifications",
-      to: "settings#notifications",
-      as: :settings_notifications
+    patch "settings/website",
+          to: "settings#update_website",
+          as: :update_settings_website
 
-  patch "settings/notifications",
-        to: "settings#update_notifications",
-        as: :update_settings_notifications
+    get "settings/security",
+        to: "settings#security",
+        as: :settings_security
 
-  get "settings/website",
-      to: "settings#website",
-      as: :settings_website
+    get "settings/password",
+        to: "settings#password",
+        as: :settings_password
 
-  patch "settings/website",
-        to: "settings#update_website",
-        as: :update_settings_website
-
-  get "settings/security",
-      to: "settings#security",
-      as: :settings_security
-
-  get "settings/password",
-      to: "settings#password",
-      as: :settings_password
-
-  patch "settings/password",
-        to: "settings#update_password",
-        as: :update_settings_password
+    patch "settings/password",
+          to: "settings#update_password",
+          as: :update_settings_password
 
 
-  # ==================================================
-  # ADMIN COURSES
-  # ==================================================
+    # ==================================================
+    # ADMIN COURSES
+    # ==================================================
 
-  resources :courses do
+    resources :courses do
 
-    resources :quizzes do
-      resources :questions
+      resources :quizzes do
+        resources :questions
+      end
+
+      resources :playlists do
+        resources :videos
+        resources :course_resources
+      end
+
+      resources :students,
+                only: [:index]
+
     end
 
-    resources :playlists do
-      resources :videos
-      resources :course_resources
-    end
 
-    resources :students,
-              only: [:index]
+    # ==================================================
+    # ADMIN ENROLLMENTS
+    # ==================================================
+
+    resources :enrollments
 
   end
-
-
-  # ==================================================
-  # ADMIN ENROLLMENTS
-  # ==================================================
-
-  resources :enrollments
-
-end
 
 
   # ==================================================
@@ -278,13 +278,13 @@ end
        as: :enroll_free_course
 
 
-     # ==================================================
-# STUDENT COURSE ENROLLMENT
-# ==================================================
+  # ==================================================
+  # STUDENT COURSE ENROLLMENT
+  # ==================================================
 
   post "/enrollments",
-     to: "enrollments#create",
-     as: :enrollments  
+       to: "enrollments#create",
+       as: :enrollments
 
 
   # ==================================================
@@ -371,31 +371,69 @@ end
   end
 
 
-      resources :ebooks, only: [:index, :show]
-      get "/ebooks/:id/download",
-    to: "ebooks#download",
-    as: :download_ebook
+  # ==================================================
+  # E-BOOK MODULE
+  # ==================================================
 
-# E-BOOK PAYMENT
-post "/ebooks/:ebook_id/buy",
-     to: "ebook_payments#create",
-     as: :buy_ebook
+  # --------------------------------------------------
+  # PUBLIC E-BOOKS
+  # --------------------------------------------------
 
-get "/ebook-payments/:id",
-    to: "ebook_payments#show",
-    as: :ebook_payment
+  # IMPORTANT:
+  # Keep /ebooks/my before /ebooks/:id
+  get "/ebooks/my",
+      to: "ebooks#my",
+      as: :my_ebooks
 
-post "/ebook-payments/:id/verify",
-     to: "ebook_payments#verify",
-     as: :verify_ebook_payment
+  resources :ebooks,
+            only: [:index, :show] do
 
-get "/ebook-payments/:id/success",
-    to: "ebook_payments#success",
-    as: :ebook_payment_success
+    member do
+      get :access
+    end
 
-get "/ebook-payments/:id/failed",
-    to: "ebook_payments#failed",
-    as: :ebook_payment_failed
+  end
+
+
+  # --------------------------------------------------
+  # E-BOOK PURCHASE / PAYMENT
+  # --------------------------------------------------
+
+  post "/ebooks/:ebook_id/buy",
+       to: "ebook_payments#create",
+       as: :buy_ebook
+
+  get "/ebook-payments/:id",
+      to: "ebook_payments#show",
+      as: :ebook_payment
+
+  post "/ebook-payments/:id/verify",
+       to: "ebook_payments#verify",
+       as: :verify_ebook_payment
+
+  get "/ebook-payments/:id/success",
+      to: "ebook_payments#success",
+      as: :ebook_payment_success
+
+  get "/ebook-payments/:id/failed",
+      to: "ebook_payments#failed",
+      as: :ebook_payment_failed
+
+
+  # --------------------------------------------------
+  # E-BOOK PDF FILE ACCESS
+  # --------------------------------------------------
+
+  resources :ebook_files,
+            only: [:show] do
+
+    member do
+      get :download
+    end
+
+  end
+
+
   # ==================================================
   # STUDENT NOTES
   # ==================================================
@@ -409,16 +447,6 @@ get "/ebook-payments/:id/failed",
     end
 
   end
-
-
-  resources :ebook_files,
-          only: [:show] do
-
-  member do
-    get :download
-  end
-
-end
 
 
   # ==================================================
@@ -620,8 +648,8 @@ end
       as: :payment_success
 
   get "/payments/:id/failed",
-       to: "payments#failed",
-       as: :payment_failed
+      to: "payments#failed",
+      as: :payment_failed
 
 
   # ==================================================

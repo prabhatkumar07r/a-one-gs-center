@@ -46,8 +46,17 @@ class Admin::EbooksController < AdminController
   private
 
   def set_ebook
-    @ebook = Ebook.find(params[:id])
-  end
+    @ebook =
+      Ebook
+        .includes(
+          cover_image_attachment: :blob,
+          pdf_file_attachment: :blob,
+          ebook_files: {
+            pdf_attachment: :blob
+          }
+        )
+        .find(params[:id])
+  e
 
   def ebook_params
     params.require(:ebook).permit(

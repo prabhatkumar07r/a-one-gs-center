@@ -1,6 +1,5 @@
 <%= render "ebook_3d_style" %>
 
-
 <%= form_with model: [:admin, ebook],
               local: true,
               multipart: true do |form| %>
@@ -135,7 +134,7 @@
       <%= form.number_field :original_price,
           min: 0,
           step: 0.01,
-          placeholder: "499" %>
+          placeholder: "499",
           id: "ebook_original_price" %>
 
     </div>
@@ -152,26 +151,32 @@
       <%= form.number_field :price,
           min: 0,
           step: 0.01,
-          placeholder: "299" %>
+          placeholder: "299",
           id: "ebook_price" %>
 
     </div>
 
 
-    <div id="ebook-discount-preview"
-     style="
-       margin-top: 10px;
-       padding: 10px 14px;
-       border-radius: 12px;
-       background: #f5f3ff;
-       color: #6d28d9;
-       font-size: 13px;
-       font-weight: 800;
-     ">
-  🏷️ Discount: 0%
-</div>
+    <!-- =====================================================
+         DISCOUNT PREVIEW
+    ====================================================== -->
 
+    <div class="ebook-form-group full">
 
+      <div id="ebook-discount-preview"
+           style="
+             margin-top: 0;
+             padding: 11px 14px;
+             border-radius: 12px;
+             background: #f5f3ff;
+             color: #6d28d9;
+             font-size: 13px;
+             font-weight: 800;
+           ">
+        🏷️ Discount: 0%
+      </div>
+
+    </div>
 
 
     <!-- =====================================================
@@ -236,6 +241,7 @@
       <%= form.file_field :cover_image,
           accept: "image/png,image/jpeg,image/webp" %>
 
+
       <% if ebook.cover_image.attached? %>
 
         <div style="
@@ -257,43 +263,11 @@
     </div>
 
 
-    <!-- =====================================================
-         PDF
-    ====================================================== -->
-
-    <div class="ebook-form-group">
-
-      <%= form.label :pdf_file, "E-Book PDF" %>
-
-      <%= form.file_field :pdf_file,
-          accept: "application/pdf" %>
-
-      <% if ebook.pdf_file.attached? %>
-
-        <div style="
-          margin-top: 12px;
-          font-size: 12px;
-          color: #667085;
-        ">
-
-          Current PDF:
-
-          <strong>
-            <%= ebook.pdf_file.filename.to_s %>
-          </strong>
-
-        </div>
-
-      <% end %>
-
-    </div>
-
-
   </div>
 
 
   <!-- =====================================================
-       SUBMIT
+       FORM ACTIONS
   ====================================================== -->
 
   <div style="
@@ -320,5 +294,122 @@
 
   </div>
 
+
 <% end %>
+
 <%= render "ebook_3d_script" %>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+
+    function initializeEbookPricing() {
+
+      const originalPrice =
+        document.querySelector("#ebook_original_price");
+
+      const sellingPrice =
+        document.querySelector("#ebook_price");
+
+      const accessType =
+        document.querySelector("#ebook_access_type");
+
+      const discountPreview =
+        document.querySelector("#ebook-discount-preview");
+
+
+      if (
+        !originalPrice ||
+        !sellingPrice ||
+        !accessType ||
+        !discountPreview
+      ) {
+        return;
+      }
+
+
+      if (
+        originalPrice.dataset.pricingInitialized === "true"
+      ) {
+        return;
+      }
+
+
+      originalPrice.dataset.pricingInitialized = "true";
+
+
+      function updateDiscount() {
+
+        const original =
+          parseFloat(originalPrice.value) || 0;
+
+        const selling =
+          parseFloat(sellingPrice.value) || 0;
+
+
+        if (accessType.value === "true") {
+
+          discountPreview.textContent =
+            "🏷️ Discount: 0%";
+
+          return;
+        }
+
+
+        if (
+          original > 0 &&
+          selling >= 0 &&
+          selling <= original
+        ) {
+
+          const discount =
+            Math.round(
+              ((original - selling) / original) * 100
+            );
+
+          discountPreview.textContent =
+            `🏷️ Discount: ${discount}%`;
+
+        } else {
+
+          discountPreview.textContent =
+            "🏷️ Discount: 0%";
+
+        }
+
+      }
+
+
+      originalPrice.addEventListener(
+        "input",
+        updateDiscount
+      );
+
+      sellingPrice.addEventListener(
+        "input",
+        updateDiscount
+      );
+
+      accessType.addEventListener(
+        "change",
+        updateDiscount
+      );
+
+
+      updateDiscount();
+
+    }
+
+
+    document.addEventListener(
+      "turbo:load",
+      initializeEbookPricing
+    );
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeEbookPricing
+    );
+
+  })();
+</script>
