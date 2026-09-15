@@ -1,0 +1,622 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   TESTIMONIAL FORM
+========================================================= */
+
+.testimonial-form {
+
+  display: grid;
+  gap: 24px;
+
+}
+
+.testimonial-form-section {
+
+  padding: 24px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(248,247,255,.90)
+    );
+
+  border: 1px solid rgba(124,58,237,.12);
+
+  box-shadow:
+    0 15px 40px rgba(76,29,149,.08);
+
+}
+
+.testimonial-form-section h2 {
+
+  margin: 0 0 5px;
+
+  color: #3b0764;
+
+  font-size: 18px;
+  font-weight: 800;
+
+}
+
+.testimonial-form-section > p {
+
+  margin: 0 0 20px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.testimonial-form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+
+}
+
+.testimonial-field {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+}
+
+.testimonial-field.full {
+
+  grid-column: 1 / -1;
+
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.testimonial-field label {
+
+  color: #4c1d95;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.testimonial-field input,
+.testimonial-field textarea,
+.testimonial-field select {
+
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid #ddd6fe;
+
+  background: rgba(255,255,255,.9);
+
+  color: #1f2937;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+
+}
+
+.testimonial-field textarea {
+
+  min-height: 150px;
+
+  resize: vertical;
+
+}
+
+.testimonial-field input:focus,
+.testimonial-field textarea:focus,
+.testimonial-field select:focus {
+
+  border-color: #8b5cf6;
+
+  box-shadow:
+    0 0 0 3px rgba(139,92,246,.12);
+
+}
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+.testimonial-field input[type="file"] {
+
+  padding: 10px;
+
+  background: #faf9ff;
+
+}
+
+
+/* =========================================================
+   HELP TEXT
+========================================================= */
+
+.testimonial-help {
+
+  color: #9ca3af;
+
+  font-size: 11px;
+
+}
+
+
+/* =========================================================
+   CURRENT IMAGE
+========================================================= */
+
+.testimonial-current-photo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 10px;
+
+}
+
+.testimonial-current-photo img {
+
+  width: 70px;
+  height: 70px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 3px solid #ede9fe;
+
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.testimonial-current-video {
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background: #f5f3ff;
+
+  color: #6d28d9;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.testimonial-errors {
+
+  padding: 15px 18px;
+
+  border-radius: 13px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #991b1b;
+
+  font-size: 13px;
+
+}
+
+.testimonial-errors ul {
+
+  margin: 8px 0 0;
+
+}
+
+
+/* =========================================================
+   FOOTER ACTIONS
+========================================================= */
+
+.testimonial-form-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding-top: 5px;
+
+}
+
+.testimonial-form-btn {
+
+  border: 0;
+
+  padding: 12px 22px;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+}
+
+.testimonial-form-btn.cancel {
+
+  background: #f3f4f6;
+
+  color: #4b5563;
+
+}
+
+.testimonial-form-btn.submit {
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #a855f7
+    );
+
+  box-shadow:
+    0 8px 20px rgba(124,58,237,.22);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .testimonial-form-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .testimonial-field.full {
+
+    grid-column: auto;
+
+  }
+
+  .testimonial-form-section {
+
+    padding: 18px;
+
+  }
+
+  .testimonial-form-actions {
+
+    flex-direction: column-reverse;
+
+  }
+
+  .testimonial-form-btn {
+
+    width: 100%;
+
+    text-align: center;
+
+  }
+
+}
+
+</style>
+
+
+<%= form_with model: [:admin, testimonial],
+              local: true,
+              multipart: true,
+              class: "testimonial-form" do |form| %>
+
+
+  <!-- =====================================================
+       ERRORS
+  ====================================================== -->
+
+  <% if testimonial.errors.any? %>
+
+    <div class="testimonial-errors">
+
+      <strong>
+        Please fix the following errors:
+      </strong>
+
+      <ul>
+
+        <% testimonial.errors.full_messages.each do |message| %>
+
+          <li>
+            <%= message %>
+          </li>
+
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- =====================================================
+       BASIC INFORMATION
+  ====================================================== -->
+
+  <section class="testimonial-form-section">
+
+    <h2>
+      Student Information
+    </h2>
+
+    <p>
+      Enter the student's name and feedback.
+    </p>
+
+
+    <div class="testimonial-form-grid">
+
+      <div class="testimonial-field">
+
+        <%= form.label :student_name,
+                       "Student Name" %>
+
+        <%= form.text_field :student_name,
+                            placeholder:
+                              "Enter student name",
+                            autocomplete: "off" %>
+
+      </div>
+
+
+      <div class="testimonial-field">
+
+        <%= form.label :rating,
+                       "Rating" %>
+
+        <%= form.select :rating,
+                        options_for_select(
+                          [
+                            ["★★★★★ — 5 Stars", 5],
+                            ["★★★★☆ — 4 Stars", 4],
+                            ["★★★☆☆ — 3 Stars", 3],
+                            ["★★☆☆☆ — 2 Stars", 2],
+                            ["★☆☆☆☆ — 1 Star", 1]
+                          ],
+                          testimonial.rating || 5
+                        ) %>
+
+      </div>
+
+
+      <div class="testimonial-field full">
+
+        <%= form.label :message,
+                       "Student Feedback" %>
+
+        <%= form.text_area :message,
+                           placeholder:
+                             "Write the student's testimonial..." %>
+
+        <span class="testimonial-help">
+          Keep the testimonial genuine and focused on the student's experience.
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       MEDIA
+  ====================================================== -->
+
+  <section class="testimonial-form-section">
+
+    <h2>
+      Student Media
+    </h2>
+
+    <p>
+      Add an optional student photo and video testimonial.
+    </p>
+
+
+    <div class="testimonial-form-grid">
+
+      <div class="testimonial-field">
+
+        <%= form.label :student_photo,
+                       "Student Photo" %>
+
+
+        <% if testimonial.student_photo.attached? %>
+
+          <div class="testimonial-current-photo">
+
+            <%= image_tag testimonial.student_photo,
+                          alt: testimonial.student_name %>
+
+            <span class="testimonial-help">
+              Current photo
+            </span>
+
+          </div>
+
+        <% end %>
+
+
+        <%= form.file_field :student_photo,
+                            accept: "image/*" %>
+
+        <span class="testimonial-help">
+          JPG, PNG, WEBP recommended.
+        </span>
+
+      </div>
+
+
+      <div class="testimonial-field">
+
+        <%= form.label :video,
+                       "Video Testimonial" %>
+
+
+        <% if testimonial.video.attached? %>
+
+          <div class="testimonial-current-video">
+
+            🎥 Existing video attached
+
+          </div>
+
+        <% end %>
+
+
+        <%= form.file_field :video,
+                            accept: "video/*" %>
+
+        <span class="testimonial-help">
+          Upload a short student feedback video.
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       DISPLAY SETTINGS
+  ====================================================== -->
+
+  <section class="testimonial-form-section">
+
+    <h2>
+      Display Settings
+    </h2>
+
+    <p>
+      Control where and whether this testimonial appears.
+    </p>
+
+
+    <div class="testimonial-form-grid">
+
+      <div class="testimonial-field">
+
+        <%= form.label :display_order,
+                       "Display Order" %>
+
+        <%= form.number_field :display_order,
+                              min: 0,
+                              step: 1,
+                              placeholder: "0" %>
+
+        <span class="testimonial-help">
+          Lower numbers appear first.
+        </span>
+
+      </div>
+
+
+      <div class="testimonial-field">
+
+        <%= form.label :status,
+                       "Status" %>
+
+        <%= form.select :status,
+                        [
+                          ["Active", "Active"],
+                          ["Inactive", "Inactive"]
+                        ] %>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ACTIONS
+  ====================================================== -->
+
+  <div class="testimonial-form-actions">
+
+    <%= link_to "Cancel",
+                admin_testimonials_path,
+                class: "testimonial-form-btn cancel" %>
+
+
+    <%= form.submit testimonial.persisted? ?
+                      "Update Testimonial" :
+                      "Create Testimonial",
+                    class: "testimonial-form-btn submit" %>
+
+  </div>
+
+<% end %>

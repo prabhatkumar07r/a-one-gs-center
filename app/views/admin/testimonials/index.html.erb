@@ -1,0 +1,803 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   A ONE GS CENTER
+   ADMIN — TESTIMONIALS
+   PURPLE GLASS ADMIN THEME
+========================================================= */
+
+.admin-testimonials-page {
+  min-height: 100vh;
+  padding: 25px;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(124, 58, 237, .16), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(168, 85, 247, .12), transparent 30%),
+    #f5f3ff;
+  font-family: "Poppins", sans-serif;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.testimonials-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.testimonials-title-wrap h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #2e1065;
+}
+
+.testimonials-title-wrap p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.testimonial-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 12px 20px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #a855f7
+  );
+
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow:
+    0 10px 25px rgba(124, 58, 237, .25);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.testimonial-add-btn:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 30px rgba(124, 58, 237, .35);
+}
+
+/* =========================================================
+   FLASH
+========================================================= */
+
+.testimonial-flash {
+  padding: 13px 17px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.testimonial-flash.notice {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.testimonial-flash.alert {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+/* =========================================================
+   STAT BAR
+========================================================= */
+
+.testimonial-stat-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.testimonial-stat {
+  padding: 20px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(124, 58, 237, .12);
+
+  box-shadow:
+    0 10px 30px rgba(76, 29, 149, .08);
+
+  backdrop-filter: blur(15px);
+}
+
+.testimonial-stat-label {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.testimonial-stat-value {
+  margin-top: 5px;
+  color: #4c1d95;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.admin-testimonial-card {
+  position: relative;
+
+  padding: 22px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.92),
+      rgba(245,243,255,.86)
+    );
+
+  border: 1px solid rgba(124, 58, 237, .13);
+
+  box-shadow:
+    0 18px 45px rgba(76, 29, 149, .10);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.admin-testimonial-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 24px 55px rgba(76, 29, 149, .16);
+}
+
+/* =========================================================
+   TOP
+========================================================= */
+
+.testimonial-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.testimonial-student-info {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.testimonial-avatar {
+  width: 55px;
+  height: 55px;
+  flex: 0 0 55px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.testimonial-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial-student-name {
+  margin: 0;
+  color: #2e1065;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.testimonial-order {
+  margin-top: 3px;
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.testimonial-stars {
+  color: #f59e0b;
+  letter-spacing: 2px;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.testimonial-message {
+  margin-top: 20px;
+  padding: 18px;
+
+  border-radius: 15px;
+
+  background: rgba(124, 58, 237, .055);
+
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.75;
+
+  min-height: 115px;
+}
+
+.testimonial-message::before {
+  content: "“";
+  display: block;
+
+  height: 15px;
+
+  color: #8b5cf6;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 10px;
+}
+
+/* =========================================================
+   META
+========================================================= */
+
+.testimonial-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 15px;
+}
+
+.testimonial-badge {
+  padding: 5px 10px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.testimonial-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.testimonial-badge.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.testimonial-badge.video {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.testimonial-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin-top: 18px;
+  padding-top: 17px;
+
+  border-top: 1px solid rgba(124, 58, 237, .10);
+}
+
+.testimonial-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 13px;
+
+  border-radius: 10px;
+
+  border: 0;
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.testimonial-action:hover {
+  transform: translateY(-1px);
+  opacity: .9;
+}
+
+.testimonial-action.edit {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.testimonial-action.toggle {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.testimonial-action.delete {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.testimonials-empty {
+  grid-column: 1 / -1;
+
+  padding: 70px 30px;
+
+  text-align: center;
+
+  border-radius: 24px;
+
+  background: rgba(255,255,255,.8);
+
+  border: 2px dashed rgba(124, 58, 237, .18);
+}
+
+.testimonials-empty-icon {
+  font-size: 50px;
+  margin-bottom: 12px;
+}
+
+.testimonials-empty h3 {
+  margin: 0;
+  color: #3b0764;
+  font-size: 20px;
+}
+
+.testimonials-empty p {
+  margin: 8px 0 20px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-stat-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+
+  .admin-testimonials-page {
+    padding: 15px;
+  }
+
+  .testimonials-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .testimonial-add-btn {
+    width: 100%;
+  }
+
+  .testimonials-title-wrap h1 {
+    font-size: 24px;
+  }
+
+  .admin-testimonial-card {
+    padding: 17px;
+  }
+
+  .testimonial-card-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .testimonial-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .testimonial-action {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+
+  .testimonial-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+
+
+<div class="admin-testimonials-page">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <div class="testimonials-page-header">
+
+    <div class="testimonials-title-wrap">
+      <h1>Student Testimonials</h1>
+
+      <p>
+        Manage student feedback, ratings and video testimonials.
+      </p>
+    </div>
+
+    <%= link_to new_admin_testimonial_path,
+                class: "testimonial-add-btn" do %>
+
+      <span>＋</span>
+      <span>Add Testimonial</span>
+
+    <% end %>
+
+  </div>
+
+
+  <!-- =====================================================
+       FLASH
+  ====================================================== -->
+
+  <% if notice.present? %>
+    <div class="testimonial-flash notice">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <% if alert.present? %>
+    <div class="testimonial-flash alert">
+      <%= alert %>
+    </div>
+  <% end %>
+
+
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
+
+  <div class="testimonial-stat-bar">
+
+    <div class="testimonial-stat">
+      <div class="testimonial-stat-label">
+        TOTAL TESTIMONIALS
+      </div>
+
+      <div class="testimonial-stat-value">
+        <%= @testimonials.count %>
+      </div>
+    </div>
+
+
+    <div class="testimonial-stat">
+      <div class="testimonial-stat-label">
+        ACTIVE
+      </div>
+
+      <div class="testimonial-stat-value">
+        <%= @testimonials.count { |testimonial|
+          testimonial.status == "Active"
+        } %>
+      </div>
+    </div>
+
+
+    <div class="testimonial-stat">
+      <div class="testimonial-stat-label">
+        VIDEO TESTIMONIALS
+      </div>
+
+      <div class="testimonial-stat-value">
+        <%= @testimonials.count { |testimonial|
+          testimonial.video.attached?
+        } %>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       TESTIMONIAL GRID
+  ====================================================== -->
+
+  <div class="testimonials-grid">
+
+    <% if @testimonials.any? %>
+
+      <% @testimonials.each do |testimonial| %>
+
+        <article class="admin-testimonial-card">
+
+          <!-- TOP -->
+
+          <div class="testimonial-card-top">
+
+            <div class="testimonial-student-info">
+
+              <div class="testimonial-avatar">
+
+                <% if testimonial.student_photo.attached? %>
+
+                  <%= image_tag testimonial.student_photo,
+                                alt: testimonial.student_name %>
+
+                <% else %>
+
+                  <%= testimonial.student_name
+                        .to_s
+                        .first
+                        .upcase %>
+
+                <% end %>
+
+              </div>
+
+
+              <div>
+
+                <h3 class="testimonial-student-name">
+                  <%= testimonial.student_name %>
+                </h3>
+
+                <div class="testimonial-order">
+                  Display order:
+                  <%= testimonial.display_order || 0 %>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="testimonial-stars"
+                 aria-label="Rating <%= testimonial.rating || 0 %> out of 5">
+
+              <%= "★" * (testimonial.rating || 0) %>
+              <%= "☆" * (5 - (testimonial.rating || 0)) %>
+
+            </div>
+
+          </div>
+
+
+          <!-- MESSAGE -->
+
+          <div class="testimonial-message">
+            <%= simple_format(
+                  testimonial.message,
+                  {},
+                  wrapper_tag: "span"
+                ) %>
+          </div>
+
+
+          <!-- META -->
+
+          <div class="testimonial-meta">
+
+            <% if testimonial.status == "Active" %>
+
+              <span class="testimonial-badge active">
+                ● Active
+              </span>
+
+            <% else %>
+
+              <span class="testimonial-badge inactive">
+                ● Inactive
+              </span>
+
+            <% end %>
+
+
+            <% if testimonial.video.attached? %>
+
+              <span class="testimonial-badge video">
+                🎥 Video
+              </span>
+
+            <% end %>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="testimonial-actions">
+
+            <%= link_to edit_admin_testimonial_path(testimonial),
+                        class: "testimonial-action edit" do %>
+              ✏️ Edit
+            <% end %>
+
+
+            <%= button_to toggle_status_admin_testimonial_path(testimonial),
+                          method: :patch,
+                          class: "testimonial-action toggle",
+                          form: {
+                            data: {
+                              turbo_confirm:
+                                "Are you sure you want to change this testimonial status?"
+                            }
+                          } do %>
+
+              <%= testimonial.status == "Active" ?
+                    "⏸ Deactivate" :
+                    "▶ Activate" %>
+
+            <% end %>
+
+
+            <%= button_to admin_testimonial_path(testimonial),
+                          method: :delete,
+                          class: "testimonial-action delete",
+                          form: {
+                            data: {
+                              turbo_confirm:
+                                "Delete this testimonial permanently?"
+                            }
+                          } do %>
+
+              🗑 Delete
+
+            <% end %>
+
+          </div>
+
+        </article>
+
+      <% end %>
+
+    <% else %>
+
+      <div class="testimonials-empty">
+
+        <div class="testimonials-empty-icon">
+          💬
+        </div>
+
+        <h3>
+          No testimonials yet
+        </h3>
+
+        <p>
+          Add your first student testimonial to display it here.
+        </p>
+
+        <%= link_to "＋ Add First Testimonial",
+                    new_admin_testimonial_path,
+                    class: "testimonial-add-btn" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  "use strict";
+
+  /* =======================================================
+     TESTIMONIAL ADMIN PAGE
+     CSP SAFE
+  ======================================================= */
+
+  function initializeTestimonialsPage() {
+
+    const flashMessages =
+      document.querySelectorAll(".testimonial-flash");
+
+    if (!flashMessages.length) return;
+
+    flashMessages.forEach(function (message) {
+
+      window.setTimeout(function () {
+
+        message.style.opacity = "0";
+
+        window.setTimeout(function () {
+          message.remove();
+        }, 300);
+
+      }, 4500);
+
+    });
+
+  }
+
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeTestimonialsPage,
+      { once: true }
+    );
+
+  } else {
+
+    initializeTestimonialsPage();
+
+  }
+
+})();
+
+</script>

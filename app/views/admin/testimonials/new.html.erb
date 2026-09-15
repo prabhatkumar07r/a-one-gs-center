@@ -1,0 +1,98 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+.admin-testimonial-form-page {
+
+  min-height: 100vh;
+
+  padding: 25px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(124,58,237,.15),
+      transparent 30%
+    ),
+    #f5f3ff;
+
+  font-family: "Poppins", sans-serif;
+
+}
+
+.admin-testimonial-form-header {
+
+  margin-bottom: 25px;
+
+}
+
+.admin-testimonial-form-header h1 {
+
+  margin: 0;
+
+  color: #2e1065;
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+}
+
+.admin-testimonial-form-header p {
+
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+}
+
+.admin-testimonial-form-card {
+
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+}
+
+@media (max-width: 600px) {
+
+  .admin-testimonial-form-page {
+
+    padding: 15px;
+
+  }
+
+  .admin-testimonial-form-header h1 {
+
+    font-size: 24px;
+
+  }
+
+}
+
+</style>
+
+
+<div class="admin-testimonial-form-page">
+
+  <div class="admin-testimonial-form-header">
+
+    <h1>
+      Add Student Testimonial
+    </h1>
+
+    <p>
+      Add feedback from a student.
+    </p>
+
+  </div>
+
+
+  <div class="admin-testimonial-form-card">
+
+    <%= render "form",
+               testimonial: @testimonial %>
+
+  </div>
+
+</div>

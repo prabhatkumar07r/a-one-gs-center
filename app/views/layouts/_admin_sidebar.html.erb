@@ -790,7 +790,7 @@
         class="nav-link"
         data-bs-toggle="collapse"
         role="button"
-        aria-expanded="<%= controller_path.start_with?('galleries', 'achievements', 'notifications', 'demos') %>"
+        aria-expanded="<%= controller_path.start_with?('galleries', 'achievements', 'admin/testimonials', 'notifications', 'demos') %>"
         aria-controls="websiteMenu">
 
         <i class="bi bi-globe"></i>
@@ -803,7 +803,7 @@
 
 
       <div
-        class="collapse <%= 'show' if controller_path.start_with?('galleries', 'achievements', 'notifications', 'demos') %>"
+        class="collapse <%= 'show' if controller_path.start_with?('galleries', 'achievements', 'admin/testimonials', 'notifications', 'demos') %>"
         id="websiteMenu">
 
         <ul class="nav flex-column submenu">
@@ -839,6 +839,23 @@
             <% end %>
 
           </li>
+
+            <!-- =====================================================
+     TESTIMONIALS
+====================================================== -->
+
+<li class="nav-item">
+
+  <%= link_to admin_testimonials_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/testimonials')}" do %>
+
+    <i class="bi bi-chat-quote"></i>
+
+    <span>Testimonials</span>
+
+  <% end %>
+
+</li>
 
 
           <!-- Notifications -->

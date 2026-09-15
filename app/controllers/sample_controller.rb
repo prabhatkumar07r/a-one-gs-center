@@ -59,6 +59,15 @@ class SampleController < ApplicationController
         video_attachment: :blob
         )
 
+
+
+
+  @testimonials =Testimonial
+    .active
+    .with_attached_student_photo
+    .with_attached_video
+    .ordered
+
   end
 
 

@@ -135,6 +135,11 @@ Rails.application.routes.draw do
   # ==================================================
 
   namespace :admin do
+    resources :testimonials do
+  member do
+    patch :toggle_status
+  end
+end
 
     # ==================================================
     # E-BOOK PAYMENTS
