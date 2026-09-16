@@ -1,77 +1,1498 @@
-<% content_for :title, "Resources" %>
+<% content_for :hide_footer, true %>
 
-<div class="container mt-4">
+<style nonce="<%= content_security_policy_nonce %>">
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
-   <h2 class="fw-bold">
-  📂 Resources
-</h2>
+/* =========================================================
+   RESOURCE PAGE — DAY / NIGHT GLASS THEME
+========================================================= */
 
-    <%= link_to "➕ Add Resource",
-    new_course_playlist_course_resource_path(@course, @playlist),
-    class: "btn btn-success" %>
-  </div>
+.resource-page,
+.resource-page * {
+  box-sizing: border-box;
+}
 
-  <table class="table table-hover table-bordered">
+/* =========================================================
+   ROOT
+========================================================= */
 
-    <thead class="table-dark">
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Type</th>
-        <th>File</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+.resource-page {
+  --rp-bg-1: #f5f3ff;
+  --rp-bg-2: #e9e4ff;
+  --rp-text: #17142b;
+  --rp-muted: #706b82;
+  --rp-card: rgba(255,255,255,.64);
+  --rp-card-border: rgba(255,255,255,.72);
+  --rp-shadow: 0 25px 70px rgba(76, 48, 150, .16);
+  --rp-primary: #7c3aed;
+  --rp-primary-dark: #5b21b6;
+  --rp-success: #16a34a;
+  --rp-danger: #dc2626;
+  --rp-warning: #d97706;
+  --rp-blue: #2563eb;
 
-    <tbody>
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 38px 28px 70px;
 
-      <% @resources.each_with_index do |resource, index| %>
+  color: var(--rp-text);
 
-        <tr>
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(124,58,237,.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(37,99,235,.14),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      var(--rp-bg-1),
+      var(--rp-bg-2)
+    );
 
-          <td><%= index + 1 %></td>
+  transition:
+    background .35s ease,
+    color .35s ease;
+}
 
-          <td><%= resource.title %></td>
+/* =========================================================
+   NIGHT MODE
+========================================================= */
 
-          <td>
-            <span class="badge bg-primary">
-              <%= resource.resource_type.upcase %>
-            </span>
-          </td>
+.resource-page.night-mode {
+  --rp-bg-1: #080611;
+  --rp-bg-2: #151027;
+  --rp-text: #f7f4ff;
+  --rp-muted: #aaa3bf;
+  --rp-card: rgba(27,22,47,.70);
+  --rp-card-border: rgba(255,255,255,.10);
+  --rp-shadow: 0 30px 90px rgba(0,0,0,.48);
+  --rp-primary: #a78bfa;
+  --rp-primary-dark: #8b5cf6;
 
-          <td>
-            <% if resource.file.attached? %>
-              <%= link_to "📥 Download",
-                  rails_blob_path(resource.file, disposition: "attachment"),
-                  class: "btn btn-outline-success btn-sm" %>
-            <% else %>
-              <span class="text-danger">No File</span>
-            <% end %>
-          </td>
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(124,58,237,.24),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(59,130,246,.15),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      var(--rp-bg-1),
+      var(--rp-bg-2)
+    );
+}
 
-          <td>
+/* =========================================================
+   FLOATING BACKGROUND ORBS
+========================================================= */
 
-            <%= link_to "✏️",
-                edit_course_playlist_resource_path(@course, @playlist, resource),
-                class: "btn btn-warning btn-sm" %>
+.resource-page::before,
+.resource-page::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+}
 
-            <%= link_to "🗑️",
-                course_playlist_resource_path(@course, @playlist, resource),
-                data: {
-                  turbo_method: :delete,
-                  turbo_confirm: "Delete this resource?"
-                },
-                class: "btn btn-danger btn-sm" %>
+.resource-page::before {
+  width: 280px;
+  height: 280px;
+  left: -100px;
+  top: 180px;
+  background: rgba(124,58,237,.13);
+  box-shadow:
+    0 0 100px rgba(124,58,237,.16);
+}
 
-          </td>
+.resource-page::after {
+  width: 340px;
+  height: 340px;
+  right: -140px;
+  bottom: 80px;
+  background: rgba(59,130,246,.10);
+  box-shadow:
+    0 0 120px rgba(59,130,246,.14);
+}
 
-        </tr>
+/* =========================================================
+   FLOATING ICONS
+========================================================= */
+
+.resource-floating {
+  position: absolute;
+  z-index: 0;
+  opacity: .22;
+  pointer-events: none;
+  font-size: 54px;
+  animation: resourceFloat 6s ease-in-out infinite;
+}
+
+.resource-floating.one {
+  top: 130px;
+  left: 4%;
+}
+
+.resource-floating.two {
+  top: 320px;
+  right: 5%;
+  animation-delay: 1.5s;
+}
+
+.resource-floating.three {
+  bottom: 110px;
+  left: 8%;
+  animation-delay: 3s;
+}
+
+@keyframes resourceFloat {
+  0%,100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+
+  50% {
+    transform: translateY(-18px) rotate(5deg);
+  }
+}
+
+/* =========================================================
+   MAIN WRAPPER
+========================================================= */
+
+.resource-container {
+  width: min(1250px, 100%);
+  margin: auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.resource-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.resource-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.resource-brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.82),
+      rgba(255,255,255,.28)
+    );
+
+  border: 1px solid var(--rp-card-border);
+
+  box-shadow:
+    8px 8px 20px rgba(60,40,110,.14),
+    inset -4px -4px 10px rgba(80,50,150,.07),
+    inset 4px 4px 10px rgba(255,255,255,.5);
+
+  transform: translateZ(0);
+}
+
+.night-mode .resource-brand-icon {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.10),
+      rgba(255,255,255,.025)
+    );
+
+  box-shadow:
+    8px 8px 25px rgba(0,0,0,.35),
+    inset 1px 1px 0 rgba(255,255,255,.10);
+}
+
+.resource-brand-title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.resource-brand-subtitle {
+  color: var(--rp-muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
+
+.resource-theme-toggle {
+  border: 1px solid var(--rp-card-border);
+  background: var(--rp-card);
+
+  min-width: 112px;
+  height: 46px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 5px 7px;
+
+  cursor: pointer;
+
+  color: var(--rp-text);
+
+  box-shadow:
+    0 12px 30px rgba(50,30,100,.13),
+    inset 0 1px 0 rgba(255,255,255,.35);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.resource-theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 40px rgba(50,30,100,.18);
+}
+
+.resource-theme-icon {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--rp-primary);
+  color: white;
+
+  box-shadow:
+    0 6px 18px rgba(124,58,237,.35);
+
+  transition: transform .3s ease;
+}
+
+.night-mode .resource-theme-icon {
+  transform: translateX(59px);
+}
+
+.resource-theme-label {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0 5px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.resource-hero {
+  position: relative;
+
+  padding: 34px;
+
+  border-radius: 30px;
+
+  background: var(--rp-card);
+
+  border: 1px solid var(--rp-card-border);
+
+  box-shadow: var(--rp-shadow);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  overflow: hidden;
+
+  margin-bottom: 24px;
+}
+
+.resource-hero::after {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  right: -90px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(124,58,237,.12);
+
+  box-shadow:
+    0 0 90px rgba(124,58,237,.15);
+}
+
+.resource-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.resource-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--rp-primary);
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: .15em;
+  text-transform: uppercase;
+
+  margin-bottom: 10px;
+}
+
+.resource-hero h1 {
+  margin: 0;
+
+  font-size: clamp(28px, 4vw, 46px);
+
+  line-height: 1.05;
+
+  font-weight: 900;
+
+  letter-spacing: -.04em;
+}
+
+.resource-hero-description {
+  color: var(--rp-muted);
+
+  margin: 13px 0 20px;
+
+  max-width: 700px;
+
+  line-height: 1.7;
+
+  font-size: 15px;
+}
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.resource-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  color: var(--rp-muted);
+
+  font-size: 13px;
+}
+
+.resource-breadcrumb strong {
+  color: var(--rp-text);
+}
+
+.resource-breadcrumb-arrow {
+  opacity: .45;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.resource-stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.resource-stat {
+  min-width: 145px;
+
+  padding: 13px 17px;
+
+  border-radius: 17px;
+
+  background: rgba(255,255,255,.24);
+
+  border: 1px solid var(--rp-card-border);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+.night-mode .resource-stat {
+  background: rgba(255,255,255,.035);
+}
+
+.resource-stat-label {
+  color: var(--rp-muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.resource-stat-value {
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   ACTION BAR
+========================================================= */
+
+.resource-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+.resource-section-title {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.resource-section-subtitle {
+  color: var(--rp-muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.resource-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 12px 20px;
+
+  border-radius: 15px;
+
+  text-decoration: none;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #6d28d9
+    );
+
+  border: 1px solid rgba(255,255,255,.20);
+
+  box-shadow:
+    0 12px 28px rgba(109,40,217,.28),
+    inset 0 1px 0 rgba(255,255,255,.28);
+
+  font-weight: 800;
+  font-size: 13px;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.resource-add-btn:hover {
+  color: white;
+  transform: translateY(-3px);
+  box-shadow:
+    0 18px 35px rgba(109,40,217,.38);
+}
+
+/* =========================================================
+   RESOURCE TABLE CARD
+========================================================= */
+
+.resource-table-card {
+  border-radius: 27px;
+
+  background: var(--rp-card);
+
+  border: 1px solid var(--rp-card-border);
+
+  box-shadow: var(--rp-shadow);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.resource-table-wrap {
+  overflow-x: auto;
+}
+
+.resource-table {
+  width: 100%;
+  min-width: 760px;
+
+  border-collapse: collapse;
+}
+
+.resource-table thead {
+  background: rgba(124,58,237,.07);
+}
+
+.night-mode .resource-table thead {
+  background: rgba(167,139,250,.07);
+}
+
+.resource-table th {
+  padding: 17px 20px;
+
+  text-align: left;
+
+  font-size: 10px;
+
+  letter-spacing: .1em;
+
+  text-transform: uppercase;
+
+  color: var(--rp-muted);
+
+  font-weight: 900;
+
+  border-bottom: 1px solid var(--rp-card-border);
+}
+
+.resource-table td {
+  padding: 17px 20px;
+
+  border-bottom: 1px solid var(--rp-card-border);
+
+  vertical-align: middle;
+
+  font-size: 13px;
+}
+
+.resource-table tbody tr {
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.resource-table tbody tr:hover {
+  background: rgba(124,58,237,.055);
+}
+
+.night-mode .resource-table tbody tr:hover {
+  background: rgba(167,139,250,.055);
+}
+
+.resource-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================================================
+   RESOURCE TITLE
+========================================================= */
+
+.resource-title-cell {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.resource-file-icon {
+  width: 45px;
+  height: 45px;
+
+  flex: 0 0 45px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,58,237,.15),
+      rgba(124,58,237,.05)
+    );
+
+  border: 1px solid rgba(124,58,237,.16);
+
+  box-shadow:
+    5px 5px 14px rgba(50,30,100,.10),
+    inset 1px 1px 0 rgba(255,255,255,.35);
+}
+
+.resource-title {
+  font-weight: 850;
+  color: var(--rp-text);
+}
+
+.resource-description {
+  color: var(--rp-muted);
+  font-size: 11px;
+  margin-top: 3px;
+  max-width: 350px;
+}
+
+/* =========================================================
+   TYPE BADGES
+========================================================= */
+
+.resource-type {
+  display: inline-flex;
+
+  align-items: center;
+  gap: 6px;
+
+  padding: 7px 11px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: .04em;
+
+  text-transform: uppercase;
+}
+
+.resource-type.pdf {
+  color: #dc2626;
+  background: rgba(220,38,38,.10);
+}
+
+.resource-type.assignment {
+  color: #2563eb;
+  background: rgba(37,99,235,.10);
+}
+
+.resource-type.ppt {
+  color: #d97706;
+  background: rgba(217,119,6,.10);
+}
+
+.resource-type.zip-file {
+  color: #7c3aed;
+  background: rgba(124,58,237,.10);
+}
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.resource-date {
+  color: var(--rp-muted);
+  font-size: 12px;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.resource-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.resource-action {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 11px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  border: 1px solid var(--rp-card-border);
+
+  background: rgba(255,255,255,.25);
+
+  color: var(--rp-text);
+
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.night-mode .resource-action {
+  background: rgba(255,255,255,.045);
+}
+
+.resource-action:hover {
+  transform: translateY(-2px);
+}
+
+.resource-action.view:hover {
+  color: var(--rp-blue);
+  background: rgba(37,99,235,.10);
+}
+
+.resource-action.edit:hover {
+  color: var(--rp-primary);
+  background: rgba(124,58,237,.10);
+}
+
+.resource-action.delete:hover {
+  color: var(--rp-danger);
+  background: rgba(220,38,38,.10);
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.resource-empty {
+  padding: 70px 25px;
+
+  text-align: center;
+}
+
+.resource-empty-icon {
+  width: 82px;
+  height: 82px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 38px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124,58,237,.15),
+      rgba(124,58,237,.04)
+    );
+
+  box-shadow:
+    12px 12px 30px rgba(50,30,100,.12),
+    inset 1px 1px 0 rgba(255,255,255,.4);
+}
+
+.resource-empty h3 {
+  margin: 0 0 8px;
+
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.resource-empty p {
+  color: var(--rp-muted);
+
+  max-width: 450px;
+
+  margin: auto auto 20px;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .resource-page {
+    padding: 22px 14px 50px;
+  }
+
+  .resource-topbar {
+    align-items: flex-start;
+  }
+
+  .resource-brand-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .resource-theme-toggle {
+    min-width: 96px;
+  }
+
+  .resource-hero {
+    padding: 25px 20px;
+    border-radius: 23px;
+  }
+
+  .resource-hero h1 {
+    font-size: 31px;
+  }
+
+  .resource-action-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .resource-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .resource-stat {
+    flex: 1;
+  }
+
+  .resource-table-card {
+    border-radius: 21px;
+  }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .resource-floating {
+    animation: none;
+  }
+
+  .resource-theme-toggle,
+  .resource-action,
+  .resource-add-btn {
+    transition: none;
+  }
+
+}
+
+</style>
+
+
+<div
+  class="resource-page"
+  id="resourcePage"
+  data-resource-theme="auto"
+>
+
+  <!-- Floating Background Objects -->
+
+  <div class="resource-floating one">📚</div>
+  <div class="resource-floating two">📄</div>
+  <div class="resource-floating three">💾</div>
+
+
+  <div class="resource-container">
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <div class="resource-topbar">
+
+      <div class="resource-brand">
+
+        <div class="resource-brand-icon">
+          📚
+        </div>
+
+        <div>
+          <div class="resource-brand-title">
+            A ONE GS CENTER
+          </div>
+
+          <div class="resource-brand-subtitle">
+            Course Resource Management
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- DAY / NIGHT -->
+
+      <button
+        type="button"
+        class="resource-theme-toggle"
+        id="resourceThemeToggle"
+        aria-label="Toggle day and night mode"
+      >
+
+        <span
+          class="resource-theme-icon"
+          id="resourceThemeIcon"
+        >
+          ☀️
+        </span>
+
+        <span
+          class="resource-theme-label"
+          id="resourceThemeLabel"
+        >
+          Day
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="resource-hero">
+
+      <div class="resource-hero-content">
+
+        <div class="resource-kicker">
+          <span>✦</span>
+          STUDY MATERIALS
+        </div>
+
+
+        <h1>
+          Course Resources
+        </h1>
+
+
+        <p class="resource-hero-description">
+          Manage PDFs, assignments, presentations and other
+          learning resources for this playlist.
+        </p>
+
+
+        <!-- Breadcrumb -->
+
+        <div class="resource-breadcrumb">
+
+          <span>
+            Course
+          </span>
+
+          <span class="resource-breadcrumb-arrow">
+            →
+          </span>
+
+          <strong>
+            <%= @course.Course_name %>
+          </strong>
+
+          <span class="resource-breadcrumb-arrow">
+            →
+          </span>
+
+          <span>
+            Playlist
+          </span>
+
+          <span class="resource-breadcrumb-arrow">
+            →
+          </span>
+
+          <strong>
+            <%= @playlist.title %>
+          </strong>
+
+        </div>
+
+
+        <!-- Stats -->
+
+        <div class="resource-stat-row">
+
+          <div class="resource-stat">
+
+            <div class="resource-stat-label">
+              Playlist
+            </div>
+
+            <div class="resource-stat-value">
+              <%= @playlist.title %>
+            </div>
+
+          </div>
+
+
+          <div class="resource-stat">
+
+            <div class="resource-stat-label">
+              Resources
+            </div>
+
+            <div class="resource-stat-value">
+              <%= @resources.count %>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ACTION BAR
+    ====================================================== -->
+
+    <div class="resource-action-bar">
+
+      <div>
+
+        <div class="resource-section-title">
+          Learning Resources
+        </div>
+
+        <div class="resource-section-subtitle">
+          Files attached to this playlist
+        </div>
+
+      </div>
+
+
+      <%= link_to new_course_playlist_resource_path(
+            @course,
+            @playlist
+          ),
+          class: "resource-add-btn" do %>
+
+        <span>＋</span>
+        <span>Add Resource</span>
 
       <% end %>
 
-    </tbody>
+    </div>
 
-  </table>
+
+    <!-- =====================================================
+         RESOURCE TABLE
+    ====================================================== -->
+
+    <div class="resource-table-card">
+
+      <% if @resources.any? %>
+
+        <div class="resource-table-wrap">
+
+          <table class="resource-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Resource
+                </th>
+
+                <th>
+                  Type
+                </th>
+
+                <th>
+                  Added
+                </th>
+
+                <th>
+                  Actions
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <% @resources.each do |resource| %>
+
+                <tr>
+
+                  <!-- RESOURCE -->
+
+                  <td>
+
+                    <div class="resource-title-cell">
+
+                      <div class="resource-file-icon">
+
+                        <%=
+                          case resource.resource_type
+                          when "pdf"
+                            "📕"
+                          when "assignment"
+                            "📝"
+                          when "ppt"
+                            "📊"
+                          when "zip_file"
+                            "🗜️"
+                          else
+                            "📄"
+                          end
+                        %>
+
+                      </div>
+
+
+                      <div>
+
+                        <div class="resource-title">
+
+                          <%= resource.title %>
+
+                        </div>
+
+
+                        <% if resource.description.present? %>
+
+                          <div class="resource-description">
+
+                            <%= truncate(
+                                  resource.description,
+                                  length: 80
+                                ) %>
+
+                          </div>
+
+                        <% end %>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- TYPE -->
+
+                  <td>
+
+                    <% type_class =
+                         resource.resource_type
+                                 .to_s
+                                 .tr("-", "-")
+                                 .gsub("_", "-")
+                    %>
+
+                    <span
+                      class="resource-type <%= type_class %>"
+                    >
+
+                      <%=
+                        case resource.resource_type
+                        when "pdf"
+                          "📕 PDF"
+                        when "assignment"
+                          "📝 Assignment"
+                        when "ppt"
+                          "📊 PPT"
+                        when "zip_file"
+                          "🗜 ZIP"
+                        else
+                          resource.resource_type.to_s.upcase
+                        end
+                      %>
+
+                    </span>
+
+                  </td>
+
+
+                  <!-- DATE -->
+
+                  <td>
+
+                    <div class="resource-date">
+
+                      <%= resource.created_at.strftime(
+                            "%d %b %Y"
+                          ) %>
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- ACTIONS -->
+
+                  <td>
+
+                    <div class="resource-actions">
+
+                      <!-- VIEW -->
+
+                      <%= link_to resource_path(resource),
+                          class: "resource-action view",
+                          title: "View Resource" do %>
+
+                        👁
+
+                      <% end %>
+
+
+                      <!-- EDIT -->
+
+                      <%= link_to edit_course_playlist_resource_path(
+                            @course,
+                            @playlist,
+                            resource
+                          ),
+                          class: "resource-action edit",
+                          title: "Edit Resource" do %>
+
+                        ✏️
+
+                      <% end %>
+
+
+                      <!-- DELETE -->
+
+                      <%= button_to course_playlist_resource_path(
+                            @course,
+                            @playlist,
+                            resource
+                          ),
+                          method: :delete,
+                          class: "resource-action delete",
+                          title: "Delete Resource",
+                          form: {
+                            data: {
+                              turbo_confirm: "Delete this resource?"
+                            }
+                          } do %>
+
+                        🗑
+
+                      <% end %>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+      <% else %>
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div class="resource-empty">
+
+          <div class="resource-empty-icon">
+            📂
+          </div>
+
+          <h3>
+            No Resources Yet
+          </h3>
+
+          <p>
+            This playlist doesn't have any study resources.
+            Upload your first PDF, assignment, PPT or ZIP file
+            to make it available for students.
+          </p>
+
+
+          <%= link_to new_course_playlist_resource_path(
+                @course,
+                @playlist
+              ),
+              class: "resource-add-btn" do %>
+
+            ＋ Add First Resource
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
 
 </div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  function initializeResourceTheme() {
+
+    const page =
+      document.getElementById("resourcePage");
+
+    const toggle =
+      document.getElementById("resourceThemeToggle");
+
+    const icon =
+      document.getElementById("resourceThemeIcon");
+
+    const label =
+      document.getElementById("resourceThemeLabel");
+
+
+    if (!page || !toggle || !icon || !label) {
+      return;
+    }
+
+
+    /* Prevent duplicate Turbo initialization */
+
+    if (page.dataset.themeInitialized === "true") {
+      return;
+    }
+
+    page.dataset.themeInitialized = "true";
+
+
+    /* ================================================
+       APPLY THEME
+    ================================================ */
+
+    function applyTheme(theme) {
+
+      if (theme === "night") {
+
+        page.classList.add("night-mode");
+
+        icon.textContent = "🌙";
+        label.textContent = "Night";
+
+      } else {
+
+        page.classList.remove("night-mode");
+
+        icon.textContent = "☀️";
+        label.textContent = "Day";
+
+      }
+
+    }
+
+
+    /* ================================================
+       LOAD SAVED THEME
+    ================================================ */
+
+    let savedTheme =
+      localStorage.getItem(
+        "aone_resource_theme"
+      );
+
+
+    if (
+      savedTheme !== "day" &&
+      savedTheme !== "night"
+    ) {
+
+      savedTheme = "day";
+
+    }
+
+
+    applyTheme(savedTheme);
+
+
+    /* ================================================
+       TOGGLE
+    ================================================ */
+
+    toggle.addEventListener(
+      "click",
+      function () {
+
+        const isNight =
+          page.classList.contains(
+            "night-mode"
+          );
+
+
+        const newTheme =
+          isNight ? "day" : "night";
+
+
+        localStorage.setItem(
+          "aone_resource_theme",
+          newTheme
+        );
+
+
+        applyTheme(newTheme);
+
+      }
+    );
+
+  }
+
+
+  document.addEventListener(
+    "turbo:load",
+    initializeResourceTheme
+  );
+
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeResourceTheme
+  );
+
+})();
+
+</script>

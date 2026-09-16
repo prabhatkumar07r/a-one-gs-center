@@ -2,7 +2,7 @@ class Note < ApplicationRecord
 
   belongs_to :playlist
   belongs_to :user, optional:true
-   belongs_to :video, optional: true
+   belongs_to :video
 
   has_one_attached :pdf_file
 
@@ -21,6 +21,24 @@ class Note < ApplicationRecord
 
 
   private
+
+
+
+  
+  def video_belongs_to_playlist
+
+    return if video.blank? || playlist.blank?
+
+    unless video.playlist_id == playlist.id
+
+      errors.add(
+        :video,
+        "must belong to the selected playlist"
+      )
+
+    end
+
+  end
 
 
   def acceptable_file

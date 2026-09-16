@@ -260,6 +260,17 @@
                       <% end %>
 
 
+                      <%= link_to course_playlist_resources_path(
+                        @course,
+                         playlist
+                       ),
+                       class: "btn btn-sm" do %>
+
+                       📚 Resources
+
+                        <% end %>
+
+
                       <%= link_to edit_admin_course_playlist_path(
                             @course,
                             playlist

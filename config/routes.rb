@@ -196,6 +196,8 @@ end
     end
 
 
+
+
     # ==================================================
     # ADMIN PROFILE
     # ==================================================
@@ -460,6 +462,17 @@ end
 
   resources :resources,
             only: [:index, :show]
+
+
+   # ==================================================
+# COURSE → PLAYLIST → RESOURCES
+# ==================================================
+
+resources :courses, only: [] do
+  resources :playlists, only: [] do
+    resources :resources
+  end
+end         
 
 
   # ==================================================

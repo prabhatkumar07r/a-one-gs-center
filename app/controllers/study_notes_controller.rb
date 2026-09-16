@@ -3,110 +3,337 @@ class StudyNotesController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authorize_admin_or_teacher
-  before_action :set_note, only: [:show, :edit, :update, :destroy]
+  before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
 
+  # =========================================================
   # GET /study_notes
+  # =========================================================
+
   def index
+
     if current_user.admin?
-      @notes = Note.includes(:user, playlist: :course)
-                   .order(created_at: :desc)
+
+      @notes =
+        Note
+          .includes(:user, :video, playlist: :course)
+          .order(created_at: :desc)
+
     else
-      @notes = Note.joins(playlist: :course)
-                   .where(courses: { teacher_id: current_user.teacher.id })
-                   .includes(:user, playlist: :course)
-                   .order(created_at: :desc)
+
+      @notes =
+        Note
+          .joins(playlist: :course)
+          .where(
+            courses: {
+              teacher_id: current_user.teacher.id
+            }
+          )
+          .includes(:user, :video, playlist: :course)
+          .order(created_at: :desc)
+
     end
+
   end
 
-  def videos
-    videos = Video.where(playlist_id: params[:playlist_id])
-    render json: videos.select(:id, :title)
-  end
 
+  # =========================================================
   # GET /study_notes/new
+  # =========================================================
+
   def new
+
     @note = Note.new
+
     load_courses
+
   end
 
+
+  # =========================================================
   # GET /study_notes/:id
+  # =========================================================
+
   def show
+
   end
 
+
+  # =========================================================
   # GET /study_notes/:id/edit
+  # =========================================================
+
   def edit
+
     load_courses
+
   end
+
+
+  # =========================================================
+  # GET /study_notes/:id/download
+  # =========================================================
 
   def download
+
     if @note.pdf_file.attached?
-      redirect_to rails_blob_url(@note.pdf_file, disposition: "attachment")
+
+      redirect_to rails_blob_url(
+        @note.pdf_file,
+        disposition: "attachment"
+      )
+
     else
-      redirect_to study_notes_path, alert: "No file attached."
+
+      redirect_to study_notes_path,
+                  alert: "No file attached."
+
     end
+
   end
 
+
+  # =========================================================
   # POST /study_notes
+  # =========================================================
+
   def create
+
     @note = Note.new(note_params)
+
     @note.user = current_user
 
+
     if @note.save
+
       redirect_to study_notes_path,
                   notice: "Study Note uploaded successfully."
+
     else
+
       load_courses
-      render :new, status: :unprocessable_entity
+
+      render :new,
+             status: :unprocessable_entity
+
     end
+
   end
 
-  # PATCH/PUT /study_notes/:id
+
+  # =========================================================
+  # PATCH /study_notes/:id
+  # =========================================================
+
   def update
+
     if @note.update(note_params)
+
       redirect_to study_notes_path,
                   notice: "Study note updated successfully."
+
     else
+
       load_courses
-      render :edit, status: :unprocessable_entity
+
+      render :edit,
+             status: :unprocessable_entity
+
     end
+
   end
 
+
+  # =========================================================
   # DELETE /study_notes/:id
+  # =========================================================
+
   def destroy
+
     @note.destroy
+
     redirect_to study_notes_path,
                 notice: "Study note deleted successfully."
+
   end
 
-  # AJAX
+
+  # =========================================================
+  # AJAX — PLAYLISTS
+  #
+  # GET /study_notes/playlists?course_id=5
+  # =========================================================
+
   def playlists
-    playlists = Playlist.where(course_id: params[:course_id]).order(:position)
-    render json: playlists.select(:id, :title)
+
+    course =
+      accessible_courses.find_by(
+        id: params[:course_id]
+      )
+
+
+    unless course
+
+      render json: [],
+             status: :unprocessable_entity
+
+      return
+
+    end
+
+
+    playlists =
+      Playlist
+        .where(course_id: course.id)
+        .order(:position)
+
+
+    render json:
+      playlists.map { |playlist|
+
+        {
+          id: playlist.id,
+          title: playlist.title
+        }
+
+      }
+
   end
+
+
+  # =========================================================
+  # AJAX — VIDEOS
+  #
+  # GET /study_notes/videos?playlist_id=10
+  # =========================================================
+
+  def videos
+
+    playlist =
+      accessible_playlists.find_by(
+        id: params[:playlist_id]
+      )
+
+
+    unless playlist
+
+      render json: [],
+             status: :unprocessable_entity
+
+      return
+
+    end
+
+
+    videos =
+      Video
+        .where(playlist_id: playlist.id)
+        .where(status: :active)
+        .order(:position)
+
+
+    render json:
+      videos.map { |video|
+
+        {
+          id: video.id,
+          title: video.title,
+          position: video.position,
+          thumbnail: video.youtube_thumbnail
+        }
+
+      }
+
+  end
+
 
   private
 
+
+  # =========================================================
+  # LAYOUT
+  # =========================================================
+
   def select_layout
+
     current_user.admin? ? "admin" : "teacher"
+
   end
+
+
+  # =========================================================
+  # LOAD COURSES
+  # =========================================================
 
   def load_courses
-    if current_user.admin?
-      @courses = Course.includes(:playlists).order(:Course_name)
-    elsif current_user.teacher?
-      @courses = current_user.teacher.courses
-                             .includes(:playlists)
-                             .order(:Course_name)
-    else
-      @courses = Course.none
-    end
+
+    @courses =
+      accessible_courses
+        .includes(:playlists)
+        .order(:Course_name)
+
   end
+
+
+  # =========================================================
+  # ACCESSIBLE COURSES
+  #
+  # ADMIN:
+  #   All courses
+  #
+  # TEACHER:
+  #   Only their courses
+  # =========================================================
+
+  def accessible_courses
+
+    if current_user.admin?
+
+      Course.all
+
+    elsif current_user.teacher?
+
+      current_user.teacher.courses
+
+    else
+
+      Course.none
+
+    end
+
+  end
+
+
+  # =========================================================
+  # ACCESSIBLE PLAYLISTS
+  # =========================================================
+
+  def accessible_playlists
+
+    Playlist
+      .joins(:course)
+      .merge(accessible_courses)
+
+  end
+
+
+  # =========================================================
+  # SET NOTE
+  # =========================================================
 
   def set_note
-    @note = Note.find(params[:id])
+
+    @note =
+      Note.find(params[:id])
+
   end
 
+
+  # =========================================================
+  # STRONG PARAMETERS
+  # =========================================================
+
   def note_params
+
     params.require(:note).permit(
       :playlist_id,
       :video_id,
@@ -114,12 +341,25 @@ class StudyNotesController < ApplicationController
       :pdf_file,
       :title
     )
+
   end
 
+
+  # =========================================================
+  # ADMIN / TEACHER AUTHORIZATION
+  # =========================================================
+
   def authorize_admin_or_teacher
-    unless current_user.admin? || current_user.teacher?
+
+    unless current_user.admin? ||
+           current_user.teacher?
+
       redirect_to root_path,
-                  alert: "Only Admin or Teacher can manage study notes."
+                  alert:
+                    "Only Admin or Teacher can manage study notes."
+
     end
+
   end
+
 end
