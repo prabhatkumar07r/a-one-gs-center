@@ -1,55 +1,1347 @@
-<%= form_with model: @gallery, local: true do |f| %>
+<%= form_with model: @gallery, local: true, html: { multipart: true } do |f| %>
 
-<div class="mb-3">
-  <%= f.label :title %>
-  <%= f.text_field :title, class: "form-control" %>
-</div>
+  <div class="gallery-form-card">
 
-<div class="mb-3">
-  <%= f.label :category %>
-  <%= f.select :category,
-      ["Classroom","Seminar","Event","Prize Distribution","Tour","Other"],
-      {},
-      class: "form-select" %>
-</div>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-<div class="mb-3">
-  <%= f.label :description %>
-  <%= f.text_area :description,
-      rows: 4,
-      class: "form-control" %>
-</div>
+    <div class="gallery-form-header">
 
-<!-- Current Image -->
-
-<% if @gallery.photos.attached? %>
-  <label>Current Images</label>
-
-  <div class="row mt-3">
-    <% @gallery.photos.each do |photo| %>
-      <div class="col-md-3 mb-3">
-        <%= image_tag photo,
-            width: 180,
-            class: "img-thumbnail shadow" %>
+      <div class="gallery-form-header-icon">
+        <i class="bi bi-images"></i>
       </div>
+
+      <div>
+        <h2>
+          <%= @gallery.persisted? ? "Edit Gallery" : "Create Gallery" %>
+        </h2>
+
+        <p>
+          Add photos and organize them by category.
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM ERRORS
+    ====================================================== -->
+
+    <% if @gallery.errors.any? %>
+
+      <div class="gallery-form-errors">
+
+        <div class="gallery-error-title">
+          <i class="bi bi-exclamation-triangle"></i>
+          Please fix the following errors:
+        </div>
+
+        <ul>
+          <% @gallery.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+
+      </div>
+
     <% end %>
+
+
+    <!-- =====================================================
+         TITLE
+    ====================================================== -->
+
+    <div class="gallery-form-group">
+
+      <%= f.label :title,
+          "Gallery Title",
+          class: "gallery-form-label" %>
+
+      <div class="gallery-input-wrap">
+
+        <i class="bi bi-type"></i>
+
+        <%= f.text_field :title,
+            class: "gallery-form-input",
+            placeholder: "Example: Annual Celebration 2026",
+            autocomplete: "off" %>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CATEGORY
+    ====================================================== -->
+
+   <div class="gallery-form-group">
+
+  <%= f.label :categories,
+      "Categories",
+      class: "gallery-form-label" %>
+
+  <div class="gallery-category-grid">
+
+    <% [
+      ["classes", "Classes", "bi-book"],
+      ["events", "Events", "bi-calendar-event"],
+      ["achievements", "Achievements", "bi-trophy"],
+      ["results", "Results", "bi-mortarboard"],
+      ["students", "Students", "bi-people"],
+      ["faculty", "Faculty", "bi-person"],
+      ["study", "Study", "bi-journal-bookmark"],
+      ["other", "Other", "bi-images"]
+    ].each do |value, label, icon| %>
+
+      <label class="gallery-category-option">
+
+        <%= check_box_tag(
+          "gallery[categories][]",
+          value,
+          @gallery.categories.to_a.include?(value),
+          id: "gallery_category_#{value}"
+        ) %>
+
+        <span class="gallery-category-content">
+
+          <span class="gallery-category-icon">
+            <i class="bi <%= icon %>"></i>
+          </span>
+
+          <span class="gallery-category-label">
+            <%= label %>
+          </span>
+
+          <span class="gallery-category-check">
+            <i class="bi bi-check"></i>
+          </span>
+
+        </span>
+
+      </label>
+
+    <% end %>
+
   </div>
-<% end %>
 
-<div class="mb-3">
-  <%= f.label :photos %>
- <%= f.file_field :photos, multiple: true, class: "form-control" %>
-  
+  <small class="gallery-form-help">
+    You can select multiple categories for the same gallery.
+    Example: Results + Students.
+  </small>
+
 </div>
 
-<div class="mb-3">
-  <%= f.label :status %>
-  <%= f.select :status,
-      ["Active","Inactive"],
-      {},
-      class: "form-select" %>
-</div>
 
-<%= f.submit "Save Gallery", class: "btn btn-primary" %>
+    <!-- =====================================================
+         DESCRIPTION
+    ====================================================== -->
+
+    <div class="gallery-form-group">
+
+      <%= f.label :description,
+          "Description",
+          class: "gallery-form-label" %>
+
+      <%= f.text_area :description,
+          rows: 4,
+          class: "gallery-form-textarea",
+          placeholder: "Write a short description about these photos..." %>
+
+      <div class="gallery-character-count">
+        <span id="galleryDescriptionCount">0</span>
+        characters
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CURRENT IMAGES
+    ====================================================== -->
+
+    <% if @gallery.photos.attached? %>
+
+      <div class="gallery-form-group">
+
+        <div class="gallery-form-label">
+          Current Images
+        </div>
+
+        <div class="gallery-current-grid">
+
+          <% @gallery.photos.each do |photo| %>
+
+            <div class="gallery-current-item">
+
+              <%= image_tag photo,
+                  alt: @gallery.title.presence || "Gallery Image" %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+        <small class="gallery-form-help">
+          Existing images will remain unless you remove them separately.
+        </small>
+
+      </div>
+
+    <% end %>
+
+
+    <!-- =====================================================
+         UPLOAD IMAGES
+    ====================================================== -->
+
+    <div class="gallery-form-group">
+
+      <label class="gallery-form-label">
+        Upload Images
+      </label>
+
+      <label
+        class="gallery-upload-box"
+        for="gallery_photos">
+
+        <div class="gallery-upload-icon">
+          <i class="bi bi-cloud-arrow-up"></i>
+        </div>
+
+        <div class="gallery-upload-title">
+          Choose Gallery Images
+        </div>
+
+        <div class="gallery-upload-text">
+          Click here to select multiple images
+        </div>
+
+        <div
+          class="gallery-upload-count"
+          id="galleryUploadCount">
+          No new images selected
+        </div>
+
+      </label>
+
+      <%= f.file_field :photos,
+          multiple: true,
+          accept: "image/*",
+          id: "gallery_photos",
+          class: "gallery-file-input" %>
+
+
+      <!-- NEW IMAGE PREVIEW -->
+
+      <div
+        id="galleryPreview"
+        class="gallery-preview-grid">
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATUS
+    ====================================================== -->
+
+    <div class="gallery-form-group">
+
+      <%= f.label :status,
+          "Status",
+          class: "gallery-form-label" %>
+
+      <div class="gallery-status-options">
+
+        <label class="gallery-status-option">
+
+          <%= f.radio_button :status,
+              "Active",
+              class: "gallery-status-radio" %>
+
+          <span class="gallery-status-content">
+
+            <span class="gallery-status-icon active">
+              <i class="bi bi-check-circle"></i>
+            </span>
+
+            <span>
+              <strong>Active</strong>
+              <small>Show this gallery publicly</small>
+            </span>
+
+          </span>
+
+        </label>
+
+
+        <label class="gallery-status-option">
+
+          <%= f.radio_button :status,
+              "Inactive",
+              class: "gallery-status-radio" %>
+
+          <span class="gallery-status-content">
+
+            <span class="gallery-status-icon inactive">
+              <i class="bi bi-x-circle"></i>
+            </span>
+
+            <span>
+              <strong>Inactive</strong>
+              <small>Hide this gallery from website</small>
+            </span>
+
+          </span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTIONS
+    ====================================================== -->
+
+    <div class="gallery-form-actions">
+
+      <%= link_to galleries_path,
+          class: "gallery-cancel-btn" do %>
+
+        <i class="bi bi-arrow-left"></i>
+        Cancel
+
+      <% end %>
+
+
+      <%= f.submit(
+          @gallery.persisted? ?
+          "Update Gallery" :
+          "Save Gallery",
+          class: "gallery-submit-btn"
+      ) %>
+
+    </div>
+
+  </div>
 
 <% end %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.gallery-form-card {
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  padding: 30px;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 15px 45px rgba(47, 24, 90, 0.12);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.gallery-form-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding-bottom: 25px;
+
+  margin-bottom: 25px;
+
+  border-bottom: 1px solid #eeeaf5;
+}
+
+.gallery-form-header-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #f0e8ff;
+
+  color: #6d28d9;
+
+  font-size: 24px;
+}
+
+.gallery-form-header h2 {
+  margin: 0;
+
+  color: #24163a;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+.gallery-form-header p {
+  margin: 4px 0 0;
+
+  color: #7d7488;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.gallery-form-errors {
+  margin-bottom: 22px;
+
+  padding: 15px 18px;
+
+  border: 1px solid #f2c6c6;
+
+  border-radius: 13px;
+
+  background: #fff7f7;
+
+  color: #a52b2b;
+}
+
+.gallery-error-title {
+  font-weight: 800;
+
+  margin-bottom: 7px;
+}
+
+.gallery-form-errors ul {
+  margin: 0;
+
+  padding-left: 22px;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.gallery-form-group {
+  margin-bottom: 23px;
+}
+
+.gallery-form-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #352747;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.gallery-input-wrap,
+.gallery-select-wrap {
+  position: relative;
+}
+
+.gallery-input-wrap > i,
+.gallery-select-wrap > i {
+  position: absolute;
+
+  left: 15px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 2;
+
+  color: #8c819d;
+}
+
+.gallery-form-input,
+.gallery-form-select {
+  width: 100%;
+
+  height: 48px;
+
+  padding: 0 15px 0 43px;
+
+  border: 1px solid #ddd7e8;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  color: #30243d;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.gallery-form-select {
+  appearance: none;
+
+  cursor: pointer;
+}
+
+.gallery-form-input:focus,
+.gallery-form-select:focus,
+.gallery-form-textarea:focus {
+  border-color: #7c3aed;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, .1);
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.gallery-form-textarea {
+  width: 100%;
+
+  min-height: 110px;
+
+  padding: 14px 15px;
+
+  resize: vertical;
+
+  border: 1px solid #ddd7e8;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  color: #30243d;
+
+  font-size: 14px;
+
+  line-height: 1.55;
+
+  outline: none;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.gallery-character-count {
+  margin-top: 5px;
+
+  text-align: right;
+
+  color: #91879e;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   HELP
+========================================================= */
+
+.gallery-form-help {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #91879e;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   CURRENT IMAGES
+========================================================= */
+
+.gallery-current-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(130px, 1fr));
+
+  gap: 12px;
+
+  padding: 15px;
+
+  background: #faf9fd;
+
+  border: 1px solid #eeeaf5;
+
+  border-radius: 15px;
+}
+
+.gallery-current-item {
+  height: 120px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #eee;
+}
+
+.gallery-current-item img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform .25s ease;
+}
+
+.gallery-current-item:hover img {
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.gallery-file-input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.gallery-upload-box {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 175px;
+
+  padding: 25px;
+
+  border: 2px dashed #cfc1e8;
+
+  border-radius: 16px;
+
+  background: #faf8ff;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    transform .2s ease;
+}
+
+.gallery-upload-box:hover {
+  border-color: #7c3aed;
+
+  background: #f6f1ff;
+
+  transform: translateY(-1px);
+}
+
+.gallery-upload-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 10px;
+
+  border-radius: 16px;
+
+  background: #eee5ff;
+
+  color: #7c3aed;
+
+  font-size: 25px;
+}
+
+.gallery-upload-title {
+  color: #352747;
+
+  font-size: 15px;
+
+  font-weight: 800;
+}
+
+.gallery-upload-text {
+  margin-top: 4px;
+
+  color: #8a8095;
+
+  font-size: 12px;
+}
+
+.gallery-upload-count {
+  margin-top: 10px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #eee5ff;
+
+  color: #6d28d9;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.gallery-preview-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(120px, 1fr));
+
+  gap: 12px;
+
+  margin-top: 15px;
+}
+
+.gallery-preview-item {
+  position: relative;
+
+  height: 120px;
+
+  overflow: hidden;
+
+  border-radius: 11px;
+
+  border: 1px solid #e6e0ef;
+
+  background: #f4f1f8;
+}
+
+.gallery-preview-item img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.gallery-preview-number {
+  position: absolute;
+
+  left: 7px;
+  bottom: 7px;
+
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  background: rgba(0, 0, 0, .65);
+
+  color: #fff;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.gallery-status-options {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.gallery-status-option {
+  position: relative;
+
+  cursor: pointer;
+}
+
+.gallery-status-radio {
+  position: absolute;
+
+  opacity: 0;
+}
+
+.gallery-status-content {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-height: 70px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #e2dceb;
+
+  border-radius: 13px;
+
+  background: #fff;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.gallery-status-radio:checked
++ .gallery-status-content {
+  border-color: #7c3aed;
+
+  background: #f8f4ff;
+
+  box-shadow:
+    0 0 0 2px rgba(124, 58, 237, .08);
+}
+
+.gallery-status-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 18px;
+}
+
+.gallery-status-icon.active {
+  background: #e9f8ef;
+
+  color: #16803c;
+}
+
+.gallery-status-icon.inactive {
+  background: #fff0f0;
+
+  color: #c0392b;
+}
+
+.gallery-status-content strong {
+  display: block;
+
+  color: #352747;
+
+  font-size: 13px;
+}
+
+.gallery-status-content small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #8c8195;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.gallery-form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding-top: 23px;
+
+  border-top: 1px solid #eeeaf5;
+}
+
+.gallery-cancel-btn,
+.gallery-submit-btn {
+  min-height: 45px;
+
+  padding: 0 20px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 11px;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.gallery-cancel-btn {
+  border: 1px solid #ddd6e8;
+
+  background: #fff;
+
+  color: #665c72;
+}
+
+.gallery-submit-btn {
+  border: 0;
+
+  background: #6d28d9;
+
+  color: #fff;
+
+  box-shadow:
+    0 7px 18px rgba(109, 40, 217, .22);
+}
+
+.gallery-submit-btn:hover {
+  background: #5b21b6;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .gallery-form-card {
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+
+  .gallery-form-header {
+    align-items: flex-start;
+  }
+
+  .gallery-form-header h2 {
+    font-size: 20px;
+  }
+
+  .gallery-status-options {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .gallery-cancel-btn,
+  .gallery-submit-btn {
+    width: 100%;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MULTI CATEGORY SELECTOR
+========================================================= */
+
+.gallery-category-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+.gallery-category-option {
+  position: relative;
+
+  cursor: pointer;
+}
+
+.gallery-category-option input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.gallery-category-content {
+  position: relative;
+
+  min-height: 76px;
+
+  padding: 12px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  border: 1px solid #ded7e9;
+
+  border-radius: 14px;
+
+  background: #fff;
+
+  color: #40354d;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.gallery-category-option:hover
+.gallery-category-content {
+  transform: translateY(-2px);
+
+  border-color: #9b6ee8;
+
+  background: #faf7ff;
+}
+
+.gallery-category-option input:checked
++ .gallery-category-content {
+  border-color: #6d28d9;
+
+  background: #f3ecff;
+
+  color: #5b21b6;
+
+  box-shadow:
+    0 5px 16px rgba(109, 40, 217, .12);
+}
+
+.gallery-category-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eee7fa;
+
+  color: #7c3aed;
+
+  font-size: 16px;
+}
+
+.gallery-category-label {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-align: center;
+}
+
+.gallery-category-check {
+  position: absolute;
+
+  top: 7px;
+  right: 7px;
+
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #6d28d9;
+
+  color: #fff;
+
+  font-size: 11px;
+
+  opacity: 0;
+
+  transform: scale(.7);
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+.gallery-category-option input:checked
++ .gallery-category-content
+.gallery-category-check {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .gallery-category-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  .gallery-category-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function () {
+  "use strict";
+
+  function initializeGalleryForm() {
+
+    const fileInput =
+      document.getElementById("gallery_photos");
+
+    const preview =
+      document.getElementById("galleryPreview");
+
+    const uploadCount =
+      document.getElementById("galleryUploadCount");
+
+    const description =
+      document.getElementById("gallery_description");
+
+    const descriptionCount =
+      document.getElementById("galleryDescriptionCount");
+
+
+    /* ==========================================
+       IMAGE PREVIEW
+    ========================================== */
+
+    if (fileInput && preview && uploadCount) {
+
+      fileInput.addEventListener(
+        "change",
+        function () {
+
+          preview.innerHTML = "";
+
+          const files =
+            Array.from(fileInput.files || []);
+
+          if (!files.length) {
+
+            uploadCount.textContent =
+              "No new images selected";
+
+            return;
+          }
+
+
+          uploadCount.textContent =
+            files.length +
+            (files.length === 1
+              ? " image selected"
+              : " images selected");
+
+
+          files.forEach(function (file, index) {
+
+            if (!file.type.startsWith("image/")) {
+              return;
+            }
+
+            const reader =
+              new FileReader();
+
+            reader.addEventListener(
+              "load",
+              function (event) {
+
+                const item =
+                  document.createElement("div");
+
+                item.className =
+                  "gallery-preview-item";
+
+
+                const image =
+                  document.createElement("img");
+
+                image.src =
+                  event.target.result;
+
+                image.alt =
+                  "Selected gallery image " +
+                  (index + 1);
+
+
+                const number =
+                  document.createElement("span");
+
+                number.className =
+                  "gallery-preview-number";
+
+                number.textContent =
+                  "#" + (index + 1);
+
+
+                item.appendChild(image);
+
+                item.appendChild(number);
+
+                preview.appendChild(item);
+
+              }
+            );
+
+            reader.readAsDataURL(file);
+
+          });
+
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       DESCRIPTION COUNTER
+    ========================================== */
+
+    if (
+      description &&
+      descriptionCount
+    ) {
+
+      function updateDescriptionCount() {
+
+        descriptionCount.textContent =
+          description.value.length;
+
+      }
+
+      description.addEventListener(
+        "input",
+        updateDescriptionCount
+      );
+
+      updateDescriptionCount();
+
+    }
+
+  }
+
+
+  /* ==========================================
+     TURBO
+  ========================================== */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeGalleryForm
+  );
+
+
+  /* ==========================================
+     NORMAL PAGE LOAD
+  ========================================== */
+
+  if (
+    document.readyState === "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeGalleryForm
+    );
+
+  } else {
+
+    initializeGalleryForm();
+
+  }
+
+})();
+</script>

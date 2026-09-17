@@ -1,188 +1,1422 @@
-<style>
-    .back-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:6px 10px;   /* Small horizontal padding */
-    width:auto;         /* Only as wide as its content */
-    white-space:nowrap;
-    font-size:14px;
-    font-weight:500;
-    border-radius:10px;
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   GALLERY ADMIN PAGE
+========================================================= */
+
+.gallery-admin-page {
+  width: 100%;
+  padding: 28px;
 }
 
-.back-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 4px 12px rgba(0,0,0,.12);
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.gallery-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 28px;
 }
 
-.back-btn i{
-    font-size:15px;
+.gallery-admin-kicker {
+  display: inline-block;
+  margin-bottom: 7px;
 
-  } 
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  opacity: 0.65;
+}
+
+.gallery-admin-heading h1 {
+  margin: 0;
+
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.gallery-admin-heading p {
+  margin: 7px 0 0;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+.gallery-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  background: #6d28d9;
+  color: #fff;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(109, 40, 217, 0.22);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.gallery-add-btn:hover {
+  color: #fff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(109, 40, 217, 0.3);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.gallery-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+.gallery-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 20px;
+
+  background: #fff;
+
+  border: 1px solid #ebe7f5;
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 7px 25px rgba(48, 30, 80, .07);
+}
+
+.gallery-stat-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #f0e9ff;
+
+  color: #6d28d9;
+
+  font-size: 21px;
+}
+
+.gallery-stat-card span {
+  display: block;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+.gallery-stat-card strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 23px;
+}
+
+
+/* =========================================================
+   FILTER PANEL
+========================================================= */
+
+.gallery-filter-panel {
+  padding: 20px;
+
+  margin-bottom: 22px;
+
+  background: #fff;
+
+  border: 1px solid #ebe7f5;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 7px 25px rgba(48, 30, 80, .06);
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.gallery-search-form {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+.gallery-search-input-wrap {
+  position: relative;
+
+  flex: 1;
+}
+
+.gallery-search-input-wrap i {
+  position: absolute;
+
+  left: 15px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #8b83a0;
+}
+
+.gallery-search-input {
+  width: 100%;
+
+  height: 46px;
+
+  padding: 0 15px 0 43px;
+
+  border: 1px solid #ddd8eb;
+
+  border-radius: 11px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.gallery-search-input:focus {
+  border-color: #7c3aed;
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, .1);
+}
+
+.gallery-search-btn {
+  height: 46px;
+
+  padding: 0 22px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #6d28d9;
+
+  color: #fff;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   FILTER HEADING
+========================================================= */
+
+.gallery-filter-heading {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 12px;
+}
+
+.gallery-filter-heading > span {
+  font-size: 13px;
+
+  font-weight: 800;
+
+  color: #4c445d;
+}
+
+.gallery-filter-heading i {
+  margin-right: 5px;
+}
+
+.gallery-clear-filter {
+  color: #6d28d9;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+.gallery-admin-filters {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+}
+
+.gallery-filter-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 16px;
+
+  border: 1px solid #e1dced;
+
+  border-radius: 999px;
+
+  background: #faf9fd;
+
+  color: #544b65;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+.gallery-filter-btn:hover {
+  color: #6d28d9;
+
+  border-color: #b9a5e7;
+
+  transform: translateY(-1px);
+}
+
+.gallery-filter-btn.active {
+  background: #6d28d9;
+
+  color: #fff;
+
+  border-color: #6d28d9;
+
+  box-shadow:
+    0 5px 14px rgba(109, 40, 217, .2);
+}
+
+
+/* =========================================================
+   RESULT BAR
+========================================================= */
+
+.gallery-result-bar {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+.gallery-result-bar strong {
+  margin: 0 4px;
+
+  color: #27212f;
+
+  font-size: 16px;
+}
+
+.gallery-current-category {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 6px 11px;
+
+  border-radius: 999px;
+
+  background: #f0e9ff;
+
+  color: #6d28d9;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.gallery-admin-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(285px, 1fr));
+
+  gap: 22px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.gallery-admin-card {
+  overflow: hidden;
+
+  background: #fff;
+
+  border: 1px solid #ebe7f5;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 7px 25px rgba(48, 30, 80, .07);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.gallery-admin-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 35px rgba(48, 30, 80, .13);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.gallery-admin-image-wrap {
+  position: relative;
+
+  height: 215px;
+
+  overflow: hidden;
+
+  background: #f3f0f8;
+}
+
+.gallery-admin-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition: transform .35s ease;
+}
+
+.gallery-admin-card:hover .gallery-admin-image {
+  transform: scale(1.04);
+}
+
+.gallery-admin-no-image {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  color: #9b91ad;
+}
+
+.gallery-admin-no-image i {
+  font-size: 42px;
+}
+
+
+/* =========================================================
+   CATEGORY BADGE
+========================================================= */
+
+.gallery-image-category {
+  position: absolute;
+
+  top: 12px;
+  left: 12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 6px 10px;
+
+  background: rgba(255,255,255,.92);
+
+  border-radius: 999px;
+
+  color: #5c22ad;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  backdrop-filter: blur(7px);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.gallery-status-badge {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.92);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  backdrop-filter: blur(7px);
+}
+
+.gallery-status-badge.active {
+  color: #15803d;
+}
+
+.gallery-status-badge.inactive {
+  color: #b91c1c;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.gallery-admin-card-content {
+  padding: 17px;
+}
+
+.gallery-admin-card-content h3 {
+  margin: 0 0 8px;
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  line-height: 1.35;
+}
+
+.gallery-admin-card-content p {
+  min-height: 42px;
+
+  margin: 0 0 14px;
+
+  color: #777;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.gallery-card-meta {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding-top: 12px;
+
+  margin-bottom: 14px;
+
+  border-top: 1px solid #eeeaf5;
+
+  color: #80778d;
+
+  font-size: 11px;
+}
+
+.gallery-card-meta i {
+  margin-right: 3px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.gallery-admin-actions {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 8px;
+}
+
+.gallery-edit-btn,
+.gallery-delete-btn {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 9px;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.gallery-edit-btn {
+  border: 1px solid #cfc1ed;
+
+  background: #f7f3ff;
+
+  color: #6d28d9;
+}
+
+.gallery-delete-btn {
+  border: 1px solid #f0caca;
+
+  background: #fff7f7;
+
+  color: #c0392b;
+}
+
+.gallery-edit-btn:hover,
+.gallery-delete-btn:hover {
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.gallery-empty-state {
+  grid-column: 1 / -1;
+
+  padding: 70px 20px;
+
+  text-align: center;
+
+  background: #faf9fd;
+
+  border: 1px dashed #d8d0e7;
+
+  border-radius: 18px;
+}
+
+.gallery-empty-icon {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+
+  border-radius: 20px;
+
+  background: #f0e9ff;
+
+  color: #7c3aed;
+
+  font-size: 30px;
+}
+
+.gallery-empty-state h3 {
+  margin: 0 0 7px;
+
+  font-size: 20px;
+}
+
+.gallery-empty-state p {
+  margin: 0 0 18px;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+.gallery-empty-btn {
+  display: inline-flex;
+
+  padding: 10px 17px;
+
+  border-radius: 10px;
+
+  background: #6d28d9;
+
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .gallery-admin-page {
+    padding: 20px;
+  }
+
+  .gallery-admin-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .gallery-stats {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .gallery-admin-page {
+    padding: 14px;
+  }
+
+  .gallery-search-form {
+    flex-direction: column;
+  }
+
+  .gallery-search-btn {
+    width: 100%;
+  }
+
+  .gallery-filter-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .gallery-admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-result-bar {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+}
+
+
+
+
+
+.gallery-stat-card strong {
+  display: block;
+  margin-top: 4px;
+  color: #24163a;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
 </style>
-<div class="container mt-4">
 
-<h2>Gallery Management</h2>
 
-<!-- Dashboard Cards -->
 
-<div class="row mb-4">
 
-  <div class="col-md-4">
-    <div class="card shadow border-start border-primary border-4">
-      <div class="card-body text-center">
-        <h6>Total Gallery</h6>
-        <h3><%= @total_gallery %></h3>
-      </div>
+<% content_for :hide_footer, true %>
+
+<div class="gallery-admin-page">
+
+  <!-- ==========================================
+       HEADER
+  =========================================== -->
+
+  <div class="gallery-admin-header">
+
+    <div class="gallery-admin-heading">
+
+      <span class="gallery-admin-kicker">
+        ADMIN PANEL
+      </span>
+
+      <h1>
+        Gallery Management
+      </h1>
+
+      <p>
+        Manage classroom moments, events, achievements and memories.
+      </p>
+
     </div>
+
+    <div class="gallery-admin-header-action">
+
+      <%= link_to new_gallery_path,
+          class: "gallery-add-btn" do %>
+
+        <i class="bi bi-plus-lg"></i>
+
+        <span>Add Gallery</span>
+
+      <% end %>
+
+    </div>
+
   </div>
 
-  <div class="col-md-4">
-    <div class="card shadow border-start border-success border-4">
-      <div class="card-body text-center">
-        <h6>Active</h6>
-        <h3><%= @active_gallery %></h3>
+
+  <!-- ==========================================
+       STATISTICS
+  =========================================== -->
+
+  <div class="gallery-stats">
+
+    <div class="gallery-stat-card">
+
+      <div class="gallery-stat-icon">
+        <i class="bi bi-images"></i>
       </div>
+
+      <div>
+        <span>Total Gallery</span>
+        <strong><%= @total_gallery %></strong>
+      </div>
+
     </div>
+
+
+    <div class="gallery-stat-card">
+
+      <div class="gallery-stat-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+      <div>
+        <span>Active</span>
+        <strong><%= @active_gallery %></strong>
+      </div>
+
+    </div>
+
+
+    <div class="gallery-stat-card">
+
+      <div class="gallery-stat-icon">
+        <i class="bi bi-x-circle"></i>
+      </div>
+
+      <div>
+        <span>Inactive</span>
+        <strong><%= @inactive_gallery %></strong>
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="col-md-4">
-    <div class="card shadow border-start border-danger border-4">
-      <div class="card-body text-center">
-        <h6>Inactive</h6>
-        <h3><%= @inactive_gallery %></h3>
-      </div>
+
+  <!-- ==========================================
+       SEARCH + FILTER
+  =========================================== -->
+
+  <div class="gallery-filter-panel">
+
+    <!-- SEARCH -->
+
+    <div class="gallery-search-box">
+
+      <%= form_with url: galleries_path,
+          method: :get,
+          local: true,
+          class: "gallery-search-form" do %>
+
+        <div class="gallery-search-input-wrap">
+
+          <i class="bi bi-search"></i>
+
+          <%= text_field_tag :search,
+              params[:search],
+              placeholder: "Search gallery by title or category...",
+              class: "gallery-search-input",
+              autocomplete: "off" %>
+
+        </div>
+
+        <% if params[:category].present? &&
+              params[:category] != "all" %>
+
+          <%= hidden_field_tag :category,
+              params[:category] %>
+
+        <% end %>
+
+        <%= submit_tag "Search",
+            class: "gallery-search-btn" %>
+
+      <% end %>
+
     </div>
-  </div>
-
-</div>
-
-<!-- Search -->
-
-<%= form_with url: galleries_path, method: :get, local: true do %>
 
 
-<div class="row mb-3">
+    <!-- CATEGORY FILTER -->
 
-<div class="col-md-10">
+   <!-- ==========================================
+     FILTER HEADER
+=========================================== -->
 
-<%= text_field_tag :search,
-      params[:search],
-      class: "form-control",
-      placeholder: "Search Gallery..." %>
+<div class="gallery-filter-heading">
 
-</div>
+  <span>
+    <i class="bi bi-funnel"></i>
+    Filter by Category
+  </span>
 
-<div class="col-md-2">
+  <% selected_categories =
+       Array(params[:categories]).reject(&:blank?) %>
 
-<%= submit_tag "🔍 Search",
-      class: "btn btn-primary w-100" %>
 
-</div>
+  <% if selected_categories.any? ||
+        params[:search].present? %>
 
-</div>
+    <%= link_to galleries_path,
+        class: "gallery-clear-filter" do %>
 
-<% end %>
-<div class="d-flex justify-content-end align-items-center mb-3">
+      <i class="bi bi-arrow-counterclockwise"></i>
+      Clear Filters
 
-  <%= link_to new_gallery_path,
-      class: "btn btn-outline-secondary back-btn" do %>
-
-    <i class="bi bi-plus"></i>
-    Add Gallery
+    <% end %>
 
   <% end %>
 
 </div>
 
-<table class="table table-bordered table-hover">
 
-<thead class="table-dark">
+<!-- ==========================================
+     MULTI CATEGORY FILTER
+=========================================== -->
 
-<tr>
+<div class="gallery-admin-filters">
 
-<th>#</th>
-<th>Photo</th>
-<th>Title</th>
-<th>Category</th>
-<th>Status</th>
-<th>Action</th>
+  <!-- ALL -->
 
-</tr>
+  <%= link_to galleries_path(
+        search: params[:search]
+      ),
+      class: "gallery-filter-btn gallery-filter-all #{
+        selected_categories.empty? ? 'active' : ''
+      }" do %>
 
-</thead>
-
-<tbody>
-
-<% @galleries.each_with_index do |gallery,index| %>
-
-<tr>
-
-<td><%= index+1 %></td>
-
-<td>
-
-<% if gallery.photos.attached? %>
-
-  <% gallery.photos.each do |photo| %>
-
-    <%= image_tag photo,
-          width: 120,
-          height: 80,
-          class: "rounded shadow-sm me-2 mb-2" %>
+    <i class="bi bi-grid"></i>
+    All
 
   <% end %>
-  <% else %>
 
-<span class="text-muted">No Image</span>
 
-<% end %>
+  <!-- CATEGORIES -->
 
-</td>
+  <% [
+    ["Classes", "classes", "bi-book"],
+    ["Events", "events", "bi-calendar-event"],
+    ["Achievements", "achievements", "bi-trophy"],
+    ["Results", "results", "bi-mortarboard"],
+    ["Students", "students", "bi-people"],
+    ["Faculty", "faculty", "bi-person"],
+    ["Study", "study", "bi-journal-bookmark"]
+  ].each do |label, value, icon| %>
 
-<td><%= gallery.title %></td>
 
-<td><%= gallery.category %></td>
+    <%
+      category_selected =
+        selected_categories.include?(value)
 
-<td>
+      new_categories =
+        if category_selected
 
-<% if gallery.status=="Active" %>
+          selected_categories - [value]
 
-<span class="badge bg-success">Active</span>
+        else
 
-<% else %>
+          selected_categories + [value]
 
-<span class="badge bg-danger">Inactive</span>
+        end
+    %>
 
-<% end %>
 
-</td>
+    <%= link_to galleries_path(
+          categories: new_categories,
+          search: params[:search]
+        ),
+        class: "gallery-filter-btn #{
+          category_selected ? 'active' : ''
+        }" do %>
 
-<td>
+      <i class="bi <%= icon %>"></i>
 
-<%= link_to "👁 View",
-      gallery_path(gallery),
-      class:"btn btn-info btn-sm" %>
+      <%= label %>
 
-<%= link_to "✏ Edit",
-      edit_gallery_path(gallery),
-      class:"btn btn-warning btn-sm" %>
+      <% if category_selected %>
 
-<%= button_to "🗑 Delete",
-      gallery_path(gallery),
-      method: :delete,
-      form:{ data:{ turbo_confirm:"Delete Gallery?" }},
-      class:"btn btn-danger btn-sm d-inline" %>
+        <span class="gallery-filter-check">
+          <i class="bi bi-check"></i>
+        </span>
 
-</td>
+      <% end %>
 
-</tr>
+    <% end %>
 
-<% end %>
-
-</tbody>
-
-</table>
+  <% end %>
 
 </div>
+
+
+<!-- ==========================================
+     SELECTED CATEGORY DISPLAY
+=========================================== -->
+
+<% if selected_categories.any? %>
+
+  <div class="gallery-selected-filters">
+
+    <span class="gallery-selected-label">
+      <i class="bi bi-funnel-fill"></i>
+      Selected:
+    </span>
+
+
+    <% selected_categories.each do |category| %>
+
+      <span class="gallery-selected-chip">
+
+        <%= category.humanize %>
+
+        <%= link_to galleries_path(
+              categories: selected_categories - [category],
+              search: params[:search]
+            ),
+            aria: {
+              label: "Remove #{category.humanize} filter"
+            } do %>
+
+          <i class="bi bi-x"></i>
+
+        <% end %>
+
+      </span>
+
+    <% end %>
+
+  </div>
+
+<% end %>
+
+
+<!-- ==========================================
+     CURRENT FILTER RESULT
+=========================================== -->
+
+<div class="gallery-result-bar">
+
+  <div>
+
+    <span class="gallery-result-label">
+      Showing
+    </span>
+
+    <strong>
+      <%= @galleries.count %>
+    </strong>
+
+    <span>
+      gallery
+      <%= @galleries.count == 1 ? "item" : "items" %>
+    </span>
+
+  </div>
+
+
+  <% if selected_categories.any? %>
+
+    <div class="gallery-result-categories">
+
+      <i class="bi bi-tags"></i>
+
+      <% selected_categories.each_with_index do |category, index| %>
+
+        <% if index > 0 %>
+          <span class="gallery-category-plus">+</span>
+        <% end %>
+
+        <span>
+          <%= category.humanize %>
+        </span>
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>
+  <!-- ==========================================
+       GALLERY GRID
+  =========================================== -->
+
+  <div
+    class="gallery-admin-grid"
+    id="galleryAdminGrid">
+
+    <% if @galleries.any? %>
+
+      <% @galleries.each do |gallery| %>
+
+        <article
+          class="gallery-admin-card"
+          data-gallery-card>
+
+          <!-- IMAGE -->
+
+          <div class="gallery-admin-image-wrap">
+
+            <% if gallery.photos.attached? %>
+
+              <%= image_tag gallery.photos.first,
+                  class: "gallery-admin-image",
+                  loading: "lazy",
+                  alt: gallery.title.presence ||
+                       "Gallery Image" %>
+
+            <% else %>
+
+              <div class="gallery-admin-no-image">
+
+                <i class="bi bi-images"></i>
+
+                <span>No Image</span>
+
+              </div>
+
+            <% end %>
+
+
+            <!-- CATEGORY -->
+
+            <span class="gallery-image-category">
+
+              <i class="bi bi-folder2-open"></i>
+
+              <%= gallery.category.to_s.humanize %>
+
+            </span>
+
+
+            <!-- STATUS -->
+
+            <span
+              class="gallery-status-badge <%= gallery.status.to_s.downcase %>">
+
+              <%= gallery.status %>
+
+            </span>
+
+          </div>
+
+
+          <!-- CONTENT -->
+
+          <div class="gallery-admin-card-content">
+
+            <h3>
+
+              <%= gallery.title.presence ||
+                  "Untitled Gallery" %>
+
+            </h3>
+
+
+            <% if gallery.description.present? %>
+
+              <p>
+
+                <%= truncate(
+                  gallery.description,
+                  length: 110
+                ) %>
+
+              </p>
+
+            <% end %>
+
+
+            <!-- META -->
+
+            <div class="gallery-card-meta">
+
+              <span>
+
+                <i class="bi bi-images"></i>
+
+                <%= gallery.photos.count %>
+
+                <%= gallery.photos.count == 1 ?
+                    "Image" :
+                    "Images" %>
+
+              </span>
+
+
+              <span>
+
+                <i class="bi bi-calendar3"></i>
+
+                <%= gallery.created_at.strftime("%d %b %Y") %>
+
+              </span>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="gallery-admin-actions">
+
+              <%= link_to edit_gallery_path(gallery),
+                  class: "gallery-edit-btn" do %>
+
+                <i class="bi bi-pencil-square"></i>
+
+                Edit
+
+              <% end %>
+
+
+              <%= link_to gallery_path(gallery),
+                  data: {
+                    turbo_method: :delete,
+                    turbo_confirm:
+                      "Are you sure you want to delete this gallery?"
+                  },
+                  class: "gallery-delete-btn" do %>
+
+                <i class="bi bi-trash3"></i>
+
+                Delete
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      <% end %>
+
+    <% else %>
+
+      <div class="gallery-empty-state">
+
+        <div class="gallery-empty-icon">
+
+          <i class="bi bi-images"></i>
+
+        </div>
+
+        <h3>
+          No Gallery Found
+        </h3>
+
+        <p>
+          No gallery matches your current search or category filter.
+        </p>
+
+        <%= link_to "View All Gallery",
+            galleries_path,
+            class: "gallery-empty-btn" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function () {
+  "use strict";
+
+  function initializeGalleryAdmin() {
+
+    const grid =
+      document.getElementById("galleryAdminGrid");
+
+    if (!grid) return;
+
+    const cards =
+      grid.querySelectorAll("[data-gallery-card]");
+
+    if (!cards.length) return;
+
+
+    /*
+     * Small entrance animation
+     */
+
+    cards.forEach(function (card, index) {
+
+      card.style.opacity = "0";
+      card.style.transform = "translateY(12px)";
+
+      setTimeout(function () {
+
+        card.style.transition =
+          "opacity .3s ease, transform .3s ease";
+
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+
+      }, index * 45);
+
+    });
+
+
+    /*
+     * Prevent double submit
+     */
+
+    const searchForm =
+      document.querySelector(".gallery-search-form");
+
+    if (searchForm) {
+
+      searchForm.addEventListener("submit", function () {
+
+        const submitButton =
+          searchForm.querySelector(
+            ".gallery-search-btn"
+          );
+
+        if (!submitButton) return;
+
+        submitButton.disabled = true;
+
+        submitButton.textContent = "Searching...";
+
+      });
+
+    }
+
+  }
+
+
+  /*
+   * Rails Turbo support
+   */
+
+  document.addEventListener(
+    "turbo:load",
+    initializeGalleryAdmin
+  );
+
+  /*
+   * Normal page load fallback
+   */
+
+  if (
+    document.readyState === "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeGalleryAdmin
+    );
+
+  } else {
+
+    initializeGalleryAdmin();
+
+  }
+
+})();
+</script>
