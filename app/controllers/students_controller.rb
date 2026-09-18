@@ -47,6 +47,9 @@ class StudentsController < ApplicationController
 end
 
   private
+    def set_student
+    @student = User.find(params[:id])
+  end
 
   def student_params
     params.require(:user).permit(
