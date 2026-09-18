@@ -1,5 +1,8 @@
 class StudentsController < ApplicationController
   layout "admin"
+  before_action :require_admin
+  before_action :set_student, only: [:show, :edit, :update, :destroy]
+
 
   def index
     @students = User.where(role: "student")
@@ -33,9 +36,15 @@ class StudentsController < ApplicationController
   def update
   end
 
-  def destroy
-  end
+ def destroy
+  @student = User.find(params[:id])
 
+  if @student.destroy
+    redirect_to students_path, notice: "Student deleted successfully."
+  else
+    redirect_to students_path, alert: "Unable to delete student."
+  end
+end
 
   private
 
