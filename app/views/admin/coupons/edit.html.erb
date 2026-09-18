@@ -1,0 +1,958 @@
+<style>
+  /* =========================================================
+     ADMIN COUPONS — EDIT
+  ========================================================= */
+
+  .coupon-edit-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0;
+    padding: 0 24px 50px 0;
+    background: transparent !important;
+    color: #24113f;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  .coupon-edit-header {
+    margin-bottom: 25px;
+  }
+
+  .coupon-edit-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    padding: 7px 12px;
+    border: 1px solid rgba(128,9,226,.14);
+    border-radius: 999px;
+    background: rgba(255,255,255,.80);
+    color: #7a21c9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .11em;
+  }
+
+  .coupon-edit-header h1 {
+    margin: 0;
+    color: #24113f;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -.025em;
+  }
+
+  .coupon-edit-header p {
+    max-width: 680px;
+    margin: 9px 0 0;
+    color: #746982;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ---------- CARD ---------- */
+
+  .coupon-edit-card {
+    overflow: hidden;
+    border: 1px solid rgba(128,9,226,.10);
+    border-radius: 22px;
+    background: rgba(255,255,255,.97);
+    box-shadow:
+      0 20px 50px rgba(43,14,74,.11),
+      0 3px 8px rgba(0,0,0,.035);
+  }
+
+  /* ---------- ERROR ---------- */
+
+  .coupon-edit-errors {
+    margin: 20px 25px 0;
+    padding: 14px 16px;
+    border: 1px solid #f2d1d1;
+    border-radius: 13px;
+    background: #fff6f6;
+    color: #a93636;
+    font-size: 13px;
+  }
+
+  .coupon-edit-errors strong {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .coupon-edit-errors ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  /* ---------- SECTION ---------- */
+
+  .coupon-edit-section {
+    padding: 25px;
+    border-bottom: 1px solid #eee8f3;
+  }
+
+  .coupon-edit-section:last-of-type {
+    border-bottom: 0;
+  }
+
+  .coupon-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .coupon-section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 11px;
+    background: #f3eaff;
+    color: #8009e2;
+  }
+
+  .coupon-section-heading h2 {
+    margin: 0;
+    color: #351748;
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .coupon-section-heading p {
+    margin: 3px 0 0;
+    color: #8b7e94;
+    font-size: 12px;
+  }
+
+  /* ---------- FORM ---------- */
+
+  .coupon-field {
+    margin-bottom: 18px;
+  }
+
+  .coupon-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .coupon-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #493552;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .coupon-label-required::after {
+    content: " *";
+    color: #d34c4c;
+  }
+
+  .coupon-input,
+  .coupon-select {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 13px;
+    border: 1px solid #e3dce8;
+    border-radius: 11px;
+    outline: none;
+    background: #fff;
+    color: #392145;
+    font-size: 13px;
+    transition: .2s ease;
+    box-sizing: border-box;
+  }
+
+  .coupon-input:focus,
+  .coupon-select:focus {
+    border-color: rgba(128,9,226,.50);
+    box-shadow: 0 0 0 4px rgba(128,9,226,.08);
+  }
+
+  .coupon-input::placeholder {
+    color: #aaa0b1;
+  }
+
+  .coupon-code-input {
+    font-family: monospace;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  .coupon-help {
+    margin: 7px 0 0;
+    color: #938899;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .coupon-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  /* ---------- TYPE OPTIONS ---------- */
+
+  .coupon-type-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+  }
+
+  .coupon-type-option {
+    position: relative;
+  }
+
+  .coupon-type-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .coupon-type-label {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 75px;
+    padding: 14px;
+    border: 1px solid #e6dfea;
+    border-radius: 13px;
+    background: #fff;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .coupon-type-label:hover {
+    border-color: rgba(128,9,226,.25);
+    background: #fcf9ff;
+    transform: translateY(-1px);
+  }
+
+  .coupon-type-option input:checked + .coupon-type-label {
+    border-color: rgba(128,9,226,.48);
+    background: #faf5ff;
+    box-shadow: 0 6px 18px rgba(128,9,226,.08);
+  }
+
+  .coupon-type-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border-radius: 11px;
+    background: #f2e9ff;
+    color: #8009e2;
+  }
+
+  .coupon-type-text strong {
+    display: block;
+    color: #3b204d;
+    font-size: 13px;
+  }
+
+  .coupon-type-text span {
+    display: block;
+    margin-top: 3px;
+    color: #938899;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  /* ---------- STUDENT ---------- */
+
+  .coupon-student-box {
+    margin-top: 16px;
+    padding: 17px;
+    border: 1px solid #eee6f3;
+    border-radius: 13px;
+    background: #fcfbfd;
+  }
+
+  .coupon-student-box.hidden {
+    display: none;
+  }
+
+  /* ---------- DISCOUNT ---------- */
+
+  .coupon-discount-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 17px;
+    padding: 16px;
+    border: 1px solid rgba(128,9,226,.11);
+    border-radius: 13px;
+    background: linear-gradient(135deg,#faf5ff,#fff);
+  }
+
+  .coupon-preview-label {
+    color: #796c83;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .coupon-preview-value {
+    color: #6d1bad;
+    font-size: 20px;
+    font-weight: 850;
+  }
+
+  /* ---------- STATUS ---------- */
+
+  .coupon-status-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 17px;
+    border: 1px solid #eee7f2;
+    border-radius: 13px;
+    background: #fcfbfd;
+  }
+
+  .coupon-status-info strong {
+    display: block;
+    color: #392046;
+    font-size: 13px;
+  }
+
+  .coupon-status-info span {
+    display: block;
+    margin-top: 3px;
+    color: #938899;
+    font-size: 11px;
+  }
+
+  .coupon-switch {
+    position: relative;
+    width: 48px;
+    height: 27px;
+    flex: 0 0 48px;
+  }
+
+  .coupon-switch input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  .coupon-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    background: #d8d0dd;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .coupon-slider::before {
+    content: "";
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,.18);
+    transition: .2s ease;
+  }
+
+  .coupon-switch input:checked + .coupon-slider {
+    background: #8009e2;
+  }
+
+  .coupon-switch input:checked + .coupon-slider::before {
+    transform: translateX(21px);
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  .coupon-edit-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px 25px;
+    background: #fcfbfd;
+  }
+
+  .coupon-cancel-button,
+  .coupon-save-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .coupon-cancel-button {
+    border: 1px solid #e4dce9;
+    background: #fff;
+    color: #665170 !important;
+  }
+
+  .coupon-save-button {
+    border: 0;
+    background: linear-gradient(135deg,#8009e2,#a52ce8);
+    color: #fff;
+    box-shadow: 0 9px 21px rgba(128,9,226,.20);
+  }
+
+  .coupon-cancel-button:hover,
+  .coupon-save-button:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+
+  @media (max-width: 700px) {
+    .coupon-edit-page {
+      padding-right: 0;
+    }
+
+    .coupon-two-column,
+    .coupon-type-options {
+      grid-template-columns: 1fr;
+    }
+
+    .coupon-edit-section {
+      padding: 20px;
+    }
+
+    .coupon-edit-footer {
+      padding: 17px 20px;
+      flex-direction: column-reverse;
+    }
+
+    .coupon-cancel-button,
+    .coupon-save-button {
+      width: 100%;
+    }
+  }
+</style>
+
+
+<div class="coupon-edit-page">
+
+  <!-- HEADER -->
+  <div class="coupon-edit-header">
+
+    <span class="coupon-edit-kicker">
+      <i class="fa-solid fa-pen-to-square"></i>
+      COUPON MANAGEMENT
+    </span>
+
+    <h1>Edit Coupon</h1>
+
+    <p>
+      Update the coupon details, discount settings, usage limits and status.
+    </p>
+
+  </div>
+
+
+  <!-- CARD -->
+  <div class="coupon-edit-card">
+
+    <% if @coupon.errors.any? %>
+
+      <div class="coupon-edit-errors">
+
+        <strong>
+          <i class="fa-solid fa-circle-exclamation"></i>
+          Please fix the following errors:
+        </strong>
+
+        <ul>
+
+          <% @coupon.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+
+        </ul>
+
+      </div>
+
+    <% end %>
+
+
+    <%= form_with model: [:admin, @coupon],
+                  local: true do |form| %>
+
+
+      <!-- COURSE -->
+      <section class="coupon-edit-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+
+          <div>
+            <h2>Course & Target</h2>
+            <p>Select the course and students who can use this coupon.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :course_id,
+                "Course",
+                class: "coupon-label coupon-label-required" %>
+
+          <%= form.collection_select :course_id,
+                @courses,
+                :id,
+                :Course_name,
+                { prompt: "Select a course" },
+                { class: "coupon-select" } %>
+
+        </div>
+
+
+        <!-- TYPE -->
+        <div class="coupon-field">
+
+          <label class="coupon-label">
+            Coupon Type
+          </label>
+
+
+          <div class="coupon-type-options">
+
+            <!-- EVERYONE -->
+            <div class="coupon-type-option">
+
+              <%= form.radio_button :coupon_type,
+                    "everyone",
+                    id: "coupon_type_everyone" %>
+
+              <label
+                for="coupon_type_everyone"
+                class="coupon-type-label">
+
+                <span class="coupon-type-icon">
+                  <i class="fa-solid fa-users"></i>
+                </span>
+
+                <span class="coupon-type-text">
+
+                  <strong>Everyone</strong>
+
+                  <span>
+                    Any student can use this coupon once.
+                  </span>
+
+                </span>
+
+              </label>
+
+            </div>
+
+
+            <!-- PERSONAL -->
+            <div class="coupon-type-option">
+
+              <%= form.radio_button :coupon_type,
+                    "personal",
+                    id: "coupon_type_personal" %>
+
+              <label
+                for="coupon_type_personal"
+                class="coupon-type-label">
+
+                <span class="coupon-type-icon">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+
+                <span class="coupon-type-text">
+
+                  <strong>Personal</strong>
+
+                  <span>
+                    Only the selected student can use it.
+                  </span>
+
+                </span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- STUDENT -->
+        <div
+          id="personal-student-section"
+          class="coupon-student-box <%= @coupon.personal? ? '' : 'hidden' %>"
+        >
+
+          <div class="coupon-field">
+
+            <%= form.label :student_id,
+                  "Specific Student",
+                  class: "coupon-label" %>
+
+            <%= form.collection_select :student_id,
+                  @students,
+                  :id,
+                  :name,
+                  { prompt: "Select student" },
+                  { class: "coupon-select" } %>
+
+            <p class="coupon-help">
+              Personal coupons can only be used by the selected student.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- COUPON DETAILS -->
+      <section class="coupon-edit-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-ticket"></i>
+          </div>
+
+          <div>
+            <h2>Coupon Details</h2>
+            <p>Set the code and discount value.</p>
+          </div>
+
+        </div>
+
+
+        <!-- CODE -->
+        <div class="coupon-field">
+
+          <%= form.label :code,
+                "Coupon Code",
+                class: "coupon-label coupon-label-required" %>
+
+          <%= form.text_field :code,
+                class: "coupon-input coupon-code-input",
+                placeholder: "Example: WELCOME50",
+                maxlength: 50,
+                autocomplete: "off" %>
+
+          <p class="coupon-help">
+            Students will enter this code during course payment.
+          </p>
+
+        </div>
+
+
+        <!-- DISCOUNT -->
+        <div class="coupon-two-column">
+
+          <div class="coupon-field">
+
+            <%= form.label :discount_type,
+                  "Discount Type",
+                  class: "coupon-label coupon-label-required" %>
+
+            <%= form.select :discount_type,
+                  [
+                    ["Percentage (%)", "percentage"],
+                    ["Fixed Amount (₹)", "fixed"]
+                  ],
+                  {},
+                  {
+                    class: "coupon-select",
+                    id: "discount_type"
+                  } %>
+
+          </div>
+
+
+          <div class="coupon-field">
+
+            <%= form.label :discount_value,
+                  "Discount Value",
+                  class: "coupon-label coupon-label-required" %>
+
+            <%= form.number_field :discount_value,
+                  class: "coupon-input",
+                  id: "discount_value",
+                  min: 0,
+                  step: "0.01",
+                  placeholder: "50" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- PREVIEW -->
+        <div class="coupon-discount-preview">
+
+          <span class="coupon-preview-label">
+            Discount Preview
+          </span>
+
+          <span
+            id="coupon-discount-preview-value"
+            class="coupon-preview-value"
+          >
+            <%= @coupon.discount_type == "percentage" ?
+                  "#{@coupon.discount_value.to_f}% OFF" :
+                  "₹#{number_with_precision(
+                    @coupon.discount_value,
+                    precision: 2,
+                    strip_insignificant_zeros: true
+                  )} OFF" %>
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- USAGE -->
+      <section class="coupon-edit-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-chart-simple"></i>
+          </div>
+
+          <div>
+            <h2>Usage Settings</h2>
+            <p>Control how long and how many times the coupon can be used.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-two-column">
+
+          <!-- LIMIT -->
+          <div class="coupon-field">
+
+            <%= form.label :usage_limit,
+                  "Usage Limit",
+                  class: "coupon-label" %>
+
+            <%= form.number_field :usage_limit,
+                  class: "coupon-input",
+                  min: 1,
+                  step: 1,
+                  placeholder: "Leave blank for unlimited" %>
+
+            <p class="coupon-help">
+              Leave blank if there is no overall usage limit.
+            </p>
+
+          </div>
+
+
+          <!-- EXPIRY -->
+          <div class="coupon-field">
+
+            <%= form.label :expires_at,
+                  "Expiry Date & Time",
+                  class: "coupon-label" %>
+
+            <%= form.datetime_local_field :expires_at,
+                  class: "coupon-input" %>
+
+            <p class="coupon-help">
+              Leave blank if the coupon should not expire.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- STATUS -->
+      <section class="coupon-edit-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-toggle-on"></i>
+          </div>
+
+          <div>
+            <h2>Coupon Status</h2>
+            <p>Enable or disable this coupon.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-status-box">
+
+          <div class="coupon-status-info">
+
+            <strong>
+              Active Coupon
+            </strong>
+
+            <span>
+              Students can use the coupon while it is active and valid.
+            </span>
+
+          </div>
+
+
+          <label class="coupon-switch">
+
+            <%= form.check_box :active %>
+
+            <span class="coupon-slider"></span>
+
+          </label>
+
+        </div>
+
+      </section>
+
+
+      <!-- FOOTER -->
+      <div class="coupon-edit-footer">
+
+        <%= link_to admin_coupon_path(@coupon),
+              class: "coupon-cancel-button" do %>
+
+          <i class="fa-solid fa-xmark"></i>
+          Cancel
+
+        <% end %>
+
+
+        <%= form.submit "Save Changes",
+              class: "coupon-save-button" %>
+
+      </div>
+
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener("turbo:load", function () {
+
+    const everyoneRadio =
+      document.getElementById("coupon_type_everyone");
+
+    const personalRadio =
+      document.getElementById("coupon_type_personal");
+
+    const studentSection =
+      document.getElementById("personal-student-section");
+
+    const discountType =
+      document.getElementById("discount_type");
+
+    const discountValue =
+      document.getElementById("discount_value");
+
+    const preview =
+      document.getElementById("coupon-discount-preview-value");
+
+
+    function updateStudentVisibility() {
+
+      if (!studentSection) return;
+
+      if (personalRadio && personalRadio.checked) {
+        studentSection.classList.remove("hidden");
+      } else {
+        studentSection.classList.add("hidden");
+      }
+    }
+
+
+    function updateDiscountPreview() {
+
+      if (!preview || !discountType || !discountValue) return;
+
+      const value = parseFloat(discountValue.value);
+
+      if (isNaN(value) || value <= 0) {
+        preview.textContent = "Enter discount value";
+        return;
+      }
+
+      if (discountType.value === "percentage") {
+        preview.textContent =
+          `${value}% OFF`;
+      } else {
+        preview.textContent =
+          `₹${value.toFixed(2)} OFF`;
+      }
+    }
+
+
+    if (everyoneRadio) {
+      everyoneRadio.addEventListener(
+        "change",
+        updateStudentVisibility
+      );
+    }
+
+
+    if (personalRadio) {
+      personalRadio.addEventListener(
+        "change",
+        updateStudentVisibility
+      );
+    }
+
+
+    if (discountType) {
+      discountType.addEventListener(
+        "change",
+        updateDiscountPreview
+      );
+    }
+
+
+    if (discountValue) {
+      discountValue.addEventListener(
+        "input",
+        updateDiscountPreview
+      );
+    }
+
+
+    updateStudentVisibility();
+    updateDiscountPreview();
+
+  });
+</script>

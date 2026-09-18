@@ -1,0 +1,716 @@
+<style>
+  /* =========================================================
+     ADMIN COUPONS — SHOW
+  ========================================================= */
+
+  .coupon-show-page {
+    width: 100%;
+    max-width: 1180px;
+    padding: 0 24px 50px 0;
+    background: transparent !important;
+    color: #24113f;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  .coupon-show-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .coupon-show-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    padding: 7px 12px;
+    border: 1px solid rgba(128,9,226,.14);
+    border-radius: 999px;
+    background: rgba(255,255,255,.8);
+    color: #7a21c9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .1em;
+  }
+
+  .coupon-show-header h1 {
+    margin: 0;
+    color: #28113f;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -.025em;
+  }
+
+  .coupon-show-header p {
+    margin: 8px 0 0;
+    color: #81748b;
+    font-size: 14px;
+  }
+
+  /* ---------- ACTIONS ---------- */
+
+  .coupon-show-actions {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+
+  .coupon-show-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 15px;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none !important;
+    transition: .2s ease;
+  }
+
+  .coupon-show-button:hover {
+    transform: translateY(-2px);
+  }
+
+  .coupon-edit-button {
+    border: 0;
+    background: linear-gradient(135deg,#8009e2,#a52ce8);
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(128,9,226,.20);
+  }
+
+  .coupon-back-button {
+    border: 1px solid #e5ddea;
+    background: rgba(255,255,255,.92);
+    color: #624c70 !important;
+  }
+
+  /* ---------- MAIN CARD ---------- */
+
+  .coupon-detail-card {
+    overflow: hidden;
+    border: 1px solid rgba(128,9,226,.10);
+    border-radius: 22px;
+    background: rgba(255,255,255,.96);
+    box-shadow:
+      0 20px 48px rgba(43,14,74,.11),
+      0 3px 8px rgba(0,0,0,.035);
+  }
+
+  .coupon-detail-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 27px;
+    border-bottom: 1px solid #eee8f3;
+  }
+
+  .coupon-main-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px 16px;
+    border: 1px dashed rgba(128,9,226,.28);
+    border-radius: 12px;
+    background: #faf6ff;
+    color: #6817a9;
+    font-family: monospace;
+    font-size: 22px;
+    font-weight: 850;
+    letter-spacing: .05em;
+  }
+
+  .coupon-main-code i {
+    color: #8009e2;
+    font-size: 18px;
+  }
+
+  .coupon-status-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .coupon-status-active {
+    background: #eaf8ef;
+    color: #168044;
+  }
+
+  .coupon-status-inactive {
+    background: #f3eef5;
+    color: #766b7d;
+  }
+
+  .coupon-status-expired {
+    background: #fff0f0;
+    color: #c43d3d;
+  }
+
+  .coupon-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ---------- INFO GRID ---------- */
+
+  .coupon-detail-body {
+    padding: 25px 27px 30px;
+  }
+
+  .coupon-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .coupon-info-box {
+    padding: 17px;
+    border: 1px solid #eee7f2;
+    border-radius: 14px;
+    background: #fcfbfd;
+  }
+
+  .coupon-info-label {
+    margin-bottom: 7px;
+    color: #8a7d94;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .coupon-info-value {
+    color: #351748;
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
+  /* ---------- DISCOUNT PREVIEW ---------- */
+
+  .coupon-preview {
+    margin-top: 24px;
+    padding: 22px;
+    border: 1px solid rgba(128,9,226,.12);
+    border-radius: 17px;
+    background: linear-gradient(
+      135deg,
+      #faf5ff,
+      #fff
+    );
+  }
+
+  .coupon-preview-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: #542071;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .coupon-preview-title i {
+    color: #8009e2;
+  }
+
+  .coupon-price-preview {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .coupon-old-price {
+    color: #968b9d;
+    font-size: 18px;
+    text-decoration: line-through;
+  }
+
+  .coupon-arrow {
+    color: #a494ad;
+  }
+
+  .coupon-new-price {
+    color: #6b18aa;
+    font-size: 28px;
+    font-weight: 850;
+  }
+
+  /* ---------- USAGE ---------- */
+
+  .coupon-usage-section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #eee8f3;
+  }
+
+  .coupon-section-title {
+    margin: 0 0 15px;
+    color: #351748;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .coupon-usage-bar-large {
+    height: 9px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #eee9f2;
+  }
+
+  .coupon-usage-progress-large {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg,#8009e2,#b437ef);
+  }
+
+  .coupon-usage-text {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #7e7188;
+    font-size: 12px;
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  .coupon-detail-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 20px 27px;
+    border-top: 1px solid #eee8f3;
+    background: #fcfbfd;
+  }
+
+  .coupon-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 15px;
+    border: 1px solid #f0dada;
+    border-radius: 11px;
+    background: #fff;
+    color: #bd4141;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .coupon-delete-button:hover {
+    background: #fff5f5;
+    transform: translateY(-2px);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+
+  @media (max-width: 900px) {
+    .coupon-info-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 650px) {
+    .coupon-show-page {
+      padding-right: 0;
+    }
+
+    .coupon-show-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .coupon-show-actions {
+      width: 100%;
+    }
+
+    .coupon-show-button {
+      flex: 1;
+    }
+
+    .coupon-detail-top {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .coupon-info-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .coupon-detail-body,
+    .coupon-detail-top {
+      padding: 20px;
+    }
+
+    .coupon-detail-footer {
+      padding: 17px 20px;
+    }
+
+    .coupon-main-code {
+      font-size: 18px;
+    }
+  }
+</style>
+
+
+<%
+  if @coupon.expired?
+    status_class = "coupon-status-expired"
+    status_text = "Expired"
+  elsif @coupon.active?
+    status_class = "coupon-status-active"
+    status_text = "Active"
+  else
+    status_class = "coupon-status-inactive"
+    status_text = "Inactive"
+  end
+
+  if @coupon.usage_limit.present? && @coupon.usage_limit.to_i > 0
+    usage_percentage =
+      [(@coupon.used_count.to_f / @coupon.usage_limit.to_f) * 100, 100].min
+  else
+    usage_percentage = 0
+  end
+
+  course_price = @coupon.course&.fee.to_d || 0.to_d
+  discount_amount = @coupon.discount_for(course_price)
+  final_price = course_price - discount_amount
+%>
+
+
+<div class="coupon-show-page">
+
+  <!-- HEADER -->
+  <div class="coupon-show-header">
+
+    <div>
+
+      <span class="coupon-show-kicker">
+        <i class="fa-solid fa-ticket"></i>
+        COUPON DETAILS
+      </span>
+
+      <h1>Coupon Details</h1>
+
+      <p>
+        View discount, course, student and usage information.
+      </p>
+
+    </div>
+
+
+    <div class="coupon-show-actions">
+
+      <%= link_to admin_coupons_path,
+            class: "coupon-show-button coupon-back-button" do %>
+
+        <i class="fa-solid fa-arrow-left"></i>
+        Back
+
+      <% end %>
+
+
+      <%= link_to edit_admin_coupon_path(@coupon),
+            class: "coupon-show-button coupon-edit-button" do %>
+
+        <i class="fa-solid fa-pen"></i>
+        Edit Coupon
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- DETAIL CARD -->
+  <div class="coupon-detail-card">
+
+    <!-- TOP -->
+    <div class="coupon-detail-top">
+
+      <div class="coupon-main-code">
+
+        <i class="fa-solid fa-ticket"></i>
+
+        <%= @coupon.code %>
+
+      </div>
+
+
+      <span class="coupon-status-large <%= status_class %>">
+
+        <span class="coupon-status-dot"></span>
+
+        <%= status_text %>
+
+      </span>
+
+    </div>
+
+
+    <!-- BODY -->
+    <div class="coupon-detail-body">
+
+      <div class="coupon-info-grid">
+
+        <!-- COURSE -->
+        <div class="coupon-info-box">
+
+          <div class="coupon-info-label">
+            Course
+          </div>
+
+          <div class="coupon-info-value">
+            <%= @coupon.course&.Course_name || "—" %>
+          </div>
+
+        </div>
+
+
+        <!-- TYPE -->
+        <div class="coupon-info-box">
+
+          <div class="coupon-info-label">
+            Coupon Type
+          </div>
+
+          <div class="coupon-info-value">
+
+            <% if @coupon.personal? %>
+              <i class="fa-solid fa-user"></i>
+              Personal
+            <% else %>
+              <i class="fa-solid fa-users"></i>
+              Everyone
+            <% end %>
+
+          </div>
+
+        </div>
+
+
+        <!-- STUDENT -->
+        <div class="coupon-info-box">
+
+          <div class="coupon-info-label">
+            Student
+          </div>
+
+          <div class="coupon-info-value">
+
+            <% if @coupon.personal? && @coupon.student.present? %>
+
+              <%= @coupon.student.name.presence ||
+                    @coupon.student.email %>
+
+            <% else %>
+
+              All Students
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+
+        <!-- DISCOUNT -->
+        <div class="coupon-info-box">
+
+          <div class="coupon-info-label">
+            Discount
+          </div>
+
+          <div class="coupon-info-value">
+
+            <% if @coupon.discount_type == "percentage" %>
+
+              <%= number_with_precision(
+                    @coupon.discount_value,
+                    precision: 0,
+                    strip_insignificant_zeros: true
+                  ) %>%
+
+            <% else %>
+
+              ₹<%= number_with_precision(
+                    @coupon.discount_value,
+                    precision: 2,
+                    strip_insignificant_zeros: true
+                  ) %>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+
+        <!-- USAGE -->
+        <div class="coupon-info-box">
+
+          <div class="coupon-info-label">
+            Usage
+          </div>
+
+          <div class="coupon-info-value">
+
+            <%= @coupon.used_count %>
+
+            <% if @coupon.usage_limit.present? %>
+              / <%= @coupon.usage_limit %>
+            <% else %>
+              / Unlimited
+            <% end %>
+
+          </div>
+
+        </div>
+
+
+        <!-- EXPIRY -->
+        <div class="coupon-info-box">
+
+          <div class="coupon-info-label">
+            Expiry
+          </div>
+
+          <div class="coupon-info-value">
+
+            <% if @coupon.expires_at.present? %>
+              <%= @coupon.expires_at.strftime("%d %B %Y, %I:%M %p") %>
+            <% else %>
+              No expiry
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PREVIEW -->
+      <div class="coupon-preview">
+
+        <div class="coupon-preview-title">
+
+          <i class="fa-solid fa-tags"></i>
+
+          Discount Preview
+
+        </div>
+
+
+        <div class="coupon-price-preview">
+
+          <span class="coupon-old-price">
+            ₹<%= number_with_precision(
+                  course_price,
+                  precision: 2,
+                  strip_insignificant_zeros: true
+                ) %>
+          </span>
+
+          <span class="coupon-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </span>
+
+          <span class="coupon-new-price">
+            ₹<%= number_with_precision(
+                  final_price,
+                  precision: 2,
+                  strip_insignificant_zeros: true
+                ) %>
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- USAGE SECTION -->
+      <div class="coupon-usage-section">
+
+        <h3 class="coupon-section-title">
+          Usage Progress
+        </h3>
+
+        <% if @coupon.usage_limit.present? %>
+
+          <div class="coupon-usage-bar-large">
+
+            <div
+              class="coupon-usage-progress-large"
+              style="width:<%= usage_percentage %>%;">
+            </div>
+
+          </div>
+
+          <div class="coupon-usage-text">
+
+            <span>
+              <%= @coupon.used_count %> used
+            </span>
+
+            <span>
+              <%= @coupon.usage_limit %> total limit
+            </span>
+
+          </div>
+
+        <% else %>
+
+          <div class="coupon-usage-text">
+            <span>
+              Unlimited usage
+            </span>
+
+            <span>
+              <%= @coupon.used_count %> used
+            </span>
+          </div>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="coupon-detail-footer">
+
+      <%= button_to admin_coupon_path(@coupon),
+            method: :delete,
+            class: "coupon-delete-button",
+            data: {
+              turbo_confirm: "Are you sure you want to delete #{@coupon.code}?"
+            } do %>
+
+        <i class="fa-solid fa-trash"></i>
+        Delete Coupon
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

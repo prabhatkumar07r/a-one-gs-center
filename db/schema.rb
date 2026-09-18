@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_105946) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_145033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -122,6 +122,38 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_105946) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "coupon_usages", force: :cascade do |t|
+    t.bigint "coupon_id", null: false
+    t.datetime "created_at", null: false
+    t.decimal "discount_amount", precision: 10, scale: 2, null: false
+    t.bigint "enrollment_id", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "used_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["coupon_id", "user_id"], name: "index_coupon_usages_on_coupon_id_and_user_id", unique: true
+    t.index ["coupon_id"], name: "index_coupon_usages_on_coupon_id"
+    t.index ["enrollment_id"], name: "index_coupon_usages_on_enrollment_id"
+    t.index ["user_id"], name: "index_coupon_usages_on_user_id"
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.string "code", null: false
+    t.string "coupon_type", default: "everyone", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.string "discount_type", default: "percentage", null: false
+    t.decimal "discount_value", precision: 10, scale: 2, null: false
+    t.datetime "expires_at"
+    t.bigint "student_id"
+    t.datetime "updated_at", null: false
+    t.integer "usage_limit"
+    t.integer "used_count", default: 0, null: false
+    t.index ["code"], name: "index_coupons_on_code", unique: true
+    t.index ["course_id"], name: "index_coupons_on_course_id"
+    t.index ["student_id"], name: "index_coupons_on_student_id"
+  end
+
   create_table "course_discounts", force: :cascade do |t|
     t.bigint "course_id", null: false
     t.datetime "created_at", null: false
@@ -219,11 +251,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_105946) do
   end
 
   create_table "enrollments", force: :cascade do |t|
+    t.bigint "coupon_id"
     t.integer "course_id", null: false
     t.datetime "created_at", null: false
+    t.decimal "discount_amount", precision: 10, scale: 2
+    t.decimal "final_amount", precision: 10, scale: 2
+    t.decimal "original_amount", precision: 10, scale: 2
     t.string "status"
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.index ["coupon_id"], name: "index_enrollments_on_coupon_id"
     t.index ["course_id"], name: "index_enrollments_on_course_id"
     t.index ["user_id"], name: "index_enrollments_on_user_id"
   end
@@ -636,12 +673,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_105946) do
   add_foreign_key "batches", "teachers"
   add_foreign_key "certificates", "courses"
   add_foreign_key "certificates", "users"
+  add_foreign_key "coupon_usages", "coupons"
+  add_foreign_key "coupon_usages", "enrollments"
+  add_foreign_key "coupon_usages", "users"
+  add_foreign_key "coupons", "courses"
+  add_foreign_key "coupons", "users", column: "student_id"
   add_foreign_key "course_discounts", "courses"
   add_foreign_key "course_discounts", "discounts"
   add_foreign_key "courses", "teachers"
   add_foreign_key "ebook_files", "ebooks"
   add_foreign_key "ebook_purchases", "ebooks"
   add_foreign_key "ebook_purchases", "users"
+  add_foreign_key "enrollments", "coupons"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
   add_foreign_key "fee_payments", "fees"

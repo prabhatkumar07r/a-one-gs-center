@@ -135,6 +135,7 @@ Rails.application.routes.draw do
   # ==================================================
 
   namespace :admin do
+    resources :coupons
     resources :payments, only: [:index,:show]
     resources :testimonials do
   member do
@@ -669,6 +670,10 @@ end
   get "/payments/:id/failed",
       to: "payments#failed",
       as: :payment_failed
+
+  post "payments/:id/apply_coupon",
+     to: "payments#apply_coupon",
+     as: :apply_coupon    
 
 
   # ==================================================

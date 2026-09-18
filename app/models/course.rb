@@ -9,6 +9,8 @@ class Course < ApplicationRecord
 
   has_one_attached :image
   has_many :quizzes, dependent: :destroy
+  has_many :coupons,
+         dependent: :destroy
 
   # ==========================================
   # DISCOUNTS

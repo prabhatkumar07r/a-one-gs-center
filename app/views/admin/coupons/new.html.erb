@@ -1,0 +1,1351 @@
+<% content_for :title, "Create Coupon" %>
+
+<div class="coupon-new-page">
+
+  <div class="coupon-new-header">
+    <span class="coupon-kicker">
+      <i class="fa-solid fa-ticket"></i>
+      COUPON MANAGEMENT
+    </span>
+
+    <h1>Create Coupon</h1>
+
+    <p>
+      Create a discount coupon for one course or a specific student.
+    </p>
+  </div>
+
+
+  <% if @coupon.errors.any? %>
+    <div class="coupon-error-box">
+
+      <div class="coupon-error-title">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        Please fix the following errors:
+      </div>
+
+      <ul>
+        <% @coupon.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+  <% end %>
+
+
+  <%= form_with model: [:admin, @coupon], local: true do |form| %>
+
+    <div class="coupon-form-card">
+
+      <!-- COURSE -->
+
+      <div class="coupon-form-section">
+
+        <div class="coupon-section-heading">
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+
+          <div>
+            <h2>Course</h2>
+            <p>Select the course where this coupon can be used.</p>
+          </div>
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :course_id, "Select Course", class: "coupon-label" %>
+
+          <%= form.collection_select(
+                :course_id,
+                @courses,
+                :id,
+                :Course_name,
+                { prompt: "Choose a course" },
+                { class: "coupon-input coupon-select", required: true }
+              ) %>
+
+        </div>
+
+      </div>
+
+
+      <!-- COUPON TYPE -->
+
+      <div class="coupon-form-section">
+
+        <div class="coupon-section-heading">
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-users"></i>
+          </div>
+
+          <div>
+            <h2>Who Can Use This Coupon?</h2>
+            <p>Choose whether this coupon is public or assigned to one student.</p>
+          </div>
+        </div>
+
+
+        <div class="coupon-type-options">
+
+          <label class="coupon-type-option">
+
+            <%= form.radio_button(
+                  :coupon_type,
+                  "everyone",
+                  id: "coupon_type_everyone"
+                ) %>
+
+            <div class="coupon-type-content">
+
+              <div class="coupon-type-icon everyone-icon">
+                <i class="fa-solid fa-users"></i>
+              </div>
+
+              <div>
+                <strong>Everyone</strong>
+
+                <span>
+                  Any student can use this coupon.
+                </span>
+              </div>
+
+            </div>
+
+          </label>
+
+
+          <label class="coupon-type-option">
+
+            <%= form.radio_button(
+                  :coupon_type,
+                  "personal",
+                  id: "coupon_type_personal"
+                ) %>
+
+            <div class="coupon-type-content">
+
+              <div class="coupon-type-icon personal-icon">
+                <i class="fa-solid fa-user-lock"></i>
+              </div>
+
+              <div>
+                <strong>Specific Student</strong>
+
+                <span>
+                  Only one selected student can use this coupon.
+                </span>
+              </div>
+
+            </div>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- STUDENT -->
+
+      <div
+        class="coupon-form-section"
+        id="personal-student-section"
+        style="<%= @coupon.personal? ? '' : 'display:none;' %>"
+      >
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div>
+            <h2>Specific Student</h2>
+            <p>Select the student who will receive this personal coupon.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :student_id, "Select Student", class: "coupon-label" %>
+
+          <%= form.collection_select(
+                :student_id,
+                @students,
+                :id,
+                :name,
+                { prompt: "Choose a student" },
+                {
+                  class: "coupon-input coupon-select",
+                  id: "coupon_student_id"
+                }
+              ) %>
+
+          <div class="coupon-help">
+            <i class="fa-solid fa-circle-info"></i>
+            This coupon will only work for the selected student's account.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CODE -->
+
+      <div class="coupon-form-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-key"></i>
+          </div>
+
+          <div>
+            <h2>Coupon Code</h2>
+            <p>Create the code students will enter during checkout.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :code, "Coupon Code", class: "coupon-label" %>
+
+          <%= form.text_field(
+                :code,
+                class: "coupon-input coupon-code-input",
+                placeholder: "Example: GS50",
+                autocomplete: "off",
+                required: true
+              ) %>
+
+          <div class="coupon-help">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Use a short and easy-to-remember code.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- DISCOUNT -->
+
+      <div class="coupon-form-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-percent"></i>
+          </div>
+
+          <div>
+            <h2>Discount</h2>
+            <p>Choose percentage or fixed amount discount.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-two-column">
+
+          <div class="coupon-field">
+
+            <%= form.label :discount_type,
+                          "Discount Type",
+                          class: "coupon-label" %>
+
+            <%= form.select(
+                  :discount_type,
+                  [
+                    ["Percentage (%)", "percentage"],
+                    ["Fixed Amount (₹)", "fixed"]
+                  ],
+                  {},
+                  class: "coupon-input coupon-select",
+                  id: "coupon_discount_type"
+                ) %>
+
+          </div>
+
+
+          <div class="coupon-field">
+
+            <%= form.label :discount_value,
+                          "Discount Value",
+                          class: "coupon-label" %>
+
+            <%= form.number_field(
+                  :discount_value,
+                  class: "coupon-input",
+                  placeholder: "Example: 20",
+                  min: 0.01,
+                  step: 0.01,
+                  required: true
+                ) %>
+
+          </div>
+
+        </div>
+
+
+        <div class="coupon-discount-preview">
+
+          <div class="coupon-preview-icon">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+
+          <div>
+            <strong>Example</strong>
+
+            <span id="coupon-discount-preview-text">
+              Enter a discount value to see the discount format.
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LIMIT & EXPIRY -->
+
+      <div class="coupon-form-section">
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-sliders"></i>
+          </div>
+
+          <div>
+            <h2>Usage Settings</h2>
+            <p>Control how many times the coupon can be used and when it expires.</p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-two-column">
+
+          <div class="coupon-field">
+
+            <%= form.label :usage_limit,
+                          "Overall Usage Limit",
+                          class: "coupon-label" %>
+
+            <%= form.number_field(
+                  :usage_limit,
+                  class: "coupon-input",
+                  placeholder: "Example: 100",
+                  min: 1,
+                  step: 1
+                ) %>
+
+            <div class="coupon-help">
+              <i class="fa-solid fa-infinity"></i>
+              Leave blank for unlimited usage.
+            </div>
+
+          </div>
+
+
+          <div class="coupon-field">
+
+            <%= form.label :expires_at,
+                          "Expiry Date & Time",
+                          class: "coupon-label" %>
+
+            <%= form.datetime_local_field(
+                  :expires_at,
+                  class: "coupon-input"
+                ) %>
+
+            <div class="coupon-help">
+              <i class="fa-solid fa-calendar"></i>
+              Leave blank if the coupon never expires.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="coupon-form-section">
+
+        <div class="coupon-status-row">
+
+          <div class="coupon-status-text">
+
+            <div class="coupon-status-icon">
+              <i class="fa-solid fa-power-off"></i>
+            </div>
+
+            <div>
+              <strong>Coupon Status</strong>
+
+              <span>
+                Only active coupons can be used by students.
+              </span>
+            </div>
+
+          </div>
+
+
+          <label class="coupon-switch">
+
+            <%= form.check_box :active, id: "coupon_active" %>
+
+            <span class="coupon-slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="coupon-form-footer">
+
+        <%= link_to admin_coupons_path,
+                    class: "coupon-cancel-button" do %>
+
+          <i class="fa-solid fa-xmark"></i>
+          Cancel
+
+        <% end %>
+
+
+        <%= form.submit "Create Coupon",
+                        class: "coupon-save-button" %>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   COUPON CREATE PAGE
+   Local white / purple admin override
+========================================================= */
+
+.coupon-new-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0;
+  padding: 0 24px 50px 0;
+
+  /* Override global admin background */
+  background: transparent !important;
+  color: #24113f;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.coupon-new-header {
+  position: relative;
+  margin-bottom: 24px;
+  padding: 4px 4px 0;
+}
+
+.coupon-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(12px);
+
+  color: #e9d5ff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+}
+
+.coupon-kicker i {
+  font-size: 11px;
+}
+
+.coupon-new-header h1 {
+  margin: 12px 0 5px;
+
+  color: #ffffff;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.05;
+  font-weight: 950;
+  letter-spacing: -1.4px;
+}
+
+.coupon-new-header p {
+  max-width: 650px;
+  margin: 0;
+
+  color: rgba(255,255,255,.72);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ERROR BOX
+========================================================= */
+
+.coupon-error-box {
+  margin-bottom: 20px;
+  padding: 17px 19px;
+
+  border: 1px solid rgba(248,113,113,.35);
+  border-radius: 16px;
+
+  background: rgba(127,29,29,.35);
+  backdrop-filter: blur(15px);
+
+  color: #fff;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.12);
+}
+
+.coupon-error-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.coupon-error-title i {
+  color: #fca5a5;
+}
+
+.coupon-error-box ul {
+  margin: 9px 0 0 23px;
+  padding: 0;
+
+  color: rgba(255,255,255,.82);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.coupon-form-card {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.99),
+      rgba(250,247,255,.98)
+    );
+
+  color: #24113f;
+
+  box-shadow:
+    0 25px 60px rgba(20,8,45,.22),
+    0 8px 22px rgba(20,8,45,.08);
+
+  isolation: isolate;
+}
+
+/* decorative glow */
+
+.coupon-form-card::before {
+  content: "";
+  position: absolute;
+
+  top: -130px;
+  right: -100px;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(139,92,246,.13),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.coupon-form-section {
+  position: relative;
+
+  padding: 28px 30px;
+
+  border-bottom: 1px solid #eee8f6;
+
+  background: transparent;
+}
+
+.coupon-form-section:last-of-type {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.coupon-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 23px;
+}
+
+.coupon-section-icon {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid #e5d8f7;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #faf5ff,
+      #eee7ff
+    );
+
+  color: #6d28d9;
+
+  box-shadow:
+    0 6px 15px rgba(109,40,217,.10),
+    inset 0 1px 0 #fff;
+}
+
+.coupon-section-icon i {
+  font-size: 17px;
+}
+
+.coupon-section-heading h2 {
+  margin: 0;
+
+  color: #32104f;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -.2px;
+}
+
+.coupon-section-heading p {
+  margin: 4px 0 0;
+
+  color: #8b8493;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.coupon-field {
+  width: 100%;
+}
+
+.coupon-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #492467;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .1px;
+}
+
+.coupon-input {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 11px 14px;
+
+  border: 1px solid #ded5e9;
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #fff;
+  color: #29163f;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 2px 5px rgba(30,15,50,.025),
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.coupon-input:hover {
+  border-color: #c4b5fd;
+}
+
+.coupon-input:focus {
+  border-color: #8b5cf6;
+
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,.10),
+    0 5px 15px rgba(109,40,217,.06);
+
+  transform: translateY(-1px);
+}
+
+.coupon-select {
+  cursor: pointer;
+}
+
+.coupon-code-input {
+  text-transform: uppercase;
+
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.coupon-code-input::placeholder {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   HELP TEXT
+========================================================= */
+
+.coupon-help {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+
+  margin-top: 8px;
+
+  color: #8b8493;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.coupon-help i {
+  margin-top: 2px;
+
+  color: #8b5cf6;
+}
+
+
+/* =========================================================
+   COUPON TYPE
+========================================================= */
+
+.coupon-type-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.coupon-type-option {
+  display: block;
+
+  margin: 0;
+
+  cursor: pointer;
+}
+
+.coupon-type-option input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+.coupon-type-content {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  min-height: 82px;
+
+  padding: 15px 17px;
+
+  border: 1px solid #e3daec;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff,
+      #fcfaff
+    );
+
+  box-shadow:
+    0 4px 12px rgba(40,20,70,.035);
+
+  transition:
+    border-color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.coupon-type-content::after {
+  content: "";
+
+  position: absolute;
+
+  top: 13px;
+  right: 13px;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #ddd6fe;
+
+  opacity: 0;
+
+  transition: .2s ease;
+}
+
+.coupon-type-option:hover .coupon-type-content {
+  border-color: #c4b5fd;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(91,33,182,.08);
+}
+
+.coupon-type-option input:checked + .coupon-type-content {
+  border-color: #8b5cf6;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff,
+      #faf5ff
+    );
+
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,.08),
+    0 12px 25px rgba(91,33,182,.10);
+}
+
+.coupon-type-option input:checked + .coupon-type-content::after {
+  opacity: 1;
+  background: #7c3aed;
+}
+
+.coupon-type-icon {
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  font-size: 16px;
+}
+
+.everyone-icon {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.personal-icon {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.coupon-type-content strong {
+  display: block;
+
+  color: #35105f;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.coupon-type-content span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #89818f;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.coupon-two-column {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   DISCOUNT PREVIEW
+========================================================= */
+
+.coupon-discount-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 17px;
+  padding: 14px 16px;
+
+  border: 1px solid #e9def7;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf7ff,
+      #f5f0ff
+    );
+}
+
+.coupon-preview-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.coupon-discount-preview strong {
+  display: block;
+
+  color: #432065;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.coupon-discount-preview span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #81788b;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.coupon-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.coupon-status-text {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.coupon-status-icon {
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.coupon-status-text strong {
+  display: block;
+
+  color: #35105f;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.coupon-status-text span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8b8493;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.coupon-switch {
+  position: relative;
+
+  width: 52px;
+  height: 29px;
+
+  flex: 0 0 52px;
+
+  cursor: pointer;
+}
+
+.coupon-switch input {
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  opacity: 0;
+}
+
+.coupon-slider {
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: 999px;
+
+  background: #d6d3d9;
+
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,.10);
+
+  transition: .25s ease;
+}
+
+.coupon-slider::before {
+  content: "";
+
+  position: absolute;
+
+  width: 23px;
+  height: 23px;
+
+  left: 3px;
+  top: 3px;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,.18);
+
+  transition: .25s ease;
+}
+
+.coupon-switch input:checked + .coupon-slider {
+  background: #7c3aed;
+
+  box-shadow:
+    0 4px 12px rgba(124,58,237,.25);
+}
+
+.coupon-switch input:checked + .coupon-slider::before {
+  transform: translateX(23px);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.coupon-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 11px;
+
+  padding: 20px 30px;
+
+  border-top: 1px solid #eee8f6;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fcfbfe,
+      #f9f6fd
+    );
+}
+
+.coupon-cancel-button,
+.coupon-save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+
+  padding: 10px 18px;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 850;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.coupon-cancel-button {
+  border: 1px solid #ddd5e7;
+
+  background: #fff;
+
+  color: #6b6472;
+
+  box-shadow:
+    0 3px 8px rgba(20,10,35,.04);
+}
+
+.coupon-save-button {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6d28d9
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 9px 20px rgba(109,40,217,.25);
+}
+
+.coupon-cancel-button:hover,
+.coupon-save-button:hover {
+  transform: translateY(-2px);
+}
+
+.coupon-cancel-button:hover {
+  background: #faf7ff;
+
+  color: #5b21b6;
+}
+
+.coupon-save-button:hover {
+  box-shadow:
+    0 13px 28px rgba(109,40,217,.32);
+}
+
+
+/* =========================================================
+   DESKTOP WIDTH
+========================================================= */
+
+@media (min-width: 1200px) {
+
+  .coupon-new-page {
+    max-width: 1180px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .coupon-new-page {
+    max-width: 100%;
+    padding-right: 0;
+  }
+
+  .coupon-two-column {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .coupon-new-header h1 {
+    font-size: 31px;
+  }
+
+  .coupon-new-header p {
+    font-size: 13px;
+  }
+
+  .coupon-form-card {
+    border-radius: 18px;
+  }
+
+  .coupon-form-section {
+    padding: 21px 18px;
+  }
+
+  .coupon-section-heading {
+    align-items: flex-start;
+  }
+
+  .coupon-section-icon {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .coupon-type-options {
+    grid-template-columns: 1fr;
+  }
+
+  .coupon-type-content {
+    min-height: 76px;
+  }
+
+  .coupon-form-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    padding: 17px 18px;
+  }
+
+  .coupon-cancel-button,
+  .coupon-save-button {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .coupon-new-page {
+    padding-bottom: 25px;
+  }
+
+  .coupon-new-header {
+    margin-bottom: 18px;
+  }
+
+  .coupon-kicker {
+    font-size: 9px;
+  }
+
+  .coupon-new-header h1 {
+    font-size: 28px;
+  }
+
+  .coupon-section-heading h2 {
+    font-size: 15px;
+  }
+
+  .coupon-section-heading p {
+    font-size: 11px;
+  }
+
+}
+
+</style>

@@ -688,6 +688,23 @@
 
           </li>
 
+
+
+
+               <!-- Coupons -->
+<li class="nav-item">
+
+  <%= link_to admin_coupons_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/coupons')}" do %>
+
+    <i class="bi bi-ticket-perforated"></i>
+
+    <span>Coupons</span>
+
+  <% end %>
+
+</li>
+
           <!-- =====================================================
      E-BOOKS
 ====================================================== -->

@@ -16,6 +16,13 @@ class User < ApplicationRecord
   has_one_attached :image
   has_many :quiz_attempts,
          dependent: :destroy
+  has_many :coupon_usages,
+         dependent: :destroy
+
+has_many :personal_coupons,
+         class_name: "Coupon",
+         foreign_key: :student_id,
+         dependent: :nullify      
 
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments

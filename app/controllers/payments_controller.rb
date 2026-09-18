@@ -5,205 +5,235 @@ class PaymentsController < ApplicationController
   # PAYMENT PAGE
   # ==================================================
 
-  def show
-    @enrollment = current_user.enrollments.find(params[:id])
-    @course = @enrollment.course
+def show
+  @enrollment =
+    current_user.enrollments.find(params[:id])
 
-    # Free course
-    if @course.free?
-      redirect_to course_details_path(@course),
-                  alert: "This course is free. No payment is required."
-      return
-    end
+  @course =
+    @enrollment.course
 
-    # Already approved
-    if @enrollment.status == "Approved"
-      redirect_to learning_course_path(@course),
-                  notice: "You already have access to this course."
-      return
-    end
-
-    # Existing unpaid Razorpay payment
-    @payment = @enrollment.payments
-                          .where(status: ["created", "pending"])
-                          .order(created_at: :desc)
-                          .first
-
-    # ------------------------------------------
-    # Payment/Fee information for payment page
-    # ------------------------------------------
-
-    @fee = @enrollment.fee
-
-    if @fee.present?
-      @total_fee = @fee.total_fee.to_d
-      @discount_amount = @fee.discount_amount.to_d
-      @payable_amount = @total_fee - @discount_amount
-      @due_amount = @fee.due_amount.to_d
-    else
-      @total_fee = @course.fee.to_d
-      @discount_amount = @course.current_discount_amount.to_d
-      @payable_amount = @course.final_fee.to_d
-      @due_amount = @payable_amount
-    end
+  if @course.free?
+    redirect_to course_details_path(@course),
+                alert: "This course is free. No payment is required."
+    return
   end
 
+  if @enrollment.status == "Approved"
+    redirect_to learning_course_path(@course),
+                notice: "You already have access to this course."
+    return
+  end
+
+  @payment =
+    @enrollment.payments
+               .where(status: ["created", "pending"])
+               .order(created_at: :desc)
+               .first
+
+  @fee =
+    @enrollment.fee
+
+  if @fee.present?
+
+    @total_fee =
+      @fee.total_fee.to_d
+
+    @course_discount_amount =
+      @fee.discount_amount.to_d
+
+  else
+
+    @total_fee =
+      @course.fee.to_d
+
+    @course_discount_amount =
+      @course.current_discount_amount.to_d
+
+  end
+
+  @coupon_discount_amount =
+    if @enrollment.coupon.present?
+      @enrollment.discount_amount.to_d
+    else
+      0.to_d
+    end
+
+  # IMPORTANT:
+  # This includes the coupon discount.
+  @payable_amount =
+    @enrollment.payable_amount.to_d
+
+  @due_amount =
+    @payable_amount
+end
+
+  # ==================================================
+  # CREATE RAZORPAY ORDER
+  # ==================================================
+def create
+  @enrollment = current_user.enrollments.find(params[:id])
+  @course = @enrollment.course
+
+  # ------------------------------------------
+  # Free course
+  # ------------------------------------------
+
+  if @course.free?
+    @enrollment.update!(status: "Approved")
+
+    redirect_to learning_course_path(@course),
+                notice: "You have been enrolled in this free course."
+    return
+  end
+
+  # ------------------------------------------
+  # Already approved
+  # ------------------------------------------
+
+  if @enrollment.status == "Approved"
+    redirect_to learning_course_path(@course),
+                notice: "You already have access to this course."
+    return
+  end
+
+  # ------------------------------------------
+  # Existing unpaid Razorpay order
+  # ------------------------------------------
+
+  existing_payment =
+    @enrollment.payments
+               .where(status: ["created", "pending"])
+               .order(created_at: :desc)
+               .first
+
+  if existing_payment.present?
+    redirect_to payment_path(@enrollment)
+    return
+  end
+
+  # ==================================================
+  # FIND OR CREATE FEE
+  # ==================================================
+
+  fee =
+    @enrollment.fee ||
+    @enrollment.build_fee
+
+  # Original course fee
+  fee.total_fee =
+    @course.fee.to_d
+
+  # ------------------------------------------
+  # Apply course discount
+  # ------------------------------------------
+
+  if fee.discount_amount.to_d.zero? &&
+     @course.has_active_discount?
+
+    discount =
+      @course.active_discount
+
+    fee.discount_amount =
+      discount.calculate_discount(@course.fee)
+
+    fee.discount_name =
+      discount.name
+  end
+
+  fee.paid_amount ||= 0
+
+  # ------------------------------------------
+  # Save Fee
+  # ------------------------------------------
+
+  fee.save!
+
+  # ==================================================
+  # FINAL PAYABLE AMOUNT
+  #
+  # IMPORTANT:
+  # Enrollment#payable_amount includes:
+  #
+  # Course discount
+  # +
+  # Coupon discount
+  # ==================================================
+
+  payable_amount =
+    @enrollment.payable_amount.to_d
+
+  # ------------------------------------------
+  # Already fully paid
+  # ------------------------------------------
+
+  if fee.paid_amount.to_d >= payable_amount
+    @enrollment.update!(
+      status: "Approved"
+    )
+
+    redirect_to learning_course_path(@course),
+                notice: "Your course fee has already been paid."
+    return
+  end
+
+  # ------------------------------------------
+  # Razorpay amount is in PAISE
+  # ------------------------------------------
+
+  amount =
+    (payable_amount * 100).to_i
+
+  if amount <= 0
+
+    redirect_to course_details_path(@course),
+                alert: "Invalid course fee."
+    return
+  end
 
   # ==================================================
   # CREATE RAZORPAY ORDER
   # ==================================================
 
-  def create
-    @enrollment = current_user.enrollments.find(params[:id])
-    @course = @enrollment.course
-
-    # ------------------------------------------
-    # Free course
-    # ------------------------------------------
-
-    if @course.free?
-      @enrollment.update!(status: "Approved")
-
-      redirect_to learning_course_path(@course),
-                  notice: "You have been enrolled in this free course."
-      return
-    end
-
-    # ------------------------------------------
-    # Already approved
-    # ------------------------------------------
-
-    if @enrollment.status == "Approved"
-      redirect_to learning_course_path(@course),
-                  notice: "You already have access to this course."
-      return
-    end
-
-    # ------------------------------------------
-    # Existing unpaid Razorpay order
-    # ------------------------------------------
-
-    existing_payment = @enrollment.payments
-                                   .where(status: ["created", "pending"])
-                                   .order(created_at: :desc)
-                                   .first
-
-    if existing_payment.present?
-      redirect_to payment_path(@enrollment)
-      return
-    end
-
-    # ==================================================
-    # FIND OR CREATE FEE
-    # ==================================================
-
-    fee = @enrollment.fee || @enrollment.build_fee
-
-    # Original course fee
-    fee.total_fee = @course.fee.to_d
-
-    # ------------------------------------------
-    # Apply discount only if Fee doesn't already
-    # have one.
-    # ------------------------------------------
-
-    if fee.discount_amount.to_d.zero? &&
-       @course.has_active_discount?
-
-      discount = @course.active_discount
-
-      fee.discount_amount =
-        discount.calculate_discount(@course.fee)
-
-      fee.discount_name =
-        discount.name
-    end
-
-    fee.paid_amount ||= 0
-
-    # ------------------------------------------
-    # Calculate final payable amount
-    # ------------------------------------------
-
-    payable_amount =
-      fee.total_fee.to_d - fee.discount_amount.to_d
-
-    payable_amount = 0 if payable_amount < 0
-
-    # ------------------------------------------
-    # Already fully paid
-    # ------------------------------------------
-
-    if fee.paid_amount.to_d >= payable_amount
-      fee.save!
-
-      @enrollment.update!(status: "Approved")
-
-      redirect_to learning_course_path(@course),
-                  notice: "Your course fee has already been paid."
-      return
-    end
-
-    # Save Fee before creating Razorpay order
-    fee.save!
-
-    # ------------------------------------------
-    # Razorpay amount is in paise
-    # ------------------------------------------
-
-    amount = (payable_amount * 100).to_i
-
-    if amount <= 0
-      redirect_to course_details_path(@course),
-                  alert: "Invalid course fee."
-      return
-    end
-
-    # ------------------------------------------
-    # Create Razorpay Order
-    # ------------------------------------------
-
-    razorpay_order = Razorpay::Order.create(
+  razorpay_order =
+    Razorpay::Order.create(
       amount: amount,
       currency: "INR",
       receipt: "enrollment_#{@enrollment.id}_#{Time.current.to_i}"
     )
 
-    # ------------------------------------------
-    # Create Payment record
-    #
-    # Store amount in RUPEES in our database.
-    # Razorpay receives PAISE.
-    # ------------------------------------------
+  # ==================================================
+  # CREATE PAYMENT RECORD
+  #
+  # Database stores RUPEES.
+  # Razorpay receives PAISE.
+  # ==================================================
 
-    @enrollment.payments.create!(
-      amount: payable_amount,
-      razorpay_order_id: razorpay_order.id,
-      status: "created"
-    )
+  @enrollment.payments.create!(
+    amount: payable_amount,
+    razorpay_order_id: razorpay_order.id,
+    status: "created"
+  )
 
-    redirect_to payment_path(@enrollment)
+  redirect_to payment_path(@enrollment)
 
-  rescue Razorpay::Error => e
+rescue Razorpay::Error => e
 
-    Rails.logger.error(
-      "RAZORPAY ORDER ERROR: #{e.message}"
-    )
+  Rails.logger.error(
+    "RAZORPAY ORDER ERROR: #{e.message}"
+  )
 
-    redirect_to payment_path(@enrollment),
-                alert: "Unable to create payment. Please try again."
+  redirect_to payment_path(@enrollment),
+              alert: "Unable to create payment. Please try again."
 
-  rescue ActiveRecord::RecordInvalid => e
+rescue ActiveRecord::RecordInvalid => e
 
-    Rails.logger.error(
-      "PAYMENT/FEE RECORD ERROR: #{e.message}"
-    )
+  Rails.logger.error(
+    "PAYMENT/FEE RECORD ERROR: #{e.message}"
+  )
 
-    redirect_to payment_path(@enrollment),
-                alert: "Unable to create payment record."
-  end
-
-
+  redirect_to payment_path(@enrollment),
+              alert: "Unable to create payment record."
+end
   # ==================================================
   # VERIFY RAZORPAY PAYMENT
   # ==================================================
@@ -428,4 +458,89 @@ class PaymentsController < ApplicationController
     @enrollment = current_user.enrollments.find(params[:id])
     @course = @enrollment.course
   end
+
+
+
+
+
+
+
+
+  def apply_coupon
+  @enrollment =
+    current_user.enrollments.find(params[:id])
+
+  @course =
+    @enrollment.course
+
+  # Do not allow coupon changes after approval
+  if @enrollment.status == "Approved"
+    redirect_to payment_path(@enrollment),
+                alert: "You already have access to this course."
+    return
+  end
+
+  # Do not allow coupon changes after successful payment
+  if @enrollment.payments.where(status: "paid").exists?
+    redirect_to payment_path(@enrollment),
+                alert: "A payment has already been completed for this enrollment."
+    return
+  end
+
+  code =
+    params[:coupon_code].to_s.strip.upcase
+
+  if code.blank?
+    redirect_to payment_path(@enrollment),
+                alert: "Please enter a coupon code."
+    return
+  end
+
+  coupon =
+    Coupon.find_by(code: code)
+
+  unless coupon
+    redirect_to payment_path(@enrollment),
+                alert: "Invalid coupon code."
+    return
+  end
+
+  # Coupon must belong to this course
+  unless coupon.course_id == @course.id
+    redirect_to payment_path(@enrollment),
+                alert: "This coupon is not valid for this course."
+    return
+  end
+
+  # Check active / expiry / student / previous usage
+  unless coupon.available_for_user?(current_user)
+    redirect_to payment_path(@enrollment),
+                alert: "This coupon is not available for you or has already been used."
+    return
+  end
+
+  # Apply coupon
+  @enrollment.apply_coupon!(coupon)
+
+  redirect_to payment_path(@enrollment),
+              notice: "Coupon #{coupon.code} applied successfully."
+
+rescue ActiveRecord::RecordInvalid => e
+
+  Rails.logger.error(
+    "COUPON APPLY ERROR: #{e.message}"
+  )
+
+  redirect_to payment_path(@enrollment),
+              alert: "Unable to apply this coupon."
+
+rescue StandardError => e
+
+  Rails.logger.error(
+    "COUPON ERROR: #{e.class} - #{e.message}"
+  )
+
+  redirect_to payment_path(@enrollment),
+              alert: "Something went wrong while applying the coupon."
+end
 end
