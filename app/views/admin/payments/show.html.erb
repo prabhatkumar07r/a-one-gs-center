@@ -1,0 +1,780 @@
+<div class="admin-payment-details-page">
+
+  <!-- PAGE HEADER -->
+  <div class="payment-details-header">
+
+    <div>
+      <span class="payment-details-kicker">
+        PAYMENT DETAILS
+      </span>
+
+      <h1>
+        Payment #<%= @payment.id %>
+      </h1>
+
+      <p>
+        Complete transaction information
+      </p>
+    </div>
+
+    <%= link_to dashboard_path,
+        class: "payment-back-btn" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      Back to Dashboard
+
+    <% end %>
+
+  </div>
+
+
+  <% enrollment = @payment.enrollment %>
+  <% student = enrollment&.user %>
+  <% course = enrollment&.course %>
+
+
+  <!-- SUMMARY CARDS -->
+  <div class="row g-4 mb-4">
+
+    <!-- AMOUNT -->
+    <div class="col-md-4">
+
+      <div class="payment-detail-card">
+
+        <div class="payment-detail-icon amount">
+          <i class="bi bi-currency-rupee"></i>
+        </div>
+
+        <div>
+          <small>Payment Amount</small>
+
+          <h3>
+            ₹ <%= number_with_precision(
+              @payment.amount,
+              precision: 2
+            ) %>
+          </h3>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+    <div class="col-md-4">
+
+      <div class="payment-detail-card">
+
+        <div class="payment-detail-icon status">
+          <i class="bi bi-check-circle"></i>
+        </div>
+
+        <div>
+          <small>Payment Status</small>
+
+          <h3>
+            <span class="payment-detail-status <%= @payment.status.to_s.downcase %>">
+              <%= @payment.status.to_s.titleize %>
+            </span>
+          </h3>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- PAYMENT ID -->
+    <div class="col-md-4">
+
+      <div class="payment-detail-card">
+
+        <div class="payment-detail-icon id">
+          <i class="bi bi-receipt"></i>
+        </div>
+
+        <div>
+          <small>Payment ID</small>
+
+          <h3>
+            #<%= @payment.id %>
+          </h3>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- STUDENT + COURSE -->
+  <div class="row g-4 mb-4">
+
+    <!-- STUDENT INFORMATION -->
+    <div class="col-lg-6">
+
+      <div class="payment-info-card">
+
+        <div class="payment-info-card-header">
+
+          <div>
+            <h5>
+              <i class="bi bi-person-circle"></i>
+              Student Information
+            </h5>
+
+            <small>
+              Student associated with this payment
+            </small>
+          </div>
+
+        </div>
+
+
+        <div class="payment-student-detail">
+
+          <div class="payment-large-avatar">
+            <%= student&.name.to_s.first.upcase.presence || "S" %>
+          </div>
+
+          <div>
+
+            <h4>
+              <%= student&.name.presence || "Unknown Student" %>
+            </h4>
+
+            <p>
+              <i class="bi bi-envelope"></i>
+              <%= student&.email.presence || "—" %>
+            </p>
+
+            <% if student&.mobile.present? %>
+              <p>
+                <i class="bi bi-phone"></i>
+                <%= student.mobile %>
+              </p>
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- COURSE INFORMATION -->
+    <div class="col-lg-6">
+
+      <div class="payment-info-card">
+
+        <div class="payment-info-card-header">
+
+          <div>
+            <h5>
+              <i class="bi bi-book"></i>
+              Course Information
+            </h5>
+
+            <small>
+              Course connected to this enrollment
+            </small>
+          </div>
+
+        </div>
+
+
+        <div class="payment-course-detail">
+
+          <div class="payment-course-icon">
+            <i class="bi bi-mortarboard-fill"></i>
+          </div>
+
+          <div>
+
+            <h4>
+              <%= course&.Course_name.presence || "Unknown Course" %>
+            </h4>
+
+            <p>
+              Enrollment #<%= enrollment&.id || "—" %>
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RAZORPAY INFORMATION -->
+  <div class="payment-info-card mb-4">
+
+    <div class="payment-info-card-header">
+
+      <div>
+        <h5>
+          <i class="bi bi-credit-card-2-front"></i>
+          Razorpay Information
+        </h5>
+
+        <small>
+          Payment gateway transaction details
+        </small>
+      </div>
+
+    </div>
+
+
+    <div class="payment-data-grid">
+
+      <!-- ORDER ID -->
+      <div class="payment-data-item">
+
+        <span>
+          Razorpay Order ID
+        </span>
+
+        <strong>
+          <%= @payment.razorpay_order_id.presence || "—" %>
+        </strong>
+
+      </div>
+
+
+      <!-- PAYMENT ID -->
+      <div class="payment-data-item">
+
+        <span>
+          Razorpay Payment ID
+        </span>
+
+        <strong>
+          <%= @payment.razorpay_payment_id.presence || "—" %>
+        </strong>
+
+      </div>
+
+
+      <!-- QR ID -->
+      <div class="payment-data-item">
+
+        <span>
+          Razorpay QR ID
+        </span>
+
+        <strong>
+          <%= @payment.razorpay_qr_id.presence || "—" %>
+        </strong>
+
+      </div>
+
+
+      <!-- SIGNATURE -->
+      <div class="payment-data-item">
+
+        <span>
+          Razorpay Signature
+        </span>
+
+        <strong class="payment-sensitive-value">
+          <%= @payment.razorpay_signature.presence || "—" %>
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PAYMENT TIMELINE -->
+  <div class="payment-info-card">
+
+    <div class="payment-info-card-header">
+
+      <div>
+        <h5>
+          <i class="bi bi-clock-history"></i>
+          Payment Timeline
+        </h5>
+
+        <small>
+          Transaction timestamps
+        </small>
+      </div>
+
+    </div>
+
+
+    <div class="payment-timeline">
+
+      <!-- CREATED -->
+      <div class="payment-timeline-item">
+
+        <div class="payment-timeline-dot">
+          <i class="bi bi-plus-circle"></i>
+        </div>
+
+        <div>
+
+          <strong>
+            Payment Created
+          </strong>
+
+          <span>
+            <%= @payment.created_at.strftime("%d %b %Y, %I:%M %p") %>
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- UPDATED -->
+      <div class="payment-timeline-item">
+
+        <div class="payment-timeline-dot">
+          <i class="bi bi-arrow-repeat"></i>
+        </div>
+
+        <div>
+
+          <strong>
+            Last Updated
+          </strong>
+
+          <span>
+            <%= @payment.updated_at.strftime("%d %b %Y, %I:%M %p") %>
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style nonce="<%= content_security_policy_nonce %>">
+/* =========================================================
+   ADMIN PAYMENT DETAILS
+========================================================= */
+
+.admin-payment-details-page {
+    padding: 10px 0 50px;
+}
+
+/* HEADER */
+
+.payment-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.payment-details-kicker {
+    color: #8009e2;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.payment-details-header h1 {
+    margin: 5px 0 4px;
+    color: #1f2937;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.payment-details-header p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.payment-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    background: rgba(128, 9, 226, 0.08);
+    border: 1px solid rgba(128, 9, 226, 0.14);
+
+    color: #8009e2;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: all .2s ease;
+}
+
+.payment-back-btn:hover {
+    background: #8009e2;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+
+/* SUMMARY */
+
+.payment-detail-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    min-height: 110px;
+    padding: 20px;
+
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(128,9,226,.08);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(30,20,60,.06);
+}
+
+.payment-detail-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    color: #fff;
+    font-size: 19px;
+}
+
+.payment-detail-icon.amount {
+    background: linear-gradient(135deg,#8009e2,#5b08a8);
+}
+
+.payment-detail-icon.status {
+    background: linear-gradient(135deg,#10b981,#059669);
+}
+
+.payment-detail-icon.id {
+    background: linear-gradient(135deg,#6366f1,#4338ca);
+}
+
+.payment-detail-card small {
+    display: block;
+    margin-bottom: 5px;
+    color: #9ca3af;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.payment-detail-card h3 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+
+/* STATUS */
+
+.payment-detail-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+}
+
+.payment-detail-status.paid,
+.payment-detail-status.success,
+.payment-detail-status.completed {
+    background: rgba(16,185,129,.10);
+    color: #059669;
+}
+
+.payment-detail-status.created {
+    background: rgba(59,130,246,.10);
+    color: #2563eb;
+}
+
+.payment-detail-status.pending {
+    background: rgba(245,158,11,.10);
+    color: #d97706;
+}
+
+.payment-detail-status.failed,
+.payment-detail-status.cancelled {
+    background: rgba(239,68,68,.10);
+    color: #dc2626;
+}
+
+
+/* INFORMATION CARD */
+
+.payment-info-card {
+    padding: 24px;
+
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(128,9,226,.08);
+    border-radius: 18px;
+
+    box-shadow: 0 10px 30px rgba(30,20,60,.06);
+}
+
+.payment-info-card-header {
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid rgba(128,9,226,.08);
+}
+
+.payment-info-card-header h5 {
+    margin: 0 0 5px;
+
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.payment-info-card-header h5 i {
+    margin-right: 7px;
+    color: #8009e2;
+}
+
+.payment-info-card-header small {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* STUDENT */
+
+.payment-student-detail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.payment-large-avatar {
+    width: 62px;
+    height: 62px;
+    min-width: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: linear-gradient(135deg,#8009e2,#5b08a8);
+    color: #fff;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.payment-student-detail h4,
+.payment-course-detail h4 {
+    margin: 0 0 7px;
+
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.payment-student-detail p,
+.payment-course-detail p {
+    margin: 4px 0;
+
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.payment-student-detail p i {
+    width: 17px;
+    color: #8009e2;
+}
+
+
+/* COURSE */
+
+.payment-course-detail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.payment-course-icon {
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: rgba(128,9,226,.08);
+    color: #8009e2;
+
+    font-size: 22px;
+}
+
+
+/* RAZORPAY DATA */
+
+.payment-data-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 15px;
+}
+
+.payment-data-item {
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: rgba(128,9,226,.035);
+    border: 1px solid rgba(128,9,226,.06);
+}
+
+.payment-data-item span {
+    display: block;
+    margin-bottom: 7px;
+
+    color: #9ca3af;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.payment-data-item strong {
+    display: block;
+
+    color: #374151;
+    font-family: monospace;
+    font-size: 11px;
+
+    word-break: break-all;
+}
+
+.payment-sensitive-value {
+    color: #6b7280 !important;
+}
+
+
+/* TIMELINE */
+
+.payment-timeline {
+    position: relative;
+}
+
+.payment-timeline-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 10px 0;
+}
+
+.payment-timeline-item:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    left: 17px;
+    top: 43px;
+    bottom: -10px;
+
+    width: 1px;
+
+    background: rgba(128,9,226,.15);
+}
+
+.payment-timeline-dot {
+    position: relative;
+    z-index: 1;
+
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(128,9,226,.08);
+    color: #8009e2;
+
+    font-size: 13px;
+}
+
+.payment-timeline-item strong {
+    display: block;
+
+    color: #374151;
+    font-size: 12px;
+}
+
+.payment-timeline-item span {
+    display: block;
+    margin-top: 3px;
+
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .payment-details-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .payment-details-header h1 {
+        font-size: 23px;
+    }
+
+    .payment-data-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-info-card {
+        padding: 18px;
+    }
+
+}
+
+
+
+
+</style>

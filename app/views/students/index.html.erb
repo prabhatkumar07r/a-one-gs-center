@@ -1,387 +1,1013 @@
-<div class="container-fluid py-4">
+<style>
+  /* =========================================================
+     STUDENT MANAGEMENT - MODERN DASHBOARD
+  ========================================================= */
 
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+  .student-page {
+    background: #f5f8fc;
+    min-height: 100vh;
+    padding: 28px;
+  }
 
-        <div>
-            <h2 class="fw-bold text-primary">
-                <i class="fas fa-user-graduate"></i>
-                Student Management
-            </h2>
+  /* Header */
+  .student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
 
-            <p class="text-muted mb-0">
-                Manage all registered students
-            </p>
-        </div>
+  .student-header-left h2 {
+    color: #17365d;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
 
-        <div>
+  .student-header-left h2 i {
+    color: #287cf0;
+    margin-right: 8px;
+  }
 
-            <%= link_to new_user_registration_path,
-                class: "btn btn-success shadow" do %>
+  .student-header-left p {
+    color: #718096;
+    margin: 0;
+    font-size: 14px;
+  }
 
-                <i class="fas fa-plus"></i>
-                Add Student
+  .add-student-btn {
+    background: #287cf0;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 20px;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(40, 124, 240, 0.20);
+  }
 
-            <% end %>
+  .add-student-btn:hover {
+    background: #1769d1;
+  }
 
-        </div>
+  /* =========================================================
+     STAT CARDS
+  ========================================================= */
+
+  .stat-card {
+    border: none !important;
+    border-radius: 14px !important;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(30, 55, 90, 0.07) !important;
+    transition: all 0.25s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(30, 55, 90, 0.12) !important;
+  }
+
+  .stat-card .card-body {
+    padding: 21px;
+  }
+
+  .stat-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .stat-title {
+    color: #718096;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+  }
+
+  .stat-number {
+    color: #17365d;
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .stat-subtitle {
+    color: #8a99ab;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  .stat-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+  }
+
+  .icon-blue {
+    background: #e5f0ff;
+    color: #287cf0;
+  }
+
+  .icon-green {
+    background: #e1f8ed;
+    color: #20a66a;
+  }
+
+  .icon-purple {
+    background: #eee7ff;
+    color: #805ad5;
+  }
+
+  .icon-orange {
+    background: #fff0df;
+    color: #ed8b22;
+  }
+
+  /* =========================================================
+     SEARCH CARD
+  ========================================================= */
+
+  .search-card {
+    background: #fff;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(30, 55, 90, 0.07);
+    margin-bottom: 22px;
+  }
+
+  .search-card .card-body {
+    padding: 18px;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+  }
+
+  .search-input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+  }
+
+  .search-input {
+    height: 46px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    padding-left: 43px;
+    font-size: 14px;
+    box-shadow: none !important;
+  }
+
+  .search-input:focus {
+    border-color: #287cf0;
+  }
+
+  .search-btn {
+    height: 46px;
+    border-radius: 9px;
+    background: #287cf0;
+    border: none;
+    font-weight: 600;
+  }
+
+  /* =========================================================
+     STUDENT LIST CARD
+  ========================================================= */
+
+  .student-list-card {
+    background: #fff;
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(30, 55, 90, 0.07);
+  }
+
+  .student-list-header {
+    padding: 20px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #edf1f5;
+    background: #fff;
+  }
+
+  .student-list-title {
+    color: #17365d;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .student-count {
+    color: #718096;
+    font-size: 13px;
+  }
+
+  /* =========================================================
+     TABLE
+  ========================================================= */
+
+  .student-table {
+    margin: 0 !important;
+  }
+
+  .student-table thead th {
+    background: #f7f9fc;
+    color: #718096;
+    border-bottom: 1px solid #e8edf3;
+    border-top: none;
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    white-space: nowrap;
+  }
+
+  .student-table tbody td {
+    padding: 14px 18px;
+    border-color: #edf1f5;
+    color: #425466;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  .student-table tbody tr {
+    transition: background .2s ease;
+  }
+
+  .student-table tbody tr:hover {
+    background: #f8fbff;
+  }
+
+  .student-id {
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  /* =========================================================
+     STUDENT PROFILE
+  ========================================================= */
+
+  .student-profile {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+
+  .student-avatar {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #edf2f7;
+  }
+
+  .student-name {
+    color: #17365d;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .student-email {
+    color: #8a99ab;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  /* =========================================================
+     STATUS
+  ========================================================= */
+
+  .student-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #e5f8ee;
+    color: #15945b;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .student-status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #20b56d;
+    border-radius: 50%;
+  }
+
+  .role-badge {
+    background: #edf4ff;
+    color: #287cf0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* =========================================================
+     ACTION BUTTONS
+  ========================================================= */
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .action-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 13px;
+  }
+
+  .view-btn {
+    background: #e8f2ff;
+    color: #287cf0;
+  }
+
+  .view-btn:hover {
+    background: #287cf0;
+    color: #fff;
+  }
+
+  .edit-btn {
+    background: #fff2df;
+    color: #e89019;
+  }
+
+  .edit-btn:hover {
+    background: #e89019;
+    color: #fff;
+  }
+
+  .delete-btn {
+    background: #ffe8e8;
+    color: #e5484d;
+  }
+
+  .delete-btn:hover {
+    background: #e5484d;
+    color: #fff;
+  }
+
+  /* =========================================================
+     EMPTY STATE
+  ========================================================= */
+
+  .empty-state {
+    padding: 60px 20px !important;
+    text-align: center;
+  }
+
+  .empty-state-icon {
+    width: 70px;
+    height: 70px;
+    background: #f1f5f9;
+    color: #94a3b8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 25px;
+  }
+
+  .empty-state h5 {
+    color: #334155;
+    font-weight: 700;
+  }
+
+  .empty-state p {
+    color: #94a3b8;
+    font-size: 13px;
+  }
+
+  /* =========================================================
+     PAGINATION
+  ========================================================= */
+
+  .pagination-wrapper {
+    padding: 17px 22px;
+    border-top: 1px solid #edf1f5;
+    background: #fff;
+  }
+
+  .pagination {
+    margin: 0;
+    justify-content: flex-end;
+  }
+
+  /* =========================================================
+     RESPONSIVE
+  ========================================================= */
+
+  @media (max-width: 768px) {
+
+    .student-page {
+      padding: 15px;
+    }
+
+    .student-header {
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .student-header-left h2 {
+      font-size: 22px;
+    }
+
+    .add-student-btn {
+      white-space: nowrap;
+      padding: 9px 13px;
+    }
+
+    .search-btn {
+      margin-top: 10px;
+    }
+
+    .student-list-header {
+      padding: 16px;
+    }
+
+    .student-table thead th,
+    .student-table tbody td {
+      padding: 12px;
+    }
+  }
+
+
+  .student-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #287cf0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+</style>
+
+
+<!-- =========================================================
+     STUDENT MANAGEMENT PAGE
+========================================================= -->
+
+<div class="student-page">
+
+  <!-- =======================================================
+       PAGE HEADER
+  ======================================================== -->
+
+  <div class="student-header">
+
+    <div class="student-header-left">
+
+      <h2>
+        <i class="fas fa-user-graduate"></i>
+        Student Management
+      </h2>
+
+      <p>
+        Manage and monitor all registered students
+      </p>
 
     </div>
 
-    <!-- Dashboard Cards -->
+    <div>
 
-    <div class="row mb-4">
+      <%= link_to new_user_registration_path,
+          class: "btn btn-primary add-student-btn" do %>
 
-        <div class="col-lg-3 col-md-6 mb-3">
+        <i class="fas fa-plus me-1"></i>
+        Add Student
 
-            <div class="card border-0 shadow">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Total Students
-
-                            </h6>
-
-                            <h2 class="fw-bold">
-
-                                <%= @students.count %>
-
-                            </h2>
-
-                        </div>
-
-                        <div>
-
-                            <i class="fas fa-users fa-3x text-primary"></i>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-3">
-
-            <div class="card border-0 shadow">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Today's Registration
-
-                            </h6>
-
-                            <h2>
-
-                                <%= User.where(role: "student")
-                                .where(created_at: Date.today.all_day)
-                                .count %>
-
-                            </h2>
-
-                        </div>
-
-                        <i class="fas fa-user-plus fa-3x text-success"></i>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-3">
-
-            <div class="card border-0 shadow">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Active Students
-
-                            </h6>
-
-                            <h2>
-
-                                <%= User.where(role: "student").count %>
-
-                            </h2>
-
-                        </div>
-
-                        <i class="fas fa-user-check fa-3x text-info"></i>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-3">
-
-            <div class="card border-0 shadow">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                New This Month
-
-                            </h6>
-
-                            <h2>
-
-                                <%= User.where(role: "student")
-                                .where(created_at: Time.current.beginning_of_month..Time.current.end_of_month)
-                                .count %>
-
-                            </h2>
-
-                        </div>
-
-                        <i class="fas fa-chart-line fa-3x text-warning"></i>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+      <% end %>
 
     </div>
 
-    <!-- Search -->
+  </div>
 
-    <div class="card shadow border-0 mb-4">
+
+  <!-- =======================================================
+       STATISTICS
+  ======================================================== -->
+
+  <div class="row g-3 mb-4">
+
+    <!-- Total Students -->
+
+    <div class="col-xl-3 col-md-6">
+
+      <div class="card stat-card h-100">
 
         <div class="card-body">
 
-            <%= form_with url: students_path,
-                          method: :get,
-                          local: true do %>
+          <div class="stat-content">
 
-                <div class="row">
+            <div>
 
-                    <div class="col-md-10">
+              <div class="stat-title">
+                Total Students
+              </div>
 
-                        <%= text_field_tag :search,
-                            params[:search],
-                            class: "form-control",
-                            placeholder: "Search by Name, Email or Mobile..." %>
+              <div class="stat-number">
+                <%= @students.count %>
+              </div>
 
-                    </div>
+              <div class="stat-subtitle">
+                Registered students
+              </div>
 
-                    <div class="col-md-2">
+            </div>
 
-                        <button class="btn btn-primary w-100">
+            <div class="stat-icon icon-blue">
 
-                            <i class="fas fa-search"></i>
+              <i class="fas fa-users"></i>
 
-                            Search
+            </div>
 
-                        </button>
-
-                    </div>
-
-                </div>
-
-            <% end %>
+          </div>
 
         </div>
+
+      </div>
 
     </div>
 
-    <!-- Student Table -->
 
-    <div class="card border-0 shadow">
+    <!-- Today's Registration -->
 
-        <div class="card-header bg-primary text-white">
+    <div class="col-xl-3 col-md-6">
 
-            <h5 class="mb-0">
+      <div class="card stat-card h-100">
 
-                Student List
+        <div class="card-body">
 
-            </h5>
+          <div class="stat-content">
+
+            <div>
+
+              <div class="stat-title">
+                Today's Registration
+              </div>
+
+              <div class="stat-number">
+
+                <%= User.where(role: "student")
+                        .where(created_at: Date.today.all_day)
+                        .count %>
+
+              </div>
+
+              <div class="stat-subtitle">
+                Registered today
+              </div>
+
+            </div>
+
+            <div class="stat-icon icon-green">
+
+              <i class="fas fa-user-plus"></i>
+
+            </div>
+
+          </div>
 
         </div>
 
-        <div class="table-responsive">
+      </div>
 
-            <table class="table table-hover align-middle mb-0">
+    </div>
 
-                <thead class="table-light">
 
-                <tr>
+    <!-- Active Students -->
 
-                    <th>ID</th>
+    <div class="col-xl-3 col-md-6">
 
-                    <th>Photo</th>
+      <div class="card stat-card h-100">
 
-                    <th>Name</th>
+        <div class="card-body">
 
-                    <th>Email</th>
+          <div class="stat-content">
 
-                    <th>Mobile</th>
+            <div>
 
-                    <th>Role</th>
+              <div class="stat-title">
+                Active Students
+              </div>
 
-                    <th>Registered</th>
+              <div class="stat-number">
 
-                    <th class="text-center">
+                <%= User.where(role: "student").count %>
 
-                        Action
+              </div>
 
-                    </th>
+              <div class="stat-subtitle">
+                Currently active
+              </div>
 
-                </tr>
+            </div>
 
-                </thead>
+            <div class="stat-icon icon-purple">
 
-                <tbody>
+              <i class="fas fa-user-check"></i>
 
-                <% if @students.any? %>
+            </div>
 
-                    <% @students.each do |student| %>
+          </div>
 
-                    <tr>
+        </div>
 
-                        <td>
+      </div>
 
-                            <strong>#<%= student.id %></strong>
+    </div>
 
-                        </td>
 
-                         <td>
-                            <img src="https://ui-avatars.com/api/?name=<%= student.name %>&background=0D6EFD&color=fff"
-                            class="rounded-circle border"
-                            width="55"
-                            height="55">
-                            </td>
+    <!-- New This Month -->
 
-                        <td>
+    <div class="col-xl-3 col-md-6">
 
-                            <strong>
+      <div class="card stat-card h-100">
 
-                                <%= student.name %>
+        <div class="card-body">
 
-                            </strong>
+          <div class="stat-content">
 
-                        </td>
+            <div>
 
-                        <td>
+              <div class="stat-title">
+                New This Month
+              </div>
 
-                            <%= student.email %>
+              <div class="stat-number">
 
-                        </td>
+                <%= User.where(role: "student")
+                        .where(
+                          created_at:
+                          Time.current.beginning_of_month..
+                          Time.current.end_of_month
+                        )
+                        .count %>
 
-                        <td>
+              </div>
 
-                            <%= student.mobile %>
+              <div class="stat-subtitle">
+                This month's registrations
+              </div>
 
-                        </td>
+            </div>
 
-                        <td>
+            <div class="stat-icon icon-orange">
 
-                            <span class="badge bg-success">
+              <i class="fas fa-chart-line"></i>
 
-                                <%= student.role.capitalize %>
+            </div>
 
-                            </span>
+          </div>
 
-                        </td>
+        </div>
 
-                        <td>
+      </div>
 
-                            <%= student.created_at.strftime("%d %b %Y") %>
+    </div>
 
-                        </td>
+  </div>
 
-                        <td class="text-center">
 
-                            <%= link_to student_path(student),
-                                class:"btn btn-sm btn-info text-white" do %>
+  <!-- =======================================================
+       SEARCH
+  ======================================================== -->
 
-                                <i class="fas fa-eye"></i>
+  <div class="search-card">
 
-                            <% end %>
+    <div class="card-body">
 
-                                <%= link_to edit_student_path(student),
-                             class: "btn btn-warning btn-sm" do %>
-                               <i class="fas fa-edit"></i>
-                            <% end %>
-                            <%= link_to student_path(student),
-                                data:{
-                                    turbo_method: :delete,
-                                    turbo_confirm:"Delete Student?"
-                                },
-                                class:"btn btn-sm btn-danger" do %>
+      <%= form_with url: students_path,
+                    method: :get,
+                    local: true do %>
 
-                                <i class="fas fa-trash"></i>
+        <div class="row align-items-center">
 
-                            <% end %>
+          <div class="col-md-10">
 
-                        </td>
+            <div class="search-input-wrapper">
 
-                    </tr>
+              <i class="fas fa-search"></i>
+
+              <%= text_field_tag :search,
+                  params[:search],
+                  class: "form-control search-input",
+                  placeholder:
+                  "Search by name, email or mobile..." %>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-2">
+
+            <button type="submit"
+                    class="btn btn-primary search-btn w-100">
+
+              <i class="fas fa-search me-1"></i>
+              Search
+
+            </button>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       STUDENT LIST
+  ======================================================== -->
+
+  <div class="student-list-card">
+
+    <!-- Header -->
+
+    <div class="student-list-header">
+
+      <div>
+
+        <h5 class="student-list-title">
+          Recent Students
+        </h5>
+
+        <div class="student-count">
+          Showing registered students
+        </div>
+
+      </div>
+
+      <div class="student-count">
+
+        <%= @students.count %> students
+
+      </div>
+
+    </div>
+
+
+    <!-- Table -->
+
+    <div class="table-responsive">
+
+      <table class="table student-table table-hover">
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Student</th>
+
+            <th>Email</th>
+
+            <th>Mobile</th>
+
+            <th>Role</th>
+
+            <th>Status</th>
+
+            <th>Registered</th>
+
+            <th class="text-center">
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <% if @students.any? %>
+
+            <% @students.each do |student| %>
+
+              <tr>
+
+                <!-- ID -->
+
+                <td>
+
+                  <span class="student-id">
+                    #<%= student.id %>
+                  </span>
+
+                </td>
+
+
+                <!-- Student -->
+                   <!-- Student -->
+<td>
+  <div class="student-profile">
+
+    <% if student.image.attached? %>
+
+      <%= image_tag student.image,
+          class: "student-avatar",
+          alt: student.name.to_s %>
+
+    <% else %>
+
+      <div class="student-avatar student-avatar-placeholder">
+        <%= student.name.to_s.first.upcase %>
+      </div>
+
+    <% end %>
+
+    <div>
+      <div class="student-name">
+        <%= student.name.presence || "Unnamed Student" %>
+      </div>
+
+      <div class="student-email">
+        <%= student.email %>
+      </div>
+    </div>
+
+  </div>
+</td>
+
+
+                <!-- Email -->
+
+                <td>
+
+                  <span>
+                    <%= student.email %>
+                  </span>
+
+                </td>
+
+
+                <!-- Mobile -->
+
+                <td>
+
+                  <%= student.mobile.presence || "—" %>
+
+                </td>
+
+
+                <!-- Role -->
+
+                <td>
+
+                  <span class="role-badge">
+
+                    <%= student.role.to_s.capitalize %>
+
+                  </span>
+
+                </td>
+
+
+                <!-- Status -->
+
+                <td>
+
+                  <span class="student-status">
+                    Active
+                  </span>
+
+                </td>
+
+
+                <!-- Registered -->
+
+                <td>
+
+                  <span class="text-muted">
+
+                    <%= student.created_at.strftime("%d %b %Y") %>
+
+                  </span>
+
+                </td>
+
+
+                <!-- Actions -->
+
+                <td>
+
+                  <div class="action-buttons">
+
+                    <!-- View -->
+
+                    <%= link_to student_path(student),
+                        class: "action-btn view-btn",
+                        title: "View Student" do %>
+
+                      <i class="fas fa-eye"></i>
 
                     <% end %>
 
-                <% else %>
 
-                    <tr>
+                    <!-- Edit -->
 
-                        <td colspan="8" class="text-center py-5">
+                    <%= link_to edit_student_path(student),
+                        class: "action-btn edit-btn",
+                        title: "Edit Student" do %>
 
-                            <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+                      <i class="fas fa-edit"></i>
 
-                            <h5>No Students Found</h5>
+                    <% end %>
 
-                        </td>
 
-                    </tr>
+                    <!-- Delete -->
 
-                <% end %>
+                    <%= link_to student_path(student),
+                        data: {
+                          turbo_method: :delete,
+                          turbo_confirm: "Delete Student?"
+                        },
+                        class: "action-btn delete-btn",
+                        title: "Delete Student" do %>
 
-                </tbody>
+                      <i class="fas fa-trash"></i>
 
-            </table>
+                    <% end %>
 
-        </div>
+                  </div>
 
-        <div class="card-footer">
+                </td>
 
-            <%= paginate @students %>
+              </tr>
 
-        </div>
+            <% end %>
+
+
+          <% else %>
+
+            <!-- Empty State -->
+
+            <tr>
+
+              <td colspan="8" class="empty-state">
+
+                <div class="empty-state-icon">
+
+                  <i class="fas fa-user-slash"></i>
+
+                </div>
+
+                <h5>
+                  No Students Found
+                </h5>
+
+                <p>
+                  There are currently no registered students.
+                </p>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
 
     </div>
+
+
+    <!-- Pagination -->
+
+    <div class="pagination-wrapper">
+
+      <%= paginate @students %>
+
+    </div>
+
+  </div>
 
 </div>

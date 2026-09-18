@@ -1,0 +1,22 @@
+<div class="admin-back-wrapper">
+
+  <button
+    type="button"
+    class="admin-back-button"
+    onclick="adminGoBack()"
+  >
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>Back</span>
+  </button>
+
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  function adminGoBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "/admin";
+    }
+  }
+</script>

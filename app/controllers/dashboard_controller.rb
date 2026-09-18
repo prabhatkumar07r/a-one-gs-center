@@ -29,7 +29,10 @@ class DashboardController < ApplicationController
       User.student.order(created_at: :desc).limit(5)
 
     @recent_payments =
-      Payment.order(created_at: :desc).limit(5)
+  Payment
+    .includes(enrollment: [:user, :course])
+    .order(created_at: :desc)
+    .limit(10)
 
     @recent_notifications =
       Notification.order(created_at: :desc).limit(5)

@@ -1,506 +1,1433 @@
 <style nonce="<%= content_security_policy_nonce %>">
-  /* =========================================================
-   DASHBOARD ANALYTICS
+/* =========================================================
+   A ONE GS CENTER — MODERN ADMIN DASHBOARD
 ========================================================= */
 
-.analytics-card {
-  border-radius: 16px;
+:root {
+  --dash-primary: #2563eb;
+  --dash-primary-dark: #173b8f;
+  --dash-text: #172033;
+  --dash-muted: #7b8798;
+  --dash-border: #e8edf4;
+  --dash-bg: #f6f8fc;
+  --dash-radius: 18px;
+}
+
+.admin-dashboard {
+  background: var(--dash-bg);
+  min-height: 100vh;
+  padding: 22px;
+  color: var(--dash-text);
+}
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.dashboard-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+  gap: 20px;
+}
+
+.dashboard-title h2 {
+  font-size: 27px;
+  font-weight: 800;
+  margin: 0;
+  color: #16213d;
+}
+
+.dashboard-title p {
+  margin: 5px 0 0;
+  color: var(--dash-muted);
+  font-size: 14px;
+}
+
+.dashboard-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #607089;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.modern-stat {
+  position: relative;
+  border: 0;
+  border-radius: var(--dash-radius);
+  padding: 22px;
+  min-height: 145px;
   overflow: hidden;
+  transition: .25s ease;
 }
 
-.analytics-card .card-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+.modern-stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(31, 41, 55, .13) !important;
 }
 
-.analytics-card .card-header h5 {
-  font-size: 18px;
-  font-weight: 700;
+.modern-stat::after {
+  content: "";
+  position: absolute;
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  right: -35px;
+  bottom: -45px;
+  background: rgba(255,255,255,.13);
+}
+
+.stat-blue {
+  background: linear-gradient(135deg, #2563eb, #1748b2);
+}
+
+.stat-green {
+  background: linear-gradient(135deg, #16a34a, #08752f);
+}
+
+.stat-purple {
+  background: linear-gradient(135deg, #7c3aed, #5421ae);
+}
+
+.stat-orange {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-cyan {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+}
+
+.stat-dark {
+  background: linear-gradient(135deg, #334155, #172033);
+}
+
+.stat-red {
+  background: linear-gradient(135deg, #ef4444, #c62828);
+}
+
+.stat-indigo {
+  background: linear-gradient(135deg, #4f46e5, #3730a3);
+}
+
+.stat-content {
+  position: relative;
+  z-index: 2;
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: .9;
+  margin-bottom: 7px;
+}
+
+.stat-number {
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.stat-bottom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  opacity: .88;
+}
+
+.stat-icon {
+  position: absolute;
+  right: 20px;
+  top: 21px;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.17);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  z-index: 2;
+}
+
+/* =========================================================
+   COMMON CARD
+========================================================= */
+
+.dashboard-card-modern {
+  background: #fff;
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 0 5px 20px rgba(23,32,51,.04);
+}
+
+.dashboard-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 19px 22px;
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.dashboard-card-header h5 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 750;
   color: #172033;
 }
 
-
-/* =========================
-   RATIO
-========================= */
-
-.ratio-chart-wrapper {
-  min-height: 330px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 60px;
+.dashboard-card-header small {
+  color: var(--dash-muted);
 }
 
+/* =========================================================
+   STUDENT GROWTH GRAPH
+========================================================= */
 
-/* Pie */
+.growth-body {
+  padding: 20px;
+}
 
-.ratio-pie {
-  width: 210px;
-  height: 210px;
+.growth-summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 18px;
+}
 
-  border-radius: 50%;
+.growth-summary strong {
+  font-size: 25px;
+  font-weight: 800;
+}
 
-  background:
-    conic-gradient(
-      #2563eb 0 var(--student),
-      #16a34a var(--student) 100%
-    );
+.growth-badge {
+  background: #e9f9ef;
+  color: #149447;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
 
+.growth-chart {
+  width: 100%;
+  height: 235px;
+  display: block;
+}
+
+.chart-label {
+  font-size: 11px;
+  fill: #8b95a5;
+}
+
+.chart-grid {
+  stroke: #edf1f6;
+  stroke-width: 1;
+}
+
+.chart-area {
+  fill: rgba(37,99,235,.09);
+}
+
+.chart-line {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-point {
+  fill: #fff;
+  stroke: #2563eb;
+  stroke-width: 3;
+}
+
+/* =========================================================
+   DONUT
+========================================================= */
+
+.donut-wrapper {
+  min-height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 30px;
+  padding: 25px;
+}
 
+.donut-chart {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      #2563eb 0 45%,
+      #16a34a 45% 65%,
+      #f59e0b 65% 80%,
+      #7c3aed 80% 90%,
+      #ec4899 90% 100%
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-
-/* Center */
-
-.ratio-pie-center {
-  width: 125px;
-  height: 125px;
-
-  background: #ffffff;
-
+.donut-inner {
+  width: 112px;
+  height: 112px;
+  background: #fff;
   border-radius: 50%;
-
   display: flex;
   flex-direction: column;
-
-  align-items: center;
   justify-content: center;
-
-  box-shadow: 0 3px 15px rgba(0, 0, 0, .08);
+  align-items: center;
+  box-shadow: 0 5px 18px rgba(0,0,0,.08);
 }
 
-.ratio-pie-center strong {
-  font-size: 30px;
-  font-weight: 700;
+.donut-inner strong {
+  font-size: 27px;
+  font-weight: 800;
+}
 
+.donut-inner span {
+  font-size: 12px;
+  color: #8b95a5;
+}
+
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #596579;
+}
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-blue { background:#2563eb; }
+.legend-green { background:#16a34a; }
+.legend-orange { background:#f59e0b; }
+.legend-purple { background:#7c3aed; }
+.legend-pink { background:#ec4899; }
+
+.legend-item strong {
+  margin-left: auto;
   color: #172033;
 }
 
-.ratio-pie-center small {
+/* =========================================================
+   RECENT ACTIVITY
+========================================================= */
+
+.activity-list {
+  padding: 8px 20px 15px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.activity-item:last-child {
+  border-bottom: 0;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4ff;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.activity-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.activity-info strong {
+  display: block;
+  font-size: 13px;
+  color: #26334b;
+}
+
+.activity-info span {
+  display: block;
+  font-size: 11px;
   color: #8b95a5;
+  margin-top: 3px;
+}
+
+.activity-time {
+  font-size: 10px;
+  color: #9aa4b2;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   TOP COURSES
+========================================================= */
+
+.course-table {
+  margin: 0;
+}
+
+.course-table thead th {
+  border: 0;
+  background: #f8fafc;
+  color: #718096;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 12px 16px;
+}
+
+.course-table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  border-color: #edf1f5;
   font-size: 13px;
 }
 
-
-/* Details */
-
-.ratio-details {
-  min-width: 150px;
-}
-
-.ratio-item {
+.course-name {
   display: flex;
   align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 20px;
+  gap: 11px;
 }
 
-.ratio-dot {
-  width: 14px;
-  height: 14px;
-
-  border-radius: 50%;
-
-  flex-shrink: 0;
+.course-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #eef2ff;
 }
 
-.student-dot {
-  background: #2563eb;
+.course-name strong {
+  display: block;
+  font-size: 13px;
 }
 
-.teacher-dot {
-  background: #16a34a;
+.course-name small {
+  color: #8993a4;
+  font-size: 10px;
 }
 
-.ratio-item div {
-  display: flex;
-  flex-direction: column;
-}
-
-.ratio-item strong {
-  font-size: 14px;
-  color: #172033;
-}
-
-.ratio-item span {
-  font-size: 20px;
+.status-active {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #e9f9ef;
+  color: #149447;
+  font-size: 10px;
   font-weight: 700;
-  color: #172033;
 }
 
+/* =========================================================
+   QUICK LINKS
+========================================================= */
 
-/* Percentages */
-
-.ratio-percentages {
-  display: flex;
-  gap: 25px;
-
-  margin-top: 10px;
+.quick-links {
+  padding: 18px;
 }
 
-.ratio-percentages div {
+.quick-link {
+  min-height: 95px;
+  border: 1px solid #e6ebf2;
+  border-radius: 15px;
+  background: #fff;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #25324a;
+  transition: .2s ease;
 }
 
-.ratio-percentages strong {
-  font-size: 16px;
+.quick-link:hover {
+  border-color: #b9ccf8;
+  background: #f7faff;
+  transform: translateY(-2px);
   color: #2563eb;
 }
 
-.ratio-percentages small {
-  color: #8b95a5;
-}
-
-
-/* =========================
-   SYSTEM STATISTICS
-========================= */
-
-.statistics-list {
-  padding: 15px 5px;
-}
-
-.stat-row {
-  margin-bottom: 25px;
-}
-
-.stat-heading {
+.quick-link i {
+  width: 38px;
+  height: 38px;
   display: flex;
-  justify-content: space-between;
-
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #eef4ff;
+  color: #2563eb;
+  font-size: 18px;
   margin-bottom: 8px;
-
-  font-size: 14px;
 }
 
-.stat-heading span {
-  color: #4b5563;
-  font-weight: 500;
+.quick-link span {
+  font-size: 11px;
+  font-weight: 650;
 }
 
-.stat-heading strong {
-  color: #172033;
-  font-weight: 700;
-}
+/* =========================================================
+   PROMO BANNER
+========================================================= */
 
-
-/* Progress */
-
-.stat-progress {
-  width: 100%;
-  height: 12px;
-
-  background: #eef1f5;
-
-  border-radius: 20px;
-
+.dashboard-promo {
+  position: relative;
+  min-height: 260px;
   overflow: hidden;
+  border-radius: var(--dash-radius);
+  background:
+    linear-gradient(135deg, #1748b2, #4523a5);
+  color: #fff;
+  padding: 25px;
 }
 
-.stat-progress-bar {
-  height: 100%;
-
-  border-radius: 20px;
-
-  background: linear-gradient(
-    90deg,
-    #6d28d9,
-    #2563eb
-  );
-
-  transition: width .5s ease;
+.dashboard-promo::before {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  right: -80px;
+  top: -70px;
+  background: rgba(255,255,255,.09);
 }
 
+.promo-content {
+  position: relative;
+  z-index: 2;
+  max-width: 70%;
+}
 
-/* =========================
+.promo-logo {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.promo-content h4 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.promo-content p {
+  font-size: 12px;
+  line-height: 1.6;
+  opacity: .85;
+}
+
+.promo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 7px;
+  padding: 9px 15px;
+  border-radius: 10px;
+  background: #fbbf24;
+  color: #172033;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.promo-student {
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  width: 42%;
+  max-height: 220px;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+/* =========================================================
    RESPONSIVE
-========================= */
+========================================================= */
+
+@media (max-width: 1200px) {
+  .donut-wrapper {
+    gap: 15px;
+  }
+
+  .donut-chart {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 991px) {
+  .dashboard-topbar {
+    align-items: flex-start;
+  }
+
+  .dashboard-date {
+    display: none;
+  }
+
+  .promo-content {
+    max-width: 100%;
+  }
+
+  .promo-student {
+    opacity: .25;
+    width: 55%;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 14px;
+  }
+
+  .dashboard-title h2 {
+    font-size: 23px;
+  }
+
+  .modern-stat {
+    min-height: 130px;
+  }
+
+  .donut-wrapper {
+    flex-direction: column;
+  }
+
+  .donut-legend {
+    width: 100%;
+  }
+
+  .growth-chart {
+    height: 200px;
+  }
+
+  .course-table {
+    min-width: 600px;
+  }
+}
+
+
+
+
+/* =========================================================
+   RECENT PAYMENTS
+========================================================= */
+
+.recent-payments-card {
+    overflow: hidden;
+}
+
+/* Payment table wrapper */
+.payment-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Table */
+.payment-table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+}
+
+/* Header */
+.payment-table thead th {
+    padding: 15px 18px;
+    background: rgba(91, 8, 168, 0.06);
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(91, 8, 168, 0.10);
+}
+
+/* Body */
+.payment-table tbody td {
+    padding: 16px 18px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(91, 8, 168, 0.07);
+    background: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    color: #374151;
+}
+
+.payment-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.payment-table tbody tr:hover td {
+    background: rgba(128, 9, 226, 0.045);
+}
+
+.payment-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================================
+   STUDENT
+========================================================= */
+
+.payment-student {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 180px;
+}
+
+.payment-student-avatar {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #8009e2,
+        #5b08a8
+    );
+
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow: 0 5px 14px rgba(91, 8, 168, 0.18);
+}
+
+.payment-student-info {
+    min-width: 0;
+}
+
+.payment-student-name {
+    display: block;
+    color: #1f2937;
+    font-size: 13px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.payment-student-email {
+    display: block;
+    margin-top: 3px;
+    color: #9ca3af;
+    font-size: 11px;
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   COURSE
+========================================================= */
+
+.payment-course {
+    min-width: 210px;
+    max-width: 250px;
+}
+
+.payment-course-name {
+    display: block;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   PAYMENT ID
+========================================================= */
+
+.payment-id {
+    color: #8009e2;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   RAZORPAY IDS
+========================================================= */
+
+.payment-razorpay-id {
+    display: inline-block;
+    max-width: 145px;
+
+    padding: 6px 9px;
+    border-radius: 7px;
+
+    background: rgba(107, 114, 128, 0.07);
+    color: #6b7280;
+
+    font-family: monospace;
+    font-size: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.payment-razorpay-id:hover {
+    background: rgba(128, 9, 226, 0.08);
+    color: #8009e2;
+}
+
+/* =========================================================
+   AMOUNT
+========================================================= */
+
+.payment-amount {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.payment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 10px;
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+
+    white-space: nowrap;
+}
+
+.payment-status i {
+    font-size: 10px;
+}
+
+.payment-status.paid,
+.payment-status.success,
+.payment-status.completed {
+    background: rgba(16, 185, 129, 0.10);
+    color: #059669;
+}
+
+.payment-status.pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+}
+
+.payment-status.failed,
+.payment-status.cancelled {
+    background: rgba(239, 68, 68, 0.10);
+    color: #dc2626;
+}
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.payment-date {
+    white-space: nowrap;
+}
+
+.payment-date-main {
+    display: block;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.payment-date-time {
+    display: block;
+    margin-top: 3px;
+    color: #9ca3af;
+    font-size: 10px;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.payment-empty {
+    padding: 45px 20px !important;
+    text-align: center;
+}
+
+.payment-empty-icon {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+    background: rgba(128, 9, 226, 0.07);
+    color: #8009e2;
+
+    font-size: 22px;
+}
+
+.payment-empty strong {
+    display: block;
+    color: #374151;
+    font-size: 14px;
+}
+
+.payment-empty small {
+    display: block;
+    margin-top: 5px;
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 768px) {
 
-  .ratio-chart-wrapper {
-    flex-direction: column;
+    .payment-table {
+        min-width: 1000px;
+    }
 
-    gap: 30px;
+    .payment-table thead th,
+    .payment-table tbody td {
+        padding: 13px 14px;
+    }
 
-    padding: 20px 0;
-  }
-
+    .payment-student-avatar {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
 }
+
+
+/* =========================================================
+   VIEW PAYMENT DETAILS BUTTON
+========================================================= */
+
+.payment-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 8px 12px;
+
+    border-radius: 9px;
+
+    background: rgba(128, 9, 226, 0.08);
+    border: 1px solid rgba(128, 9, 226, 0.14);
+
+    color: #8009e2;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition: all 0.2s ease;
+}
+
+.payment-view-btn i {
+    font-size: 13px;
+}
+
+.payment-view-btn:hover {
+    background: #8009e2;
+    border-color: #8009e2;
+    color: #fff;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 15px rgba(128, 9, 226, 0.20);
+}
+
 </style>
-<div class="container-fluid py-2 px-3">
 
-  <!-- Page Heading -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="admin-dashboard">
 
-    <h2 class="fw-bold">Dashboard</h2>
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
 
-   
+  <div class="dashboard-topbar">
+
+    <div class="dashboard-title">
+      <h2>Welcome Back, Prabhat Kumar 👋</h2>
+      <p>Here's what's happening with your academy today.</p>
+    </div>
+
+    <div class="dashboard-date">
+      <i class="bi bi-calendar3"></i>
+      <%= Date.current.strftime("%A, %d %B %Y") %>
+    </div>
 
   </div>
 
-  <!-- Statistics -->
+
+  <!-- =====================================================
+       STATISTICS ROW 1
+  ====================================================== -->
+
   <div class="row g-4">
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-primary text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <h6>Total Students</h6>
-            <h2><%= @students %></h2>
+    <!-- Students -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-blue shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Total Students</div>
+
+          <div class="stat-number">
+            <%= @students %>
           </div>
-          <i class="bi bi-mortarboard-fill display-4"></i>
+
+          <div class="stat-bottom">
+            <i class="bi bi-arrow-up"></i>
+            Active learners
+          </div>
         </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-people-fill"></i>
+        </div>
+
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-success text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <h6>Total Teachers</h6>
-            <h2><%= @teachers %></h2>
+
+    <!-- Teachers -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-green shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Total Teachers</div>
+
+          <div class="stat-number">
+            <%= @teachers %>
           </div>
-          <i class="bi bi-person-workspace display-4"></i>
+
+          <div class="stat-bottom">
+            <i class="bi bi-person-check"></i>
+            Teaching staff
+          </div>
         </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-person-workspace"></i>
+        </div>
+
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-warning text-dark border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <h6>Total Courses</h6>
-            <h2><%= @courses %></h2>
+
+    <!-- Courses -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-purple shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Total Courses</div>
+
+          <div class="stat-number">
+            <%= @courses %>
           </div>
-          <i class="bi bi-book-fill display-4"></i>
+
+          <div class="stat-bottom">
+            <i class="bi bi-book"></i>
+            Available courses
+          </div>
         </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-book-fill"></i>
+        </div>
+
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-danger text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <h6>Total Videos</h6>
-            <h2><%= @videos %></h2>
+
+    <!-- Videos -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-orange shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Total Videos</div>
+
+          <div class="stat-number">
+            <%= @videos %>
           </div>
-          <i class="bi bi-play-circle-fill display-4"></i>
+
+          <div class="stat-bottom">
+            <i class="bi bi-play-circle"></i>
+            Learning content
+          </div>
         </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-play-circle-fill"></i>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STATISTICS ROW 2
+  ====================================================== -->
+
+  <div class="row g-4 mt-0">
+
+    <!-- Playlists -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-cyan shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Playlists</div>
+
+          <div class="stat-number">
+            <%= @playlists %>
+          </div>
+
+          <div class="stat-bottom">
+            Video collections
+          </div>
+        </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-collection-play-fill"></i>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Resources -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-dark shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Resources</div>
+
+          <div class="stat-number">
+            <%= @resources %>
+          </div>
+
+          <div class="stat-bottom">
+            Study materials
+          </div>
+        </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-file-earmark-fill"></i>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Enrollments -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-red shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Enrollments</div>
+
+          <div class="stat-number">
+            <%= @enrollments %>
+          </div>
+
+          <div class="stat-bottom">
+            Course enrollments
+          </div>
+        </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-person-check-fill"></i>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Demo Requests -->
+    <div class="col-xl-3 col-md-6">
+      <div class="modern-stat stat-indigo shadow-sm">
+
+        <div class="stat-content">
+          <div class="stat-label">Demo Requests</div>
+
+          <div class="stat-number">
+            <%= @demos %>
+          </div>
+
+          <div class="stat-bottom">
+            New enquiries
+          </div>
+        </div>
+
+        <div class="stat-icon">
+          <i class="bi bi-people-fill"></i>
+        </div>
+
       </div>
     </div>
 
   </div>
 
-  <!-- Second Row -->
-  <div class="row g-4 mt-2">
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-info text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
+  <!-- =====================================================
+       GRAPH + COURSE DISTRIBUTION
+  ====================================================== -->
+
+  <div class="row g-4 mt-1">
+
+    <!-- STUDENT GROWTH -->
+
+    <div class="col-xl-7">
+
+      <div class="dashboard-card-modern">
+
+        <div class="dashboard-card-header">
+
           <div>
-            <h6>Playlists</h6>
-            <h2><%= @playlists %></h2>
+            <h5>Student Growth</h5>
+            <small>Recent student overview</small>
           </div>
-          <i class="bi bi-collection-play-fill display-4"></i>
+
+          <span class="badge bg-light text-primary">
+            Overview
+          </span>
+
         </div>
+
+
+        <div class="growth-body">
+
+          <div class="growth-summary">
+
+            <strong>
+              <%= @students %>
+            </strong>
+
+            <span class="growth-badge">
+              <i class="bi bi-graph-up-arrow"></i>
+              Students
+            </span>
+
+          </div>
+
+
+          <svg
+            class="growth-chart"
+            viewBox="0 0 700 235"
+            preserveAspectRatio="none"
+            role="img"
+            aria-label="Student growth graph">
+
+            <!-- Grid -->
+
+            <line class="chart-grid"
+                  x1="45" y1="30"
+                  x2="680" y2="30"/>
+
+            <line class="chart-grid"
+                  x1="45" y1="75"
+                  x2="680" y2="75"/>
+
+            <line class="chart-grid"
+                  x1="45" y1="120"
+                  x2="680" y2="120"/>
+
+            <line class="chart-grid"
+                  x1="45" y1="165"
+                  x2="680" y2="165"/>
+
+            <line class="chart-grid"
+                  x1="45" y1="210"
+                  x2="680" y2="210"/>
+
+
+            <!-- Area -->
+
+            <path
+              class="chart-area"
+              d="
+                M45 185
+                L150 155
+                L255 142
+                L360 110
+                L470 90
+                L575 70
+                L680 45
+                L680 210
+                L45 210
+                Z
+              "
+            />
+
+
+            <!-- Line -->
+
+            <path
+              class="chart-line"
+              d="
+                M45 185
+                L150 155
+                L255 142
+                L360 110
+                L470 90
+                L575 70
+                L680 45
+              "
+            />
+
+
+            <!-- Points -->
+
+            <circle class="chart-point" cx="45" cy="185" r="5"/>
+            <circle class="chart-point" cx="150" cy="155" r="5"/>
+            <circle class="chart-point" cx="255" cy="142" r="5"/>
+            <circle class="chart-point" cx="360" cy="110" r="5"/>
+            <circle class="chart-point" cx="470" cy="90" r="5"/>
+            <circle class="chart-point" cx="575" cy="70" r="5"/>
+            <circle class="chart-point" cx="680" cy="45" r="5"/>
+
+
+            <!-- Labels -->
+
+            <text class="chart-label" x="42" y="230">Jan</text>
+            <text class="chart-label" x="147" y="230">Feb</text>
+            <text class="chart-label" x="252" y="230">Mar</text>
+            <text class="chart-label" x="357" y="230">Apr</text>
+            <text class="chart-label" x="467" y="230">May</text>
+            <text class="chart-label" x="572" y="230">Jun</text>
+            <text class="chart-label" x="677" y="230">Jul</text>
+
+          </svg>
+
+        </div>
+
       </div>
+
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-secondary text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
+
+    <!-- COURSE DISTRIBUTION -->
+
+    <div class="col-xl-5">
+
+      <div class="dashboard-card-modern">
+
+        <div class="dashboard-card-header">
+
           <div>
-            <h6>Resources</h6>
-            <h2><%= @resources %></h2>
-          </div>
-          <i class="bi bi-file-earmark-fill display-4"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-dark text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <h6>Enrollments</h6>
-            <h2><%= @enrollments %></h2>
-          </div>
-          <i class="bi bi-person-check-fill display-4"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-      <div class="card dashboard-card bg-primary text-white border-0 shadow">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <h6>Demo Requests</h6>
-            <h2><%= @demos %></h2>
-          </div>
-          <i class="bi bi-people-fill display-4"></i>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Quick Actions -->
-  <div class="row mt-4">
-
-    <div class="col-lg-12">
-
-      <div class="card shadow border-0">
-
-        <div class="card-header bg-white">
-          <h5 class="mb-0">Quick Actions</h5>
-        </div>
-
-        <div class="card-body">
-
-          <div class="row g-3">
-
-            <div class="col-md-3">
-              <%= link_to new_student_path, class: "btn btn-primary w-100 py-3" do %>
-                <i class="bi bi-person-plus-fill"></i><br>
-                Add Student
-              <% end %>
-            </div>
-
-            <div class="col-md-3">
-              <%= link_to new_teacher_path, class: "btn btn-success w-100 py-3" do %>
-                <i class="bi bi-person-workspace"></i><br>
-                Add Teacher
-              <% end %>
-            </div>
-
-            <div class="col-md-3">
-              <%= link_to new_admin_course_path, class: "btn btn-warning w-100 py-3" do %>
-                <i class="bi bi-book-fill"></i><br>
-                Add Course
-              <% end %>
-            </div>
-
-            <div class="col-md-3">
-              <%= link_to new_notification_path, class: "btn btn-danger w-100 py-3" do %>
-                <i class="bi bi-bell-fill"></i><br>
-                Send Notification
-              <% end %>
-            </div>
-
+            <h5>Course Distribution</h5>
+            <small>Course categories</small>
           </div>
 
+          <i class="bi bi-pie-chart text-primary"></i>
+
         </div>
 
-      </div>
 
-    </div>
+        <div class="donut-wrapper">
 
-  </div>
+          <div class="donut-chart">
 
-  <!-- Charts -->
-  <!-- =========================
-     DASHBOARD ANALYTICS
-========================= -->
-
-<div class="row mt-4">
-
-  <!-- Student & Teacher Ratio -->
-  <div class="col-lg-6">
-
-    <div class="card shadow border-0 analytics-card">
-
-      <div class="card-header bg-white">
-        <h5 class="mb-0">Student & Teacher Ratio</h5>
-      </div>
-
-      <div class="card-body">
-
-        <% total_people = @students.to_i + @teachers.to_i %>
-
-        <% student_percentage =
-             total_people > 0 ? ((@students.to_f / total_people) * 100).round : 0 %>
-
-        <% teacher_percentage =
-             total_people > 0 ? ((@teachers.to_f / total_people) * 100).round : 0 %>
-
-
-        <div class="ratio-chart-wrapper">
-
-          <!-- CSS Pie Chart -->
-          <div
-            class="ratio-pie"
-            style="--student: <%= student_percentage %>%;"
-          >
-
-            <div class="ratio-pie-center">
+            <div class="donut-inner">
 
               <strong>
-                <%= total_people %>
+                <%= @courses %>
               </strong>
 
-              <small>
-                Total
-              </small>
+              <span>Courses</span>
 
             </div>
 
           </div>
 
 
-          <!-- Legend -->
-          <div class="ratio-details">
+          <div class="donut-legend">
 
-            <div class="ratio-item">
-
-              <span class="ratio-dot student-dot"></span>
-
-              <div>
-                <strong>Students</strong>
-                <span>
-                  <%= @students %>
-                </span>
-              </div>
-
+            <div class="legend-item">
+              <span class="legend-dot legend-blue"></span>
+              <span>Competitive Exams</span>
+              <strong>45%</strong>
             </div>
 
-
-            <div class="ratio-item">
-
-              <span class="ratio-dot teacher-dot"></span>
-
-              <div>
-                <strong>Teachers</strong>
-                <span>
-                  <%= @teachers %>
-                </span>
-              </div>
-
+            <div class="legend-item">
+              <span class="legend-dot legend-green"></span>
+              <span>Class 11th & 12th</span>
+              <strong>20%</strong>
             </div>
 
+            <div class="legend-item">
+              <span class="legend-dot legend-orange"></span>
+              <span>Foundation Batch</span>
+              <strong>15%</strong>
+            </div>
 
-            <div class="ratio-percentages">
+            <div class="legend-item">
+              <span class="legend-dot legend-purple"></span>
+              <span>Web Development</span>
+              <strong>10%</strong>
+            </div>
 
-              <div>
-                <strong><%= student_percentage %>%</strong>
-                <small>Students</small>
-              </div>
-
-              <div>
-                <strong><%= teacher_percentage %>%</strong>
-                <small>Teachers</small>
-              </div>
-
+            <div class="legend-item">
+              <span class="legend-dot legend-pink"></span>
+              <span>Others</span>
+              <strong>10%</strong>
             </div>
 
           </div>
@@ -514,64 +1441,225 @@
   </div>
 
 
-  <!-- System Statistics -->
-  <div class="col-lg-6">
+  <!-- =====================================================
+       RECENT ACTIVITY + QUICK LINKS
+  ====================================================== -->
 
-    <div class="card shadow border-0 analytics-card">
+  <div class="row g-4 mt-1">
 
-      <div class="card-header bg-white">
-        <h5 class="mb-0">System Statistics</h5>
-      </div>
+    <!-- RECENT ACTIVITY -->
 
-      <div class="card-body">
+    <div class="col-xl-5">
 
-        <% statistics = {
-          "Courses" => @courses,
-          "Enrollments" => @enrollments,
-          "Payments" => @payments,
-          "Demo Requests" => @demos
-        } %>
+      <div class="dashboard-card-modern">
 
-        <% max_value = statistics.values.map(&:to_i).max.to_i %>
+        <div class="dashboard-card-header">
 
-        <% max_value = 1 if max_value == 0 %>
+          <h5>Recent Activity</h5>
 
+          <span class="text-primary small">
+            View All →
+          </span>
 
-        <div class="statistics-list">
-
-          <% statistics.each do |label, value| %>
-
-            <% percentage =
-                 ((value.to_i.to_f / max_value) * 100).round %>
+        </div>
 
 
-            <div class="stat-row">
+        <div class="activity-list">
 
-              <div class="stat-heading">
+          <% if @recent_students.present? %>
 
-                <span>
-                  <%= label %>
-                </span>
+            <% @recent_students.first(3).each do |student| %>
 
-                <strong>
-                  <%= value %>
-                </strong>
+              <div class="activity-item">
 
-              </div>
+                <div class="activity-icon">
+                  <i class="bi bi-person-plus-fill"></i>
+                </div>
 
+                <div class="activity-info">
 
-              <div class="stat-progress">
+                  <strong>
+                    New student registered
+                  </strong>
 
-                <div
-                  class="stat-progress-bar"
-                  style="width: <%= percentage %>%;">
+                  <span>
+                    <%= student.name %>
+                  </span>
+
+                </div>
+
+                <div class="activity-time">
+                  Recent
                 </div>
 
               </div>
 
-            </div>
+            <% end %>
 
           <% end %>
+
+
+          <% if @recent_payments.present? %>
+
+            <% @recent_payments.first(2).each do |payment| %>
+
+              <div class="activity-item">
+
+                <div class="activity-icon">
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+
+                <div class="activity-info">
+
+                  <strong>
+                    Fee payment received
+                  </strong>
+
+                  <span>
+                    ₹ <%= payment.amount %>
+                  </span>
+
+                </div>
+
+                <div class="activity-time">
+                  <%= payment.created_at.strftime("%d %b") %>
+                </div>
+
+              </div>
+
+            <% end %>
+
+          <% end %>
+
+
+          <div class="activity-item">
+
+            <div class="activity-icon">
+              <i class="bi bi-play-circle-fill"></i>
+            </div>
+
+            <div class="activity-info">
+
+              <strong>
+                Video content available
+              </strong>
+
+              <span>
+                Total <%= @videos %> videos
+              </span>
+
+            </div>
+
+            <div class="activity-time">
+              System
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- QUICK LINKS -->
+
+    <div class="col-xl-7">
+
+      <div class="dashboard-card-modern">
+
+        <div class="dashboard-card-header">
+
+          <h5>Quick Links</h5>
+
+          <small>Manage your academy</small>
+
+        </div>
+
+
+        <div class="quick-links">
+
+          <div class="row g-3">
+
+            <div class="col-6 col-md-4">
+
+              <%= link_to new_student_path,
+                  class: "quick-link" do %>
+
+                <i class="bi bi-person-plus-fill"></i>
+                <span>Add Student</span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="col-6 col-md-4">
+
+              <%= link_to new_teacher_path,
+                  class: "quick-link" do %>
+
+                <i class="bi bi-person-workspace"></i>
+                <span>Add Teacher</span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="col-6 col-md-4">
+
+              <%= link_to new_admin_course_path,
+                  class: "quick-link" do %>
+
+                <i class="bi bi-book-fill"></i>
+                <span>Add Course</span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="col-6 col-md-4">
+
+              <%= link_to new_notification_path,
+                  class: "quick-link" do %>
+
+                <i class="bi bi-bell-fill"></i>
+                <span>Notification</span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="col-6 col-md-4">
+
+              <%= link_to admin_courses_path,
+                  class: "quick-link" do %>
+
+                <i class="bi bi-collection-play-fill"></i>
+                <span>Courses</span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="col-6 col-md-4">
+
+              <%= link_to admin_ebooks_path,
+                  class: "quick-link" do %>
+
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+                <span>E-Books</span>
+
+              <% end %>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -581,81 +1669,409 @@
 
   </div>
 
-</div>
 
-  <!-- Recent Students -->
-  <div class="card shadow border-0 mt-4">
+  <!-- =====================================================
+       RECENT STUDENTS
+  ====================================================== -->
 
-    <div class="card-header bg-white">
-      <h5 class="mb-0">Recent Students</h5>
-    </div>
+  <div class="row g-4 mt-1">
 
-    <div class="table-responsive">
+    <div class="col-12">
 
-      <table class="table table-hover mb-0">
+      <div class="dashboard-card-modern">
 
-        <thead class="table-light">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Mobile</th>
-          </tr>
-        </thead>
+        <div class="dashboard-card-header">
 
-        <tbody>
+          <div>
+            <h5>Recent Students</h5>
+            <small>Latest registered students</small>
+          </div>
 
-          <% @recent_students.each do |student| %>
-
-            <tr>
-              <td><%= student.name %></td>
-              <td><%= student.email %></td>
-              <td><%= student.mobile %></td>
-            </tr>
-
+          <%= link_to students_path,
+              class: "text-primary small text-decoration-none" do %>
+            View All →
           <% end %>
 
-        </tbody>
+        </div>
 
-      </table>
+
+        <div class="table-responsive">
+
+          <table class="table course-table mb-0">
+
+            <thead>
+
+              <tr>
+                <th>Student</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Status</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <% if @recent_students.present? %>
+
+                <% @recent_students.first(5).each do |student| %>
+
+                  <tr>
+
+                    <td>
+
+                      <div class="course-name">
+
+                        <div class="course-thumb d-flex align-items-center justify-content-center">
+                          <i class="bi bi-person-fill text-primary"></i>
+                        </div>
+
+                        <div>
+
+                          <strong>
+                            <%= student.name %>
+                          </strong>
+
+                          <small>
+                            Student
+                          </small>
+
+                        </div>
+
+                      </div>
+
+                    </td>
+
+
+                    <td>
+                      <%= student.email.presence || "—" %>
+                    </td>
+
+
+                    <td>
+                      <%= student.mobile.presence || "—" %>
+                    </td>
+
+
+                    <td>
+
+                      <span class="status-active">
+                        Active
+                      </span>
+
+                    </td>
+
+                  </tr>
+
+                <% end %>
+
+              <% else %>
+
+                <tr>
+
+                  <td colspan="4"
+                      class="text-center py-4">
+
+                    No students registered yet.
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
-  <!-- Recent Payments -->
-  <div class="card shadow border-0 mt-4">
 
-    <div class="card-header bg-white">
-      <h5 class="mb-0">Recent Payments</h5>
+  <!-- =====================================================
+       PROMO
+  ====================================================== -->
+
+  <div class="row g-4 mt-1">
+
+    <div class="col-12">
+
+      <div class="dashboard-promo">
+
+        <div class="promo-content">
+
+          <%= image_tag "logo.jpeg",
+              class: "promo-logo",
+              alt: "A One GS Center" %>
+
+          <h4>
+            Your Success<br>
+            Our Mission
+          </h4>
+
+          <p>
+            Quality education for a better tomorrow.
+            Manage courses, students and learning
+            resources from one place.
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="table-responsive">
+  </div>
 
-      <table class="table table-hover mb-0">
 
-        <thead class="table-light">
-          <tr>
-            <th>Student</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
-        </thead>
+  <!-- =====================================================
+       RECENT PAYMENTS
+  ====================================================== -->
 
-        <tbody>
+  <div class="row g-4 mt-1">
 
-          <% @recent_payments.each do |payment| %>
+    <div class="col-12">
 
-            <tr>
-              <td><%= payment.enrollment.user.name %></td>
-              <td>₹ <%= payment.amount %></td>
-              <td><%= payment.created_at.strftime("%d %b %Y") %></td>
-            </tr>
+      <div class="dashboard-card-modern">
+
+        <div class="dashboard-card-header">
+
+          <div>
+            <h5>Recent Payments</h5>
+            <small>Latest course payment transactions</small>
+          </div>
+
+          <span class="badge bg-light text-primary">
+            Payments
+          </span>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+          <table class="table course-table payment-table mb-0">
+
+            <thead>
+
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Payment ID</th>
+                <th>Order ID</th>
+                <th>Razorpay Payment ID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date & Time</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+
+          <tbody>
+
+  <% if @recent_payments.present? %>
+
+    <% @recent_payments.each do |payment| %>
+
+      <% enrollment = payment.enrollment %>
+      <% student = enrollment&.user %>
+      <% course = enrollment&.course %>
+
+      <tr>
+
+        <!-- STUDENT -->
+        <td>
+          <div class="payment-student">
+
+            <div class="payment-student-avatar">
+              <%= student&.name.to_s.first.upcase.presence || "S" %>
+            </div>
+
+            <div class="payment-student-info">
+
+              <span class="payment-student-name">
+                <%= student&.name.presence || "Unknown Student" %>
+              </span>
+
+              <span class="payment-student-email">
+                <%= student&.email.presence || "—" %>
+              </span>
+
+            </div>
+
+          </div>
+        </td>
+
+
+        <!-- COURSE -->
+        <td>
+          <span class="payment-course-name">
+            <%= course&.Course_name.presence || "Unknown Course" %>
+          </span>
+        </td>
+
+
+        <!-- PAYMENT ID -->
+        <td>
+          <span class="payment-id">
+            #<%= payment.id %>
+          </span>
+        </td>
+
+
+        <!-- ORDER ID -->
+        <td>
+          <% if payment.razorpay_order_id.present? %>
+
+            <span
+              class="payment-razorpay-id"
+              title="<%= payment.razorpay_order_id %>">
+
+              <%= payment.razorpay_order_id %>
+
+            </span>
+
+          <% else %>
+            <span>—</span>
+          <% end %>
+        </td>
+
+
+        <!-- RAZORPAY PAYMENT ID -->
+        <td>
+          <% if payment.razorpay_payment_id.present? %>
+
+            <span
+              class="payment-razorpay-id"
+              title="<%= payment.razorpay_payment_id %>">
+
+              <%= payment.razorpay_payment_id %>
+
+            </span>
+
+          <% else %>
+            <span>—</span>
+          <% end %>
+        </td>
+
+
+        <!-- AMOUNT -->
+        <td>
+          <span class="payment-amount">
+            ₹ <%= number_with_precision(
+              payment.amount,
+              precision: 2
+            ) %>
+          </span>
+        </td>
+
+
+        <!-- STATUS -->
+        <td>
+
+          <% status_class = payment.status.to_s.downcase %>
+
+          <span class="payment-status <%= status_class %>">
+
+            <% if ["paid", "success", "completed"].include?(status_class) %>
+
+              <i class="bi bi-check-circle-fill"></i>
+
+            <% elsif status_class == "pending" %>
+
+              <i class="bi bi-clock-fill"></i>
+
+            <% elsif ["failed", "cancelled"].include?(status_class) %>
+
+              <i class="bi bi-x-circle-fill"></i>
+
+            <% else %>
+
+              <i class="bi bi-info-circle-fill"></i>
+
+            <% end %>
+
+            <%= payment.status.to_s.titleize %>
+
+          </span>
+
+        </td>
+
+
+        <!-- DATE & TIME -->
+        <td>
+
+          <div class="payment-date">
+
+            <span class="payment-date-main">
+              <%= payment.created_at.strftime("%d %b %Y") %>
+            </span>
+
+            <span class="payment-date-time">
+              <%= payment.created_at.strftime("%I:%M %p") %>
+            </span>
+
+          </div>
+
+        </td>
+
+
+        <!-- VIEW DETAILS -->
+        <td>
+
+          <%= link_to admin_payment_path(payment),
+              class: "payment-view-btn" do %>
+
+            <i class="bi bi-eye"></i>
+            <span>View Details</span>
 
           <% end %>
 
-        </tbody>
+        </td>
 
-      </table>
+      </tr>
+
+    <% end %>
+
+
+  <% else %>
+
+    <!-- EMPTY STATE -->
+    <tr>
+
+      <td colspan="9" class="payment-empty">
+
+        <div class="payment-empty-icon">
+          <i class="bi bi-credit-card"></i>
+        </div>
+
+        <strong>No payments yet</strong>
+
+        <small>
+          Course payment transactions will appear here.
+        </small>
+
+      </td>
+
+    </tr>
+
+  <% end %>
+
+</tbody>
+
+          </table>
+
+        </div>
+
+      </div>
 
     </div>
 

@@ -201,6 +201,98 @@ body.admin-body {
 
 }
 
+
+/* =========================================================
+   ADMIN BACK BUTTON
+========================================================= */
+
+.admin-back-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+}
+
+.admin-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 10px 17px;
+
+  border: 1px solid rgba(128, 9, 226, 0.14);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  color: #5b21b6;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 15px rgba(91, 33, 182, 0.10),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-back-button i {
+  font-size: 15px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.admin-back-button:hover {
+  background: #f7f1ff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(91, 33, 182, 0.15);
+}
+
+.admin-back-button:hover i {
+  transform: translateX(-4px);
+}
+
+.admin-back-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-back-wrapper {
+    margin-bottom: 14px;
+  }
+
+  .admin-back-button {
+    padding: 9px 14px;
+
+    font-size: 13px;
+
+    border-radius: 10px;
+  }
+
+}
+
 </style>
 
 </head>
@@ -242,7 +334,7 @@ body.admin-body {
       ==================================================== -->
 
       <main class="admin-content">
-
+      <%= render "admin/shared/back_button" %>
 
         <!-- =================================================
              SUCCESS MESSAGE

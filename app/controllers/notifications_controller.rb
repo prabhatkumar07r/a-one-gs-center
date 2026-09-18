@@ -1,4 +1,5 @@
 class NotificationsController < ApplicationController
+  layout "admin"
   before_action :set_notification, only: %i[ show edit update destroy ]
 
   # GET /notifications or /notifications.json

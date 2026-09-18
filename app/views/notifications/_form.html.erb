@@ -1,99 +1,801 @@
 <%= form_with(model: @notification, local: true) do |form| %>
 
   <% if @notification.errors.any? %>
-    <div class="alert alert-danger">
-      <h5><%= pluralize(@notification.errors.count, "error") %> prohibited this notification from being saved:</h5>
-      <ul>
-        <% @notification.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+    <div class="notification-form-error">
+      <div class="notification-error-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+
+      <div>
+        <h5>
+          <%= pluralize(@notification.errors.count, "error") %>
+          prohibited this notification from being saved:
+        </h5>
+
+        <ul>
+          <% @notification.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white">
-      <h4>📢 Notification Form</h4>
-    </div>
 
-    <div class="card-body">
+  <div class="notification-form-page">
 
-      <div class="mb-3">
-        <%= form.label :title, class: "form-label" %>
-        <%= form.text_field :title,
-              class: "form-control",
-              placeholder: "Enter Notification Title" %>
-      </div>
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
 
-      <div class="mb-3">
-        <%= form.label :description, class: "form-label" %>
-        <%= form.text_area :description,
-              rows: 5,
-              class: "form-control",
-              placeholder: "Enter Notification Description" %>
-      </div>
+    <div class="notification-form-card">
 
-      <div class="row">
+      <!-- CARD HEADER -->
+      <div class="notification-form-card-top">
 
-        <div class="col-md-6 mb-3">
-          <%= form.label :notification_type, class: "form-label" %>
-          <%= form.select :notification_type,
-                ["Admission",
-                 "Exam",
-                 "Holiday",
-                 "Fee",
-                 "Result",
-                 "Event",
-                 "General"],
-                {},
-                class: "form-select" %>
+        <div>
+          <span class="notification-section-kicker">
+            <i class="bi bi-pencil-square"></i>
+            NOTIFICATION DETAILS
+          </span>
+
+          <h2>
+            Notification Form
+          </h2>
         </div>
 
-        <div class="col-md-6 mb-3">
-          <%= form.label :status, class: "form-label" %>
-          <%= form.select :status,
-                ["Active", "Inactive"],
-                {},
-                class: "form-select" %>
+        <div class="notification-live-badge">
+          <span></span>
+          Admin
         </div>
 
       </div>
 
-      <div class="row">
 
-        <div class="col-md-6 mb-3">
-          <%= form.label :start_date, class: "form-label" %>
-          <%= form.date_field :start_date,
-                class: "form-control" %>
+      <!-- ===================================================
+           FORM BODY
+      ==================================================== -->
+
+      <div class="notification-form-body">
+
+        <!-- TITLE -->
+        <div class="notification-field">
+
+          <%= form.label :title, class: "notification-label" do %>
+            <i class="bi bi-type"></i>
+            Notification Title
+          <% end %>
+
+          <%= form.text_field :title,
+                class: "notification-input",
+                placeholder: "Enter notification title",
+                autocomplete: "off" %>
+
+          <span class="notification-field-help">
+            Keep the title short and clear.
+          </span>
+
         </div>
 
-        <div class="col-md-6 mb-3">
-          <%= form.label :end_date, class: "form-label" %>
-          <%= form.date_field :end_date,
-                class: "form-control" %>
+
+        <!-- DESCRIPTION -->
+        <div class="notification-field">
+
+          <%= form.label :description, class: "notification-label" do %>
+            <i class="bi bi-card-text"></i>
+            Notification Description
+          <% end %>
+
+          <%= form.text_area :description,
+                rows: 6,
+                class: "notification-input notification-textarea",
+                placeholder: "Enter notification description..." %>
+
+          <span class="notification-field-help">
+            Add the complete information students need to know.
+          </span>
+
+        </div>
+
+
+        <!-- TYPE + STATUS -->
+        <div class="notification-form-grid">
+
+          <!-- TYPE -->
+          <div class="notification-field">
+
+            <%= form.label :notification_type, class: "notification-label" do %>
+              <i class="bi bi-tags-fill"></i>
+              Notification Type
+            <% end %>
+
+            <%= form.select :notification_type,
+                  [
+                    "Admission",
+                    "Exam",
+                    "Holiday",
+                    "Fee",
+                    "Result",
+                    "Event",
+                    "General"
+                  ],
+                  {},
+                  class: "notification-input notification-select" %>
+
+          </div>
+
+
+          <!-- STATUS -->
+          <div class="notification-field">
+
+            <%= form.label :status, class: "notification-label" do %>
+              <i class="bi bi-toggle-on"></i>
+              Status
+            <% end %>
+
+            <%= form.select :status,
+                  ["Active", "Inactive"],
+                  {},
+                  class: "notification-input notification-select" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- START DATE + END DATE -->
+        <div class="notification-form-grid">
+
+          <!-- START DATE -->
+          <div class="notification-field">
+
+            <%= form.label :start_date, class: "notification-label" do %>
+              <i class="bi bi-calendar-event"></i>
+              Start Date
+            <% end %>
+
+            <%= form.date_field :start_date,
+                  class: "notification-input" %>
+
+          </div>
+
+
+          <!-- END DATE -->
+          <div class="notification-field">
+
+            <%= form.label :end_date, class: "notification-label" do %>
+              <i class="bi bi-calendar-check"></i>
+              End Date
+            <% end %>
+
+            <%= form.date_field :end_date,
+                  class: "notification-input" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- ATTACHMENT -->
+        <div class="notification-field">
+
+          <%= form.label :attachment, class: "notification-label" do %>
+            <i class="bi bi-paperclip"></i>
+            Attachment
+          <% end %>
+
+          <div class="notification-upload-box">
+
+            <div class="notification-upload-icon">
+              <i class="bi bi-cloud-arrow-up-fill"></i>
+            </div>
+
+            <div class="notification-upload-content">
+
+              <strong>
+                Upload Attachment
+              </strong>
+
+              <span>
+                Add an image or document if required.
+              </span>
+
+            </div>
+
+            <%= form.file_field :attachment,
+                  class: "notification-file-input" %>
+
+          </div>
+
         </div>
 
       </div>
 
-      <div class="mb-3">
-        <%= form.label :attachment, class: "form-label" %>
-        <%= form.file_field :attachment,
-              class: "form-control" %>
+
+      <!-- ===================================================
+           FORM FOOTER
+      ==================================================== -->
+
+      <div class="notification-form-footer">
+
+        <%= link_to notifications_path,
+              class: "notification-cancel-button" do %>
+
+          <i class="bi bi-arrow-left"></i>
+          Cancel
+
+        <% end %>
+
+
+        <%= form.submit(
+              @notification.new_record? ?
+              "Save Notification" :
+              "Update Notification",
+              class: "notification-save-button"
+            ) %>
+
       </div>
-
-    </div>
-
-    <div class="card-footer">
-
-      <%= form.submit "💾 Save Notification",
-            class: "btn btn-success" %>
-
-      <%= link_to "Cancel",
-            notifications_path,
-            class: "btn btn-secondary" %>
 
     </div>
 
   </div>
 
 <% end %>
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   NOTIFICATION FORM CONTAINER
+========================================================= */
+
+.notification-form-page {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
+
+.notification-form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  margin: 0 auto 22px;
+  max-width: 800px;
+
+  padding: 18px 20px;
+
+  border: 1px solid rgba(220, 38, 38, .15);
+  border-radius: 18px;
+
+  background: rgba(255,255,255,.97);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.07);
+}
+
+.notification-error-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #fee2e2;
+  color: #dc2626;
+
+  font-size: 18px;
+}
+
+.notification-form-error h5 {
+  margin: 0 0 8px;
+
+  color: #991b1b;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.notification-form-error ul {
+  margin: 0;
+  padding-left: 18px;
+
+  color: #7f1d1d;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.notification-form-card {
+  width: 100%;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(124,58,237,.12);
+  border-radius: 25px;
+
+  background: rgba(255,255,255,.98);
+
+  box-shadow:
+    0 25px 60px rgba(31,13,61,.10),
+    0 5px 15px rgba(31,13,61,.05);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.notification-form-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 25px 28px;
+
+  border-bottom: 1px solid rgba(124,58,237,.09);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.07),
+      rgba(168,85,247,.025),
+      rgba(255,255,255,.8)
+    );
+}
+
+.notification-section-kicker {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 5px;
+
+  color: #8b5cf6;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+}
+
+.notification-form-card-top h2 {
+  margin: 0;
+
+  color: #27143e;
+
+  font-size: 21px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   ADMIN BADGE
+========================================================= */
+
+.notification-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 7px 12px;
+
+  border-radius: 30px;
+
+  background: #f3e8ff;
+  color: #6d28d9;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.notification-live-badge span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 4px rgba(34,197,94,.12);
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.notification-form-body {
+  padding: 30px;
+}
+
+.notification-field {
+  margin-bottom: 24px;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.notification-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 9px;
+
+  color: #35204e;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notification-label i {
+  color: #7c3aed;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.notification-input {
+  display: block;
+
+  width: 100%;
+  min-height: 48px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #e5dcef;
+  border-radius: 13px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #28163d;
+
+  font-size: 14px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.notification-input::placeholder {
+  color: #aaa1b4;
+}
+
+.notification-input:hover {
+  border-color: #cdb7ed;
+}
+
+.notification-input:focus {
+  border-color: #8b5cf6;
+
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,.10),
+    0 7px 18px rgba(91,33,182,.06);
+
+  transform: translateY(-1px);
+}
+
+.notification-textarea {
+  min-height: 145px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+.notification-select {
+  cursor: pointer;
+}
+
+.notification-field-help {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   TWO COLUMN GRID
+========================================================= */
+
+.notification-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   FILE UPLOAD
+========================================================= */
+
+.notification-upload-box {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  min-height: 82px;
+
+  padding: 14px 18px;
+
+  overflow: hidden;
+
+  border: 1.5px dashed #cdb7ed;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf7ff,
+      #ffffff
+    );
+
+  transition: all .2s ease;
+}
+
+.notification-upload-box:hover {
+  border-color: #8b5cf6;
+
+  background: #faf5ff;
+
+  transform: translateY(-1px);
+}
+
+.notification-upload-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #ede9fe;
+  color: #7c3aed;
+
+  font-size: 20px;
+}
+
+.notification-upload-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.notification-upload-content strong {
+  color: #35204e;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.notification-upload-content span {
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+.notification-file-input {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.notification-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding: 20px 28px;
+
+  border-top: 1px solid rgba(124,58,237,.09);
+
+  background: #fcfbff;
+}
+
+
+/* =========================================================
+   CANCEL BUTTON
+========================================================= */
+
+.notification-cancel-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 44px;
+
+  padding: 0 18px;
+
+  border: 1px solid #e5dcef;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #6b7280;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  transition: all .2s ease;
+}
+
+.notification-cancel-button:hover {
+  background: #f8f5fb;
+  color: #4b5563;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
+.notification-save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+
+  padding: 0 23px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #9333ea
+    );
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 9px 20px rgba(124,58,237,.24);
+
+  transition: all .2s ease;
+}
+
+.notification-save-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 28px rgba(124,58,237,.30);
+
+  filter: brightness(1.04);
+}
+
+.notification-save-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .notification-form-body {
+    padding: 22px 18px;
+  }
+
+  .notification-form-card-top {
+    padding: 20px 18px;
+  }
+
+  .notification-form-footer {
+    padding: 18px;
+
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .notification-cancel-button,
+  .notification-save-button {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .notification-form-grid {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+  .notification-live-badge {
+    display: none;
+  }
+
+}
+
+
+@media (max-width: 420px) {
+
+  .notification-form-body {
+    padding: 18px 14px;
+  }
+
+  .notification-form-card-top {
+    padding: 18px 14px;
+  }
+
+  .notification-form-card-top h2 {
+    font-size: 19px;
+  }
+
+}
+
+</style>

@@ -1,38 +1,172 @@
-
 <% content_for :title, "New Notification" %>
 
-<div class="admin-layout">
+<div class="admin-notification-new-page">
 
-  <%= render "layouts/admin_sidebar" %>
+  <div class="notification-new-header">
+    <span class="notification-new-kicker">
+      <i class="bi bi-bell-fill"></i>
+      NOTIFICATION MANAGEMENT
+    </span>
 
-  <main class="admin-main">
-    <div class="container-fluid py-4">
+    <h1>Create Notification</h1>
 
-      <!-- Page Header -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h1 class="fw-bold mb-1">New Notification</h1>
-          <p class="text-muted mb-0">
-            Create a new notification for students.
-          </p>
-        </div>
+    <p>
+      Create important updates and announcements for students and users.
+    </p>
+  </div>
 
-        <%= link_to notifications_path, class: "btn btn-outline-secondary" do %>
-          <i class="bi bi-arrow-left me-1"></i>
-          Back to Notifications
-        <% end %>
-      </div>
-
-      <!-- Notification Form -->
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-
-          <%= render "form", notification: @notification %>
-
-        </div>
-      </div>
-
-    </div>
-  </main>
+  <%= render "form", notification: @notification %>
 
 </div>
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+.admin-notification-new-page {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 5px 0 50px;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.notification-new-header {
+  margin-bottom: 24px;
+}
+
+.notification-new-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #c4b5fd;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.notification-new-header h1 {
+  margin: 7px 0 5px;
+
+  color: #ffffff;
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.notification-new-header p {
+  margin: 0;
+
+  color: rgba(255,255,255,.72);
+  font-size: 14px;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+  .admin-notification-new-page {
+    max-width: 100%;
+  }
+
+  .notification-new-header h1 {
+    font-size: 29px;
+  }
+
+}
+
+
+
+
+/* =========================================================
+   NEW NOTIFICATION PAGE
+========================================================= */
+
+.admin-notification-new-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 20px 40px 0;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.notification-new-header {
+  width: 100%;
+  margin: 0 0 14px 0;
+  padding: 0;
+}
+
+.notification-new-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #c4b5fd;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.notification-new-header h1 {
+  margin: 5px 0 3px;
+
+  color: #ffffff;
+
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.notification-new-header p {
+  margin: 0;
+
+  color: rgba(255,255,255,.72);
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   FORM POSITION
+========================================================= */
+
+.notification-new-form-wrapper {
+  width: 800px;
+  max-width: 100%;
+  margin: 0;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .admin-notification-new-page {
+    padding-right: 0;
+  }
+
+  .notification-new-form-wrapper {
+    width: 100%;
+  }
+
+  .notification-new-header h1 {
+    font-size: 30px;
+  }
+
+}
+
+</style>

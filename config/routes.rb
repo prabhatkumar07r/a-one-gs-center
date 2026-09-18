@@ -135,6 +135,7 @@ Rails.application.routes.draw do
   # ==================================================
 
   namespace :admin do
+    resources :payments, only: [:index,:show]
     resources :testimonials do
   member do
     patch :toggle_status
