@@ -423,42 +423,33 @@
                                            value: index + 1 %>
 
             </div>
-
-
             <div class="correct-area">
 
-              <%= option_form.radio_button :is_correct,
-                                           true,
-                                           class:
-                                           "correct-option",
-                                           name: "correct_option",
-                                           value: index,
-                                           checked:
-                                           option_form.object.is_correct? %>
+                   <% radio_id = "correct_option_#{index}" %>
 
+                 <%= option_form.radio_button :is_correct,
+                               true,
+                               class: "correct-option",
+                               name: "correct_option",
+                               value: index,
+                               id: radio_id,
+                               checked: option_form.object.is_correct? %>
 
-              <label>
+               <label for="<%= radio_id %>">
 
-                <span class="radio-custom"></span>
+               <span class="radio-custom"></span>
 
-                <span>
+               <span>
+                 Correct Answer
+                 </span>
 
-                  Correct Answer
+                </label>
 
-                </span>
+                <%= option_form.hidden_field :is_correct,
+                               value: option_form.object.is_correct? ? "true" : "false",
+                               class: "correct-hidden" %>
 
-              </label>
-
-
-              <!-- Actual submitted value -->
-
-              <%= option_form.hidden_field :is_correct,
-                                            value:
-                                            option_form.object.is_correct?,
-                                            class:
-                                            "correct-hidden" %>
-
-            </div>
+                </div>
 
           </div>
 
