@@ -537,7 +537,7 @@
         class="nav-link"
         data-bs-toggle="collapse"
         role="button"
-        aria-expanded="<%= controller_path.start_with?('students', 'admin/enrollments', 'attendances', 'fees') %>"
+        aria-expanded="<%= controller_path.start_with?('students', 'admin/enrollments','admin/payments', 'attendances', 'fees') %>"
         aria-controls="studentMenu">
 
         <i class="bi bi-people"></i>
@@ -550,7 +550,7 @@
 
 
       <div
-        class="collapse <%= 'show' if controller_path.start_with?('students', 'admin/enrollments', 'attendances', 'fees') %>"
+        class="collapse <%= 'show' if controller_path.start_with?('students', 'admin/enrollments','admin/payments', 'attendances', 'fees') %>"
         id="studentMenu">
 
         <ul class="nav flex-column submenu">
@@ -586,6 +586,25 @@
             <% end %>
 
           </li>
+
+
+
+          <!-- =====================================================
+     PAYMENT MANAGEMENT
+====================================================== -->
+
+<li class="nav-item">
+
+  <%= link_to admin_payments_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/payments')}" do %>
+
+    <i class="bi bi-credit-card-2-front-fill"></i>
+
+    <span>Payment Management</span>
+
+  <% end %>
+
+</li>
 
 
           <!-- Attendance -->

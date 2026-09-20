@@ -1,5 +1,9 @@
+<style nonce="<%= content_security_policy_nonce %>">
 
-<style>
+/* =========================================================
+   ADMIN PAYMENT PAGE
+========================================================= */
+
 .admin-payment-page {
     min-height: 100vh;
     padding: 25px 5px 60px;
@@ -32,7 +36,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    gap: 20px;
     margin-bottom: 28px;
 }
 
@@ -84,6 +88,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
 
     border-radius: 22px;
 
@@ -160,6 +166,8 @@
     border-radius: 50%;
 
     background: rgba(128,9,226,0.07);
+
+    pointer-events: none;
 }
 
 .payment-stat-card:hover {
@@ -219,8 +227,12 @@
     background: #fff0f3;
 }
 
-.payment-stat-trend {
-    padding: 5px 8px;
+.payment-stat-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 5px 9px;
 
     border-radius: 999px;
 
@@ -228,8 +240,19 @@
 
     color: #059669;
 
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
+}
+
+.payment-stat-live::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #10b981;
 }
 
 .payment-stat-label {
@@ -260,7 +283,7 @@
 
 
 /* =========================================================
-   FILTER
+   FILTER CARD
 ========================================================= */
 
 .payment-filter-card {
@@ -303,6 +326,8 @@
     color: #8009e2;
 
     font-size: 15px;
+
+    pointer-events: none;
 }
 
 .payment-search-box input,
@@ -334,6 +359,10 @@
     padding-left: 40px;
 }
 
+.payment-search-box input::placeholder {
+    color: #94a3b8;
+}
+
 .payment-search-box input:focus,
 .payment-filter-select select:focus {
     border-color: rgba(128,9,226,.35);
@@ -358,6 +387,11 @@
 
     padding: 0 20px;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
     border: 0;
 
     border-radius: 10px;
@@ -374,6 +408,8 @@
     font-size: 11px;
     font-weight: 750;
 
+    text-decoration: none;
+
     box-shadow:
         0 7px 15px rgba(128,9,226,.22);
 
@@ -385,8 +421,89 @@
 .payment-filter-btn:hover {
     transform: translateY(-2px);
 
+    color: #ffffff;
+
     box-shadow:
         0 10px 22px rgba(128,9,226,.28);
+}
+
+.payment-reset-btn {
+    height: 43px;
+
+    padding: 0 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e5f0;
+
+    color: #64748b;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    text-decoration: none;
+
+    transition: all .2s ease;
+}
+
+.payment-reset-btn:hover {
+    color: #8009e2;
+
+    border-color: rgba(128,9,226,.25);
+
+    background: #faf8ff;
+}
+
+
+/* =========================================================
+   ACTIVE FILTER INFO
+========================================================= */
+
+.payment-filter-info {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin: -10px 0 18px;
+
+    padding: 0 4px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+.payment-filter-info strong {
+    color: #475569;
+}
+
+.payment-active-filter {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: #f1eaff;
+
+    color: #6d28d9;
+
+    font-size: 9px;
+    font-weight: 750;
 }
 
 
@@ -414,6 +531,8 @@
     align-items: center;
     justify-content: space-between;
 
+    gap: 15px;
+
     padding: 20px 21px 17px;
 }
 
@@ -432,6 +551,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
 
     border-radius: 11px;
 
@@ -476,6 +597,8 @@
 
     font-size: 10px;
     font-weight: 750;
+
+    white-space: nowrap;
 }
 
 
@@ -489,6 +612,9 @@
     overflow-x: auto;
 
     padding: 0 12px;
+
+    scrollbar-width: thin;
+    scrollbar-color: #d8c9f5 transparent;
 }
 
 .payment-management-table {
@@ -528,7 +654,8 @@
 }
 
 .payment-management-table tbody tr {
-    transition: background .18s ease;
+    transition:
+        background .18s ease;
 }
 
 .payment-management-table tbody tr:hover {
@@ -633,6 +760,8 @@
     overflow: hidden;
 
     text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 .payment-course-info small {
@@ -804,71 +933,11 @@
 
 
 /* =========================================================
-   FOOTER
-========================================================= */
-
-.payment-table-footer {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 14px 20px;
-
-    color: #94a3b8;
-
-    font-size: 10px;
-}
-
-.payment-table-footer strong {
-    color: #475569;
-}
-
-.payment-pagination {
-    display: flex;
-
-    gap: 5px;
-}
-
-.payment-pagination button {
-    width: 31px;
-    height: 31px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid #e8e5f1;
-
-    border-radius: 8px;
-
-    background: #ffffff;
-
-    color: #64748b;
-
-    font-size: 10px;
-
-    cursor: pointer;
-}
-
-.payment-pagination button.active {
-    background: #8009e2;
-
-    border-color: #8009e2;
-
-    color: #ffffff;
-
-    box-shadow:
-        0 5px 12px rgba(128,9,226,.20);
-}
-
-
-/* =========================================================
-   EMPTY
+   EMPTY STATE
 ========================================================= */
 
 .payment-empty-state {
-    padding: 60px 20px;
+    padding: 65px 20px;
 
     text-align: center;
 }
@@ -910,6 +979,101 @@
 
 
 /* =========================================================
+   PAGINATION
+========================================================= */
+
+.payment-table-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px 20px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+.payment-table-footer strong {
+    color: #475569;
+}
+
+.payment-pagination {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+}
+
+.payment-page-link {
+    min-width: 31px;
+    height: 31px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 8px;
+
+    border: 1px solid #e8e5f1;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: all .18s ease;
+}
+
+.payment-page-link:hover {
+    border-color: rgba(128,9,226,.25);
+
+    background: #faf8ff;
+
+    color: #8009e2;
+}
+
+.payment-page-link.active {
+    background: #8009e2;
+
+    border-color: #8009e2;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 5px 12px rgba(128,9,226,.20);
+}
+
+.payment-page-link.disabled {
+    opacity: .45;
+
+    pointer-events: none;
+
+    cursor: default;
+}
+
+.payment-page-dots {
+    min-width: 25px;
+
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -925,7 +1089,8 @@
             1fr 1fr;
     }
 
-    .payment-filter-btn {
+    .payment-filter-btn,
+    .payment-reset-btn {
         width: 100%;
     }
 }
@@ -945,11 +1110,18 @@
         font-size: 24px;
     }
 
+    .payment-page-header p {
+        max-width: 240px;
+        line-height: 1.5;
+    }
+
     .payment-header-icon {
         width: 55px;
         height: 55px;
 
         font-size: 22px;
+
+        border-radius: 17px;
     }
 
     .payment-stats-grid {
@@ -958,27 +1130,78 @@
 
     .payment-filter-card {
         grid-template-columns: 1fr;
+
+        padding: 14px;
+    }
+
+    .payment-filter-info {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        margin-top: -5px;
     }
 
     .payment-table-header {
         align-items: flex-start;
 
-        gap: 10px;
+        flex-direction: column;
     }
 
     .payment-count-badge {
-        display: none;
+        display: inline-flex;
     }
 
     .payment-table-footer {
         flex-direction: column;
 
         align-items: flex-start;
+    }
 
+    .payment-pagination {
+        width: 100%;
+
+        overflow-x: auto;
+
+        padding-bottom: 3px;
+    }
+}
+
+
+@media (max-width: 420px) {
+
+    .payment-page-header {
         gap: 12px;
     }
 
+    .payment-page-header h1 {
+        font-size: 21px;
+    }
+
+    .payment-kicker {
+        font-size: 9px;
+    }
+
+    .payment-stat-card {
+        min-height: 140px;
+
+        padding: 17px;
+    }
+
+    .payment-stat-card h2 {
+        font-size: 22px;
+    }
+
+    .payment-table-title h3 {
+        font-size: 14px;
+    }
+
+    .payment-page-link {
+        min-width: 29px;
+        height: 29px;
+    }
 }
+
 </style>
 
 
@@ -987,6 +1210,7 @@
   <!-- =====================================================
        PAGE HEADER
   ====================================================== -->
+
   <div class="payment-page-header">
 
     <div class="payment-header-left">
@@ -996,7 +1220,9 @@
         PAYMENTS
       </span>
 
-      <h1>Payment Management</h1>
+      <h1>
+        Payment Management
+      </h1>
 
       <p>
         Track and manage all course payment transactions
@@ -1014,128 +1240,137 @@
   <!-- =====================================================
        STATISTICS
   ====================================================== -->
-<!-- =====================================================
-     STATISTICS
-====================================================== -->
 
-<div class="payment-stats-grid">
+  <div class="payment-stats-grid">
 
-  <!-- TOTAL REVENUE -->
-  <div class="payment-stat-card revenue-card">
+    <!-- TOTAL REVENUE -->
 
-    <div class="payment-stat-top">
+    <div class="payment-stat-card revenue-card">
 
-      <div class="payment-stat-icon">
-        <i class="bi bi-currency-rupee"></i>
+      <div class="payment-stat-top">
+
+        <div class="payment-stat-icon">
+          <i class="bi bi-currency-rupee"></i>
+        </div>
+
+        <span class="payment-stat-live">
+          Live
+        </span>
+
       </div>
 
-      <span class="payment-stat-trend">
-        <i class="bi bi-arrow-up"></i>
-        12%
+      <span class="payment-stat-label">
+        Total Revenue
       </span>
 
+      <h2>
+        ₹ <%= number_with_precision(
+          @total_revenue,
+          precision: 2
+        ) %>
+      </h2>
+
+      <small>
+        From all successful payments
+      </small>
+
     </div>
 
-    <span class="payment-stat-label">
-      Total Revenue
-    </span>
 
-    <h2>
-      ₹ <%= number_with_precision(@total_revenue, precision: 2) %>
-    </h2>
+    <!-- SUCCESSFUL -->
 
-    <small>
-      From all successful payments
-    </small>
+    <div class="payment-stat-card success-card">
 
-  </div>
+      <div class="payment-stat-top">
 
+        <div class="payment-stat-icon">
+          <i class="bi bi-check-lg"></i>
+        </div>
 
-  <!-- SUCCESSFUL -->
-  <div class="payment-stat-card success-card">
-
-    <div class="payment-stat-top">
-
-      <div class="payment-stat-icon">
-        <i class="bi bi-check-lg"></i>
       </div>
 
+      <span class="payment-stat-label">
+        Successful Payments
+      </span>
+
+      <h2>
+        <%= @successful_payments %>
+      </h2>
+
+      <small>
+        Completed transactions
+      </small>
+
     </div>
 
-    <span class="payment-stat-label">
-      Successful Payments
-    </span>
 
-    <h2>
-      <%= @successful_payments %>
-    </h2>
+    <!-- CREATED -->
 
-    <small>
-      Completed transactions
-    </small>
+    <div class="payment-stat-card pending-card">
 
-  </div>
+      <div class="payment-stat-top">
 
+        <div class="payment-stat-icon">
+          <i class="bi bi-clock"></i>
+        </div>
 
-  <!-- CREATED -->
-  <div class="payment-stat-card pending-card">
-
-    <div class="payment-stat-top">
-
-      <div class="payment-stat-icon">
-        <i class="bi bi-clock"></i>
       </div>
 
+      <span class="payment-stat-label">
+        Created Payments
+      </span>
+
+      <h2>
+        <%= @pending_payments %>
+      </h2>
+
+      <small>
+        Awaiting payment completion
+      </small>
+
     </div>
 
-    <span class="payment-stat-label">
-      Created Payments
-    </span>
 
-    <h2>
-      <%= @pending_payments %>
-    </h2>
+    <!-- FAILED -->
 
-    <small>
-      Awaiting payment completion
-    </small>
+    <div class="payment-stat-card failed-card">
 
-  </div>
+      <div class="payment-stat-top">
 
+        <div class="payment-stat-icon">
+          <i class="bi bi-x-lg"></i>
+        </div>
 
-  <!-- FAILED -->
-  <div class="payment-stat-card failed-card">
-
-    <div class="payment-stat-top">
-
-      <div class="payment-stat-icon">
-        <i class="bi bi-x-lg"></i>
       </div>
 
+      <span class="payment-stat-label">
+        Failed Payments
+      </span>
+
+      <h2>
+        <%= @failed_payments %>
+      </h2>
+
+      <small>
+        Failed or cancelled
+      </small>
+
     </div>
 
-    <span class="payment-stat-label">
-      Failed Payments
-    </span>
-
-    <h2>
-      <%= @failed_payments %>
-    </h2>
-
-    <small>
-      Failed or cancelled
-    </small>
-
   </div>
-
-</div>
 
 
   <!-- =====================================================
-       FILTER BAR
+       SERVER-SIDE FILTER
   ====================================================== -->
 
-  <div class="payment-filter-card">
+  <form
+    method="get"
+    action="<%= admin_payments_path %>"
+    class="payment-filter-card"
+  >
+
+    <!-- SEARCH -->
 
     <div class="payment-search-box">
 
@@ -1143,50 +1378,96 @@
 
       <input
         type="text"
-        id="paymentSearch"
-        placeholder="Search by student, course, payment ID..."
+        name="search"
+        value="<%= params[:search].to_s %>"
+        placeholder="Search student, email, course, payment ID..."
         autocomplete="off"
       >
 
     </div>
 
 
+    <!-- STATUS -->
+
     <div class="payment-filter-select">
 
-      <label>Status</label>
+      <label for="paymentStatusFilter">
+        Status
+      </label>
 
-      <select id="paymentStatusFilter">
+      <select
+        id="paymentStatusFilter"
+        name="status"
+      >
 
-        <option value="">All Status</option>
-        <option value="Paid">Paid</option>
-        <option value="Created">Created</option>
-        <option value="Pending">Pending</option>
-        <option value="Failed">Failed</option>
-        <option value="Cancelled">Cancelled</option>
+        <option value="">
+          All Status
+        </option>
+
+        <option
+          value="paid"
+          <%= "selected" if params[:status] == "paid" %>
+        >
+          Paid
+        </option>
+
+        <option
+          value="created"
+          <%= "selected" if params[:status] == "created" %>
+        >
+          Created
+        </option>
+
+        <option
+          value="pending"
+          <%= "selected" if params[:status] == "pending" %>
+        >
+          Pending
+        </option>
+
+        <option
+          value="failed"
+          <%= "selected" if params[:status] == "failed" %>
+        >
+          Failed
+        </option>
+
+        <option
+          value="cancelled"
+          <%= "selected" if params[:status] == "cancelled" %>
+        >
+          Cancelled
+        </option>
 
       </select>
 
     </div>
 
 
+    <!-- COURSE -->
+
     <div class="payment-filter-select">
 
-      <label>Course</label>
+      <label for="paymentCourseFilter">
+        Course
+      </label>
 
-      <select id="paymentCourseFilter">
+      <select
+        id="paymentCourseFilter"
+        name="course"
+      >
 
-        <option value="">All Courses</option>
+        <option value="">
+          All Courses
+        </option>
 
-        <% Payment
-          .includes(enrollment: :course)
-          .map { |p| p.enrollment&.course&.Course_name }
-          .compact
-          .uniq
-          .sort
-          .each do |course_name| %>
+        <% @payment_courses.each do |course| %>
 
-          <option value="<%= course_name %>">
-            <%= course_name %>
+          <option
+            value="<%= course.Course_name %>"
+            <%= "selected" if params[:course].to_s == course.Course_name.to_s %>
+          >
+            <%= course.Course_name %>
           </option>
 
         <% end %>
@@ -1196,26 +1477,106 @@
     </div>
 
 
-    <button
-      type="button"
-      class="payment-filter-btn"
-      id="paymentFilterBtn">
+    <!-- ACTIONS -->
 
-      <i class="bi bi-funnel"></i>
-      Filter
+    <div
+      style="
+        display:flex;
+        gap:7px;
+        align-items:center;
+      "
+    >
 
-    </button>
+      <button
+        type="submit"
+        class="payment-filter-btn"
+      >
+
+        <i class="bi bi-funnel"></i>
+
+        Filter
+
+      </button>
+
+
+      <% if params[:search].present? ||
+            params[:status].present? ||
+            params[:course].present? %>
+
+        <%= link_to(
+          admin_payments_path,
+          class: "payment-reset-btn",
+          title: "Clear filters"
+        ) do %>
+
+          <i class="bi bi-x-circle"></i>
+
+          Reset
+
+        <% end %>
+
+      <% end %>
+
+    </div>
+
+  </form>
+
+
+  <!-- =====================================================
+       FILTER INFORMATION
+  ====================================================== -->
+
+  <div class="payment-filter-info">
+
+    <div>
+
+      <% if params[:search].present? ||
+            params[:status].present? ||
+            params[:course].present? %>
+
+        <span class="payment-active-filter">
+
+          <i class="bi bi-funnel-fill"></i>
+
+          Filters active
+
+        </span>
+
+        &nbsp;
+
+      <% end %>
+
+      Showing
+
+      <strong>
+        <%= @filtered_payments_count %>
+      </strong>
+
+      matching payment<%= "s" unless @filtered_payments_count == 1 %>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        <%= @total_payments %>
+      </strong>
+
+      total payments
+
+    </div>
 
   </div>
 
 
   <!-- =====================================================
-       RECENT PAYMENTS
+       PAYMENT TABLE
   ====================================================== -->
 
   <div class="payment-table-card">
 
-    <!-- CARD HEADER -->
+    <!-- TABLE HEADER -->
 
     <div class="payment-table-header">
 
@@ -1228,11 +1589,11 @@
         <div>
 
           <h3>
-            Recent Payments
+            Payment Transactions
           </h3>
 
           <p>
-            Latest course payment transactions
+            Course payment transaction history
           </p>
 
         </div>
@@ -1241,7 +1602,10 @@
 
 
       <span class="payment-count-badge">
-        <%= @payments&.count || 0 %> Payments
+
+        <%= @filtered_payments_count %>
+        Payments
+
       </span>
 
     </div>
@@ -1251,38 +1615,56 @@
 
     <div class="payment-table-wrapper">
 
-      <table class="payment-management-table">
+      <% if @payments.present? %>
 
-        <thead>
+        <table class="payment-management-table">
 
-          <tr>
+          <thead>
 
-            <th>Student</th>
+            <tr>
 
-            <th>Course</th>
+              <th>
+                Student
+              </th>
 
-            <th>Payment ID</th>
+              <th>
+                Course
+              </th>
 
-            <th>Order ID</th>
+              <th>
+                Payment ID
+              </th>
 
-            <th>Razorpay ID</th>
+              <th>
+                Order ID
+              </th>
 
-            <th>Amount</th>
+              <th>
+                Razorpay ID
+              </th>
 
-            <th>Status</th>
+              <th>
+                Amount
+              </th>
 
-            <th>Date & Time</th>
+              <th>
+                Status
+              </th>
 
-            <th>Action</th>
+              <th>
+                Date & Time
+              </th>
 
-          </tr>
+              <th>
+                Action
+              </th>
 
-        </thead>
+            </tr>
+
+          </thead>
 
 
-        <tbody id="paymentTableBody">
-
-          <% if @payments.present? %>
+          <tbody>
 
             <% @payments.each do |payment| %>
 
@@ -1290,24 +1672,18 @@
               <% student = enrollment&.user %>
               <% course = enrollment&.course %>
 
-              <tr
-                class="payment-row"
-                data-status="<%= payment.status.to_s %>"
-                data-course="<%= course&.Course_name.to_s %>"
-                data-search="
-                  <%= [
-                    student&.name,
-                    student&.email,
-                    course&.Course_name,
-                    payment.id,
-                    payment.razorpay_order_id,
-                    payment.razorpay_payment_id
-                  ].compact.join(' ').downcase
-                  %>
-                "
-              >
+              <% status =
+                   payment.status.to_s.downcase %>
 
-                <!-- STUDENT -->
+              <% course_name =
+                   course&.Course_name.to_s %>
+
+
+              <tr>
+
+                <!-- =========================================
+                     STUDENT
+                ========================================== -->
 
                 <td>
 
@@ -1317,12 +1693,18 @@
 
                       <% if student&.image&.attached? %>
 
-                        <%= image_tag student.image,
-                            alt: student.name %>
+                        <%= image_tag(
+                          student.image,
+                          alt: student.name.to_s
+                        ) %>
 
                       <% else %>
 
-                        <%= student&.name.to_s.first.upcase.presence || "S" %>
+                        <%= student&.name
+                              .to_s
+                              .first
+                              .upcase
+                              .presence || "S" %>
 
                       <% end %>
 
@@ -1332,11 +1714,17 @@
                     <div class="payment-student-info">
 
                       <strong>
-                        <%= student&.name.presence || "Unknown Student" %>
+
+                        <%= student&.name.presence ||
+                            "Unknown Student" %>
+
                       </strong>
 
                       <small>
-                        <%= student&.email.presence || "—" %>
+
+                        <%= student&.email.presence ||
+                            "—" %>
+
                       </small>
 
                     </div>
@@ -1346,18 +1734,28 @@
                 </td>
 
 
-                <!-- COURSE -->
+                <!-- =========================================
+                     COURSE
+                ========================================== -->
 
                 <td>
 
                   <div class="payment-course-info">
 
-                    <strong>
-                      <%= course&.Course_name.presence || "Unknown Course" %>
+                    <strong
+                      title="<%= course_name %>"
+                    >
+
+                      <%= course_name.presence ||
+                          "Unknown Course" %>
+
                     </strong>
 
                     <small>
-                      Enrollment #<%= enrollment&.id || "—" %>
+
+                      Enrollment #
+                      <%= enrollment&.id || "—" %>
+
                     </small>
 
                   </div>
@@ -1365,22 +1763,31 @@
                 </td>
 
 
-                <!-- PAYMENT ID -->
+                <!-- =========================================
+                     PAYMENT ID
+                ========================================== -->
 
                 <td>
 
                   <span class="payment-id">
+
                     #<%= payment.id %>
+
                   </span>
 
                 </td>
 
 
-                <!-- ORDER ID -->
+                <!-- =========================================
+                     ORDER ID
+                ========================================== -->
 
                 <td>
 
-                  <span class="payment-transaction-id">
+                  <span
+                    class="payment-transaction-id"
+                    title="<%= payment.razorpay_order_id.presence || "—" %>"
+                  >
 
                     <%= payment.razorpay_order_id.presence || "—" %>
 
@@ -1389,11 +1796,16 @@
                 </td>
 
 
-                <!-- RAZORPAY PAYMENT ID -->
+                <!-- =========================================
+                     RAZORPAY PAYMENT ID
+                ========================================== -->
 
                 <td>
 
-                  <span class="payment-transaction-id">
+                  <span
+                    class="payment-transaction-id"
+                    title="<%= payment.razorpay_payment_id.presence || "—" %>"
+                  >
 
                     <%= payment.razorpay_payment_id.presence || "—" %>
 
@@ -1402,7 +1814,9 @@
                 </td>
 
 
-                <!-- AMOUNT -->
+                <!-- =========================================
+                     AMOUNT
+                ========================================== -->
 
                 <td>
 
@@ -1418,65 +1832,90 @@
                 </td>
 
 
-                <!-- STATUS -->
+                <!-- =========================================
+                     STATUS
+                ========================================== -->
 
-               <!-- STATUS -->
+                <td>
 
-<td>
+                  <span
+                    class="payment-status-badge <%= status %>"
+                  >
 
-  <% status = payment.status.to_s.downcase %>
+                    <% if status == "paid" %>
 
-  <span class="payment-status-badge <%= status %>">
+  <span class="payment-status-badge paid">
+    <i class="bi bi-check-circle-fill"></i>
+    Paid
+  </span>
 
-    <% if status == "paid" %>
+<% elsif status == "created" %>
 
-      <i class="bi bi-check-circle-fill"></i>
-      Paid
+  <span class="payment-status-badge created">
+    <i class="bi bi-clock-fill"></i>
+    Created
+  </span>
 
-    <% elsif status == "created" %>
+<% elsif status == "pending" %>
 
-      <i class="bi bi-clock-fill"></i>
-      Created
+  <span class="payment-status-badge pending">
+    <i class="bi bi-hourglass-split"></i>
+    Pending
+  </span>
 
-    <% elsif status == "pending" %>
+<% elsif status == "failed" %>
 
-      <i class="bi bi-hourglass-split"></i>
-      Pending
+  <span class="payment-status-badge failed">
+    <i class="bi bi-x-circle-fill"></i>
+    Failed
+  </span>
 
-    <% elsif status == "failed" %>
+<% elsif status == "cancelled" %>
 
-      <i class="bi bi-x-circle-fill"></i>
-      Failed
+  <span class="payment-status-badge cancelled">
+    <i class="bi bi-slash-circle-fill"></i>
+    Cancelled
+  </span>
 
-    <% elsif status == "cancelled" %>
+<% else %>
 
-      <i class="bi bi-slash-circle-fill"></i>
-      Cancelled
+  <span class="payment-status-badge">
 
-    <% else %>
+    <i class="bi bi-info-circle-fill"></i>
 
-      <i class="bi bi-info-circle-fill"></i>
-      <%= payment.status.to_s.titleize %>
-
-    <% end %>
+    <%= payment.status.to_s.titleize.presence || "Unknown" %>
 
   </span>
 
-</td>
+<% end %>
+
+                  </span>
+
+                </td>
 
 
-                <!-- DATE -->
+                <!-- =========================================
+                     DATE
+                ========================================== -->
 
                 <td>
 
                   <div class="payment-date">
 
                     <strong>
-                      <%= payment.created_at.strftime("%d %b %Y") %>
+
+                      <%= payment.created_at.strftime(
+                        "%d %b %Y"
+                      ) %>
+
                     </strong>
 
                     <small>
-                      <%= payment.created_at.strftime("%I:%M %p") %>
+
+                      <%= payment.created_at.strftime(
+                        "%I:%M %p"
+                      ) %>
+
                     </small>
 
                   </div>
@@ -1484,12 +1923,16 @@
                 </td>
 
 
-                <!-- ACTION -->
+                <!-- =========================================
+                     ACTION
+                ========================================== -->
 
                 <td>
 
-                  <%= link_to admin_payment_path(payment),
-                      class: "payment-view-btn" do %>
+                  <%= link_to(
+                    admin_payment_path(payment),
+                    class: "payment-view-btn"
+                  ) do %>
 
                     <i class="bi bi-eye"></i>
 
@@ -1505,72 +1948,375 @@
 
             <% end %>
 
-          <% else %>
+          </tbody>
 
-            <tr>
+        </table>
 
-              <td colspan="9">
 
-                <div class="payment-empty-state">
+      <% else %>
 
-                  <div class="payment-empty-icon">
+        <!-- ===============================================
+             EMPTY STATE
+        ================================================ -->
 
-                    <i class="bi bi-wallet2"></i>
+        <div class="payment-empty-state">
 
-                  </div>
+          <div class="payment-empty-icon">
 
-                  <h4>
-                    No Payments Found
-                  </h4>
+            <% if params[:search].present? ||
+                  params[:status].present? ||
+                  params[:course].present? %>
 
-                  <p>
-                    Payment transactions will appear here.
-                  </p>
+              <i class="bi bi-search"></i>
 
-                </div>
+            <% else %>
 
-              </td>
+              <i class="bi bi-wallet2"></i>
 
-            </tr>
+            <% end %>
+
+          </div>
+
+
+          <h4>
+
+            <% if params[:search].present? ||
+                  params[:status].present? ||
+                  params[:course].present? %>
+
+              No Matching Payments
+
+            <% else %>
+
+              No Payments Found
+
+            <% end %>
+
+          </h4>
+
+
+          <p>
+
+            <% if params[:search].present? ||
+                  params[:status].present? ||
+                  params[:course].present? %>
+
+              Try changing your search or filters.
+
+            <% else %>
+
+              Payment transactions will appear here.
+
+            <% end %>
+
+          </p>
+
+
+          <% if params[:search].present? ||
+                params[:status].present? ||
+                params[:course].present? %>
+
+            <div style="margin-top:15px;">
+
+              <%= link_to(
+                admin_payments_path,
+                class: "payment-reset-btn"
+              ) do %>
+
+                <i class="bi bi-arrow-counterclockwise"></i>
+
+                Clear Filters
+
+              <% end %>
+
+            </div>
 
           <% end %>
 
-        </tbody>
+        </div>
 
-      </table>
+      <% end %>
 
     </div>
 
 
-    <!-- FOOTER -->
+    <!-- =====================================================
+         PAGINATION FOOTER
+    ====================================================== -->
 
-    <% if @payments.present? %>
+    <% if @filtered_payments_count > 0 %>
 
       <div class="payment-table-footer">
 
-        <span>
+        <div>
+
+          <% first_record =
+     ((@page - 1) * @per_page) + 1 %>
+
+ <% last_record =
+     [
+       @page * @per_page,
+       @filtered_payments_count
+     ].min %>
+
+
           Showing
-          <strong id="visiblePaymentCount">
-            <%= @payments.count %>
+
+          <strong>
+            <%= first_record %>
           </strong>
+
+          –
+
+          <strong>
+            <%= last_record %>
+          </strong>
+
+          of
+
+          <strong>
+            <%= @filtered_payments_count %>
+          </strong>
+
           payments
-        </span>
-
-        <div class="payment-pagination">
-
-          <button type="button">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-
-          <button type="button" class="active">
-            1
-          </button>
-
-          <button type="button">
-            <i class="bi bi-chevron-right"></i>
-          </button>
 
         </div>
+
+
+        <!-- ===============================================
+             PAGINATION
+        ================================================ -->
+
+        <% if @total_pages > 1 %>
+
+          <div class="payment-pagination">
+
+            <!-- PREVIOUS -->
+
+            <% if @page > 1 %>
+
+              <%= link_to(
+                admin_payments_path(
+                  request.query_parameters.merge(
+                    page: @page - 1
+                  )
+                ),
+                class: "payment-page-link",
+                aria: {
+                  label: "Previous page"
+                }
+              ) do %>
+
+                <i class="bi bi-chevron-left"></i>
+
+              <% end %>
+
+            <% else %>
+
+              <span
+                class="payment-page-link disabled"
+                aria-disabled="true"
+              >
+
+                <i class="bi bi-chevron-left"></i>
+
+              </span>
+
+            <% end %>
+
+
+            <!-- PAGE NUMBERS -->
+
+            <% if @total_pages <= 7 %>
+
+              <% (1..@total_pages).each do |page_number| %>
+
+                <% if page_number == @page %>
+
+                  <span
+                    class="payment-page-link active"
+                    aria-current="page"
+                  >
+                    <%= page_number %>
+                  </span>
+
+                <% else %>
+
+                  <%= link_to(
+                    page_number,
+                    admin_payments_path(
+                      request.query_parameters.merge(
+                        page: page_number
+                      )
+                    ),
+                    class: "payment-page-link"
+                  ) %>
+
+                <% end %>
+
+              <% end %>
+
+            <% else %>
+
+              <!-- FIRST PAGE -->
+
+              <% if @page == 1 %>
+
+                <span
+                  class="payment-page-link active"
+                  aria-current="page"
+                >
+                  1
+                </span>
+
+              <% else %>
+
+                <%= link_to(
+                  "1",
+                  admin_payments_path(
+                    request.query_parameters.merge(
+                      page: 1
+                    )
+                  ),
+                  class: "payment-page-link"
+                ) %>
+
+              <% end %>
+
+
+              <!-- LEFT DOTS -->
+
+              <% if @page > 4 %>
+
+                <span class="payment-page-dots">
+                  …
+                </span>
+
+              <% end %>
+
+
+              <!-- MIDDLE PAGES -->
+
+              <% start_page =
+                   [
+                     2,
+                     @page - 1
+                   ].max %>
+
+              <% end_page =
+                   [
+                     @total_pages - 1,
+                     @page + 1
+                   ].min %>
+
+
+              <% (start_page..end_page).each do |page_number| %>
+
+                <% next if page_number <= 1 ||
+                           page_number >= @total_pages %>
+
+
+                <% if page_number == @page %>
+
+                  <span
+                    class="payment-page-link active"
+                    aria-current="page"
+                  >
+                    <%= page_number %>
+                  </span>
+
+                <% else %>
+
+                  <%= link_to(
+                    page_number,
+                    admin_payments_path(
+                      request.query_parameters.merge(
+                        page: page_number
+                      )
+                    ),
+                    class: "payment-page-link"
+                  ) %>
+
+                <% end %>
+
+              <% end %>
+
+
+              <!-- RIGHT DOTS -->
+
+              <% if @page < @total_pages - 3 %>
+
+                <span class="payment-page-dots">
+                  …
+                </span>
+
+              <% end %>
+
+
+              <!-- LAST PAGE -->
+
+              <% if @page == @total_pages %>
+
+                <span
+                  class="payment-page-link active"
+                  aria-current="page"
+                >
+                  <%= @total_pages %>
+                </span>
+
+              <% else %>
+
+                <%= link_to(
+                  @total_pages,
+                  admin_payments_path(
+                    request.query_parameters.merge(
+                      page: @total_pages
+                    )
+                  ),
+                  class: "payment-page-link"
+                ) %>
+
+              <% end %>
+
+            <% end %>
+
+
+            <!-- NEXT -->
+
+            <% if @page < @total_pages %>
+
+              <%= link_to(
+                admin_payments_path(
+                  request.query_parameters.merge(
+                    page: @page + 1
+                  )
+                ),
+                class: "payment-page-link",
+                aria: {
+                  label: "Next page"
+                }
+              ) do %>
+
+                <i class="bi bi-chevron-right"></i>
+
+              <% end %>
+
+            <% else %>
+
+              <span
+                class="payment-page-link disabled"
+                aria-disabled="true"
+              >
+
+                <i class="bi bi-chevron-right"></i>
+
+              </span>
+
+            <% end %>
+
+          </div>
+
+        <% end %>
 
       </div>
 
@@ -1579,130 +2325,3 @@
   </div>
 
 </div>
-
-
-<!-- =====================================================
-     SEARCH + FILTER JAVASCRIPT
-====================================================== -->
-
-<script nonce="<%= content_security_policy_nonce %>">
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const searchInput =
-    document.getElementById("paymentSearch");
-
-  const statusFilter =
-    document.getElementById("paymentStatusFilter");
-
-  const courseFilter =
-    document.getElementById("paymentCourseFilter");
-
-  const rows =
-    Array.from(document.querySelectorAll(".payment-row"));
-
-  const visibleCount =
-    document.getElementById("visiblePaymentCount");
-
-
-  function filterPayments() {
-
-    const search =
-      searchInput.value
-        .trim()
-        .toLowerCase();
-
-    const status =
-      statusFilter.value
-        .trim()
-        .toLowerCase();
-
-    const course =
-      courseFilter.value
-        .trim()
-        .toLowerCase();
-
-
-    let count = 0;
-
-
-    rows.forEach(function (row) {
-
-      const rowSearch =
-        row.dataset.search || "";
-
-      const rowStatus =
-        row.dataset.status
-          .toLowerCase();
-
-      const rowCourse =
-        row.dataset.course
-          .toLowerCase();
-
-
-      const searchMatch =
-        !search ||
-        rowSearch.includes(search);
-
-      const statusMatch =
-        !status ||
-        rowStatus === status;
-
-      const courseMatch =
-        !course ||
-        rowCourse === course;
-
-
-      if (
-        searchMatch &&
-        statusMatch &&
-        courseMatch
-      ) {
-
-        row.style.display = "";
-        count++;
-
-      } else {
-
-        row.style.display = "none";
-
-      }
-
-    });
-
-
-    if (visibleCount) {
-      visibleCount.textContent = count;
-    }
-
-  }
-
-
-  searchInput.addEventListener(
-    "input",
-    filterPayments
-  );
-
-
-  statusFilter.addEventListener(
-    "change",
-    filterPayments
-  );
-
-
-  courseFilter.addEventListener(
-    "change",
-    filterPayments
-  );
-
-
-  document
-    .getElementById("paymentFilterBtn")
-    .addEventListener(
-      "click",
-      filterPayments
-    );
-
-});
-
-</script>
