@@ -345,221 +345,161 @@ end
   # VERIFY RAZORPAY PAYMENT
   # ==================================================
 
-  def verify
-    @enrollment = current_user.enrollments.find(params[:id])
-    @course = @enrollment.course
+def verify
+  @enrollment = current_user.enrollments.find(params[:enrollment_id])
 
-    payment_id = params[:razorpay_payment_id]
-    order_id = params[:razorpay_order_id]
-    signature = params[:razorpay_signature]
+  razorpay_payment_id = params[:razorpay_payment_id].to_s.strip
+  razorpay_order_id   = params[:razorpay_order_id].to_s.strip
+  razorpay_signature  = params[:razorpay_signature].to_s.strip
 
-    # ------------------------------------------
-    # Validate Razorpay response
-    # ------------------------------------------
+  if razorpay_payment_id.blank? ||
+     razorpay_order_id.blank? ||
+     razorpay_signature.blank?
 
-    if payment_id.blank? ||
-       order_id.blank? ||
-       signature.blank?
+    redirect_to payment_path(@enrollment),
+                alert: "Payment verification details are incomplete."
+    return
+  end
 
-      redirect_to payment_failed_path(@enrollment),
-                  alert: "Payment verification information is missing."
-      return
-    end
-
-    # ------------------------------------------
-    # Find Payment
-    # ------------------------------------------
-
-    @payment = @enrollment.payments.find_by(
-      razorpay_order_id: order_id
+  begin
+    payment = @enrollment.payments.find_by!(
+      razorpay_order_id: razorpay_order_id
     )
 
-    unless @payment
-      redirect_to payment_failed_path(@enrollment),
-                  alert: "Payment record not found."
-      return
-    end
+    # =========================================================
+    # PREVENT DUPLICATE VERIFICATION
+    # =========================================================
 
-    # ------------------------------------------
-    # Prevent duplicate verification
-    # ------------------------------------------
-
-    if @payment.status == "paid"
-      redirect_to payment_success_path(@enrollment),
+    if payment.paid?
+      redirect_to student_dashboard_path,
                   notice: "Payment has already been verified."
       return
     end
 
-    # ------------------------------------------
-    # Verify Razorpay signature
-    # ------------------------------------------
+    # =========================================================
+    # VERIFY RAZORPAY SIGNATURE
+    # =========================================================
 
-    Razorpay::Utility.verify_payment_signature(
-      razorpay_order_id: order_id,
-      razorpay_payment_id: payment_id,
-      razorpay_signature: signature
+    razorpay_order_id_for_signature = payment.razorpay_order_id
+
+    generated_signature =
+      OpenSSL::HMAC.hexdigest(
+        OpenSSL::Digest.new("SHA256"),
+        ENV.fetch("RAZORPAY_KEY_SECRET"),
+        "#{razorpay_order_id_for_signature}|#{razorpay_payment_id}"
+      )
+
+    unless ActiveSupport::SecurityUtils.secure_compare(
+      generated_signature,
+      razorpay_signature
     )
+      redirect_to payment_path(@enrollment),
+                  alert: "Payment verification failed."
+      return
+    end
 
-    # ==================================================
+    # =========================================================
     # DATABASE TRANSACTION
-    # ==================================================
+    # =========================================================
 
     ActiveRecord::Base.transaction do
 
-      # ------------------------------------------
-      # Mark Payment as Paid
-      # ------------------------------------------
+      # -------------------------------------------------------
+      # MARK PAYMENT AS PAID
+      # -------------------------------------------------------
 
-      @payment.update!(
-        razorpay_payment_id: payment_id,
-        razorpay_signature: signature,
-        status: "paid"
+      payment.update!(
+        status: "paid",
+        razorpay_payment_id: razorpay_payment_id
       )
 
-      # ==================================================
-      # FIND OR CREATE SINGLE FEE
-      # ==================================================
+      # -------------------------------------------------------
+      # CREATE / UPDATE FEE
+      # -------------------------------------------------------
 
-      fee = Fee.find_or_initialize_by(
-        enrollment_id: @enrollment.id
-      )
+      fee = @enrollment.fee ||
+            @enrollment.build_fee(
+              user: current_user,
+              course: @enrollment.course
+            )
 
-      # ------------------------------------------
-      # Original course fee
-      # ------------------------------------------
+      fee.amount =
+        @enrollment.course_price.to_d
 
-      fee.total_fee = @course.fee.to_d
+      fee.discount_amount =
+        @enrollment.discount_amount.to_d
 
-      # ------------------------------------------
-      # Apply active discount only when Fee
-      # doesn't already have a discount.
-      # ------------------------------------------
-
-      if fee.discount_amount.to_d.zero? &&
-         @course.has_active_discount?
-
-        discount = @course.active_discount
-
-        fee.discount_amount =
-          discount.calculate_discount(@course.fee)
-
-        fee.discount_name =
-          discount.name
-      end
-
-      fee.paid_amount ||= 0
-
-      # ------------------------------------------
-      # Online payment amount
-      #
-      # Payment.amount is stored in RUPEES.
-      # ------------------------------------------
-
-      online_amount = @payment.amount.to_d
-
-      # ------------------------------------------
-      # Add this payment exactly once
-      # ------------------------------------------
-
-      already_recorded =
-        fee.payment_mode == "Razorpay" &&
-        fee.receipt_no == payment_id
-
-      unless already_recorded
-        fee.paid_amount =
-          fee.paid_amount.to_d + online_amount
-      end
-
-      # ------------------------------------------
-      # Payment information
-      # ------------------------------------------
-
-      fee.payment_date = Date.current
-      fee.payment_mode = "Razorpay"
-      fee.receipt_no = payment_id
-
-      # ------------------------------------------
-      # Save Fee
-      #
-      # Fee callbacks calculate:
-      # - due_amount
-      # - status
-      # ------------------------------------------
+      fee.paid_amount =
+        fee.paid_amount.to_d + payment.amount.to_d
 
       fee.save!
 
+      # -------------------------------------------------------
+      # RECORD COUPON USAGE
+      # -------------------------------------------------------
 
-if @enrollment.coupon.present?
+      if @enrollment.coupon.present?
 
-  coupon = @enrollment.coupon
+        coupon = @enrollment.coupon
 
-  # Safety check: same user cannot use same coupon twice
-  unless coupon.already_used_by?(current_user)
+        unless coupon.already_used_by?(current_user)
 
-    CouponUsage.create!(
-      coupon: coupon,
-      user: current_user,
-      enrollment: @enrollment,
-      discount_amount: @enrollment.discount_amount.to_d,
-      used_at: Time.current
-    )
+          CouponUsage.create!(
+            coupon: coupon,
+            user: current_user,
+            enrollment: @enrollment,
+            discount_amount: @enrollment.discount_amount.to_d,
+            used_at: Time.current
+          )
+        end
 
-    coupon.increment!(:used_count)
+        # Keep the denormalized counter synchronized
+        coupon.update!(
+          used_count: coupon.coupon_usages.count
+        )
+      end
 
-  end
-end
-
-
-      # ------------------------------------------
-      # Approve enrollment
-      # ------------------------------------------
+      # -------------------------------------------------------
+      # APPROVE ENROLLMENT
+      # -------------------------------------------------------
 
       @enrollment.update!(
         status: "Approved"
       )
     end
 
-    # ------------------------------------------
-    # Success
-    # ------------------------------------------
+    # =========================================================
+    # SUCCESS
+    # =========================================================
 
-    redirect_to payment_success_path(@enrollment),
-                notice: "Payment successful. You now have access to the course."
-
-  rescue Razorpay::SignatureVerificationError
-
-    Rails.logger.error(
-      "RAZORPAY SIGNATURE VERIFICATION FAILED"
-    )
-
-    @payment&.update(status: "failed")
-
-    redirect_to payment_failed_path(@enrollment),
-                alert: "Payment verification failed."
+    redirect_to student_dashboard_path,
+                notice: "Payment successful. Your enrollment is now approved."
 
   rescue ActiveRecord::RecordNotFound
-
-    redirect_to homepage_path,
-                alert: "Enrollment not found."
+    redirect_to payment_path(@enrollment),
+                alert: "Payment record could not be found."
 
   rescue ActiveRecord::RecordInvalid => e
-
     Rails.logger.error(
-      "PAYMENT/FEE ERROR: #{e.message}"
+      "[PAYMENT VERIFY] Record validation failed: #{e.message}"
     )
 
-    redirect_to payment_failed_path(@enrollment),
-                alert: "Payment was received but could not be recorded. Please contact administration."
+    redirect_to payment_path(@enrollment),
+                alert: "Payment could not be completed. Please contact support."
 
   rescue StandardError => e
-
     Rails.logger.error(
-      "RAZORPAY VERIFY ERROR: #{e.class} - #{e.message}"
+      "[PAYMENT VERIFY] #{e.class}: #{e.message}"
     )
 
-    redirect_to payment_failed_path(@enrollment),
-                alert: "Something went wrong while verifying payment."
+    Rails.logger.error(
+      e.backtrace.first(20).join("\n")
+    )
+
+    redirect_to payment_path(@enrollment),
+                alert: "Payment verification failed. Please contact support."
   end
+end
 
 
   # ==================================================
