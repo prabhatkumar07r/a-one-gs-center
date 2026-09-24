@@ -4,6 +4,10 @@ class UsersMailer < Devise::Mailer
   include Devise::Controllers::UrlHelpers
   include Rails.application.routes.url_helpers
 
+  # =========================================================
+  # ACCOUNT CONFIRMATION
+  # =========================================================
+
   def confirmation_instructions(record, token, opts = {})
     @resource = record
     @token = token
@@ -12,10 +16,13 @@ class UsersMailer < Devise::Mailer
       confirmation_token: token,
       host: ENV.fetch(
         "APP_HOST",
-        "a-one-gs-center.onrender.com"
+        "aonegscenter.com"
       ),
       protocol: "https"
     )
+
+    student_name =
+      @resource.name.presence || "Student"
 
     html = <<~HTML
       <!DOCTYPE html>
@@ -53,7 +60,7 @@ class UsersMailer < Devise::Mailer
               font-size:16px;
               line-height:1.6;
             ">
-              Hello #{ERB::Util.html_escape(@resource.name.presence || "Student")},
+              Hello #{ERB::Util.html_escape(student_name)},
             </p>
 
             <p style="
@@ -62,7 +69,8 @@ class UsersMailer < Devise::Mailer
               line-height:1.6;
             ">
               Thank you for creating your account.
-              Please confirm your email address by clicking the button below.
+              Please confirm your email address by clicking
+              the button below.
             </p>
 
             <div style="margin:30px 0;">
@@ -87,8 +95,8 @@ class UsersMailer < Devise::Mailer
               font-size:14px;
               line-height:1.6;
             ">
-              If the button does not work, copy and paste this URL into your
-              browser:
+              If the button does not work, copy and paste
+              this URL into your browser:
             </p>
 
             <p style="
@@ -104,7 +112,8 @@ class UsersMailer < Devise::Mailer
               font-size:14px;
               line-height:1.6;
             ">
-              If you did not create this account, you can safely ignore this email.
+              If you did not create this account, you can
+              safely ignore this email.
             </p>
 
             <hr style="
@@ -117,7 +126,7 @@ class UsersMailer < Devise::Mailer
               color:#999;
               font-size:13px;
             ">
-              © #{Time.current.year} A-One GS Center
+              &copy; #{Time.current.year} A-One GS Center
             </p>
 
           </div>
@@ -129,7 +138,7 @@ class UsersMailer < Devise::Mailer
     text = <<~TEXT
       Welcome to A-One GS Center
 
-      Hello #{@resource.name.presence || "Student"},
+      Hello #{student_name},
 
       Thank you for creating your account.
 
@@ -146,10 +155,171 @@ class UsersMailer < Devise::Mailer
       to: [
         {
           email: @resource.email,
-          name: @resource.name.presence || "Student"
+          name: student_name
         }
       ],
       subject: "Confirm your A-One GS Center account",
+      html_content: html,
+      text_content: text
+    )
+  end
+
+  # =========================================================
+  # PASSWORD RESET
+  # =========================================================
+
+  def reset_password_instructions(record, token, opts = {})
+    @resource = record
+    @token = token
+
+    reset_url = edit_user_password_url(
+      reset_password_token: token,
+      host: ENV.fetch(
+        "APP_HOST",
+        "aonegscenter.com"
+      ),
+      protocol: "https"
+    )
+
+    student_name =
+      @resource.name.presence || "Student"
+
+    html = <<~HTML
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Reset your password</title>
+        </head>
+
+        <body style="
+          margin:0;
+          padding:0;
+          background:#f5f7fb;
+          font-family:Arial,Helvetica,sans-serif;
+        ">
+
+          <div style="
+            max-width:600px;
+            margin:40px auto;
+            background:#ffffff;
+            border-radius:12px;
+            padding:40px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.08);
+          ">
+
+            <h1 style="
+              color:#172033;
+              margin-top:0;
+            ">
+              Reset Your A-One GS Center Password
+            </h1>
+
+            <p style="
+              color:#555;
+              font-size:16px;
+              line-height:1.6;
+            ">
+              Hello #{ERB::Util.html_escape(student_name)},
+            </p>
+
+            <p style="
+              color:#555;
+              font-size:16px;
+              line-height:1.6;
+            ">
+              We received a request to reset your
+              A-One GS Center account password.
+            </p>
+
+            <div style="margin:30px 0;">
+
+              <a href="#{ERB::Util.html_escape(reset_url)}"
+                 style="
+                   display:inline-block;
+                   padding:14px 24px;
+                   background:#2563eb;
+                   color:#ffffff;
+                   text-decoration:none;
+                   border-radius:8px;
+                   font-weight:bold;
+                 ">
+                Reset My Password
+              </a>
+
+            </div>
+
+            <p style="
+              color:#777;
+              font-size:14px;
+              line-height:1.6;
+            ">
+              If the button does not work, copy and paste
+              this URL into your browser:
+            </p>
+
+            <p style="
+              word-break:break-all;
+              font-size:13px;
+              color:#2563eb;
+            ">
+              #{ERB::Util.html_escape(reset_url)}
+            </p>
+
+            <p style="
+              color:#777;
+              font-size:14px;
+              line-height:1.6;
+            ">
+              If you did not request a password reset,
+              you can safely ignore this email.
+            </p>
+
+            <hr style="
+              border:0;
+              border-top:1px solid #eeeeee;
+              margin:30px 0;
+            ">
+
+            <p style="
+              color:#999;
+              font-size:13px;
+            ">
+              &copy; #{Time.current.year} A-One GS Center
+            </p>
+
+          </div>
+
+        </body>
+      </html>
+    HTML
+
+    text = <<~TEXT
+      Reset Your A-One GS Center Password
+
+      Hello #{student_name},
+
+      We received a request to reset your
+      A-One GS Center account password.
+
+      Reset your password using this link:
+
+      #{reset_url}
+
+      If you did not request a password reset,
+      you can safely ignore this email.
+
+      © #{Time.current.year} A-One GS Center
+    TEXT
+
+    BrevoService.send_email(
+      to: [
+        {
+          email: @resource.email,
+          name: student_name
+        }
+      ],
+      subject: "Reset your A-One GS Center password",
       html_content: html,
       text_content: text
     )
