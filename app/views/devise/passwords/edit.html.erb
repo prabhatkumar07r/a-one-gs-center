@@ -1,199 +1,1910 @@
-<div class="auth-container">
+<div class="aone-password-page">
 
-  <!-- =====================================================
-       LEFT SIDE - BRANDING
-  ====================================================== -->
+  <div class="auth-container">
 
-  <div class="auth-image">
+    <!-- =====================================================
+         LEFT SIDE — BRANDING
+    ====================================================== -->
 
-    <div class="auth-image-content">
+    <section class="auth-image" aria-label="A ONE GS CENTER">
 
-      <%= image_tag "logo.jpeg",
-          alt: "A ONE GS CENTER" %>
+      <div class="auth-image-overlay"></div>
 
-      <h2>A ONE GS CENTER</h2>
+      <div class="auth-image-content">
 
-      <p>
-        Create a new secure password and continue your
-        learning journey with us.
-      </p>
+        <div class="brand-logo-wrap">
+          <%= image_tag "logo.jpeg",
+              alt: "A ONE GS CENTER Logo",
+              class: "brand-logo" %>
+        </div>
 
-    </div>
+        <h1>A ONE GS CENTER</h1>
 
-  </div>
+        <div class="brand-line"></div>
 
+        <p>
+          Secure your account and continue your
+          learning journey with A ONE GS CENTER.
+        </p>
 
-  <!-- =====================================================
-       RIGHT SIDE - CHANGE PASSWORD
-  ====================================================== -->
+        <div class="security-badge">
+          <i class="bi bi-shield-check"></i>
+          <span>Secure Password Reset</span>
+        </div>
 
-  <div class="auth-forms">
-
-    <!-- AUTH TABS -->
-    <div class="auth-tabs">
-
-      <div class="auth-tab active">
-        Change Password
       </div>
 
-      <div class="auth-tab">
-        <%= link_to "Login", new_user_session_path %>
-      </div>
-
-    </div>
+    </section>
 
 
-    <!-- FORM -->
-    <div class="auth-form active">
+    <!-- =====================================================
+         RIGHT SIDE — PASSWORD FORM
+    ====================================================== -->
 
-      <h2 class="form-title">
-        Create New Password
-      </h2>
+    <section class="auth-forms">
 
-      <p class="form-subtitle">
-        Enter your new password below. Make sure it is
-        strong and easy for you to remember.
-      </p>
+      <div class="auth-form-wrapper">
 
+        <!-- =================================================
+             TOP NAV
+        ================================================== -->
 
-      <%= form_for(
-            resource,
-            as: resource_name,
-            url: password_path(resource_name),
-            html: { method: :put }
-          ) do |f| %>
+        <div class="auth-tabs" role="tablist">
 
-        <!-- DEVise ERRORS -->
-        <%= render "devise/shared/error_messages",
-            resource: resource %>
+          <div class="auth-tab active">
+            <i class="bi bi-key"></i>
+            <span>Change Password</span>
+          </div>
 
+          <%= link_to new_user_session_path,
+              class: "auth-tab auth-tab-link" do %>
 
-        <!-- RESET TOKEN -->
-        <%= f.hidden_field :reset_password_token %>
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span>Login</span>
 
-
-        <!-- NEW PASSWORD -->
-        <div class="form-group">
-
-          <%= f.label :password, "New Password" %>
-
-          <i class="bi bi-lock form-icon"></i>
-
-          <%= f.password_field :password,
-                autofocus: true,
-                autocomplete: "new-password",
-                class: "form-control",
-                placeholder: "Enter your new password",
-                required: true %>
-
-          <% if @minimum_password_length %>
-            <small class="password-hint">
-              Minimum <%= @minimum_password_length %> characters
-            </small>
           <% end %>
 
         </div>
 
 
-        <!-- CONFIRM PASSWORD -->
-        <div class="form-group">
+        <!-- =================================================
+             FORM HEADER
+        ================================================== -->
 
-          <%= f.label :password_confirmation,
-              "Confirm New Password" %>
+        <div class="password-header">
 
-          <i class="bi bi-shield-lock form-icon"></i>
+          <div class="password-icon">
 
-          <%= f.password_field :password_confirmation,
-                autocomplete: "new-password",
-                class: "form-control",
-                placeholder: "Confirm your new password",
-                required: true %>
+            <i class="bi bi-shield-lock"></i>
+
+          </div>
+
+          <div>
+
+            <h2 class="form-title">
+              Create New Password
+            </h2>
+
+            <p class="form-subtitle">
+              Choose a strong password to keep your
+              A ONE GS CENTER account secure.
+            </p>
+
+          </div>
 
         </div>
 
 
-        <!-- SUBMIT -->
-        <%= f.submit "Change My Password",
-              class: "btn" %>
+        <!-- =================================================
+             FORM
+        ================================================== -->
 
-      <% end %>
+        <%= form_for(
+              resource,
+              as: resource_name,
+              url: password_path(resource_name),
+              html: {
+                method: :put,
+                class: "password-reset-form"
+              }
+            ) do |f| %>
 
 
-      <!-- FOOTER -->
-      <div class="auth-footer">
+          <!-- DEVise ERRORS -->
 
-        Remember your password?
+          <% if resource.errors.any? %>
 
-        <%= link_to "Login",
-            new_user_session_path %>
+            <div class="password-error-box">
+
+              <div class="error-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+              </div>
+
+              <div>
+
+                <strong>
+                  Please check the following:
+                </strong>
+
+                <%= render "devise/shared/error_messages",
+                    resource: resource %>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+
+          <!-- RESET TOKEN -->
+
+          <%= f.hidden_field :reset_password_token %>
+
+
+          <!-- =================================================
+               NEW PASSWORD
+          ================================================== -->
+
+          <div class="form-group password-field-group">
+
+            <%= f.label :password,
+                "New Password",
+                class: "form-label" %>
+
+            <div class="password-input-wrapper">
+
+              <i class="bi bi-lock form-icon"
+                 aria-hidden="true"></i>
+
+              <%= f.password_field :password,
+                    autofocus: true,
+                    autocomplete: "new-password",
+                    class: "form-control password-input",
+                    placeholder: "Enter your new password",
+                    required: true,
+                    minlength: @minimum_password_length %>
+
+              <button
+                type="button"
+                class="password-toggle"
+                data-password-toggle
+                aria-label="Show password"
+                aria-pressed="false">
+
+                <i class="bi bi-eye"></i>
+
+              </button>
+
+            </div>
+
+
+            <% if @minimum_password_length %>
+
+              <div class="password-hint">
+
+                <i class="bi bi-info-circle"></i>
+
+                <span>
+                  Minimum
+                  <strong><%= @minimum_password_length %></strong>
+                  characters
+                </span>
+
+              </div>
+
+            <% end %>
+
+
+            <!-- PASSWORD STRENGTH -->
+
+            <div class="password-strength"
+                 data-password-strength>
+
+              <div class="strength-track">
+
+                <span class="strength-bar"></span>
+                <span class="strength-bar"></span>
+                <span class="strength-bar"></span>
+                <span class="strength-bar"></span>
+
+              </div>
+
+              <span class="strength-text">
+                Enter a password
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               CONFIRM PASSWORD
+          ================================================== -->
+
+          <div class="form-group password-field-group">
+
+            <%= f.label :password_confirmation,
+                "Confirm New Password",
+                class: "form-label" %>
+
+            <div class="password-input-wrapper">
+
+              <i class="bi bi-shield-lock form-icon"
+                 aria-hidden="true"></i>
+
+              <%= f.password_field :password_confirmation,
+                    autocomplete: "new-password",
+                    class: "form-control password-input",
+                    placeholder: "Re-enter your new password",
+                    required: true %>
+
+              <button
+                type="button"
+                class="password-toggle"
+                data-password-toggle
+                aria-label="Show password"
+                aria-pressed="false">
+
+                <i class="bi bi-eye"></i>
+
+              </button>
+
+            </div>
+
+            <div class="password-match"
+                 data-password-match>
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               SECURITY INFO
+          ================================================== -->
+
+          <div class="security-info">
+
+            <div class="security-info-icon">
+
+              <i class="bi bi-shield-check"></i>
+
+            </div>
+
+            <div>
+
+              <strong>
+                Keep your account secure
+              </strong>
+
+              <p>
+                Avoid using your name, mobile number,
+                or easily guessed passwords.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               SUBMIT
+          ================================================== -->
+
+          <%= f.submit "Change My Password",
+                class: "btn password-submit" %>
+
+
+        <% end %>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <div class="auth-footer">
+
+          <span>
+            Remember your password?
+          </span>
+
+          <%= link_to new_user_session_path do %>
+
+            Login
+            <i class="bi bi-arrow-right"></i>
+
+          <% end %>
+
+        </div>
 
       </div>
 
-    </div>
+    </section>
 
   </div>
 
 </div>
+
+
 <style nonce="<%= content_security_policy_nonce %>">
-  /* =========================================================
-   CHANGE PASSWORD
-   DEVISE PASSWORD RESET
+
+/* =========================================================
+   PAGE
 ========================================================= */
+
+.aone-password-page {
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
+  padding-top: 100px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(124, 58, 237, 0.10),
+      transparent 35%
+    ),
+    #f7f8fc;
+
+  font-family:
+    "Poppins",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =========================================================
+   MAIN AUTH CONTAINER
+========================================================= */
+
+.aone-password-page .auth-container {
+
+  width: min(1180px, calc(100% - 40px));
+
+  min-height: 720px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(360px, 0.9fr)
+    minmax(480px, 1.1fr);
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.12),
+    0 5px 20px rgba(15, 23, 42, 0.05);
+
+}
+
+
+/* =========================================================
+   LEFT BRANDING
+========================================================= */
+
+.aone-password-page .auth-image {
+
+  position: relative;
+
+  min-height: 720px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 50px 42px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #261044 0%,
+      #4c1684 48%,
+      #8009e2 100%
+    );
+
+  color: #ffffff;
+
+}
+
+
+.aone-password-page .auth-image::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 360px;
+  height: 360px;
+
+  border-radius: 50%;
+
+  top: -150px;
+  right: -130px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+}
+
+
+.aone-password-page .auth-image::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  bottom: -110px;
+  left: -100px;
+
+  background:
+    rgba(255,255,255,0.06);
+
+}
+
+
+.aone-password-page .auth-image-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.04),
+      transparent
+    );
+
+  pointer-events: none;
+
+}
+
+
+/* =========================================================
+   BRAND CONTENT
+========================================================= */
+
+.aone-password-page .auth-image-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  max-width: 390px;
+
+  text-align: center;
+
+}
+
+
+.aone-password-page .brand-logo-wrap {
+
+  width: 105px;
+  height: 105px;
+
+  margin: 0 auto 25px;
+
+  padding: 7px;
+
+  border-radius: 28px;
+
+  background:
+    rgba(255,255,255,0.16);
+
+  border:
+    1px solid rgba(255,255,255,0.28);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.20);
+
+  backdrop-filter: blur(12px);
+
+}
+
+
+.aone-password-page .brand-logo {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  border-radius: 21px;
+
+  background: #ffffff;
+
+}
+
+
+.aone-password-page .auth-image h1 {
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(25px, 3vw, 34px);
+
+  font-weight: 800;
+
+  letter-spacing: 0.3px;
+
+}
+
+
+.aone-password-page .brand-line {
+
+  width: 60px;
+  height: 4px;
+
+  margin: 16px auto 20px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.85);
+
+}
+
+
+.aone-password-page .auth-image-content > p {
+
+  margin: 0 auto;
+
+  max-width: 330px;
+
+  color: rgba(255,255,255,0.82);
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+}
+
+
+.aone-password-page .security-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 28px;
+
+  padding: 10px 16px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.10);
+
+  border:
+    1px solid rgba(255,255,255,0.18);
+
+  color: rgba(255,255,255,0.92);
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.aone-password-page .auth-forms {
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 45px 55px;
+
+  background: #ffffff;
+
+}
+
+
+.aone-password-page .auth-form-wrapper {
+
+  width: 100%;
+
+  max-width: 520px;
+
+}
+
+
+/* =========================================================
+   AUTH TABS
+========================================================= */
+
+.aone-password-page .auth-tabs {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 42px;
+
+  padding: 5px;
+
+  background: #f5f3ff;
+
+  border: 1px solid #ebe7ff;
+
+  border-radius: 14px;
+
+}
+
+
+.aone-password-page .auth-tab {
+
+  min-height: 42px;
+
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 10px;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+}
+
+
+.aone-password-page .auth-tab.active {
+
+  background: #ffffff;
+
+  color: #6d28d9;
+
+  box-shadow:
+    0 4px 12px rgba(109,40,217,0.10);
+
+}
+
+
+.aone-password-page .auth-tab-link {
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+
+}
+
+
+.aone-password-page .auth-tab-link:hover {
+
+  color: #6d28d9;
+
+  background: rgba(255,255,255,0.75);
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.aone-password-page .password-header {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 16px;
+
+  margin-bottom: 30px;
+
+}
+
+
+.aone-password-page .password-icon {
+
+  flex: 0 0 52px;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f3e8ff,
+      #ede9fe
+    );
+
+  color: #7c3aed;
+
+  font-size: 22px;
+
+}
+
+
+.aone-password-page .form-title {
+
+  margin: 0 0 7px;
+
+  color: #172033;
+
+  font-size: clamp(22px, 3vw, 29px);
+
+  line-height: 1.25;
+
+  font-weight: 750;
+
+}
+
+
+.aone-password-page .form-subtitle {
+
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.aone-password-page .form-group {
+
+  margin-bottom: 22px;
+
+}
+
+
+.aone-password-page .form-label {
+
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #263247;
+
+  font-size: 13px;
+
+  font-weight: 650;
+
+}
+
+
+/* =========================================================
+   PASSWORD INPUT
+========================================================= */
+
+.aone-password-page .password-input-wrapper {
+
+  position: relative;
+
+}
+
+
+.aone-password-page .password-input {
+
+  width: 100%;
+
+  min-height: 54px;
+
+  padding:
+    0 48px 0 47px !important;
+
+  border:
+    1px solid #dfe3ec !important;
+
+  border-radius: 13px !important;
+
+  background: #ffffff !important;
+
+  color: #172033 !important;
+
+  font-size: 14px !important;
+
+  outline: none !important;
+
+  box-shadow: none !important;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+}
+
+
+.aone-password-page .password-input::placeholder {
+
+  color: #9aa4b2;
+
+}
+
+
+.aone-password-page .password-input:hover {
+
+  border-color: #c4b5fd !important;
+
+}
+
+
+.aone-password-page .password-input:focus {
+
+  border-color: #8b5cf6 !important;
+
+  background: #ffffff !important;
+
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,0.10) !important;
+
+}
+
+
+/* =========================================================
+   INPUT ICON
+========================================================= */
+
+.aone-password-page .form-icon {
+
+  position: absolute;
+
+  z-index: 3;
+
+  left: 17px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #94a3b8;
+
+  font-size: 17px;
+
+  pointer-events: none;
+
+  transition: color 0.2s ease;
+
+}
+
+
+.aone-password-page .password-input-wrapper:focus-within
+.form-icon {
+
+  color: #7c3aed;
+
+}
+
+
+/* =========================================================
+   SHOW/HIDE PASSWORD
+========================================================= */
+
+.aone-password-page .password-toggle {
+
+  position: absolute;
+
+  z-index: 4;
+
+  top: 50%;
+  right: 10px;
+
+  width: 36px;
+  height: 36px;
+
+  transform: translateY(-50%);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+
+}
+
+
+.aone-password-page .password-toggle:hover {
+
+  background: #f5f3ff;
+
+  color: #7c3aed;
+
+}
+
+
+.aone-password-page .password-toggle:focus-visible {
+
+  outline: 2px solid #8b5cf6;
+
+  outline-offset: 2px;
+
+}
 
 
 /* =========================================================
    PASSWORD HINT
 ========================================================= */
 
-.auth-container .password-hint {
-  display: block;
+.aone-password-page .password-hint {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
 
   margin-top: 8px;
 
   color: #64748b;
 
-  font-size: 12px;
+  font-size: 11px;
 
   line-height: 1.5;
+
+}
+
+
+.aone-password-page .password-hint i {
+
+  color: #8b5cf6;
+
 }
 
 
 /* =========================================================
-   PASSWORD INPUT ICON
+   PASSWORD STRENGTH
 ========================================================= */
 
-.auth-container .form-group .form-icon {
+.aone-password-page .password-strength {
+
+  margin-top: 11px;
+
+}
+
+
+.aone-password-page .strength-track {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 5px;
+
+}
+
+
+.aone-password-page .strength-bar {
+
+  height: 4px;
+
+  border-radius: 999px;
+
+  background: #e5e7eb;
+
+  transition:
+    background 0.2s ease;
+
+}
+
+
+.aone-password-page .strength-text {
+
+  display: block;
+
+  margin-top: 6px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+}
+
+
+/* =========================================================
+   PASSWORD MATCH
+========================================================= */
+
+.aone-password-page .password-match {
+
+  min-height: 18px;
+
+  margin-top: 7px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+}
+
+
+.aone-password-page .password-match.match {
+
+  color: #15803d;
+
+}
+
+
+.aone-password-page .password-match.no-match {
+
+  color: #dc2626;
+
+}
+
+
+/* =========================================================
+   SECURITY INFO
+========================================================= */
+
+.aone-password-page .security-info {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin: 5px 0 24px;
+
+  padding: 13px 14px;
+
+  border:
+    1px solid #e9e5ff;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf9ff,
+      #f7f5ff
+    );
+
+}
+
+
+.aone-password-page .security-info-icon {
+
+  flex: 0 0 32px;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #ede9fe;
+
+  color: #7c3aed;
+
+}
+
+
+.aone-password-page .security-info strong {
+
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #374151;
+
+  font-size: 11px;
+
+}
+
+
+.aone-password-page .security-info p {
+
+  margin: 0;
+
   color: #64748b;
 
-  transition: color 0.25s ease;
-}
+  font-size: 10px;
 
+  line-height: 1.55;
 
-/* Change icon color when input is focused */
-
-.auth-container .form-group:focus-within .form-icon {
-  color: #a78bfa;
 }
 
 
 /* =========================================================
-   PASSWORD INPUT SPACING
+   ERROR
 ========================================================= */
 
-.auth-container input[type="password"].form-control {
-  padding-right: 48px;
+.aone-password-page .password-error-box {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 11px;
+
+  margin-bottom: 22px;
+
+  padding: 13px 14px;
+
+  border:
+    1px solid #fecaca;
+
+  border-radius: 12px;
+
+  background: #fff7f7;
+
+  color: #991b1b;
+
+  font-size: 12px;
+
+}
+
+
+.aone-password-page .error-icon {
+
+  flex: 0 0 25px;
+
+  color: #dc2626;
+
+  font-size: 15px;
+
 }
 
 
 /* =========================================================
-   PASSWORD HINT MOBILE
+   SUBMIT BUTTON
+========================================================= */
+
+.aone-password-page .password-submit {
+
+  width: 100%;
+
+  min-height: 54px;
+
+  border: 0 !important;
+
+  border-radius: 13px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #8b5cf6
+    ) !important;
+
+  color: #ffffff !important;
+
+  font-size: 14px !important;
+
+  font-weight: 700 !important;
+
+  letter-spacing: 0.1px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 24px rgba(124,58,237,0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+}
+
+
+.aone-password-page .password-submit:hover {
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 14px 30px rgba(124,58,237,0.28);
+
+}
+
+
+.aone-password-page .password-submit:active {
+
+  transform: translateY(0);
+
+}
+
+
+.aone-password-page .password-submit:focus-visible {
+
+  outline: 3px solid rgba(124,58,237,0.22);
+
+  outline-offset: 3px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.aone-password-page .auth-footer {
+
+  margin-top: 25px;
+
+  text-align: center;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+}
+
+
+.aone-password-page .auth-footer a {
+
+  margin-left: 5px;
+
+  color: #6d28d9;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+}
+
+
+.aone-password-page .auth-footer a:hover {
+
+  text-decoration: underline;
+
+}
+
+
+.aone-password-page .auth-footer i {
+
+  margin-left: 3px;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+
+  .aone-password-page .auth-container {
+
+    grid-template-columns:
+      minmax(290px, 0.75fr)
+      minmax(430px, 1.25fr);
+
+    width: min(100% - 24px, 900px);
+
+    min-height: 650px;
+
+  }
+
+
+  .aone-password-page .auth-image {
+
+    min-height: 650px;
+
+    padding: 35px 25px;
+
+  }
+
+
+  .aone-password-page .auth-forms {
+
+    padding:
+      35px 35px;
+
+  }
+
+
+  .aone-password-page .auth-tabs {
+
+    margin-bottom: 32px;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE / PORTRAIT TABLET
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .aone-password-page {
+
+    padding: 0;
+
+  }
+
+
+  .aone-password-page .auth-container {
+
+    width: 100%;
+
+    min-height: 100dvh;
+
+    margin: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+  }
+
+
+  .aone-password-page .auth-image {
+
+    min-height: auto;
+
+    padding:
+      30px 22px 28px;
+
+  }
+
+
+  .aone-password-page .brand-logo-wrap {
+
+    width: 72px;
+    height: 72px;
+
+    margin-bottom: 13px;
+
+    border-radius: 20px;
+
+  }
+
+
+  .aone-password-page .brand-logo {
+
+    border-radius: 14px;
+
+  }
+
+
+  .aone-password-page .auth-image h1 {
+
+    font-size: 22px;
+
+  }
+
+
+  .aone-password-page .brand-line {
+
+    width: 45px;
+    height: 3px;
+
+    margin:
+      10px auto 11px;
+
+  }
+
+
+  .aone-password-page .auth-image-content > p {
+
+    max-width: 430px;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+  }
+
+
+  .aone-password-page .security-badge {
+
+    margin-top: 15px;
+
+    padding:
+      8px 13px;
+
+    font-size: 10px;
+
+  }
+
+
+  .aone-password-page .auth-forms {
+
+    flex: 1;
+
+    align-items: flex-start;
+
+    padding:
+      28px 20px 35px;
+
+  }
+
+
+  .aone-password-page .auth-form-wrapper {
+
+    max-width: 100%;
+
+  }
+
+
+  .aone-password-page .auth-tabs {
+
+    margin-bottom: 27px;
+
+  }
+
+
+  .aone-password-page .password-header {
+
+    gap: 12px;
+
+    margin-bottom: 24px;
+
+  }
+
+
+  .aone-password-page .password-icon {
+
+    flex-basis: 44px;
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 13px;
+
+    font-size: 18px;
+
+  }
+
+
+  .aone-password-page .form-title {
+
+    font-size: 21px;
+
+  }
+
+
+  .aone-password-page .form-subtitle {
+
+    font-size: 12px;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
 ========================================================= */
 
 @media (max-width: 480px) {
 
-  .auth-container .password-hint {
+  .aone-password-page .auth-image {
+
+    padding:
+      24px 18px 22px;
+
+  }
+
+
+  .aone-password-page .auth-image-content > p {
+
+    display: none;
+
+  }
+
+
+  .aone-password-page .security-badge {
+
+    margin-top: 10px;
+
+  }
+
+
+  .aone-password-page .auth-forms {
+
+    padding:
+      23px 16px 30px;
+
+  }
+
+
+  .aone-password-page .auth-tabs {
+
+    margin-bottom: 24px;
+
+  }
+
+
+  .aone-password-page .auth-tab {
+
+    min-height: 40px;
+
     font-size: 11px;
+
+  }
+
+
+  .aone-password-page .password-header {
+
+    align-items: center;
+
+  }
+
+
+  .aone-password-page .password-icon {
+
+    flex-basis: 40px;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 11px;
+
+    font-size: 16px;
+
+  }
+
+
+  .aone-password-page .form-title {
+
+    font-size: 19px;
+
+  }
+
+
+  .aone-password-page .form-subtitle {
+
+    font-size: 11px;
+
+    line-height: 1.55;
+
+  }
+
+
+  .aone-password-page .form-group {
+
+    margin-bottom: 19px;
+
+  }
+
+
+  .aone-password-page .password-input {
+
+    min-height: 51px;
+
+    font-size: 13px !important;
+
+  }
+
+
+  .aone-password-page .security-info {
+
+    padding: 11px;
+
+  }
+
+
+  .aone-password-page .password-submit {
+
+    min-height: 52px;
+
+    font-size: 13px !important;
+
   }
 
 }
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .aone-password-page .auth-image {
+
+    padding:
+      20px 14px;
+
+  }
+
+
+  .aone-password-page .auth-image h1 {
+
+    font-size: 19px;
+
+  }
+
+
+  .aone-password-page .auth-forms {
+
+    padding:
+      20px 13px 25px;
+
+  }
+
+
+  .aone-password-page .auth-tab span {
+
+    white-space: nowrap;
+
+  }
+
+
+  .aone-password-page .password-header {
+
+    gap: 9px;
+
+  }
+
+
+  .aone-password-page .form-title {
+
+    font-size: 17px;
+
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .aone-password-page * {
+
+    scroll-behavior: auto !important;
+
+    transition: none !important;
+
+    animation: none !important;
+
+  }
+
+}
+
 </style>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =======================================================
+     PASSWORD SHOW / HIDE
+  ======================================================== */
+
+  document
+    .querySelectorAll("[data-password-toggle]")
+    .forEach(function (button) {
+
+      button.addEventListener("click", function () {
+
+        const wrapper = button.closest(".password-input-wrapper");
+        const input = wrapper?.querySelector("input");
+
+        if (!input) return;
+
+        const icon = button.querySelector("i");
+
+        const showing = input.type === "text";
+
+        input.type = showing ? "password" : "text";
+
+        button.setAttribute(
+          "aria-label",
+          showing ? "Show password" : "Hide password"
+        );
+
+        button.setAttribute(
+          "aria-pressed",
+          String(!showing)
+        );
+
+        if (icon) {
+
+          icon.classList.toggle(
+            "bi-eye",
+            showing
+          );
+
+          icon.classList.toggle(
+            "bi-eye-slash",
+            !showing
+          );
+
+        }
+
+      });
+
+    });
+
+
+  /* =======================================================
+     PASSWORD STRENGTH
+  ======================================================== */
+
+  const password =
+    document.querySelector("#user_password");
+
+  const strength =
+    document.querySelector("[data-password-strength]");
+
+  if (password && strength) {
+
+    const bars =
+      strength.querySelectorAll(".strength-bar");
+
+    const text =
+      strength.querySelector(".strength-text");
+
+
+    password.addEventListener("input", function () {
+
+      const value = password.value;
+
+      let score = 0;
+
+      if (value.length >= 8) score++;
+
+      if (/[a-z]/.test(value)) score++;
+
+      if (/[A-Z]/.test(value)) score++;
+
+      if (/[0-9!@#$%^&*]/.test(value)) score++;
+
+
+      bars.forEach(function (bar, index) {
+
+        bar.style.background =
+          index < score
+            ? "#8b5cf6"
+            : "#e5e7eb";
+
+      });
+
+
+      const labels = [
+        "Enter a password",
+        "Weak password",
+        "Fair password",
+        "Good password",
+        "Strong password"
+      ];
+
+      text.textContent =
+        labels[score];
+
+    });
+
+  }
+
+
+  /* =======================================================
+     PASSWORD MATCH
+  ======================================================== */
+
+  const confirmation =
+    document.querySelector("#user_password_confirmation");
+
+  const match =
+    document.querySelector("[data-password-match]");
+
+
+  if (password && confirmation && match) {
+
+    function checkPasswordMatch() {
+
+      if (!confirmation.value) {
+
+        match.textContent = "";
+
+        match.className =
+          "password-match";
+
+        return;
+
+      }
+
+
+      if (password.value === confirmation.value) {
+
+        match.innerHTML =
+          '<i class="bi bi-check-circle-fill"></i> Passwords match';
+
+        match.className =
+          "password-match match";
+
+      } else {
+
+        match.innerHTML =
+          '<i class="bi bi-x-circle-fill"></i> Passwords do not match';
+
+        match.className =
+          "password-match no-match";
+
+      }
+
+    }
+
+
+    password.addEventListener(
+      "input",
+      checkPasswordMatch
+    );
+
+    confirmation.addEventListener(
+      "input",
+      checkPasswordMatch
+    );
+
+  }
+
+});
+
+</script>
