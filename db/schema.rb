@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_18_145033) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_23_175015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,65 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_145033) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "ai_conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "title", default: "New AI Chat", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "updated_at"], name: "index_ai_conversations_on_user_id_and_updated_at"
+    t.index ["user_id"], name: "index_ai_conversations_on_user_id"
+  end
+
+  create_table "ai_messages", force: :cascade do |t|
+    t.bigint "ai_conversation_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.integer "input_tokens"
+    t.string "model"
+    t.integer "output_tokens"
+    t.string "role", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ai_conversation_id", "created_at"], name: "index_ai_messages_on_ai_conversation_id_and_created_at"
+    t.index ["ai_conversation_id"], name: "index_ai_messages_on_ai_conversation_id"
+  end
+
+  create_table "ai_support_messages", force: :cascade do |t|
+    t.bigint "ai_support_request_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "read_at"
+    t.string "sender_type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["ai_support_request_id", "created_at"], name: "idx_on_ai_support_request_id_created_at_caf2eea086"
+    t.index ["ai_support_request_id", "read_at"], name: "index_ai_support_messages_on_ai_support_request_id_and_read_at"
+    t.index ["ai_support_request_id"], name: "index_ai_support_messages_on_ai_support_request_id"
+    t.index ["user_id", "created_at"], name: "index_ai_support_messages_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_ai_support_messages_on_user_id"
+  end
+
+  create_table "ai_support_requests", force: :cascade do |t|
+    t.text "admin_reply"
+    t.bigint "admin_user_id"
+    t.text "ai_context"
+    t.bigint "ai_conversation_id", null: false
+    t.string "category", default: "other", null: false
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.string "priority", default: "normal", null: false
+    t.datetime "replied_at"
+    t.datetime "resolved_at"
+    t.string "status", default: "open", null: false
+    t.string "subject", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["ai_conversation_id", "created_at"], name: "index_ai_support_requests_on_ai_conversation_id_and_created_at"
+    t.index ["ai_conversation_id"], name: "index_ai_support_requests_on_ai_conversation_id"
+    t.index ["status", "priority"], name: "index_ai_support_requests_on_status_and_priority"
+    t.index ["user_id", "status"], name: "index_ai_support_requests_on_user_id_and_status"
+    t.index ["user_id"], name: "index_ai_support_requests_on_user_id"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -665,6 +724,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_145033) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ai_conversations", "users"
+  add_foreign_key "ai_messages", "ai_conversations"
+  add_foreign_key "ai_support_messages", "ai_support_requests"
+  add_foreign_key "ai_support_messages", "users"
+  add_foreign_key "ai_support_requests", "ai_conversations"
+  add_foreign_key "ai_support_requests", "users"
+  add_foreign_key "ai_support_requests", "users", column: "admin_user_id"
   add_foreign_key "attendances", "courses"
   add_foreign_key "attendances", "users"
   add_foreign_key "batch_students", "batches"

@@ -22,7 +22,24 @@ class User < ApplicationRecord
 has_many :personal_coupons,
          class_name: "Coupon",
          foreign_key: :student_id,
-         dependent: :nullify      
+         dependent: :nullify
+
+
+has_many :ai_conversations,
+         class_name: "Ai::Conversation",
+         dependent: :destroy
+
+has_many :ai_support_requests,
+         class_name: "Ai::SupportRequest",
+         dependent: :destroy
+
+has_many :admin_ai_support_requests,
+         class_name: "Ai::SupportRequest",
+         foreign_key: :admin_user_id,
+         dependent: :nullify
+  has_many :ai_support_messages,
+         class_name: "Ai::SupportMessage",
+         dependent: :destroy                               
 
   has_many :enrollments, dependent: :destroy
   has_many :courses, through: :enrollments

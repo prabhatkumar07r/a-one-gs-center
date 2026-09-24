@@ -330,6 +330,9 @@
     <%= render "layouts/footer" %>
 
   <% end %>
+  <% if user_signed_in? %>
+  <%= render "shared/ai_chatbot" %>
+<% end %>
 
 
   <script nonce="<%= content_security_policy_nonce %>">

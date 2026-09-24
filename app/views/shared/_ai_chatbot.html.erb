@@ -1,0 +1,4087 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+  /* =========================================================
+     A ONE AI - FLOATING CHATBOT
+  ========================================================= */
+
+  .aone-ai-launcher {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+
+    width: 64px;
+    height: 64px;
+
+    border: 0;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    color: #ffffff;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb 0%,
+        #7c3aed 50%,
+        #9333ea 100%
+      );
+
+    box-shadow:
+      0 12px 35px rgba(80, 40, 180, 0.35),
+      0 0 0 5px rgba(124, 58, 237, 0.10);
+
+    z-index: 99990;
+
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .aone-ai-launcher:hover {
+    transform: translateY(-4px) scale(1.04);
+
+    box-shadow:
+      0 18px 45px rgba(80, 40, 180, 0.45),
+      0 0 0 7px rgba(124, 58, 237, 0.12);
+  }
+
+  .aone-ai-launcher-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .aone-ai-launcher-label {
+    position: absolute;
+
+    right: 74px;
+    bottom: 8px;
+
+    white-space: nowrap;
+
+    padding: 9px 14px;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    color: #39206f;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow:
+      0 8px 25px rgba(31, 41, 55, 0.15);
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform: translateX(8px);
+
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .aone-ai-launcher:hover .aone-ai-launcher-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+
+  /* =========================================================
+     CHAT WINDOW
+  ========================================================= */
+
+  .aone-ai-window {
+    position: fixed;
+
+    right: 24px;
+    bottom: 100px;
+
+    width: min(430px, calc(100vw - 30px));
+    height: min(650px, calc(100vh - 130px));
+
+    display: none;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.98),
+        rgba(249, 247, 255, 0.98)
+      );
+
+    border:
+      1px solid rgba(124, 58, 237, 0.18);
+
+    border-radius: 24px;
+
+    box-shadow:
+      0 25px 80px rgba(31, 20, 70, 0.28),
+      0 8px 30px rgba(124, 58, 237, 0.14);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    z-index: 99991;
+
+    animation: aoneAiOpen 0.25s ease;
+  }
+
+  .aone-ai-window.is-open {
+    display: flex;
+  }
+
+  @keyframes aoneAiOpen {
+
+    from {
+      opacity: 0;
+      transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+  }
+
+
+  /* =========================================================
+     HEADER
+  ========================================================= */
+
+  .aone-ai-header {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 17px;
+
+    color: #ffffff;
+
+    background:
+      linear-gradient(
+        135deg,
+        #1d4ed8 0%,
+        #6d28d9 48%,
+        #9333ea 100%
+      );
+  }
+
+  .aone-ai-header-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-width: 0;
+  }
+
+  .aone-ai-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.18);
+
+    border:
+      1px solid rgba(255, 255, 255, 0.28);
+
+    font-size: 22px;
+  }
+
+  .aone-ai-header-text {
+    min-width: 0;
+  }
+
+  .aone-ai-header-title {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    line-height: 1.2;
+  }
+
+  .aone-ai-header-subtitle {
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    opacity: 0.86;
+  }
+
+  .aone-ai-close {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    cursor: pointer;
+
+    font-size: 21px;
+
+    transition: background 0.2s ease;
+  }
+
+  .aone-ai-close:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+
+  /* =========================================================
+     QUICK ACTIONS
+  ========================================================= */
+
+  .aone-ai-quick-actions {
+    display: flex;
+    gap: 7px;
+
+    padding: 11px 12px;
+
+    overflow-x: auto;
+
+    border-bottom:
+      1px solid rgba(124, 58, 237, 0.09);
+
+    scrollbar-width: none;
+  }
+
+  .aone-ai-quick-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .aone-ai-quick-btn {
+    position: relative;
+    z-index: 20;
+    flex: 0 0 auto;
+    pointer-events: auto;
+    padding: 7px 10px;
+
+    border:
+      1px solid rgba(124, 58, 237, 0.14);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    color: #4c2a85;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .aone-ai-quick-btn:hover {
+    background: #ffffff;
+
+    transform: translateY(-1px);
+  }
+
+
+  /* =========================================================
+     MESSAGES
+  ========================================================= */
+
+  .aone-ai-messages {
+  flex: 1 1 0;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 17px 13px;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+}
+
+  .aone-ai-message {
+    display: flex;
+
+    margin-bottom: 13px;
+  }
+
+  .aone-ai-message.user {
+    justify-content: flex-end;
+  }
+
+  .aone-ai-message.assistant {
+    justify-content: flex-start;
+  }
+
+  .aone-ai-bubble {
+    max-width: 96%;
+
+    padding: 11px 13px;
+
+    border-radius: 17px;
+
+    font-size: 13px;
+
+    line-height: 1.58;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+  }
+
+  .aone-ai-message.user .aone-ai-bubble {
+    color: #ffffff;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+      );
+
+    border-bottom-right-radius: 5px;
+
+    box-shadow:
+      0 6px 18px rgba(79, 70, 229, 0.18);
+
+    white-space: pre-wrap;
+  }
+
+  .aone-ai-message.assistant .aone-ai-bubble {
+    color: #273047;
+
+    background: #ffffff;
+
+    border:
+      1px solid rgba(124, 58, 237, 0.10);
+
+    border-bottom-left-radius: 5px;
+
+    box-shadow:
+      0 5px 18px rgba(31, 41, 55, 0.07);
+  }
+
+
+  /* =========================================================
+     MARKDOWN CONTENT
+  ========================================================= */
+
+  .aone-ai-markdown {
+    width: 100%;
+  }
+
+  .aone-ai-markdown > :first-child {
+    margin-top: 0;
+  }
+
+  .aone-ai-markdown > :last-child {
+    margin-bottom: 0;
+  }
+
+
+  /* Paragraph */
+
+  .aone-ai-markdown p {
+    margin: 0 0 9px;
+  }
+
+
+  /* Headings */
+
+  .aone-ai-markdown h1,
+  .aone-ai-markdown h2,
+  .aone-ai-markdown h3,
+  .aone-ai-markdown h4 {
+    margin-top: 13px;
+    margin-bottom: 7px;
+
+    color: #32205f;
+
+    line-height: 1.3;
+    font-weight: 800;
+  }
+
+  .aone-ai-markdown h1 {
+    font-size: 19px;
+  }
+
+  .aone-ai-markdown h2 {
+    font-size: 17px;
+  }
+
+  .aone-ai-markdown h3 {
+    font-size: 15px;
+  }
+
+  .aone-ai-markdown h4 {
+    font-size: 14px;
+  }
+
+
+  /* Strong / emphasis */
+
+  .aone-ai-markdown strong {
+    color: #34206d;
+
+    font-weight: 800;
+  }
+
+  .aone-ai-markdown em {
+    font-style: italic;
+
+    color: #51456e;
+  }
+
+
+  /* Lists */
+
+  .aone-ai-markdown ul,
+  .aone-ai-markdown ol {
+    margin: 7px 0 10px;
+
+    padding-left: 22px;
+  }
+
+  .aone-ai-markdown li {
+    margin: 4px 0;
+
+    padding-left: 2px;
+  }
+
+  .aone-ai-markdown li > ul,
+  .aone-ai-markdown li > ol {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+
+  /* =========================================================
+     MARKDOWN TABLE
+  ========================================================= */
+
+  .aone-ai-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    width: 100%;
+
+    margin: 10px 0;
+
+    overflow-x: auto;
+
+    border:
+      1px solid rgba(124, 58, 237, 0.13);
+
+    border-radius: 12px;
+
+    background: #ffffff;
+  }
+
+  .aone-ai-table {
+  width: max-content;
+  min-width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 11px;
+
+  table-layout: auto;
+}
+
+.aone-ai-table th,
+.aone-ai-table td {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.aone-ai-table th:first-child,
+.aone-ai-table td:first-child {
+  min-width: 125px;
+}
+
+.aone-ai-table th:nth-child(2),
+.aone-ai-table td:nth-child(2) {
+  min-width: 150px;
+}
+
+.aone-ai-table th {
+  white-space: nowrap;
+}
+
+  .aone-ai-table th {
+    padding: 8px 9px;
+
+    text-align: left;
+
+    color: #ffffff;
+
+    background:
+      linear-gradient(
+        135deg,
+        #5b21b6,
+        #7c3aed
+      );
+
+    font-weight: 800;
+
+    white-space: nowrap;
+  }
+
+  .aone-ai-table td {
+    padding: 8px 9px;
+
+    border-top:
+      1px solid #eee8ff;
+
+    color: #344054;
+
+    vertical-align: top;
+  }
+
+  .aone-ai-table tr:nth-child(even) td {
+    background: #faf9ff;
+  }
+
+
+  /* =========================================================
+     INLINE CODE
+  ========================================================= */
+
+  .aone-ai-markdown code {
+    padding: 2px 5px;
+
+    border-radius: 5px;
+
+    background: #f3f0ff;
+
+    color: #6d28d9;
+
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      monospace;
+
+    font-size: 11px;
+  }
+
+
+  /* =========================================================
+     CODE BLOCK
+  ========================================================= */
+
+  .aone-ai-code-wrapper {
+    margin: 10px 0;
+
+    overflow: hidden;
+
+    border-radius: 11px;
+
+    background: #17152a;
+
+    box-shadow:
+      0 5px 16px rgba(31, 20, 70, 0.14);
+  }
+
+  .aone-ai-code-label {
+    padding: 6px 10px;
+
+    color: #c4b5fd;
+
+    background: #211d38;
+
+    border-bottom:
+      1px solid rgba(255, 255, 255, 0.08);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.06em;
+  }
+
+  .aone-ai-code {
+    display: block;
+
+    margin: 0;
+
+    padding: 11px;
+
+    overflow-x: auto;
+
+    color: #f4f1ff;
+
+    background: #17152a;
+
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      monospace;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+
+    white-space: pre;
+  }
+
+
+  /* =========================================================
+     LINKS
+  ========================================================= */
+
+  .aone-ai-markdown a {
+    color: #6d28d9;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    border-bottom:
+      1px dashed rgba(109, 40, 217, 0.45);
+
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .aone-ai-markdown a:hover {
+    color: #4c1d95;
+
+    background: #f4efff;
+  }
+
+
+  /* A ONE internal course/action link */
+
+  .aone-ai-course-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin: 3px 3px 3px 0;
+
+    padding: 6px 10px;
+
+    border: 0 !important;
+
+    border-radius: 8px;
+
+    color: #ffffff !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+      );
+
+    font-size: 11px;
+
+    box-shadow:
+      0 4px 10px rgba(79, 70, 229, 0.16);
+  }
+
+  .aone-ai-course-link:hover {
+    color: #ffffff !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        #1d4ed8,
+        #6d28d9
+      );
+
+    transform: translateY(-1px);
+  }
+
+
+  /* =========================================================
+     BLOCKQUOTE
+  ========================================================= */
+
+  .aone-ai-markdown blockquote {
+    margin: 9px 0;
+
+    padding: 8px 11px;
+
+    border-left:
+      3px solid #8b5cf6;
+
+    border-radius: 0 8px 8px 0;
+
+    background: #f7f4ff;
+
+    color: #5d5870;
+  }
+
+
+  /* =========================================================
+     HORIZONTAL RULE
+  ========================================================= */
+
+  .aone-ai-markdown hr {
+    margin: 12px 0;
+
+    border: 0;
+
+    border-top:
+      1px solid #e8e1f7;
+  }
+
+
+  /* =========================================================
+     WELCOME
+  ========================================================= */
+
+  .aone-ai-welcome {
+    padding: 8px 2px 14px;
+  }
+
+  .aone-ai-welcome-title {
+    margin-bottom: 5px;
+
+    color: #32205f;
+
+    font-size: 19px;
+    font-weight: 800;
+  }
+
+  .aone-ai-welcome-text {
+    color: #667085;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+  }
+
+
+  /* =========================================================
+     TYPING
+  ========================================================= */
+
+  .aone-ai-typing {
+    display: none;
+
+    align-items: center;
+    gap: 5px;
+
+    width: fit-content;
+
+    margin: 0 13px 13px;
+
+    padding: 10px 13px;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    border:
+      1px solid rgba(124, 58, 237, 0.10);
+
+    box-shadow:
+      0 5px 18px rgba(31, 41, 55, 0.06);
+  }
+
+  .aone-ai-typing.is-visible {
+    display: flex;
+  }
+
+  .aone-ai-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #7c3aed;
+
+    animation:
+      aoneAiTyping 1.1s infinite ease-in-out;
+  }
+
+  .aone-ai-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .aone-ai-dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes aoneAiTyping {
+
+    0%, 60%, 100% {
+      transform: translateY(0);
+      opacity: 0.45;
+    }
+
+    30% {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+
+  }
+
+
+  /* =========================================================
+     INPUT
+  ========================================================= */
+
+  .aone-ai-input-area {
+    flex: 0 0 auto;
+
+    padding: 11px;
+
+    background:
+      rgba(255, 255, 255, 0.88);
+
+    border-top:
+      1px solid rgba(124, 58, 237, 0.09);
+  }
+
+  .aone-ai-form {
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 8px;
+  }
+
+  .aone-ai-input {
+    flex: 1;
+
+    min-height: 44px;
+    height:44px;
+    max-height: 110px;
+
+    resize: none;
+
+    padding: 12px 13px;
+
+    border:
+      1px solid #ddd6fe;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #202938;
+
+    font-size: 13px;
+
+    font-family: inherit;
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .aone-ai-input:focus {
+    border-color: #8b5cf6;
+
+    box-shadow:
+      0 0 0 3px rgba(139, 92, 246, 0.10);
+  }
+
+  .aone-ai-send {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    border: 0;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+      );
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .aone-ai-send:hover {
+    transform: translateY(-2px);
+  }
+
+  .aone-ai-send:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+  }
+
+  .aone-ai-powered {
+    margin-top: 6px;
+
+    text-align: center;
+
+    color: #98a2b3;
+
+    font-size: 9px;
+  }
+
+
+
+  .aone-ai-support-panel {
+    position: absolute;
+    inset: 136px 0 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(249,247,255,0.99));
+  }
+
+  .aone-ai-support-panel[hidden] {
+    display: none;
+  }
+
+  .aone-ai-support-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 12px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f3efff, #ffffff);
+    border: 1px solid rgba(124,58,237,0.12);
+  }
+
+  .aone-ai-support-header strong {
+    display: block;
+    color: #32205f;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .aone-ai-support-header div div {
+    margin-top: 3px;
+    color: #667085;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  #aoneAiSupportClose {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    border: 0;
+    border-radius: 9px;
+    color: #4c2a85;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  #aoneAiSupportForm {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  #aoneAiSupportForm label {
+    margin-top: 4px;
+    color: #344054;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  #aoneAiSupportForm select,
+  #aoneAiSupportForm input,
+  #aoneAiSupportForm textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd6fe;
+    border-radius: 11px;
+    outline: none;
+    background: #ffffff;
+    color: #202938;
+    font: inherit;
+    font-size: 12px;
+  }
+
+  #aoneAiSupportForm select,
+  #aoneAiSupportForm input {
+    min-height: 40px;
+    padding: 9px 11px;
+  }
+
+  #aoneAiSupportForm textarea {
+    min-height: 125px;
+    padding: 10px 11px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  #aoneAiSupportForm select:focus,
+  #aoneAiSupportForm input:focus,
+  #aoneAiSupportForm textarea:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139,92,246,0.10);
+  }
+
+  #aoneAiSupportSubmit {
+    min-height: 42px;
+    margin-top: 5px;
+    border: 0;
+    border-radius: 11px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  #aoneAiSupportSubmit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  #aoneAiSupportResult {
+    margin-top: 12px;
+    padding: 11px 12px;
+    border-radius: 11px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  #aoneAiSupportResult.success {
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+  }
+
+  #aoneAiSupportResult.error {
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+  }
+
+  .aone-ai-support-history {
+    margin-top: 16px;
+  }
+
+  .aone-ai-support-history h4 {
+    margin: 0 0 8px;
+    color: #32205f;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .aone-ai-support-ticket {
+    margin-bottom: 8px;
+    padding: 10px;
+    border: 1px solid rgba(124,58,237,0.11);
+    border-radius: 11px;
+    background: #ffffff;
+  }
+
+  .aone-ai-support-ticket-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .aone-ai-support-ticket-subject {
+    min-width: 0;
+    color: #344054;
+    font-size: 11px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  .aone-ai-support-ticket-status {
+    flex: 0 0 auto;
+    padding: 3px 7px;
+    border-radius: 999px;
+    color: #4c1d95;
+    background: #f3e8ff;
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .aone-ai-support-ticket-meta {
+    margin-top: 4px;
+    color: #98a2b3;
+    font-size: 9px;
+  }
+
+  .aone-ai-support-ticket-reply {
+    margin-top: 7px;
+    padding-top: 7px;
+    border-top: 1px solid #eee8ff;
+    color: #475467;
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  .aone-ai-support-ticket-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+
+  .aone-ai-support-chat-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    text-decoration: none !important;
+    font-size: 10px;
+    font-weight: 800;
+    box-shadow: 0 4px 10px rgba(79,70,229,0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .aone-ai-support-chat-link:hover {
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(79,70,229,0.22);
+  }
+
+  .aone-ai-support-empty {
+    color: #98a2b3;
+    font-size: 10px;
+  }
+
+  @media (max-width: 576px) {
+    .aone-ai-support-panel {
+      inset: 70px 0 0;
+      padding: 11px;
+    }
+  }
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 576px) {
+
+    .aone-ai-launcher {
+      right: 16px;
+      bottom: 16px;
+
+      width: 58px;
+      height: 58px;
+    }
+
+    .aone-ai-launcher-icon {
+      font-size: 25px;
+    }
+
+    .aone-ai-launcher-label {
+      display: none;
+    }
+
+    .aone-ai-window {
+      right: 10px;
+      bottom: 84px;
+
+      width: calc(100vw - 20px);
+
+      height:
+        min(
+          620px,
+          calc(100vh - 105px)
+        );
+
+      border-radius: 20px;
+    }
+
+    .aone-ai-bubble {
+      max-width: 93%;
+    }
+
+    .aone-ai-table {
+      min-width: 520px;
+    }
+
+  }
+
+
+
+  .aone-ai-input {
+  flex: 1;
+
+  min-height: 44px;
+  height: 44px;
+  max-height: 110px;
+
+  resize: none;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: none;
+}
+
+.aone-ai-input::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+.aone-ai-window {
+  position: fixed;
+
+  right: 24px;
+  bottom: 100px;
+
+  width: min(430px, calc(100vw - 30px));
+  height: min(650px, calc(100vh - 130px));
+
+  display: none;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(249, 247, 255, 0.99)
+    );
+
+  border:
+    1px solid rgba(124, 58, 237, 0.18);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 80px rgba(31, 20, 70, 0.32),
+    0 8px 30px rgba(124, 58, 237, 0.16);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  /*
+   * Keep the complete chatbot above
+   * the website's normal header.
+   */
+  z-index: 2147483000;
+
+  isolation: isolate;
+
+  animation: aoneAiOpen 0.25s ease;
+}
+.aone-ai-header {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 74px;
+
+  padding: 15px 17px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8 0%,
+      #6d28d9 48%,
+      #9333ea 100%
+    );
+
+  z-index: 2;
+
+  isolation: isolate;
+}
+
+
+@media (max-width: 576px) {
+
+  .aone-ai-window {
+    position: fixed;
+
+    top: auto;
+    left: 10px;
+    right: 10px;
+    bottom: 84px;
+
+    width: auto;
+
+    height:
+      min(
+        620px,
+        calc(100dvh - 105px)
+      );
+
+    max-height:
+      calc(100dvh - 105px);
+
+    border-radius: 20px;
+
+    z-index: 2147483000;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .aone-ai-window {
+    top: 70px;
+    bottom: 84px;
+
+    height: auto;
+    max-height: calc(100dvh - 154px);
+  }
+
+}
+</style>
+
+
+<!-- =========================================================
+     FLOATING BUTTON
+========================================================= -->
+
+<button
+  type="button"
+  class="aone-ai-launcher"
+  id="aoneAiLauncher"
+  aria-label="Open A ONE AI Study Assistant"
+  aria-expanded="false">
+
+  <span class="aone-ai-launcher-icon">
+    🤖
+  </span>
+
+  <span class="aone-ai-launcher-label">
+    Ask A ONE AI
+  </span>
+
+</button>
+
+
+<!-- =========================================================
+     CHAT WINDOW
+========================================================= -->
+
+<div
+  class="aone-ai-window"
+  id="aoneAiWindow"
+  role="dialog"
+  aria-modal="false"
+  aria-label="A ONE AI Study Assistant">
+
+  <!-- HEADER -->
+
+  <div class="aone-ai-header">
+
+    <div class="aone-ai-header-left">
+
+      <div class="aone-ai-avatar">
+        🤖
+      </div>
+
+      <div class="aone-ai-header-text">
+
+        <div class="aone-ai-header-title">
+          A ONE AI
+        </div>
+
+        <div class="aone-ai-header-subtitle">
+          Study Assistant • Ask anything
+        </div>
+
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="aone-ai-close"
+      id="aoneAiClose"
+      aria-label="Close A ONE AI">
+
+      ×
+
+    </button>
+
+  </div>
+
+
+  <!-- =======================================================
+       QUICK ACTIONS
+  ======================================================== -->
+
+  <div class="aone-ai-quick-actions">
+
+    <button
+      type="button"
+      class="aone-ai-quick-btn"
+      data-ai-question="What courses are available?">
+
+      📚 Courses
+
+    </button>
+
+    <button
+      type="button"
+      class="aone-ai-quick-btn"
+      data-ai-question="What are the course fees?">
+
+      💰 Fees
+
+    </button>
+
+    <button
+      type="button"
+      class="aone-ai-quick-btn"
+      data-ai-question="How can I enroll in a course?">
+
+      🎓 Enrollment
+
+    </button>
+
+    <button
+      type="button"
+      class="aone-ai-quick-btn"
+      data-ai-question="Help me with my studies.">
+
+      📖 Study Help
+
+    </button>
+
+    <button
+  type="button"
+  class="aone-ai-quick-btn aone-ai-support-btn"
+  id="aoneAiSupportButton">
+  🆘 Human Help
+</button>
+
+  </div>
+
+
+  <!-- =======================================================
+       MESSAGES
+  ======================================================== -->
+
+  <div
+    class="aone-ai-messages"
+    id="aoneAiMessages">
+
+    <div class="aone-ai-welcome">
+
+      <div class="aone-ai-welcome-title">
+        👋 Hello!
+      </div>
+
+      <div class="aone-ai-welcome-text">
+
+        I’m <strong>A ONE AI</strong>, your study assistant.
+
+        Ask me about courses, enrollment, fees, lessons,
+        or general study questions.
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div
+    id="aoneAiSupportPanel"
+    class="aone-ai-support-panel"
+    hidden>
+
+    <div class="aone-ai-support-header">
+      <div>
+        <strong>Human Help</strong>
+        <div>Send your issue to A ONE GS CENTER admin.</div>
+      </div>
+
+      <button
+        type="button"
+        id="aoneAiSupportClose"
+        aria-label="Close Human Help">
+        ×
+      </button>
+    </div>
+
+    <form id="aoneAiSupportForm">
+      <label for="aoneAiSupportCategory">Issue Type</label>
+
+      <select id="aoneAiSupportCategory" required>
+        <option value="course_access">Course Access</option>
+        <option value="enrollment">Enrollment</option>
+        <option value="payment">Payment</option>
+        <option value="refund">Refund</option>
+        <option value="technical">Technical</option>
+        <option value="account">Account</option>
+        <option value="content">Content</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="aoneAiSupportSubject">Subject</label>
+
+      <input
+        type="text"
+        id="aoneAiSupportSubject"
+        maxlength="160"
+        required>
+
+      <label for="aoneAiSupportDescription">Your Requirement</label>
+
+      <textarea
+        id="aoneAiSupportDescription"
+        maxlength="10000"
+        rows="6"
+        required></textarea>
+
+      <button
+        type="submit"
+        id="aoneAiSupportSubmit">
+        Submit Request
+      </button>
+    </form>
+
+    <div id="aoneAiSupportResult" hidden></div>
+
+    <div class="aone-ai-support-history">
+      <h4>Recent Support Requests</h4>
+      <div id="aoneAiSupportHistory">Loading...</div>
+    </div>
+  </div>
+
+
+  <!-- =======================================================
+       TYPING
+  ======================================================== -->
+
+  <div
+    class="aone-ai-typing"
+    id="aoneAiTyping"
+    aria-hidden="true">
+
+    <span class="aone-ai-dot"></span>
+    <span class="aone-ai-dot"></span>
+    <span class="aone-ai-dot"></span>
+
+  </div>
+
+
+  <!-- =======================================================
+       INPUT
+  ======================================================== -->
+
+  <div class="aone-ai-input-area">
+
+    <form
+      class="aone-ai-form"
+      id="aoneAiForm">
+
+      <textarea
+        class="aone-ai-input"
+        id="aoneAiInput"
+        rows="1"
+        maxlength="8000"
+        placeholder="Ask A ONE AI anything..."></textarea>
+
+      <button
+        type="submit"
+        class="aone-ai-send"
+        id="aoneAiSend"
+        aria-label="Send message">
+
+        ➤
+
+      </button>
+
+    </form>
+
+    <div class="aone-ai-powered">
+      A ONE GS CENTER • AI Study Assistant
+    </div>
+
+  </div>
+
+</div>
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+  .aone-ai-quick-actions {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 9px 10px !important;
+    overflow: hidden !important;
+  }
+
+  .aone-ai-quick-btn,
+  #aoneAiSupportButton {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 4px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  #aoneAiSupportButton {
+    position: relative !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  @media (max-width: 700px) {
+    .aone-ai-quick-actions {
+      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      gap: 4px !important;
+      padding: 8px 6px !important;
+    }
+
+    .aone-ai-quick-btn,
+    #aoneAiSupportButton {
+      height: 37px !important;
+      min-height: 37px !important;
+      padding: 0 2px !important;
+      font-size: 9px !important;
+    }
+  }
+</style>
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(function () {
+
+  "use strict";
+
+
+  /* =========================================================
+     ELEMENTS
+  ========================================================= */
+
+  const launcher =
+    document.getElementById("aoneAiLauncher");
+
+  const chatWindow =
+    document.getElementById("aoneAiWindow");
+
+  const closeButton =
+    document.getElementById("aoneAiClose");
+
+  const form =
+    document.getElementById("aoneAiForm");
+
+  const input =
+    document.getElementById("aoneAiInput");
+
+  const sendButton =
+    document.getElementById("aoneAiSend");
+
+  const messages =
+    document.getElementById("aoneAiMessages");
+
+  const typing =
+    document.getElementById("aoneAiTyping");
+
+
+  if (
+    !launcher ||
+    !chatWindow ||
+    !closeButton ||
+    !form ||
+    !input ||
+    !sendButton ||
+    !messages ||
+    !typing
+  ) {
+
+    return;
+
+  }
+
+
+  /* =========================================================
+     STATE
+  ========================================================= */
+
+  let conversationId = null;
+
+  let initialized = false;
+
+  let sending = false;
+
+
+  /* =========================================================
+     CSRF
+  ========================================================= */
+
+  function csrfToken() {
+
+    const meta =
+      document.querySelector(
+        'meta[name="csrf-token"]'
+      );
+
+    return meta
+      ? meta.content
+      : "";
+
+  }
+
+
+  /* =========================================================
+     OPEN / CLOSE
+  ========================================================= */
+
+  function openChat() {
+
+    chatWindow.classList.add(
+      "is-open"
+    );
+
+    launcher.setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+    setTimeout(function () {
+
+      input.focus();
+
+    }, 100);
+
+  }
+
+
+  function closeChat() {
+
+    chatWindow.classList.remove(
+      "is-open"
+    );
+
+    launcher.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  }
+
+
+  launcher.addEventListener(
+    "click",
+    function () {
+
+      if (
+        chatWindow.classList.contains(
+          "is-open"
+        )
+      ) {
+
+        closeChat();
+
+      } else {
+
+        openChat();
+
+      }
+
+    }
+  );
+
+
+  closeButton.addEventListener(
+    "click",
+    closeChat
+  );
+
+
+  /* =========================================================
+     CREATE CONVERSATION
+  ========================================================= */
+
+  async function createConversation() {
+
+    if (conversationId) {
+
+      return conversationId;
+
+    }
+
+
+    const response =
+      await fetch(
+        "/ai/conversations",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CSRF-Token": csrfToken()
+          },
+
+          credentials: "same-origin",
+
+          body: JSON.stringify({
+            title: "A ONE AI Chat"
+          })
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Could not create AI conversation."
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    conversationId =
+      data.id ||
+      data.conversation_id ||
+      data.conversation?.id;
+
+
+    if (!conversationId) {
+
+      throw new Error(
+        "AI conversation ID was not returned."
+      );
+
+    }
+
+
+    return conversationId;
+
+  }
+
+
+  /* =========================================================
+     SAFE TEXT NODE
+  ========================================================= */
+
+  function textNode(text) {
+
+    return document.createTextNode(
+      text || ""
+    );
+
+  }
+
+
+  /* =========================================================
+     SAFE URL VALIDATION
+  ========================================================= */
+
+  function safeUrl(rawUrl) {
+
+    if (!rawUrl) {
+
+      return null;
+
+    }
+
+
+    const value =
+      rawUrl.trim();
+
+
+    /*
+     * Allow internal A ONE links.
+     */
+
+    if (
+      value.startsWith("/")
+      &&
+      !value.startsWith("//")
+    ) {
+
+      return value;
+
+    }
+
+
+    /*
+     * Allow safe HTTP/HTTPS URLs only.
+     */
+
+    try {
+
+      const parsed =
+        new URL(
+          value,
+          window.location.origin
+        );
+
+
+      if (
+        parsed.protocol === "http:" ||
+        parsed.protocol === "https:"
+      ) {
+
+        return parsed.href;
+
+      }
+
+    } catch (error) {
+
+      return null;
+
+    }
+
+
+    return null;
+
+  }
+
+
+  /* =========================================================
+     INLINE MARKDOWN
+  ========================================================= */
+
+  function renderInlineMarkdown(
+    text,
+    parent
+  ) {
+
+    if (!text) {
+
+      return;
+
+    }
+
+
+    let remaining =
+      text;
+
+
+    while (remaining.length > 0) {
+
+      /*
+       * Bold
+       */
+
+      let match =
+        remaining.match(
+          /^\*\*(.+?)\*\*/
+        );
+
+
+      if (match) {
+
+        const strong =
+          document.createElement(
+            "strong"
+          );
+
+        strong.appendChild(
+          textNode(match[1])
+        );
+
+        parent.appendChild(
+          strong
+        );
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Bold using __
+       */
+
+      match =
+        remaining.match(
+          /^__(.+?)__/
+        );
+
+
+      if (match) {
+
+        const strong =
+          document.createElement(
+            "strong"
+          );
+
+        strong.appendChild(
+          textNode(match[1])
+        );
+
+        parent.appendChild(
+          strong
+        );
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Inline code
+       */
+
+      match =
+        remaining.match(
+          /^`([^`]+)`/
+        );
+
+
+      if (match) {
+
+        const code =
+          document.createElement(
+            "code"
+          );
+
+        code.textContent =
+          match[1];
+
+        parent.appendChild(
+          code
+        );
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Markdown link
+       */
+
+      match =
+        remaining.match(
+          /^\[([^\]]+)\]\(([^)\s]+)\)/
+        );
+
+
+      if (match) {
+
+        const label =
+          match[1];
+
+        const rawUrl =
+          match[2];
+
+        const url =
+          safeUrl(rawUrl);
+
+
+        if (url) {
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+          link.href =
+            url;
+
+          link.appendChild(
+            textNode(label)
+          );
+
+
+          /*
+           * A ONE internal links become
+           * action buttons.
+           */
+
+          if (
+            url.startsWith(
+              "/courses/"
+            )
+            ||
+            url.startsWith(
+              "/test_series"
+            )
+            ||
+            url.startsWith(
+              "/enrollments"
+            )
+          ) {
+
+            link.className =
+              "aone-ai-course-link";
+
+            link.setAttribute(
+              "data-ai-internal-link",
+              "true"
+            );
+
+          } else {
+
+            link.target =
+              "_blank";
+
+            link.rel =
+              "noopener noreferrer";
+
+          }
+
+
+          parent.appendChild(
+            link
+          );
+
+        } else {
+
+          parent.appendChild(
+            textNode(match[0])
+          );
+
+        }
+
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Raw URL
+       */
+
+      match =
+        remaining.match(
+          /^(https?:\/\/[^\s<]+)/
+        );
+
+
+      if (match) {
+
+        let rawUrl =
+          match[1];
+
+
+        /*
+         * Remove common punctuation
+         * from the end of URLs.
+         */
+
+        let punctuation = "";
+
+        while (
+          /[.,!?;:]$/.test(
+            rawUrl
+          )
+        ) {
+
+          punctuation =
+            rawUrl.slice(
+              -1
+            ) +
+            punctuation;
+
+          rawUrl =
+            rawUrl.slice(
+              0,
+              -1
+            );
+
+        }
+
+
+        const url =
+          safeUrl(rawUrl);
+
+
+        if (url) {
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+          link.href =
+            url;
+
+          link.target =
+            "_blank";
+
+          link.rel =
+            "noopener noreferrer";
+
+          link.textContent =
+            rawUrl;
+
+          parent.appendChild(
+            link
+          );
+
+        } else {
+
+          parent.appendChild(
+            textNode(
+              rawUrl
+            )
+          );
+
+        }
+
+
+        if (punctuation) {
+
+          parent.appendChild(
+            textNode(
+              punctuation
+            )
+          );
+
+        }
+
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Italic
+       */
+
+      match =
+        remaining.match(
+          /^\*(?!\s)(.+?)(?<!\s)\*/
+        );
+
+
+      if (match) {
+
+        const italic =
+          document.createElement(
+            "em"
+          );
+
+        italic.appendChild(
+          textNode(match[1])
+        );
+
+        parent.appendChild(
+          italic
+        );
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Italic using _
+       */
+
+      match =
+        remaining.match(
+          /^_(?!\s)(.+?)(?<!\s)_/
+        );
+
+
+      if (match) {
+
+        const italic =
+          document.createElement(
+            "em"
+          );
+
+        italic.appendChild(
+          textNode(match[1])
+        );
+
+        parent.appendChild(
+          italic
+        );
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Escape Markdown characters
+       */
+
+      match =
+        remaining.match(
+          /^\\([\\`*_[\]{}()#+.!-])/
+        );
+
+
+      if (match) {
+
+        parent.appendChild(
+          textNode(
+            match[1]
+          )
+        );
+
+        remaining =
+          remaining.slice(
+            match[0].length
+          );
+
+        continue;
+
+      }
+
+
+      /*
+       * Normal text.
+       *
+       * Take one character at a time.
+       * This keeps the parser safe and predictable.
+       */
+
+      parent.appendChild(
+        textNode(
+          remaining.charAt(0)
+        )
+      );
+
+      remaining =
+        remaining.slice(1);
+
+    }
+
+  }
+
+
+  /* =========================================================
+     CREATE INLINE CONTAINER
+  ========================================================= */
+
+  function createInlineContent(
+    text
+  ) {
+
+    const fragment =
+      document.createDocumentFragment();
+
+    renderInlineMarkdown(
+      text,
+      fragment
+    );
+
+    return fragment;
+
+  }
+
+
+  /* =========================================================
+     TABLE DETECTION
+  ========================================================= */
+
+  function isTableSeparator(
+    line
+  ) {
+
+    const cleaned =
+      line
+        .trim()
+        .replace(/^\|/, "")
+        .replace(/\|$/, "");
+
+
+    const cells =
+      cleaned.split("|");
+
+
+    if (
+      cells.length === 0
+    ) {
+
+      return false;
+
+    }
+
+
+    return cells.every(
+      function (cell) {
+
+        return /^:?-{3,}:?$/.test(
+          cell.trim()
+        );
+
+      }
+    );
+
+  }
+
+
+  function splitTableRow(
+    line
+  ) {
+
+    let value =
+      line.trim();
+
+
+    if (
+      value.startsWith("|")
+    ) {
+
+      value =
+        value.slice(1);
+
+    }
+
+
+    if (
+      value.endsWith("|")
+    ) {
+
+      value =
+        value.slice(
+          0,
+          -1
+        );
+
+    }
+
+
+    return value.split("|")
+      .map(function (cell) {
+
+        return cell.trim();
+
+      });
+
+  }
+
+
+  /* =========================================================
+     RENDER TABLE
+  ========================================================= */
+
+  function renderTable(
+    lines,
+    parent
+  ) {
+
+    if (
+      lines.length < 2
+    ) {
+
+      return false;
+
+    }
+
+
+    if (
+      !lines[1] ||
+      !isTableSeparator(
+        lines[1]
+      )
+    ) {
+
+      return false;
+
+    }
+
+
+    const headerCells =
+      splitTableRow(
+        lines[0]
+      );
+
+
+    const bodyLines =
+      lines.slice(2);
+
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+    wrapper.className =
+      "aone-ai-table-wrapper";
+
+
+    const table =
+      document.createElement(
+        "table"
+      );
+
+    table.className =
+      "aone-ai-table";
+
+
+    const thead =
+      document.createElement(
+        "thead"
+      );
+
+
+    const headerRow =
+      document.createElement(
+        "tr"
+      );
+
+
+    headerCells.forEach(
+      function (cell) {
+
+        const th =
+          document.createElement(
+            "th"
+          );
+
+        th.appendChild(
+          createInlineContent(
+            cell
+          )
+        );
+
+        headerRow.appendChild(
+          th
+        );
+
+      }
+    );
+
+
+    thead.appendChild(
+      headerRow
+    );
+
+    table.appendChild(
+      thead
+    );
+
+
+    if (
+      bodyLines.length > 0
+    ) {
+
+      const tbody =
+        document.createElement(
+          "tbody"
+        );
+
+
+      bodyLines.forEach(
+        function (line) {
+
+          if (
+            !line.trim()
+          ) {
+
+            return;
+
+          }
+
+
+          const cells =
+            splitTableRow(
+              line
+            );
+
+
+          const tr =
+            document.createElement(
+              "tr"
+            );
+
+
+          headerCells.forEach(
+            function (_, index) {
+
+              const td =
+                document.createElement(
+                  "td"
+                );
+
+
+              td.appendChild(
+                createInlineContent(
+                  cells[index] || ""
+                )
+              );
+
+
+              tr.appendChild(
+                td
+              );
+
+            }
+          );
+
+
+          tbody.appendChild(
+            tr
+          );
+
+        }
+      );
+
+
+      table.appendChild(
+        tbody
+      );
+
+    }
+
+
+    wrapper.appendChild(
+      table
+    );
+
+
+    parent.appendChild(
+      wrapper
+    );
+
+
+    return true;
+
+  }
+
+
+  /* =========================================================
+     RENDER CODE BLOCK
+  ========================================================= */
+
+  function renderCodeBlock(
+    code,
+    language,
+    parent
+  ) {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+    wrapper.className =
+      "aone-ai-code-wrapper";
+
+
+    if (language) {
+
+      const label =
+        document.createElement(
+          "div"
+        );
+
+      label.className =
+        "aone-ai-code-label";
+
+      label.textContent =
+        language;
+
+      wrapper.appendChild(
+        label
+      );
+
+    }
+
+
+    const pre =
+      document.createElement(
+        "pre"
+      );
+
+    pre.className =
+      "aone-ai-code";
+
+
+    const codeElement =
+      document.createElement(
+        "code"
+      );
+
+    codeElement.textContent =
+      code;
+
+
+    pre.appendChild(
+      codeElement
+    );
+
+
+    wrapper.appendChild(
+      pre
+    );
+
+
+    parent.appendChild(
+      wrapper
+    );
+
+  }
+
+
+  /* =========================================================
+     RENDER MARKDOWN
+  ========================================================= */
+
+  function renderMarkdown(
+    content
+  ) {
+
+    const container =
+      document.createElement(
+        "div"
+      );
+
+    container.className =
+      "aone-ai-markdown";
+
+
+    if (
+      typeof content !== "string"
+    ) {
+
+      return container;
+
+    }
+
+
+    const normalized =
+      content
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n");
+
+
+    const lines =
+      normalized.split("\n");
+
+
+    let i = 0;
+
+
+    while (
+      i < lines.length
+    ) {
+
+      const line =
+        lines[i];
+
+
+      /* -----------------------------------------------------
+         Empty line
+      ----------------------------------------------------- */
+
+      if (
+        line.trim() === ""
+      ) {
+
+        i++;
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Fenced code block
+      ----------------------------------------------------- */
+
+      if (
+        line.trim().startsWith("```")
+      ) {
+
+        const language =
+          line
+            .trim()
+            .slice(3)
+            .trim();
+
+
+        const codeLines = [];
+
+        i++;
+
+
+        while (
+          i < lines.length
+          &&
+          !lines[i]
+            .trim()
+            .startsWith("```")
+        ) {
+
+          codeLines.push(
+            lines[i]
+          );
+
+          i++;
+
+        }
+
+
+        if (
+          i < lines.length
+        ) {
+
+          i++;
+
+        }
+
+
+        renderCodeBlock(
+          codeLines.join("\n"),
+          language,
+          container
+        );
+
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Markdown table
+      ----------------------------------------------------- */
+
+      if (
+        i + 1 < lines.length
+        &&
+        isTableSeparator(
+          lines[i + 1]
+        )
+      ) {
+
+        const tableLines = [
+          lines[i],
+          lines[i + 1]
+        ];
+
+
+        i += 2;
+
+
+        while (
+          i < lines.length
+          &&
+          lines[i].trim() !== ""
+          &&
+          lines[i].includes("|")
+        ) {
+
+          tableLines.push(
+            lines[i]
+          );
+
+          i++;
+
+        }
+
+
+        renderTable(
+          tableLines,
+          container
+        );
+
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Heading
+      ----------------------------------------------------- */
+
+      const headingMatch =
+        line.match(
+          /^(#{1,4})\s+(.+)$/
+        );
+
+
+      if (headingMatch) {
+
+        const level =
+          headingMatch[1].length;
+
+
+        const heading =
+          document.createElement(
+            "h" + level
+          );
+
+
+        heading.appendChild(
+          createInlineContent(
+            headingMatch[2]
+          )
+        );
+
+
+        container.appendChild(
+          heading
+        );
+
+
+        i++;
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Horizontal rule
+      ----------------------------------------------------- */
+
+      if (
+        /^(\*{3,}|-{3,}|_{3,})$/.test(
+          line.trim()
+        )
+      ) {
+
+        container.appendChild(
+          document.createElement(
+            "hr"
+          )
+        );
+
+
+        i++;
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Blockquote
+      ----------------------------------------------------- */
+
+      if (
+        line.trim().startsWith(">")
+      ) {
+
+        const quoteLines = [];
+
+
+        while (
+          i < lines.length
+          &&
+          lines[i]
+            .trim()
+            .startsWith(">")
+        ) {
+
+          quoteLines.push(
+            lines[i]
+              .trim()
+              .replace(/^>\s?/, "")
+          );
+
+          i++;
+
+        }
+
+
+        const blockquote =
+          document.createElement(
+            "blockquote"
+          );
+
+
+        quoteLines.forEach(
+          function (
+            quoteLine,
+            index
+          ) {
+
+            if (index > 0) {
+
+              blockquote.appendChild(
+                document.createElement(
+                  "br"
+                )
+              );
+
+            }
+
+
+            blockquote.appendChild(
+              createInlineContent(
+                quoteLine
+              )
+            );
+
+          }
+        );
+
+
+        container.appendChild(
+          blockquote
+        );
+
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Unordered list
+      ----------------------------------------------------- */
+
+      if (
+        /^\s*[-*+]\s+/.test(
+          line
+        )
+      ) {
+
+        const ul =
+          document.createElement(
+            "ul"
+          );
+
+
+        while (
+          i < lines.length
+          &&
+          /^\s*[-*+]\s+/.test(
+            lines[i]
+          )
+        ) {
+
+          const itemText =
+            lines[i]
+              .replace(
+                /^\s*[-*+]\s+/,
+                ""
+              );
+
+
+          const li =
+            document.createElement(
+              "li"
+            );
+
+
+          li.appendChild(
+            createInlineContent(
+              itemText
+            )
+          );
+
+
+          ul.appendChild(
+            li
+          );
+
+
+          i++;
+
+        }
+
+
+        container.appendChild(
+          ul
+        );
+
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Ordered list
+      ----------------------------------------------------- */
+
+      if (
+        /^\s*\d+\.\s+/.test(
+          line
+        )
+      ) {
+
+        const ol =
+          document.createElement(
+            "ol"
+          );
+
+
+        while (
+          i < lines.length
+          &&
+          /^\s*\d+\.\s+/.test(
+            lines[i]
+          )
+        ) {
+
+          const itemText =
+            lines[i]
+              .replace(
+                /^\s*\d+\.\s+/,
+                ""
+              );
+
+
+          const li =
+            document.createElement(
+              "li"
+            );
+
+
+          li.appendChild(
+            createInlineContent(
+              itemText
+            )
+          );
+
+
+          ol.appendChild(
+            li
+          );
+
+
+          i++;
+
+        }
+
+
+        container.appendChild(
+          ol
+        );
+
+
+        continue;
+
+      }
+
+
+      /* -----------------------------------------------------
+         Normal paragraph
+      ----------------------------------------------------- */
+
+      const paragraphLines = [
+        line
+      ];
+
+
+      i++;
+
+
+      /*
+       * Combine consecutive normal lines
+       * into one paragraph.
+       */
+
+      while (
+        i < lines.length
+        &&
+        lines[i].trim() !== ""
+        &&
+        !/^#{1,4}\s+/.test(
+          lines[i]
+        ) &&
+        !/^\s*[-*+]\s+/.test(
+          lines[i]
+        ) &&
+        !/^\s*\d+\.\s+/.test(
+          lines[i]
+        ) &&
+        !lines[i]
+          .trim()
+          .startsWith(">") &&
+        !lines[i]
+          .trim()
+          .startsWith("```") &&
+        !(
+          i + 1 < lines.length
+          &&
+          isTableSeparator(
+            lines[i + 1]
+          )
+        )
+      ) {
+
+        paragraphLines.push(
+          lines[i]
+        );
+
+        i++;
+
+      }
+
+
+      const paragraph =
+        document.createElement(
+          "p"
+        );
+
+
+      paragraphLines.forEach(
+        function (
+          paragraphLine,
+          index
+        ) {
+
+          if (index > 0) {
+
+            paragraph.appendChild(
+              document.createElement(
+                "br"
+              )
+            );
+
+          }
+
+
+          paragraph.appendChild(
+            createInlineContent(
+              paragraphLine
+            )
+          );
+
+        }
+      );
+
+
+      container.appendChild(
+        paragraph
+      );
+
+    }
+
+
+    return container;
+
+  }
+
+
+  /* =========================================================
+     ADD MESSAGE
+  ========================================================= */
+
+  function addMessage(
+    role,
+    content
+  ) {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+    wrapper.className =
+      "aone-ai-message " +
+      role;
+
+
+    const bubble =
+      document.createElement(
+        "div"
+      );
+
+    bubble.className =
+      "aone-ai-bubble";
+
+
+    /*
+     * USER messages remain plain text.
+     *
+     * AI messages are safely parsed as the
+     * limited Markdown format above.
+     */
+
+    if (
+      role === "assistant"
+    ) {
+
+      bubble.appendChild(
+        renderMarkdown(
+          content
+        )
+      );
+
+    } else {
+
+      bubble.textContent =
+        content || "";
+
+    }
+
+
+    wrapper.appendChild(
+      bubble
+    );
+
+
+    messages.appendChild(
+      wrapper
+    );
+
+
+    scrollMessages();
+
+  }
+
+
+  /* =========================================================
+     SCROLL
+  ========================================================= */
+
+  function scrollMessages() {
+
+    messages.scrollTop =
+      messages.scrollHeight;
+
+  }
+
+
+  /* =========================================================
+     TYPING
+  ========================================================= */
+
+  function showTyping() {
+
+    typing.classList.add(
+      "is-visible"
+    );
+
+    scrollMessages();
+
+  }
+
+
+  function hideTyping() {
+
+    typing.classList.remove(
+      "is-visible"
+    );
+
+  }
+
+
+  /* =========================================================
+     SEND MESSAGE
+  ========================================================= */
+
+  async function sendMessage(
+    message
+  ) {
+
+    const cleanMessage =
+      message.trim();
+
+
+    if (
+      !cleanMessage ||
+      sending
+    ) {
+
+      return;
+
+    }
+
+
+    sending = true;
+
+    sendButton.disabled =
+      true;
+
+    input.disabled =
+      true;
+
+
+    addMessage(
+      "user",
+      cleanMessage
+    );
+
+
+    input.value =
+      "";
+
+    input.style.height =
+      "44px";
+
+
+    showTyping();
+
+
+    try {
+
+      const id =
+        await createConversation();
+
+
+      const response =
+        await fetch(
+          "/ai/conversations/" +
+          encodeURIComponent(id) +
+          "/messages",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              "Accept":
+                "application/json",
+
+              "X-CSRF-Token":
+                csrfToken()
+            },
+
+            credentials:
+              "same-origin",
+
+            body:
+              JSON.stringify({
+                content:
+                  cleanMessage,
+
+                message:
+                  cleanMessage
+              })
+          }
+        );
+
+
+      const data =
+        await response
+          .json()
+          .catch(
+            function () {
+              return {};
+            }
+          );
+
+
+      if (!response.ok) {
+
+        console.error(
+          "[A ONE AI] HTTP error:",
+          response.status,
+          data
+        );
+
+
+        throw new Error(
+          data.error ||
+          data.message ||
+          data.content ||
+          (
+            "Server returned HTTP " +
+            response.status
+          )
+        );
+
+      }
+
+
+      const answer =
+        data.content ||
+        data.response ||
+        data.answer ||
+        data.message?.content ||
+        data.assistant_message?.content;
+
+
+      if (!answer) {
+
+        throw new Error(
+          "A ONE AI returned an empty response."
+        );
+
+      }
+
+
+      hideTyping();
+
+
+      addMessage(
+        "assistant",
+        answer
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "[A ONE AI] Request failed:",
+        error
+      );
+
+
+      hideTyping();
+
+
+      addMessage(
+        "assistant",
+        "⚠️ A ONE AI error: " +
+        error.message
+      );
+
+
+    } finally {
+
+      sending =
+        false;
+
+      sendButton.disabled =
+        false;
+
+      input.disabled =
+        false;
+
+      input.focus();
+
+    }
+
+  }
+
+
+
+  const supportButton =
+    document.getElementById("aoneAiSupportButton");
+
+  const supportPanel =
+    document.getElementById("aoneAiSupportPanel");
+
+  const supportClose =
+    document.getElementById("aoneAiSupportClose");
+
+  const supportForm =
+    document.getElementById("aoneAiSupportForm");
+
+  const supportCategory =
+    document.getElementById("aoneAiSupportCategory");
+
+  const supportSubject =
+    document.getElementById("aoneAiSupportSubject");
+
+  const supportDescription =
+    document.getElementById("aoneAiSupportDescription");
+
+  const supportSubmit =
+    document.getElementById("aoneAiSupportSubmit");
+
+  const supportResult =
+    document.getElementById("aoneAiSupportResult");
+
+  const supportHistory =
+    document.getElementById("aoneAiSupportHistory");
+
+  function escapeSupportHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function showSupportResult(message, type) {
+    if (!supportResult) {
+      return;
+    }
+
+    supportResult.hidden = false;
+    supportResult.className = type || "success";
+    supportResult.textContent = message || "";
+  }
+
+  function hideSupportResult() {
+    if (!supportResult) {
+      return;
+    }
+
+    supportResult.hidden = true;
+    supportResult.className = "";
+    supportResult.textContent = "";
+  }
+
+  function renderSupportHistory(items) {
+    if (!supportHistory) {
+      return;
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      supportHistory.innerHTML = '<div class="aone-ai-support-empty">No support requests yet.</div>';
+      return;
+    }
+
+    supportHistory.innerHTML = items.map(function (item) {
+      const subject = escapeSupportHtml(item.subject || "Support Request");
+      const status = escapeSupportHtml(item.status_label || item.status || "Open");
+      const category = escapeSupportHtml(item.category_label || item.category || "Other");
+      const created = escapeSupportHtml(item.created_at || "");
+      const reply = item.admin_reply
+        ? '<div class="aone-ai-support-ticket-reply"><strong>Admin:</strong> ' + escapeSupportHtml(item.admin_reply) + '</div>'
+        : "";
+
+      const chatLink = item.id
+        ? '<div class="aone-ai-support-ticket-actions">' +
+            '<a class="aone-ai-support-chat-link" href="/ai/support_requests/' + encodeURIComponent(item.id) + '">Open Chat →</a>' +
+          '</div>'
+        : "";
+
+      return '<div class="aone-ai-support-ticket">' +
+        '<div class="aone-ai-support-ticket-top">' +
+          '<div class="aone-ai-support-ticket-subject">#' + escapeSupportHtml(item.id) + ' • ' + subject + '</div>' +
+          '<div class="aone-ai-support-ticket-status">' + status + '</div>' +
+        '</div>' +
+        '<div class="aone-ai-support-ticket-meta">' + category + (created ? ' • ' + created : '') + '</div>' +
+        reply +
+        chatLink +
+      '</div>';
+    }).join("");
+  }
+
+  async function loadSupportHistory() {
+    if (!supportHistory) {
+      return;
+    }
+
+    supportHistory.textContent = "Loading...";
+
+    try {
+      const response = await fetch("/ai/support_requests", {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        },
+        credentials: "same-origin"
+      });
+
+      const data = await response.json().catch(function () {
+        return {};
+      });
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to load support requests.");
+      }
+
+      renderSupportHistory(data.support_requests || data.requests || data);
+    } catch (error) {
+      console.error("[A ONE AI] Support history failed:", error);
+      supportHistory.innerHTML = '<div class="aone-ai-support-empty">Unable to load support requests.</div>';
+    }
+  }
+
+  function openSupportPanel() {
+    if (!supportPanel) {
+      return;
+    }
+
+    supportPanel.hidden = false;
+    hideSupportResult();
+    loadSupportHistory();
+
+    if (supportSubject && supportDescription && messages) {
+      const lastUserMessage = messages.querySelector(".aone-ai-message.user:last-child .aone-ai-bubble");
+
+      if (lastUserMessage) {
+        const text = lastUserMessage.textContent.trim();
+
+        if (text) {
+          if (!supportSubject.value.trim()) {
+            supportSubject.value = text.slice(0, 160);
+          }
+
+          if (!supportDescription.value.trim()) {
+            supportDescription.value = text.slice(0, 10000);
+          }
+        }
+      }
+    }
+
+    if (supportSubject) {
+      setTimeout(function () {
+        supportSubject.focus();
+      }, 50);
+    }
+  }
+
+  function closeSupportPanel() {
+    if (supportPanel) {
+      supportPanel.hidden = true;
+    }
+
+    if (supportButton) {
+      supportButton.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  if (supportButton) {
+    supportButton.type = "button";
+    supportButton.setAttribute("aria-controls", "aoneAiSupportPanel");
+    supportButton.setAttribute("aria-expanded", "false");
+
+    supportButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      try {
+        openChat();
+      } catch (error) {
+        console.error("[A ONE AI] Unable to open chat:", error);
+      }
+
+      openSupportPanel();
+      supportButton.setAttribute("aria-expanded", "true");
+    });
+  }
+
+  document.addEventListener("click", function (event) {
+    const button = event.target.closest("#aoneAiSupportButton");
+
+    if (!button) {
+      return;
+    }
+
+    if (button === supportButton) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    openChat();
+    openSupportPanel();
+    button.setAttribute("aria-expanded", "true");
+  }, true);
+
+  if (supportClose) {
+    supportClose.addEventListener("click", closeSupportPanel);
+  }
+
+  if (supportForm) {
+    supportForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const subject = supportSubject ? supportSubject.value.trim() : "";
+      const description = supportDescription ? supportDescription.value.trim() : "";
+      const category = supportCategory ? supportCategory.value : "other";
+
+      if (!subject || !description) {
+        showSupportResult("Please enter a subject and describe your requirement.", "error");
+        return;
+      }
+
+      supportSubmit.disabled = true;
+      supportSubmit.textContent = "Submitting...";
+      hideSupportResult();
+
+      try {
+        const id = await createConversation();
+
+        const response = await fetch("/ai/support_requests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CSRF-Token": csrfToken()
+          },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            support_request: {
+              ai_conversation_id: id,
+              category: category,
+              subject: subject,
+              description: description
+            }
+          })
+        });
+
+        const data = await response.json().catch(function () {
+          return {};
+        });
+
+        if (!response.ok) {
+          throw new Error(data.error || "Unable to submit support request.");
+        }
+
+        const ticket = data.support_request || data.request || data;
+        const ticketId = ticket.id ? "Ticket #" + ticket.id + " created successfully." : "Your support request was submitted successfully.";
+
+        if (!ticket.id) {
+          throw new Error("Support request was created but its ID was not returned.");
+        }
+
+        window.location.href =
+          "/ai/support_requests/" +
+          encodeURIComponent(ticket.id);
+      } catch (error) {
+        console.error("[A ONE AI] Support request failed:", error);
+        showSupportResult(error.message || "Unable to submit support request.", "error");
+      } finally {
+        supportSubmit.disabled = false;
+        supportSubmit.textContent = "Submit Request";
+      }
+    });
+  }
+
+
+  /* =========================================================
+     FORM SUBMIT
+  ========================================================= */
+
+  form.addEventListener(
+    "submit",
+    function (event) {
+
+      event.preventDefault();
+
+
+      sendMessage(
+        input.value
+      );
+
+    }
+  );
+
+
+  /* =========================================================
+     ENTER TO SEND
+  ========================================================= */
+
+  input.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        form.requestSubmit();
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     AUTO RESIZE TEXTAREA
+  ========================================================= */
+
+  input.addEventListener(
+    "input",
+    function () {
+
+      input.style.height =
+        "44px";
+
+
+      input.style.height =
+        Math.min(
+          input.scrollHeight,
+          110
+        ) + "px";
+
+    }
+  );
+
+
+  /* =========================================================
+     QUICK QUESTIONS
+  ========================================================= */
+
+  document
+    .querySelectorAll(
+      "[data-ai-question]"
+    )
+    .forEach(
+      function (button) {
+
+        button.addEventListener(
+          "click",
+          function () {
+
+            const question =
+              button.getAttribute(
+                "data-ai-question"
+              );
+
+
+            if (!question) {
+
+              return;
+
+            }
+
+
+            openChat();
+
+
+            sendMessage(
+              question
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =========================================================
+     ESCAPE KEY
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Escape" &&
+        chatWindow.classList.contains(
+          "is-open"
+        )
+      ) {
+
+        closeChat();
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     TURBO SAFETY
+  ========================================================= */
+
+  if (
+    window.Turbo &&
+    !initialized
+  ) {
+
+    initialized =
+      true;
+
+  }
+
+})();
+
+</script>

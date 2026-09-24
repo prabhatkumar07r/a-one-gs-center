@@ -1,0 +1,2468 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   A ONE GS CENTER
+   STUDENT SUPPORT CENTER
+   PREMIUM LIGHT / DARK UI
+========================================================= */
+
+.student-support-page {
+  min-height: 100vh;
+  padding: 30px 28px 50px;
+  padding-top: 100px;
+
+  color: #17223d;
+
+  background:
+    radial-gradient(
+      circle at 5% 5%,
+      rgba(99, 76, 220, .10),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 96% 12%,
+      rgba(53, 112, 229, .08),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #f8faff 0%,
+      #f3f5ff 52%,
+      #faf8ff 100%
+    );
+
+  transition:
+    background .3s ease,
+    color .3s ease;
+}
+
+.student-support-page *,
+.student-support-page *::before,
+.student-support-page *::after {
+  box-sizing: border-box;
+}
+
+.student-support-container {
+  width: min(100%, 1450px);
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.student-support-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.student-support-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.student-support-heading-icon {
+  width: 58px;
+  height: 58px;
+
+  flex: 0 0 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5146e5,
+      #7638df
+    );
+
+  color: #fff;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 13px 30px rgba(79, 65, 215, .24);
+}
+
+.student-support-title {
+  margin: 0;
+
+  color: #17223d;
+
+  font-size: clamp(25px, 3vw, 32px);
+  font-weight: 850;
+
+  letter-spacing: -.7px;
+}
+
+.student-support-subtitle {
+  margin: 5px 0 0;
+
+  color: #6d7891;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.student-support-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.student-support-theme,
+.student-support-back {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 14px;
+
+  border-radius: 12px;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.student-support-theme {
+  border: 1px solid #dddff0;
+
+  background: rgba(255,255,255,.88);
+
+  color: #4b3b91;
+
+  box-shadow:
+    0 5px 18px rgba(43, 36, 100, .05);
+}
+
+.student-support-back {
+  border: 1px solid #dddff0;
+
+  background: #fff;
+
+  color: #39496e;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 5px 18px rgba(43, 36, 100, .04);
+}
+
+.student-support-theme:hover,
+.student-support-back:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 24px rgba(43, 36, 100, .10);
+}
+
+
+/* =========================================================
+   HELP BANNER
+========================================================= */
+
+.student-support-help {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-bottom: 18px;
+  padding: 16px 19px;
+
+  border: 1px solid rgba(120, 105, 220, .14);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.94),
+      rgba(247,245,255,.94)
+    );
+
+  box-shadow:
+    0 10px 32px rgba(45, 39, 105, .06);
+
+  backdrop-filter: blur(14px);
+}
+
+.student-support-help-left {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.student-support-help-icon {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 43px;
+
+  border-radius: 13px;
+
+  background: #eeeaff;
+  color: #5b45dc;
+
+  font-size: 19px;
+}
+
+.student-support-help-title {
+  color: #263458;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.student-support-help-text {
+  margin-top: 2px;
+
+  color: #7d859a;
+
+  font-size: 11px;
+}
+
+.student-support-help-status {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #159563;
+
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.student-support-online-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #16b979;
+
+  box-shadow:
+    0 0 0 4px rgba(22,185,121,.10);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.student-support-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.student-support-stat {
+  min-height: 105px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 17px 19px;
+
+  border: 1px solid rgba(255,255,255,.90);
+  border-radius: 17px;
+
+  background: rgba(255,255,255,.84);
+
+  box-shadow:
+    0 10px 30px rgba(44,38,100,.07);
+
+  backdrop-filter: blur(15px);
+}
+
+.student-support-stat-left {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.student-support-stat-icon {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 43px;
+
+  border-radius: 13px;
+
+  font-size: 19px;
+}
+
+.student-support-stat-icon.active {
+  background: #eeeaff;
+  color: #6048dd;
+}
+
+.student-support-stat-icon.progress {
+  background: #eaf3ff;
+  color: #2972d8;
+}
+
+.student-support-stat-icon.resolved {
+  background: #e8f9f0;
+  color: #159b63;
+}
+
+.student-support-stat-label {
+  color: #7c8498;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.student-support-stat-value {
+  margin-top: 3px;
+
+  color: #202d4e;
+
+  font-size: 25px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   MAIN SUPPORT AREA
+========================================================= */
+
+.student-support-main {
+  display: grid;
+
+  grid-template-columns:
+    minmax(330px, 420px)
+    minmax(0, 1fr);
+
+  gap: 16px;
+
+  min-height: 600px;
+}
+
+
+/* =========================================================
+   LIST PANEL
+========================================================= */
+
+.student-support-list-panel,
+.student-support-preview-panel {
+  overflow: hidden;
+
+  border: 1px solid rgba(255,255,255,.90);
+  border-radius: 20px;
+
+  background: rgba(255,255,255,.84);
+
+  box-shadow:
+    0 15px 45px rgba(44,38,100,.08);
+
+  backdrop-filter: blur(16px);
+}
+
+
+/* =========================================================
+   LIST HEADER
+========================================================= */
+
+.student-support-list-header {
+  padding: 18px 18px 13px;
+
+  border-bottom: 1px solid #ecebf4;
+}
+
+.student-support-list-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.student-support-list-title {
+  margin: 0;
+
+  color: #263452;
+
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.student-support-new-ticket {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  min-height: 34px;
+
+  padding: 0 11px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5146e5,
+      #7536df
+    );
+
+  color: #fff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 7px 17px rgba(82,65,215,.20);
+}
+
+.student-support-new-ticket:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.student-support-tabs {
+  display: flex;
+
+  gap: 20px;
+
+  margin-top: 15px;
+}
+
+.student-support-tab {
+  position: relative;
+
+  padding: 8px 1px;
+
+  border: 0;
+  background: transparent;
+
+  color: #7d8498;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.student-support-tab.active {
+  color: #4f42d7;
+}
+
+.student-support-tab.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -14px;
+
+  height: 2px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #5146e5,
+      #8b4de8
+    );
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.student-support-search {
+  position: relative;
+
+  margin-top: 12px;
+}
+
+.student-support-search-icon {
+  position: absolute;
+
+  left: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #9299aa;
+
+  font-size: 13px;
+}
+
+.student-support-search input {
+  width: 100%;
+
+  min-height: 40px;
+
+  padding:
+    0 12px 0 34px;
+
+  border: 1px solid #e1e2ec;
+  border-radius: 11px;
+
+  background: #fafbff;
+
+  color: #303b59;
+
+  outline: none;
+
+  font-size: 11px;
+}
+
+.student-support-search input:focus {
+  border-color: #7463df;
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 4px rgba(91,72,220,.08);
+}
+
+
+/* =========================================================
+   REQUEST LIST
+========================================================= */
+
+#student-support-list {
+  max-height: 520px;
+
+  overflow-y: auto;
+}
+
+#student-support-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+#student-support-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #d8d6e5;
+}
+
+.support-list-card {
+  position: relative;
+
+  display: block;
+
+  margin: 0;
+
+  padding: 15px 17px;
+
+  border: 0;
+
+  border-bottom: 1px solid #efedf5;
+
+  background: transparent;
+
+  color: inherit;
+
+  text-decoration: none;
+
+  transition:
+    background .18s ease,
+    padding-left .18s ease;
+}
+
+.support-list-card:hover {
+  color: inherit;
+
+  background: #faf9ff;
+
+  padding-left: 20px;
+}
+
+.support-list-card:last-child {
+  border-bottom: 0;
+}
+
+.support-list-card.active {
+  background:
+    linear-gradient(
+      90deg,
+      #f4f1ff,
+      #fbfaff
+    );
+
+  box-shadow:
+    inset 3px 0 0 #6048df;
+}
+
+.support-list-card-top {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.support-list-avatar {
+  width: 39px;
+  height: 39px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 39px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #725ce5,
+      #9d5fea
+    );
+
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.support-list-main {
+  min-width: 0;
+
+  display: flex;
+
+  gap: 10px;
+}
+
+.support-list-content {
+  min-width: 0;
+}
+
+.support-list-subject {
+  overflow: hidden;
+
+  color: #293655;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.support-list-id {
+  margin-top: 3px;
+
+  color: #969caf;
+
+  font-size: 9px;
+}
+
+.support-list-preview {
+  overflow: hidden;
+
+  margin-top: 6px;
+
+  color: #7c8498;
+
+  font-size: 10px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.support-list-arrow {
+  color: #9aa0b0;
+
+  font-size: 12px;
+}
+
+.support-list-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin:
+    9px 0 0 49px;
+}
+
+.support-list-pill {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 21px;
+
+  padding: 3px 7px;
+
+  border-radius: 999px;
+
+  background: #f0edfa;
+
+  color: #684e9c;
+
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.support-list-time {
+  margin:
+    7px 0 0 49px;
+
+  color: #a0a5b3;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+========================================================= */
+
+.support-list-empty {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  text-align: center;
+
+  color: #858c9e;
+}
+
+.support-empty-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 18px;
+
+  background: #eeeaff;
+  color: #6048dd;
+
+  font-size: 23px;
+}
+
+.support-empty-title {
+  color: #303b59;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.support-empty-text {
+  max-width: 280px;
+
+  margin-top: 5px;
+
+  color: #8b92a3;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RIGHT PREVIEW
+========================================================= */
+
+.student-support-preview {
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.student-support-preview-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #ecebf4;
+}
+
+.student-support-preview-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.student-support-preview-avatar {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 46px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6a56dc,
+      #985be7
+    );
+
+  color: #fff;
+
+  font-weight: 850;
+}
+
+.student-support-preview-name {
+  color: #263452;
+
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.student-support-preview-ticket {
+  margin-top: 3px;
+
+  color: #9097a8;
+
+  font-size: 10px;
+}
+
+.student-support-preview-status {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #eaf8f0;
+
+  color: #15925d;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   PREVIEW BODY
+========================================================= */
+
+.student-support-preview-body {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 25px;
+
+  text-align: center;
+}
+
+.student-support-preview-icon {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 17px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eeeaff,
+      #f5edff
+    );
+
+  color: #6048dd;
+
+  font-size: 29px;
+
+  box-shadow:
+    0 12px 30px rgba(89,69,207,.10);
+}
+
+.student-support-preview-title {
+  margin: 0;
+
+  color: #293653;
+
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.student-support-preview-text {
+  max-width: 410px;
+
+  margin: 7px auto 20px;
+
+  color: #81899c;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.student-support-preview-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 39px;
+
+  padding: 0 15px;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5146e5,
+      #7536df
+    );
+
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 20px rgba(82,65,215,.20);
+}
+
+.student-support-preview-button:hover {
+  color: #fff;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.student-support-dark {
+  background: #080b16 !important;
+}
+
+body.student-support-dark .student-support-page {
+  color: #edf0ff;
+
+  background:
+    radial-gradient(
+      circle at 5% 5%,
+      rgba(104,74,230,.17),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 96% 12%,
+      rgba(45,91,210,.13),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #090c18 0%,
+      #0e1222 52%,
+      #0b0d18 100%
+    );
+}
+
+
+/* HEADER */
+
+body.student-support-dark .student-support-title {
+  color: #f4f2ff;
+}
+
+body.student-support-dark .student-support-subtitle {
+  color: #969bb2;
+}
+
+
+/* BUTTONS */
+
+body.student-support-dark .student-support-theme {
+  border-color: #303650;
+
+  background: #171b2c;
+
+  color: #d8ccff;
+}
+
+body.student-support-dark .student-support-back {
+  border-color: #303650;
+
+  background: #171b2c;
+
+  color: #d9deef;
+}
+
+
+/* HELP */
+
+body.student-support-dark .student-support-help {
+  border-color: rgba(255,255,255,.07);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(24,28,47,.94),
+      rgba(20,23,40,.94)
+    );
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.25);
+}
+
+body.student-support-dark .student-support-help-title {
+  color: #f0edff;
+}
+
+body.student-support-dark .student-support-help-text {
+  color: #8d93aa;
+}
+
+body.student-support-dark .student-support-help-icon {
+  background: #282044;
+  color: #c7b5ff;
+}
+
+
+/* STATS */
+
+body.student-support-dark .student-support-stat {
+  border-color: rgba(255,255,255,.07);
+
+  background: rgba(20,24,40,.88);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.24);
+}
+
+body.student-support-dark .student-support-stat-label {
+  color: #8d93a8;
+}
+
+body.student-support-dark .student-support-stat-value {
+  color: #f0edff;
+}
+
+
+/* PANELS */
+
+body.student-support-dark .student-support-list-panel,
+body.student-support-dark .student-support-preview-panel {
+  border-color: rgba(255,255,255,.07);
+
+  background: rgba(18,22,37,.90);
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.27);
+}
+
+body.student-support-dark .student-support-list-header,
+body.student-support-dark .student-support-preview-header {
+  border-color: rgba(255,255,255,.07);
+}
+
+body.student-support-dark .student-support-list-title {
+  color: #f0edff;
+}
+
+
+/* SEARCH */
+
+body.student-support-dark .student-support-search input {
+  border-color: #30354b;
+
+  background: #151a2b;
+
+  color: #e7e9f5;
+}
+
+body.student-support-dark .student-support-search input:focus {
+  background: #191e31;
+}
+
+
+/* TABS */
+
+body.student-support-dark .student-support-tab {
+  color: #858ca2;
+}
+
+body.student-support-dark .student-support-tab.active {
+  color: #b7a5ff;
+}
+
+
+/* REQUEST LIST */
+
+body.student-support-dark .support-list-card {
+  border-color: rgba(255,255,255,.055);
+
+  background: transparent;
+
+  color: #edf0ff;
+}
+
+body.student-support-dark .support-list-card:hover {
+  background: #181d30;
+}
+
+body.student-support-dark .support-list-card.active {
+  background:
+    linear-gradient(
+      90deg,
+      #201c38,
+      #171b2d
+    );
+}
+
+body.student-support-dark .support-list-subject {
+  color: #f1efff;
+}
+
+body.student-support-dark .support-list-id,
+body.student-support-dark .support-list-preview,
+body.student-support-dark .support-list-time {
+  color: #858ca1;
+}
+
+body.student-support-dark .support-list-pill {
+  background: #292d44;
+  color: #c6b9ff;
+}
+
+
+/* PREVIEW */
+
+body.student-support-dark .student-support-preview-name {
+  color: #f1efff;
+}
+
+body.student-support-dark .student-support-preview-ticket {
+  color: #858ca1;
+}
+
+body.student-support-dark .student-support-preview-title {
+  color: #f1efff;
+}
+
+body.student-support-dark .student-support-preview-text {
+  color: #8d94a8;
+}
+
+body.student-support-dark .student-support-preview-icon {
+  background: #292344;
+  color: #c5b5ff;
+}
+
+
+/* EMPTY */
+
+body.student-support-dark .support-list-empty {
+  color: #8d94aa;
+}
+
+body.student-support-dark .support-empty-title {
+  color: #f1efff;
+}
+
+body.student-support-dark .support-empty-text {
+  color: #858ca0;
+}
+
+body.student-support-dark .support-empty-icon {
+  background: #292344;
+  color: #c5b5ff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .student-support-main {
+    grid-template-columns:
+      minmax(300px, 380px)
+      minmax(0, 1fr);
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .student-support-page {
+    padding: 22px 16px 40px;
+  }
+
+  .student-support-main {
+    grid-template-columns: 1fr;
+  }
+
+  .student-support-preview-panel {
+    min-height: 420px;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .student-support-page {
+    padding: 17px 11px 35px;
+  }
+
+  .student-support-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .student-support-actions {
+    width: 100%;
+  }
+
+  .student-support-theme,
+  .student-support-back {
+    flex: 1;
+  }
+
+  .student-support-help {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .student-support-help-status {
+    margin-left: 56px;
+  }
+
+  .student-support-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .student-support-main {
+    gap: 12px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .student-support-heading-icon {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+
+    border-radius: 15px;
+
+    font-size: 22px;
+  }
+
+  .student-support-title {
+    font-size: 23px;
+  }
+
+  .student-support-subtitle {
+    font-size: 11px;
+  }
+
+  .student-support-help {
+    padding: 14px;
+  }
+
+  .student-support-stat {
+    min-height: 92px;
+  }
+
+  .student-support-list-header {
+    padding: 15px 14px 12px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .student-support-page *,
+  .student-support-page *::before,
+  .student-support-page *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+
+}
+
+</style>
+
+
+<div
+  class="student-support-page"
+  id="studentSupportPage"
+  data-theme-key="aone_student_support_theme">
+
+  <div class="student-support-container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="student-support-header">
+
+      <div class="student-support-heading">
+
+        <div class="student-support-heading-icon">
+          <i class="bi bi-headset"></i>
+        </div>
+
+        <div>
+
+          <h1 class="student-support-title">
+            Support Center
+          </h1>
+
+          <p class="student-support-subtitle">
+            Get help, resolve your queries and stay on track with your learning journey.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="student-support-actions">
+
+        <!-- DAY / NIGHT TOGGLE -->
+
+        <button
+          type="button"
+          id="studentSupportThemeToggle"
+          class="student-support-theme"
+          aria-label="Toggle day and night mode">
+
+          <span id="studentSupportThemeIcon">
+            🌙
+          </span>
+
+          <span id="studentSupportThemeText">
+            Night Mode
+          </span>
+
+        </button>
+
+
+        <!-- BACK -->
+
+        <button
+          type="button"
+          class="student-support-back"
+          onclick="window.history.back()">
+
+          <i class="bi bi-arrow-left"></i>
+
+          <span>
+            Back
+          </span>
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         HELP BANNER
+    ====================================================== -->
+
+    <section class="student-support-help">
+
+      <div class="student-support-help-left">
+
+        <div class="student-support-help-icon">
+          <i class="bi bi-chat-dots"></i>
+        </div>
+
+        <div>
+
+          <div class="student-support-help-title">
+            Need help with your course?
+          </div>
+
+          <div class="student-support-help-text">
+            Our support team is available to help you with enrollment, payment, account and technical issues.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="student-support-help-status">
+
+        <span class="student-support-online-dot"></span>
+
+        Support Available
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
+    <section class="student-support-stats">
+
+
+      <div class="student-support-stat">
+
+        <div class="student-support-stat-left">
+
+          <div class="student-support-stat-icon active">
+            <i class="bi bi-chat-square-text"></i>
+          </div>
+
+          <div>
+
+            <div class="student-support-stat-label">
+              Active Requests
+            </div>
+
+            <div
+              class="student-support-stat-value"
+              id="supportActiveCount">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="student-support-stat">
+
+        <div class="student-support-stat-left">
+
+          <div class="student-support-stat-icon progress">
+            <i class="bi bi-clock-history"></i>
+          </div>
+
+          <div>
+
+            <div class="student-support-stat-label">
+              In Progress
+            </div>
+
+            <div
+              class="student-support-stat-value"
+              id="supportProgressCount">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="student-support-stat">
+
+        <div class="student-support-stat-left">
+
+          <div class="student-support-stat-icon resolved">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+
+          <div>
+
+            <div class="student-support-stat-label">
+              Resolved
+            </div>
+
+            <div
+              class="student-support-stat-value"
+              id="supportResolvedCount">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN SUPPORT AREA
+    ====================================================== -->
+
+    <section class="student-support-main">
+
+
+      <!-- ===================================================
+           LEFT REQUEST LIST
+      ==================================================== -->
+
+      <div class="student-support-list-panel">
+
+
+        <div class="student-support-list-header">
+
+          <div class="student-support-list-title-row">
+
+            <h2 class="student-support-list-title">
+              My Support Requests
+            </h2>
+
+          </div>
+
+
+          <!-- TABS -->
+
+          <div class="student-support-tabs">
+
+            <button
+              type="button"
+              class="student-support-tab active"
+              data-filter="all">
+
+              All
+
+            </button>
+
+            <button
+              type="button"
+              class="student-support-tab"
+              data-filter="open">
+
+              Open
+
+            </button>
+
+            <button
+              type="button"
+              class="student-support-tab"
+              data-filter="in_progress">
+
+              In Progress
+
+            </button>
+
+            <button
+              type="button"
+              class="student-support-tab"
+              data-filter="resolved">
+
+              Resolved
+
+            </button>
+
+          </div>
+
+
+          <!-- SEARCH -->
+
+          <div class="student-support-search">
+
+            <i
+              class="bi bi-search student-support-search-icon">
+            </i>
+
+            <input
+              type="search"
+              id="studentSupportSearch"
+              placeholder="Search ticket or subject..."
+              autocomplete="off">
+
+          </div>
+
+        </div>
+
+
+        <!-- REQUESTS -->
+
+        <div id="student-support-list">
+
+          <div class="support-list-empty">
+
+            <div class="support-empty-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+
+            <div class="support-empty-title">
+              Loading support requests...
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           RIGHT PREVIEW
+      ==================================================== -->
+
+      <div class="student-support-preview-panel">
+
+        <div class="student-support-preview">
+
+
+          <div class="student-support-preview-header">
+
+            <div class="student-support-preview-user">
+
+              <div class="student-support-preview-avatar">
+                <i class="bi bi-headset"></i>
+              </div>
+
+              <div>
+
+                <div class="student-support-preview-name">
+                  A ONE GS Center Support
+                </div>
+
+                <div class="student-support-preview-ticket">
+                  Select a support request to continue
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="student-support-preview-status">
+
+              <span class="student-support-online-dot"></span>
+
+              Available
+
+            </div>
+
+          </div>
+
+
+          <div class="student-support-preview-body">
+
+            <div class="student-support-preview-icon">
+              <i class="bi bi-chat-square-heart"></i>
+            </div>
+
+            <h3 class="student-support-preview-title">
+              How can we help you?
+            </h3>
+
+            <p class="student-support-preview-text">
+              Select any support request from the left to view its details and continue the conversation with the A ONE GS CENTER support team.
+            </p>
+
+            <div class="student-support-preview-button">
+              <i class="bi bi-shield-check me-1"></i>
+              Student Support
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+(() => {
+
+  /* =======================================================
+     ELEMENTS
+  ======================================================= */
+
+  const page =
+    document.getElementById(
+      "studentSupportPage"
+    );
+
+  const container =
+    document.getElementById(
+      "student-support-list"
+    );
+
+  const searchInput =
+    document.getElementById(
+      "studentSupportSearch"
+    );
+
+  const themeToggle =
+    document.getElementById(
+      "studentSupportThemeToggle"
+    );
+
+  const themeIcon =
+    document.getElementById(
+      "studentSupportThemeIcon"
+    );
+
+  const themeText =
+    document.getElementById(
+      "studentSupportThemeText"
+    );
+
+  const activeCount =
+    document.getElementById(
+      "supportActiveCount"
+    );
+
+  const progressCount =
+    document.getElementById(
+      "supportProgressCount"
+    );
+
+  const resolvedCount =
+    document.getElementById(
+      "supportResolvedCount"
+    );
+
+
+  const indexUrl =
+    "<%= ai_support_requests_path %>";
+
+
+  let allRequests = [];
+
+  let currentFilter = "all";
+
+  let currentSearch = "";
+
+
+  /* =======================================================
+     ESCAPE HTML
+  ======================================================= */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =======================================================
+     FORMAT TIME
+  ======================================================= */
+
+  function formatTime(value) {
+
+    if (!value) {
+      return "";
+    }
+
+    const date =
+      new Date(value);
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return "";
+    }
+
+    return date.toLocaleString(
+      undefined,
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     STATUS LABEL
+  ======================================================= */
+
+  function statusLabel(request) {
+
+    return (
+      request.status_label ||
+      request.status ||
+      "Unknown"
+    );
+
+  }
+
+
+  /* =======================================================
+     UPDATE STATS
+  ======================================================= */
+
+  function updateStats(requests) {
+
+    const active =
+      requests.filter(
+        request =>
+          ["open", "in_progress"]
+            .includes(
+              request.status
+            )
+      ).length;
+
+    const progress =
+      requests.filter(
+        request =>
+          request.status ===
+          "in_progress"
+      ).length;
+
+    const resolved =
+      requests.filter(
+        request =>
+          ["resolved", "closed"]
+            .includes(
+              request.status
+            )
+      ).length;
+
+
+    if (activeCount) {
+      activeCount.textContent =
+        active;
+    }
+
+    if (progressCount) {
+      progressCount.textContent =
+        progress;
+    }
+
+    if (resolvedCount) {
+      resolvedCount.textContent =
+        resolved;
+    }
+
+  }
+
+
+  /* =======================================================
+     FILTER REQUESTS
+  ======================================================= */
+
+  function filteredRequests() {
+
+    let requests =
+      [...allRequests];
+
+
+    if (
+      currentFilter !==
+      "all"
+    ) {
+
+      requests =
+        requests.filter(
+          request =>
+            request.status ===
+            currentFilter
+        );
+
+    }
+
+
+    if (
+      currentSearch
+    ) {
+
+      const search =
+        currentSearch
+          .toLowerCase()
+          .trim();
+
+
+      requests =
+        requests.filter(
+          request => {
+
+            const subject =
+              String(
+                request.subject ||
+                ""
+              ).toLowerCase();
+
+            const category =
+              String(
+                request.category_label ||
+                request.category ||
+                ""
+              ).toLowerCase();
+
+            const id =
+              String(
+                request.id ||
+                ""
+              ).toLowerCase();
+
+            const description =
+              String(
+                request.description ||
+                ""
+              ).toLowerCase();
+
+
+            return (
+              subject.includes(search) ||
+              category.includes(search) ||
+              id.includes(search) ||
+              description.includes(search)
+            );
+
+          }
+        );
+
+    }
+
+
+    return requests;
+
+  }
+
+
+  /* =======================================================
+     RENDER
+  ======================================================= */
+
+  function renderRequests() {
+
+    const requests =
+      filteredRequests();
+
+
+    if (!requests.length) {
+
+      container.innerHTML = `
+
+        <div class="support-list-empty">
+
+          <div class="support-empty-icon">
+            <i class="bi bi-inbox"></i>
+          </div>
+
+          <div class="support-empty-title">
+            No support requests found
+          </div>
+
+          <div class="support-empty-text">
+            There are no support requests matching your current filter.
+          </div>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      requests.map(
+        request => {
+
+          const subject =
+            escapeHtml(
+              request.subject ||
+              "Support Request"
+            );
+
+          const category =
+            escapeHtml(
+              request.category_label ||
+              request.category ||
+              "General"
+            );
+
+          const status =
+            escapeHtml(
+              statusLabel(request)
+            );
+
+          const priority =
+            escapeHtml(
+              request.priority_label ||
+              request.priority ||
+              "Normal"
+            );
+
+          const description =
+            escapeHtml(
+              request.description ||
+              "Support request"
+            );
+
+          const updatedAt =
+            escapeHtml(
+              formatTime(
+                request.updated_at ||
+                request.created_at
+              )
+            );
+
+
+          const firstLetter =
+            escapeHtml(
+              (
+                request.subject ||
+                "S"
+              )
+                .charAt(0)
+                .toUpperCase()
+            );
+
+
+          return `
+
+            <a
+              href="/ai/support_requests/${request.id}"
+              class="support-list-card">
+
+              <div class="support-list-card-top">
+
+                <div class="support-list-main">
+
+                  <div class="support-list-avatar">
+                    ${firstLetter}
+                  </div>
+
+                  <div class="support-list-content">
+
+                    <div class="support-list-subject">
+                      ${subject}
+                    </div>
+
+                    <div class="support-list-id">
+                      Ticket #${escapeHtml(request.id)}
+                    </div>
+
+                    <div class="support-list-preview">
+                      ${description}
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <div class="support-list-arrow">
+                  <i class="bi bi-chevron-right"></i>
+                </div>
+
+              </div>
+
+
+              <div class="support-list-meta">
+
+                <span class="support-list-pill">
+                  ${category}
+                </span>
+
+                <span class="support-list-pill">
+                  ${status}
+                </span>
+
+                <span class="support-list-pill">
+                  ${priority}
+                </span>
+
+              </div>
+
+
+              <div class="support-list-time">
+                ${updatedAt}
+              </div>
+
+            </a>
+
+          `;
+
+        }
+      ).join("");
+
+  }
+
+
+  /* =======================================================
+     LOAD SUPPORT REQUESTS
+  ======================================================= */
+
+  async function loadSupportRequests() {
+
+    try {
+
+      const response =
+        await fetch(
+          indexUrl,
+          {
+            headers: {
+              Accept:
+                "application/json"
+            },
+
+            credentials:
+              "same-origin"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load support requests."
+        );
+
+      }
+
+
+      allRequests =
+        Array.isArray(
+          data.support_requests
+        )
+          ? data.support_requests
+          : [];
+
+
+      updateStats(
+        allRequests
+      );
+
+      renderRequests();
+
+
+    } catch (error) {
+
+      container.innerHTML = `
+
+        <div class="support-list-empty">
+
+          <div class="support-empty-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+
+          <div class="support-empty-title">
+            Unable to load support requests
+          </div>
+
+          <div class="support-empty-text">
+            ${escapeHtml(
+              error.message ||
+              "Please try again later."
+            )}
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  /* =======================================================
+     SEARCH
+  ======================================================= */
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "input",
+      function () {
+
+        currentSearch =
+          this.value;
+
+        renderRequests();
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     FILTER TABS
+  ======================================================= */
+
+  document
+    .querySelectorAll(
+      ".student-support-tab"
+    )
+    .forEach(
+      tab => {
+
+        tab.addEventListener(
+          "click",
+          function () {
+
+            document
+              .querySelectorAll(
+                ".student-support-tab"
+              )
+              .forEach(
+                item =>
+                  item.classList.remove(
+                    "active"
+                  )
+              );
+
+
+            this.classList.add(
+              "active"
+            );
+
+
+            currentFilter =
+              this.dataset.filter ||
+              "all";
+
+
+            renderRequests();
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =======================================================
+     DAY / NIGHT MODE
+  ======================================================= */
+
+  const themeStorageKey =
+    page?.dataset.themeKey ||
+    "aone_student_support_theme";
+
+
+  function applyTheme(theme) {
+
+    const dark =
+      theme === "dark";
+
+
+    document.body.classList.toggle(
+      "student-support-dark",
+      dark
+    );
+
+
+    if (dark) {
+
+      if (themeIcon) {
+        themeIcon.textContent =
+          "☀️";
+      }
+
+      if (themeText) {
+        themeText.textContent =
+          "Day Mode";
+      }
+
+    } else {
+
+      if (themeIcon) {
+        themeIcon.textContent =
+          "🌙";
+      }
+
+      if (themeText) {
+        themeText.textContent =
+          "Night Mode";
+      }
+
+    }
+
+  }
+
+
+  let savedTheme =
+    localStorage.getItem(
+      themeStorageKey
+    );
+
+
+  if (!savedTheme) {
+
+    savedTheme =
+      window.matchMedia &&
+      window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches
+        ? "dark"
+        : "light";
+
+  }
+
+
+  applyTheme(
+    savedTheme
+  );
+
+
+  if (themeToggle) {
+
+    themeToggle.addEventListener(
+      "click",
+      function () {
+
+        const current =
+          document.body.classList.contains(
+            "student-support-dark"
+          )
+            ? "dark"
+            : "light";
+
+
+        const next =
+          current === "dark"
+            ? "light"
+            : "dark";
+
+
+        localStorage.setItem(
+          themeStorageKey,
+          next
+        );
+
+
+        applyTheme(
+          next
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     INITIAL LOAD
+  ======================================================= */
+
+  loadSupportRequests();
+
+})();
+
+</script>

@@ -1,0 +1,1999 @@
+<%
+  # ============================================================
+  # A ONE GS CENTER - ADMIN SUPPORT REQUESTS
+  # White / Professional UI + Day/Night Toggle
+  # ============================================================
+%>
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+  /* ============================================================
+     PAGE RESET / ADMIN BACKGROUND OVERRIDE
+  ============================================================ */
+
+  .aone-support-page,
+  .aone-support-page * {
+    box-sizing: border-box;
+  }
+
+  .aone-support-page {
+    min-height: calc(100vh - 0px) !important;
+    width: 100% !important;
+
+    padding: 28px 24px 55px !important;
+
+    background:
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(128, 9, 226, 0.10),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(59, 130, 246, 0.07),
+        transparent 30%
+      ),
+      #f7f9fc !important;
+
+    color: #172033;
+
+    transition:
+      background 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .aone-support-container {
+    width: min(1500px, 100%);
+    margin: 0 auto;
+  }
+
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+
+  .support-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 24px;
+  }
+
+  .support-page-heading {
+    min-width: 0;
+  }
+
+  .support-page-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 10px;
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    background: rgba(128, 9, 226, 0.08);
+    color: #8009e2;
+
+    font-size: 11px;
+    font-weight: 850;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .support-page-eyebrow i {
+    font-size: 12px;
+  }
+
+  .support-page-title {
+    margin: 0;
+
+    color: #151b2e;
+
+    font-size: clamp(27px, 3vw, 39px);
+    line-height: 1.1;
+
+    font-weight: 850;
+    letter-spacing: -0.035em;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-page-subtitle {
+    max-width: 750px;
+
+    margin: 9px 0 0;
+
+    color: #6e778b;
+
+    font-size: 14px;
+    line-height: 1.7;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     HEADER RIGHT SIDE
+  ============================================================ */
+
+  .support-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .support-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 43px;
+    padding: 0 14px;
+
+    border: 1px solid #e7eaf0;
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: #4d566b;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    box-shadow: 0 7px 20px rgba(26, 32, 55, 0.05);
+
+    transition:
+      background 0.3s ease,
+      border 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .support-header-badge i {
+    color: #8009e2;
+  }
+
+
+  /* ============================================================
+     DAY / NIGHT TOGGLE
+  ============================================================ */
+
+  .support-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 43px;
+
+    border: 1px solid #e2e6ee;
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    color: #596276;
+
+    cursor: pointer;
+
+    box-shadow: 0 7px 20px rgba(26, 32, 55, 0.05);
+
+    transition:
+      background 0.25s ease,
+      border 0.25s ease,
+      color 0.25s ease,
+      transform 0.2s ease;
+  }
+
+  .support-theme-toggle:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(128, 9, 226, 0.3);
+    color: #8009e2;
+  }
+
+  .support-theme-toggle i {
+    font-size: 16px;
+  }
+
+
+  /* ============================================================
+     STAT CARDS
+  ============================================================ */
+
+  .support-stats-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+  }
+
+  .support-stat-card {
+    position: relative;
+
+    min-height: 126px;
+
+    overflow: hidden;
+
+    padding: 20px;
+
+    border: 1px solid #e7eaf0;
+    border-radius: 19px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    box-shadow:
+      0 10px 30px rgba(25, 32, 55, 0.055);
+
+    transition:
+      background 0.3s ease,
+      border 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .support-stat-card::after {
+    content: "";
+
+    position: absolute;
+
+    right: -40px;
+    bottom: -55px;
+
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+
+    background: rgba(128, 9, 226, 0.055);
+
+    pointer-events: none;
+  }
+
+  .support-stat-top {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+  }
+
+  .support-stat-label {
+    color: #737c90;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-stat-icon {
+    display: grid;
+
+    width: 41px;
+    height: 41px;
+
+    place-items: center;
+
+    border-radius: 12px;
+
+    background: rgba(128, 9, 226, 0.08);
+    color: #8009e2;
+
+    font-size: 16px;
+  }
+
+  .support-stat-number {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 13px;
+
+    color: #171d30;
+
+    font-size: 29px;
+    line-height: 1;
+
+    font-weight: 850;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     MAIN CARD
+  ============================================================ */
+
+  .support-main-card {
+    overflow: hidden;
+
+    border: 1px solid #e5e8ef;
+    border-radius: 21px;
+
+    background: #ffffff;
+
+    box-shadow:
+      0 18px 45px rgba(25, 32, 55, 0.065);
+
+    transition:
+      background 0.3s ease,
+      border 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+
+  /* ============================================================
+     TOOLBAR
+  ============================================================ */
+
+  .support-toolbar {
+    padding: 20px;
+
+    border-bottom: 1px solid #edf0f4;
+
+    transition: border-color 0.3s ease;
+  }
+
+  .support-toolbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 16px;
+  }
+
+  .support-section-title {
+    margin: 0;
+
+    color: #1b2133;
+
+    font-size: 18px;
+    font-weight: 850;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-section-description {
+    margin: 5px 0 0;
+
+    color: #858da0;
+
+    font-size: 12px;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     FILTERS
+  ============================================================ */
+
+  .support-filter-form {
+    display: grid;
+
+    grid-template-columns:
+      minmax(240px, 1.8fr)
+      minmax(150px, 0.75fr)
+      minmax(150px, 0.75fr)
+      auto;
+
+    gap: 10px;
+
+    align-items: center;
+  }
+
+  .support-search-wrap {
+    position: relative;
+  }
+
+  .support-search-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    transform: translateY(-50%);
+
+    color: #969eaf;
+
+    pointer-events: none;
+  }
+
+  .support-filter-input,
+  .support-filter-select {
+    width: 100%;
+    min-height: 45px;
+
+    padding: 0 13px;
+
+    border: 1px solid #e2e6ed;
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #ffffff;
+    color: #293043;
+
+    font-size: 12px;
+
+    transition:
+      background 0.3s ease,
+      border 0.2s ease,
+      color 0.3s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .support-search-input {
+    padding-left: 40px;
+  }
+
+  .support-filter-input:focus,
+  .support-filter-select:focus {
+    border-color: rgba(128, 9, 226, 0.42);
+
+    box-shadow:
+      0 0 0 4px rgba(128, 9, 226, 0.065);
+  }
+
+  .support-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .support-filter-button {
+    min-height: 45px;
+
+    padding: 0 17px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #8009e2,
+        #6511c7
+      );
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+      0 8px 19px rgba(128, 9, 226, 0.18);
+
+    transition: transform 0.2s ease;
+  }
+
+  .support-filter-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .support-filter-clear {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 45px;
+
+    padding: 0 15px;
+
+    border: 1px solid #e2e6ed;
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #687186;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    text-decoration: none;
+
+    transition:
+      background 0.3s ease,
+      border 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .support-filter-clear:hover {
+    color: #8009e2;
+    border-color: rgba(128, 9, 226, 0.25);
+
+    text-decoration: none;
+  }
+
+
+  /* ============================================================
+     TABLE
+  ============================================================ */
+
+  .support-table-wrap {
+    width: 100%;
+
+    overflow-x: auto;
+  }
+
+  .support-table {
+    width: 100%;
+
+    min-width: 950px;
+
+    border-collapse: collapse;
+  }
+
+  .support-table th {
+    padding: 14px 17px;
+
+    border-bottom: 1px solid #edf0f4;
+
+    background: #fafbfe;
+
+    color: #858da0;
+
+    font-size: 10px;
+    font-weight: 850;
+
+    letter-spacing: 0.07em;
+
+    text-align: left;
+    text-transform: uppercase;
+
+    white-space: nowrap;
+
+    transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  .support-table td {
+    padding: 16px 17px;
+
+    border-bottom: 1px solid #f0f2f5;
+
+    vertical-align: middle;
+
+    transition: border-color 0.3s ease;
+  }
+
+  .support-table tbody tr {
+    transition: background 0.2s ease;
+  }
+
+  .support-table tbody tr:hover {
+    background: #faf9ff;
+  }
+
+  .support-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+
+  /* ============================================================
+     TICKET
+  ============================================================ */
+
+  .support-ticket-link {
+    display: block;
+
+    min-width: 260px;
+
+    color: inherit;
+
+    text-decoration: none;
+  }
+
+  .support-ticket-link:hover {
+    text-decoration: none;
+  }
+
+  .support-ticket-id {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 5px;
+
+    margin-bottom: 5px;
+
+    color: #8009e2;
+
+    font-size: 10px;
+    font-weight: 850;
+  }
+
+  .support-ticket-subject {
+    max-width: 370px;
+
+    overflow: hidden;
+
+    color: #202638;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    line-height: 1.45;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-ticket-description {
+    max-width: 370px;
+
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: #8991a3;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     USER
+  ============================================================ */
+
+  .support-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 190px;
+  }
+
+  .support-user-avatar {
+    display: grid;
+
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(128, 9, 226, 0.13),
+        rgba(59, 130, 246, 0.10)
+      );
+
+    color: #8009e2;
+
+    font-size: 12px;
+    font-weight: 850;
+  }
+
+  .support-user-name {
+    max-width: 160px;
+
+    overflow: hidden;
+
+    color: #30374a;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-user-email {
+    max-width: 180px;
+
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    color: #9198aa;
+
+    font-size: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     CATEGORY
+  ============================================================ */
+
+  .support-category {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 6px;
+
+    color: #596176;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-category i {
+    color: #8009e2;
+  }
+
+
+  /* ============================================================
+     PILLS
+  ============================================================ */
+
+  .support-pill {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 28px;
+
+    padding: 5px 10px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 850;
+
+    white-space: nowrap;
+  }
+
+  .support-pill-open {
+    background: #fff4e5;
+    color: #c46b00;
+  }
+
+  .support-pill-progress {
+    background: #eee8ff;
+    color: #6940bd;
+  }
+
+  .support-pill-resolved {
+    background: #eaf8f0;
+    color: #22814d;
+  }
+
+  .support-pill-closed {
+    background: #eef0f4;
+    color: #697185;
+  }
+
+  .support-pill-normal {
+    background: #f0f2f6;
+    color: #687086;
+  }
+
+  .support-pill-high {
+    background: #fff0dc;
+    color: #bc6700;
+  }
+
+  .support-pill-urgent {
+    background: #ffe7e9;
+    color: #c6283a;
+  }
+
+
+  /* ============================================================
+     DATE
+  ============================================================ */
+
+  .support-date {
+    color: #737b90;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-date strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #444b5f;
+
+    font-size: 11px;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     ACTION
+  ============================================================ */
+
+  .support-action {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #e4e7ed;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #687186;
+
+    text-decoration: none;
+
+    transition:
+      background 0.25s ease,
+      border 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .support-action:hover {
+    background: rgba(128, 9, 226, 0.06);
+
+    border-color: rgba(128, 9, 226, 0.25);
+
+    color: #8009e2;
+
+    text-decoration: none;
+  }
+
+
+  /* ============================================================
+     EMPTY
+  ============================================================ */
+
+  .support-empty {
+    padding: 75px 24px;
+
+    text-align: center;
+  }
+
+  .support-empty-icon {
+    display: grid;
+
+    width: 68px;
+    height: 68px;
+
+    margin: 0 auto 17px;
+
+    place-items: center;
+
+    border-radius: 20px;
+
+    background: rgba(128, 9, 226, 0.08);
+
+    color: #8009e2;
+
+    font-size: 24px;
+  }
+
+  .support-empty-title {
+    margin: 0;
+
+    color: #252b3c;
+
+    font-size: 18px;
+    font-weight: 850;
+
+    transition: color 0.3s ease;
+  }
+
+  .support-empty-text {
+    max-width: 460px;
+
+    margin: 8px auto 0;
+
+    color: #858ca0;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    transition: color 0.3s ease;
+  }
+
+
+  /* ============================================================
+     PAGINATION
+  ============================================================ */
+
+  .support-pagination {
+    display: flex;
+
+    justify-content: center;
+
+    padding: 19px;
+
+    border-top: 1px solid #edf0f5;
+
+    transition: border-color 0.3s ease;
+  }
+
+  .support-pagination .pagination {
+    margin: 0;
+
+    gap: 5px;
+  }
+
+  .support-pagination .page-item .page-link {
+    min-width: 36px;
+    min-height: 36px;
+
+    border: 1px solid #e3e6ee;
+    border-radius: 9px;
+
+    color: #626a7e;
+
+    background: #ffffff;
+
+    text-align: center;
+
+    line-height: 22px;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    transition:
+      background 0.3s ease,
+      border 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .support-pagination .page-item.active .page-link {
+    border-color: #8009e2;
+
+    background: #8009e2;
+
+    color: #ffffff;
+  }
+
+
+  /* ============================================================
+     NIGHT MODE
+  ============================================================ */
+
+  .aone-support-page.support-night {
+
+    background:
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(128, 9, 226, 0.20),
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(59, 130, 246, 0.12),
+        transparent 30%
+      ),
+      #0d1220 !important;
+
+    color: #e7eaf3;
+  }
+
+  .support-night .support-page-title {
+    color: #f3f5fb;
+  }
+
+  .support-night .support-page-subtitle {
+    color: #98a1b6;
+  }
+
+  .support-night .support-header-badge {
+    background: #151b2b;
+    border-color: #252d40;
+    color: #aeb7ca;
+  }
+
+  .support-night .support-theme-toggle {
+    background: #151b2b;
+    border-color: #2a3245;
+    color: #f2c94c;
+  }
+
+  .support-night .support-stat-card {
+    background: #151b2b;
+    border-color: #252d40;
+
+    box-shadow:
+      0 15px 35px rgba(0, 0, 0, 0.20);
+  }
+
+  .support-night .support-stat-label {
+    color: #929cb2;
+  }
+
+  .support-night .support-stat-number {
+    color: #f2f4f9;
+  }
+
+  .support-night .support-main-card {
+    background: #141a29;
+    border-color: #252d40;
+
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.24);
+  }
+
+  .support-night .support-toolbar {
+    border-color: #252d40;
+  }
+
+  .support-night .support-section-title {
+    color: #f2f4fa;
+  }
+
+  .support-night .support-section-description {
+    color: #8993a9;
+  }
+
+  .support-night .support-filter-input,
+  .support-night .support-filter-select {
+    background: #0f1523;
+    border-color: #2a3245;
+    color: #e6eaf2;
+  }
+
+  .support-night .support-filter-input::placeholder {
+    color: #69748b;
+  }
+
+  .support-night .support-filter-clear {
+    background: #151b2b;
+    border-color: #2a3245;
+    color: #a4adc0;
+  }
+
+  .support-night .support-table th {
+    background: #101624;
+    border-color: #252d40;
+    color: #7f8aa2;
+  }
+
+  .support-night .support-table td {
+    border-color: #222a3b;
+  }
+
+  .support-night .support-table tbody tr:hover {
+    background: #191f30;
+  }
+
+  .support-night .support-ticket-subject {
+    color: #edf0f7;
+  }
+
+  .support-night .support-ticket-description {
+    color: #7f8aa2;
+  }
+
+  .support-night .support-user-name {
+    color: #e3e7ef;
+  }
+
+  .support-night .support-user-email {
+    color: #7d879d;
+  }
+
+  .support-night .support-category {
+    color: #a2abc0;
+  }
+
+  .support-night .support-date {
+    color: #8a94aa;
+  }
+
+  .support-night .support-date strong {
+    color: #c5ccda;
+  }
+
+  .support-night .support-action {
+    background: #151b2b;
+    border-color: #2a3245;
+    color: #a2abc0;
+  }
+
+  .support-night .support-action:hover {
+    background: rgba(128, 9, 226, 0.15);
+    color: #b978ff;
+  }
+
+  .support-night .support-pagination {
+    border-color: #252d40;
+  }
+
+  .support-night .support-pagination .page-item .page-link {
+    background: #151b2b;
+    border-color: #2a3245;
+    color: #a2abc0;
+  }
+
+  .support-night .support-empty-title {
+    color: #eef1f7;
+  }
+
+  .support-night .support-empty-text {
+    color: #8993a9;
+  }
+
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+
+  @media (max-width: 1100px) {
+
+    .support-stats-grid {
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    }
+
+    .support-filter-form {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .support-search-wrap {
+      grid-column: 1 / -1;
+    }
+
+    .support-filter-actions {
+      grid-column: 1 / -1;
+    }
+  }
+
+
+  @media (max-width: 700px) {
+
+    .aone-support-page {
+      padding: 20px 12px 40px !important;
+    }
+
+    .support-page-header {
+      flex-direction: column;
+    }
+
+    .support-header-actions {
+      width: 100%;
+    }
+
+    .support-header-badge {
+      flex: 1;
+    }
+
+    .support-stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .support-filter-form {
+      grid-template-columns: 1fr;
+    }
+
+    .support-search-wrap {
+      grid-column: auto;
+    }
+
+    .support-filter-actions {
+      grid-column: auto;
+    }
+
+    .support-toolbar {
+      padding: 16px;
+    }
+
+    .support-filter-actions > * {
+      flex: 1;
+    }
+  }
+
+</style>
+
+
+<!-- ============================================================
+     PAGE
+============================================================ -->
+
+<div
+  class="aone-support-page"
+  id="aoneSupportPage"
+>
+
+  <div class="aone-support-container">
+
+
+    <!-- ========================================================
+         HEADER
+    ======================================================== -->
+
+    <div class="support-page-header">
+
+      <div class="support-page-heading">
+
+        <div class="support-page-eyebrow">
+          <i class="fa-solid fa-headset"></i>
+          A ONE GS CENTER
+        </div>
+
+        <h1 class="support-page-title">
+          Support Requests
+        </h1>
+
+        <p class="support-page-subtitle">
+          Manage student support requests, review ticket details,
+          update request status, and continue conversations with students.
+        </p>
+
+      </div>
+
+
+      <div class="support-header-actions">
+
+        <div class="support-header-badge">
+          <i class="fa-solid fa-shield-halved"></i>
+
+          <span>
+            Admin Support Center
+          </span>
+        </div>
+
+
+        <!-- DAY / NIGHT -->
+
+        <button
+          type="button"
+          id="supportThemeToggle"
+          class="support-theme-toggle"
+          aria-label="Toggle day and night mode"
+          title="Toggle day/night mode"
+        >
+          <i
+            id="supportThemeIcon"
+            class="fa-solid fa-moon"
+          ></i>
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ========================================================
+         STATS
+    ======================================================== -->
+
+    <div class="support-stats-grid">
+
+
+      <!-- OPEN -->
+
+      <div class="support-stat-card">
+
+        <div class="support-stat-top">
+
+          <span class="support-stat-label">
+            Open / In Progress
+          </span>
+
+          <span class="support-stat-icon">
+            <i class="fa-solid fa-comments"></i>
+          </span>
+
+        </div>
+
+        <div class="support-stat-number">
+          <%= @open_count %>
+        </div>
+
+      </div>
+
+
+      <!-- URGENT -->
+
+      <div class="support-stat-card">
+
+        <div class="support-stat-top">
+
+          <span class="support-stat-label">
+            Urgent
+          </span>
+
+          <span class="support-stat-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </span>
+
+        </div>
+
+        <div class="support-stat-number">
+          <%= @urgent_count %>
+        </div>
+
+      </div>
+
+
+      <!-- TOTAL -->
+
+      <div class="support-stat-card">
+
+        <div class="support-stat-top">
+
+          <span class="support-stat-label">
+            Total Requests
+          </span>
+
+          <span class="support-stat-icon">
+            <i class="fa-solid fa-ticket"></i>
+          </span>
+
+        </div>
+
+        <div class="support-stat-number">
+          <%= @total_count %>
+        </div>
+
+      </div>
+
+
+      <!-- RESOLVED -->
+
+      <div class="support-stat-card">
+
+        <div class="support-stat-top">
+
+          <span class="support-stat-label">
+            Resolved / Closed
+          </span>
+
+          <span class="support-stat-icon">
+            <i class="fa-solid fa-circle-check"></i>
+          </span>
+
+        </div>
+
+        <div class="support-stat-number">
+          <%= @resolved_count %>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ========================================================
+         MAIN SUPPORT CARD
+    ======================================================== -->
+
+    <div class="support-main-card">
+
+
+      <!-- ======================================================
+           TOOLBAR
+      ====================================================== -->
+
+      <div class="support-toolbar">
+
+        <div class="support-toolbar-top">
+
+          <div>
+
+            <h2 class="support-section-title">
+              Student Support Tickets
+            </h2>
+
+            <p class="support-section-description">
+              Select a ticket to view its complete details and continue support.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             FILTER FORM
+        ==================================================== -->
+
+        <%= form_with url: admin_support_requests_path,
+                      method: :get,
+                      local: true,
+                      class: "support-filter-form" do |form| %>
+
+
+          <!-- SEARCH -->
+
+          <div class="support-search-wrap">
+
+            <i class="fa-solid fa-magnifying-glass support-search-icon"></i>
+
+            <%= form.text_field :search,
+                                value: @search,
+                                placeholder: "Search ticket, subject, student or email...",
+                                class: "support-filter-input support-search-input" %>
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <%= form.select :status,
+
+                          options_for_select(
+                            [
+                              ["All Status", ""],
+                              ["Open", "open"],
+                              ["In Progress", "in_progress"],
+                              ["Resolved", "resolved"],
+                              ["Closed", "closed"]
+                            ],
+                            @status
+                          ),
+
+                          {},
+
+                          class: "support-filter-select" %>
+
+
+          <!-- CATEGORY -->
+
+          <%= form.select :category,
+
+                          options_for_select(
+                            [
+                              ["All Categories", ""],
+                              ["Course Access", "course_access"],
+                              ["Enrollment", "enrollment"],
+                              ["Payment", "payment"],
+                              ["Refund", "refund"],
+                              ["Technical", "technical"],
+                              ["Account", "account"],
+                              ["Content", "content"],
+                              ["Other", "other"]
+                            ],
+                            @category
+                          ),
+
+                          {},
+
+                          class: "support-filter-select" %>
+
+
+          <!-- ACTIONS -->
+
+          <div class="support-filter-actions">
+
+            <%= form.submit "Search",
+                            class: "support-filter-button" %>
+
+            <%= link_to "Clear",
+                        admin_support_requests_path,
+                        class: "support-filter-clear" %>
+
+          </div>
+
+
+        <% end %>
+
+      </div>
+
+
+
+      <!-- ======================================================
+           TABLE
+      ====================================================== -->
+
+      <% if @support_requests.present? %>
+
+        <div class="support-table-wrap">
+
+          <table class="support-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Ticket
+                </th>
+
+                <th>
+                  Student
+                </th>
+
+                <th>
+                  Category
+                </th>
+
+                <th>
+                  Priority
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Created
+                </th>
+
+                <th>
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <% @support_requests.each do |support_request| %>
+
+
+                <% student = support_request.user %>
+
+
+                <% student_name =
+
+                     if student.respond_to?(:name) &&
+                        student.name.present?
+
+                       student.name
+
+                     else
+
+                       student.email
+
+                     end
+
+                %>
+
+
+                <% initials =
+
+                     student_name
+                       .to_s
+                       .split
+                       .first(2)
+                       .map { |part| part[0] }
+                       .join
+                       .upcase
+
+                %>
+
+
+                <tr>
+
+
+                  <!-- TICKET -->
+
+                  <td>
+
+                    <%= link_to admin_support_request_path(support_request),
+                                class: "support-ticket-link" do %>
+
+
+                      <div class="support-ticket-id">
+
+                        <i class="fa-solid fa-hashtag"></i>
+
+                        <%= support_request.id %>
+
+                      </div>
+
+
+                      <div class="support-ticket-subject">
+
+                        <%= support_request.subject %>
+
+                      </div>
+
+
+                      <div class="support-ticket-description">
+
+                        <%= support_request.description %>
+
+                      </div>
+
+
+                    <% end %>
+
+                  </td>
+
+
+
+                  <!-- STUDENT -->
+
+                  <td>
+
+                    <div class="support-user">
+
+
+                      <div class="support-user-avatar">
+
+                        <%= initials.presence || "U" %>
+
+                      </div>
+
+
+                      <div>
+
+                        <div class="support-user-name">
+
+                          <%= student_name %>
+
+                        </div>
+
+
+                        <div class="support-user-email">
+
+                          <%= student.email %>
+
+                        </div>
+
+                      </div>
+
+
+                    </div>
+
+                  </td>
+
+
+
+                  <!-- CATEGORY -->
+
+                  <td>
+
+                    <div class="support-category">
+
+                      <i class="fa-solid fa-layer-group"></i>
+
+                      <%= support_request.category_label %>
+
+                    </div>
+
+                  </td>
+
+
+
+                  <!-- PRIORITY -->
+
+                  <td>
+
+                    <span
+                      class="
+                        support-pill
+                        support-pill-<%= support_request.priority %>
+                      "
+                    >
+
+                      <%= support_request.priority_label %>
+
+                    </span>
+
+                  </td>
+
+
+
+                  <!-- STATUS -->
+
+                  <td>
+
+                    <% status_class =
+
+                         case support_request.status
+
+                         when "open"
+                           "open"
+
+                         when "in_progress"
+                           "progress"
+
+                         when "resolved"
+                           "resolved"
+
+                         when "closed"
+                           "closed"
+
+                         else
+                           "closed"
+
+                         end
+
+                    %>
+
+
+                    <span
+                      class="
+                        support-pill
+                        support-pill-<%= status_class %>
+                      "
+                    >
+
+                      <%= support_request.status_label %>
+
+                    </span>
+
+                  </td>
+
+
+
+                  <!-- DATE -->
+
+                  <td>
+
+                    <div class="support-date">
+
+                      <strong>
+                        <%= support_request.created_at.strftime("%d %b %Y") %>
+                      </strong>
+
+                      <%= support_request.created_at.strftime("%I:%M %p") %>
+
+                    </div>
+
+                  </td>
+
+
+
+                  <!-- OPEN -->
+
+                  <td>
+
+                    <%= link_to admin_support_request_path(support_request),
+
+                                class: "support-action",
+
+                                title: "Open Support Request" do %>
+
+                      <i class="fa-solid fa-arrow-right"></i>
+
+                    <% end %>
+
+                  </td>
+
+
+                </tr>
+
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+
+        <!-- ====================================================
+             PAGINATION
+        ==================================================== -->
+
+        <div class="support-pagination">
+
+          <%= paginate @support_requests %>
+
+        </div>
+
+
+      <% else %>
+
+
+        <!-- ====================================================
+             EMPTY
+        ==================================================== -->
+
+        <div class="support-empty">
+
+          <div class="support-empty-icon">
+
+            <i class="fa-solid fa-headset"></i>
+
+          </div>
+
+
+          <h3 class="support-empty-title">
+
+            No Support Requests Found
+
+          </h3>
+
+
+          <p class="support-empty-text">
+
+            There are no support requests matching your current filters.
+            Student requests created through A ONE AI Human Help will appear here.
+
+          </p>
+
+        </div>
+
+
+      <% end %>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     DAY / NIGHT JAVASCRIPT
+============================================================ -->
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+  (() => {
+
+    const page =
+      document.getElementById(
+        "aoneSupportPage"
+      );
+
+    const toggle =
+      document.getElementById(
+        "supportThemeToggle"
+      );
+
+    const icon =
+      document.getElementById(
+        "supportThemeIcon"
+      );
+
+    if (!page || !toggle || !icon) {
+      return;
+    }
+
+
+    /* ==========================================================
+       APPLY THEME
+    ========================================================== */
+
+    function applyTheme(theme) {
+
+      const isNight =
+        theme === "night";
+
+      page.classList.toggle(
+        "support-night",
+        isNight
+      );
+
+
+      if (isNight) {
+
+        icon.className =
+          "fa-solid fa-sun";
+
+        toggle.setAttribute(
+          "title",
+          "Switch to day mode"
+        );
+
+        toggle.setAttribute(
+          "aria-label",
+          "Switch to day mode"
+        );
+
+      } else {
+
+        icon.className =
+          "fa-solid fa-moon";
+
+        toggle.setAttribute(
+          "title",
+          "Switch to night mode"
+        );
+
+        toggle.setAttribute(
+          "aria-label",
+          "Switch to night mode"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================================
+       LOAD SAVED THEME
+    ========================================================== */
+
+    let savedTheme =
+      localStorage.getItem(
+        "aone_support_theme"
+      );
+
+
+    if (
+      savedTheme !== "night" &&
+      savedTheme !== "day"
+    ) {
+
+      savedTheme = "day";
+
+    }
+
+
+    applyTheme(
+      savedTheme
+    );
+
+
+    /* ==========================================================
+       TOGGLE
+    ========================================================== */
+
+    toggle.addEventListener(
+      "click",
+      () => {
+
+        const night =
+          page.classList.contains(
+            "support-night"
+          );
+
+
+        const newTheme =
+          night
+            ? "day"
+            : "night";
+
+
+        applyTheme(
+          newTheme
+        );
+
+
+        localStorage.setItem(
+          "aone_support_theme",
+          newTheme
+        );
+
+      }
+    );
+
+  })();
+
+</script>

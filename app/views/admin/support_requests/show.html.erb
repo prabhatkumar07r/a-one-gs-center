@@ -1,0 +1,2050 @@
+<style nonce="<%= content_security_policy_nonce %>">
+
+/* =========================================================
+   A ONE GS CENTER — ADMIN SUPPORT TICKET
+   PREMIUM LIGHT / DARK UI
+========================================================= */
+
+.aone-support-page {
+  --sp-bg: #f5f7ff;
+  --sp-card: #ffffff;
+  --sp-card-soft: #f8f9ff;
+  --sp-border: #e5e7f2;
+  --sp-text: #172033;
+  --sp-muted: #697386;
+
+  --sp-primary: #6d28d9;
+  --sp-primary-2: #4f46e5;
+  --sp-primary-soft: #f1ebff;
+
+  --sp-success: #16a34a;
+  --sp-danger: #dc2626;
+  --sp-warning: #d97706;
+
+  --sp-shadow:
+    0 18px 45px rgba(50, 40, 100, .09);
+
+  min-height: 100vh;
+
+  padding: 25px;
+
+  color: var(--sp-text);
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(124, 58, 237, .08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(59, 130, 246, .08),
+      transparent 30%
+    ),
+    var(--sp-bg);
+
+  transition:
+    background .3s ease,
+    color .3s ease;
+}
+
+.aone-support-page *,
+.aone-support-page *::before,
+.aone-support-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+.aone-support-page[data-theme="dark"] {
+  --sp-bg: #0b1020;
+  --sp-card: #12192b;
+  --sp-card-soft: #182137;
+
+  --sp-border: #29334b;
+
+  --sp-text: #f3f4f6;
+  --sp-muted: #9ca8bd;
+
+  --sp-primary: #a78bfa;
+  --sp-primary-2: #818cf8;
+  --sp-primary-soft: #241c42;
+
+  --sp-shadow:
+    0 18px 45px rgba(0, 0, 0, .35);
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(124, 58, 237, .15),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(59, 130, 246, .10),
+      transparent 30%
+    ),
+    var(--sp-bg);
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.sp-topbar {
+  max-width: 1500px;
+
+  margin: 0 auto 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+.sp-title-area {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.sp-title-icon {
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+
+  box-shadow:
+    0 12px 25px rgba(79, 70, 229, .25);
+}
+
+.sp-title {
+  margin: 0;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  color: var(--sp-text);
+}
+
+.sp-subtitle {
+  margin: 5px 0 0;
+
+  color: var(--sp-muted);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   DAY / NIGHT TOGGLE
+========================================================= */
+
+.sp-theme-toggle {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  border: 1px solid var(--sp-border);
+
+  background: var(--sp-card);
+
+  color: var(--sp-text);
+
+  border-radius: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 18px;
+
+  box-shadow: var(--sp-shadow);
+
+  transition:
+    transform .2s ease,
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
+.sp-theme-toggle:hover {
+  transform: translateY(-2px);
+}
+
+.sp-theme-toggle:active {
+  transform: scale(.96);
+}
+
+.sp-theme-toggle .fa-moon {
+  display: block;
+}
+
+.sp-theme-toggle .fa-sun {
+  display: none;
+}
+
+.aone-support-page[data-theme="dark"]
+.sp-theme-toggle .fa-moon {
+  display: none;
+}
+
+.aone-support-page[data-theme="dark"]
+.sp-theme-toggle .fa-sun {
+  display: block;
+}
+
+
+/* =========================================================
+   MAIN TWO COLUMN
+========================================================= */
+
+.sp-layout {
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(380px, 520px);
+
+  gap: 22px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
+.sp-left {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.sp-card {
+  background: var(--sp-card);
+
+  border: 1px solid var(--sp-border);
+
+  border-radius: 22px;
+
+  box-shadow: var(--sp-shadow);
+
+  overflow: hidden;
+
+  transition:
+    background .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+
+.sp-card-header {
+  padding: 20px 22px;
+
+  border-bottom: 1px solid var(--sp-border);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.sp-card-title {
+  margin: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  color: var(--sp-text);
+}
+
+.sp-card-title i {
+  color: var(--sp-primary);
+}
+
+.sp-card-body {
+  padding: 22px;
+}
+
+
+/* =========================================================
+   TICKET OVERVIEW
+========================================================= */
+
+.sp-ticket-id {
+  margin-bottom: 8px;
+
+  color: var(--sp-muted);
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.sp-subject {
+  margin: 0;
+
+  color: var(--sp-text);
+
+  font-size: 25px;
+
+  line-height: 1.35;
+
+  font-weight: 800;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.sp-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px 11px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  background: var(--sp-primary-soft);
+
+  color: var(--sp-primary);
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   INFO GRID
+========================================================= */
+
+.sp-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+.sp-info-item {
+  min-width: 0;
+
+  padding: 16px;
+
+  border: 1px solid var(--sp-border);
+
+  background: var(--sp-card-soft);
+
+  border-radius: 15px;
+
+  transition:
+    background .3s ease,
+    border-color .3s ease;
+}
+
+.sp-info-label {
+  margin-bottom: 6px;
+
+  font-size: 11px;
+
+  line-height: 1.3;
+
+  text-transform: uppercase;
+
+  letter-spacing: .7px;
+
+  font-weight: 800;
+
+  color: var(--sp-muted);
+}
+
+.sp-info-value {
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  font-weight: 700;
+
+  color: var(--sp-text);
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   DESCRIPTION / AI CONTEXT
+========================================================= */
+
+.sp-description {
+  white-space: pre-wrap;
+
+  line-height: 1.7;
+
+  font-size: 14px;
+
+  color: var(--sp-text);
+
+  background: var(--sp-card-soft);
+
+  border: 1px solid var(--sp-border);
+
+  border-radius: 16px;
+
+  padding: 18px;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   MANAGEMENT FORM
+========================================================= */
+
+.sp-form-group {
+  margin-bottom: 17px;
+}
+
+.sp-form-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: var(--sp-muted);
+}
+
+.sp-form-control {
+  width: 100%;
+
+  min-height: 45px;
+
+  border: 1px solid var(--sp-border);
+
+  background: var(--sp-card-soft);
+
+  color: var(--sp-text);
+
+  border-radius: 12px;
+
+  padding: 11px 13px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.sp-form-control:focus {
+  border-color: var(--sp-primary);
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, .12);
+}
+
+.aone-support-page[data-theme="dark"]
+.sp-form-control,
+.aone-support-page[data-theme="dark"]
+.sp-form-control option {
+  background: #12192b;
+
+  color: #f3f4f6;
+}
+
+.sp-update-btn {
+  border: 0;
+
+  border-radius: 12px;
+
+  padding: 11px 18px;
+
+  color: #fff;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+
+  box-shadow:
+    0 10px 20px rgba(79, 70, 229, .20);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.sp-update-btn:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 13px 24px rgba(79, 70, 229, .27);
+}
+
+
+/* =========================================================
+   RIGHT CHAT
+========================================================= */
+
+.sp-chat-card {
+  position: sticky;
+
+  top: 20px;
+
+  height: calc(100vh - 105px);
+
+  min-height: 600px;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   CHAT HEADER
+========================================================= */
+
+.sp-chat-header {
+  padding: 18px 20px;
+
+  border-bottom: 1px solid var(--sp-border);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  flex-shrink: 0;
+}
+
+.sp-chat-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 0;
+}
+
+.sp-chat-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  border-radius: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #2563eb
+    );
+}
+
+.sp-chat-name {
+  color: var(--sp-text);
+
+  font-size: 15px;
+
+  font-weight: 800;
+}
+
+.sp-chat-status {
+  margin-top: 3px;
+
+  color: #22c55e;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   CHAT MESSAGES
+========================================================= */
+
+.sp-chat-messages {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--sp-card-soft),
+      var(--sp-card)
+    );
+
+  scrollbar-width: thin;
+}
+
+.sp-message-row {
+  display: flex;
+
+  margin-bottom: 15px;
+}
+
+.sp-message-row.admin {
+  justify-content: flex-end;
+}
+
+.sp-message-row.student {
+  justify-content: flex-start;
+}
+
+.sp-message {
+  max-width: 82%;
+
+  padding: 11px 14px;
+
+  border-radius: 16px;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+.sp-message-row.student .sp-message {
+  background: var(--sp-card);
+
+  border: 1px solid var(--sp-border);
+
+  border-bottom-left-radius: 5px;
+
+  color: var(--sp-text);
+}
+
+.sp-message-row.admin .sp-message {
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+
+  color: #fff;
+
+  border-bottom-right-radius: 5px;
+}
+
+.sp-message-sender {
+  margin-bottom: 4px;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  opacity: .75;
+}
+
+.sp-message-time {
+  margin-top: 5px;
+
+  font-size: 9px;
+
+  opacity: .65;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   CHAT COMPOSER
+========================================================= */
+
+.sp-chat-composer {
+  padding: 15px;
+
+  border-top: 1px solid var(--sp-border);
+
+  background: var(--sp-card);
+
+  flex-shrink: 0;
+}
+
+.sp-chat-form {
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 9px;
+}
+
+.sp-chat-input {
+  flex: 1;
+
+  resize: none;
+
+  min-height: 45px;
+
+  max-height: 120px;
+
+  border: 1px solid var(--sp-border);
+
+  border-radius: 13px;
+
+  padding: 12px;
+
+  background: var(--sp-card-soft);
+
+  color: var(--sp-text);
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.sp-chat-input::placeholder {
+  color: var(--sp-muted);
+}
+
+.sp-chat-input:focus {
+  border-color: var(--sp-primary);
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 237, .10);
+}
+
+.sp-chat-send {
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.sp-chat-send:hover {
+  transform: translateY(-1px);
+}
+
+.sp-chat-send:disabled {
+  opacity: .55;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   EMPTY CHAT
+========================================================= */
+
+.sp-chat-empty {
+  min-height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color: var(--sp-muted);
+
+  padding: 30px;
+
+  gap: 3px;
+}
+
+.sp-chat-empty i {
+  margin-bottom: 12px;
+
+  font-size: 40px;
+
+  color: var(--sp-primary);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.sp-chat-loading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 100%;
+
+  color: var(--sp-muted);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .sp-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-chat-card {
+    position: relative;
+
+    top: auto;
+
+    height: 650px;
+
+    min-height: 550px;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .aone-support-page {
+    padding: 14px;
+  }
+
+  .sp-topbar {
+    align-items: flex-start;
+  }
+
+  .sp-title-area {
+    gap: 10px;
+  }
+
+  .sp-title-icon {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 13px;
+  }
+
+  .sp-title {
+    font-size: 20px;
+  }
+
+  .sp-subtitle {
+    font-size: 11px;
+  }
+
+  .sp-theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .sp-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sp-subject {
+    font-size: 20px;
+  }
+
+  .sp-card-body {
+    padding: 16px;
+  }
+
+  .sp-card-header {
+    padding: 17px;
+  }
+
+  .sp-chat-card {
+    min-height: 550px;
+
+    height: 600px;
+  }
+
+  .sp-chat-header {
+    padding: 15px;
+  }
+
+  .sp-chat-messages {
+    padding: 15px;
+  }
+
+  .sp-message {
+    max-width: 90%;
+  }
+}
+
+</style>
+
+
+<div
+  class="aone-support-page"
+  id="aoneSupportPage"
+  data-theme="light"
+>
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <div class="sp-topbar">
+
+    <div class="sp-title-area">
+
+      <div class="sp-title-icon">
+        <i class="fa-solid fa-headset"></i>
+      </div>
+
+      <div>
+
+        <h1 class="sp-title">
+          Support Ticket
+        </h1>
+
+        <p class="sp-subtitle">
+          Manage ticket details and communicate with the student
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- DAY / NIGHT TOGGLE -->
+
+    <button
+      type="button"
+      class="sp-theme-toggle"
+      id="spThemeToggle"
+      aria-label="Toggle day and night mode"
+      title="Toggle day/night mode"
+    >
+
+      <i class="fa-solid fa-moon"></i>
+
+      <i class="fa-solid fa-sun"></i>
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAIN TWO COLUMN LAYOUT
+  ====================================================== -->
+
+  <div class="sp-layout">
+
+
+    <!-- ===================================================
+         LEFT SIDE — TICKET INFORMATION
+    ==================================================== -->
+
+    <div class="sp-left">
+
+
+      <!-- =================================================
+           TICKET OVERVIEW
+      ================================================== -->
+
+      <div class="sp-card">
+
+        <div class="sp-card-body">
+
+          <div class="sp-ticket-id">
+            Ticket #<%= @support_request.id %>
+          </div>
+
+          <h2 class="sp-subject">
+            <%= @support_request.subject %>
+          </h2>
+
+          <div style="margin-top: 12px;">
+
+            <span class="sp-status">
+
+              <i
+                class="fa-solid fa-circle"
+                style="font-size: 7px;"
+              ></i>
+
+              <%= @support_request.status_label %>
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           TICKET INFORMATION
+      ================================================== -->
+
+      <div class="sp-card">
+
+        <div class="sp-card-header">
+
+          <h3 class="sp-card-title">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Ticket Information
+
+          </h3>
+
+        </div>
+
+
+        <div class="sp-card-body">
+
+          <div class="sp-info-grid">
+
+
+            <!-- Student -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Student
+              </div>
+
+              <div class="sp-info-value">
+
+                <%= @support_request.user&.name.presence ||
+                    "Unknown Student" %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Email
+              </div>
+
+              <div class="sp-info-value">
+
+                <%= @support_request.user&.email ||
+                    "Not available" %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Category
+              </div>
+
+              <div class="sp-info-value">
+
+                <%= @support_request.category_label %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Priority -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Priority
+              </div>
+
+              <div class="sp-info-value">
+
+                <%= @support_request.priority_label %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Status
+              </div>
+
+              <div class="sp-info-value">
+
+                <%= @support_request.status_label %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Created -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Created
+              </div>
+
+              <div class="sp-info-value">
+
+                <%= @support_request.created_at.strftime(
+                      "%d %b %Y, %I:%M %p"
+                    ) %>
+
+              </div>
+
+            </div>
+
+
+            <!-- Assigned Admin -->
+
+            <div class="sp-info-item">
+
+              <div class="sp-info-label">
+                Assigned Admin
+              </div>
+
+              <div class="sp-info-value">
+
+                <% if @support_request.admin_user.present? %>
+
+                  <%= @support_request.admin_user.name.presence ||
+                      @support_request.admin_user.email %>
+
+                <% else %>
+
+                  Not assigned
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           STUDENT REQUIREMENT
+      ================================================== -->
+
+      <div class="sp-card">
+
+        <div class="sp-card-header">
+
+          <h3 class="sp-card-title">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            Student Requirement
+
+          </h3>
+
+        </div>
+
+
+        <div class="sp-card-body">
+
+          <div class="sp-description">
+
+            <%= @support_request.description %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           AI CONTEXT
+      ================================================== -->
+
+      <% if @support_request.ai_context.present? %>
+
+        <div class="sp-card">
+
+          <div class="sp-card-header">
+
+            <h3 class="sp-card-title">
+
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+              AI Context
+
+            </h3>
+
+          </div>
+
+
+          <div class="sp-card-body">
+
+            <div class="sp-description">
+
+              <%= @support_request.ai_context %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+      <!-- =================================================
+           TICKET MANAGEMENT
+      ================================================== -->
+
+     <div class="sp-card">
+
+  <div class="sp-card-header">
+
+    <h3 class="sp-card-title">
+      <i class="fa-solid fa-sliders"></i>
+      Ticket Management
+    </h3>
+
+  </div>
+
+  <div class="sp-card-body">
+
+    <%= form_with(
+          model: @support_request,
+          url: admin_support_request_path(@support_request),
+          method: :patch,
+          local: true
+        ) do |f| %>
+
+      <div class="sp-form-group">
+
+        <label class="sp-form-label">
+          Category
+        </label>
+
+        <%= f.select(
+              :category,
+              Ai::SupportRequest::CATEGORIES.map do |category|
+                [
+                  category.tr("_", " ").titleize,
+                  category
+                ]
+              end,
+              {
+                selected: @support_request.category
+              },
+              class: "sp-form-control"
+            ) %>
+
+      </div>
+
+      <div class="sp-form-group">
+
+        <label class="sp-form-label">
+          Priority
+        </label>
+
+        <%= f.select(
+              :priority,
+              Ai::SupportRequest::PRIORITIES.map do |priority|
+                [
+                  priority.titleize,
+                  priority
+                ]
+              end,
+              {
+                selected: @support_request.priority
+              },
+              class: "sp-form-control"
+            ) %>
+
+      </div>
+
+      <div class="sp-form-group">
+
+        <label class="sp-form-label">
+          Status
+        </label>
+
+        <%= f.select(
+              :status,
+              Ai::SupportRequest::STATUSES.map do |status|
+                [
+                  status.tr("_", " ").titleize,
+                  status
+                ]
+              end,
+              {
+                selected: @support_request.status
+              },
+              class: "sp-form-control"
+            ) %>
+
+      </div>
+
+      <div class="sp-form-group">
+
+        <label class="sp-form-label">
+          Subject
+        </label>
+
+        <%= f.text_field(
+              :subject,
+              class: "sp-form-control",
+              required: true,
+              maxlength: 160
+            ) %>
+
+      </div>
+
+      <div class="sp-form-group">
+
+        <label class="sp-form-label">
+          Student Requirement
+        </label>
+
+        <%= f.text_area(
+              :description,
+              class: "sp-form-control",
+              rows: 6,
+              required: true,
+              maxlength: 10_000
+            ) %>
+
+      </div>
+
+      <%= f.submit(
+            "Update Ticket",
+            class: "sp-update-btn"
+          ) %>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+    </div>
+
+
+    <!-- ===================================================
+         RIGHT SIDE — LIVE CHAT
+    ==================================================== -->
+
+    <div class="sp-card sp-chat-card">
+
+
+      <!-- =================================================
+           CHAT HEADER
+      ================================================== -->
+
+      <div class="sp-chat-header">
+
+        <div class="sp-chat-title">
+
+          <div class="sp-chat-icon">
+
+            <i class="fa-solid fa-comments"></i>
+
+          </div>
+
+
+          <div>
+
+            <div class="sp-chat-name">
+              Live Support Chat
+            </div>
+
+            <div class="sp-chat-status">
+
+              <i
+                class="fa-solid fa-circle"
+                style="font-size: 6px;"
+              ></i>
+
+              Active conversation
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <span
+          class="sp-status"
+          id="chatTicketStatus"
+        >
+          <%= @support_request.status_label %>
+        </span>
+
+      </div>
+
+
+      <!-- =================================================
+           CHAT MESSAGES
+      ================================================== -->
+
+      <div
+        class="sp-chat-messages"
+        id="supportChatMessages"
+      >
+
+        <div class="sp-chat-loading">
+
+          <i class="fa-solid fa-spinner fa-spin"></i>
+
+          Loading conversation...
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           CHAT COMPOSER
+      ================================================== -->
+
+      <div class="sp-chat-composer">
+
+        <form
+          id="supportChatForm"
+          class="sp-chat-form"
+        >
+
+          <textarea
+            id="supportChatInput"
+            class="sp-chat-input"
+            placeholder="Type your reply..."
+            rows="1"
+          ></textarea>
+
+
+          <button
+            type="submit"
+            class="sp-chat-send"
+            aria-label="Send message"
+            title="Send message"
+          >
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+          </button>
+
+        </form>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const page =
+    document.getElementById("aoneSupportPage");
+
+  const themeButton =
+    document.getElementById("spThemeToggle");
+
+
+  if (!page || !themeButton) {
+    return;
+  }
+
+
+  /* =====================================================
+     DAY / NIGHT MODE
+  ====================================================== */
+
+  const savedTheme =
+    localStorage.getItem(
+      "aone-support-theme"
+    );
+
+
+  if (savedTheme === "dark") {
+
+    page.setAttribute(
+      "data-theme",
+      "dark"
+    );
+
+  } else {
+
+    page.setAttribute(
+      "data-theme",
+      "light"
+    );
+
+  }
+
+
+  themeButton.addEventListener(
+    "click",
+    function () {
+
+      const currentTheme =
+        page.getAttribute(
+          "data-theme"
+        );
+
+
+      const nextTheme =
+        currentTheme === "dark"
+          ? "light"
+          : "dark";
+
+
+      page.setAttribute(
+        "data-theme",
+        nextTheme
+      );
+
+
+      localStorage.setItem(
+        "aone-support-theme",
+        nextTheme
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     CHAT ELEMENTS
+  ====================================================== */
+
+  const messagesContainer =
+    document.getElementById(
+      "supportChatMessages"
+    );
+
+  const chatForm =
+    document.getElementById(
+      "supportChatForm"
+    );
+
+  const chatInput =
+    document.getElementById(
+      "supportChatInput"
+    );
+
+  const statusElement =
+    document.getElementById(
+      "chatTicketStatus"
+    );
+
+
+  if (
+    !messagesContainer ||
+    !chatForm ||
+    !chatInput
+  ) {
+    return;
+  }
+
+
+  /* =====================================================
+     CHAT URLS
+  ====================================================== */
+
+  const messagesUrl =
+    "<%= admin_support_request_path(@support_request) %>/messages";
+
+  const sendUrl =
+    "<%= admin_support_request_path(@support_request) %>/messages";
+
+
+  /* =====================================================
+     HTML ESCAPE
+  ====================================================== */
+
+  function escapeHtml(value) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent =
+      value || "";
+
+    return div.innerHTML;
+
+  }
+
+
+  /* =====================================================
+     RENDER MESSAGES
+  ====================================================== */
+
+  function renderMessages(messages) {
+
+    if (
+      !messages ||
+      messages.length === 0
+    ) {
+
+      messagesContainer.innerHTML = `
+        <div class="sp-chat-empty">
+
+          <i class="fa-regular fa-comments"></i>
+
+          <strong>
+            No messages yet
+          </strong>
+
+          <span>
+            Start the conversation with the student.
+          </span>
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    messagesContainer.innerHTML =
+      messages.map(function (message) {
+
+        const isAdmin =
+          message.sender_type === "admin";
+
+
+        const senderName =
+          message.sender?.name ||
+          message.sender?.email ||
+          (
+            isAdmin
+              ? "Admin"
+              : "Student"
+          );
+
+
+        const createdAt =
+          message.created_at
+            ? new Date(
+                message.created_at
+              ).toLocaleString()
+            : "";
+
+
+        return `
+          <div
+            class="sp-message-row ${
+              isAdmin
+                ? "admin"
+                : "student"
+            }"
+          >
+
+            <div class="sp-message">
+
+              <div class="sp-message-sender">
+                ${escapeHtml(senderName)}
+              </div>
+
+              <div>
+                ${escapeHtml(message.content)}
+              </div>
+
+              <div class="sp-message-time">
+                ${escapeHtml(createdAt)}
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+
+
+    messagesContainer.scrollTop =
+      messagesContainer.scrollHeight;
+
+  }
+
+
+  /* =====================================================
+     LOAD MESSAGES
+  ====================================================== */
+
+  async function loadMessages() {
+
+    try {
+
+      const response =
+        await fetch(
+          messagesUrl,
+          {
+            headers: {
+              "Accept":
+                "application/json"
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Unable to load messages"
+        );
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      renderMessages(
+        data.messages || []
+      );
+
+
+      /* Update status from server */
+
+      if (
+        data.support_request &&
+        statusElement
+      ) {
+
+        statusElement.textContent =
+          data.support_request.status_label ||
+          data.support_request.status ||
+          "";
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "Support chat error:",
+        error
+      );
+
+
+      messagesContainer.innerHTML = `
+        <div class="sp-chat-empty">
+
+          <i class="fa-solid fa-triangle-exclamation"></i>
+
+          <strong>
+            Unable to load conversation
+          </strong>
+
+          <span>
+            Please refresh the page and try again.
+          </span>
+
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     SEND MESSAGE
+  ====================================================== */
+
+  chatForm.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+
+      const content =
+        chatInput.value.trim();
+
+
+      if (!content) {
+        return;
+      }
+
+
+      const sendButton =
+        chatForm.querySelector(
+          ".sp-chat-send"
+        );
+
+
+      if (sendButton) {
+        sendButton.disabled = true;
+      }
+
+
+      try {
+
+        const csrfToken =
+          document.querySelector(
+            'meta[name="csrf-token"]'
+          )?.content;
+
+
+        const response =
+          await fetch(
+            sendUrl,
+            {
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+                "Accept":
+                  "application/json",
+
+                "X-CSRF-Token":
+                  csrfToken || ""
+
+              },
+
+              body: JSON.stringify({
+                content: content
+              })
+
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "Unable to send message"
+          );
+
+        }
+
+
+        chatInput.value = "";
+
+
+        await loadMessages();
+
+
+      } catch (error) {
+
+        console.error(
+          "Send message error:",
+          error
+        );
+
+
+        alert(
+          "Unable to send message. Please try again."
+        );
+
+
+      } finally {
+
+        if (sendButton) {
+          sendButton.disabled = false;
+        }
+
+        chatInput.focus();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     ENTER TO SEND
+     SHIFT + ENTER = NEW LINE
+  ====================================================== */
+
+  chatInput.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        chatForm.requestSubmit();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     INITIAL LOAD
+  ====================================================== */
+
+  loadMessages();
+
+
+  /* =====================================================
+     AUTO REFRESH
+  ====================================================== */
+
+  setInterval(
+    loadMessages,
+    5000
+  );
+
+});
+
+</script>

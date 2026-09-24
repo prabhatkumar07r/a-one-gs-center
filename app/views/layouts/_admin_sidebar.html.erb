@@ -488,9 +488,9 @@
   id="adminSidebar">
 
 
-  <!-- =======================================================
-       SIDEBAR HEADER
-  ======================================================== -->
+  <!--------- SIDEBAR HEADER------------>
+       
+
 
   <div class="admin-sidebar-header">
 
@@ -501,16 +501,14 @@
   </div>
 
 
-  <!-- =======================================================
-       NAVIGATION
-  ======================================================== -->
+  <!-------NAVIGATION------->
+       
 
   <ul class="nav flex-column">
 
 
-    <!-- =====================================================
-         DASHBOARD
-    ====================================================== -->
+    <!-------DASHBOARD------>
+         
 
     <li class="nav-item">
 
@@ -526,9 +524,7 @@
     </li>
 
 
-    <!-- =====================================================
-         STUDENT MANAGEMENT
-    ====================================================== -->
+      <!---------STUDENT MANAGEMENT-------->
 
     <li class="nav-item">
 
@@ -589,9 +585,8 @@
 
 
 
-          <!-- =====================================================
-     PAYMENT MANAGEMENT
-====================================================== -->
+  
+  <!---------   PAYMENT MANAGEMENT-------->
 
 <li class="nav-item">
 
@@ -604,6 +599,37 @@
 
   <% end %>
 
+</li>
+
+
+<li class="nav-item">
+  <%= link_to admin_support_requests_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/support_requests')}" do %>
+
+    <i class="bi bi-headset"></i>
+
+    <span>AI Support Requests</span>
+
+    <% if defined?(Ai::SupportRequest) &&
+          Ai::SupportRequest.table_exists? %>
+
+      <% open_support_count =
+           Ai::SupportRequest.open_items.count %>
+
+      <% if open_support_count.positive? %>
+
+        <span
+          class="badge rounded-pill bg-danger ms-auto"
+          style="font-size: 10px;"
+        >
+          <%= open_support_count > 99 ? "99+" : open_support_count %>
+        </span>
+
+      <% end %>
+
+    <% end %>
+
+  <% end %>
 </li>
 
 

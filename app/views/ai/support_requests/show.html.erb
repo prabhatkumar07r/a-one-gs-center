@@ -1,0 +1,1535 @@
+
+<style nonce="<%= content_security_policy_nonce %>">
+  .support-workspace {
+    --support-bg: #f6f8ff;
+    --support-surface: #ffffff;
+    --support-surface-soft: #f8f9ff;
+    --support-border: #e7e9f2;
+    --support-text: #17213c;
+    --support-muted: #7b849b;
+    --support-primary: #6246ea;
+    --support-primary-dark: #5135d7;
+    --support-primary-soft: #efecff;
+    --support-green: #12a76a;
+    --support-green-soft: #e4f8ef;
+    --support-shadow: 0 18px 55px rgba(31, 35, 68, 0.08);
+
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    box-sizing: border-box;
+    padding: 96px 20px 18px;
+    overflow: hidden;
+
+    background:
+      radial-gradient(
+        circle at 5% 0%,
+        rgba(98, 70, 234, 0.09),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 95% 90%,
+        rgba(127, 87, 255, 0.07),
+        transparent 28%
+      ),
+      var(--support-bg);
+
+    color: var(--support-text);
+
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .support-workspace.dark-mode {
+    --support-bg: #0b1020;
+    --support-surface: #11182b;
+    --support-surface-soft: #151d32;
+    --support-border: #27314b;
+    --support-text: #edf1ff;
+    --support-muted: #8e9ab5;
+    --support-primary: #765cf2;
+    --support-primary-dark: #6749e6;
+    --support-primary-soft: rgba(118, 92, 242, 0.14);
+    --support-green: #2bd58e;
+    --support-green-soft: rgba(43, 213, 142, 0.12);
+    --support-shadow: 0 18px 55px rgba(0, 0, 0, 0.3);
+  }
+
+  .support-shell {
+    width: min(100%, 1280px);
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .support-page-top {
+    flex: 0 0 auto;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 12px;
+  }
+
+  .support-page-heading {
+    min-width: 0;
+  }
+
+  .support-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 5px;
+    color: var(--support-primary);
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 800;
+    transition: 0.2s ease;
+  }
+
+  .support-back:hover {
+    color: var(--support-primary-dark);
+    transform: translateX(-2px);
+  }
+
+  .support-page-title {
+    margin: 0;
+    color: var(--support-text);
+    font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .support-page-subtitle {
+    margin: 4px 0 0;
+    color: var(--support-muted);
+    font-size: 0.72rem;
+  }
+
+  .support-page-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .support-reference-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--support-border);
+    border-radius: 11px;
+    color: var(--support-primary);
+    background: var(--support-surface);
+    box-shadow: 0 6px 18px rgba(35, 38, 70, 0.05);
+    font-size: 0.68rem;
+    font-weight: 900;
+  }
+
+  .support-theme-toggle {
+    width: 39px;
+    height: 39px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--support-border);
+    border-radius: 11px;
+    color: var(--support-text);
+    background: var(--support-surface);
+    box-shadow: 0 6px 18px rgba(35, 38, 70, 0.05);
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .support-theme-toggle:hover {
+    color: var(--support-primary);
+    border-color: rgba(98, 70, 234, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .support-layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 285px minmax(0, 1fr);
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .support-panel {
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--support-border);
+    border-radius: 18px;
+    background: var(--support-surface);
+    box-shadow: var(--support-shadow);
+  }
+
+  .support-sidebar {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .support-case-card {
+    flex: 0 0 auto;
+    padding: 18px;
+    border-bottom: 1px solid var(--support-border);
+    background:
+      linear-gradient(
+        145deg,
+        var(--support-primary-soft),
+        transparent 75%
+      );
+  }
+
+  .support-case-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    color: #fff;
+    background:
+      linear-gradient(
+        135deg,
+        var(--support-primary),
+        #8d72ff
+      );
+    box-shadow: 0 8px 22px rgba(98, 70, 234, 0.25);
+    font-size: 1rem;
+  }
+
+  .support-case-label {
+    margin: 0 0 4px;
+    color: var(--support-muted);
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .support-case-number {
+    margin: 0;
+    color: var(--support-primary);
+    font-size: 0.82rem;
+    font-weight: 900;
+  }
+
+  .support-case-subject {
+    margin: 8px 0 0;
+    color: var(--support-text);
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .support-sidebar-section {
+    flex: 0 0 auto;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--support-border);
+  }
+
+  .support-sidebar-title {
+    margin: 0 0 12px;
+    color: var(--support-text);
+    font-size: 0.75rem;
+    font-weight: 900;
+  }
+
+  .support-detail-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .support-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .support-detail-key {
+    color: var(--support-muted);
+    font-size: 0.67rem;
+    font-weight: 700;
+  }
+
+  .support-detail-value {
+    color: var(--support-text);
+    font-size: 0.67rem;
+    font-weight: 900;
+    text-align: right;
+  }
+
+  .support-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    color: var(--support-green);
+    background: var(--support-green-soft);
+    font-size: 0.62rem;
+    font-weight: 900;
+  }
+
+  .support-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .support-reference-card {
+    margin: auto 16px 16px;
+    padding: 14px;
+    border: 1px solid rgba(98, 70, 234, 0.16);
+    border-radius: 14px;
+    background: var(--support-primary-soft);
+    text-align: center;
+  }
+
+  .support-reference-card-icon {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 8px;
+    border-radius: 10px;
+    color: var(--support-primary);
+    background: var(--support-surface);
+  }
+
+  .support-reference-card-title {
+    margin: 0;
+    color: var(--support-muted);
+    font-size: 0.63rem;
+    font-weight: 800;
+  }
+
+  .support-reference-card-number {
+    margin: 5px 0;
+    color: var(--support-primary);
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .support-reference-card-text {
+    margin: 0;
+    color: var(--support-muted);
+    font-size: 0.59rem;
+    line-height: 1.4;
+  }
+
+  .support-chat-panel {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .support-chat-header {
+    flex: 0 0 auto;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--support-border);
+    background: var(--support-surface);
+  }
+
+  .support-chat-person {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+  }
+
+  .support-chat-avatar {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    color: #fff;
+    background:
+      linear-gradient(
+        135deg,
+        var(--support-primary),
+        #8b6eff
+      );
+    box-shadow: 0 6px 16px rgba(98, 70, 234, 0.2);
+    font-size: 0.95rem;
+  }
+
+  .support-chat-title {
+    margin: 0;
+    color: var(--support-text);
+    font-size: 0.95rem;
+    font-weight: 900;
+  }
+
+  .support-chat-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 3px 0 0;
+    color: var(--support-muted);
+    font-size: 0.64rem;
+  }
+
+  .support-online-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--support-green);
+  }
+
+  .support-chat-status {
+    flex-shrink: 0;
+  }
+
+  .support-notice {
+    display: none;
+    flex: 0 0 auto;
+    margin: 8px 12px 0;
+    padding: 8px 11px;
+    border-radius: 9px;
+    font-size: 0.69rem;
+    font-weight: 700;
+  }
+
+  .support-notice.show {
+    display: block;
+  }
+
+  .support-notice.error {
+    color: #842029;
+    background: #f8d7da;
+  }
+
+  .support-notice.success {
+    color: #0f5132;
+    background: #d1e7dd;
+  }
+
+  .support-workspace.dark-mode .support-notice.error {
+    color: #ffb6bd;
+    background: rgba(220, 53, 69, 0.14);
+  }
+
+  .support-workspace.dark-mode .support-notice.success {
+    color: #8ff0bd;
+    background: rgba(25, 135, 84, 0.14);
+  }
+
+  .support-chat {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    overflow-y: auto;
+    padding: 20px 19px;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(98, 70, 234, 0.055),
+        transparent 30%
+      ),
+      var(--support-surface-soft);
+    scroll-behavior: smooth;
+  }
+
+  .support-chat::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .support-chat::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .support-chat::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #cfc9df;
+  }
+
+  .support-workspace.dark-mode .support-chat::-webkit-scrollbar-thumb {
+    background: #37415a;
+  }
+
+  .support-empty {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 7px;
+    color: var(--support-muted);
+    text-align: center;
+    padding: 30px;
+  }
+
+  .support-empty-icon {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 5px;
+    border-radius: 15px;
+    color: var(--support-primary);
+    background: var(--support-primary-soft);
+    font-size: 1.05rem;
+  }
+
+  .support-message-row {
+    display: flex;
+    margin-bottom: 17px;
+  }
+
+  .support-message-row.student {
+    justify-content: flex-end;
+  }
+
+  .support-message-row.admin {
+    justify-content: flex-start;
+  }
+
+  .support-message {
+    max-width: min(68%, 570px);
+  }
+
+  .support-message-name {
+    margin: 0 0 5px;
+    color: var(--support-muted);
+    font-size: 0.62rem;
+    font-weight: 900;
+  }
+
+  .support-message-row.student .support-message-name {
+    text-align: right;
+  }
+
+  .support-message-bubble {
+    padding: 11px 14px;
+    border-radius: 15px;
+    font-size: 0.81rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .support-message-row.student .support-message-bubble {
+    color: #fff;
+    background:
+      linear-gradient(
+        135deg,
+        var(--support-primary),
+        #934fff
+      );
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 8px 20px rgba(98, 70, 234, 0.2);
+  }
+
+  .support-message-row.admin .support-message-bubble {
+    color: var(--support-text);
+    background: var(--support-surface);
+    border: 1px solid var(--support-border);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 5px 15px rgba(40, 45, 75, 0.045);
+  }
+
+  .support-message-time {
+    margin-top: 5px;
+    color: var(--support-muted);
+    font-size: 0.57rem;
+  }
+
+  .support-message-row.student .support-message-time {
+    text-align: right;
+  }
+
+  .support-composer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 13px 7px;
+    border-top: 1px solid var(--support-border);
+    background: var(--support-surface);
+  }
+
+  .support-input {
+    flex: 1;
+    min-height: 44px;
+    max-height: 110px;
+    resize: none;
+    padding: 10px 12px;
+    border: 1px solid var(--support-border);
+    border-radius: 11px;
+    outline: none;
+    color: var(--support-text);
+    background: var(--support-surface-soft);
+    font: inherit;
+    font-size: 0.79rem;
+    line-height: 1.5;
+    transition: 0.2s ease;
+  }
+
+  .support-input:focus {
+    border-color: var(--support-primary);
+    background: var(--support-surface);
+    box-shadow: 0 0 0 3px rgba(98, 70, 234, 0.08);
+  }
+
+  .support-input::placeholder {
+    color: var(--support-muted);
+  }
+
+  .support-send {
+    min-width: 86px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 0;
+    border-radius: 11px;
+    color: #fff;
+    background:
+      linear-gradient(
+        135deg,
+        var(--support-primary),
+        #8d68ff
+      );
+    box-shadow: 0 7px 18px rgba(98, 70, 234, 0.18);
+    font-size: 0.75rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .support-send:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 23px rgba(98, 70, 234, 0.25);
+  }
+
+  .support-send:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .support-composer-hint {
+    flex: 0 0 auto;
+    padding: 0 14px 8px;
+    color: var(--support-muted);
+    background: var(--support-surface);
+    font-size: 0.56rem;
+  }
+
+  @media (max-width: 1050px) {
+    .support-workspace {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    .support-layout {
+      grid-template-columns: 255px minmax(0, 1fr);
+    }
+
+    .support-message {
+      max-width: 76%;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .support-workspace {
+      height: auto;
+      min-height: 100dvh;
+      overflow: visible;
+      padding-top: 94px;
+      padding-bottom: 20px;
+    }
+
+    .support-shell {
+      height: auto;
+    }
+
+    .support-page-top {
+      min-height: auto;
+      margin-bottom: 12px;
+    }
+
+    .support-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+
+    .support-sidebar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .support-case-card {
+      border-bottom: 0;
+      border-right: 1px solid var(--support-border);
+    }
+
+    .support-sidebar-section {
+      border-bottom: 0;
+    }
+
+    .support-reference-card {
+      display: none;
+    }
+
+    .support-chat-panel {
+      height: 620px;
+      min-height: 620px;
+    }
+
+    .support-chat {
+      height: auto;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .support-workspace {
+      padding: 92px 9px 18px;
+    }
+
+    .support-page-top {
+      align-items: flex-start;
+    }
+
+    .support-reference-mini {
+      display: none;
+    }
+
+    .support-page-title {
+      font-size: 1.25rem;
+    }
+
+    .support-page-subtitle {
+      font-size: 0.68rem;
+    }
+
+    .support-sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    .support-case-card {
+      border-right: 0;
+      border-bottom: 1px solid var(--support-border);
+    }
+
+    .support-sidebar-section {
+      padding: 14px 16px;
+    }
+
+    .support-chat-panel {
+      height: 600px;
+      min-height: 600px;
+    }
+
+    .support-chat-header {
+      min-height: 64px;
+      padding: 12px 13px;
+    }
+
+    .support-chat-avatar {
+      width: 38px;
+      height: 38px;
+    }
+
+    .support-chat-title {
+      font-size: 0.86rem;
+    }
+
+    .support-chat-subtitle {
+      font-size: 0.6rem;
+    }
+
+    .support-chat {
+      padding: 16px 11px;
+    }
+
+    .support-message {
+      max-width: 88%;
+    }
+
+    .support-message-bubble {
+      font-size: 0.77rem;
+      padding: 10px 12px;
+    }
+
+    .support-composer {
+      padding: 9px;
+    }
+
+    .support-send {
+      min-width: 74px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .support-workspace {
+      padding-left: 7px;
+      padding-right: 7px;
+    }
+
+    .support-page-title {
+      font-size: 1.15rem;
+    }
+
+    .support-chat-panel {
+      height: 570px;
+      min-height: 570px;
+    }
+
+    .support-message {
+      max-width: 92%;
+    }
+  }
+</style>
+
+<div
+  class="support-workspace"
+  id="support-workspace"
+  data-support-theme="light"
+>
+  <div class="support-shell">
+
+    <div class="support-page-top">
+
+      <div class="support-page-heading">
+
+        <%= link_to ai_support_requests_path,
+            class: "support-back" do %>
+          <i class="bi bi-arrow-left"></i>
+          My Support Requests
+        <% end %>
+
+        <h1 class="support-page-title">
+          Support Center
+        </h1>
+
+        <p class="support-page-subtitle">
+          Continue your conversation with the A ONE GS CENTER support team.
+        </p>
+
+      </div>
+
+      <div class="support-page-actions">
+
+        <div class="support-reference-mini">
+          <i class="bi bi-ticket-perforated-fill"></i>
+          AONE-SUP-<%= "%06d" % @support_request.id %>
+        </div>
+
+        <button
+          type="button"
+          class="support-theme-toggle"
+          id="support-theme-toggle"
+          aria-label="Toggle day and night mode"
+          title="Toggle day and night mode"
+        >
+          <i
+            id="support-theme-icon"
+            class="bi bi-moon-stars-fill"
+          ></i>
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="support-layout">
+
+      <aside class="support-panel support-sidebar">
+
+        <div class="support-case-card">
+
+          <div class="support-case-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+
+          <p class="support-case-label">
+            Case Reference
+          </p>
+
+          <p class="support-case-number">
+            AONE-SUP-<%= "%06d" % @support_request.id %>
+          </p>
+
+          <p class="support-case-subject">
+            <%= @support_request.subject %>
+          </p>
+
+        </div>
+
+        <div class="support-sidebar-section">
+
+          <h2 class="support-sidebar-title">
+            Case Information
+          </h2>
+
+          <div class="support-detail-list">
+
+            <div class="support-detail-row">
+              <span class="support-detail-key">
+                Category
+              </span>
+
+              <span class="support-detail-value">
+                <%= @support_request.category_label %>
+              </span>
+            </div>
+
+            <div class="support-detail-row">
+              <span class="support-detail-key">
+                Priority
+              </span>
+
+              <span class="support-detail-value">
+                <%= @support_request.priority_label %>
+              </span>
+            </div>
+
+            <div class="support-detail-row">
+              <span class="support-detail-key">
+                Status
+              </span>
+
+              <span
+                class="support-detail-value"
+                id="support-sidebar-status"
+              >
+                <span class="support-status-pill">
+                  <span class="support-status-dot"></span>
+                  <%= @support_request.status_label %>
+                </span>
+              </span>
+            </div>
+
+            <div class="support-detail-row">
+              <span class="support-detail-key">
+                Created
+              </span>
+
+              <span class="support-detail-value">
+                <%= time_ago_in_words(@support_request.created_at) %> ago
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="support-reference-card">
+
+          <div class="support-reference-card-icon">
+            <i class="bi bi-ticket-detailed-fill"></i>
+          </div>
+
+          <p class="support-reference-card-title">
+            Support Reference
+          </p>
+
+          <p class="support-reference-card-number">
+            AONE-SUP-<%= "%06d" % @support_request.id %>
+          </p>
+
+          <p class="support-reference-card-text">
+            Keep this reference number for future communication with A ONE GS CENTER.
+          </p>
+
+        </div>
+
+      </aside>
+
+      <section class="support-panel support-chat-panel">
+
+        <div class="support-chat-header">
+
+          <div class="support-chat-person">
+
+            <div class="support-chat-avatar">
+              <i class="bi bi-headset"></i>
+            </div>
+
+            <div>
+              <h2 class="support-chat-title">
+                A ONE GS CENTER Support
+              </h2>
+
+              <p class="support-chat-subtitle">
+                <span class="support-online-dot"></span>
+                Student Support Team
+              </p>
+            </div>
+
+          </div>
+
+          <div class="support-chat-status">
+
+            <span
+              class="support-status-pill"
+              id="support-status"
+            >
+              <span class="support-status-dot"></span>
+
+              <span id="support-status-text">
+                <%= @support_request.status_label %>
+              </span>
+            </span>
+
+          </div>
+
+        </div>
+
+        <div
+          id="support-notice"
+          class="support-notice"
+          role="alert"
+        ></div>
+
+        <div
+          id="support-chat"
+          class="support-chat"
+          aria-live="polite"
+        >
+          <div class="support-empty">
+
+            <div class="support-empty-icon">
+              <i class="bi bi-chat-dots-fill"></i>
+            </div>
+
+            <strong>
+              Loading conversation...
+            </strong>
+
+            <span>
+              Please wait while your support messages load.
+            </span>
+
+          </div>
+        </div>
+
+        <form
+          id="support-message-form"
+          class="support-composer"
+        >
+
+          <textarea
+            id="support-message-input"
+            class="support-input"
+            placeholder="Type your message to the support team..."
+            maxlength="10000"
+            rows="1"
+            required
+          ></textarea>
+
+          <button
+            id="support-send-button"
+            class="support-send"
+            type="submit"
+          >
+            <i class="bi bi-send-fill"></i>
+            Send
+          </button>
+
+        </form>
+
+        <div class="support-composer-hint">
+          Enter to send &nbsp;•&nbsp; Shift + Enter for a new line
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    const supportRequestId =
+      <%= @support_request.id %>;
+
+    const workspace =
+      document.getElementById("support-workspace");
+
+    const themeToggle =
+      document.getElementById("support-theme-toggle");
+
+    const themeIcon =
+      document.getElementById("support-theme-icon");
+
+    const chat =
+      document.getElementById("support-chat");
+
+    const form =
+      document.getElementById("support-message-form");
+
+    const input =
+      document.getElementById("support-message-input");
+
+    const sendButton =
+      document.getElementById("support-send-button");
+
+    const notice =
+      document.getElementById("support-notice");
+
+    const statusText =
+      document.getElementById("support-status-text");
+
+    const sidebarStatus =
+      document.getElementById("support-sidebar-status");
+
+    const messagesUrl =
+      `/ai/support_requests/${supportRequestId}/messages`;
+
+    let pollingTimer = null;
+    let lastMessageSignature = "";
+    let isPolling = false;
+
+    function csrfToken() {
+      return document.querySelector(
+        'meta[name="csrf-token"]'
+      )?.content || "";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatTime(value) {
+      if (!value) {
+        return "";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "";
+      }
+
+      return date.toLocaleString(
+        undefined,
+        {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
+    }
+
+    function showNotice(
+      message,
+      type = "error"
+    ) {
+      notice.textContent = message;
+
+      notice.className =
+        `support-notice show ${type}`;
+    }
+
+    function hideNotice() {
+      notice.textContent = "";
+
+      notice.className =
+        "support-notice";
+    }
+
+    function updateStatus(
+      supportRequest
+    ) {
+      if (!supportRequest) {
+        return;
+      }
+
+      const label =
+        supportRequest.status_label ||
+        supportRequest.status ||
+        "Open";
+
+      statusText.textContent =
+        label;
+
+      if (sidebarStatus) {
+        sidebarStatus.innerHTML = `
+          <span class="support-status-pill">
+            <span class="support-status-dot"></span>
+            ${escapeHtml(label)}
+          </span>
+        `;
+      }
+    }
+
+    function renderMessages(
+      messages
+    ) {
+      if (
+        !Array.isArray(messages) ||
+        messages.length === 0
+      ) {
+        chat.innerHTML = `
+          <div class="support-empty">
+            <div class="support-empty-icon">
+              <i class="bi bi-chat-dots-fill"></i>
+            </div>
+
+            <strong>
+              No messages yet
+            </strong>
+
+            <span>
+              Send a message to the A ONE GS CENTER support team.
+            </span>
+          </div>
+        `;
+
+        return;
+      }
+
+      const wasNearBottom =
+        chat.scrollHeight -
+        chat.scrollTop -
+        chat.clientHeight <
+        150;
+
+      chat.innerHTML =
+        messages
+          .map(message => {
+            const isStudent =
+              message.sender_type === "student";
+
+            const rowClass =
+              isStudent
+                ? "student"
+                : "admin";
+
+            const name =
+              isStudent
+                ? "You"
+                : "A ONE GS CENTER";
+
+            return `
+              <div class="support-message-row ${rowClass}">
+                <div class="support-message">
+
+                  <div class="support-message-name">
+                    ${escapeHtml(name)}
+                  </div>
+
+                  <div class="support-message-bubble">
+                    ${escapeHtml(message.content)}
+                  </div>
+
+                  <div class="support-message-time">
+                    ${escapeHtml(
+                      formatTime(message.created_at)
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+
+      if (
+        wasNearBottom ||
+        lastMessageSignature === ""
+      ) {
+        chat.scrollTop =
+          chat.scrollHeight;
+      }
+    }
+
+    async function loadMessages() {
+      if (isPolling) {
+        return;
+      }
+
+      isPolling = true;
+
+      try {
+        const response =
+          await fetch(
+            messagesUrl,
+            {
+              headers: {
+                Accept:
+                  "application/json"
+              },
+              credentials:
+                "same-origin"
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "Unable to load messages."
+          );
+        }
+
+        updateStatus(
+          data.support_request
+        );
+
+        const messages =
+          data.messages || [];
+
+        const signature =
+          messages
+            .map(
+              message =>
+                `${message.id}:${message.read_at || ""}`
+            )
+            .join("|");
+
+        if (
+          signature !==
+          lastMessageSignature
+        ) {
+          renderMessages(
+            messages
+          );
+
+          lastMessageSignature =
+            signature;
+        }
+
+      } catch (error) {
+        console.error(
+          "[A ONE SUPPORT]",
+          error
+        );
+      } finally {
+        isPolling = false;
+      }
+    }
+
+    async function sendMessage(
+      content
+    ) {
+      const response =
+        await fetch(
+          messagesUrl,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+              "Accept":
+                "application/json",
+              "X-CSRF-Token":
+                csrfToken()
+            },
+            credentials:
+              "same-origin",
+            body: JSON.stringify({
+              content: content
+            })
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+          "Unable to send your message."
+        );
+      }
+
+      return data;
+    }
+
+    form.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        const content =
+          input.value.trim();
+
+        if (!content) {
+          return;
+        }
+
+        sendButton.disabled =
+          true;
+
+        input.disabled =
+          true;
+
+        hideNotice();
+
+        try {
+          const data =
+            await sendMessage(
+              content
+            );
+
+          input.value = "";
+
+          updateStatus(
+            data.support_request
+          );
+
+          lastMessageSignature =
+            "";
+
+          await loadMessages();
+
+          showNotice(
+            "Your message has been sent to the support team.",
+            "success"
+          );
+
+        } catch (error) {
+          showNotice(
+            error.message ||
+            "Unable to send your message."
+          );
+
+        } finally {
+          sendButton.disabled =
+            false;
+
+          input.disabled =
+            false;
+
+          input.focus();
+        }
+      }
+    );
+
+    input.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Enter" &&
+          !event.shiftKey
+        ) {
+          event.preventDefault();
+
+          form.requestSubmit();
+        }
+      }
+    );
+
+    function applyTheme(
+      theme
+    ) {
+      const dark =
+        theme === "dark";
+
+      workspace.classList.toggle(
+        "dark-mode",
+        dark
+      );
+
+      workspace.dataset.supportTheme =
+        dark
+          ? "dark"
+          : "light";
+
+      themeIcon.className =
+        dark
+          ? "bi bi-sun-fill"
+          : "bi bi-moon-stars-fill";
+
+      themeToggle.setAttribute(
+        "aria-label",
+        dark
+          ? "Switch to day mode"
+          : "Switch to night mode"
+      );
+    }
+
+    const savedTheme =
+      localStorage.getItem(
+        "aone-support-theme"
+      );
+
+    applyTheme(
+      savedTheme === "dark"
+        ? "dark"
+        : "light"
+    );
+
+    themeToggle.addEventListener(
+      "click",
+      () => {
+        const nextTheme =
+          workspace.classList.contains(
+            "dark-mode"
+          )
+            ? "light"
+            : "dark";
+
+        applyTheme(
+          nextTheme
+        );
+
+        localStorage.setItem(
+          "aone-support-theme",
+          nextTheme
+        );
+      }
+    );
+
+    async function pollMessages() {
+      await loadMessages();
+
+      pollingTimer =
+        window.setTimeout(
+          pollMessages,
+          4000
+        );
+    }
+
+    pollMessages();
+
+    window.addEventListener(
+      "beforeunload",
+      () => {
+        if (pollingTimer) {
+          window.clearTimeout(
+            pollingTimer
+          );
+
+          pollingTimer = null;
+        }
+      }
+    );
+  })();
+</script>

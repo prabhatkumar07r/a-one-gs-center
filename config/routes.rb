@@ -130,19 +130,38 @@ Rails.application.routes.draw do
       to: "smtp_test#index"
 
 
-  # ==================================================
-  # ADMIN
-  # ==================================================
 
-  namespace :admin do
-    resources :coupons
-    resources :payments, only: [:index,:show]
-    resources :testimonials do
-  member do
-    patch :toggle_status
+
+namespace :ai do
+  resources :conversations, only: [:index, :show, :create, :destroy] do
+    resources :messages, only: [:create]
+  end
+
+  resources :support_requests, only: [:index, :show, :create] do
+    resources :messages,
+              controller: "support_messages",
+              only: [:index, :create]
   end
 end
 
+namespace :admin do
+  resources :support_requests,
+            only: [:index, :show, :update] do
+    resources :messages,
+              controller: "support_messages",
+              only: [:index, :create]
+  end
+
+  resources :coupons
+
+  resources :payments,
+            only: [:index, :show]
+
+  resources :testimonials do
+    member do
+      patch :toggle_status
+    end
+  end
     # ==================================================
     # E-BOOK PAYMENTS
     # ==================================================
