@@ -2,74 +2,53 @@ class SampleController < ApplicationController
 
   def homepage
 
-    # =========================================================
-    # EVENTS
-    # Latest 6 events + preload photos
-    # =========================================================
     @events = Event
-      .with_attached_photo
+      .preload(photo_attachment: :blob)
       .order(created_at: :desc)
       .limit(6)
 
-
-    # =========================================================
-    # NOTIFICATIONS
-    # =========================================================
     @notifications = Notification
       .where(status: "Active")
       .order(created_at: :desc)
+      .limit(10)
 
-
-    # =========================================================
-    # COURSES
-    # Active courses + preload course images
-    # =========================================================
     @courses = Course
       .where(status: "Active")
-      .includes(image_attachment: :blob)
+      .preload(image_attachment: :blob)
+      .order(created_at: :desc)
+      .limit(8)
 
-
-    # =========================================================
-    # TEACHERS
-    # Active teachers + preload teacher photos
-    # =========================================================
     @teachers = Teacher
       .where(status: "Active")
-      .includes(photo_attachment: :blob)
+      .preload(photo_attachment: :blob)
+      .order(created_at: :desc)
+      .limit(6)
 
-
-    # =========================================================
-    # GALLERIES
-    # Active galleries + preload all gallery photos
-    # =========================================================
     @galleries = Gallery
-     .where(status: "Active")
-     .includes(photos_attachments: :blob)
-     .order(created_at: :desc)
+      .where(status: "Active")
+      .preload(photos_attachments: :blob)
+      .order(created_at: :desc)
+      .limit(8)
 
-
-    # =========================================================
-    # ACHIEVEMENTS
-    # Active achievements + preload photo & video
-    # =========================================================
     @achievements = Achievement
-       .active
-       .includes(
-        photo_attachment: :blob,
-        video_attachment: :blob
-        )
+      .active
+      .preload(
+        { photo_attachment: :blob },
+        { video_attachment: :blob }
+      )
+      .order(created_at: :desc)
+      .limit(6)
 
-
-
-
-  @testimonials =Testimonial
-    .active
-    .with_attached_student_photo
-    .with_attached_video
-    .ordered
+    @testimonials = Testimonial
+      .active
+      .preload(
+        { student_photo_attachment: :blob },
+        { video_attachment: :blob }
+      )
+      .ordered
+      .limit(6)
 
   end
-
 
   def debug_env
     render plain: <<~TEXT
@@ -79,7 +58,6 @@ class SampleController < ApplicationController
     TEXT
   end
 
-
   def cloudinary_check
     render plain: {
       service: Rails.application.config.active_storage.service,
@@ -88,7 +66,6 @@ class SampleController < ApplicationController
       api_secret_present: ENV["CLOUDINARY_API_SECRET"].present?
     }.inspect
   end
-
 
   def blob_check
     teacher = Teacher.first

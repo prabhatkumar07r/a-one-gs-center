@@ -1,64 +1,127 @@
 <style nonce="<%= content_security_policy_nonce %>">
 
-  /* =========================================================
-   ADMIN TEST SERIES — QUESTION CREATE / EDIT FORM
-   ========================================================= */
+.admin-ts-form-page {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  padding: 24px;
+}
+
+.admin-ts-form-shell {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.admin-ts-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.admin-ts-form-breadcrumb {
+  margin-bottom: 7px;
+  color: #7b8194;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.admin-ts-form-breadcrumb a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.admin-ts-form-breadcrumb a:hover {
+  color: #4f46e5;
+}
+
+.admin-ts-form-title {
+  margin: 0;
+  color: #202033;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.admin-ts-form-subtitle {
+  margin: 6px 0 0;
+  color: #7b8194;
+  font-size: 12px;
+}
+
+.admin-ts-form-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-ts-form-back,
+.admin-ts-form-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.admin-ts-form-back {
+  padding: 8px 13px;
+  color: #4b5563 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  text-decoration: none !important;
+}
+
+.admin-ts-form-back:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+}
+
+.admin-ts-form-theme {
+  width: 38px;
+  min-width: 38px;
+  padding: 0;
+  color: #5b21b6 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  cursor: pointer;
+}
+
+.admin-ts-form-theme:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+}
+
+.admin-ts-form-card {
+  width: 100%;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e3e6ee;
+  border-radius: 15px;
+  box-shadow: 0 7px 25px rgba(25, 25, 50, .045);
+}
 
 .admin-ts-form {
   width: 100%;
-  max-width: 1000px;
 }
-
-/* =========================================================
-   ERROR BOX
-   ========================================================= */
-
-.admin-ts-errors {
-  margin-bottom: 22px;
-  padding: 15px 18px;
-
-  background: #fff7f7;
-  border: 1px solid #fecaca;
-  border-left: 4px solid #dc2626;
-  border-radius: 10px;
-
-  color: #991b1b;
-}
-
-.admin-ts-errors strong {
-  display: block;
-  margin-bottom: 8px;
-
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.admin-ts-errors ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.admin-ts-errors li {
-  margin-bottom: 3px;
-  font-size: 13px;
-}
-
-/* =========================================================
-   MAIN FORM GRID
-   ========================================================= */
 
 .admin-ts-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-
-  padding: 24px;
-
+  gap: 17px;
+  padding: 20px;
   background: #ffffff;
-  border: 1px solid #e6e8ef;
+  border: 1px solid #e3e6ee;
   border-radius: 13px;
-
-  box-shadow: 0 4px 16px rgba(25, 25, 50, 0.04);
 }
 
 .admin-ts-field {
@@ -69,282 +132,433 @@
   grid-column: 1 / -1;
 }
 
-/* =========================================================
-   LABELS
-   ========================================================= */
-
-.admin-ts-field label,
-.admin-ts-option-fields label {
+.admin-ts-field label {
   display: block;
   margin-bottom: 7px;
-
-  color: #303044;
-  font-size: 13px;
-  font-weight: 650;
+  color: #303446;
+  font-size: 11px;
+  font-weight: 700;
 }
 
-/* =========================================================
-   INPUTS
-   ========================================================= */
+.admin-ts-input,
+.admin-ts-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  color: #25283a;
+  background: #ffffff;
+  border: 1px solid #dfe3eb;
+  border-radius: 8px;
+  outline: none;
+  font-size: 12px;
+  font-family: inherit;
+  transition: .2s ease;
+  box-sizing: border-box;
+}
 
 .admin-ts-input {
-  width: 100%;
-  min-height: 43px;
-  padding: 10px 12px;
-
-  color: #252536;
-  background: #ffffff;
-
-  border: 1px solid #dfe2ea;
-  border-radius: 8px;
-
-  outline: none;
-
-  font-family: inherit;
-  font-size: 14px;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  min-height: 40px;
 }
-
-.admin-ts-input:hover {
-  border-color: #c9cdd8;
-}
-
-.admin-ts-input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
-}
-
-.admin-ts-input::placeholder {
-  color: #a1a6b5;
-}
-
-/* =========================================================
-   TEXTAREA
-   ========================================================= */
 
 .admin-ts-textarea {
-  min-height: 125px;
+  min-height: 105px;
   resize: vertical;
   line-height: 1.6;
 }
 
-/* =========================================================
-   OPTIONS SECTION
-   ========================================================= */
+.admin-ts-input:hover,
+.admin-ts-textarea:hover {
+  border-color: #bfc5d4;
+}
+
+.admin-ts-input:focus,
+.admin-ts-textarea:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, .12);
+}
+
+.admin-ts-input::placeholder,
+.admin-ts-textarea::placeholder {
+  color: #9aa1b2;
+}
 
 .admin-ts-section-header.form-section {
-  margin-top: 28px;
-  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 22px 0 12px;
 }
 
 .admin-ts-section-header.form-section h2 {
-  margin: 0 0 5px;
-
-  color: #202033;
-  font-size: 20px;
-  font-weight: 700;
+  margin: 0;
+  color: #242638;
+  font-size: 15px;
+  font-weight: 800;
 }
 
 .admin-ts-section-header.form-section p {
-  margin: 0;
-
-  color: #7b8194;
-  font-size: 13px;
-  line-height: 1.5;
+  margin: 4px 0 0;
+  color: #858b9d;
+  font-size: 10px;
 }
-
-/* =========================================================
-   OPTION CONTAINER
-   ========================================================= */
 
 #adminOptionsContainer {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
-
-/* =========================================================
-   OPTION FORM CARD
-   ========================================================= */
 
 .admin-ts-option-form {
   display: grid;
-  grid-template-columns: 70px minmax(0, 1fr) auto auto;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 12px;
   align-items: center;
-  gap: 15px;
-
-  padding: 16px;
-
+  padding: 12px;
   background: #ffffff;
-  border: 1px solid #e3e5ec;
-  border-radius: 11px;
-
-  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  border: 1px solid #e2e5ed;
+  border-radius: 10px;
+  transition: .2s ease;
 }
 
 .admin-ts-option-form:hover {
-  border-color: #d8d6ff;
-  box-shadow: 0 6px 18px rgba(45, 45, 90, 0.06);
+  border-color: #c8ccef;
+  box-shadow: 0 5px 16px rgba(50, 60, 110, .05);
 }
 
-/* =========================================================
-   OPTION LABEL
-   ========================================================= */
-
 .admin-ts-option-number {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 38px;
-  padding: 8px 10px;
-
-  color: #4f46e5;
-  background: #f2f1ff;
-  border: 1px solid #ddd9ff;
+  color: #5b21b6;
+  background: #f1ecff;
+  border: 1px solid #ddd2ff;
   border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
 
-  font-size: 12px;
+.admin-ts-option-fields {
+  min-width: 0;
+}
+
+.admin-ts-option-fields label {
+  display: block;
+  margin-bottom: 6px;
+  color: #343746;
+  font-size: 10px;
   font-weight: 700;
 }
 
-/* =========================================================
-   OPTION FIELDS
-   ========================================================= */
-
-.admin-ts-option-fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-
-  min-width: 0;
-}
-
-.admin-ts-option-fields > div {
-  min-width: 0;
-}
-
-.admin-ts-option-fields .admin-ts-input {
-  min-height: 40px;
-  font-size: 13px;
-}
-
-/* =========================================================
-   CORRECT ANSWER
-   ========================================================= */
-
 .admin-ts-option-correct {
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
 }
 
 .admin-ts-option-correct label {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-
   margin: 0;
-
-  color: #4b5563;
-  font-size: 12px;
+  color: #5f6575;
+  font-size: 10px;
   font-weight: 600;
-
-  cursor: pointer;
 }
 
 .admin-ts-option-correct input[type="radio"] {
-  width: 17px;
-  height: 17px;
-
-  margin: 0;
-
   accent-color: #6366f1;
-
-  cursor: pointer;
 }
 
-/* =========================================================
-   REMOVE BUTTON
-   ========================================================= */
-
 .admin-ts-remove-option {
-  min-height: 36px;
-  padding: 7px 11px;
-
-  color: #dc2626;
-  background: #ffffff;
-
-  border: 1px solid #fecaca;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 7px 10px;
+  color: #dc2626 !important;
+  background: #fff5f5 !important;
+  border: 1px solid #fecaca !important;
   border-radius: 7px;
-
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+  transition: .2s ease;
 }
 
 .admin-ts-remove-option:hover {
+  color: #b91c1c !important;
+  background: #fee2e2 !important;
+  border-color: #fca5a5 !important;
+}
+
+.admin-ts-form #adminAddOption {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 13px;
+  color: #4f46e5 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.admin-ts-form #adminAddOption:hover {
+  color: #4338ca !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+}
+
+.admin-ts-errors {
+  margin-bottom: 16px;
+  padding: 12px 14px;
   color: #b91c1c;
-  background: #fef2f2;
-  border-color: #fca5a5;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+  font-size: 11px;
 }
-
-/* =========================================================
-   ADD OPTION BUTTON
-   ========================================================= */
-
-#adminAddOption {
-  margin-top: 14px;
-}
-
-/* =========================================================
-   FORM ACTIONS
-   ========================================================= */
 
 .admin-ts-form-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-
-  margin-top: 24px;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #e7e9ef;
 }
 
-/* =========================================================
-   HIDDEN DESTROY FIELD
-   ========================================================= */
-
-.admin-option-destroy {
-  display: none !important;
+.admin-ts-form-actions .admin-ts-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: .2s ease;
 }
 
-/* =========================================================
-   RESPONSIVE — TABLET
-   ========================================================= */
+.admin-ts-form-actions .admin-ts-btn-primary {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+  border: 1px solid #6d28d9 !important;
+  box-shadow: 0 5px 14px rgba(79, 70, 229, .18);
+}
 
-@media (max-width: 900px) {
+.admin-ts-form-actions .admin-ts-btn-primary:hover {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #6d28d9, #4338ca) !important;
+  transform: translateY(-1px);
+}
+
+.admin-ts-form-actions .admin-ts-btn-light {
+  color: #4b5563 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+}
+
+.admin-ts-form-actions .admin-ts-btn-light:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+}
+
+body:not(.admin-ts-dark):has(.admin-ts-form-page),
+body:not(.admin-ts-dark):has(.admin-ts-form-page) main,
+body:not(.admin-ts-dark):has(.admin-ts-form-page) .main-content,
+body:not(.admin-ts-dark):has(.admin-ts-form-page) .admin-main,
+body:not(.admin-ts-dark):has(.admin-ts-form-page) .content-wrapper {
+  background: #f3f5ff !important;
+}
+
+body.admin-ts-dark:has(.admin-ts-form-page),
+body.admin-ts-dark:has(.admin-ts-form-page) main,
+body.admin-ts-dark:has(.admin-ts-form-page) .main-content,
+body.admin-ts-dark:has(.admin-ts-form-page) .admin-main,
+body.admin-ts-dark:has(.admin-ts-form-page) .content-wrapper {
+  background: #0e1222 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-card,
+body.admin-ts-dark .admin-ts-form-grid {
+  background: #191e33 !important;
+  border-color: #303852 !important;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, .18);
+}
+
+body.admin-ts-dark .admin-ts-form-breadcrumb {
+  color: #8f98b1;
+}
+
+body.admin-ts-dark .admin-ts-form-breadcrumb a {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-form-title {
+  color: #f5f7ff;
+}
+
+body.admin-ts-dark .admin-ts-form-subtitle {
+  color: #9da6bd;
+}
+
+body.admin-ts-dark .admin-ts-form-back {
+  color: #c7ccda !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-back:hover {
+  color: #c4b5fd !important;
+  background: #252044 !important;
+  border-color: #5146a8 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-theme {
+  color: #fbbf24 !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-theme:hover {
+  color: #fcd34d !important;
+  background: #252b43 !important;
+  border-color: #596582 !important;
+}
+
+body.admin-ts-dark .admin-ts-field label,
+body.admin-ts-dark .admin-ts-option-fields label {
+  color: #dce1ee;
+}
+
+body.admin-ts-dark .admin-ts-input,
+body.admin-ts-dark .admin-ts-textarea {
+  color: #f1f3f8;
+  background: #151a2c;
+  border-color: #39415d;
+}
+
+body.admin-ts-dark .admin-ts-input:hover,
+body.admin-ts-dark .admin-ts-textarea:hover {
+  border-color: #505b7b;
+}
+
+body.admin-ts-dark .admin-ts-input:focus,
+body.admin-ts-dark .admin-ts-textarea:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, .14);
+}
+
+body.admin-ts-dark .admin-ts-input::placeholder,
+body.admin-ts-dark .admin-ts-textarea::placeholder {
+  color: #737c96;
+}
+
+body.admin-ts-dark .admin-ts-section-header.form-section h2 {
+  color: #f4f5fb;
+}
+
+body.admin-ts-dark .admin-ts-section-header.form-section p {
+  color: #9da6bd;
+}
+
+body.admin-ts-dark .admin-ts-option-form {
+  background: #191e33;
+  border-color: #303852;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .16);
+}
+
+body.admin-ts-dark .admin-ts-option-form:hover {
+  border-color: #5146a8;
+  box-shadow: 0 7px 20px rgba(0, 0, 0, .22);
+}
+
+body.admin-ts-dark .admin-ts-option-number {
+  color: #c4b5fd;
+  background: #252044;
+  border-color: #5146a8;
+}
+
+body.admin-ts-dark .admin-ts-option-correct label {
+  color: #c8cede;
+}
+
+body.admin-ts-dark .admin-ts-option-correct input[type="radio"] {
+  accent-color: #818cf8;
+}
+
+body.admin-ts-dark .admin-ts-remove-option {
+  color: #fca5a5 !important;
+  background: #351b22 !important;
+  border-color: #71313d !important;
+}
+
+body.admin-ts-dark .admin-ts-remove-option:hover {
+  color: #fecaca !important;
+  background: #46202a !important;
+  border-color: #91404e !important;
+}
+
+body.admin-ts-dark .admin-ts-form #adminAddOption {
+  color: #c4b5fd !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-form #adminAddOption:hover {
+  color: #ddd6fe !important;
+  background: #252044 !important;
+  border-color: #5146a8 !important;
+}
+
+body.admin-ts-dark .admin-ts-errors {
+  color: #fca5a5;
+  background: #351b22;
+  border-color: #71313d;
+  border-left-color: #ef4444;
+}
+
+body.admin-ts-dark .admin-ts-form-actions {
+  border-top-color: #303852;
+}
+
+body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light {
+  color: #c7ccda !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light:hover {
+  color: #c4b5fd !important;
+  background: #252044 !important;
+  border-color: #5146a8 !important;
+}
+
+@media (max-width: 800px) {
+  .admin-ts-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-ts-field.full {
+    grid-column: auto;
+  }
 
   .admin-ts-option-form {
-    grid-template-columns: 60px minmax(0, 1fr);
-  }
-
-  .admin-ts-option-fields {
-    grid-column: 2;
-  }
-
-  .admin-ts-option-correct {
-    grid-column: 2;
+    grid-template-columns: 36px minmax(0, 1fr);
   }
 
   .admin-ts-remove-option {
@@ -353,50 +567,35 @@
   }
 }
 
-/* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-  .admin-ts-form-grid {
-    grid-template-columns: 1fr;
-    gap: 17px;
-    padding: 18px;
-  }
-
-  .admin-ts-field.full {
-    grid-column: auto;
-  }
-
-  .admin-ts-option-form {
-    grid-template-columns: 1fr;
-    gap: 12px;
+@media (max-width: 600px) {
+  .admin-ts-form-page {
     padding: 14px;
   }
 
-  .admin-ts-option-number {
-    justify-self: flex-start;
-    min-width: 70px;
+  .admin-ts-form-header {
+    align-items: flex-start;
   }
 
-  .admin-ts-option-fields {
-    grid-column: auto;
-    grid-template-columns: 1fr;
-    gap: 11px;
+  .admin-ts-form-title {
+    font-size: 21px;
   }
 
-  .admin-ts-option-correct {
-    grid-column: auto;
+  .admin-ts-form-card {
+    padding: 14px;
+    border-radius: 12px;
   }
 
-  .admin-ts-remove-option {
-    grid-column: auto;
-    justify-self: flex-start;
+  .admin-ts-form-grid {
+    padding: 14px;
+  }
+
+  .admin-ts-section-header.form-section {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .admin-ts-form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: stretch;
   }
 
@@ -404,997 +603,907 @@
     width: 100%;
   }
 
-  #adminAddOption {
-    width: 100%;
+  .admin-ts-form-back {
+    width: 38px;
+    padding: 0;
+  }
+
+  .admin-ts-form-back span {
+    display: none;
   }
 }
 
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-  .admin-ts-form-grid {
-    padding: 14px;
+@media (max-width: 430px) {
+  .admin-ts-form-page {
+    padding: 9px;
   }
 
-  .admin-ts-input {
-    font-size: 13px;
+  .admin-ts-form-title {
+    font-size: 19px;
+  }
+
+  .admin-ts-form-breadcrumb {
+    font-size: 9px;
+  }
+
+  .admin-ts-form-subtitle {
+    display: none;
+  }
+
+  .admin-ts-form-card {
+    padding: 10px;
+  }
+
+  .admin-ts-form-grid {
+    padding: 11px;
   }
 
   .admin-ts-option-form {
-    padding: 12px;
+    padding: 9px;
+    gap: 8px;
   }
 }
+
+
+#adminOptionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-ts-option-form {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #e2e5ed;
+  border-radius: 11px;
+  box-shadow: 0 2px 8px rgba(30, 35, 60, .035);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.admin-ts-option-form:hover {
+  border-color: #c8ccef;
+  box-shadow: 0 6px 18px rgba(50, 60, 110, .07);
+}
+
+.admin-ts-option-number {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b21b6;
+  background: #f1ecff;
+  border: 1px solid #ddd2ff;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.admin-ts-option-fields {
+  min-width: 0;
+  width: 100%;
+}
+
+.admin-ts-option-fields label {
+  display: block;
+  margin-bottom: 6px;
+  color: #343746;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.admin-ts-option-fields .admin-ts-input {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+.admin-ts-option-correct {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.admin-ts-option-correct label {
+  margin: 0;
+  color: #5f6575;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.admin-ts-option-correct input[type="radio"] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #6366f1;
+}
+
+.admin-ts-remove-option {
+  grid-column: 2;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 32px;
+  margin-top: -2px;
+  padding: 6px 10px;
+  color: #dc2626 !important;
+  background: #fff5f5 !important;
+  border: 1px solid #fecaca !important;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.admin-ts-remove-option:hover {
+  color: #b91c1c !important;
+  background: #fee2e2 !important;
+  border-color: #fca5a5 !important;
+  transform: translateY(-1px);
+}
+
+body.admin-ts-dark .admin-ts-option-form {
+  background: #191e33;
+  border-color: #303852;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .16);
+}
+
+body.admin-ts-dark .admin-ts-option-form:hover {
+  border-color: #5146a8;
+  box-shadow: 0 7px 20px rgba(0, 0, 0, .22);
+}
+
+body.admin-ts-dark .admin-ts-option-number {
+  color: #c4b5fd;
+  background: #252044;
+  border-color: #5146a8;
+}
+
+body.admin-ts-dark .admin-ts-option-fields label {
+  color: #dce1ee;
+}
+
+body.admin-ts-dark .admin-ts-option-correct label {
+  color: #c8cede;
+}
+
+body.admin-ts-dark .admin-ts-option-correct input[type="radio"] {
+  accent-color: #818cf8;
+}
+
+body.admin-ts-dark .admin-ts-remove-option {
+  color: #fca5a5 !important;
+  background: #351b22 !important;
+  border-color: #71313d !important;
+}
+
+body.admin-ts-dark .admin-ts-remove-option:hover {
+  color: #fecaca !important;
+  background: #46202a !important;
+  border-color: #91404e !important;
+}
+
 </style>
 
-<%= form_with(
-      model: @question,
-      url: @question.persisted? ?
-        admin_test_series_test_question_path(
-          @test_series,
-          @test,
-          @question
-        ) :
-        admin_test_series_test_questions_path(
-          @test_series,
-          @test
-        ),
-      method: @question.persisted? ? :patch : :post,
-      local: true,
-      class: "admin-ts-form",
-      id: "adminQuestionForm"
-    ) do |form| %>
+<div class="admin-ts-form-page">
 
+  <div class="admin-ts-form-shell">
 
-  <% if @question.errors.any? %>
+    <div class="admin-ts-form-header">
 
-    <div class="admin-ts-errors">
+      <div>
 
-      <strong>
-        <%= pluralize(
-              @question.errors.count,
-              "error"
-            ) %> prevented saving:
-      </strong>
+        <div class="admin-ts-form-breadcrumb">
 
-      <ul>
-        <% @question.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <%= link_to @test_series.title,
+                      admin_test_series_path(@test_series) %>
+
+          /
+
+          <%= link_to @test.title,
+                      admin_test_series_test_path(
+                        @test_series,
+                        @test
+                      ) %>
+
+          /
+
+          <%= @question.persisted? ? "Edit Question" : "Add Question" %>
+
+        </div>
+
+        <h1 class="admin-ts-form-title">
+          <%= @question.persisted? ? "Edit Question" : "Add New Question" %>
+        </h1>
+
+        <p class="admin-ts-form-subtitle">
+          Create the question and answer options in Hindi.
+        </p>
+
+      </div>
+
+      <div class="admin-ts-form-header-actions">
+
+        <%= link_to admin_test_series_test_path(
+                      @test_series,
+                      @test
+                    ),
+                    class: "admin-ts-form-back" do %>
+
+          <i class="fas fa-arrow-left"></i>
+
+          <span>Back</span>
+
         <% end %>
-      </ul>
-
-    </div>
-
-  <% end %>
-
-
-  <div class="admin-ts-form-grid">
-
-    <!-- QUESTION ENGLISH -->
-
-    <div class="admin-ts-field full">
-
-      <%= form.label :question_text,
-                    "Question (English)" %>
-
-      <%= form.text_area :question_text,
-            class: "admin-ts-input admin-ts-textarea",
-            rows: 5,
-            required: true,
-            placeholder: "Enter question in English" %>
-
-    </div>
-
-
-    <!-- QUESTION HINDI -->
-
-    <div class="admin-ts-field full">
-
-      <%= form.label :question_text_hindi,
-                    "Question (Hindi)" %>
-
-      <%= form.text_area :question_text_hindi,
-            class: "admin-ts-input admin-ts-textarea",
-            rows: 5,
-            placeholder: "हिंदी में प्रश्न लिखें" %>
-
-    </div>
-
-
-    <!-- MARKS -->
-
-    <div class="admin-ts-field">
-
-      <%= form.label :marks, "Marks" %>
-
-      <%= form.number_field :marks,
-            class: "admin-ts-input",
-            step: "0.01",
-            min: 0,
-            required: true %>
-
-    </div>
-
-
-    <!-- POSITION -->
-
-    <div class="admin-ts-field">
-
-      <%= form.label :position, "Question Position" %>
-
-      <%= form.number_field :position,
-            class: "admin-ts-input",
-            min: 1,
-            required: true %>
-
-    </div>
-
-
-    <!-- QUESTION TYPE -->
-
-    <div class="admin-ts-field">
-
-      <%= form.label :question_type,
-                    "Question Type" %>
-
-      <%= form.text_field :question_type,
-            class: "admin-ts-input",
-            placeholder: "MCQ" %>
-
-    </div>
-
-
-    <!-- EXPLANATION ENGLISH -->
-
-    <div class="admin-ts-field full">
-
-      <%= form.label :explanation,
-                    "Explanation (English)" %>
-
-      <%= form.text_area :explanation,
-            class: "admin-ts-input admin-ts-textarea",
-            rows: 5 %>
-
-    </div>
-
-
-    <!-- EXPLANATION HINDI -->
-
-    <div class="admin-ts-field full">
-
-      <%= form.label :explanation_hindi,
-                    "Explanation (Hindi)" %>
-
-      <%= form.text_area :explanation_hindi,
-            class: "admin-ts-input admin-ts-textarea",
-            rows: 5 %>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       OPTIONS
-  ====================================================== -->
-
-  <div class="admin-ts-section-header form-section">
-
-    <div>
-
-      <h2>Options</h2>
-
-      <p>
-        Add the answer options and mark exactly one as correct.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <div id="adminOptionsContainer">
-
-    <%= form.fields_for :test_series_options do |option_form| %>
-
-      <% option = option_form.object %>
-
-      <div
-        class="admin-ts-option-form"
-        data-admin-option-row
-        <%= 'style="display:none;"' if option.marked_for_destruction? %>
-      >
-
-        <%= option_form.hidden_field :id %>
-
-        <%= option_form.hidden_field :position,
-              class: "admin-option-position" %>
-
-        <%= option_form.hidden_field :_destroy,
-              value: "0",
-              class: "admin-option-destroy" %>
-
-
-        <div class="admin-ts-option-number">
-          Option
-        </div>
-
-
-        <div class="admin-ts-option-fields">
-
-          <div>
-
-            <%= option_form.label :option_text,
-                                  "English" %>
-
-            <%= option_form.text_field :option_text,
-                  class: "admin-ts-input",
-                  required: true %>
-
-          </div>
-
-
-          <div>
-
-            <%= option_form.label :option_text_hindi,
-                                  "Hindi" %>
-
-            <%= option_form.text_field :option_text_hindi,
-                  class: "admin-ts-input" %>
-
-          </div>
-
-        </div>
-
-
-        <div class="admin-ts-option-correct">
-
-          <label>
-
-            <%= option_form.radio_button(
-                  :is_correct,
-                  true,
-                  class: "admin-correct-radio",
-                  checked: option.is_correct?
-                ) %>
-
-            Correct Answer
-
-          </label>
-
-        </div>
-
 
         <button
           type="button"
-          class="admin-ts-remove-option"
-          data-remove-admin-option>
-          Remove
+          class="admin-ts-form-theme"
+          id="adminTsFormThemeToggle"
+          aria-label="Switch to night mode"
+          title="Switch to night mode">
+
+          <i class="fas fa-moon"
+             id="adminTsFormThemeIcon"></i>
+
         </button>
 
       </div>
 
-    <% end %>
+    </div>
+
+    <div class="admin-ts-form-card">
+
+      <%= form_with(
+            model: @question,
+            url: @question.persisted? ?
+              admin_test_series_test_question_path(
+                @test_series,
+                @test,
+                @question
+              ) :
+              admin_test_series_test_questions_path(
+                @test_series,
+                @test
+              ),
+            method: @question.persisted? ? :patch : :post,
+            local: true,
+            class: "admin-ts-form",
+            id: "adminQuestionForm"
+          ) do |form| %>
+
+        <% if @question.errors.any? %>
+
+          <div class="admin-ts-errors">
+
+            <strong>
+              Please correct the following errors:
+            </strong>
+
+            <ul>
+              <% @question.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+
+          </div>
+
+        <% end %>
+
+        <div class="admin-ts-form-grid">
+
+          <div class="admin-ts-field full">
+
+            <%= form.label :question_text_hindi, "Question" %>
+
+            <%= form.text_area :question_text_hindi,
+                  class: "admin-ts-textarea",
+                  rows: 4,
+                  placeholder: "Enter question in Hindi" %>
+
+          </div>
+
+          <div class="admin-ts-field">
+
+            <%= form.label :marks, "Marks" %>
+
+            <%= form.number_field :marks,
+                  class: "admin-ts-input",
+                  min: 1,
+                  step: 1,
+                  placeholder: "e.g. 1" %>
+
+          </div>
+
+          <div class="admin-ts-field">
+
+            <%= form.label :position, "Question Number" %>
+
+            <%= form.number_field :position,
+                  class: "admin-ts-input",
+                  min: 1,
+                  step: 1,
+                  placeholder: "e.g. 1" %>
+
+          </div>
+
+          <div class="admin-ts-field">
+
+            <%= form.label :question_type, "Question Type" %>
+
+            <%= form.text_field :question_type,
+                  class: "admin-ts-input",
+                  placeholder: "MCQ" %>
+
+          </div>
+
+          <div class="admin-ts-field full">
+
+            <%= form.label :explanation_hindi, "Explanation" %>
+
+            <%= form.text_area :explanation_hindi,
+                  class: "admin-ts-textarea",
+                  rows: 4,
+                  placeholder: "Enter the explanation for the correct answer in Hindi" %>
+
+          </div>
+
+        </div>
+
+        <div class="admin-ts-section-header form-section">
+
+          <div>
+
+            <h2>
+              Answer Options
+            </h2>
+
+            <p>
+              Add at least two options and select only one correct answer.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            id="adminAddOption">
+
+            <i class="fas fa-plus"></i>
+
+            Add Option
+
+          </button>
+
+        </div>
+
+        <div id="adminOptionsContainer">
+
+          <% @question.test_series_options.each_with_index do |option, index| %>
+
+            <div class="admin-ts-option-form">
+
+              <div class="admin-ts-option-number">
+                <%= index + 1 %>
+              </div>
+
+              <div class="admin-ts-option-fields">
+
+                <%= form.fields_for :test_series_options, option do |option_form| %>
+
+                  <%= option_form.hidden_field :id if option.persisted? %>
+
+                  <%= option_form.label :option_text_hindi, "Option" %>
+
+                  <%= option_form.text_field :option_text_hindi,
+                        class: "admin-ts-input",
+                        placeholder: "Enter option in Hindi" %>
+
+                  <div class="admin-ts-option-correct">
+
+                    <%= option_form.radio_button :is_correct,
+                          true,
+                          class: "admin-correct-radio" %>
+
+                    <%= option_form.label :is_correct,
+                          "Correct Answer" %>
+
+                  </div>
+
+                <% end %>
+
+              </div>
+
+              <button
+                type="button"
+                class="admin-ts-remove-option">
+
+                <i class="fas fa-trash-alt"></i>
+
+                Remove
+
+              </button>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+        <div class="admin-ts-form-actions">
+
+          <%= link_to admin_test_series_test_path(
+                        @test_series,
+                        @test
+                      ),
+                      class: "admin-ts-btn admin-ts-btn-light" do %>
+
+            <i class="fas fa-times"></i>
+
+            Cancel
+
+          <% end %>
+
+          <%= form.submit(
+                @question.persisted? ?
+                  "Update Question" :
+                  "Create Question",
+                class: "admin-ts-btn admin-ts-btn-primary"
+              ) %>
+
+        </div>
+
+      <% end %>
+
+    </div>
 
   </div>
 
-
-  <!-- ADD OPTION -->
-
-  <button
-    type="button"
-    id="adminAddOption"
-    class="admin-ts-btn admin-ts-btn-light">
-
-    <i class="fas fa-plus"></i>
-    Add Option
-
-  </button>
-
-
-  <!-- FORM ACTIONS -->
-
-  <div class="admin-ts-form-actions">
-
-    <%= form.submit(
-          @question.persisted? ?
-            "Update Question" :
-            "Create Question",
-          class: "admin-ts-btn admin-ts-btn-primary"
-        ) %>
-
-    <%= link_to "Cancel",
-                admin_test_series_test_path(
-                  @test_series,
-                  @test
-                ),
-                class: "admin-ts-btn admin-ts-btn-light" %>
-
-  </div>
-
-<% end %>
+</div>
 
 <script nonce="<%= content_security_policy_nonce %>">
+(function() {
 
-(function () {
+  function applyAdminTsFormTheme() {
 
-  "use strict";
+    const isDark =
+      localStorage.getItem("admin-ts-theme") === "dark";
 
+    const icon =
+      document.getElementById("adminTsFormThemeIcon");
+
+    const toggle =
+      document.getElementById("adminTsFormThemeToggle");
+
+    document.body.classList.toggle(
+      "admin-ts-dark",
+      isDark
+    );
+
+    if (icon) {
+
+      icon.classList.remove(
+        "fa-moon",
+        "fa-sun"
+      );
+
+      icon.classList.add(
+        isDark ? "fa-sun" : "fa-moon"
+      );
+
+    }
+
+    if (toggle) {
+
+      const label =
+        isDark
+          ? "Switch to day mode"
+          : "Switch to night mode";
+
+      toggle.setAttribute(
+        "aria-label",
+        label
+      );
+
+      toggle.setAttribute(
+        "title",
+        label
+      );
+
+    }
+
+  }
+
+  function initAdminTsFormTheme() {
+
+    applyAdminTsFormTheme();
+
+    const toggle =
+      document.getElementById(
+        "adminTsFormThemeToggle"
+      );
+
+    if (
+      !toggle ||
+      toggle.dataset.themeReady === "true"
+    ) {
+      return;
+    }
+
+    toggle.dataset.themeReady = "true";
+
+    toggle.addEventListener(
+      "click",
+      function() {
+
+        const isDark =
+          !document.body.classList.contains(
+            "admin-ts-dark"
+          );
+
+        document.body.classList.toggle(
+          "admin-ts-dark",
+          isDark
+        );
+
+        localStorage.setItem(
+          "admin-ts-theme",
+          isDark ? "dark" : "light"
+        );
+
+        applyAdminTsFormTheme();
+
+      }
+    );
+
+  }
 
   function initializeAdminQuestionForm() {
 
     const container =
-      document.getElementById("adminOptionsContainer");
+      document.getElementById(
+        "adminOptionsContainer"
+      );
 
     const addButton =
-      document.getElementById("adminAddOption");
+      document.getElementById(
+        "adminAddOption"
+      );
 
     const form =
-      document.getElementById("adminQuestionForm");
-
-
-    /*
-     * ==================================================
-     * REQUIRED ELEMENTS
-     * ==================================================
-     */
+      document.getElementById(
+        "adminQuestionForm"
+      );
 
     if (!container || !addButton || !form) {
       return;
     }
 
-
-    /*
-     * ==================================================
-     * DUPLICATE INITIALIZATION PROTECTION
-     * ==================================================
-     */
-
     if (
-      form.dataset.adminQuestionInitialized === "true"
+      form.dataset.questionFormReady === "true"
     ) {
       return;
     }
 
-    form.dataset.adminQuestionInitialized = "true";
-
-
-    /*
-     * ==================================================
-     * UNIQUE INDEX
-     * ==================================================
-     */
-
-    let nextIndex =
-      container.querySelectorAll(
-        "[data-admin-option-row]"
-      ).length;
-
-
-    /*
-     * ==================================================
-     * GET ACTIVE OPTIONS
-     * ==================================================
-     */
+    form.dataset.questionFormReady = "true";
 
     function getActiveRows() {
 
       return Array.from(
         container.querySelectorAll(
-          "[data-admin-option-row]"
+          ".admin-ts-option-form"
         )
-      ).filter(function (row) {
-
-        return row.style.display !== "none";
-
-      });
+      );
 
     }
-
-
-    /*
-     * ==================================================
-     * UPDATE POSITIONS
-     * ==================================================
-     */
 
     function updatePositions() {
 
-      const rows =
-        getActiveRows();
+      getActiveRows().forEach(
+        function(row, index) {
 
+          const number =
+            row.querySelector(
+              ".admin-ts-option-number"
+            );
 
-      rows.forEach(function (row, index) {
-
-        const positionField =
-          row.querySelector(
-            ".admin-option-position"
-          );
-
-
-        if (positionField) {
-
-          positionField.value =
-            index + 1;
+          if (number) {
+            number.textContent = index + 1;
+          }
 
         }
-
-      });
+      );
 
     }
-
-
-    /*
-     * ==================================================
-     * ENFORCE ONE CORRECT RADIO
-     * ==================================================
-     */
 
     function enforceSingleCorrect(selectedRadio) {
 
       const radios =
         container.querySelectorAll(
-          'input[type="radio"][data-correct-option]'
+          'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
         );
 
+      radios.forEach(
+        function(radio) {
 
-      radios.forEach(function (radio) {
-
-        if (radio !== selectedRadio) {
-
-          radio.checked = false;
+          if (radio !== selectedRadio) {
+            radio.checked = false;
+          }
 
         }
-
-      });
+      );
 
     }
 
+    function nextIndex() {
 
-    /*
-     * ==================================================
-     * ADD OPTION
-     * ==================================================
-     */
+      return container.querySelectorAll(
+        ".admin-ts-option-form"
+      ).length;
 
-    if (
-      addButton.dataset.addInitialized !== "true"
-    ) {
+    }
 
-      addButton.dataset.addInitialized = "true";
+    function addOption() {
 
+      const index =
+        nextIndex();
 
-      addButton.addEventListener(
-        "click",
-        function () {
+      const wrapper =
+        document.createElement("div");
 
-          const index =
-            nextIndex++;
+      wrapper.className =
+        "admin-ts-option-form";
 
+      wrapper.innerHTML = `
+        <div class="admin-ts-option-number">
+          ${index + 1}
+        </div>
 
-          const row =
-            document.createElement("div");
+        <div class="admin-ts-option-fields">
 
+          <label>
+            Option
+          </label>
 
-          row.className =
-            "admin-ts-option-form";
+          <input
+            type="text"
+            name="question[test_series_options_attributes][${index}][option_text_hindi]"
+            class="admin-ts-input"
+            placeholder="Enter option in Hindi"
+          >
 
+          <input
+            type="hidden"
+            name="question[test_series_options_attributes][${index}][is_correct]"
+            value="0"
+            class="admin-hidden-correct"
+          >
 
-          row.setAttribute(
-            "data-admin-option-row",
-            ""
-          );
-
-
-          row.innerHTML = `
+          <div class="admin-ts-option-correct">
 
             <input
-              type="hidden"
-              name="test_series_question[test_series_options_attributes][${index}][position]"
-              value=""
-              class="admin-option-position">
+              type="radio"
+              name="admin_correct_option"
+              value="${index}"
+              class="admin-dynamic-correct-radio"
+              data-correct-option="${index}"
+            >
 
-            <input
-              type="hidden"
-              name="test_series_question[test_series_options_attributes][${index}][_destroy]"
-              value="0"
-              class="admin-option-destroy">
+            <label>
+              Correct Answer
+            </label>
 
-            <div class="admin-ts-option-number">
-              Option
-            </div>
+          </div>
 
-            <div class="admin-ts-option-fields">
+        </div>
 
-              <div>
+        <button
+          type="button"
+          class="admin-ts-remove-option">
 
-                <label for="admin_option_${index}_english">
-                  English
-                </label>
+          <i class="fas fa-trash-alt"></i>
 
-                <input
-                  type="text"
-                  id="admin_option_${index}_english"
-                  name="test_series_question[test_series_options_attributes][${index}][option_text]"
-                  class="admin-ts-input"
-                  required>
+          Remove
 
-              </div>
+        </button>
+      `;
 
-              <div>
+      container.appendChild(wrapper);
 
-                <label for="admin_option_${index}_hindi">
-                  Hindi
-                </label>
-
-                <input
-                  type="text"
-                  id="admin_option_${index}_hindi"
-                  name="test_series_question[test_series_options_attributes][${index}][option_text_hindi]"
-                  class="admin-ts-input">
-
-              </div>
-
-            </div>
-
-            <div class="admin-ts-option-correct">
-
-              <label>
-
-                <input
-                  type="radio"
-                  name="admin_correct_option"
-                  value="${index}"
-                  class="admin-dynamic-correct-radio"
-                  data-correct-option>
-
-                Correct Answer
-
-              </label>
-
-            </div>
-
-            <button
-              type="button"
-              class="admin-ts-remove-option"
-              data-remove-admin-option>
-
-              Remove
-
-            </button>
-          `;
-
-
-          container.appendChild(row);
-
-
-          updatePositions();
-
-        }
-      );
+      updatePositions();
 
     }
 
+    addButton.addEventListener(
+      "click",
+      function() {
+        addOption();
+      }
+    );
 
-    /*
-     * ==================================================
-     * REMOVE OPTION
-     * ==================================================
-     */
+    container.addEventListener(
+      "click",
+      function(event) {
 
-    if (
-      container.dataset.removeInitialized !== "true"
-    ) {
-
-      container.dataset.removeInitialized = "true";
-
-
-      container.addEventListener(
-        "click",
-        function (event) {
-
-          const removeButton =
-            event.target.closest(
-              "[data-remove-admin-option]"
-            );
-
-
-          if (!removeButton) {
-            return;
-          }
-
-
-          const row =
-            removeButton.closest(
-              "[data-admin-option-row]"
-            );
-
-
-          if (!row) {
-            return;
-          }
-
-
-          const activeRows =
-            getActiveRows();
-
-
-          /*
-           * Minimum 2 options required
-           */
-
-          if (activeRows.length <= 2) {
-
-            alert(
-              "A question must have at least 2 options."
-            );
-
-            return;
-
-          }
-
-
-          const destroyField =
-            row.querySelector(
-              ".admin-option-destroy"
-            );
-
-
-          if (destroyField) {
-
-            /*
-             * Existing database option
-             */
-
-            destroyField.value = "1";
-
-            row.style.display = "none";
-
-
-          } else {
-
-            /*
-             * Newly added option
-             */
-
-            row.remove();
-
-          }
-
-
-          updatePositions();
-
-        }
-      );
-
-    }
-
-
-    /*
-     * ==================================================
-     * CORRECT ANSWER
-     * ==================================================
-     */
-
-    if (
-      container.dataset.correctInitialized !== "true"
-    ) {
-
-      container.dataset.correctInitialized = "true";
-
-
-      container.addEventListener(
-        "change",
-        function (event) {
-
-          const selected =
-            event.target;
-
-
-          if (
-            !selected.matches(
-              ".admin-correct-radio, .admin-dynamic-correct-radio"
-            )
-          ) {
-
-            return;
-
-          }
-
-
-          /*
-           * Keep only one radio selected
-           */
-
-          enforceSingleCorrect(
-            selected
+        const removeButton =
+          event.target.closest(
+            ".admin-ts-remove-option"
           );
 
+        if (!removeButton) {
+          return;
+        }
 
-          /*
-           * =============================================
-           * DYNAMIC OPTION
-           * =============================================
-           */
+        const rows =
+          getActiveRows();
 
-          if (
-            selected.classList.contains(
-              "admin-dynamic-correct-radio"
-            )
-          ) {
+        if (rows.length <= 2) {
 
-            const index =
-              selected.value;
+          alert(
+            "At least 2 options are required."
+          );
 
+          return;
+        }
 
-            const row =
-              selected.closest(
-                "[data-admin-option-row]"
-              );
+        const row =
+          removeButton.closest(
+            ".admin-ts-option-form"
+          );
 
+        if (row) {
+          row.remove();
+        }
 
-            if (!row) {
-              return;
-            }
+        updatePositions();
 
+      }
+    );
 
-            /*
-             * Find/create Rails nested
-             * is_correct hidden field
-             */
+    container.addEventListener(
+      "change",
+      function(event) {
 
-            let correctField =
+        const radio =
+          event.target.closest(
+            'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
+          );
+
+        if (!radio) {
+          return;
+        }
+
+        enforceSingleCorrect(radio);
+
+        getActiveRows().forEach(
+          function(row) {
+
+            const correctRadio =
               row.querySelector(
-                ".admin-dynamic-is-correct"
+                'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
               );
 
-
-            if (!correctField) {
-
-              correctField =
-                document.createElement(
-                  "input"
-                );
-
-
-              correctField.type =
-                "hidden";
-
-
-              correctField.name =
-                `test_series_question[test_series_options_attributes][${index}][is_correct]`;
-
-
-              correctField.className =
-                "admin-dynamic-is-correct";
-
-
-              row.appendChild(
-                correctField
+            const hidden =
+              row.querySelector(
+                ".admin-hidden-correct"
               );
+
+            if (hidden) {
+
+              hidden.value =
+                correctRadio &&
+                correctRadio.checked
+                  ? "1"
+                  : "0";
 
             }
-
-
-            correctField.value =
-              "true";
 
           }
+        );
+
+      }
+    );
+
+    form.addEventListener(
+      "submit",
+      function(event) {
+
+        const rows =
+          getActiveRows();
+
+        if (rows.length < 2) {
+
+          event.preventDefault();
+
+          alert(
+            "At least 2 options are required."
+          );
+
+          return;
 
         }
-      );
 
-    }
+        const checked =
+          container.querySelectorAll(
+            'input[type="radio"].admin-correct-radio:checked, input[type="radio"].admin-dynamic-correct-radio:checked'
+          );
 
+        if (checked.length !== 1) {
 
-    /*
-     * ==================================================
-     * BEFORE SUBMIT
-     * ==================================================
-     */
+          event.preventDefault();
 
-    if (
-      form.dataset.submitInitialized !== "true"
-    ) {
+          alert(
+            "Please select only one correct answer."
+          );
 
-      form.dataset.submitInitialized = "true";
-
-
-      form.addEventListener(
-        "submit",
-        function (event) {
-
-          const activeRows =
-            getActiveRows();
-
-
-          /*
-           * Minimum 2 options
-           */
-
-          if (activeRows.length < 2) {
-
-            event.preventDefault();
-
-            alert(
-              "A question must have at least 2 options."
-            );
-
-            return;
-
-          }
-
-
-          /*
-           * =============================================
-           * FIND SELECTED CORRECT OPTION
-           * =============================================
-           */
-
-          const checked =
-            container.querySelectorAll(
-              ".admin-correct-radio:checked, .admin-dynamic-correct-radio:checked"
-            );
-
-
-          /*
-           * Exactly one correct answer
-           */
-
-          if (checked.length !== 1) {
-
-            event.preventDefault();
-
-            alert(
-              "Please select exactly one correct answer."
-            );
-
-            return;
-
-          }
-
-
-          const selected =
-            checked[0];
-
-
-          /*
-           * =============================================
-           * RESET DYNAMIC is_correct FIELDS
-           * =============================================
-           */
-
-          activeRows.forEach(function (row) {
-
-            const dynamicCorrectField =
-              row.querySelector(
-                ".admin-dynamic-is-correct"
-              );
-
-
-            if (dynamicCorrectField) {
-
-              dynamicCorrectField.value =
-                "false";
-
-            }
-
-          });
-
-
-          /*
-           * =============================================
-           * SELECTED DYNAMIC OPTION
-           * =============================================
-           */
-
-          if (
-            selected.classList.contains(
-              "admin-dynamic-correct-radio"
-            )
-          ) {
-
-            const selectedRow =
-              selected.closest(
-                "[data-admin-option-row]"
-              );
-
-
-            if (selectedRow) {
-
-              let correctField =
-                selectedRow.querySelector(
-                  ".admin-dynamic-is-correct"
-                );
-
-
-              if (!correctField) {
-
-                correctField =
-                  document.createElement(
-                    "input"
-                  );
-
-
-                correctField.type =
-                  "hidden";
-
-
-                correctField.name =
-                  `test_series_question[test_series_options_attributes][${selected.value}][is_correct]`;
-
-
-                correctField.className =
-                  "admin-dynamic-is-correct";
-
-
-                selectedRow.appendChild(
-                  correctField
-                );
-
-              }
-
-
-              correctField.value =
-                "true";
-
-            }
-
-          }
+          return;
 
         }
-      );
 
-    }
+        rows.forEach(
+          function(row) {
 
+            const correctRadio =
+              row.querySelector(
+                'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
+              );
 
-    /*
-     * ==================================================
-     * INITIAL POSITIONS
-     * ==================================================
-     */
+            const hidden =
+              row.querySelector(
+                ".admin-hidden-correct"
+              );
+
+            if (hidden) {
+
+              hidden.value =
+                correctRadio &&
+                correctRadio.checked
+                  ? "1"
+                  : "0";
+
+            }
+
+          }
+        );
+
+      }
+    );
 
     updatePositions();
 
   }
 
-
-  /*
-   * ==================================================
-   * TURBO NAVIGATION
-   * ==================================================
-   */
-
   document.addEventListener(
     "turbo:load",
-    initializeAdminQuestionForm
+    function() {
+
+      initAdminTsFormTheme();
+      initializeAdminQuestionForm();
+
+    }
   );
 
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-  /*
-   * ==================================================
-   * NORMAL PAGE LOAD
-   * ==================================================
-   */
+      initAdminTsFormTheme();
+      initializeAdminQuestionForm();
 
-  if (
-    document.readyState !== "loading"
-  ) {
+    }
+  );
 
-    initializeAdminQuestionForm();
-
-  } else {
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      initializeAdminQuestionForm,
-      { once: true }
-    );
-
-  }
+  initAdminTsFormTheme();
+  initializeAdminQuestionForm();
 
 })();
-
 </script>

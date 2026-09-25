@@ -1,20 +1,26 @@
-<div class="admin-ts-page">
+<div class="admin-ts-page admin-question-page">
 
   <div class="admin-ts-header">
 
     <div>
 
       <div class="admin-ts-breadcrumb">
+
         <%= link_to @test_series.title,
                     admin_test_series_path(@test_series) %>
-        /
+
+        <i class="fas fa-chevron-right"></i>
+
         <%= link_to @test.title,
                     admin_test_series_test_path(
                       @test_series,
                       @test
                     ) %>
-        /
-        New Question
+
+        <i class="fas fa-chevron-right"></i>
+
+        <span>New Question</span>
+
       </div>
 
       <h1>Add Question</h1>
@@ -26,8 +32,170 @@
 
     </div>
 
+    <div class="admin-question-header-actions">
+
+    
+
+    </div>
+
   </div>
 
   <%= render "form" %>
 
 </div>
+
+
+<style nonce="<%= content_security_policy_nonce %>">
+
+.admin-question-page {
+  width: 100%;
+}
+
+.admin-question-page .admin-ts-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.admin-question-page .admin-ts-header > div:first-child {
+  min-width: 0;
+}
+
+.admin-question-page .admin-ts-header h1 {
+  display: block !important;
+  margin: 0 !important;
+  color: #202033 !important;
+  font-size: 26px !important;
+  font-weight: 750 !important;
+  line-height: 1.25 !important;
+}
+
+.admin-question-page .admin-ts-header p {
+  display: block !important;
+  margin: 7px 0 0 !important;
+  color: #7b8194 !important;
+  font-size: 13px !important;
+}
+
+.admin-question-page .admin-ts-header p strong {
+  color: #4f46e5 !important;
+}
+
+.admin-question-page .admin-ts-breadcrumb {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 8px !important;
+  color: #8a90a2 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.admin-question-page .admin-ts-breadcrumb a {
+  color: #6366f1 !important;
+  text-decoration: none !important;
+}
+
+.admin-question-page .admin-ts-breadcrumb a:hover {
+  color: #4f46e5 !important;
+}
+
+.admin-question-page .admin-ts-breadcrumb i {
+  color: #a7acba !important;
+  font-size: 8px !important;
+}
+
+.admin-question-page .admin-question-header-actions {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0;
+}
+
+.admin-question-page .admin-ts-theme-toggle {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  color: #5b21b6 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  border-radius: 9px !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 12px rgba(50, 60, 110, .08);
+  transition: .2s ease;
+}
+
+.admin-question-page .admin-ts-theme-toggle:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-header h1 {
+  color: #f5f7ff !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-header p {
+  color: #9da6bd !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-header p strong {
+  color: #a78bfa !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-breadcrumb {
+  color: #858da5 !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-breadcrumb a {
+  color: #a78bfa !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-breadcrumb i {
+  color: #59627b !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-theme-toggle {
+  color: #fbbf24 !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-question-page .admin-ts-theme-toggle:hover {
+  color: #fcd34d !important;
+  background: #252b43 !important;
+  border-color: #596582 !important;
+}
+
+@media (max-width: 600px) {
+
+  .admin-question-page .admin-ts-header {
+    align-items: flex-start !important;
+  }
+
+  .admin-question-page .admin-ts-header h1 {
+    font-size: 21px !important;
+  }
+
+  .admin-question-page .admin-ts-header p {
+    font-size: 12px !important;
+  }
+
+  .admin-question-page .admin-ts-theme-toggle {
+    width: 37px !important;
+    height: 37px !important;
+    min-width: 37px !important;
+  }
+
+}
+
+</style>

@@ -1,24 +1,403 @@
-<div class="admin-ts-page">
+<style nonce="<%= content_security_policy_nonce %>">
 
-  <div class="admin-ts-header">
+.admin-ts-edit-page {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  padding: 24px;
+}
 
-    <div>
+.admin-ts-edit-shell {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
 
-      <div class="admin-ts-breadcrumb">
-        <%= @test_series.title %> /
-        <%= @test_series_test.title %> /
-        Edit
+.admin-ts-edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.admin-ts-edit-breadcrumb {
+  margin-bottom: 7px;
+  color: #7b8194;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.admin-ts-edit-breadcrumb a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.admin-ts-edit-title {
+  margin: 0;
+  color: #202033;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.admin-ts-edit-subtitle {
+  margin: 6px 0 0;
+  color: #7b8194;
+  font-size: 12px;
+}
+
+.admin-ts-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-ts-edit-back,
+.admin-ts-edit-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.admin-ts-edit-back {
+  padding: 8px 13px;
+  color: #4b5563 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  text-decoration: none !important;
+}
+
+.admin-ts-edit-back:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+}
+
+.admin-ts-edit-theme {
+  width: 38px;
+  min-width: 38px;
+  padding: 0;
+  color: #5b21b6 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  cursor: pointer;
+}
+
+.admin-ts-edit-theme:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+}
+
+.admin-ts-edit-form-card {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e3e6ee;
+  border-radius: 15px;
+  box-shadow: 0 7px 25px rgba(25, 25, 50, .045);
+}
+
+body:not(.admin-ts-dark):has(.admin-ts-edit-page),
+body:not(.admin-ts-dark):has(.admin-ts-edit-page) main,
+body:not(.admin-ts-dark):has(.admin-ts-edit-page) .main-content,
+body:not(.admin-ts-dark):has(.admin-ts-edit-page) .admin-main,
+body:not(.admin-ts-dark):has(.admin-ts-edit-page) .content-wrapper {
+  background: #f3f5ff !important;
+}
+
+body.admin-ts-dark:has(.admin-ts-edit-page),
+body.admin-ts-dark:has(.admin-ts-edit-page) main,
+body.admin-ts-dark:has(.admin-ts-edit-page) .main-content,
+body.admin-ts-dark:has(.admin-ts-edit-page) .admin-main,
+body.admin-ts-dark:has(.admin-ts-edit-page) .content-wrapper {
+  background: #0e1222 !important;
+}
+
+body.admin-ts-dark .admin-ts-edit-breadcrumb {
+  color: #8f98b1;
+}
+
+body.admin-ts-dark .admin-ts-edit-breadcrumb a {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-edit-title {
+  color: #f5f7ff;
+}
+
+body.admin-ts-dark .admin-ts-edit-subtitle {
+  color: #9da6bd;
+}
+
+body.admin-ts-dark .admin-ts-edit-back {
+  color: #c7ccda !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-edit-back:hover {
+  color: #c4b5fd !important;
+  background: #252044 !important;
+  border-color: #5146a8 !important;
+}
+
+body.admin-ts-dark .admin-ts-edit-theme {
+  color: #fbbf24 !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-edit-theme:hover {
+  color: #fcd34d !important;
+  background: #252b43 !important;
+  border-color: #596582 !important;
+}
+
+body.admin-ts-dark .admin-ts-edit-form-card {
+  background: #191e33;
+  border-color: #303852;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+}
+
+@media (max-width: 650px) {
+
+  .admin-ts-edit-page {
+    padding: 14px;
+  }
+
+  .admin-ts-edit-header {
+    align-items: flex-start;
+  }
+
+  .admin-ts-edit-title {
+    font-size: 21px;
+  }
+
+  .admin-ts-edit-subtitle {
+    font-size: 10px;
+  }
+
+  .admin-ts-edit-back {
+    width: 38px;
+    padding: 0;
+  }
+
+  .admin-ts-edit-back span {
+    display: none;
+  }
+
+}
+
+@media (max-width: 430px) {
+
+  .admin-ts-edit-page {
+    padding: 9px;
+  }
+
+  .admin-ts-edit-title {
+    font-size: 19px;
+  }
+
+  .admin-ts-edit-breadcrumb {
+    font-size: 9px;
+  }
+
+  .admin-ts-edit-subtitle {
+    display: none;
+  }
+
+  .admin-ts-edit-form-card {
+    border-radius: 12px;
+  }
+
+}
+
+</style>
+
+
+<div class="admin-ts-edit-page">
+
+  <div class="admin-ts-edit-shell">
+
+    <div class="admin-ts-edit-header">
+
+      <div>
+
+        <div class="admin-ts-edit-breadcrumb">
+
+          <%= link_to @test_series.title,
+                      admin_test_series_path(@test_series) %>
+
+          /
+
+          <%= link_to @test_series_test.title,
+                      admin_test_series_test_path(
+                        @test_series,
+                        @test_series_test
+                      ) %>
+
+          / Edit
+
+        </div>
+
+        <h1 class="admin-ts-edit-title">
+          Edit Test
+        </h1>
+
+        <p class="admin-ts-edit-subtitle">
+          Update the test information and configuration.
+        </p>
+
       </div>
 
-      <h1>Edit Test</h1>
+
+      <div class="admin-ts-edit-actions">
+
+        <%= link_to admin_test_series_test_path(
+                      @test_series,
+                      @test_series_test
+                    ),
+                    class: "admin-ts-edit-back" do %>
+
+          <i class="fas fa-arrow-left"></i>
+
+          <span>Back</span>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <div class="admin-ts-edit-form-card">
+
+      <%= render "form" %>
 
     </div>
 
   </div>
 
-
-  <div class="admin-ts-form-card">
-    <%= render "form" %>
-  </div>
-
 </div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function() {
+
+  function applyAdminTsEditTheme() {
+
+    const isDark =
+      localStorage.getItem("admin-ts-theme") === "dark";
+
+    const icon =
+      document.getElementById("adminTsEditThemeIcon");
+
+    const toggle =
+      document.getElementById("adminTsEditThemeToggle");
+
+    document.body.classList.toggle(
+      "admin-ts-dark",
+      isDark
+    );
+
+    if (icon) {
+
+      icon.classList.remove(
+        "fa-moon",
+        "fa-sun"
+      );
+
+      icon.classList.add(
+        isDark ? "fa-sun" : "fa-moon"
+      );
+
+    }
+
+    if (toggle) {
+
+      const label =
+        isDark
+          ? "Switch to day mode"
+          : "Switch to night mode";
+
+      toggle.setAttribute(
+        "aria-label",
+        label
+      );
+
+      toggle.setAttribute(
+        "title",
+        label
+      );
+
+    }
+
+  }
+
+  function initAdminTsEditTheme() {
+
+    applyAdminTsEditTheme();
+
+    const toggle =
+      document.getElementById(
+        "adminTsEditThemeToggle"
+      );
+
+    if (
+      !toggle ||
+      toggle.dataset.themeReady === "true"
+    ) {
+      return;
+    }
+
+    toggle.dataset.themeReady = "true";
+
+    toggle.addEventListener(
+      "click",
+      function() {
+
+        const isDark =
+          !document.body.classList.contains(
+            "admin-ts-dark"
+          );
+
+        document.body.classList.toggle(
+          "admin-ts-dark",
+          isDark
+        );
+
+        localStorage.setItem(
+          "admin-ts-theme",
+          isDark ? "dark" : "light"
+        );
+
+        applyAdminTsEditTheme();
+
+      }
+    );
+
+  }
+
+  document.addEventListener(
+    "turbo:load",
+    initAdminTsEditTheme
+  );
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initAdminTsEditTheme
+  );
+
+  initAdminTsEditTheme();
+
+})();
+</script>

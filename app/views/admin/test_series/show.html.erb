@@ -1,29 +1,34 @@
 <style nonce="<%= content_security_policy_nonce %>">
-
-  /* =========================================================
-   ADMIN TEST SERIES — SHOW PAGE
-   ========================================================= */
-
 .admin-ts-page {
   width: 100%;
-  padding: 28px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 14px 14px 35px;
+  color: #172554;
 }
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+body:has(.admin-ts-page) {
+  background: #f3f5ff !important;
+}
+
+body:has(.admin-ts-page) main,
+body:has(.admin-ts-page) .main-content,
+body:has(.admin-ts-page) .admin-main,
+body:has(.admin-ts-page) .content-wrapper {
+  background: #f3f5ff !important;
+}
 
 .admin-ts-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 28px;
+  gap: 20px;
+  margin-bottom: 25px;
 }
 
 .admin-ts-breadcrumb {
-  margin-bottom: 8px;
-  color: #7c83a1;
+  margin-bottom: 6px;
+  color: #6b7280;
   font-size: 13px;
   font-weight: 500;
 }
@@ -31,7 +36,6 @@
 .admin-ts-breadcrumb a {
   color: #6366f1;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
 
 .admin-ts-breadcrumb a:hover {
@@ -39,19 +43,19 @@
 }
 
 .admin-ts-header h1 {
-  margin: 0 0 8px;
-  color: #17172a;
+  margin: 0 0 5px;
+  color: #14245a;
   font-size: 30px;
-  line-height: 1.25;
+  line-height: 1.2;
   font-weight: 750;
 }
 
 .admin-ts-header p {
   max-width: 760px;
   margin: 0;
-  color: #6b7280;
+  color: #64748b;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .admin-ts-header-actions {
@@ -61,56 +65,67 @@
   flex-shrink: 0;
 }
 
-/* =========================================================
-   BUTTONS
-   ========================================================= */
+.admin-ts-theme-toggle {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #e2e6f0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #5b21b6;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(50, 60, 110, .08);
+  transition: .2s ease;
+}
+
+.admin-ts-theme-toggle:hover {
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+  transform: translateY(-1px);
+}
 
 .admin-ts-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-
   min-height: 42px;
   padding: 10px 17px;
-
   border: 1px solid transparent;
-  border-radius: 9px;
-
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 650;
   line-height: 1;
   text-decoration: none;
-
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: .2s ease;
 }
 
 .admin-ts-btn:hover {
   transform: translateY(-1px);
+  text-decoration: none;
 }
 
 .admin-ts-btn-primary {
   color: #ffffff;
-  background: linear-gradient(135deg, #6366f1, #7c3aed);
-  box-shadow: 0 5px 16px rgba(99, 102, 241, 0.18);
+  background: linear-gradient(135deg, #6527df, #4f46e5);
+  box-shadow: 0 8px 22px rgba(91, 55, 220, .22);
 }
 
 .admin-ts-btn-primary:hover {
   color: #ffffff;
-  background: linear-gradient(135deg, #4f46e5, #6d28d9);
-  box-shadow: 0 7px 20px rgba(99, 102, 241, 0.25);
+  background: linear-gradient(135deg, #5720c9, #4338ca);
 }
 
 .admin-ts-btn-light {
-  color: #374151;
+  color: #475569;
   background: #ffffff;
-  border-color: #e5e7eb;
+  border-color: #e2e6f0;
+  box-shadow: 0 5px 15px rgba(30, 41, 59, .05);
 }
 
 .admin-ts-btn-light:hover {
@@ -119,80 +134,76 @@
   background: #f8f9ff;
 }
 
-/* =========================================================
-   INFO CARDS
-   ========================================================= */
-
 .admin-ts-info-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 36px;
+  gap: 16px;
+  margin-bottom: 30px;
 }
 
 .admin-ts-info-card {
-  min-width: 0;
-  padding: 18px;
+  position: relative;
+  min-height: 120px;
+  padding: 19px 20px;
+  overflow: hidden;
+  background: #ffffff !important;
+  border: 1px solid #e4e7f1;
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(45, 55, 100, .07);
+}
 
-  background: #ffffff;
-  border: 1px solid #e8eaf1;
-  border-radius: 12px;
-
-  box-shadow: 0 4px 14px rgba(25, 25, 50, 0.04);
+.admin-ts-info-card::after {
+  content: "";
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  right: -17px;
+  bottom: -24px;
+  border-radius: 50%;
+  background: #f1f0ff;
 }
 
 .admin-ts-info-card span {
+  position: relative;
+  z-index: 2;
   display: block;
-  margin-bottom: 7px;
-
-  color: #8a90a6;
+  margin-bottom: 12px;
+  color: #65708a;
   font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 650;
 }
 
 .admin-ts-info-card strong {
+  position: relative;
+  z-index: 2;
   display: block;
-
-  color: #202033;
-  font-size: 15px;
-  font-weight: 700;
-
+  color: #13265c;
+  font-size: 22px;
+  font-weight: 750;
+  line-height: 1.25;
   overflow-wrap: anywhere;
 }
-
-/* =========================================================
-   SECTION HEADER
-   ========================================================= */
 
 .admin-ts-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-
   margin-bottom: 16px;
 }
 
 .admin-ts-section-header h2 {
   margin: 0 0 4px;
-
-  color: #181827;
+  color: #172554;
   font-size: 21px;
-  font-weight: 700;
+  font-weight: 750;
 }
 
 .admin-ts-section-header p {
   margin: 0;
-
-  color: #858ba0;
+  color: #7b849b;
   font-size: 13px;
 }
-
-/* =========================================================
-   TEST LIST
-   ========================================================= */
 
 .admin-ts-list {
   display: flex;
@@ -205,53 +216,33 @@
   grid-template-columns: 52px minmax(0, 1fr) auto;
   align-items: center;
   gap: 18px;
-
   padding: 18px 20px;
-
-  background: #ffffff;
-  border: 1px solid #e7e9f0;
-  border-radius: 13px;
-
-  box-shadow: 0 4px 14px rgba(25, 25, 50, 0.035);
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+  background: #ffffff !important;
+  border: 1px solid #e4e7f1;
+  border-radius: 15px;
+  box-shadow: 0 7px 22px rgba(45, 55, 100, .06);
+  transition: .2s ease;
 }
 
 .admin-ts-list-item:hover {
-  border-color: #d9d7ff;
-  box-shadow: 0 8px 22px rgba(45, 45, 90, 0.07);
+  border-color: #d6d2ff;
+  box-shadow: 0 10px 28px rgba(60, 50, 130, .09);
   transform: translateY(-1px);
 }
-
-/* =========================================================
-   TEST NUMBER
-   ========================================================= */
 
 .admin-ts-list-number {
   width: 46px;
   height: 46px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 11px;
-
+  border-radius: 12px;
   color: #ffffff;
-  background: linear-gradient(135deg, #6366f1, #7c3aed);
-
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
   font-size: 16px;
   font-weight: 750;
-
-  box-shadow: 0 5px 14px rgba(99, 102, 241, 0.18);
+  box-shadow: 0 6px 15px rgba(99, 102, 241, .20);
 }
-
-/* =========================================================
-   TEST CONTENT
-   ========================================================= */
 
 .admin-ts-list-content {
   min-width: 0;
@@ -259,28 +250,20 @@
 
 .admin-ts-list-content h3 {
   margin: 0 0 5px;
-
-  color: #1c1c2e;
+  color: #172554;
   font-size: 16px;
-  font-weight: 700;
-
+  font-weight: 750;
   overflow-wrap: anywhere;
 }
 
 .admin-ts-list-content p {
   max-width: 760px;
   margin: 0 0 10px;
-
-  color: #747b91;
+  color: #717b91;
   font-size: 13px;
   line-height: 1.55;
-
   overflow-wrap: anywhere;
 }
-
-/* =========================================================
-   TEST META
-   ========================================================= */
 
 .admin-ts-meta {
   display: flex;
@@ -293,8 +276,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-
-  color: #73798c;
+  color: #707a90;
   font-size: 12px;
   font-weight: 600;
 }
@@ -304,16 +286,11 @@
   font-size: 12px;
 }
 
-/* =========================================================
-   TEST ACTIONS
-   ========================================================= */
-
 .admin-ts-list-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 7px;
-
   flex-shrink: 0;
 }
 
@@ -321,27 +298,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-height: 35px;
   padding: 7px 11px;
-
-  border: 1px solid #e5e7eb;
-  border-radius: 7px;
-
+  border: 1px solid #e2e6ef;
+  border-radius: 8px;
   background: #ffffff;
-
-  color: #4b5563;
+  color: #475569;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 650;
   line-height: 1;
-
   text-decoration: none;
   cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+  transition: .2s ease;
 }
 
 .admin-ts-action:hover {
@@ -350,7 +318,7 @@
 
 .admin-ts-action.view:hover {
   color: #4f46e5;
-  background: #f5f5ff;
+  background: #f5f3ff;
   border-color: #c7d2fe;
 }
 
@@ -362,7 +330,6 @@
 
 .admin-ts-action.delete {
   color: #dc2626;
-  background: #ffffff;
 }
 
 .admin-ts-action.delete:hover {
@@ -371,56 +338,173 @@
   border-color: #fecaca;
 }
 
-/*
-  button_to generates a form around the button.
-  Keep the form from disturbing the action layout.
-*/
 .admin-ts-list-actions form {
   margin: 0;
   padding: 0;
 }
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
 
 .admin-ts-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  min-height: 220px;
+  min-height: 190px;
   padding: 35px;
-
-  background: #ffffff;
-  border: 1px dashed #dfe2eb;
-  border-radius: 13px;
-
+  background: #ffffff !important;
+  border: 1px dashed #d9deeb;
+  border-radius: 15px;
   text-align: center;
-}
-
-.admin-ts-empty.small {
-  min-height: 150px;
 }
 
 .admin-ts-empty i {
   margin-bottom: 12px;
-
-  color: #9ca3af;
+  color: #8b92a8;
   font-size: 30px;
 }
 
 .admin-ts-empty p {
   margin: 0;
-
-  color: #73798c;
+  color: #737c91;
   font-size: 14px;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
+body.admin-ts-dark {
+  background: #0e1222 !important;
+}
+
+body.admin-ts-dark main,
+body.admin-ts-dark .main-content,
+body.admin-ts-dark .admin-main,
+body.admin-ts-dark .content-wrapper {
+  background: #0e1222 !important;
+}
+
+body.admin-ts-dark .admin-ts-page {
+  color: #e5e7eb;
+}
+
+body.admin-ts-dark .admin-ts-breadcrumb {
+  color: #7f8aa3;
+}
+
+body.admin-ts-dark .admin-ts-breadcrumb a {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-header h1 {
+  color: #f8fafc;
+}
+
+body.admin-ts-dark .admin-ts-header p {
+  color: #94a3b8;
+}
+
+body.admin-ts-dark .admin-ts-theme-toggle {
+  background: #1a2035 !important;
+  border-color: #303754 !important;
+  color: #fbbf24 !important;
+}
+
+body.admin-ts-dark .admin-ts-theme-toggle:hover {
+  background: #242b46 !important;
+}
+
+body.admin-ts-dark .admin-ts-btn-light {
+  background: #1a2035 !important;
+  border-color: #303754 !important;
+  color: #cbd5e1 !important;
+}
+
+body.admin-ts-dark .admin-ts-info-card {
+  background: #191e33 !important;
+  border-color: #303754 !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .25);
+}
+
+body.admin-ts-dark .admin-ts-info-card::after {
+  background: #252747;
+}
+
+body.admin-ts-dark .admin-ts-info-card span {
+  color: #8d98b0 !important;
+}
+
+body.admin-ts-dark .admin-ts-info-card strong {
+  color: #f8fafc !important;
+}
+
+body.admin-ts-dark .admin-ts-section-header h2 {
+  color: #f8fafc !important;
+}
+
+body.admin-ts-dark .admin-ts-section-header p {
+  color: #8d98b0 !important;
+}
+
+body.admin-ts-dark .admin-ts-list-item {
+  background: #191e33 !important;
+  border-color: #303754 !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .22);
+}
+
+body.admin-ts-dark .admin-ts-list-item:hover {
+  background: #20263f !important;
+  border-color: #4b4675 !important;
+}
+
+body.admin-ts-dark .admin-ts-list-content h3 {
+  color: #f8fafc !important;
+}
+
+body.admin-ts-dark .admin-ts-list-content p {
+  color: #929db5 !important;
+}
+
+body.admin-ts-dark .admin-ts-meta span {
+  color: #9ba5ba !important;
+}
+
+body.admin-ts-dark .admin-ts-meta i {
+  color: #a78bfa !important;
+}
+
+body.admin-ts-dark .admin-ts-action {
+  background: #222842 !important;
+  border-color: #353c5a !important;
+  color: #cbd5e1 !important;
+}
+
+body.admin-ts-dark .admin-ts-action.view:hover {
+  background: #2d2850 !important;
+  color: #c4b5fd !important;
+}
+
+body.admin-ts-dark .admin-ts-action.edit:hover {
+  background: #192e4b !important;
+  color: #93c5fd !important;
+}
+
+body.admin-ts-dark .admin-ts-action.delete {
+  background: #2a1e2a !important;
+  color: #f87171 !important;
+}
+
+body.admin-ts-dark .admin-ts-action.delete:hover {
+  background: #3a202a !important;
+}
+
+body.admin-ts-dark .admin-ts-empty {
+  background: #191e33 !important;
+  border-color: #353c5a !important;
+}
+
+body.admin-ts-dark .admin-ts-empty i {
+  color: #8d98b0 !important;
+}
+
+body.admin-ts-dark .admin-ts-empty p {
+  color: #929db5 !important;
+}
 
 @media (max-width: 1200px) {
   .admin-ts-info-grid {
@@ -430,10 +514,11 @@
 
 @media (max-width: 900px) {
   .admin-ts-page {
-    padding: 22px;
+    padding: 18px 14px 30px;
   }
 
   .admin-ts-header {
+    align-items: flex-start;
     flex-direction: column;
   }
 
@@ -456,21 +541,18 @@
 }
 
 @media (max-width: 650px) {
-  .admin-ts-page {
-    padding: 16px;
-  }
-
-  .admin-ts-header h1 {
-    font-size: 24px;
-  }
-
   .admin-ts-info-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 11px;
   }
 
   .admin-ts-info-card {
-    padding: 14px;
+    min-height: 105px;
+    padding: 15px;
+  }
+
+  .admin-ts-info-card strong {
+    font-size: 18px;
   }
 
   .admin-ts-section-header {
@@ -503,10 +585,6 @@
   .admin-ts-action {
     width: 100%;
   }
-
-  .admin-ts-meta {
-    gap: 9px 12px;
-  }
 }
 
 @media (max-width: 430px) {
@@ -515,16 +593,46 @@
   }
 
   .admin-ts-header-actions {
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 
   .admin-ts-header-actions .admin-ts-btn {
-    width: 100%;
+    flex: 1;
   }
 
   .admin-ts-list-actions {
     grid-template-columns: 1fr;
   }
+}
+
+
+.admin-ts-theme-toggle {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  border: 1px solid #e2e6f0 !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  color: #5b21b6 !important;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(50, 60, 110, .08);
+  transition: all .2s ease;
+}
+
+.admin-ts-theme-toggle:hover {
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+}
+
+body.admin-ts-dark .admin-ts-theme-toggle {
+  background: #1a2035 !important;
+  border-color: #3b4565 !important;
+  color: #fbbf24 !important;
 }
 </style>
 
@@ -533,26 +641,29 @@
   <div class="admin-ts-header">
 
     <div>
-
       <div class="admin-ts-breadcrumb">
-        <%= link_to "Test Series",
-                    admin_test_series_index_path %>
+        <%= link_to "Test Series", admin_test_series_index_path %>
         /
         <%= @test_series.title %>
       </div>
 
-      <h1>
-        <%= @test_series.title %>
-      </h1>
+      <h1><%= @test_series.title %></h1>
 
       <p>
-        <%= @test_series.description.presence ||
-            "No description available." %>
+        <%= @test_series.description.presence || "No description available." %>
       </p>
-
     </div>
 
     <div class="admin-ts-header-actions">
+
+     <button type="button"
+        class="admin-ts-theme-toggle"
+        id="adminTsThemeToggle"
+        onclick="adminTsToggleTheme()"
+        aria-label="Switch to night mode"
+        title="Switch to night mode">
+  <i class="fas fa-moon" id="adminTsThemeIcon"></i>
+</button>
 
       <%= link_to edit_admin_test_series_path(@test_series),
                   class: "admin-ts-btn admin-ts-btn-primary" do %>
@@ -569,62 +680,45 @@
 
   </div>
 
-
   <div class="admin-ts-info-grid">
 
     <div class="admin-ts-info-card">
       <span>Exam</span>
-      <strong>
-        <%= @test_series.exam_name.presence || "-" %>
-      </strong>
+      <strong><%= @test_series.exam_name.presence || "-" %></strong>
     </div>
 
     <div class="admin-ts-info-card">
       <span>Price</span>
-      <strong>
-        ₹<%= @test_series.price.to_f.round(2) %>
-      </strong>
+      <strong>₹<%= @test_series.price.to_f.round(2) %></strong>
     </div>
 
     <div class="admin-ts-info-card">
       <span>Original Price</span>
-      <strong>
-        ₹<%= @test_series.original_price.to_f.round(2) %>
-      </strong>
+      <strong>₹<%= @test_series.original_price.to_f.round(2) %></strong>
     </div>
 
     <div class="admin-ts-info-card">
       <span>Language</span>
-      <strong>
-        <%= @test_series.language.presence || "-" %>
-      </strong>
+      <strong><%= @test_series.language.presence || "-" %></strong>
     </div>
 
     <div class="admin-ts-info-card">
       <span>Mode</span>
-      <strong>
-        <%= @test_series.mode.presence || "-" %>
-      </strong>
+      <strong><%= @test_series.mode.presence || "-" %></strong>
     </div>
 
     <div class="admin-ts-info-card">
       <span>Status</span>
-      <strong>
-        <%= @test_series.status %>
-      </strong>
+      <strong><%= @test_series.status %></strong>
     </div>
 
   </div>
-
 
   <div class="admin-ts-section-header">
 
     <div>
       <h2>Tests</h2>
-
-      <p>
-        <%= @tests.count %> test(s)
-      </p>
+      <p><%= @tests.count %> test(s)</p>
     </div>
 
     <%= link_to new_admin_test_series_test_path(@test_series),
@@ -634,7 +728,6 @@
     <% end %>
 
   </div>
-
 
   <% if @tests.any? %>
 
@@ -650,13 +743,10 @@
 
           <div class="admin-ts-list-content">
 
-            <h3>
-              <%= test.title %>
-            </h3>
+            <h3><%= test.title %></h3>
 
             <p>
-              <%= test.description.presence ||
-                  "No description available." %>
+              <%= test.description.presence || "No description available." %>
             </p>
 
             <div class="admin-ts-meta">
@@ -683,32 +773,22 @@
 
           <div class="admin-ts-list-actions">
 
-            <%= link_to admin_test_series_test_path(
-                          @test_series,
-                          test
-                        ),
+            <%= link_to admin_test_series_test_path(@test_series, test),
                         class: "admin-ts-action view" do %>
               View
             <% end %>
 
-            <%= link_to edit_admin_test_series_test_path(
-                          @test_series,
-                          test
-                        ),
+            <%= link_to edit_admin_test_series_test_path(@test_series, test),
                         class: "admin-ts-action edit" do %>
               Edit
             <% end %>
 
-            <%= button_to admin_test_series_test_path(
-                            @test_series,
-                            test
-                          ),
+            <%= button_to admin_test_series_test_path(@test_series, test),
                           method: :delete,
                           class: "admin-ts-action delete",
                           form: {
                             data: {
-                              turbo_confirm:
-                                "Delete this test?"
+                              turbo_confirm: "Delete this test?"
                             }
                           } do %>
               Delete
@@ -724,7 +804,7 @@
 
   <% else %>
 
-    <div class="admin-ts-empty small">
+    <div class="admin-ts-empty">
       <i class="fas fa-file-alt"></i>
       <p>No tests have been created yet.</p>
     </div>
@@ -732,3 +812,43 @@
   <% end %>
 
 </div>
+<script nonce="<%= content_security_policy_nonce %>">
+function adminTsApplyTheme() {
+  const isDark = localStorage.getItem("admin-ts-theme") === "dark";
+  const icon = document.getElementById("adminTsThemeIcon");
+  const toggle = document.getElementById("adminTsThemeToggle");
+
+  document.body.classList.toggle("admin-ts-dark", isDark);
+
+  if (icon) {
+    icon.classList.remove("fa-moon", "fa-sun");
+    icon.classList.add(isDark ? "fa-sun" : "fa-moon");
+  }
+
+  if (toggle) {
+    toggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to day mode" : "Switch to night mode"
+    );
+
+    toggle.setAttribute(
+      "title",
+      isDark ? "Switch to day mode" : "Switch to night mode"
+    );
+  }
+}
+
+function adminTsToggleTheme() {
+  const isDark =
+    document.body.classList.toggle("admin-ts-dark");
+
+  localStorage.setItem(
+    "admin-ts-theme",
+    isDark ? "dark" : "light"
+  );
+
+  adminTsApplyTheme();
+}
+
+adminTsApplyTheme();
+</script>

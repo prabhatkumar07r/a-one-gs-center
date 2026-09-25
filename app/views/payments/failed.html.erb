@@ -1,2 +1,146 @@
-<h1>Payments#failed</h1>
-<p>Find me in app/views/payments/failed.html.erb</p>
+<% content_for :title, "Payment Failed | A One GS Center" %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+  .payment-failed-page {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f8f5ff 0%, #ffffff 50%, #f3edff 100%);
+  }
+
+  .payment-failed-card {
+    width: 100%;
+    max-width: 560px;
+    padding: 42px 32px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(128, 9, 226, 0.12);
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(60, 20, 100, 0.12);
+  }
+
+  .payment-failed-icon {
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff1f2;
+    color: #dc2626;
+    font-size: 38px;
+  }
+
+  .payment-failed-card h1 {
+    margin-bottom: 12px;
+    color: #171321;
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .payment-failed-card p {
+    margin: 0 auto 28px;
+    max-width: 430px;
+    color: #6b7280;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .payment-failed-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .payment-failed-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 150px;
+    padding: 13px 20px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.2s ease;
+  }
+
+  .payment-failed-btn-primary {
+    color: #fff;
+    background: #8009e2;
+    box-shadow: 0 10px 25px rgba(128, 9, 226, 0.22);
+  }
+
+  .payment-failed-btn-primary:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    background: #6d07c4;
+  }
+
+  .payment-failed-btn-secondary {
+    color: #374151;
+    background: #f3f4f6;
+  }
+
+  .payment-failed-btn-secondary:hover {
+    color: #111827;
+    background: #e5e7eb;
+  }
+
+  @media (max-width: 576px) {
+    .payment-failed-page {
+      padding: 25px 15px;
+    }
+
+    .payment-failed-card {
+      padding: 35px 22px;
+      border-radius: 22px;
+    }
+
+    .payment-failed-card h1 {
+      font-size: 25px;
+    }
+
+    .payment-failed-actions {
+      flex-direction: column;
+    }
+
+    .payment-failed-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="payment-failed-page">
+  <div class="payment-failed-card">
+
+    <div class="payment-failed-icon">
+      <i class="bi bi-x-lg"></i>
+    </div>
+
+    <h1>Payment Failed</h1>
+
+    <p>
+      We couldn't complete your payment.
+      Don't worry — your enrollment has not been lost.
+      Please try again or return to your payment page.
+    </p>
+
+    <div class="payment-failed-actions">
+      <%= link_to payments_path, class: "payment-failed-btn payment-failed-btn-primary" do %>
+        <i class="bi bi-arrow-repeat"></i>
+        Try Again
+      <% end %>
+
+      <%= link_to root_path, class: "payment-failed-btn payment-failed-btn-secondary" do %>
+        <i class="bi bi-house"></i>
+        Go Home
+      <% end %>
+    </div>
+
+  </div>
+</div>

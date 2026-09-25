@@ -1,147 +1,409 @@
 <style nonce="<%= content_security_policy_nonce %>">
 
-  /* =========================================================
-   ADMIN TEST SERIES — TESTS INDEX
-   ========================================================= */
-
-.admin-ts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.admin-ts-page {
   width: 100%;
+  color: #202033;
 }
 
-/* =========================================================
-   TEST CARD
-   ========================================================= */
-
-.admin-ts-list-item {
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 18px;
-
-  padding: 18px 20px;
-
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 13px;
-
-  box-shadow: 0 3px 12px rgba(25, 25, 50, 0.035);
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.admin-ts-list-item:hover {
-  transform: translateY(-1px);
-  border-color: #d9d6ff;
-  box-shadow: 0 7px 20px rgba(25, 25, 50, 0.07);
-}
-
-/* =========================================================
-   TEST NUMBER
-   ========================================================= */
-
-.admin-ts-list-number {
+.admin-ts-header {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.admin-ts-header > div:first-child {
+  min-width: 0;
+}
+
+.admin-ts-breadcrumb {
+  margin-bottom: 7px;
+  color: #858b9d;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.admin-ts-breadcrumb a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.admin-ts-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.admin-ts-header h1 {
+  margin: 0 0 5px;
+  color: #202033;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.admin-ts-header p {
+  margin: 0;
+  color: #73798c;
+  font-size: 12px;
+}
+
+.admin-ts-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin-ts-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 13px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none !important;
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    transform .18s ease;
+}
 
-  width: 48px;
-  height: 48px;
+.admin-ts-btn-primary {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+  border: 1px solid #6d28d9 !important;
+  box-shadow: 0 5px 14px rgba(79, 70, 229, .18);
+}
 
-  color: #4f46e5;
-  background: #f2f1ff;
+.admin-ts-btn-primary:hover {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #6d28d9, #4338ca) !important;
+  transform: translateY(-1px);
+}
 
-  border: 1px solid #ddd9ff;
-  border-radius: 10px;
+.admin-ts-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
 
+.admin-ts-section-header > div {
+  min-width: 0;
+}
+
+.admin-ts-section-header h2 {
+  margin: 0 0 2px;
+  color: #25263a;
   font-size: 15px;
   font-weight: 800;
 }
 
-/* =========================================================
-   TEST CONTENT
-   ========================================================= */
+.admin-ts-section-header p {
+  margin: 0;
+  color: #7b8194;
+  font-size: 10px;
+}
 
-.admin-ts-list-content {
+.admin-ts-add-question {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 15px !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+  border: 1px solid #6d28d9 !important;
+  border-radius: 8px !important;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none !important;
+  box-shadow: 0 5px 14px rgba(79, 70, 229, .20);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.admin-ts-add-question:hover {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #6d28d9, #4338ca) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, .28);
+}
+
+.admin-ts-question-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  box-shadow: 0 2px 8px rgba(25, 25, 50, .025);
+}
+
+.admin-ts-filter-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-ts-question-search {
+  position: relative;
+  width: 310px;
+  max-width: 100%;
+}
+
+.admin-ts-question-search i {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b91a3;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.admin-ts-question-search input {
+  width: 100%;
+  height: 34px;
+  padding: 7px 11px 7px 31px;
+  color: #25263a;
+  background: #f8f9fc;
+  border: 1px solid #dfe3eb;
+  border-radius: 7px;
+  outline: none;
+  font-family: inherit;
+  font-size: 10px;
+  transition: .18s ease;
+}
+
+.admin-ts-question-search input:hover {
+  border-color: #cfd3df;
+}
+
+.admin-ts-question-search input:focus {
+  border-color: #8b7cf6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
+}
+
+.admin-ts-question-search input::placeholder {
+  color: #9aa0b1;
+}
+
+.admin-ts-language-filter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.admin-ts-language-filter button {
+  min-height: 31px;
+  padding: 5px 10px;
+  color: #6b7280;
+  background: #f8f9fc;
+  border: 1px solid #e1e4eb;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color .16s ease,
+    background .16s ease,
+    border-color .16s ease;
+}
+
+.admin-ts-language-filter button:hover {
+  color: #4f46e5;
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+}
+
+.admin-ts-language-filter button.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border-color: #6d28d9;
+}
+
+.admin-ts-question-filter-count {
+  color: #73798c;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  padding-right: 3px;
+}
+
+.admin-ts-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-ts-question-card {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 58px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border: 1px solid #e3e6ed;
+  border-radius: 8px;
+  box-shadow: 0 2px 7px rgba(25, 25, 50, .025);
+  transition:
+    border-color .16s ease,
+    box-shadow .16s ease,
+    transform .16s ease;
+}
+
+.admin-ts-question-card:hover {
+  border-color: #d6d1ff;
+  box-shadow: 0 4px 12px rgba(25, 25, 50, .05);
+  transform: translateY(-1px);
+}
+
+.admin-ts-question-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 46px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.admin-ts-question-top strong {
+  color: #4f46e5;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.admin-ts-question-top span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 3px 6px;
+  color: #636b7d;
+  background: #f5f6fa;
+  border: 1px solid #e0e3ea;
+  border-radius: 5px;
+  font-size: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-ts-question-body {
   min-width: 0;
 }
 
-.admin-ts-list-content h3 {
-  margin: 0 0 6px;
-
-  color: #202033;
-
-  font-size: 16px;
+.admin-ts-question-text {
+  margin: 0;
+  color: #25263a;
+  font-size: 11px;
   font-weight: 700;
   line-height: 1.4;
-
-  word-break: break-word;
-}
-
-.admin-ts-list-content p {
-  margin: 0 0 12px;
-
-  color: #6b7280;
-
-  font-size: 13px;
-  line-height: 1.55;
-
-  word-break: break-word;
-}
-
-/* =========================================================
-   META INFORMATION
-   ========================================================= */
-
-.admin-ts-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.admin-ts-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 9px;
-
-  color: #6b7280;
-  background: #f8f9fc;
-
-  border: 1px solid #e7e9ef;
-  border-radius: 6px;
-
-  font-size: 11px;
-  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.admin-ts-meta span i {
-  color: #6366f1;
-  font-size: 11px;
+.admin-ts-question-hindi {
+  margin: 3px 0 0;
+  color: #73798c;
+  font-size: 9px;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* =========================================================
-   ACTIONS
-   ========================================================= */
+.admin-ts-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(170px, 1fr));
+  gap: 4px 6px;
+  margin-top: 6px;
+}
 
-.admin-ts-list-actions {
+.admin-ts-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 27px;
+  padding: 4px 7px;
+  color: #596174;
+  background: #f8f9fc;
+  border: 1px solid #e2e5ec;
+  border-radius: 5px;
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.admin-ts-option > strong {
+  flex-shrink: 0;
+  color: #6366f1;
+  font-size: 9px;
+}
+
+.admin-ts-option-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-ts-option.correct {
+  color: #166534;
+  background: #effcf3;
+  border-color: #86efac;
+}
+
+.admin-ts-option.correct > strong {
+  color: #16a34a;
+}
+
+.admin-ts-correct {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 3px 5px;
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 4px;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.admin-ts-question-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 7px;
-
-  white-space: nowrap;
+  gap: 4px;
+  padding: 0;
+  background: transparent;
+  border: 0;
 }
 
-.admin-ts-list-actions form {
+.admin-ts-question-actions form {
   margin: 0;
   padding: 0;
 }
@@ -150,26 +412,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 34px;
-  padding: 7px 11px;
-
-  border-radius: 7px;
-
+  gap: 4px;
+  min-height: 27px;
+  padding: 4px 8px;
+  border-radius: 5px;
   font-family: inherit;
-  font-size: 12px;
-  font-weight: 650;
-
-  text-decoration: none;
+  font-size: 9px;
+  font-weight: 700;
+  text-decoration: none !important;
   white-space: nowrap;
-
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+    background .16s ease,
+    border-color .16s ease,
+    color .16s ease;
 }
-
-/* View */
 
 .admin-ts-action.view {
   color: #2563eb;
@@ -183,8 +439,6 @@
   border-color: #93c5fd;
 }
 
-/* Edit */
-
 .admin-ts-action.edit {
   color: #4f46e5;
   background: #f5f3ff;
@@ -197,13 +451,10 @@
   border-color: #c4b5fd;
 }
 
-/* Delete */
-
 .admin-ts-action.delete {
   color: #dc2626;
   background: #fff7f7;
   border: 1px solid #fecaca;
-
   cursor: pointer;
 }
 
@@ -213,133 +464,381 @@
   border-color: #fca5a5;
 }
 
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
 .admin-ts-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  min-height: 240px;
-  padding: 35px 20px;
-
+  min-height: 170px;
+  padding: 25px;
   background: #ffffff;
   border: 1px dashed #d9dce5;
-  border-radius: 13px;
-
+  border-radius: 10px;
   text-align: center;
 }
 
 .admin-ts-empty i {
-  margin-bottom: 13px;
-
+  margin-bottom: 9px;
   color: #a5a9b8;
-  font-size: 34px;
+  font-size: 25px;
 }
 
 .admin-ts-empty h3 {
-  margin: 0 0 6px;
-
+  margin: 0 0 5px;
   color: #303044;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 700;
 }
 
 .admin-ts-empty p {
   margin: 0;
-
   color: #7b8194;
-  font-size: 13px;
+  font-size: 11px;
 }
 
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-  .admin-ts-list-item {
-    grid-template-columns: 50px minmax(0, 1fr);
-    gap: 15px;
-  }
-
-  .admin-ts-list-actions {
-    grid-column: 2;
-
-    justify-content: flex-start;
-    padding-top: 2px;
-  }
+.admin-ts-question-no-results {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 110px;
+  margin-top: 6px;
+  padding: 20px;
+  color: #7b8194;
+  background: #ffffff;
+  border: 1px dashed #dfe2eb;
+  border-radius: 8px;
+  text-align: center;
 }
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-  .admin-ts-list-item {
-    grid-template-columns: 1fr;
-    gap: 12px;
-
-    padding: 15px;
-  }
-
-  .admin-ts-list-number {
-    width: 42px;
-    height: 42px;
-
-    font-size: 13px;
-  }
-
-  .admin-ts-list-content h3 {
-    font-size: 15px;
-  }
-
-  .admin-ts-list-content p {
-    font-size: 12px;
-  }
-
-  .admin-ts-list-actions {
-    grid-column: auto;
-
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
-  }
-
-  .admin-ts-list-actions form {
-    width: 100%;
-  }
-
-  .admin-ts-list-actions .admin-ts-action {
-    width: 100%;
-  }
+.admin-ts-question-no-results i {
+  margin-bottom: 3px;
+  color: #8b7cf6;
+  font-size: 20px;
 }
 
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
+.admin-ts-question-no-results strong {
+  color: #303044;
+  font-size: 12px;
+}
 
-@media (max-width: 400px) {
+.admin-ts-question-no-results span {
+  color: #858b9d;
+  font-size: 10px;
+}
 
-  .admin-ts-meta {
+body:not(.admin-ts-dark):has(.admin-ts-page),
+body:not(.admin-ts-dark):has(.admin-ts-page) main,
+body:not(.admin-ts-dark):has(.admin-ts-page) .main-content,
+body:not(.admin-ts-dark):has(.admin-ts-page) .admin-main,
+body:not(.admin-ts-dark):has(.admin-ts-page) .content-wrapper {
+  background: #f3f5ff !important;
+}
+
+body.admin-ts-dark:has(.admin-ts-page),
+body.admin-ts-dark:has(.admin-ts-page) main,
+body.admin-ts-dark:has(.admin-ts-page) .main-content,
+body.admin-ts-dark:has(.admin-ts-page) .admin-main,
+body.admin-ts-dark:has(.admin-ts-page) .content-wrapper {
+  background: #0e1222 !important;
+}
+
+body.admin-ts-dark .admin-ts-header h1 {
+  color: #f5f7ff;
+}
+
+body.admin-ts-dark .admin-ts-header p {
+  color: #a7aec2;
+}
+
+body.admin-ts-dark .admin-ts-breadcrumb {
+  color: #8f98b1;
+}
+
+body.admin-ts-dark .admin-ts-breadcrumb a {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-section-header h2 {
+  color: #f4f5fb;
+}
+
+body.admin-ts-dark .admin-ts-section-header p {
+  color: #9da6bd;
+}
+
+body.admin-ts-dark .admin-ts-question-filter {
+  background: #191e33;
+  border-color: #303852;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+}
+
+body.admin-ts-dark .admin-ts-question-search input {
+  color: #eef1f8;
+  background: #151a2c;
+  border-color: #343c58;
+}
+
+body.admin-ts-dark .admin-ts-question-search input:focus {
+  background: #191e33;
+  border-color: #818cf8;
+}
+
+body.admin-ts-dark .admin-ts-question-search input::placeholder {
+  color: #737c96;
+}
+
+body.admin-ts-dark .admin-ts-question-search i {
+  color: #8d96ae;
+}
+
+body.admin-ts-dark .admin-ts-language-filter button {
+  color: #aeb6ca;
+  background: #151a2c;
+  border-color: #343c58;
+}
+
+body.admin-ts-dark .admin-ts-language-filter button:hover {
+  color: #c4b5fd;
+  background: #252044;
+  border-color: #5146a8;
+}
+
+body.admin-ts-dark .admin-ts-language-filter button.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  border-color: #7c3aed;
+}
+
+body.admin-ts-dark .admin-ts-question-filter-count {
+  color: #969fb7;
+}
+
+body.admin-ts-dark .admin-ts-question-card {
+  background: #191e33;
+  border-color: #303852;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+}
+
+body.admin-ts-dark .admin-ts-question-card:hover {
+  border-color: #5146a8;
+}
+
+body.admin-ts-dark .admin-ts-question-top strong {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-question-top span {
+  color: #b4bbce;
+  background: #20263c;
+  border-color: #39415d;
+}
+
+body.admin-ts-dark .admin-ts-question-text {
+  color: #f1f3f8;
+}
+
+body.admin-ts-dark .admin-ts-question-hindi {
+  color: #a8afc2;
+}
+
+body.admin-ts-dark .admin-ts-option {
+  color: #c5cada;
+  background: #151a2c;
+  border-color: #343c58;
+}
+
+body.admin-ts-dark .admin-ts-option > strong {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-option.correct {
+  color: #b7efc6;
+  background: #12271d;
+  border-color: #28623a;
+}
+
+body.admin-ts-dark .admin-ts-option.correct > strong {
+  color: #4ade80;
+}
+
+body.admin-ts-dark .admin-ts-correct {
+  color: #86efac;
+  background: #153522;
+  border-color: #28623a;
+}
+
+body.admin-ts-dark .admin-ts-action.view {
+  color: #93c5fd;
+  background: #172641;
+  border-color: #315b91;
+}
+
+body.admin-ts-dark .admin-ts-action.view:hover {
+  color: #bfdbfe;
+  background: #1c3153;
+}
+
+body.admin-ts-dark .admin-ts-action.edit {
+  color: #c4b5fd;
+  background: #252044;
+  border-color: #5146a8;
+}
+
+body.admin-ts-dark .admin-ts-action.edit:hover {
+  color: #ddd6fe;
+  background: #30285a;
+}
+
+body.admin-ts-dark .admin-ts-action.delete {
+  color: #fca5a5;
+  background: #351b22;
+  border-color: #71313d;
+}
+
+body.admin-ts-dark .admin-ts-action.delete:hover {
+  color: #fecaca;
+  background: #46202a;
+}
+
+body.admin-ts-dark .admin-ts-empty {
+  background: #191e33;
+  border-color: #303852;
+}
+
+body.admin-ts-dark .admin-ts-empty i {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-empty h3 {
+  color: #f4f5fb;
+}
+
+body.admin-ts-dark .admin-ts-empty p {
+  color: #9ca5bc;
+}
+
+body.admin-ts-dark .admin-ts-question-no-results {
+  color: #9ca5bc;
+  background: #191e33;
+  border-color: #303852;
+}
+
+body.admin-ts-dark .admin-ts-question-no-results strong {
+  color: #f0f2f7;
+}
+
+body.admin-ts-dark .admin-ts-question-no-results span {
+  color: #929ab3;
+}
+
+@media (max-width: 1100px) {
+
+  .admin-ts-question-card {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+  }
+
+  .admin-ts-options {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .admin-ts-action {
+    padding: 4px 6px;
+  }
+
+}
+
+@media (max-width: 850px) {
+
+  .admin-ts-question-filter {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .admin-ts-meta span {
-    width: fit-content;
+  .admin-ts-filter-left {
+    width: 100%;
   }
 
-  .admin-ts-list-actions {
+  .admin-ts-question-search {
+    width: 100%;
+  }
+
+  .admin-ts-question-filter-count {
+    text-align: right;
+  }
+
+  .admin-ts-question-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .admin-ts-question-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .admin-ts-header {
+    flex-direction: column;
+  }
+
+  .admin-ts-header-actions {
+    width: 100%;
+  }
+
+  .admin-ts-header-actions .admin-ts-btn {
+    flex: 1;
+  }
+
+  .admin-ts-filter-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-ts-language-filter {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .admin-ts-language-filter button {
+    flex: 1;
+    min-width: 65px;
+  }
+
+  .admin-ts-question-card {
+    grid-template-columns: 38px minmax(0, 1fr);
+    padding: 8px;
+  }
+
+  .admin-ts-question-top {
+    min-width: 38px;
+  }
+
+  .admin-ts-question-text {
+    font-size: 10px;
+  }
+
+  .admin-ts-question-hindi {
+    font-size: 8px;
+  }
+
+  .admin-ts-options {
     grid-template-columns: 1fr;
   }
+
+  .admin-ts-question-actions {
+    grid-column: 1 / -1;
+  }
+
+  .admin-ts-question-actions .admin-ts-action {
+    flex: 1;
+  }
+
 }
+
 </style>
 
 <div class="admin-ts-page">
@@ -353,99 +852,236 @@
                     admin_test_series_index_path %>
         /
         <%= @test_series.title %>
-        / Tests
+        /
+        <%= link_to "Tests",
+                    admin_test_series_path(@test_series) %>
+        /
+        <%= @test.title %>
       </div>
 
-      <h1>Tests</h1>
+      <h1>Questions</h1>
 
       <p>
-        Manage tests in this Test Series.
+        Manage questions for this test.
       </p>
 
     </div>
 
-    <%= link_to new_admin_test_series_test_path(@test_series),
-                class: "admin-ts-btn admin-ts-btn-primary" do %>
-      <i class="fas fa-plus"></i>
-      Add Test
-    <% end %>
+    <div class="admin-ts-header-actions">
+
+      <%= link_to new_admin_test_series_test_question_path(
+                    @test_series,
+                    @test_series_test
+                  ),
+                  class: "admin-ts-add-question" do %>
+        <i class="fas fa-plus"></i>
+        Add Question
+      <% end %>
+
+    </div>
 
   </div>
 
+  <div class="admin-ts-section-header">
 
-  <div class="admin-ts-list">
+    <div>
+      <h2>Questions</h2>
+      <p>
+        <%= @questions.count %> question(s)
+      </p>
+    </div>
 
-    <% if @test_series_tests.any? %>
+  </div>
 
-      <% @test_series_tests.each do |test| %>
+  <% if @questions.any? %>
 
-        <div class="admin-ts-list-item">
+    <div class="admin-ts-question-filter">
 
-          <div class="admin-ts-list-number">
-            <%= test.test_number %>
+      <div class="admin-ts-filter-left">
+
+        <div class="admin-ts-question-search">
+
+          <i class="fas fa-search"></i>
+
+          <input
+            type="search"
+            id="adminQuestionSearch"
+            placeholder="Search question, Hindi, Hinglish or option..."
+            autocomplete="off">
+
+        </div>
+
+        <div
+          class="admin-ts-language-filter"
+          id="adminQuestionLanguageFilter">
+
+          <button
+            type="button"
+            class="active"
+            data-language="all">
+            All
+          </button>
+
+          <button
+            type="button"
+            data-language="hindi">
+            Hindi
+          </button>
+
+          <button
+            type="button"
+            data-language="hinglish">
+            Hinglish
+          </button>
+
+          <button
+            type="button"
+            data-language="english">
+            English
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="admin-ts-question-filter-count">
+
+        <span id="adminQuestionVisibleCount">
+          <%= @questions.count %>
+        </span>
+
+        of
+
+        <%= @questions.count %>
+
+        Questions
+
+      </div>
+
+    </div>
+
+    <div
+      class="admin-ts-question-list"
+      id="adminQuestionList">
+
+      <% @questions.each_with_index do |question, question_index| %>
+
+        <% option_texts = question.test_series_options.map { |option| option.option_text rescue nil }.compact %>
+
+        <% searchable_text = [
+             question.position,
+             question.question_text,
+             question.question_text_hindi,
+             question.marks,
+             option_texts
+           ].flatten.compact.join(" ") %>
+
+        <div
+          class="admin-ts-question-card"
+          data-question-search="<%= searchable_text.downcase %>"
+          data-question-language="<%= question.question_text.to_s.match?(/[\u0900-\u097F]/) ? 'hindi' : 'english' %>"
+          data-question-has-hindi="<%= question.question_text.to_s.match?(/[\u0900-\u097F]/) || question.question_text_hindi.to_s.match?(/[\u0900-\u097F]/) %>"
+          data-question-has-latin-hindi="<%= searchable_text.downcase.match?(/\b(ka|ki|ke|kya|hai|hain|tha|thi|the|ko|se|me|mein|par|aur|ya|ye|woh|is|us|kis|kise|kaun|kyun|kab|kahan|kitna|kitne|hoga|hoti|hona|kar|karo|karke|wala|wali|wale|nahi|nahin|sab|ek|do|seva|samaj|bharat|rajya|desh|itihas|vigyan)\b/) %>">
+
+          <div class="admin-ts-question-top">
+
+            <strong>
+              Q<%= question.position || question_index + 1 %>.
+            </strong>
+
+            <span>
+              <%= question.marks %> Mark
+            </span>
+
           </div>
 
-          <div class="admin-ts-list-content">
+          <div class="admin-ts-question-body">
 
-            <h3>
-              <%= test.title %>
-            </h3>
-
-            <p>
-              <%= test.description.presence ||
-                  "No description." %>
+            <p class="admin-ts-question-text"
+               title="<%= question.question_text %>">
+              <%= question.question_text %>
             </p>
 
-            <div class="admin-ts-meta">
+            <% if question.question_text_hindi.present? %>
 
-              <span>
-                <i class="fas fa-question-circle"></i>
-                <%= test.test_series_questions.size %>
-                Questions
-              </span>
+              <p
+                class="admin-ts-question-hindi"
+                title="<%= question.question_text_hindi %>">
+                <%= question.question_text_hindi %>
+              </p>
 
-              <span>
-                <i class="fas fa-clock"></i>
-                <%= test.duration %> Minutes
-              </span>
+            <% end %>
 
-              <span>
-                Status: <%= test.status %>
-              </span>
+            <div class="admin-ts-options">
+
+              <% question.test_series_options.each_with_index do |option, option_index| %>
+
+                <div class="admin-ts-option <%= 'correct' if option.is_correct? %>">
+
+                  <strong>
+                    <%= ("A".ord + option_index).chr %>.
+                  </strong>
+
+                  <span
+                    class="admin-ts-option-text"
+                    title="<%= option.option_text %>">
+                    <%= option.option_text %>
+                  </span>
+
+                  <% if option.is_correct? %>
+
+                    <span class="admin-ts-correct">
+                      <i class="fas fa-check"></i>
+                      Correct
+                    </span>
+
+                  <% end %>
+
+                </div>
+
+              <% end %>
 
             </div>
 
           </div>
 
-          <div class="admin-ts-list-actions">
+          <div class="admin-ts-question-actions">
 
-            <%= link_to "View",
-                        admin_test_series_test_path(
+            <%= link_to admin_test_series_test_question_path(
                           @test_series,
-                          test
+                          @test_series_test,
+                          question
                         ),
-                        class: "admin-ts-action view" %>
+                        class: "admin-ts-action view" do %>
+              <i class="fas fa-eye"></i>
+              View
+            <% end %>
 
-            <%= link_to "Edit",
-                        edit_admin_test_series_test_path(
+            <%= link_to edit_admin_test_series_test_question_path(
                           @test_series,
-                          test
+                          @test_series_test,
+                          question
                         ),
-                        class: "admin-ts-action edit" %>
+                        class: "admin-ts-action edit" do %>
+              <i class="fas fa-edit"></i>
+              Edit
+            <% end %>
 
-            <%= button_to "Delete",
-                          admin_test_series_test_path(
+            <%= button_to admin_test_series_test_question_path(
                             @test_series,
-                            test
+                            @test_series_test,
+                            question
                           ),
                           method: :delete,
                           class: "admin-ts-action delete",
                           form: {
                             data: {
-                              turbo_confirm:
-                                "Delete this test?"
+                              turbo_confirm: "Delete this question?"
                             }
-                          } %>
+                          } do %>
+              <i class="fas fa-trash"></i>
+              Delete
+            <% end %>
 
           </div>
 
@@ -453,16 +1089,193 @@
 
       <% end %>
 
-    <% else %>
+    </div>
 
-      <div class="admin-ts-empty">
-        <i class="fas fa-file-alt"></i>
-        <h3>No Tests</h3>
-        <p>Create the first test for this series.</p>
-      </div>
+    <div
+      class="admin-ts-question-no-results"
+      id="adminQuestionNoResults">
 
-    <% end %>
+      <i class="fas fa-search"></i>
 
-  </div>
+      <strong>
+        No matching questions found
+      </strong>
+
+      <span>
+        Try another question, Hindi, Hinglish, English or option.
+      </span>
+
+    </div>
+
+  <% else %>
+
+    <div class="admin-ts-empty">
+
+      <i class="fas fa-question-circle"></i>
+
+      <h3>
+        No Questions
+      </h3>
+
+      <p>
+        Add the first question to this test.
+      </p>
+
+    </div>
+
+  <% end %>
 
 </div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function() {
+
+  function initAdminQuestionFilter() {
+
+    const search =
+      document.getElementById("adminQuestionSearch");
+
+    const items =
+      document.querySelectorAll(".admin-ts-question-card");
+
+    const count =
+      document.getElementById("adminQuestionVisibleCount");
+
+    const noResults =
+      document.getElementById("adminQuestionNoResults");
+
+    const languageFilter =
+      document.getElementById("adminQuestionLanguageFilter");
+
+    if (!search || !items.length) {
+      return;
+    }
+
+    if (search.dataset.filterReady === "true") {
+      return;
+    }
+
+    search.dataset.filterReady = "true";
+
+    let selectedLanguage = "all";
+
+    function detectLanguage(item) {
+
+      const hasHindi =
+        item.dataset.questionHasHindi === "true";
+
+      const hasLatinHindi =
+        item.dataset.questionHasLatinHindi === "true";
+
+      if (selectedLanguage === "hindi") {
+        return hasHindi;
+      }
+
+      if (selectedLanguage === "hinglish") {
+        return hasLatinHindi && !hasHindi;
+      }
+
+      if (selectedLanguage === "english") {
+        return !hasHindi && !hasLatinHindi;
+      }
+
+      return true;
+    }
+
+    function filterQuestions() {
+
+      const query =
+        search.value
+          .trim()
+          .toLowerCase();
+
+      let visible = 0;
+
+      items.forEach(function(item) {
+
+        const searchableText =
+          item.dataset.questionSearch || "";
+
+        const textMatch =
+          !query ||
+          searchableText.includes(query);
+
+        const languageMatch =
+          detectLanguage(item);
+
+        const matched =
+          textMatch && languageMatch;
+
+        item.style.display =
+          matched ? "" : "none";
+
+        if (matched) {
+          visible++;
+        }
+
+      });
+
+      if (count) {
+        count.textContent = visible;
+      }
+
+      if (noResults) {
+        noResults.style.display =
+          visible === 0 ? "flex" : "none";
+      }
+
+    }
+
+    search.addEventListener(
+      "input",
+      filterQuestions
+    );
+
+    if (languageFilter) {
+
+      languageFilter
+        .querySelectorAll("button")
+        .forEach(function(button) {
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              languageFilter
+                .querySelectorAll("button")
+                .forEach(function(item) {
+                  item.classList.remove("active");
+                });
+
+              button.classList.add("active");
+
+              selectedLanguage =
+                button.dataset.language || "all";
+
+              filterQuestions();
+
+            }
+          );
+
+        });
+
+    }
+
+    filterQuestions();
+
+  }
+
+  document.addEventListener(
+    "turbo:load",
+    initAdminQuestionFilter
+  );
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initAdminQuestionFilter
+  );
+
+  initAdminQuestionFilter();
+
+})();
+</script>

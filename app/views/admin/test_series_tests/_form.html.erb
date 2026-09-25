@@ -1,66 +1,179 @@
 <style nonce="<%= content_security_policy_nonce %>">
 
-  /* =========================================================
-   ADMIN TEST SERIES — TEST CREATE / EDIT FORM
-   ========================================================= */
-
-.admin-ts-form {
+.admin-ts-form-page {
   width: 100%;
-  max-width: 1000px;
+  min-height: calc(100vh - 70px);
+  padding: 24px;
+  color: #202033;
 }
 
-/* =========================================================
-   ERROR MESSAGE
-   ========================================================= */
-
-.admin-ts-errors {
-  margin-bottom: 22px;
-  padding: 15px 18px;
-
-  background: #fff7f7;
-  border: 1px solid #fecaca;
-  border-left: 4px solid #dc2626;
-  border-radius: 10px;
-
-  color: #991b1b;
+body:not(.admin-ts-dark):has(.admin-ts-form-page),
+body:not(.admin-ts-dark):has(.admin-ts-form-page) main,
+body:not(.admin-ts-dark):has(.admin-ts-form-page) .main-content,
+body:not(.admin-ts-dark):has(.admin-ts-form-page) .admin-main,
+body:not(.admin-ts-dark):has(.admin-ts-form-page) .content-wrapper {
+  background: #f3f5ff !important;
 }
 
-.admin-ts-errors strong {
-  display: block;
-  margin-bottom: 8px;
-
-  font-size: 14px;
-  font-weight: 700;
+body.admin-ts-dark:has(.admin-ts-form-page),
+body.admin-ts-dark:has(.admin-ts-form-page) main,
+body.admin-ts-dark:has(.admin-ts-form-page) .main-content,
+body.admin-ts-dark:has(.admin-ts-form-page) .admin-main,
+body.admin-ts-dark:has(.admin-ts-form-page) .content-wrapper {
+  background: #0e1222 !important;
 }
 
-.admin-ts-errors ul {
+.admin-ts-form-shell {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.admin-ts-form-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.admin-ts-form-heading {
+  min-width: 0;
+}
+
+.admin-ts-form-breadcrumb {
+  margin-bottom: 7px;
+  color: #7c8498;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.admin-ts-form-breadcrumb a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.admin-ts-form-breadcrumb a:hover {
+  color: #4f46e5;
+}
+
+.admin-ts-form-title {
   margin: 0;
-  padding-left: 20px;
+  color: #202033;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.2;
 }
 
-.admin-ts-errors li {
-  margin-bottom: 3px;
-
-  font-size: 13px;
+.admin-ts-form-subtitle {
+  margin: 6px 0 0;
+  color: #7b8194;
+  font-size: 12px;
   line-height: 1.5;
 }
 
-/* =========================================================
-   FORM GRID
-   ========================================================= */
+.admin-ts-form-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin-ts-theme-toggle {
+  width: 39px !important;
+  height: 39px !important;
+  min-width: 39px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  color: #5b21b6 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+  border-radius: 9px !important;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(50, 60, 110, .07);
+  transition:
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.admin-ts-theme-toggle:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(79, 70, 229, .10);
+}
+
+.admin-ts-form-card {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e3e6ee;
+  border-radius: 15px;
+  box-shadow: 0 7px 25px rgba(25, 25, 50, .045);
+}
+
+.admin-ts-form-card-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 20px;
+  background: linear-gradient(
+    135deg,
+    #faf9ff,
+    #ffffff
+  );
+  border-bottom: 1px solid #edf0f5;
+}
+
+.admin-ts-form-card-icon {
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #4f46e5
+  );
+  border-radius: 9px;
+  font-size: 13px;
+  box-shadow: 0 5px 12px rgba(79, 70, 229, .18);
+}
+
+.admin-ts-form-card-top h2 {
+  margin: 0;
+  color: #292938;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.admin-ts-form-card-top p {
+  margin: 2px 0 0;
+  color: #8a90a2;
+  font-size: 10px;
+}
+
+.admin-ts-form {
+  width: 100%;
+}
 
 .admin-ts-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-
-  padding: 24px;
-
+  gap: 17px 18px;
+  padding: 21px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-
-  box-shadow: 0 4px 16px rgba(25, 25, 50, 0.04);
 }
 
 .admin-ts-field {
@@ -71,45 +184,31 @@
   grid-column: 1 / -1;
 }
 
-/* =========================================================
-   LABEL
-   ========================================================= */
-
 .admin-ts-field label {
   display: block;
-  margin-bottom: 7px;
-
-  color: #303044;
-
-  font-size: 13px;
-  font-weight: 650;
+  margin-bottom: 6px;
+  color: #36384a;
+  font-size: 11px;
+  font-weight: 750;
 }
-
-/* =========================================================
-   INPUT / SELECT
-   ========================================================= */
 
 .admin-ts-input {
   width: 100%;
-  min-height: 43px;
-
-  padding: 10px 12px;
-
+  min-height: 41px;
+  padding: 9px 11px;
   color: #252536;
   background: #ffffff;
-
-  border: 1px solid #dfe2ea;
+  border: 1px solid #dfe3eb;
   border-radius: 8px;
-
   outline: none;
-
   font-family: inherit;
-  font-size: 14px;
-
+  font-size: 13px;
+  line-height: 1.45;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease,
+    color .18s ease;
 }
 
 .admin-ts-input:hover {
@@ -117,274 +216,752 @@
 }
 
 .admin-ts-input:focus {
+  color: #252536;
+  background: #ffffff;
   border-color: #6366f1;
-
-  box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.10);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
 }
 
 .admin-ts-input::placeholder {
   color: #a1a6b5;
 }
 
-/* =========================================================
-   SELECT
-   ========================================================= */
-
 select.admin-ts-input {
   cursor: pointer;
 }
 
-/* =========================================================
-   TEXTAREA
-   ========================================================= */
-
 .admin-ts-textarea {
-  min-height: 140px;
-
+  min-height: 125px;
   resize: vertical;
-
   line-height: 1.6;
 }
 
-/* =========================================================
-   FORM ACTIONS
-   ========================================================= */
+.admin-ts-field-hint {
+  margin-top: 5px;
+  color: #9298a9;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.admin-ts-errors {
+  margin: 18px 21px 0;
+  padding: 13px 15px;
+  color: #991b1b;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 9px;
+}
+
+.admin-ts-errors strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.admin-ts-errors ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.admin-ts-errors li {
+  margin-bottom: 2px;
+  font-size: 11px;
+  line-height: 1.45;
+}
 
 .admin-ts-form-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-
-  margin-top: 22px;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 15px 21px;
+  background: #fafbfc;
+  border-top: 1px solid #edf0f4;
 }
 
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
 .admin-ts-form-actions .admin-ts-btn {
-  min-height: 40px;
-
-  padding: 9px 16px;
-
+  min-height: 37px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 14px;
   border-radius: 8px;
-
-  font-size: 13px;
-  font-weight: 650;
-
-  text-decoration: none;
-
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: none !important;
   cursor: pointer;
-
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+    background .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease;
 }
 
 .admin-ts-form-actions .admin-ts-btn:hover {
   transform: translateY(-1px);
 }
 
-/* =========================================================
-   TABLET
-   ========================================================= */
+.admin-ts-form-actions .admin-ts-btn-primary {
+  color: #ffffff !important;
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #4f46e5
+  ) !important;
+  border: 1px solid #6d28d9 !important;
+  box-shadow: 0 5px 13px rgba(79, 70, 229, .18);
+}
 
-@media (max-width: 800px) {
+.admin-ts-form-actions .admin-ts-btn-primary:hover {
+  color: #ffffff !important;
+  background: linear-gradient(
+    135deg,
+    #6d28d9,
+    #4338ca
+  ) !important;
+  box-shadow: 0 7px 17px rgba(79, 70, 229, .25);
+}
+
+.admin-ts-form-actions .admin-ts-btn-light {
+  color: #4b5563 !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe3eb !important;
+}
+
+.admin-ts-form-actions .admin-ts-btn-light:hover {
+  color: #4f46e5 !important;
+  background: #f5f3ff !important;
+  border-color: #c4b5fd !important;
+}
+
+body.admin-ts-dark .admin-ts-form-page {
+  color: #f3f4f6;
+}
+
+body.admin-ts-dark .admin-ts-form-breadcrumb {
+  color: #8f98b1;
+}
+
+body.admin-ts-dark .admin-ts-form-breadcrumb a {
+  color: #a78bfa;
+}
+
+body.admin-ts-dark .admin-ts-form-title {
+  color: #f5f7ff;
+}
+
+body.admin-ts-dark .admin-ts-form-subtitle {
+  color: #9da6bd;
+}
+
+body.admin-ts-dark .admin-ts-theme-toggle {
+  color: #fbbf24 !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-theme-toggle:hover {
+  color: #fcd34d !important;
+  background: #252b43 !important;
+  border-color: #596582 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-card {
+  background: #191e33;
+  border-color: #303852;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+}
+
+body.admin-ts-dark .admin-ts-form-card-top {
+  background: linear-gradient(
+    135deg,
+    #191e33,
+    #1b2036
+  );
+  border-bottom-color: #303852;
+}
+
+body.admin-ts-dark .admin-ts-form-card-top h2 {
+  color: #f1f3f8;
+}
+
+body.admin-ts-dark .admin-ts-form-card-top p {
+  color: #929ab3;
+}
+
+body.admin-ts-dark .admin-ts-form-grid {
+  background: #191e33;
+}
+
+body.admin-ts-dark .admin-ts-field label {
+  color: #dce1ee;
+}
+
+body.admin-ts-dark .admin-ts-input {
+  color: #f1f3f8;
+  background: #151a2c;
+  border-color: #39415d;
+}
+
+body.admin-ts-dark .admin-ts-input:hover {
+  border-color: #505b7b;
+}
+
+body.admin-ts-dark .admin-ts-input:focus {
+  color: #f1f3f8;
+  background: #151a2c;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, .14);
+}
+
+body.admin-ts-dark .admin-ts-input::placeholder {
+  color: #737c96;
+}
+
+body.admin-ts-dark .admin-ts-field-hint {
+  color: #737c96;
+}
+
+body.admin-ts-dark .admin-ts-errors {
+  color: #fca5a5;
+  background: #351b22;
+  border-color: #71313d;
+  border-left-color: #ef4444;
+}
+
+body.admin-ts-dark .admin-ts-form-actions {
+  background: #151a2c;
+  border-top-color: #303852;
+}
+
+body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light {
+  color: #c7ccda !important;
+  background: #191e33 !important;
+  border-color: #3b4565 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light:hover {
+  color: #c4b5fd !important;
+  background: #252044 !important;
+  border-color: #5146a8 !important;
+}
+
+body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-primary {
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #6366f1
+  ) !important;
+  border-color: #7c3aed !important;
+}
+
+body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-primary:hover {
+  background: linear-gradient(
+    135deg,
+    #a78bfa,
+    #818cf8
+  ) !important;
+}
+
+@media (max-width: 850px) {
+
+  .admin-ts-form-page {
+    padding: 18px;
+  }
+
+  .admin-ts-form-header {
+    gap: 14px;
+  }
+
+  .admin-ts-form-title {
+    font-size: 22px;
+  }
+
+  .admin-ts-form-grid {
+    gap: 15px;
+    padding: 18px;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .admin-ts-form-page {
+    min-height: calc(100vh - 55px);
+    padding: 12px;
+  }
+
+  .admin-ts-form-header {
+    align-items: flex-start;
+  }
+
+  .admin-ts-form-title {
+    font-size: 20px;
+  }
+
+  .admin-ts-form-subtitle {
+    font-size: 11px;
+  }
+
+  .admin-ts-form-header-actions {
+    gap: 6px;
+  }
+
+  .admin-ts-theme-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px;
+  }
+
+  .admin-ts-form-card {
+    border-radius: 12px;
+  }
+
+  .admin-ts-form-card-top {
+    padding: 13px 14px;
+  }
+
+  .admin-ts-form-card-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
 
   .admin-ts-form-grid {
     grid-template-columns: 1fr;
-    gap: 17px;
-
-    padding: 20px;
+    gap: 14px;
+    padding: 15px;
   }
 
   .admin-ts-field.full {
     grid-column: auto;
   }
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-  .admin-ts-form {
-    max-width: 100%;
-  }
-
-  .admin-ts-form-grid {
-    padding: 16px;
-
-    border-radius: 11px;
-  }
 
   .admin-ts-field label {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .admin-ts-input {
-    min-height: 41px;
-
+    min-height: 40px;
     font-size: 13px;
   }
 
   .admin-ts-textarea {
-    min-height: 120px;
+    min-height: 115px;
+  }
+
+  .admin-ts-errors {
+    margin: 14px 15px 0;
   }
 
   .admin-ts-form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: stretch;
-
-    width: 100%;
+    padding: 13px 15px;
   }
 
   .admin-ts-form-actions .admin-ts-btn {
     width: 100%;
-
-    justify-content: center;
-    text-align: center;
+    min-height: 39px;
   }
+
 }
 
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
+@media (max-width: 420px) {
 
-@media (max-width: 400px) {
+  .admin-ts-form-page {
+    padding: 9px;
+  }
+
+  .admin-ts-form-header {
+    margin-bottom: 12px;
+  }
+
+  .admin-ts-form-title {
+    font-size: 18px;
+  }
+
+  .admin-ts-form-breadcrumb {
+    font-size: 9px;
+  }
+
+  .admin-ts-form-subtitle {
+    display: none;
+  }
 
   .admin-ts-form-grid {
     padding: 13px;
   }
 
-  .admin-ts-input {
-    font-size: 13px;
+  .admin-ts-form-card-top {
+    padding: 12px 13px;
   }
+
+  .admin-ts-form-card-top h2 {
+    font-size: 12px;
+  }
+
+  .admin-ts-form-card-top p {
+    font-size: 9px;
+  }
+
 }
+
 </style>
 
 
-<%= form_with(
-      url: @test_series_test.new_record? ?
-        admin_test_series_tests_path(@test_series) :
-        admin_test_series_test_path(@test_series, @test_series_test),
-      model: @test_series_test,
-      local: true,
-      class: "admin-ts-form"
-    ) do |form| %>
+<div class="admin-ts-form-page">
+
+  <div class="admin-ts-form-shell">
+
+    <div class="admin-ts-form-header">
+
+      <div class="admin-ts-form-heading">
+
+        <div class="admin-ts-form-breadcrumb">
+          <%= link_to "Test Series",
+                      admin_test_series_path(@test_series) %>
+          /
+          <%= @test_series_test.persisted? ? "Edit Test" : "New Test" %>
+        </div>
+
+        <h1 class="admin-ts-form-title">
+          <%= @test_series_test.persisted? ? "Edit Test" : "Create Test" %>
+        </h1>
+
+        <p class="admin-ts-form-subtitle">
+          Configure the test title, number, duration, status and description.
+        </p>
+
+      </div>
+
+      <div class="admin-ts-form-header-actions">
+
+        <button
+          type="button"
+          class="admin-ts-theme-toggle"
+          id="adminTsFormThemeToggle"
+          aria-label="Switch to night mode"
+          title="Switch to night mode">
+
+          <i
+            class="fas fa-moon"
+            id="adminTsFormThemeIcon">
+          </i>
+
+        </button>
+
+      </div>
+
+    </div>
 
 
-  <% if @test_series_test.errors.any? %>
+    <div class="admin-ts-form-card">
 
-    <div class="admin-ts-errors">
+      <div class="admin-ts-form-card-top">
 
-      <strong>
-        <%= pluralize(
-              @test_series_test.errors.count,
-              "error"
-            ) %> prevented saving:
-      </strong>
+        <div class="admin-ts-form-card-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
 
-      <ul>
-        <% @test_series_test.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <div>
+
+          <h2>
+            Test Information
+          </h2>
+
+          <p>
+            Enter the basic details for this test.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <%= form_with(
+            url: @test_series_test.new_record? ?
+              admin_test_series_tests_path(@test_series) :
+              admin_test_series_test_path(
+                @test_series,
+                @test_series_test
+              ),
+            model: @test_series_test,
+            local: true,
+            class: "admin-ts-form"
+          ) do |form| %>
+
+
+        <% if @test_series_test.errors.any? %>
+
+          <div class="admin-ts-errors">
+
+            <strong>
+              <%= pluralize(
+                    @test_series_test.errors.count,
+                    "error"
+                  ) %>
+              prevented saving:
+            </strong>
+
+            <ul>
+
+              <% @test_series_test.errors.full_messages.each do |message| %>
+
+                <li>
+                  <%= message %>
+                </li>
+
+              <% end %>
+
+            </ul>
+
+          </div>
+
         <% end %>
-      </ul>
-
-    </div>
-
-  <% end %>
 
 
-  <div class="admin-ts-form-grid">
-
-    <div class="admin-ts-field full">
-
-      <%= form.label :title, "Test Title" %>
-
-      <%= form.text_field :title,
-            class: "admin-ts-input",
-            placeholder: "Test 1",
-            required: true %>
-
-    </div>
+        <div class="admin-ts-form-grid">
 
 
-    <div class="admin-ts-field">
+          <div class="admin-ts-field full">
 
-      <%= form.label :test_number, "Test Number" %>
+            <%= form.label :title, "Test Title" %>
 
-      <%= form.number_field :test_number,
-            class: "admin-ts-input",
-            min: 1,
-            required: true %>
+            <%= form.text_field(
+                  :title,
+                  class: "admin-ts-input",
+                  placeholder: "Example: History Test 1",
+                  required: true
+                ) %>
 
-    </div>
+            <div class="admin-ts-field-hint">
+              Give this test a short and clear title.
+            </div>
 
-
-    <div class="admin-ts-field">
-
-      <%= form.label :duration,
-                    "Duration (Minutes)" %>
-
-      <%= form.number_field :duration,
-            class: "admin-ts-input",
-            min: 1,
-            required: true %>
-
-    </div>
+          </div>
 
 
-    <div class="admin-ts-field">
+          <div class="admin-ts-field">
 
-      <%= form.label :status, "Status" %>
+            <%= form.label :test_number, "Test Number" %>
 
-      <%= form.select :status,
-            [
-              ["Active", "Active"],
-              ["Inactive", "Inactive"]
-            ],
-            {},
-            class: "admin-ts-input" %>
+            <%= form.number_field(
+                  :test_number,
+                  class: "admin-ts-input",
+                  min: 1,
+                  required: true,
+                  placeholder: "1"
+                ) %>
 
-    </div>
-
-
-    <div class="admin-ts-field full">
-
-      <%= form.label :description, "Description" %>
-
-      <%= form.text_area :description,
-            class: "admin-ts-input admin-ts-textarea",
-            rows: 6 %>
-
-    </div>
-
-  </div>
+          </div>
 
 
-  <div class="admin-ts-form-actions">
+          <div class="admin-ts-field">
 
-    <%= form.submit(
-          @test_series_test.persisted? ?
-            "Update Test" :
-            "Create Test",
-          class: "admin-ts-btn admin-ts-btn-primary"
-        ) %>
+            <%= form.label :duration, "Duration (Minutes)" %>
 
-    <%= link_to "Cancel",
+            <%= form.number_field(
+                  :duration,
+                  class: "admin-ts-input",
+                  min: 1,
+                  required: true,
+                  placeholder: "30"
+                ) %>
+
+          </div>
+
+
+          <div class="admin-ts-field">
+
+            <%= form.label :status, "Status" %>
+
+            <%= form.select(
+                  :status,
+                  [
+                    ["Active", "Active"],
+                    ["Inactive", "Inactive"]
+                  ],
+                  {},
+                  class: "admin-ts-input"
+                ) %>
+
+          </div>
+
+
+          <div class="admin-ts-field full">
+
+            <%= form.label :description, "Description" %>
+
+            <%= form.text_area(
+                  :description,
+                  class: "admin-ts-input admin-ts-textarea",
+                  rows: 6,
+                  placeholder: "Write a short description about this test..."
+                ) %>
+
+            <div class="admin-ts-field-hint">
+              This description can help administrators understand the purpose of the test.
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="admin-ts-form-actions">
+
+          <%= link_to(
                 @test_series_test.persisted? ?
                   admin_test_series_test_path(
                     @test_series,
                     @test_series_test
                   ) :
                   admin_test_series_path(@test_series),
-                class: "admin-ts-btn admin-ts-btn-light" %>
+                class: "admin-ts-btn admin-ts-btn-light"
+              ) do %>
+
+            <i class="fas fa-times"></i>
+            Cancel
+
+          <% end %>
+
+
+          <%= form.submit(
+                @test_series_test.persisted? ?
+                  "Update Test" :
+                  "Create Test",
+                class: "admin-ts-btn admin-ts-btn-primary"
+              ) %>
+
+        </div>
+
+
+      <% end %>
+
+    </div>
 
   </div>
 
-<% end %>
+</div>
+
+
+<script nonce="<%= content_security_policy_nonce %>">
+(function() {
+
+  function applyAdminTsFormTheme() {
+
+    const isDark =
+      localStorage.getItem("admin-ts-theme") === "dark";
+
+    const icon =
+      document.getElementById("adminTsFormThemeIcon");
+
+    const toggle =
+      document.getElementById("adminTsFormThemeToggle");
+
+    document.body.classList.toggle(
+      "admin-ts-dark",
+      isDark
+    );
+
+    if (icon) {
+
+      icon.classList.remove(
+        "fa-moon",
+        "fa-sun"
+      );
+
+      icon.classList.add(
+        isDark ? "fa-sun" : "fa-moon"
+      );
+
+    }
+
+    if (toggle) {
+
+      const label =
+        isDark
+          ? "Switch to day mode"
+          : "Switch to night mode";
+
+      toggle.setAttribute(
+        "aria-label",
+        label
+      );
+
+      toggle.setAttribute(
+        "title",
+        label
+      );
+
+    }
+
+  }
+
+
+  function initAdminTsFormTheme() {
+
+    applyAdminTsFormTheme();
+
+    const toggle =
+      document.getElementById(
+        "adminTsFormThemeToggle"
+      );
+
+    if (
+      !toggle ||
+      toggle.dataset.themeReady === "true"
+    ) {
+      return;
+    }
+
+    toggle.dataset.themeReady = "true";
+
+    toggle.addEventListener(
+      "click",
+      function() {
+
+        const isDark =
+          !document.body.classList.contains(
+            "admin-ts-dark"
+          );
+
+        document.body.classList.toggle(
+          "admin-ts-dark",
+          isDark
+        );
+
+        localStorage.setItem(
+          "admin-ts-theme",
+          isDark ? "dark" : "light"
+        );
+
+        applyAdminTsFormTheme();
+
+      }
+    );
+
+  }
+
+
+  document.addEventListener(
+    "turbo:load",
+    initAdminTsFormTheme
+  );
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initAdminTsFormTheme
+  );
+
+  initAdminTsFormTheme();
+
+})();
+</script>
