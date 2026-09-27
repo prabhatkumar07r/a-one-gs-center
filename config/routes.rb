@@ -795,7 +795,11 @@ Rails.application.routes.draw do
     end
 
   end
+  
 
+  get "/privacy-policy", to: "legal_pages#privacy_policy"
+get "/terms", to: "legal_pages#terms"
+get "/data-deletion", to: "legal_pages#data_deletion"
 
     # ==================================================
   # META WHATSAPP WEBHOOK

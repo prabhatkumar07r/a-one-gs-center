@@ -1,0 +1,283 @@
+<style nonce="<%= content_security_policy_nonce %>">
+  .legal-page {
+    min-height: 100vh;
+    padding: 70px 20px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(128, 9, 226, 0.12), transparent 35%),
+      radial-gradient(circle at 90% 20%, rgba(99, 102, 241, 0.10), transparent 35%),
+      #f7f7fb;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .legal-container {
+    width: min(100%, 920px);
+    margin: 0 auto;
+  }
+
+  .legal-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(128, 9, 226, 0.10);
+    border-radius: 24px;
+    padding: 42px;
+    box-shadow:
+      0 20px 60px rgba(24, 18, 40, 0.08),
+      0 4px 18px rgba(128, 9, 226, 0.05);
+    backdrop-filter: blur(16px);
+  }
+
+  .legal-header {
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #eeeaf5;
+  }
+
+  .legal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    margin-bottom: 16px;
+    border-radius: 999px;
+    background: rgba(128, 9, 226, 0.09);
+    color: #7008c8;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .legal-title {
+    margin: 0;
+    color: #17131f;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+  }
+
+  .legal-subtitle {
+    margin: 12px 0 0;
+    color: #777080;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    color: #45404c;
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .legal-content h2 {
+    margin: 34px 0 12px;
+    color: #241c2d;
+    font-size: 21px;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .legal-content h2:first-child {
+    margin-top: 0;
+  }
+
+  .legal-content p {
+    margin: 0 0 16px;
+  }
+
+  .legal-content ul {
+    margin: 10px 0 20px;
+    padding-left: 24px;
+  }
+
+  .legal-content li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  .legal-content a {
+    color: #7008c8;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .legal-content a:hover {
+    text-decoration: underline;
+  }
+
+  .legal-contact {
+    margin-top: 24px;
+    padding: 22px 24px;
+    border-radius: 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(128, 9, 226, 0.07),
+      rgba(99, 102, 241, 0.05)
+    );
+    border: 1px solid rgba(128, 9, 226, 0.10);
+  }
+
+  .legal-contact strong {
+    color: #241c2d;
+  }
+
+  .legal-footer {
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid #eeeaf5;
+    color: #8b8492;
+    font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    .legal-page {
+      padding: 35px 14px;
+    }
+
+    .legal-card {
+      padding: 26px 20px;
+      border-radius: 18px;
+    }
+
+    .legal-title {
+      font-size: 30px;
+    }
+
+    .legal-content {
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .legal-content h2 {
+      font-size: 19px;
+      margin-top: 28px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .legal-page {
+      padding: 22px 10px;
+    }
+
+    .legal-card {
+      padding: 22px 16px;
+    }
+
+    .legal-badge {
+      font-size: 12px;
+    }
+
+    .legal-title {
+      font-size: 26px;
+    }
+
+    .legal-content ul {
+      padding-left: 20px;
+    }
+
+    .legal-contact {
+      padding: 18px;
+    }
+  }
+</style>
+
+<% content_for :title, "Data Deletion | A One GS Center" %>
+
+<div class="legal-page">
+  <div class="legal-container">
+    <div class="legal-card">
+
+      <div class="legal-header">
+        <div class="legal-badge">
+          🔐 A One GS Center
+        </div>
+
+        <h1 class="legal-title">
+          Data Deletion
+        </h1>
+
+        <p class="legal-subtitle">
+          Instructions for requesting deletion of your personal information.
+        </p>
+      </div>
+
+      <div class="legal-content">
+
+        <p>
+          <strong>A One GS Center</strong> respects your right to request
+          deletion of personal information associated with your account.
+        </p>
+
+        <h2>How to Request Data Deletion</h2>
+
+        <p>
+          To request deletion of your account or personal information, contact
+          A One GS Center using the email address below.
+        </p>
+
+        <div class="legal-contact">
+          <strong>Email:</strong><br>
+          <a href="mailto:supportaonegscenter@gmail.com">
+            supportaonegscenter@gmail.com
+          </a>
+        </div>
+
+        <h2>Information to Include in Your Request</h2>
+
+        <p>
+          Please include the following information in your request:
+        </p>
+
+        <ul>
+          <li>Your registered name</li>
+          <li>Your registered email address</li>
+          <li>Your registered mobile number</li>
+          <li>A clear request to delete your account or personal information</li>
+        </ul>
+
+        <h2>What Happens After Your Request</h2>
+
+        <p>
+          We will review the request and take appropriate steps to delete or
+          anonymize personal information where deletion is applicable.
+        </p>
+
+        <p>
+          Some information may need to be retained where required for legal,
+          accounting, security, fraud-prevention, dispute-resolution, or other
+          legitimate purposes.
+        </p>
+
+        <h2>WhatsApp-Related Data</h2>
+
+        <p>
+          If your mobile number has been used for WhatsApp communication with
+          A One GS Center, you may also request that the relevant information
+          associated with your account be deleted, subject to applicable
+          retention requirements.
+        </p>
+
+        <h2>Contact Information</h2>
+
+        <div class="legal-contact">
+          <strong>A One GS Center</strong><br>
+          Professor Colony, Gali No. 01,<br>
+          Bara Chakia, East Champaran, Bihar
+
+          <p style="margin-top: 14px; margin-bottom: 0;">
+            Email:
+            <a href="mailto:supportaonegscenter@gmail.com">
+              supportaonegscenter@gmail.com
+            </a>
+            <br>
+            Mobile: 9117572747<br>
+            WhatsApp: 9128907297
+          </p>
+        </div>
+
+      </div>
+
+      <div class="legal-footer">
+        <strong>Last updated:</strong> September 2026 · A One GS Center
+      </div>
+
+    </div>
+  </div>
+</div>

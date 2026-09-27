@@ -1,0 +1,408 @@
+<style nonce="<%= content_security_policy_nonce %>">
+  .legal-page {
+    min-height: 100vh;
+    padding: 70px 20px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(128, 9, 226, 0.12), transparent 35%),
+      radial-gradient(circle at 90% 20%, rgba(99, 102, 241, 0.10), transparent 35%),
+      #f7f7fb;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .legal-container {
+    width: min(100%, 920px);
+    margin: 0 auto;
+  }
+
+  .legal-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(128, 9, 226, 0.10);
+    border-radius: 24px;
+    padding: 42px;
+    box-shadow:
+      0 20px 60px rgba(24, 18, 40, 0.08),
+      0 4px 18px rgba(128, 9, 226, 0.05);
+    backdrop-filter: blur(16px);
+  }
+
+  .legal-header {
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #eeeaf5;
+  }
+
+  .legal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    margin-bottom: 16px;
+    border-radius: 999px;
+    background: rgba(128, 9, 226, 0.09);
+    color: #7008c8;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .legal-title {
+    margin: 0;
+    color: #17131f;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+  }
+
+  .legal-subtitle {
+    margin: 12px 0 0;
+    color: #777080;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .legal-content {
+    color: #45404c;
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .legal-content h2 {
+    margin: 34px 0 12px;
+    color: #241c2d;
+    font-size: 21px;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .legal-content h2:first-child {
+    margin-top: 0;
+  }
+
+  .legal-content p {
+    margin: 0 0 16px;
+  }
+
+  .legal-content ul {
+    margin: 10px 0 20px;
+    padding-left: 24px;
+  }
+
+  .legal-content li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  .legal-content a {
+    color: #7008c8;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .legal-content a:hover {
+    text-decoration: underline;
+  }
+
+  .legal-contact {
+    margin-top: 24px;
+    padding: 22px 24px;
+    border-radius: 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(128, 9, 226, 0.07),
+      rgba(99, 102, 241, 0.05)
+    );
+    border: 1px solid rgba(128, 9, 226, 0.10);
+  }
+
+  .legal-contact strong {
+    color: #241c2d;
+  }
+
+  .legal-footer {
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid #eeeaf5;
+    color: #8b8492;
+    font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    .legal-page {
+      padding: 35px 14px;
+    }
+
+    .legal-card {
+      padding: 26px 20px;
+      border-radius: 18px;
+    }
+
+    .legal-title {
+      font-size: 30px;
+    }
+
+    .legal-content {
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .legal-content h2 {
+      font-size: 19px;
+      margin-top: 28px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .legal-page {
+      padding: 22px 10px;
+    }
+
+    .legal-card {
+      padding: 22px 16px;
+    }
+
+    .legal-badge {
+      font-size: 12px;
+    }
+
+    .legal-title {
+      font-size: 26px;
+    }
+
+    .legal-content ul {
+      padding-left: 20px;
+    }
+
+    .legal-contact {
+      padding: 18px;
+    }
+  }
+</style>
+
+<% content_for :title, "Terms of Service | A One GS Center" %>
+
+<div class="legal-page">
+  <div class="legal-container">
+
+    <div class="legal-card">
+
+      <!-- HEADER -->
+      <div class="legal-header">
+
+        <div class="legal-badge">
+          📄 A One GS Center
+        </div>
+
+        <h1 class="legal-title">
+          Terms of Service
+        </h1>
+
+        <p class="legal-subtitle">
+          Please review the terms that apply when using the A One GS Center
+          website, courses, educational services, and related features.
+        </p>
+
+      </div>
+
+
+      <!-- CONTENT -->
+      <div class="legal-content">
+
+        <p>
+          Welcome to <strong>A One GS Center</strong>.
+          By accessing or using
+          <strong>https://aonegscenter.com</strong>,
+          you agree to comply with these Terms of Service.
+        </p>
+
+
+        <h2>1. Use of Our Website</h2>
+
+        <p>
+          You agree to use the website only for lawful purposes and in
+          accordance with these Terms.
+        </p>
+
+        <p>
+          You must not use the website in a way that may damage, disrupt,
+          overload, or interfere with the website or its services.
+        </p>
+
+
+        <h2>2. User Accounts</h2>
+
+        <p>
+          Some features of the website require you to create an account.
+          You are responsible for providing accurate information and
+          maintaining the security of your account credentials.
+        </p>
+
+        <p>
+          You should notify A One GS Center if you believe that your account
+          has been accessed without authorization.
+        </p>
+
+
+        <h2>3. Courses and Educational Content</h2>
+
+        <p>
+          A One GS Center provides educational courses, study materials,
+          videos, test series, e-books, and related educational services.
+        </p>
+
+        <p>
+          Access to paid content may depend on successful enrollment and
+          payment.
+        </p>
+
+        <p>
+          Course content may be updated, modified, or improved from time to
+          time to maintain and improve the educational experience.
+        </p>
+
+
+        <h2>4. Payments</h2>
+
+        <p>
+          Course and other service prices are displayed on the website where
+          applicable. Payments may be processed through third-party payment
+          providers.
+        </p>
+
+        <p>
+          Users should review the applicable payment and enrollment
+          information before completing a transaction.
+        </p>
+
+
+        <h2>5. Course Access</h2>
+
+        <p>
+          Course access is associated with the account used for enrollment.
+          Users must not share paid account access or distribute protected
+          educational content without authorization.
+        </p>
+
+        <p>
+          Access to certain courses or services may be subject to the
+          applicable enrollment status and conditions displayed on the
+          website.
+        </p>
+
+
+        <h2>6. Intellectual Property</h2>
+
+        <p>
+          Website content, educational materials, branding, logos, videos,
+          documents, and other materials provided by A One GS Center may be
+          protected by applicable intellectual-property laws.
+        </p>
+
+        <p>
+          You may not reproduce, redistribute, sell, publish, or commercially
+          exploit protected content without appropriate permission.
+        </p>
+
+
+        <h2>7. Prohibited Activities</h2>
+
+        <ul>
+          <li>Unauthorized access to another user's account</li>
+
+          <li>
+            Attempting to interfere with website security or functionality
+          </li>
+
+          <li>
+            Unauthorized copying or distribution of paid educational content
+          </li>
+
+          <li>
+            Using the website for unlawful activities
+          </li>
+
+          <li>
+            Submitting false or misleading information
+          </li>
+
+          <li>
+            Attempting to access restricted areas or information without
+            authorization
+          </li>
+        </ul>
+
+
+        <h2>8. WhatsApp and Email Notifications</h2>
+
+        <p>
+          Where applicable, A One GS Center may send transactional
+          notifications relating to payments, enrollment, courses, and
+          support through email and WhatsApp.
+        </p>
+
+        <p>
+          These communications may include payment confirmations, payment
+          reminders, enrollment information, and other service-related
+          notifications.
+        </p>
+
+
+        <h2>9. Changes to Services</h2>
+
+        <p>
+          A One GS Center may update, modify, suspend, or discontinue parts
+          of the website or services when necessary.
+        </p>
+
+        <p>
+          We may also update these Terms of Service from time to time.
+          Continued use of the website after an update may be subject to the
+          revised Terms.
+        </p>
+
+
+        <h2>10. Contact</h2>
+
+        <div class="legal-contact">
+
+          <strong>A One GS Center</strong><br>
+
+          Professor Colony, Gali No. 01,<br>
+          Bara Chakia, East Champaran, Bihar
+
+          <p style="margin-top: 14px; margin-bottom: 0;">
+
+            <strong>Email:</strong>
+            <a href="mailto:supportaonegscenter@gmail.com">
+              supportaonegscenter@gmail.com
+            </a>
+
+            <br>
+
+            <strong>Mobile:</strong>
+            9117572747
+
+            <br>
+
+            <strong>WhatsApp:</strong>
+            9128907297
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+      <div class="legal-footer">
+
+        <strong>Last updated:</strong>
+        September 2026
+        · A One GS Center
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
