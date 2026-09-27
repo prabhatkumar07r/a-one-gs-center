@@ -130,38 +130,75 @@ Rails.application.routes.draw do
       to: "smtp_test#index"
 
 
+  # ==================================================
+  # AI
+  # ==================================================
 
+  namespace :ai do
 
-namespace :ai do
-  resources :conversations, only: [:index, :show, :create, :destroy] do
-    resources :messages, only: [:create]
-  end
+    resources :conversations,
+              only: [:index, :show, :create, :destroy] do
 
-  resources :support_requests, only: [:index, :show, :create] do
-    resources :messages,
-              controller: "support_messages",
-              only: [:index, :create]
-  end
-end
+      resources :messages,
+                only: [:create]
 
-namespace :admin do
-  resources :support_requests,
-            only: [:index, :show, :update] do
-    resources :messages,
-              controller: "support_messages",
-              only: [:index, :create]
-  end
-
-  resources :coupons
-
-  resources :payments,
-            only: [:index, :show]
-
-  resources :testimonials do
-    member do
-      patch :toggle_status
     end
+
+    resources :support_requests,
+              only: [:index, :show, :create] do
+
+      resources :messages,
+                controller: "support_messages",
+                only: [:index, :create]
+
+    end
+
   end
+
+
+  # ==================================================
+  # ADMIN
+  # ==================================================
+
+  namespace :admin do
+
+    # Admin support requests
+    resources :support_requests,
+              only: [:index, :show, :update] do
+
+      resources :messages,
+                controller: "support_messages",
+                only: [:index, :create]
+
+    end
+
+
+    # Admin coupons
+    resources :coupons
+
+
+    # Admin payments
+    resources :payments,
+              only: [:index, :show] do
+
+      member do
+        post :send_email
+        post :send_reminder
+      end
+
+    end
+
+
+    # Admin testimonials
+    resources :testimonials do
+
+      member do
+        patch :toggle_status
+      end
+
+    end
+
+
     # ==================================================
     # E-BOOK PAYMENTS
     # ==================================================
@@ -215,8 +252,6 @@ namespace :admin do
       end
 
     end
-
-
 
 
     # ==================================================
@@ -366,17 +401,11 @@ namespace :admin do
 
   namespace :student do
 
-    # ==================================================
-    # STUDENT ENROLLMENTS
-    # ==================================================
-
+    # Student enrollments
     resources :enrollments
 
 
-    # ==================================================
-    # STUDENT PROFILE
-    # ==================================================
-
+    # Student profile
     get "profile",
         to: "profile#show",
         as: :profile
@@ -403,12 +432,7 @@ namespace :admin do
   # E-BOOK MODULE
   # ==================================================
 
-  # --------------------------------------------------
-  # PUBLIC E-BOOKS
-  # --------------------------------------------------
-
-  # IMPORTANT:
-  # Keep /ebooks/my before /ebooks/:id
+  # Public e-books
   get "/ebooks/my",
       to: "ebooks#my",
       as: :my_ebooks
@@ -423,9 +447,9 @@ namespace :admin do
   end
 
 
-  # --------------------------------------------------
+  # ==================================================
   # E-BOOK PURCHASE / PAYMENT
-  # --------------------------------------------------
+  # ==================================================
 
   post "/ebooks/:ebook_id/buy",
        to: "ebook_payments#create",
@@ -448,9 +472,9 @@ namespace :admin do
       as: :ebook_payment_failed
 
 
-  # --------------------------------------------------
+  # ==================================================
   # E-BOOK PDF FILE ACCESS
-  # --------------------------------------------------
+  # ==================================================
 
   resources :ebook_files,
             only: [:show] do
@@ -485,15 +509,21 @@ namespace :admin do
             only: [:index, :show]
 
 
-   # ==================================================
-# COURSE → PLAYLIST → RESOURCES
-# ==================================================
+  # ==================================================
+  # COURSE → PLAYLIST → RESOURCES
+  # ==================================================
 
-resources :courses, only: [] do
-  resources :playlists, only: [] do
-    resources :resources
+  resources :courses,
+            only: [] do
+
+    resources :playlists,
+              only: [] do
+
+      resources :resources
+
+    end
+
   end
-end         
 
 
   # ==================================================
@@ -528,64 +558,40 @@ end
 
   namespace :teacher_panel do
 
-    # ==================================================
-    # TEACHER PROFILE
-    # ==================================================
-
+    # Teacher profile
     resource :profile,
              only: [:show, :edit, :update],
              controller: "profile"
 
 
-    # ==================================================
-    # TEACHER COURSES
-    # ==================================================
-
+    # Teacher courses
     resources :courses,
               only: [:index, :show] do
 
-      # ==================================================
-      # QUIZZES
-      # ==================================================
-
+      # Teacher quizzes
       resources :quizzes do
         resources :questions
       end
 
 
-      # ==================================================
-      # STUDENTS
-      # ==================================================
-
+      # Teacher students
       resources :students,
                 only: [:index]
 
 
-      # ==================================================
-      # VIDEOS
-      # ==================================================
-
+      # Teacher videos
       resources :videos
 
 
-      # ==================================================
-      # PLAYLISTS
-      # ==================================================
-
+      # Teacher playlists
       resources :playlists
 
 
-      # ==================================================
-      # RESOURCES
-      # ==================================================
-
+      # Teacher resources
       resources :resources
 
 
-      # ==================================================
-      # ATTENDANCE
-      # ==================================================
-
+      # Teacher attendance
       resources :attendances,
                 only: [
                   :index,
@@ -600,10 +606,7 @@ end
     end
 
 
-    # ==================================================
-    # TEACHER TEST SERIES
-    # ==================================================
-
+    # Teacher test series
     resources :test_series do
 
       resources :test_series_tests,
@@ -691,8 +694,8 @@ end
       as: :payment_failed
 
   post "payments/:id/apply_coupon",
-     to: "payments#apply_coupon",
-     as: :apply_coupon    
+       to: "payments#apply_coupon",
+       as: :apply_coupon
 
 
   # ==================================================
@@ -792,6 +795,17 @@ end
     end
 
   end
+
+
+    # ==================================================
+  # META WHATSAPP WEBHOOK
+  # ==================================================
+
+  get "/webhooks/whatsapp",
+      to: "whatsapp_webhooks#verify"
+
+  post "/webhooks/whatsapp",
+       to: "whatsapp_webhooks#receive"
 
 
   # ==================================================

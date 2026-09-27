@@ -12,7 +12,11 @@ class Admin::PaymentsController < ApplicationController
       Payment
         .includes(
           enrollment: [
-            :user,
+            {
+              user: {
+                image_attachment: :blob
+              }
+            },
             :course
           ]
         )
@@ -50,9 +54,7 @@ class Admin::PaymentsController < ApplicationController
 
     if params[:status].present?
       @payments =
-        @payments.where(
-          status: params[:status]
-        )
+        @payments.where(status: params[:status])
     end
 
     # =========================================================
@@ -81,9 +83,7 @@ class Admin::PaymentsController < ApplicationController
     # PAGINATION
     # =========================================================
 
-    @page =
-      params[:page].to_i
-
+    @page = params[:page].to_i
     @page = 1 if @page < 1
 
     @total_pages =
@@ -93,52 +93,64 @@ class Admin::PaymentsController < ApplicationController
 
     @page =
       @total_pages if @page > @total_pages
-      @per_page = PER_PAGE
+
+    @per_page = PER_PAGE
 
     @payments =
       @payments
-        .offset(
-          (@page - 1) * PER_PAGE
-        )
+        .offset((@page - 1) * PER_PAGE)
         .limit(PER_PAGE)
 
     # =========================================================
     # PAYMENT STATISTICS
-    # These remain global, not affected by filters
+    #
+    # Previously these were 5 separate queries:
+    #   Payment.count
+    #   paid.count
+    #   created.count
+    #   failed/cancelled.count
+    #   paid.sum(:amount)
+    #
+    # Now status statistics are calculated with ONE query.
     # =========================================================
 
-    @total_payments =
-      Payment.count
+    payment_stats =
+  Payment
+    .group(:status)
+    .pluck(
+      :status,
+      Arel.sql("COUNT(*)"),
+      Arel.sql("COALESCE(SUM(amount), 0)")
+    )
 
-    @successful_payments =
-      Payment.where(
-        status: "paid"
-      ).count
+stats_by_status =
+  payment_stats.each_with_object({}) do |(status, count, sum), result|
+    result[status] = {
+      count: count.to_i,
+      sum: sum.to_f
+    }
+  end
 
-    @pending_payments =
-      Payment.where(
-        status: "created"
-      ).count
+@total_payments =
+  stats_by_status.values.sum { |stats| stats[:count] }
 
-    @failed_payments =
-      Payment
-        .where(
-          status: [
-            "failed",
-            "cancelled"
-          ]
-        )
-        .count
+@successful_payments =
+  stats_by_status.dig("paid", :count).to_i
 
-    @total_revenue =
-      Payment
-        .where(
-          status: "paid"
-        )
-        .sum(:amount)
+@pending_payments =
+  stats_by_status.dig("created", :count).to_i
+
+@failed_payments =
+  stats_by_status
+    .slice("failed", "cancelled")
+    .values
+    .sum { |stats| stats[:count] }
+
+@total_revenue =
+  stats_by_status.dig("paid", :sum).to_f
 
     # =========================================================
-    # COURSE LIST FOR FILTER
+    # PAYMENT COURSES
     # =========================================================
 
     @payment_courses =
@@ -146,13 +158,9 @@ class Admin::PaymentsController < ApplicationController
         .where(
           id: Payment
             .joins(:enrollment)
-            .select(
-              "enrollments.course_id"
-            )
+            .select("enrollments.course_id")
         )
-        .order(
-          Course_name: :asc
-        )
+        .order(Course_name: :asc)
   end
 
   # =========================================================
@@ -162,10 +170,175 @@ class Admin::PaymentsController < ApplicationController
   def show
   end
 
+  # =========================================================
+  # SEND PAYMENT CONFIRMATION EMAIL
+  # =========================================================
+
+  def send_email
+    payment =
+      Payment
+        .includes(
+          enrollment: [
+            {
+              user: {
+                image_attachment: :blob
+              }
+            },
+            :course
+          ]
+        )
+        .find(params[:id])
+
+    student = payment.enrollment.user
+
+    # ---------------------------------------------------------
+    # Email validation
+    # ---------------------------------------------------------
+
+    if student.email.blank?
+      redirect_to admin_payment_path(payment),
+                  alert: "Student email is missing."
+      return
+    end
+
+    # ---------------------------------------------------------
+    # Payment status validation
+    # ---------------------------------------------------------
+
+    unless payment.paid?
+      redirect_to admin_payment_path(payment),
+                  alert: "Payment is not marked as paid."
+      return
+    end
+
+    begin
+      # -------------------------------------------------------
+      # Send confirmation email through Brevo
+      # -------------------------------------------------------
+
+      BrevoPaymentNotificationService
+        .send_success_email(payment)
+
+      # -------------------------------------------------------
+      # Save email sent timestamp
+      # -------------------------------------------------------
+
+      payment.update!(
+        success_email_sent_at: Time.current
+      )
+
+      redirect_to admin_payment_path(payment),
+                  notice:
+                    "Payment success email sent to #{student.email}."
+
+    rescue StandardError => e
+
+      Rails.logger.error(
+        "[ADMIN PAYMENT EMAIL] " \
+        "#{e.class}: #{e.message}"
+      )
+
+      redirect_to admin_payment_path(payment),
+                  alert:
+                    "Failed to send payment email: #{e.message}"
+    end
+  end
+
+# =========================================================
+# SEND PAYMENT REMINDER
+# EMAIL + WHATSAPP
+# =========================================================
+
+def send_reminder
+  payment =
+    Payment
+      .includes(
+        enrollment: [
+          :user,
+          :course
+        ]
+      )
+      .find(params[:id])
+
+  student = payment.enrollment.user
+
+  if student.email.blank?
+    redirect_to admin_payment_path(payment),
+                alert: "Student email is missing."
+    return
+  end
+
+  if payment.paid?
+    redirect_to admin_payment_path(payment),
+                alert: "Payment is already marked as paid."
+    return
+  end
+
+  # ---------------------------------------------------------
+  # SEND EMAIL
+  # ---------------------------------------------------------
+
+  email_sent = false
+
+  begin
+    BrevoPaymentNotificationService
+      .send_reminder_email(payment)
+
+    email_sent = true
+
+  rescue StandardError => e
+
+    Rails.logger.error(
+      "[ADMIN PAYMENT REMINDER EMAIL] " \
+      "#{e.class}: #{e.message}"
+    )
+
+    redirect_to admin_payment_path(payment),
+                alert:
+                  "Payment reminder email failed: #{e.message}"
+    return
+  end
+
+  # ---------------------------------------------------------
+  # SEND WHATSAPP
+  # ---------------------------------------------------------
+
+  begin
+    MetaWhatsappNotificationService
+      .send_payment_reminder(payment)
+
+    whatsapp_sent = true
+
+  rescue StandardError => e
+
+    Rails.logger.error(
+      "[ADMIN PAYMENT REMINDER WHATSAPP] " \
+      "#{e.class}: #{e.message}"
+    )
+
+    # Email was already sent successfully.
+    redirect_to admin_payment_path(payment),
+                alert:
+                  "Payment reminder email sent, " \
+                  "but WhatsApp reminder failed: #{e.message}"
+    return
+  end
+
+  # ---------------------------------------------------------
+  # SUCCESS
+  # ---------------------------------------------------------
+
+  if email_sent && whatsapp_sent
+    redirect_to admin_payment_path(payment),
+                notice:
+                  "Payment reminder sent successfully by email and WhatsApp to #{student.email}."
+  end
+end
+
   private
 
   # =========================================================
-  # FIND PAYMENT
+  # SET PAYMENT
   # =========================================================
 
   def set_payment
@@ -173,7 +346,11 @@ class Admin::PaymentsController < ApplicationController
       Payment
         .includes(
           enrollment: [
-            :user,
+            {
+              user: {
+                image_attachment: :blob
+              }
+            },
             :course
           ]
         )
@@ -181,7 +358,7 @@ class Admin::PaymentsController < ApplicationController
   end
 
   # =========================================================
-  # ADMIN ACCESS
+  # ADMIN AUTHORIZATION
   # =========================================================
 
   def require_admin

@@ -25,6 +25,12 @@
             #f8f7fc,
             #ffffff
         );
+
+    color: #172554;
+
+    transition:
+        background .25s ease,
+        color .25s ease;
 }
 
 
@@ -81,6 +87,11 @@
     font-size: 13px;
 }
 
+
+/* =========================================================
+   HEADER ICON / DAY NIGHT TOGGLE
+========================================================= */
+
 .payment-header-icon {
     width: 76px;
     height: 76px;
@@ -104,11 +115,75 @@
 
     color: #8009e2;
 
-    font-size: 31px;
-
     box-shadow:
         0 8px 18px rgba(128, 9, 226, 0.08),
         0 22px 45px rgba(30, 20, 60, 0.08);
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.payment-theme-toggle {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-width: 88px;
+    height: 38px;
+
+    padding: 0 13px;
+
+    border: 1px solid rgba(128, 9, 226, .18);
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #6d28d9;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 4px 12px rgba(31, 41, 55, .06);
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease,
+        transform .2s ease;
+}
+
+.payment-theme-toggle i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.payment-theme-toggle span {
+    line-height: 1;
+}
+
+.payment-theme-toggle:hover {
+    background: #8009e2;
+
+    color: #ffffff;
+
+    border-color: #8009e2;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 18px rgba(128, 9, 226, .20);
 }
 
 
@@ -149,7 +224,9 @@
 
     transition:
         transform .25s ease,
-        box-shadow .25s ease;
+        box-shadow .25s ease,
+        background .25s ease,
+        border-color .25s ease;
 }
 
 .payment-stat-card::after {
@@ -309,6 +386,11 @@
     box-shadow:
         0 6px 18px rgba(30,20,60,.05),
         0 18px 40px rgba(30,20,60,.04);
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
 }
 
 .payment-search-box {
@@ -353,6 +435,11 @@
     box-shadow:
         inset 0 1px 2px rgba(0,0,0,.02),
         0 3px 10px rgba(30,20,60,.03);
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease;
 }
 
 .payment-search-box input {
@@ -523,6 +610,11 @@
     box-shadow:
         0 5px 12px rgba(30,20,60,.04),
         0 18px 42px rgba(30,20,60,.07);
+
+    transition:
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
 }
 
 .payment-table-header {
@@ -614,7 +706,10 @@
     padding: 0 12px;
 
     scrollbar-width: thin;
-    scrollbar-color: #d8c9f5 transparent;
+
+    scrollbar-color:
+        #d8c9f5
+        transparent;
 }
 
 .payment-management-table {
@@ -634,8 +729,11 @@
 
     color: #64748b;
 
-    border-top: 1px solid rgba(128,9,226,.05);
-    border-bottom: 1px solid rgba(128,9,226,.07);
+    border-top:
+        1px solid rgba(128,9,226,.05);
+
+    border-bottom:
+        1px solid rgba(128,9,226,.07);
 
     font-size: 9px;
     font-weight: 800;
@@ -646,7 +744,8 @@
 .payment-management-table tbody td {
     padding: 13px 10px;
 
-    border-bottom: 1px solid #f0eff5;
+    border-bottom:
+        1px solid #f0eff5;
 
     vertical-align: middle;
 
@@ -698,7 +797,7 @@
             #6d28d9
         );
 
-    color: white;
+    color: #ffffff;
 
     font-size: 12px;
     font-weight: 800;
@@ -737,6 +836,7 @@
     font-size: 8px;
 
     text-overflow: ellipsis;
+
     white-space: nowrap;
 }
 
@@ -841,11 +941,7 @@
     color: #059669;
 }
 
-.payment-status-badge.created {
-    background: #fff1d9;
-    color: #d97706;
-}
-
+.payment-status-badge.created,
 .payment-status-badge.pending {
     background: #fff1d9;
     color: #d97706;
@@ -884,10 +980,22 @@
 
 
 /* =========================================================
-   VIEW DETAILS
+   ACTION BUTTONS
 ========================================================= */
 
-.payment-view-btn {
+.payment-action-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    flex-wrap: wrap;
+}
+
+.payment-view-btn,
+.payment-email-btn,
+.payment-reminder-btn {
     display: inline-flex;
 
     align-items: center;
@@ -899,6 +1007,20 @@
 
     border-radius: 8px;
 
+    font-size: 8px;
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+
+/* VIEW */
+
+.payment-view-btn {
     background: #ffffff;
 
     border: 1px solid rgba(128,9,226,.18);
@@ -907,15 +1029,8 @@
 
     text-decoration: none;
 
-    font-size: 8px;
-    font-weight: 800;
-
-    white-space: nowrap;
-
     box-shadow:
         0 3px 8px rgba(128,9,226,.04);
-
-    transition: all .2s ease;
 }
 
 .payment-view-btn:hover {
@@ -929,6 +1044,60 @@
 
     box-shadow:
         0 6px 14px rgba(128,9,226,.20);
+}
+
+
+/* CONFIRMATION */
+
+.payment-email-btn {
+    background: #f1eaff;
+
+    border: 1px solid rgba(128,9,226,.18);
+
+    color: #6d28d9;
+
+    box-shadow:
+        0 3px 8px rgba(128,9,226,.04);
+}
+
+.payment-email-btn:hover {
+    background: #8009e2;
+
+    border-color: #8009e2;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 14px rgba(128,9,226,.20);
+}
+
+
+/* REMINDER */
+
+.payment-reminder-btn {
+    background: #fff7ed;
+
+    border: 1px solid rgba(234,88,12,.18);
+
+    color: #c2410c;
+
+    box-shadow:
+        0 3px 8px rgba(234,88,12,.04);
+}
+
+.payment-reminder-btn:hover {
+    background: #ea580c;
+
+    border-color: #ea580c;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 14px rgba(234,88,12,.20);
 }
 
 
@@ -1014,6 +1183,7 @@
     height: 31px;
 
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1074,6 +1244,483 @@
 
 
 /* =========================================================
+   DARK MODE - ADMIN LAYOUT OVERRIDE
+========================================================= */
+
+body.payment-page-dark {
+    background: #0b0d12 !important;
+
+    color: #f3f4f6 !important;
+}
+
+
+/* ADMIN MAIN */
+
+body.payment-page-dark .admin-main,
+body.payment-page-dark .admin-content,
+body.payment-page-dark main {
+    background: #0b0d12 !important;
+
+    color: #f3f4f6 !important;
+}
+
+
+/* ADMIN SIDEBAR */
+
+body.payment-page-dark .admin-sidebar {
+    background: #11131a !important;
+
+    border-color:
+        rgba(255,255,255,.07) !important;
+}
+
+
+/* ADMIN HEADER */
+
+body.payment-page-dark .admin-header {
+    background: #11131a !important;
+
+    border-color:
+        rgba(255,255,255,.07) !important;
+
+    color: #f3f4f6 !important;
+}
+
+
+/* PAYMENT PAGE */
+
+body.payment-page-dark .admin-payment-page {
+    background:
+        radial-gradient(
+            circle at 85% 8%,
+            rgba(128, 9, 226, 0.12),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 5% 70%,
+            rgba(99, 102, 241, 0.08),
+            transparent 25%
+        ),
+        #0b0d12 !important;
+
+    color: #f3f4f6 !important;
+}
+
+
+/* =========================================================
+   DARK HEADER
+========================================================= */
+
+body.payment-page-dark .payment-page-header h1 {
+    color: #f8fafc !important;
+}
+
+body.payment-page-dark .payment-page-header p {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-kicker {
+    background: rgba(128,9,226,.14) !important;
+
+    border-color:
+        rgba(128,9,226,.20) !important;
+
+    color: #c084fc !important;
+}
+
+body.payment-page-dark .payment-header-icon {
+    background:
+        linear-gradient(
+            145deg,
+            #181b25,
+            #21182f
+        ) !important;
+
+    border-color:
+        rgba(255,255,255,.08) !important;
+
+    color: #c084fc !important;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.20),
+        0 22px 45px rgba(0,0,0,.20);
+}
+
+
+/* =========================================================
+   DARK THEME TOGGLE
+========================================================= */
+
+body.payment-page-dark .payment-theme-toggle {
+    background: #252a36 !important;
+
+    border-color:
+        rgba(255,255,255,.10) !important;
+
+    color: #fbbf24 !important;
+}
+
+body.payment-page-dark .payment-theme-toggle:hover {
+    background: #fbbf24 !important;
+
+    border-color: #fbbf24 !important;
+
+    color: #111827 !important;
+}
+
+
+/* =========================================================
+   DARK STATISTICS
+========================================================= */
+
+body.payment-page-dark .payment-stat-card {
+    background: #151821 !important;
+
+    border-color:
+        rgba(255,255,255,.07) !important;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.18);
+}
+
+body.payment-page-dark .payment-stat-card::after {
+    background:
+        rgba(128,9,226,.10) !important;
+}
+
+body.payment-page-dark .payment-stat-label {
+    color: #cbd5e1 !important;
+}
+
+body.payment-page-dark .payment-stat-card h2 {
+    color: #f8fafc !important;
+}
+
+body.payment-page-dark .payment-stat-card small {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-stat-icon {
+    background: #211d2e !important;
+
+    color: #c084fc !important;
+}
+
+
+/* =========================================================
+   DARK FILTER
+========================================================= */
+
+body.payment-page-dark .payment-filter-card {
+    background: #151821 !important;
+
+    border-color:
+        rgba(255,255,255,.07) !important;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.16);
+}
+
+body.payment-page-dark .payment-filter-select label {
+    color: #cbd5e1 !important;
+}
+
+body.payment-page-dark .payment-search-box input,
+body.payment-page-dark .payment-filter-select select {
+    background: #0f1219 !important;
+
+    color: #f3f4f6 !important;
+
+    border-color:
+        rgba(255,255,255,.10) !important;
+}
+
+body.payment-page-dark .payment-search-box input::placeholder {
+    color: #6b7280 !important;
+}
+
+body.payment-page-dark .payment-reset-btn {
+    background: #1d212b !important;
+
+    border-color:
+        rgba(255,255,255,.10) !important;
+
+    color: #cbd5e1 !important;
+}
+
+body.payment-page-dark .payment-reset-btn:hover {
+    background: #242936 !important;
+
+    color: #c084fc !important;
+}
+
+
+/* =========================================================
+   DARK FILTER INFO
+========================================================= */
+
+body.payment-page-dark .payment-filter-info {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-filter-info strong {
+    color: #e5e7eb !important;
+}
+
+body.payment-page-dark .payment-active-filter {
+    background: rgba(128,9,226,.16) !important;
+
+    color: #c084fc !important;
+}
+
+
+/* =========================================================
+   DARK TABLE CARD
+========================================================= */
+
+body.payment-page-dark .payment-table-card {
+    background: #151821 !important;
+
+    border-color:
+        rgba(255,255,255,.07) !important;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.20);
+}
+
+body.payment-page-dark .payment-table-title h3 {
+    color: #f8fafc !important;
+}
+
+body.payment-page-dark .payment-table-title p {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-count-badge {
+    background: rgba(128,9,226,.16) !important;
+
+    color: #c084fc !important;
+}
+
+
+/* =========================================================
+   DARK TABLE
+========================================================= */
+
+body.payment-page-dark .payment-management-table thead th {
+    background: #1b1f2a !important;
+
+    color: #9ca3af !important;
+
+    border-top-color:
+        rgba(255,255,255,.05) !important;
+
+    border-bottom-color:
+        rgba(255,255,255,.07) !important;
+}
+
+body.payment-page-dark .payment-management-table tbody td {
+    border-bottom-color:
+        rgba(255,255,255,.07) !important;
+
+    color: #e5e7eb !important;
+}
+
+body.payment-page-dark .payment-management-table tbody tr {
+    background: #151821 !important;
+}
+
+body.payment-page-dark .payment-management-table tbody tr:hover {
+    background: #1d222e !important;
+}
+
+
+/* =========================================================
+   DARK STUDENT / COURSE
+========================================================= */
+
+body.payment-page-dark .payment-student-info strong {
+    color: #f3f4f6 !important;
+}
+
+body.payment-page-dark .payment-student-info small {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-course-info strong {
+    color: #e5e7eb !important;
+}
+
+body.payment-page-dark .payment-course-info small {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-id {
+    color: #f3f4f6 !important;
+}
+
+body.payment-page-dark .payment-transaction-id {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-amount {
+    color: #f3f4f6 !important;
+}
+
+
+/* =========================================================
+   DARK DATE
+========================================================= */
+
+body.payment-page-dark .payment-date strong {
+    color: #e5e7eb !important;
+}
+
+body.payment-page-dark .payment-date small {
+    color: #9ca3af !important;
+}
+
+
+/* =========================================================
+   DARK VIEW BUTTON
+========================================================= */
+
+body.payment-page-dark .payment-view-btn {
+    background: #202532 !important;
+
+    border-color:
+        rgba(255,255,255,.10) !important;
+
+    color: #c084fc !important;
+}
+
+body.payment-page-dark .payment-view-btn:hover {
+    background: #8009e2 !important;
+
+    border-color: #8009e2 !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   DARK CONFIRMATION BUTTON
+========================================================= */
+
+body.payment-page-dark .payment-email-btn {
+    background: rgba(128,9,226,.16) !important;
+
+    border-color:
+        rgba(128,9,226,.25) !important;
+
+    color: #c084fc !important;
+}
+
+body.payment-page-dark .payment-email-btn:hover {
+    background: #8009e2 !important;
+
+    border-color: #8009e2 !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   DARK REMINDER BUTTON
+========================================================= */
+
+body.payment-page-dark .payment-reminder-btn {
+    background: rgba(234,88,12,.12) !important;
+
+    border-color:
+        rgba(234,88,12,.22) !important;
+
+    color: #fb923c !important;
+}
+
+body.payment-page-dark .payment-reminder-btn:hover {
+    background: #ea580c !important;
+
+    border-color: #ea580c !important;
+
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   DARK EMPTY STATE
+========================================================= */
+
+body.payment-page-dark .payment-empty-state h4 {
+    color: #f3f4f6 !important;
+}
+
+body.payment-page-dark .payment-empty-state p {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-empty-icon {
+    background: rgba(128,9,226,.15) !important;
+
+    color: #c084fc !important;
+}
+
+
+/* =========================================================
+   DARK PAGINATION
+========================================================= */
+
+body.payment-page-dark .payment-table-footer {
+    color: #9ca3af !important;
+}
+
+body.payment-page-dark .payment-table-footer strong {
+    color: #e5e7eb !important;
+}
+
+body.payment-page-dark .payment-page-link {
+    background: #1d212b !important;
+
+    border-color:
+        rgba(255,255,255,.10) !important;
+
+    color: #cbd5e1 !important;
+}
+
+body.payment-page-dark .payment-page-link:hover {
+    background: #242936 !important;
+
+    border-color:
+        rgba(128,9,226,.30) !important;
+
+    color: #c084fc !important;
+}
+
+body.payment-page-dark .payment-page-link.active {
+    background: #8009e2 !important;
+
+    border-color: #8009e2 !important;
+
+    color: #ffffff !important;
+}
+
+body.payment-page-dark .payment-page-dots {
+    color: #6b7280 !important;
+}
+
+
+/* =========================================================
+   DARK SCROLLBAR
+========================================================= */
+
+body.payment-page-dark .payment-table-wrapper {
+    scrollbar-color:
+        #454052
+        transparent;
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -1116,12 +1763,27 @@
     }
 
     .payment-header-icon {
-        width: 55px;
-        height: 55px;
+        width: auto;
+        height: auto;
 
-        font-size: 22px;
+        min-width: 55px;
+        min-height: 55px;
+
+        padding: 8px;
 
         border-radius: 17px;
+    }
+
+    .payment-theme-toggle {
+        min-width: 42px;
+
+        width: 42px;
+
+        padding: 0;
+    }
+
+    .payment-theme-toggle span {
+        display: none;
     }
 
     .payment-stats-grid {
@@ -1204,7 +1866,6 @@
 
 </style>
 
-
 <div class="admin-payment-page">
 
   <!-- =====================================================
@@ -1231,7 +1892,28 @@
     </div>
 
     <div class="payment-header-icon">
-      <i class="bi bi-wallet2"></i>
+
+      <!-- DAY / NIGHT TOGGLE -->
+
+      <button
+        type="button"
+        class="payment-theme-toggle"
+        id="paymentThemeToggle"
+        aria-label="Toggle dark mode"
+        title="Toggle dark mode"
+      >
+
+        <i
+          class="bi bi-moon-stars-fill"
+          id="paymentThemeIcon"
+        ></i>
+
+        <span id="paymentThemeText">
+          Night
+        </span>
+
+      </button>
+
     </div>
 
   </div>
@@ -1669,14 +2351,14 @@
             <% @payments.each do |payment| %>
 
               <% enrollment = payment.enrollment %>
+
               <% student = enrollment&.user %>
+
               <% course = enrollment&.course %>
 
-              <% status =
-                   payment.status.to_s.downcase %>
+              <% status = payment.status.to_s.downcase %>
 
-              <% course_name =
-                   course&.Course_name.to_s %>
+              <% course_name = course&.Course_name.to_s %>
 
 
               <tr>
@@ -1838,58 +2520,73 @@
 
                 <td>
 
-                  <span
-                    class="payment-status-badge <%= status %>"
-                  >
+                  <% if status == "paid" %>
 
-                    <% if status == "paid" %>
+                    <span class="payment-status-badge paid">
 
-  <span class="payment-status-badge paid">
-    <i class="bi bi-check-circle-fill"></i>
-    Paid
-  </span>
+                      <i class="bi bi-check-circle-fill"></i>
 
-<% elsif status == "created" %>
+                      Paid
 
-  <span class="payment-status-badge created">
-    <i class="bi bi-clock-fill"></i>
-    Created
-  </span>
+                    </span>
 
-<% elsif status == "pending" %>
 
-  <span class="payment-status-badge pending">
-    <i class="bi bi-hourglass-split"></i>
-    Pending
-  </span>
+                  <% elsif status == "created" %>
 
-<% elsif status == "failed" %>
+                    <span class="payment-status-badge created">
 
-  <span class="payment-status-badge failed">
-    <i class="bi bi-x-circle-fill"></i>
-    Failed
-  </span>
+                      <i class="bi bi-clock-fill"></i>
 
-<% elsif status == "cancelled" %>
+                      Created
 
-  <span class="payment-status-badge cancelled">
-    <i class="bi bi-slash-circle-fill"></i>
-    Cancelled
-  </span>
+                    </span>
 
-<% else %>
 
-  <span class="payment-status-badge">
+                  <% elsif status == "pending" %>
 
-    <i class="bi bi-info-circle-fill"></i>
+                    <span class="payment-status-badge pending">
 
-    <%= payment.status.to_s.titleize.presence || "Unknown" %>
+                      <i class="bi bi-hourglass-split"></i>
 
-  </span>
+                      Pending
 
-<% end %>
+                    </span>
 
-                  </span>
+
+                  <% elsif status == "failed" %>
+
+                    <span class="payment-status-badge failed">
+
+                      <i class="bi bi-x-circle-fill"></i>
+
+                      Failed
+
+                    </span>
+
+
+                  <% elsif status == "cancelled" %>
+
+                    <span class="payment-status-badge cancelled">
+
+                      <i class="bi bi-slash-circle-fill"></i>
+
+                      Cancelled
+
+                    </span>
+
+
+                  <% else %>
+
+                    <span class="payment-status-badge">
+
+                      <i class="bi bi-info-circle-fill"></i>
+
+                      <%= payment.status.to_s.titleize.presence ||
+                          "Unknown" %>
+
+                    </span>
+
+                  <% end %>
 
                 </td>
 
@@ -1929,18 +2626,86 @@
 
                 <td>
 
-                  <%= link_to(
-                    admin_payment_path(payment),
-                    class: "payment-view-btn"
-                  ) do %>
+                  <div class="payment-action-buttons">
 
-                    <i class="bi bi-eye"></i>
+                    <!-- =====================================
+                         VIEW DETAILS
+                    ====================================== -->
 
-                    <span>
-                      View Details
-                    </span>
+                    <%= link_to(
+                      admin_payment_path(payment),
+                      class: "payment-view-btn"
+                    ) do %>
 
-                  <% end %>
+                      <i class="bi bi-eye"></i>
+
+                      <span>
+                        View Details
+                      </span>
+
+                    <% end %>
+
+
+                    <!-- =====================================
+                         PAYMENT CONFIRMATION
+                    ====================================== -->
+
+                    <% if payment.paid? &&
+                          student&.email.present? %>
+
+                      <%= button_to(
+                        send_email_admin_payment_path(payment),
+                        method: :post,
+                        class: "payment-email-btn",
+                        data: {
+                          turbo_confirm:
+                            "Send payment confirmation email to #{student.email}?"
+                        }
+                      ) do %>
+
+                        <i class="bi bi-envelope-check"></i>
+
+                        <span>
+                          Confirmation
+                        </span>
+
+                      <% end %>
+
+                    <% end %>
+
+
+                    <!-- =====================================
+                         PAYMENT REMINDER
+                         EMAIL + WHATSAPP
+                    ====================================== -->
+
+                    <% unless payment.paid? %>
+
+                      <% if student&.email.present? %>
+
+                        <%= button_to(
+                          send_reminder_admin_payment_path(payment),
+                          method: :post,
+                          class: "payment-reminder-btn",
+                          data: {
+                            turbo_confirm:
+                              "Send payment reminder by Email and WhatsApp to #{student.email}?"
+                          }
+                        ) do %>
+
+                          <i class="bi bi-bell"></i>
+
+                          <span>
+                            Reminder
+                          </span>
+
+                        <% end %>
+
+                      <% end %>
+
+                    <% end %>
+
+                  </div>
 
                 </td>
 
@@ -2051,14 +2816,13 @@
         <div>
 
           <% first_record =
-     ((@page - 1) * @per_page) + 1 %>
+               ((@page - 1) * @per_page) + 1 %>
 
- <% last_record =
-     [
-       @page * @per_page,
-       @filtered_payments_count
-     ].min %>
-
+          <% last_record =
+               [
+                 @page * @per_page,
+                 @filtered_payments_count
+               ].min %>
 
           Showing
 
@@ -2137,7 +2901,9 @@
                     class="payment-page-link active"
                     aria-current="page"
                   >
+
                     <%= page_number %>
+
                   </span>
 
                 <% else %>
@@ -2222,7 +2988,9 @@
                     class="payment-page-link active"
                     aria-current="page"
                   >
+
                     <%= page_number %>
+
                   </span>
 
                 <% else %>
@@ -2261,7 +3029,9 @@
                   class="payment-page-link active"
                   aria-current="page"
                 >
+
                   <%= @total_pages %>
+
                 </span>
 
               <% else %>
@@ -2325,3 +3095,119 @@
   </div>
 
 </div>
+
+
+<!-- =========================================================
+     PAYMENT PAGE THEME TOGGLE
+========================================================== -->
+
+<script nonce="<%= content_security_policy_nonce %>">
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const body =
+    document.body;
+
+  const toggle =
+    document.getElementById(
+      "paymentThemeToggle"
+    );
+
+  const icon =
+    document.getElementById(
+      "paymentThemeIcon"
+    );
+
+  const text =
+    document.getElementById(
+      "paymentThemeText"
+    );
+
+
+  if (!toggle || !icon || !text) {
+    return;
+  }
+
+
+  function applyPaymentTheme(theme) {
+
+    if (theme === "dark") {
+
+      body.classList.add(
+        "payment-page-dark"
+      );
+
+      icon.className =
+        "bi bi-sun-fill";
+
+      text.textContent =
+        "Day";
+
+      toggle.title =
+        "Switch to day mode";
+
+    } else {
+
+      body.classList.remove(
+        "payment-page-dark"
+      );
+
+      icon.className =
+        "bi bi-moon-stars-fill";
+
+      text.textContent =
+        "Night";
+
+      toggle.title =
+        "Switch to night mode";
+
+    }
+
+  }
+
+
+  const savedTheme =
+    localStorage.getItem(
+      "aone-payment-theme"
+    ) || "light";
+
+
+  applyPaymentTheme(
+    savedTheme
+  );
+
+
+  toggle.addEventListener(
+    "click",
+    function () {
+
+      const currentTheme =
+        body.classList.contains(
+          "payment-page-dark"
+        )
+          ? "dark"
+          : "light";
+
+
+      const newTheme =
+        currentTheme === "dark"
+          ? "light"
+          : "dark";
+
+
+      localStorage.setItem(
+        "aone-payment-theme",
+        newTheme
+      );
+
+
+      applyPaymentTheme(
+        newTheme
+      );
+
+    }
+  );
+
+});
+
+</script>

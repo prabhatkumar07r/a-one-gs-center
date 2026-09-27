@@ -467,6 +467,14 @@ def verify
         status: "Approved"
       )
     end
+        # =========================================================
+    # AUTOMATIC PAYMENT SUCCESS NOTIFICATION
+    # =========================================================
+
+    PaymentSuccessNotificationJob.perform_later(
+      payment.id
+    )
+
 
     # =========================================================
     # SUCCESS
