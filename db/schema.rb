@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_183947) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_28_075955) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -725,6 +725,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_183947) do
     t.index ["playlist_id"], name: "index_videos_on_playlist_id"
   end
 
+  create_table "whatsapp_messages", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.string "direction", default: "incoming", null: false
+    t.string "message_type", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.string "phone_number", null: false
+    t.jsonb "raw_payload", default: {}, null: false
+    t.datetime "read_at"
+    t.string "sender_name"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.string "whatsapp_message_id", null: false
+    t.datetime "whatsapp_timestamp"
+    t.index ["created_at"], name: "index_whatsapp_messages_on_created_at"
+    t.index ["direction"], name: "index_whatsapp_messages_on_direction"
+    t.index ["phone_number"], name: "index_whatsapp_messages_on_phone_number"
+    t.index ["read_at"], name: "index_whatsapp_messages_on_read_at"
+    t.index ["user_id"], name: "index_whatsapp_messages_on_user_id"
+    t.index ["whatsapp_message_id"], name: "index_whatsapp_messages_on_whatsapp_message_id", unique: true
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "ai_conversations", "users"
@@ -790,4 +812,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_183947) do
   add_foreign_key "video_progresses", "videos"
   add_foreign_key "videos", "courses"
   add_foreign_key "videos", "playlists"
+  add_foreign_key "whatsapp_messages", "users"
 end

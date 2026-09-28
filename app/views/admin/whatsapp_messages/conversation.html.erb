@@ -1,0 +1,497 @@
+<% content_for :title, "WhatsApp Conversation" %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+  .wa-conversation-page {
+    padding: 20px;
+    height: calc(100vh - 70px);
+    min-height: 600px;
+  }
+
+  .wa-chat-shell {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #efeae2;
+    border: 1px solid rgba(128, 9, 226, 0.12);
+    box-shadow: 0 15px 45px rgba(31, 41, 55, 0.12);
+  }
+
+  .wa-chat-topbar {
+    height: 72px;
+    flex: 0 0 72px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .wa-back {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #374151;
+    font-size: 22px;
+  }
+
+  .wa-back:hover {
+    background: #f3f4f6;
+    color: #8009e2;
+  }
+
+  .wa-user-avatar {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8009e2, #5b21b6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+  }
+
+  .wa-user-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .wa-user-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wa-user-phone {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .wa-online-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .wa-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 7%;
+    scroll-behavior: smooth;
+  }
+
+  .wa-date-divider {
+    text-align: center;
+    margin: 4px 0 22px;
+  }
+
+  .wa-date-divider span {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.82);
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 700;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .wa-message-row {
+    display: flex;
+    margin-bottom: 8px;
+  }
+
+  .wa-message-row.incoming {
+    justify-content: flex-start;
+  }
+
+  .wa-message-row.outgoing {
+    justify-content: flex-end;
+  }
+
+  .wa-message {
+    position: relative;
+    max-width: min(72%, 650px);
+    padding: 9px 12px 7px;
+    border-radius: 9px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  }
+
+  .wa-message.incoming {
+    background: #ffffff;
+    border-top-left-radius: 3px;
+  }
+
+  .wa-message.outgoing {
+    background: #dcf8c6;
+    border-top-right-radius: 3px;
+  }
+
+  .wa-message-text {
+    color: #111827;
+    font-size: 14px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    padding-right: 65px;
+  }
+
+  .wa-message-meta {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+    margin-top: 3px;
+    font-size: 10px;
+    color: #6b7280;
+  }
+
+  .wa-checks {
+    color: #2563eb;
+    font-size: 13px;
+    letter-spacing: -3px;
+    padding-right: 3px;
+  }
+
+  .wa-message-type {
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .wa-empty-chat {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .wa-empty-chat-box {
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 20px;
+    padding: 35px;
+    max-width: 400px;
+  }
+
+  .wa-empty-chat-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+
+  .wa-empty-chat-box h3 {
+    margin: 0 0 8px;
+    color: #111827;
+  }
+
+  .wa-empty-chat-box p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  .wa-composer {
+    flex: 0 0 auto;
+    min-height: 72px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: #f0f2f5;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .wa-composer textarea {
+    flex: 1;
+    min-height: 46px;
+    max-height: 130px;
+    resize: none;
+    border: 0;
+    outline: none;
+    border-radius: 22px;
+    padding: 13px 17px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .wa-composer textarea:focus {
+    box-shadow: 0 0 0 2px rgba(128, 9, 226, 0.15);
+  }
+
+  .wa-send-button {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border: 0;
+    border-radius: 50%;
+    background: #8009e2;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 19px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .wa-send-button:hover {
+    background: #6d07c2;
+    transform: scale(1.04);
+  }
+
+  .wa-send-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .wa-warning {
+    margin: 0 18px 10px;
+    padding: 9px 13px;
+    border-radius: 10px;
+    background: #fff7ed;
+    color: #9a3412;
+    font-size: 12px;
+    border: 1px solid #fed7aa;
+  }
+
+  @media (max-width: 700px) {
+    .wa-conversation-page {
+      padding: 0;
+      height: calc(100vh - 60px);
+    }
+
+    .wa-chat-shell {
+      border-radius: 0;
+      border: 0;
+    }
+
+    .wa-chat-body {
+      padding: 20px 12px;
+    }
+
+    .wa-message {
+      max-width: 86%;
+    }
+
+    .wa-composer {
+      padding: 9px;
+    }
+  }
+</style>
+
+<div class="wa-conversation-page">
+
+  <div class="wa-chat-shell">
+
+    <header class="wa-chat-topbar">
+
+      <%= link_to(
+        "‹",
+        admin_whatsapp_path,
+        class: "wa-back",
+        aria: { label: "Back to WhatsApp inbox" }
+      ) %>
+
+      <div class="wa-user-avatar">
+        <%= @user&.name.to_s.first&.upcase ||
+            @messages.last&.sender_name.to_s.first&.upcase ||
+            "?" %>
+      </div>
+
+      <div class="wa-user-info">
+
+        <div class="wa-user-name">
+          <%= @user&.name.presence ||
+              @messages.last&.sender_name.presence ||
+              @phone %>
+        </div>
+
+        <div class="wa-user-phone">
+          <span class="wa-online-dot"></span>
+          <%= @phone %>
+        </div>
+
+      </div>
+
+    </header>
+
+    <main class="wa-chat-body" id="waChatBody">
+
+      <% if @messages.blank? %>
+
+        <div class="wa-empty-chat">
+
+          <div class="wa-empty-chat-box">
+
+            <div class="wa-empty-chat-icon">
+              💬
+            </div>
+
+            <h3>
+              No messages yet
+            </h3>
+
+            <p>
+              This conversation does not contain any
+              WhatsApp messages yet.
+            </p>
+
+          </div>
+
+        </div>
+
+      <% else %>
+
+        <% grouped_messages =
+             @messages.group_by do |message|
+               message.created_at.to_date
+             end %>
+
+        <% grouped_messages.each do |date, messages| %>
+
+          <div class="wa-date-divider">
+            <span>
+              <%= date == Date.current ? "Today" : date.strftime("%d %b %Y") %>
+            </span>
+          </div>
+
+          <% messages.each do |message| %>
+
+            <% outgoing = message.outgoing? %>
+
+            <div class="wa-message-row <%= outgoing ? "outgoing" : "incoming" %>">
+
+              <div class="wa-message <%= outgoing ? "outgoing" : "incoming" %>">
+
+                <div class="wa-message-text">
+                  <%= message.body.presence ||
+                      "[#{message.message_type} message]" %>
+                </div>
+
+                <div class="wa-message-meta">
+
+                  <span>
+                    <%= message.created_at.strftime("%I:%M %p") %>
+                  </span>
+
+                  <% if outgoing %>
+                    <span class="wa-checks">
+                      ✓✓
+                    </span>
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+
+    </main>
+
+    <div class="wa-warning">
+      WhatsApp replies are sent through the connected Meta WhatsApp Business API.
+    </div>
+
+    <%= form_with(
+      url: admin_send_whatsapp_message_path(phone: @phone),
+      method: :post,
+      local: true,
+      class: "wa-composer",
+      id: "waComposer"
+    ) do %>
+
+      <textarea
+        name="body"
+        id="waMessageInput"
+        placeholder="Type a message..."
+        rows="1"
+        maxlength="4096"
+        required></textarea>
+
+      <button
+        type="submit"
+        class="wa-send-button"
+        id="waSendButton"
+        aria-label="Send message">
+        ➤
+      </button>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  document.addEventListener("DOMContentLoaded", function () {
+    const chatBody =
+      document.getElementById("waChatBody");
+
+    const input =
+      document.getElementById("waMessageInput");
+
+    const form =
+      document.getElementById("waComposer");
+
+    const button =
+      document.getElementById("waSendButton");
+
+    if (chatBody) {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+      input.style.height = "auto";
+      input.style.height =
+        Math.min(input.scrollHeight, 130) + "px";
+    });
+
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+
+        if (input.value.trim() && form) {
+          form.requestSubmit();
+        }
+      }
+    });
+
+    if (form && button) {
+      form.addEventListener("submit", function () {
+        if (!input.value.trim()) {
+          event.preventDefault();
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = "…";
+      });
+    }
+  });
+</script>

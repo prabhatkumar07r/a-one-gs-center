@@ -335,6 +335,232 @@ def send_reminder
   end
 end
 
+
+
+
+# =========================================================
+# BULK PAYMENT REMINDERS
+# EMAIL / WHATSAPP / BOTH
+# =========================================================
+
+def bulk_send_reminders
+  payment_ids =
+    Array(params[:payment_ids])
+      .map(&:to_i)
+      .select(&:positive?)
+      .uniq
+
+  channel = params[:channel].to_s
+
+  # ---------------------------------------------------------
+  # VALIDATE CHANNEL
+  # ---------------------------------------------------------
+
+  unless %w[email whatsapp both].include?(channel)
+    redirect_to admin_payments_path,
+                alert: "Invalid reminder channel."
+    return
+  end
+
+  # ---------------------------------------------------------
+  # VALIDATE SELECTION
+  # ---------------------------------------------------------
+
+  if payment_ids.empty?
+    redirect_to admin_payments_path,
+                alert: "Please select at least one unpaid payment."
+    return
+  end
+
+  # ---------------------------------------------------------
+  # LOAD PAYMENTS
+  # ---------------------------------------------------------
+
+  payments =
+    Payment
+      .includes(
+        enrollment: [
+          :course,
+          :user
+        ]
+      )
+      .where(id: payment_ids)
+
+  # ---------------------------------------------------------
+  # RESULT COUNTERS
+  # ---------------------------------------------------------
+
+  results = {
+    total: 0,
+    email_sent: 0,
+    email_failed: 0,
+    whatsapp_sent: 0,
+    whatsapp_failed: 0,
+    skipped: 0
+  }
+
+  # ---------------------------------------------------------
+  # PROCESS EACH PAYMENT
+  # ---------------------------------------------------------
+
+  payments.each do |payment|
+
+    results[:total] += 1
+
+    # -------------------------------------------------------
+    # SKIP ALREADY PAID PAYMENTS
+    # -------------------------------------------------------
+
+    if payment.paid?
+      results[:skipped] += 1
+      next
+    end
+
+    student =
+      payment.enrollment&.user
+
+    unless student
+      results[:skipped] += 1
+      next
+    end
+
+    # =======================================================
+    # EMAIL
+    # =======================================================
+
+    if %w[email both].include?(channel)
+
+      if student.email.present?
+
+        begin
+
+          BrevoPaymentNotificationService
+            .send_reminder_email(payment)
+
+          results[:email_sent] += 1
+
+          Rails.logger.info(
+            "[ADMIN BULK PAYMENT REMINDER EMAIL] " \
+            "Payment=#{payment.id} " \
+            "Student=#{student.id} " \
+            "Email=#{student.email}"
+          )
+
+        rescue StandardError => e
+
+          results[:email_failed] += 1
+
+          Rails.logger.error(
+            "[ADMIN BULK PAYMENT REMINDER EMAIL] " \
+            "Payment=#{payment.id} " \
+            "#{e.class}: #{e.message}"
+          )
+
+        end
+
+      else
+
+        results[:email_failed] += 1
+
+        Rails.logger.warn(
+          "[ADMIN BULK PAYMENT REMINDER EMAIL] " \
+          "Payment=#{payment.id} email missing"
+        )
+
+      end
+    end
+
+    # =======================================================
+    # WHATSAPP
+    # =======================================================
+
+    if %w[whatsapp both].include?(channel)
+
+      mobile =
+        if student.respond_to?(:mobile)
+          student.mobile
+        elsif student.respond_to?(:phone)
+          student.phone
+        end
+
+      if mobile.present?
+
+        begin
+
+          MetaWhatsappNotificationService
+            .send_payment_reminder(payment)
+
+          results[:whatsapp_sent] += 1
+
+          Rails.logger.info(
+            "[ADMIN BULK PAYMENT REMINDER WHATSAPP] " \
+            "Payment=#{payment.id} " \
+            "Student=#{student.id}"
+          )
+
+        rescue StandardError => e
+
+          results[:whatsapp_failed] += 1
+
+          Rails.logger.error(
+            "[ADMIN BULK PAYMENT REMINDER WHATSAPP] " \
+            "Payment=#{payment.id} " \
+            "#{e.class}: #{e.message}"
+          )
+
+        end
+
+      else
+
+        results[:whatsapp_failed] += 1
+
+        Rails.logger.warn(
+          "[ADMIN BULK PAYMENT REMINDER WHATSAPP] " \
+          "Payment=#{payment.id} mobile missing"
+        )
+
+      end
+    end
+  end
+
+  # =========================================================
+  # BUILD RESULT MESSAGE
+  # =========================================================
+
+  message_parts = []
+
+  if %w[email both].include?(channel)
+    message_parts << "#{results[:email_sent]} email(s) sent"
+  end
+
+  if %w[whatsapp both].include?(channel)
+    message_parts << "#{results[:whatsapp_sent]} WhatsApp message(s) sent"
+  end
+
+  if results[:email_failed].positive? &&
+     %w[email both].include?(channel)
+
+    message_parts << "#{results[:email_failed]} email(s) failed"
+  end
+
+  if results[:whatsapp_failed].positive? &&
+     %w[whatsapp both].include?(channel)
+
+    message_parts << "#{results[:whatsapp_failed]} WhatsApp message(s) failed"
+  end
+
+  if results[:skipped].positive?
+    message_parts << "#{results[:skipped]} skipped"
+  end
+
+  # =========================================================
+  # REDIRECT
+  # =========================================================
+
+  redirect_to admin_payments_path,
+              notice:
+                "Bulk reminder completed: #{message_parts.join(', ')}."
+end
   private
 
   # =========================================================

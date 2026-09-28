@@ -1,0 +1,403 @@
+<% content_for :title, "WhatsApp Inbox" %>
+
+<style nonce="<%= content_security_policy_nonce %>">
+  .wa-page {
+    padding: 24px;
+    min-height: calc(100vh - 70px);
+  }
+
+  .wa-shell {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    height: calc(100vh - 120px);
+    min-height: 600px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 15px 45px rgba(31, 41, 55, 0.12);
+    border: 1px solid rgba(128, 9, 226, 0.10);
+  }
+
+  .wa-sidebar {
+    border-right: 1px solid #e5e7eb;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .wa-sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .wa-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .wa-subtitle {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .wa-search {
+    margin-top: 16px;
+    position: relative;
+  }
+
+  .wa-search input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0 14px;
+    outline: none;
+    background: #fff;
+  }
+
+  .wa-search input:focus {
+    border-color: #8009e2;
+    box-shadow: 0 0 0 3px rgba(128, 9, 226, 0.10);
+  }
+
+  .wa-conversations {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .wa-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6b7280;
+  }
+
+  .wa-empty-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+  }
+
+  .wa-conversation {
+    display: block;
+    padding: 15px 18px;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s ease;
+  }
+
+  .wa-conversation:hover {
+    background: #f3f4f6;
+  }
+
+  .wa-conversation-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .wa-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8009e2, #5b21b6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex: 0 0 46px;
+  }
+
+  .wa-conversation-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .wa-conversation-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .wa-name {
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wa-time {
+    font-size: 11px;
+    color: #9ca3af;
+    white-space: nowrap;
+  }
+
+  .wa-last-message {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wa-chat {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #efeae2;
+  }
+
+  .wa-chat-header {
+    height: 72px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+  }
+
+  .wa-chat-header-title {
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .wa-chat-header-subtitle {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  .wa-chat-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .wa-placeholder-card {
+    background: rgba(255,255,255,0.92);
+    border-radius: 20px;
+    padding: 35px;
+    max-width: 430px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+  }
+
+  .wa-placeholder-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+  }
+
+  .wa-placeholder-card h2 {
+    margin: 0 0 8px;
+    color: #111827;
+  }
+
+  .wa-placeholder-card p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  .wa-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #8009e2;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .wa-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .wa-chat {
+      display: none;
+    }
+
+    .wa-sidebar {
+      border-right: 0;
+    }
+  }
+</style>
+
+<div class="wa-page">
+
+  <div class="wa-shell">
+
+    <aside class="wa-sidebar">
+
+      <div class="wa-sidebar-header">
+
+        <h1 class="wa-title">
+          WhatsApp Inbox
+        </h1>
+
+        <p class="wa-subtitle">
+          Student conversations
+          <% if @unread_count.to_i > 0 %>
+            · <span class="wa-badge"><%= @unread_count %></span>
+          <% end %>
+        </p>
+
+        <div class="wa-search">
+          <input
+            type="search"
+            id="waSearch"
+            placeholder="Search conversations..."
+            autocomplete="off">
+        </div>
+
+      </div>
+
+      <div class="wa-conversations" id="waConversations">
+
+        <% if @conversations.blank? %>
+
+          <div class="wa-empty">
+            <div class="wa-empty-icon">💬</div>
+
+            <strong>No conversations yet</strong>
+
+            <p>
+              When a student sends a WhatsApp message,
+              the conversation will appear here.
+            </p>
+          </div>
+
+        <% else %>
+
+          <% @conversations.each do |conversation| %>
+
+            <%= link_to(
+              admin_whatsapp_conversation_path(
+                phone: conversation.phone_number
+              ),
+              class: "wa-conversation",
+              data: {
+                search_text:
+                  [
+                    conversation.sender_name,
+                    conversation.phone_number,
+                    conversation.body
+                  ].compact.join(" ").downcase
+              }
+            ) do %>
+
+              <div class="wa-conversation-row">
+
+                <div class="wa-avatar">
+                  <%= conversation.sender_name.to_s.first&.upcase || "?" %>
+                </div>
+
+                <div class="wa-conversation-info">
+
+                  <div class="wa-conversation-top">
+
+                    <div class="wa-name">
+                      <%= conversation.sender_name.presence ||
+                          conversation.phone_number %>
+                    </div>
+
+                    <div class="wa-time">
+                      <%= conversation.created_at.strftime("%I:%M %p") %>
+                    </div>
+
+                  </div>
+
+                  <div class="wa-last-message">
+                    <%= conversation.body.presence ||
+                        "[#{conversation.message_type}]" %>
+                  </div>
+
+                </div>
+
+              </div>
+
+            <% end %>
+
+          <% end %>
+
+        <% end %>
+
+      </div>
+
+    </aside>
+
+    <main class="wa-chat">
+
+      <div class="wa-chat-header">
+
+        <div>
+          <div class="wa-chat-header-title">
+            A One GS Center
+          </div>
+
+          <div class="wa-chat-header-subtitle">
+            WhatsApp Student Support
+          </div>
+        </div>
+
+      </div>
+
+      <div class="wa-chat-placeholder">
+
+        <div class="wa-placeholder-card">
+
+          <div class="wa-placeholder-icon">
+            💬
+          </div>
+
+          <h2>
+            WhatsApp Inbox
+          </h2>
+
+          <p>
+            Select a conversation from the left to view
+            messages and reply to your students.
+          </p>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  document.addEventListener("DOMContentLoaded", function () {
+    const search = document.getElementById("waSearch");
+    const conversations = document.querySelectorAll(".wa-conversation");
+
+    if (!search) return;
+
+    search.addEventListener("input", function () {
+      const query = search.value.toLowerCase().trim();
+
+      conversations.forEach(function (conversation) {
+        const text =
+          conversation.dataset.searchText || "";
+
+        conversation.style.display =
+          text.includes(query) ? "" : "none";
+      });
+    });
+  });
+</script>

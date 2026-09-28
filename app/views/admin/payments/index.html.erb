@@ -1,2704 +1,1199 @@
-<style nonce="<%= content_security_policy_nonce %>">
+<% content_for :title, "Payment Management" %>
 
-/* =========================================================
-   ADMIN PAYMENT PAGE
-========================================================= */
+<style nonce="<%= content_security_policy_nonce %>">
+:root {
+  --payment-primary: #8009e2;
+  --payment-primary-dark: #6507b5;
+  --payment-primary-soft: rgba(128, 9, 226, 0.10);
+  --payment-success: #16a34a;
+  --payment-warning: #f59e0b;
+  --payment-danger: #dc2626;
+  --payment-info: #2563eb;
+  --payment-text: #172033;
+  --payment-muted: #64748b;
+  --payment-border: #e5e7eb;
+  --payment-bg: #f6f7fb;
+  --payment-card: #ffffff;
+  --payment-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
 
 .admin-payment-page {
-    min-height: 100vh;
-    padding: 25px 5px 60px;
-
-    background:
-        radial-gradient(
-            circle at 85% 8%,
-            rgba(128, 9, 226, 0.08),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 5% 70%,
-            rgba(99, 102, 241, 0.06),
-            transparent 25%
-        ),
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #f8f7fc,
-            #ffffff
-        );
-
-    color: #172554;
-
-    transition:
-        background .25s ease,
-        color .25s ease;
+  min-height: 100vh;
+  padding: 28px;
+  background: var(--payment-bg);
+  color: var(--payment-text);
 }
-
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 .payment-page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
 }
 
-.payment-header-left {
-    padding-left: 5px;
+.payment-page-header-left {
+  min-width: 0;
 }
 
-.payment-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-
-    padding: 6px 12px;
-
-    border-radius: 999px;
-
-    background: rgba(128, 9, 226, 0.08);
-    border: 1px solid rgba(128, 9, 226, 0.10);
-
-    color: #8009e2;
-
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
+.payment-page-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-.payment-page-header h1 {
-    margin: 9px 0 5px;
-
-    color: #172554;
-
-    font-size: 31px;
-    font-weight: 850;
-    letter-spacing: -0.7px;
-}
-
-.payment-page-header p {
-    margin: 0;
-
-    color: #64748b;
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   HEADER ICON / DAY NIGHT TOGGLE
-========================================================= */
-
-.payment-header-icon {
-    width: 76px;
-    height: 76px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f1eaff
-        );
-
-    border: 1px solid rgba(128, 9, 226, 0.12);
-
-    color: #8009e2;
-
-    box-shadow:
-        0 8px 18px rgba(128, 9, 226, 0.08),
-        0 22px 45px rgba(30, 20, 60, 0.08);
-
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
+.payment-page-subtitle {
+  margin: 7px 0 0;
+  color: var(--payment-muted);
+  font-size: 14px;
 }
 
 .payment-theme-toggle {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 7px;
-
-    min-width: 88px;
-    height: 38px;
-
-    padding: 0 13px;
-
-    border: 1px solid rgba(128, 9, 226, .18);
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    color: #6d28d9;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    white-space: nowrap;
-
-    box-shadow:
-        0 4px 12px rgba(31, 41, 55, .06);
-
-    transition:
-        background .25s ease,
-        color .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease,
-        transform .2s ease;
-}
-
-.payment-theme-toggle i {
-    font-size: 14px;
-    line-height: 1;
-}
-
-.payment-theme-toggle span {
-    line-height: 1;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--payment-border);
+  border-radius: 13px;
+  background: var(--payment-card);
+  color: var(--payment-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
 
 .payment-theme-toggle:hover {
-    background: #8009e2;
-
-    color: #ffffff;
-
-    border-color: #8009e2;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 7px 18px rgba(128, 9, 226, .20);
+  transform: translateY(-1px);
+  border-color: var(--payment-primary);
+  color: var(--payment-primary);
 }
 
-
-/* =========================================================
-   STATISTICS
-========================================================= */
-
 .payment-stats-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 18px;
-
-    margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
 }
 
 .payment-stat-card {
-    position: relative;
-
-    min-height: 155px;
-
-    padding: 20px;
-
-    overflow: hidden;
-
-    border-radius: 18px;
-
-    background: rgba(255,255,255,0.88);
-
-    border: 1px solid rgba(128,9,226,0.08);
-
-    box-shadow:
-        0 3px 8px rgba(30,20,60,0.03),
-        0 12px 28px rgba(30,20,60,0.07),
-        0 25px 55px rgba(30,20,60,0.05);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        background .25s ease,
-        border-color .25s ease;
-}
-
-.payment-stat-card::after {
-    content: "";
-
-    position: absolute;
-
-    width: 130px;
-    height: 130px;
-
-    right: -55px;
-    bottom: -65px;
-
-    border-radius: 50%;
-
-    background: rgba(128,9,226,0.07);
-
-    pointer-events: none;
-}
-
-.payment-stat-card:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 8px 15px rgba(30,20,60,0.05),
-        0 20px 40px rgba(30,20,60,0.09);
-}
-
-.payment-stat-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 15px;
+  background: var(--payment-card);
+  border: 1px solid var(--payment-border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--payment-shadow);
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .payment-stat-icon {
-    width: 44px;
-    height: 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 14px;
-
-    font-size: 18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #eee7ff
-        );
-
-    color: #8009e2;
-
-    box-shadow:
-        0 6px 15px rgba(128,9,226,.13),
-        inset 0 1px 2px rgba(255,255,255,.8);
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--payment-primary-soft);
+  color: var(--payment-primary);
+  font-size: 20px;
 }
 
-.success-card .payment-stat-icon {
-    color: #059669;
-    background: #eafff6;
+.payment-stat-card.success .payment-stat-icon {
+  background: rgba(22, 163, 74, 0.10);
+  color: var(--payment-success);
 }
 
-.pending-card .payment-stat-icon {
-    color: #d97706;
-    background: #fff7e8;
+.payment-stat-card.warning .payment-stat-icon {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--payment-warning);
 }
 
-.failed-card .payment-stat-icon {
-    color: #dc2626;
-    background: #fff0f3;
+.payment-stat-card.danger .payment-stat-icon {
+  background: rgba(220, 38, 38, 0.10);
+  color: var(--payment-danger);
 }
 
-.payment-stat-live {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-
-    padding: 5px 9px;
-
-    border-radius: 999px;
-
-    background: #ecfdf5;
-
-    color: #059669;
-
-    font-size: 9px;
-    font-weight: 800;
-}
-
-.payment-stat-live::before {
-    content: "";
-
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: #10b981;
+.payment-stat-content {
+  min-width: 0;
 }
 
 .payment-stat-label {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: #172554;
-
-    font-size: 12px;
-    font-weight: 700;
+  color: var(--payment-muted);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-.payment-stat-card h2 {
-    margin: 0 0 4px;
-
-    color: #111b4d;
-
-    font-size: 25px;
-    font-weight: 850;
+.payment-stat-value {
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.1;
 }
-
-.payment-stat-card small {
-    color: #94a3b8;
-
-    font-size: 10px;
-}
-
-
-/* =========================================================
-   FILTER CARD
-========================================================= */
 
 .payment-filter-card {
-    display: grid;
-
-    grid-template-columns:
-        2fr 1fr 1fr auto;
-
-    align-items: end;
-
-    gap: 14px;
-
-    padding: 17px;
-
-    margin-bottom: 22px;
-
-    background: rgba(255,255,255,.88);
-
-    border: 1px solid rgba(128,9,226,.08);
-
-    border-radius: 17px;
-
-    box-shadow:
-        0 6px 18px rgba(30,20,60,.05),
-        0 18px 40px rgba(30,20,60,.04);
-
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
+  background: var(--payment-card);
+  border: 1px solid var(--payment-border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--payment-shadow);
+  margin-bottom: 18px;
 }
 
-.payment-search-box {
-    position: relative;
+.payment-filter-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.6fr) minmax(150px, 1fr) minmax(180px, 1fr) auto auto;
+  gap: 12px;
+  align-items: end;
 }
 
-.payment-search-box i {
-    position: absolute;
-
-    left: 14px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    color: #8009e2;
-
-    font-size: 15px;
-
-    pointer-events: none;
+.payment-filter-group {
+  min-width: 0;
 }
 
-.payment-search-box input,
-.payment-filter-select select {
-    width: 100%;
-
-    height: 43px;
-
-    padding: 0 14px;
-
-    border-radius: 10px;
-
-    border: 1px solid #e2e5f0;
-
-    background: #ffffff;
-
-    color: #334155;
-
-    font-size: 11px;
-
-    outline: none;
-
-    box-shadow:
-        inset 0 1px 2px rgba(0,0,0,.02),
-        0 3px 10px rgba(30,20,60,.03);
-
-    transition:
-        background .25s ease,
-        color .25s ease,
-        border-color .25s ease;
+.payment-filter-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--payment-text);
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.payment-search-box input {
-    padding-left: 40px;
+.payment-filter-input,
+.payment-filter-select {
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--payment-border);
+  border-radius: 11px;
+  background: var(--payment-card);
+  color: var(--payment-text);
+  outline: none;
+  transition: 0.2s ease;
 }
 
-.payment-search-box input::placeholder {
-    color: #94a3b8;
+.payment-filter-input:focus,
+.payment-filter-select:focus {
+  border-color: var(--payment-primary);
+  box-shadow: 0 0 0 3px rgba(128, 9, 226, 0.10);
 }
 
-.payment-search-box input:focus,
-.payment-filter-select select:focus {
-    border-color: rgba(128,9,226,.35);
-
-    box-shadow:
-        0 0 0 3px rgba(128,9,226,.07);
-}
-
-.payment-filter-select label {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: #475569;
-
-    font-size: 10px;
-    font-weight: 700;
+.payment-filter-btn,
+.payment-reset-btn {
+  height: 44px;
+  border-radius: 11px;
+  padding: 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .payment-filter-btn {
-    height: 43px;
-
-    padding: 0 20px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #8009e2,
-            #6512d8
-        );
-
-    color: #ffffff;
-
-    font-size: 11px;
-    font-weight: 750;
-
-    text-decoration: none;
-
-    box-shadow:
-        0 7px 15px rgba(128,9,226,.22);
-
-    cursor: pointer;
-
-    transition: all .2s ease;
+  border: 1px solid var(--payment-primary);
+  background: var(--payment-primary);
+  color: #fff;
 }
 
 .payment-filter-btn:hover {
-    transform: translateY(-2px);
-
-    color: #ffffff;
-
-    box-shadow:
-        0 10px 22px rgba(128,9,226,.28);
+  background: var(--payment-primary-dark);
+  border-color: var(--payment-primary-dark);
 }
 
 .payment-reset-btn {
-    height: 43px;
-
-    padding: 0 15px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    border: 1px solid #e2e5f0;
-
-    color: #64748b;
-
-    font-size: 10px;
-    font-weight: 750;
-
-    text-decoration: none;
-
-    transition: all .2s ease;
+  border: 1px solid var(--payment-border);
+  background: var(--payment-card);
+  color: var(--payment-text);
 }
 
 .payment-reset-btn:hover {
-    color: #8009e2;
-
-    border-color: rgba(128,9,226,.25);
-
-    background: #faf8ff;
+  border-color: var(--payment-primary);
+  color: var(--payment-primary);
 }
 
-
-/* =========================================================
-   ACTIVE FILTER INFO
-========================================================= */
-
 .payment-filter-info {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 12px;
-
-    margin: -10px 0 18px;
-
-    padding: 0 4px;
-
-    color: #94a3b8;
-
-    font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 13px 16px;
+  border-radius: 13px;
+  background: var(--payment-primary-soft);
+  color: var(--payment-text);
+  font-size: 13px;
 }
 
 .payment-filter-info strong {
-    color: #475569;
+  color: var(--payment-primary);
 }
-
-.payment-active-filter {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    padding: 5px 9px;
-
-    border-radius: 999px;
-
-    background: #f1eaff;
-
-    color: #6d28d9;
-
-    font-size: 9px;
-    font-weight: 750;
-}
-
-
-/* =========================================================
-   TABLE CARD
-========================================================= */
 
 .payment-table-card {
-    overflow: hidden;
-
-    background: rgba(255,255,255,.94);
-
-    border: 1px solid rgba(128,9,226,.08);
-
-    border-radius: 19px;
-
-    box-shadow:
-        0 5px 12px rgba(30,20,60,.04),
-        0 18px 42px rgba(30,20,60,.07);
-
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
+  background: var(--payment-card);
+  border: 1px solid var(--payment-border);
+  border-radius: 18px;
+  box-shadow: var(--payment-shadow);
+  overflow: hidden;
 }
 
 .payment-table-header {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 20px 21px 17px;
+  padding: 19px 20px;
+  border-bottom: 1px solid var(--payment-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 }
 
 .payment-table-title {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
 }
 
-.payment-table-title-icon {
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #8009e2,
-            #6614d6
-        );
-
-    color: #ffffff;
-
-    box-shadow:
-        0 7px 15px rgba(128,9,226,.20);
+.payment-table-count {
+  color: var(--payment-muted);
+  font-size: 13px;
 }
 
-.payment-table-title h3 {
-    margin: 0 0 3px;
-
-    color: #172554;
-
-    font-size: 15px;
-    font-weight: 800;
+.bulk-payment-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  background: rgba(128, 9, 226, 0.045);
+  border-bottom: 1px solid var(--payment-border);
 }
 
-.payment-table-title p {
-    margin: 0;
-
-    color: #94a3b8;
-
-    font-size: 10px;
+.bulk-payment-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-.payment-count-badge {
-    padding: 7px 12px;
-
-    border-radius: 999px;
-
-    background: #f1eaff;
-
-    color: #6d28d9;
-
-    font-size: 10px;
-    font-weight: 750;
-
-    white-space: nowrap;
+.bulk-select-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--payment-text);
+  cursor: pointer;
 }
 
+.bulk-selected-count {
+  color: var(--payment-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
 
-/* =========================================================
-   TABLE
-========================================================= */
+.bulk-payment-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bulk-payment-btn {
+  min-height: 38px;
+  border: 0;
+  border-radius: 10px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bulk-payment-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.bulk-payment-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bulk-email-btn {
+  background: #2563eb;
+}
+
+.bulk-whatsapp-btn {
+  background: #16a34a;
+}
+
+.bulk-both-btn {
+  background: var(--payment-primary);
+}
+
+.payment-select-column {
+  width: 48px;
+  min-width: 48px;
+  text-align: center !important;
+}
+
+.payment-checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--payment-primary);
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.payment-locked {
+  width: 27px;
+  height: 27px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(22, 163, 74, 0.10);
+  color: var(--payment-success);
+  font-size: 13px;
+}
+
+.payment-select-hint {
+  color: var(--payment-muted);
+  font-size: 12px;
+}
 
 .payment-table-wrapper {
-    width: 100%;
-
-    overflow-x: auto;
-
-    padding: 0 12px;
-
-    scrollbar-width: thin;
-
-    scrollbar-color:
-        #d8c9f5
-        transparent;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .payment-management-table {
-    width: 100%;
-
-    min-width: 1100px;
-
-    border-collapse: separate;
-
-    border-spacing: 0;
+  width: 100%;
+  min-width: 1150px;
+  border-collapse: collapse;
 }
 
-.payment-management-table thead th {
-    padding: 12px 10px;
-
-    background: #f7f5ff;
-
-    color: #64748b;
-
-    border-top:
-        1px solid rgba(128,9,226,.05);
-
-    border-bottom:
-        1px solid rgba(128,9,226,.07);
-
-    font-size: 9px;
-    font-weight: 800;
-
-    white-space: nowrap;
+.payment-management-table th {
+  padding: 13px 15px;
+  background: rgba(100, 116, 139, 0.045);
+  color: var(--payment-muted);
+  border-bottom: 1px solid var(--payment-border);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+  white-space: nowrap;
 }
 
-.payment-management-table tbody td {
-    padding: 13px 10px;
-
-    border-bottom:
-        1px solid #f0eff5;
-
-    vertical-align: middle;
-
-    font-size: 10px;
+.payment-management-table td {
+  padding: 15px;
+  border-bottom: 1px solid var(--payment-border);
+  color: var(--payment-text);
+  font-size: 13px;
+  vertical-align: middle;
 }
 
 .payment-management-table tbody tr {
-    transition:
-        background .18s ease;
+  transition: 0.18s ease;
 }
 
 .payment-management-table tbody tr:hover {
-    background: #fbfaff;
+  background: rgba(128, 9, 226, 0.025);
 }
 
-
-/* =========================================================
-   STUDENT
-========================================================= */
+.payment-management-table tbody tr:last-child td {
+  border-bottom: 0;
+}
 
 .payment-student {
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    min-width: 155px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 170px;
 }
 
-.payment-avatar {
-    width: 34px;
-    height: 34px;
-
-    min-width: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #8b5cf6,
-            #6d28d9
-        );
-
-    color: #ffffff;
-
-    font-size: 12px;
-    font-weight: 800;
-
-    box-shadow:
-        0 4px 10px rgba(109,40,217,.20);
+.payment-student-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 38px;
+  background: var(--payment-primary-soft);
+  color: var(--payment-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
 }
 
-.payment-avatar img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
+.payment-student-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.payment-student-info strong {
-    display: block;
-
-    color: #1e293b;
-
-    font-size: 10px;
-    font-weight: 750;
+.payment-student-info {
+  min-width: 0;
 }
 
-.payment-student-info small {
-    display: block;
-
-    max-width: 125px;
-
-    margin-top: 2px;
-
-    overflow: hidden;
-
-    color: #94a3b8;
-
-    font-size: 8px;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
+.payment-student-name {
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 190px;
 }
 
-
-/* =========================================================
-   COURSE
-========================================================= */
+.payment-student-email {
+  margin-top: 3px;
+  color: var(--payment-muted);
+  font-size: 11px;
+  max-width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .payment-course-info {
-    max-width: 145px;
+  max-width: 210px;
 }
 
-.payment-course-info strong {
-    display: block;
-
-    color: #334155;
-
-    font-size: 10px;
-    font-weight: 700;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
+.payment-course-name {
+  font-weight: 700;
+  line-height: 1.4;
 }
-
-.payment-course-info small {
-    color: #94a3b8;
-
-    font-size: 8px;
-}
-
-
-/* =========================================================
-   IDS
-========================================================= */
 
 .payment-id {
-    color: #172554;
-
-    font-weight: 800;
-
-    white-space: nowrap;
+  font-weight: 700;
+  color: var(--payment-primary);
 }
 
-.payment-transaction-id {
-    display: block;
-
-    max-width: 125px;
-
-    overflow: hidden;
-
-    color: #64748b;
-
-    font-family: monospace;
-
-    font-size: 8px;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
+.payment-order-id,
+.payment-razorpay-id {
+  color: var(--payment-muted);
+  font-size: 11px;
+  max-width: 150px;
+  word-break: break-word;
 }
-
-
-/* =========================================================
-   AMOUNT
-========================================================= */
 
 .payment-amount {
-    color: #172554;
-
-    font-size: 10px;
-
-    white-space: nowrap;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
-
-/* =========================================================
-   STATUS
-========================================================= */
-
 .payment-status-badge {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 4px;
-
-    padding: 6px 9px;
-
-    border-radius: 999px;
-
-    font-size: 8px;
-    font-weight: 800;
-
-    white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: capitalize;
 }
 
 .payment-status-badge.paid {
-    background: #dff9ef;
-    color: #059669;
+  background: rgba(22, 163, 74, 0.11);
+  color: var(--payment-success);
 }
 
 .payment-status-badge.created,
 .payment-status-badge.pending {
-    background: #fff1d9;
-    color: #d97706;
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
 }
 
 .payment-status-badge.failed,
 .payment-status-badge.cancelled {
-    background: #ffe5eb;
-    color: #dc2626;
+  background: rgba(220, 38, 38, 0.10);
+  color: var(--payment-danger);
 }
 
-
-/* =========================================================
-   DATE
-========================================================= */
-
-.payment-date strong {
-    display: block;
-
-    color: #475569;
-
-    font-size: 9px;
-
-    white-space: nowrap;
+.payment-date {
+  color: var(--payment-muted);
+  white-space: nowrap;
+  font-size: 12px;
 }
-
-.payment-date small {
-    display: block;
-
-    margin-top: 2px;
-
-    color: #94a3b8;
-
-    font-size: 8px;
-}
-
-
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
 
 .payment-action-buttons {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  min-width: 190px;
 }
 
 .payment-view-btn,
 .payment-email-btn,
 .payment-reminder-btn {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 5px;
-
-    padding: 7px 10px;
-
-    border-radius: 8px;
-
-    font-size: 8px;
-    font-weight: 800;
-
-    white-space: nowrap;
-
-    cursor: pointer;
-
-    transition: all .2s ease;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 750;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
 }
 
-
-/* VIEW */
-
 .payment-view-btn {
-    background: #ffffff;
-
-    border: 1px solid rgba(128,9,226,.18);
-
-    color: #6d28d9;
-
-    text-decoration: none;
-
-    box-shadow:
-        0 3px 8px rgba(128,9,226,.04);
+  background: var(--payment-primary-soft);
+  color: var(--payment-primary);
+  border-color: rgba(128, 9, 226, 0.15);
 }
 
 .payment-view-btn:hover {
-    background: #8009e2;
-
-    border-color: #8009e2;
-
-    color: #ffffff;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 6px 14px rgba(128,9,226,.20);
+  background: var(--payment-primary);
+  color: #fff;
 }
 
-
-/* CONFIRMATION */
-
 .payment-email-btn {
-    background: #f1eaff;
-
-    border: 1px solid rgba(128,9,226,.18);
-
-    color: #6d28d9;
-
-    box-shadow:
-        0 3px 8px rgba(128,9,226,.04);
+  background: rgba(37, 99, 235, 0.10);
+  color: var(--payment-info);
+  border-color: rgba(37, 99, 235, 0.15);
 }
 
 .payment-email-btn:hover {
-    background: #8009e2;
-
-    border-color: #8009e2;
-
-    color: #ffffff;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 6px 14px rgba(128,9,226,.20);
+  background: var(--payment-info);
+  color: #fff;
 }
 
-
-/* REMINDER */
-
 .payment-reminder-btn {
-    background: #fff7ed;
-
-    border: 1px solid rgba(234,88,12,.18);
-
-    color: #c2410c;
-
-    box-shadow:
-        0 3px 8px rgba(234,88,12,.04);
+  background: rgba(22, 163, 74, 0.10);
+  color: var(--payment-success);
+  border-color: rgba(22, 163, 74, 0.15);
 }
 
 .payment-reminder-btn:hover {
-    background: #ea580c;
-
-    border-color: #ea580c;
-
-    color: #ffffff;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 6px 14px rgba(234,88,12,.20);
+  background: var(--payment-success);
+  color: #fff;
 }
 
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
 .payment-empty-state {
-    padding: 65px 20px;
-
-    text-align: center;
+  padding: 65px 25px;
+  text-align: center;
 }
 
 .payment-empty-icon {
-    width: 58px;
-    height: 58px;
-
-    margin: 0 auto 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 17px;
-
-    background: #f1eaff;
-
-    color: #8009e2;
-
-    font-size: 23px;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 15px;
+  border-radius: 18px;
+  background: var(--payment-primary-soft);
+  color: var(--payment-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
 }
 
-.payment-empty-state h4 {
-    margin: 0 0 5px;
-
-    color: #334155;
-
-    font-size: 14px;
+.payment-empty-title {
+  margin: 0 0 7px;
+  font-size: 18px;
+  font-weight: 800;
 }
 
-.payment-empty-state p {
-    margin: 0;
-
-    color: #94a3b8;
-
-    font-size: 10px;
+.payment-empty-text {
+  margin: 0;
+  color: var(--payment-muted);
+  font-size: 13px;
 }
-
-
-/* =========================================================
-   PAGINATION
-========================================================= */
 
 .payment-table-footer {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 15px 20px;
-
-    color: #94a3b8;
-
-    font-size: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid var(--payment-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 }
 
-.payment-table-footer strong {
-    color: #475569;
+.payment-footer-text {
+  color: var(--payment-muted);
+  font-size: 12px;
 }
 
 .payment-pagination {
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.payment-page-link {
-    min-width: 31px;
-    height: 31px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 0 8px;
-
-    border: 1px solid #e8e5f1;
-
-    border-radius: 8px;
-
-    background: #ffffff;
-
-    color: #64748b;
-
-    font-size: 10px;
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition: all .18s ease;
+.payment-pagination a,
+.payment-pagination span {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--payment-border);
+  border-radius: 8px;
+  background: var(--payment-card);
+  color: var(--payment-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.payment-page-link:hover {
-    border-color: rgba(128,9,226,.25);
-
-    background: #faf8ff;
-
-    color: #8009e2;
+.payment-pagination a:hover {
+  border-color: var(--payment-primary);
+  color: var(--payment-primary);
 }
 
-.payment-page-link.active {
-    background: #8009e2;
-
-    border-color: #8009e2;
-
-    color: #ffffff;
-
-    box-shadow:
-        0 5px 12px rgba(128,9,226,.20);
+.payment-pagination .current {
+  background: var(--payment-primary);
+  border-color: var(--payment-primary);
+  color: #fff;
 }
-
-.payment-page-link.disabled {
-    opacity: .45;
-
-    pointer-events: none;
-
-    cursor: default;
-}
-
-.payment-page-dots {
-    min-width: 25px;
-
-    text-align: center;
-
-    color: #94a3b8;
-
-    font-size: 11px;
-}
-
-
-/* =========================================================
-   DARK MODE - ADMIN LAYOUT OVERRIDE
-========================================================= */
-
-body.payment-page-dark {
-    background: #0b0d12 !important;
-
-    color: #f3f4f6 !important;
-}
-
-
-/* ADMIN MAIN */
-
-body.payment-page-dark .admin-main,
-body.payment-page-dark .admin-content,
-body.payment-page-dark main {
-    background: #0b0d12 !important;
-
-    color: #f3f4f6 !important;
-}
-
-
-/* ADMIN SIDEBAR */
-
-body.payment-page-dark .admin-sidebar {
-    background: #11131a !important;
-
-    border-color:
-        rgba(255,255,255,.07) !important;
-}
-
-
-/* ADMIN HEADER */
-
-body.payment-page-dark .admin-header {
-    background: #11131a !important;
-
-    border-color:
-        rgba(255,255,255,.07) !important;
-
-    color: #f3f4f6 !important;
-}
-
-
-/* PAYMENT PAGE */
 
 body.payment-page-dark .admin-payment-page {
-    background:
-        radial-gradient(
-            circle at 85% 8%,
-            rgba(128, 9, 226, 0.12),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 5% 70%,
-            rgba(99, 102, 241, 0.08),
-            transparent 25%
-        ),
-        #0b0d12 !important;
-
-    color: #f3f4f6 !important;
+  --payment-text: #e5e7eb;
+  --payment-muted: #94a3b8;
+  --payment-border: rgba(148, 163, 184, 0.15);
+  --payment-bg: #0b1120;
+  --payment-card: #111827;
+  --payment-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
 }
 
-
-/* =========================================================
-   DARK HEADER
-========================================================= */
-
-body.payment-page-dark .payment-page-header h1 {
-    color: #f8fafc !important;
-}
-
-body.payment-page-dark .payment-page-header p {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-kicker {
-    background: rgba(128,9,226,.14) !important;
-
-    border-color:
-        rgba(128,9,226,.20) !important;
-
-    color: #c084fc !important;
-}
-
-body.payment-page-dark .payment-header-icon {
-    background:
-        linear-gradient(
-            145deg,
-            #181b25,
-            #21182f
-        ) !important;
-
-    border-color:
-        rgba(255,255,255,.08) !important;
-
-    color: #c084fc !important;
-
-    box-shadow:
-        0 8px 18px rgba(0,0,0,.20),
-        0 22px 45px rgba(0,0,0,.20);
-}
-
-
-/* =========================================================
-   DARK THEME TOGGLE
-========================================================= */
-
-body.payment-page-dark .payment-theme-toggle {
-    background: #252a36 !important;
-
-    border-color:
-        rgba(255,255,255,.10) !important;
-
-    color: #fbbf24 !important;
-}
-
-body.payment-page-dark .payment-theme-toggle:hover {
-    background: #fbbf24 !important;
-
-    border-color: #fbbf24 !important;
-
-    color: #111827 !important;
-}
-
-
-/* =========================================================
-   DARK STATISTICS
-========================================================= */
-
-body.payment-page-dark .payment-stat-card {
-    background: #151821 !important;
-
-    border-color:
-        rgba(255,255,255,.07) !important;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.18);
-}
-
-body.payment-page-dark .payment-stat-card::after {
-    background:
-        rgba(128,9,226,.10) !important;
-}
-
-body.payment-page-dark .payment-stat-label {
-    color: #cbd5e1 !important;
-}
-
-body.payment-page-dark .payment-stat-card h2 {
-    color: #f8fafc !important;
-}
-
-body.payment-page-dark .payment-stat-card small {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-stat-icon {
-    background: #211d2e !important;
-
-    color: #c084fc !important;
-}
-
-
-/* =========================================================
-   DARK FILTER
-========================================================= */
-
-body.payment-page-dark .payment-filter-card {
-    background: #151821 !important;
-
-    border-color:
-        rgba(255,255,255,.07) !important;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.16);
-}
-
-body.payment-page-dark .payment-filter-select label {
-    color: #cbd5e1 !important;
-}
-
-body.payment-page-dark .payment-search-box input,
-body.payment-page-dark .payment-filter-select select {
-    background: #0f1219 !important;
-
-    color: #f3f4f6 !important;
-
-    border-color:
-        rgba(255,255,255,.10) !important;
-}
-
-body.payment-page-dark .payment-search-box input::placeholder {
-    color: #6b7280 !important;
-}
-
-body.payment-page-dark .payment-reset-btn {
-    background: #1d212b !important;
-
-    border-color:
-        rgba(255,255,255,.10) !important;
-
-    color: #cbd5e1 !important;
-}
-
-body.payment-page-dark .payment-reset-btn:hover {
-    background: #242936 !important;
-
-    color: #c084fc !important;
-}
-
-
-/* =========================================================
-   DARK FILTER INFO
-========================================================= */
-
-body.payment-page-dark .payment-filter-info {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-filter-info strong {
-    color: #e5e7eb !important;
-}
-
-body.payment-page-dark .payment-active-filter {
-    background: rgba(128,9,226,.16) !important;
-
-    color: #c084fc !important;
-}
-
-
-/* =========================================================
-   DARK TABLE CARD
-========================================================= */
-
-body.payment-page-dark .payment-table-card {
-    background: #151821 !important;
-
-    border-color:
-        rgba(255,255,255,.07) !important;
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,.20);
-}
-
-body.payment-page-dark .payment-table-title h3 {
-    color: #f8fafc !important;
-}
-
-body.payment-page-dark .payment-table-title p {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-count-badge {
-    background: rgba(128,9,226,.16) !important;
-
-    color: #c084fc !important;
-}
-
-
-/* =========================================================
-   DARK TABLE
-========================================================= */
-
-body.payment-page-dark .payment-management-table thead th {
-    background: #1b1f2a !important;
-
-    color: #9ca3af !important;
-
-    border-top-color:
-        rgba(255,255,255,.05) !important;
-
-    border-bottom-color:
-        rgba(255,255,255,.07) !important;
-}
-
-body.payment-page-dark .payment-management-table tbody td {
-    border-bottom-color:
-        rgba(255,255,255,.07) !important;
-
-    color: #e5e7eb !important;
-}
-
-body.payment-page-dark .payment-management-table tbody tr {
-    background: #151821 !important;
+body.payment-page-dark .payment-management-table th {
+  background: rgba(255, 255, 255, 0.025);
 }
 
 body.payment-page-dark .payment-management-table tbody tr:hover {
-    background: #1d222e !important;
+  background: rgba(128, 9, 226, 0.06);
 }
 
-
-/* =========================================================
-   DARK STUDENT / COURSE
-========================================================= */
-
-body.payment-page-dark .payment-student-info strong {
-    color: #f3f4f6 !important;
+body.payment-page-dark .bulk-payment-toolbar {
+  background: rgba(128, 9, 226, 0.08);
 }
 
-body.payment-page-dark .payment-student-info small {
-    color: #9ca3af !important;
+body.payment-page-dark .payment-filter-input,
+body.payment-page-dark .payment-filter-select {
+  background: #0f172a;
 }
 
-body.payment-page-dark .payment-course-info strong {
-    color: #e5e7eb !important;
+body.payment-page-dark .payment-status-badge.created,
+body.payment-page-dark .payment-status-badge.pending {
+  color: #fbbf24;
 }
-
-body.payment-page-dark .payment-course-info small {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-id {
-    color: #f3f4f6 !important;
-}
-
-body.payment-page-dark .payment-transaction-id {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-amount {
-    color: #f3f4f6 !important;
-}
-
-
-/* =========================================================
-   DARK DATE
-========================================================= */
-
-body.payment-page-dark .payment-date strong {
-    color: #e5e7eb !important;
-}
-
-body.payment-page-dark .payment-date small {
-    color: #9ca3af !important;
-}
-
-
-/* =========================================================
-   DARK VIEW BUTTON
-========================================================= */
-
-body.payment-page-dark .payment-view-btn {
-    background: #202532 !important;
-
-    border-color:
-        rgba(255,255,255,.10) !important;
-
-    color: #c084fc !important;
-}
-
-body.payment-page-dark .payment-view-btn:hover {
-    background: #8009e2 !important;
-
-    border-color: #8009e2 !important;
-
-    color: #ffffff !important;
-}
-
-
-/* =========================================================
-   DARK CONFIRMATION BUTTON
-========================================================= */
-
-body.payment-page-dark .payment-email-btn {
-    background: rgba(128,9,226,.16) !important;
-
-    border-color:
-        rgba(128,9,226,.25) !important;
-
-    color: #c084fc !important;
-}
-
-body.payment-page-dark .payment-email-btn:hover {
-    background: #8009e2 !important;
-
-    border-color: #8009e2 !important;
-
-    color: #ffffff !important;
-}
-
-
-/* =========================================================
-   DARK REMINDER BUTTON
-========================================================= */
-
-body.payment-page-dark .payment-reminder-btn {
-    background: rgba(234,88,12,.12) !important;
-
-    border-color:
-        rgba(234,88,12,.22) !important;
-
-    color: #fb923c !important;
-}
-
-body.payment-page-dark .payment-reminder-btn:hover {
-    background: #ea580c !important;
-
-    border-color: #ea580c !important;
-
-    color: #ffffff !important;
-}
-
-
-/* =========================================================
-   DARK EMPTY STATE
-========================================================= */
-
-body.payment-page-dark .payment-empty-state h4 {
-    color: #f3f4f6 !important;
-}
-
-body.payment-page-dark .payment-empty-state p {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-empty-icon {
-    background: rgba(128,9,226,.15) !important;
-
-    color: #c084fc !important;
-}
-
-
-/* =========================================================
-   DARK PAGINATION
-========================================================= */
-
-body.payment-page-dark .payment-table-footer {
-    color: #9ca3af !important;
-}
-
-body.payment-page-dark .payment-table-footer strong {
-    color: #e5e7eb !important;
-}
-
-body.payment-page-dark .payment-page-link {
-    background: #1d212b !important;
-
-    border-color:
-        rgba(255,255,255,.10) !important;
-
-    color: #cbd5e1 !important;
-}
-
-body.payment-page-dark .payment-page-link:hover {
-    background: #242936 !important;
-
-    border-color:
-        rgba(128,9,226,.30) !important;
-
-    color: #c084fc !important;
-}
-
-body.payment-page-dark .payment-page-link.active {
-    background: #8009e2 !important;
-
-    border-color: #8009e2 !important;
-
-    color: #ffffff !important;
-}
-
-body.payment-page-dark .payment-page-dots {
-    color: #6b7280 !important;
-}
-
-
-/* =========================================================
-   DARK SCROLLBAR
-========================================================= */
-
-body.payment-page-dark .payment-table-wrapper {
-    scrollbar-color:
-        #454052
-        transparent;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
 
 @media (max-width: 1100px) {
+  .payment-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-    .payment-stats-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
+  .payment-filter-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-    .payment-filter-card {
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-    .payment-filter-btn,
-    .payment-reset-btn {
-        width: 100%;
-    }
+  .payment-filter-form .payment-filter-actions {
+    display: flex;
+    gap: 10px;
+  }
 }
-
 
 @media (max-width: 700px) {
+  .admin-payment-page {
+    padding: 18px 13px;
+  }
 
-    .admin-payment-page {
-        padding: 18px 10px 40px;
-    }
+  .payment-page-header {
+    align-items: flex-start;
+  }
 
-    .payment-page-header {
-        align-items: flex-start;
-    }
+  .payment-page-title {
+    font-size: 23px;
+  }
 
-    .payment-page-header h1 {
-        font-size: 24px;
-    }
+  .payment-stats-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .payment-page-header p {
-        max-width: 240px;
-        line-height: 1.5;
-    }
+  .payment-filter-form {
+    grid-template-columns: 1fr;
+  }
 
-    .payment-header-icon {
-        width: auto;
-        height: auto;
+  .payment-filter-form .payment-filter-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 
-        min-width: 55px;
-        min-height: 55px;
+  .bulk-payment-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 
-        padding: 8px;
+  .bulk-payment-actions {
+    width: 100%;
+  }
 
-        border-radius: 17px;
-    }
+  .bulk-payment-btn {
+    flex: 1;
+  }
 
-    .payment-theme-toggle {
-        min-width: 42px;
-
-        width: 42px;
-
-        padding: 0;
-    }
-
-    .payment-theme-toggle span {
-        display: none;
-    }
-
-    .payment-stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .payment-filter-card {
-        grid-template-columns: 1fr;
-
-        padding: 14px;
-    }
-
-    .payment-filter-info {
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        margin-top: -5px;
-    }
-
-    .payment-table-header {
-        align-items: flex-start;
-
-        flex-direction: column;
-    }
-
-    .payment-count-badge {
-        display: inline-flex;
-    }
-
-    .payment-table-footer {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .payment-pagination {
-        width: 100%;
-
-        overflow-x: auto;
-
-        padding-bottom: 3px;
-    }
+  .payment-table-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
-
 
 @media (max-width: 420px) {
+  .payment-page-header {
+    gap: 10px;
+  }
 
-    .payment-page-header {
-        gap: 12px;
-    }
+  .payment-theme-toggle {
+    width: 40px;
+    height: 40px;
+  }
 
-    .payment-page-header h1 {
-        font-size: 21px;
-    }
+  .payment-stat-card {
+    padding: 16px;
+  }
 
-    .payment-kicker {
-        font-size: 9px;
-    }
+  .payment-filter-card {
+    padding: 15px;
+  }
 
-    .payment-stat-card {
-        min-height: 140px;
+  .payment-table-header {
+    padding: 15px;
+  }
 
-        padding: 17px;
-    }
+  .bulk-payment-toolbar {
+    padding: 13px 15px;
+  }
 
-    .payment-stat-card h2 {
-        font-size: 22px;
-    }
+  .bulk-payment-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 
-    .payment-table-title h3 {
-        font-size: 14px;
-    }
-
-    .payment-page-link {
-        min-width: 29px;
-        height: 29px;
-    }
+  .bulk-payment-btn {
+    width: 100%;
+  }
 }
-
 </style>
 
 <div class="admin-payment-page">
 
-  <!-- =====================================================
-       PAGE HEADER
-  ====================================================== -->
-
   <div class="payment-page-header">
-
-    <div class="payment-header-left">
-
-      <span class="payment-kicker">
-        <i class="bi bi-credit-card-2-front"></i>
-        PAYMENTS
-      </span>
-
-      <h1>
-        Payment Management
-      </h1>
-
-      <p>
-        Track and manage all course payment transactions
+    <div class="payment-page-header-left">
+      <h1 class="payment-page-title">Payment Management</h1>
+      <p class="payment-page-subtitle">
+        Manage student payments, confirmations and payment reminders.
       </p>
-
     </div>
 
-    <div class="payment-header-icon">
-
-      <!-- DAY / NIGHT TOGGLE -->
-
-      <button
-        type="button"
-        class="payment-theme-toggle"
-        id="paymentThemeToggle"
-        aria-label="Toggle dark mode"
-        title="Toggle dark mode"
-      >
-
-        <i
-          class="bi bi-moon-stars-fill"
-          id="paymentThemeIcon"
-        ></i>
-
-        <span id="paymentThemeText">
-          Night
-        </span>
-
-      </button>
-
-    </div>
-
+    <button type="button"
+            class="payment-theme-toggle"
+            id="paymentThemeToggle"
+            aria-label="Toggle theme">
+      <i class="bi bi-moon-stars-fill" id="paymentThemeIcon"></i>
+    </button>
   </div>
-
-
-  <!-- =====================================================
-       STATISTICS
-  ====================================================== -->
 
   <div class="payment-stats-grid">
 
-    <!-- TOTAL REVENUE -->
-
-    <div class="payment-stat-card revenue-card">
-
-      <div class="payment-stat-top">
-
-        <div class="payment-stat-icon">
-          <i class="bi bi-currency-rupee"></i>
-        </div>
-
-        <span class="payment-stat-live">
-          Live
-        </span>
-
+    <div class="payment-stat-card">
+      <div class="payment-stat-icon">
+        <i class="bi bi-credit-card"></i>
       </div>
-
-      <span class="payment-stat-label">
-        Total Revenue
-      </span>
-
-      <h2>
-        ₹ <%= number_with_precision(
-          @total_revenue,
-          precision: 2
-        ) %>
-      </h2>
-
-      <small>
-        From all successful payments
-      </small>
-
+      <div class="payment-stat-content">
+        <div class="payment-stat-label">Total Payments</div>
+        <div class="payment-stat-value">
+          <%= @total_payments || 0 %>
+        </div>
+      </div>
     </div>
 
-
-    <!-- SUCCESSFUL -->
-
-    <div class="payment-stat-card success-card">
-
-      <div class="payment-stat-top">
-
-        <div class="payment-stat-icon">
-          <i class="bi bi-check-lg"></i>
-        </div>
-
+    <div class="payment-stat-card success">
+      <div class="payment-stat-icon">
+        <i class="bi bi-check-circle"></i>
       </div>
-
-      <span class="payment-stat-label">
-        Successful Payments
-      </span>
-
-      <h2>
-        <%= @successful_payments %>
-      </h2>
-
-      <small>
-        Completed transactions
-      </small>
-
+      <div class="payment-stat-content">
+        <div class="payment-stat-label">Successful</div>
+        <div class="payment-stat-value">
+          <%= @successful_payments || 0 %>
+        </div>
+      </div>
     </div>
 
-
-    <!-- CREATED -->
-
-    <div class="payment-stat-card pending-card">
-
-      <div class="payment-stat-top">
-
-        <div class="payment-stat-icon">
-          <i class="bi bi-clock"></i>
-        </div>
-
+    <div class="payment-stat-card warning">
+      <div class="payment-stat-icon">
+        <i class="bi bi-hourglass-split"></i>
       </div>
-
-      <span class="payment-stat-label">
-        Created Payments
-      </span>
-
-      <h2>
-        <%= @pending_payments %>
-      </h2>
-
-      <small>
-        Awaiting payment completion
-      </small>
-
+      <div class="payment-stat-content">
+        <div class="payment-stat-label">Pending</div>
+        <div class="payment-stat-value">
+          <%= @pending_payments || 0 %>
+        </div>
+      </div>
     </div>
 
-
-    <!-- FAILED -->
-
-    <div class="payment-stat-card failed-card">
-
-      <div class="payment-stat-top">
-
-        <div class="payment-stat-icon">
-          <i class="bi bi-x-lg"></i>
-        </div>
-
+    <div class="payment-stat-card">
+      <div class="payment-stat-icon">
+        <i class="bi bi-currency-rupee"></i>
       </div>
-
-      <span class="payment-stat-label">
-        Failed Payments
-      </span>
-
-      <h2>
-        <%= @failed_payments %>
-      </h2>
-
-      <small>
-        Failed or cancelled
-      </small>
-
+      <div class="payment-stat-content">
+        <div class="payment-stat-label">Total Revenue</div>
+        <div class="payment-stat-value">
+          ₹<%= number_with_precision(@total_revenue || 0, precision: 2, delimiter: ",") %>
+        </div>
+      </div>
     </div>
 
   </div>
 
+  <div class="payment-filter-card">
+    <%= form_with url: admin_payments_path,
+                  method: :get,
+                  local: true,
+                  class: "payment-filter-form" do %>
 
-  <!-- =====================================================
-       SERVER-SIDE FILTER
-  ====================================================== -->
+      <div class="payment-filter-group">
+        <label class="payment-filter-label">Search</label>
+        <%= text_field_tag :search,
+                           params[:search],
+                           class: "payment-filter-input",
+                           placeholder: "Student, email, payment ID..." %>
+      </div>
 
-  <form
-    method="get"
-    action="<%= admin_payments_path %>"
-    class="payment-filter-card"
-  >
+      <div class="payment-filter-group">
+        <label class="payment-filter-label">Status</label>
+        <%= select_tag :status,
+                       options_for_select(
+                         [
+                           ["All Status", ""],
+                           ["Paid", "paid"],
+                           ["Created", "created"],
+                           ["Pending", "pending"],
+                           ["Failed", "failed"],
+                           ["Cancelled", "cancelled"]
+                         ],
+                         params[:status]
+                       ),
+                       class: "payment-filter-select" %>
+      </div>
 
-    <!-- SEARCH -->
+      <div class="payment-filter-group">
+        <label class="payment-filter-label">Course</label>
+        <%= select_tag :course_id,
+                       options_for_select(
+                         [["All Courses", ""]] +
+                         Array(@courses).map { |course| [course.Course_name, course.id] },
+                         params[:course_id]
+                       ),
+                       class: "payment-filter-select" %>
+      </div>
 
-    <div class="payment-search-box">
+      <div class="payment-filter-actions">
+        <%= submit_tag "Filter",
+                       class: "payment-filter-btn" %>
 
-      <i class="bi bi-search"></i>
-
-      <input
-        type="text"
-        name="search"
-        value="<%= params[:search].to_s %>"
-        placeholder="Search student, email, course, payment ID..."
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <!-- STATUS -->
-
-    <div class="payment-filter-select">
-
-      <label for="paymentStatusFilter">
-        Status
-      </label>
-
-      <select
-        id="paymentStatusFilter"
-        name="status"
-      >
-
-        <option value="">
-          All Status
-        </option>
-
-        <option
-          value="paid"
-          <%= "selected" if params[:status] == "paid" %>
-        >
-          Paid
-        </option>
-
-        <option
-          value="created"
-          <%= "selected" if params[:status] == "created" %>
-        >
-          Created
-        </option>
-
-        <option
-          value="pending"
-          <%= "selected" if params[:status] == "pending" %>
-        >
-          Pending
-        </option>
-
-        <option
-          value="failed"
-          <%= "selected" if params[:status] == "failed" %>
-        >
-          Failed
-        </option>
-
-        <option
-          value="cancelled"
-          <%= "selected" if params[:status] == "cancelled" %>
-        >
-          Cancelled
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <!-- COURSE -->
-
-    <div class="payment-filter-select">
-
-      <label for="paymentCourseFilter">
-        Course
-      </label>
-
-      <select
-        id="paymentCourseFilter"
-        name="course"
-      >
-
-        <option value="">
-          All Courses
-        </option>
-
-        <% @payment_courses.each do |course| %>
-
-          <option
-            value="<%= course.Course_name %>"
-            <%= "selected" if params[:course].to_s == course.Course_name.to_s %>
-          >
-            <%= course.Course_name %>
-          </option>
-
-        <% end %>
-
-      </select>
-
-    </div>
-
-
-    <!-- ACTIONS -->
-
-    <div
-      style="
-        display:flex;
-        gap:7px;
-        align-items:center;
-      "
-    >
-
-      <button
-        type="submit"
-        class="payment-filter-btn"
-      >
-
-        <i class="bi bi-funnel"></i>
-
-        Filter
-
-      </button>
-
-
-      <% if params[:search].present? ||
-            params[:status].present? ||
-            params[:course].present? %>
-
-        <%= link_to(
-          admin_payments_path,
-          class: "payment-reset-btn",
-          title: "Clear filters"
-        ) do %>
-
-          <i class="bi bi-x-circle"></i>
-
+        <%= link_to admin_payments_path,
+                    class: "payment-reset-btn" do %>
+          <i class="bi bi-arrow-counterclockwise"></i>
           Reset
-
         <% end %>
+      </div>
 
-      <% end %>
-
-    </div>
-
-  </form>
-
-
-  <!-- =====================================================
-       FILTER INFORMATION
-  ====================================================== -->
+    <% end %>
+  </div>
 
   <div class="payment-filter-info">
-
     <div>
-
-      <% if params[:search].present? ||
-            params[:status].present? ||
-            params[:course].present? %>
-
-        <span class="payment-active-filter">
-
-          <i class="bi bi-funnel-fill"></i>
-
-          Filters active
-
-        </span>
-
-        &nbsp;
-
-      <% end %>
-
       Showing
-
-      <strong>
-        <%= @filtered_payments_count %>
-      </strong>
-
-      matching payment<%= "s" unless @filtered_payments_count == 1 %>
-
+      <strong><%= @payments.respond_to?(:total_count) ? @payments.total_count : @payments.size %></strong>
+      payment(s)
     </div>
 
-
-    <div>
-
-      <strong>
-        <%= @total_payments %>
-      </strong>
-
-      total payments
-
-    </div>
-
+    <% if params[:status].present? || params[:search].present? || params[:course_id].present? %>
+      <div>
+        Active filters applied
+      </div>
+    <% end %>
   </div>
-
-
-  <!-- =====================================================
-       PAYMENT TABLE
-  ====================================================== -->
 
   <div class="payment-table-card">
 
-    <!-- TABLE HEADER -->
-
     <div class="payment-table-header">
+      <div>
+        <h2 class="payment-table-title">Payment Records</h2>
+        <div class="payment-table-count">
+          <%= @payments.size %> record(s) on this page
+        </div>
+      </div>
+    </div>
 
-      <div class="payment-table-title">
+    <% selectable_payments = @payments.select { |payment| !payment.paid? } %>
 
-        <div class="payment-table-title-icon">
-          <i class="bi bi-receipt"></i>
+    <% if selectable_payments.present? %>
+      <div class="bulk-payment-toolbar">
+
+        <div class="bulk-payment-left">
+          <label class="bulk-select-label">
+            <input type="checkbox"
+                   id="selectAllPayments"
+                   class="payment-checkbox">
+            <span>Select All</span>
+          </label>
+
+          <span class="bulk-selected-count"
+                id="bulkSelectedCount">
+            0 selected
+          </span>
         </div>
 
-        <div>
+        <div class="bulk-payment-actions">
 
-          <h3>
-            Payment Transactions
-          </h3>
+          <button type="button"
+                  class="bulk-payment-btn bulk-email-btn"
+                  id="bulkEmailButton"
+                  disabled>
+            <i class="bi bi-envelope"></i>
+            Send Email
+          </button>
 
-          <p>
-            Course payment transaction history
-          </p>
+          <button type="button"
+                  class="bulk-payment-btn bulk-whatsapp-btn"
+                  id="bulkWhatsappButton"
+                  disabled>
+            <i class="bi bi-whatsapp"></i>
+            Send WhatsApp
+          </button>
+
+          <button type="button"
+                  class="bulk-payment-btn bulk-both-btn"
+                  id="bulkBothButton"
+                  disabled>
+            <i class="bi bi-send"></i>
+            Send Both
+          </button>
 
         </div>
 
       </div>
+    <% end %>
 
+    <form id="bulkReminderForm"
+          action="<%= bulk_send_reminders_admin_payments_path %>"
+          method="post"
+          style="display:none;">
 
-      <span class="payment-count-badge">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
-        <%= @filtered_payments_count %>
-        Payments
+      <input type="hidden"
+             name="channel"
+             id="bulkChannel">
 
-      </span>
+      <div id="bulkPaymentIds"></div>
 
-    </div>
+    </form>
 
+    <% if @payments.present? %>
 
-    <!-- TABLE -->
-
-    <div class="payment-table-wrapper">
-
-      <% if @payments.present? %>
+      <div class="payment-table-wrapper">
 
         <table class="payment-management-table">
 
           <thead>
-
             <tr>
-
-              <th>
-                Student
+              <th class="payment-select-column">
+                <span class="visually-hidden">Select</span>
               </th>
-
-              <th>
-                Course
-              </th>
-
-              <th>
-                Payment ID
-              </th>
-
-              <th>
-                Order ID
-              </th>
-
-              <th>
-                Razorpay ID
-              </th>
-
-              <th>
-                Amount
-              </th>
-
-              <th>
-                Status
-              </th>
-
-              <th>
-                Date & Time
-              </th>
-
-              <th>
-                Action
-              </th>
-
+              <th>Student</th>
+              <th>Course</th>
+              <th>Payment ID</th>
+              <th>Order ID</th>
+              <th>Razorpay ID</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date & Time</th>
+              <th>Action</th>
             </tr>
-
           </thead>
-
 
           <tbody>
 
             <% @payments.each do |payment| %>
 
               <% enrollment = payment.enrollment %>
-
               <% student = enrollment&.user %>
-
               <% course = enrollment&.course %>
-
-              <% status = payment.status.to_s.downcase %>
-
-              <% course_name = course&.Course_name.to_s %>
-
 
               <tr>
 
-                <!-- =========================================
-                     STUDENT
-                ========================================== -->
+                <td class="payment-select-column">
 
-                <td>
+                  <% if payment.paid? %>
 
-                  <div class="payment-student">
-
-                    <div class="payment-avatar">
-
-                      <% if student&.image&.attached? %>
-
-                        <%= image_tag(
-                          student.image,
-                          alt: student.name.to_s
-                        ) %>
-
-                      <% else %>
-
-                        <%= student&.name
-                              .to_s
-                              .first
-                              .upcase
-                              .presence || "S" %>
-
-                      <% end %>
-
-                    </div>
-
-
-                    <div class="payment-student-info">
-
-                      <strong>
-
-                        <%= student&.name.presence ||
-                            "Unknown Student" %>
-
-                      </strong>
-
-                      <small>
-
-                        <%= student&.email.presence ||
-                            "—" %>
-
-                      </small>
-
-                    </div>
-
-                  </div>
-
-                </td>
-
-
-                <!-- =========================================
-                     COURSE
-                ========================================== -->
-
-                <td>
-
-                  <div class="payment-course-info">
-
-                    <strong
-                      title="<%= course_name %>"
-                    >
-
-                      <%= course_name.presence ||
-                          "Unknown Course" %>
-
-                    </strong>
-
-                    <small>
-
-                      Enrollment #
-                      <%= enrollment&.id || "—" %>
-
-                    </small>
-
-                  </div>
-
-                </td>
-
-
-                <!-- =========================================
-                     PAYMENT ID
-                ========================================== -->
-
-                <td>
-
-                  <span class="payment-id">
-
-                    #<%= payment.id %>
-
-                  </span>
-
-                </td>
-
-
-                <!-- =========================================
-                     ORDER ID
-                ========================================== -->
-
-                <td>
-
-                  <span
-                    class="payment-transaction-id"
-                    title="<%= payment.razorpay_order_id.presence || "—" %>"
-                  >
-
-                    <%= payment.razorpay_order_id.presence || "—" %>
-
-                  </span>
-
-                </td>
-
-
-                <!-- =========================================
-                     RAZORPAY PAYMENT ID
-                ========================================== -->
-
-                <td>
-
-                  <span
-                    class="payment-transaction-id"
-                    title="<%= payment.razorpay_payment_id.presence || "—" %>"
-                  >
-
-                    <%= payment.razorpay_payment_id.presence || "—" %>
-
-                  </span>
-
-                </td>
-
-
-                <!-- =========================================
-                     AMOUNT
-                ========================================== -->
-
-                <td>
-
-                  <strong class="payment-amount">
-
-                    ₹ <%= number_with_precision(
-                      payment.amount,
-                      precision: 2
-                    ) %>
-
-                  </strong>
-
-                </td>
-
-
-                <!-- =========================================
-                     STATUS
-                ========================================== -->
-
-                <td>
-
-                  <% if status == "paid" %>
-
-                    <span class="payment-status-badge paid">
-
-                      <i class="bi bi-check-circle-fill"></i>
-
-                      Paid
-
+                    <span class="payment-locked"
+                          title="Paid payments cannot receive payment reminders">
+                      <i class="bi bi-check"></i>
                     </span>
-
-
-                  <% elsif status == "created" %>
-
-                    <span class="payment-status-badge created">
-
-                      <i class="bi bi-clock-fill"></i>
-
-                      Created
-
-                    </span>
-
-
-                  <% elsif status == "pending" %>
-
-                    <span class="payment-status-badge pending">
-
-                      <i class="bi bi-hourglass-split"></i>
-
-                      Pending
-
-                    </span>
-
-
-                  <% elsif status == "failed" %>
-
-                    <span class="payment-status-badge failed">
-
-                      <i class="bi bi-x-circle-fill"></i>
-
-                      Failed
-
-                    </span>
-
-
-                  <% elsif status == "cancelled" %>
-
-                    <span class="payment-status-badge cancelled">
-
-                      <i class="bi bi-slash-circle-fill"></i>
-
-                      Cancelled
-
-                    </span>
-
 
                   <% else %>
 
-                    <span class="payment-status-badge">
-
-                      <i class="bi bi-info-circle-fill"></i>
-
-                      <%= payment.status.to_s.titleize.presence ||
-                          "Unknown" %>
-
-                    </span>
+                    <input type="checkbox"
+                           class="payment-checkbox payment-row-checkbox"
+                           value="<%= payment.id %>"
+                           data-payment-id="<%= payment.id %>"
+                           data-student-name="<%= student&.name.to_s %>">
 
                   <% end %>
 
                 </td>
 
-
-                <!-- =========================================
-                     DATE
-                ========================================== -->
-
                 <td>
 
-                  <div class="payment-date">
+                  <div class="payment-student">
 
-                    <strong>
+                    <div class="payment-student-avatar">
 
-                      <%= payment.created_at.strftime(
-                        "%d %b %Y"
-                      ) %>
+                      <% if student&.image&.attached? %>
 
-                    </strong>
+                        <%= image_tag student.image,
+                                      alt: student.name.to_s %>
 
-                    <small>
+                      <% else %>
 
-                      <%= payment.created_at.strftime(
-                        "%I:%M %p"
-                      ) %>
+                        <%= student&.name.to_s.first&.upcase || "S" %>
 
-                    </small>
+                      <% end %>
+
+                    </div>
+
+                    <div class="payment-student-info">
+
+                      <div class="payment-student-name">
+                        <%= student&.name.presence || "Unknown Student" %>
+                      </div>
+
+                      <% if student&.email.present? %>
+                        <div class="payment-student-email">
+                          <%= student.email %>
+                        </div>
+                      <% end %>
+
+                    </div>
 
                   </div>
 
                 </td>
 
+                <td>
 
-                <!-- =========================================
-                     ACTION
-                ========================================== -->
+                  <div class="payment-course-info">
+                    <div class="payment-course-name">
+                      <%= course&.Course_name.presence || "Unknown Course" %>
+                    </div>
+                  </div>
+
+                </td>
+
+                <td>
+                  <span class="payment-id">
+                    #<%= payment.id %>
+                  </span>
+                </td>
+
+                <td>
+                  <div class="payment-order-id">
+                    <%= payment.respond_to?(:razorpay_order_id) ? payment.razorpay_order_id.presence || "—" : "—" %>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="payment-razorpay-id">
+                    <%= payment.respond_to?(:razorpay_payment_id) ? payment.razorpay_payment_id.presence || "—" : "—" %>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="payment-amount">
+                    ₹<%= number_with_precision(payment.amount || 0, precision: 2) %>
+                  </span>
+                </td>
+
+                <td>
+
+                  <span class="payment-status-badge <%= payment.status.to_s.downcase %>">
+                    <%= payment.status.to_s.humanize %>
+                  </span>
+
+                </td>
+
+                <td>
+
+                  <div class="payment-date">
+                    <%= payment.created_at.strftime("%d %b %Y") %>
+                    <br>
+                    <%= payment.created_at.strftime("%I:%M %p") %>
+                  </div>
+
+                </td>
 
                 <td>
 
                   <div class="payment-action-buttons">
 
-                    <!-- =====================================
-                         VIEW DETAILS
-                    ====================================== -->
-
-                    <%= link_to(
-                      admin_payment_path(payment),
-                      class: "payment-view-btn"
-                    ) do %>
-
+                    <%= link_to admin_payment_path(payment),
+                                class: "payment-view-btn" do %>
                       <i class="bi bi-eye"></i>
-
-                      <span>
-                        View Details
-                      </span>
-
+                      View
                     <% end %>
 
-
-                    <!-- =====================================
-                         PAYMENT CONFIRMATION
-                    ====================================== -->
-
-                    <% if payment.paid? &&
-                          student&.email.present? %>
-
-                      <%= button_to(
-                        send_email_admin_payment_path(payment),
-                        method: :post,
-                        class: "payment-email-btn",
-                        data: {
-                          turbo_confirm:
-                            "Send payment confirmation email to #{student.email}?"
-                        }
-                      ) do %>
-
-                        <i class="bi bi-envelope-check"></i>
-
-                        <span>
-                          Confirmation
-                        </span>
-
-                      <% end %>
-
-                    <% end %>
-
-
-                    <!-- =====================================
-                         PAYMENT REMINDER
-                         EMAIL + WHATSAPP
-                    ====================================== -->
-
-                    <% unless payment.paid? %>
+                    <% if payment.paid? %>
 
                       <% if student&.email.present? %>
 
-                        <%= button_to(
-                          send_reminder_admin_payment_path(payment),
-                          method: :post,
-                          class: "payment-reminder-btn",
-                          data: {
-                            turbo_confirm:
-                              "Send payment reminder by Email and WhatsApp to #{student.email}?"
-                          }
-                        ) do %>
+                        <%= button_to send_email_admin_payment_path(payment),
+                                      method: :post,
+                                      class: "payment-email-btn",
+                                      form: {
+                                        data: {
+                                          turbo_confirm: "Send payment confirmation email to #{student.email}?"
+                                        }
+                                      } do %>
+                          <i class="bi bi-envelope"></i>
+                          Confirmation
+                        <% end %>
 
-                          <i class="bi bi-bell"></i>
+                      <% end %>
 
-                          <span>
-                            Reminder
-                          </span>
+                    <% else %>
 
+                      <% if student&.email.present? || student&.mobile.present? || student&.phone.present? %>
+
+                        <%= button_to send_reminder_admin_payment_path(payment),
+                                      method: :post,
+                                      class: "payment-reminder-btn",
+                                      form: {
+                                        data: {
+                                          turbo_confirm: "Send payment reminder by Email and WhatsApp?"
+                                        }
+                                      } do %>
+                          <i class="bi bi-send"></i>
+                          Reminder
                         <% end %>
 
                       <% end %>
@@ -2717,376 +1212,81 @@ body.payment-page-dark .payment-table-wrapper {
 
         </table>
 
+      </div>
 
-      <% else %>
+    <% else %>
 
-        <!-- ===============================================
-             EMPTY STATE
-        ================================================ -->
+      <div class="payment-empty-state">
 
-        <div class="payment-empty-state">
+        <div class="payment-empty-icon">
+          <i class="bi bi-credit-card-2-front"></i>
+        </div>
 
-          <div class="payment-empty-icon">
+        <h3 class="payment-empty-title">
+          No payments found
+        </h3>
 
-            <% if params[:search].present? ||
-                  params[:status].present? ||
-                  params[:course].present? %>
+        <p class="payment-empty-text">
+          No payment records match your current filters.
+        </p>
 
-              <i class="bi bi-search"></i>
+      </div>
 
-            <% else %>
+    <% end %>
 
-              <i class="bi bi-wallet2"></i>
+    <% if @payments.present? %>
 
+      <div class="payment-table-footer">
+
+        <div class="payment-footer-text">
+          Page <%= @payments.respond_to?(:current_page) ? @payments.current_page : 1 %>
+        </div>
+
+        <div class="payment-pagination">
+
+          <% if @payments.respond_to?(:total_pages) && @payments.total_pages > 1 %>
+
+            <% current_page = @payments.current_page %>
+
+            <% if current_page > 1 %>
+              <%= link_to "‹",
+                          admin_payments_path(
+                            request.query_parameters.merge(page: current_page - 1)
+                          ) %>
             <% end %>
 
-          </div>
+            <% first_page = [current_page - 2, 1].max %>
+            <% last_page = [first_page + 4, @payments.total_pages].min %>
 
+            <% (first_page..last_page).each do |page| %>
 
-          <h4>
+              <% if page == current_page %>
 
-            <% if params[:search].present? ||
-                  params[:status].present? ||
-                  params[:course].present? %>
+                <span class="current">
+                  <%= page %>
+                </span>
 
-              No Matching Payments
+              <% else %>
 
-            <% else %>
-
-              No Payments Found
-
-            <% end %>
-
-          </h4>
-
-
-          <p>
-
-            <% if params[:search].present? ||
-                  params[:status].present? ||
-                  params[:course].present? %>
-
-              Try changing your search or filters.
-
-            <% else %>
-
-              Payment transactions will appear here.
-
-            <% end %>
-
-          </p>
-
-
-          <% if params[:search].present? ||
-                params[:status].present? ||
-                params[:course].present? %>
-
-            <div style="margin-top:15px;">
-
-              <%= link_to(
-                admin_payments_path,
-                class: "payment-reset-btn"
-              ) do %>
-
-                <i class="bi bi-arrow-counterclockwise"></i>
-
-                Clear Filters
+                <%= link_to page,
+                            admin_payments_path(
+                              request.query_parameters.merge(page: page)
+                            ) %>
 
               <% end %>
 
-            </div>
+            <% end %>
+
+            <% if current_page < @payments.total_pages %>
+              <%= link_to "›",
+                          admin_payments_path(
+                            request.query_parameters.merge(page: current_page + 1)
+                          ) %>
+            <% end %>
 
           <% end %>
 
         </div>
-
-      <% end %>
-
-    </div>
-
-
-    <!-- =====================================================
-         PAGINATION FOOTER
-    ====================================================== -->
-
-    <% if @filtered_payments_count > 0 %>
-
-      <div class="payment-table-footer">
-
-        <div>
-
-          <% first_record =
-               ((@page - 1) * @per_page) + 1 %>
-
-          <% last_record =
-               [
-                 @page * @per_page,
-                 @filtered_payments_count
-               ].min %>
-
-          Showing
-
-          <strong>
-            <%= first_record %>
-          </strong>
-
-          –
-
-          <strong>
-            <%= last_record %>
-          </strong>
-
-          of
-
-          <strong>
-            <%= @filtered_payments_count %>
-          </strong>
-
-          payments
-
-        </div>
-
-
-        <!-- ===============================================
-             PAGINATION
-        ================================================ -->
-
-        <% if @total_pages > 1 %>
-
-          <div class="payment-pagination">
-
-            <!-- PREVIOUS -->
-
-            <% if @page > 1 %>
-
-              <%= link_to(
-                admin_payments_path(
-                  request.query_parameters.merge(
-                    page: @page - 1
-                  )
-                ),
-                class: "payment-page-link",
-                aria: {
-                  label: "Previous page"
-                }
-              ) do %>
-
-                <i class="bi bi-chevron-left"></i>
-
-              <% end %>
-
-            <% else %>
-
-              <span
-                class="payment-page-link disabled"
-                aria-disabled="true"
-              >
-
-                <i class="bi bi-chevron-left"></i>
-
-              </span>
-
-            <% end %>
-
-
-            <!-- PAGE NUMBERS -->
-
-            <% if @total_pages <= 7 %>
-
-              <% (1..@total_pages).each do |page_number| %>
-
-                <% if page_number == @page %>
-
-                  <span
-                    class="payment-page-link active"
-                    aria-current="page"
-                  >
-
-                    <%= page_number %>
-
-                  </span>
-
-                <% else %>
-
-                  <%= link_to(
-                    page_number,
-                    admin_payments_path(
-                      request.query_parameters.merge(
-                        page: page_number
-                      )
-                    ),
-                    class: "payment-page-link"
-                  ) %>
-
-                <% end %>
-
-              <% end %>
-
-            <% else %>
-
-              <!-- FIRST PAGE -->
-
-              <% if @page == 1 %>
-
-                <span
-                  class="payment-page-link active"
-                  aria-current="page"
-                >
-                  1
-                </span>
-
-              <% else %>
-
-                <%= link_to(
-                  "1",
-                  admin_payments_path(
-                    request.query_parameters.merge(
-                      page: 1
-                    )
-                  ),
-                  class: "payment-page-link"
-                ) %>
-
-              <% end %>
-
-
-              <!-- LEFT DOTS -->
-
-              <% if @page > 4 %>
-
-                <span class="payment-page-dots">
-                  …
-                </span>
-
-              <% end %>
-
-
-              <!-- MIDDLE PAGES -->
-
-              <% start_page =
-                   [
-                     2,
-                     @page - 1
-                   ].max %>
-
-              <% end_page =
-                   [
-                     @total_pages - 1,
-                     @page + 1
-                   ].min %>
-
-
-              <% (start_page..end_page).each do |page_number| %>
-
-                <% next if page_number <= 1 ||
-                           page_number >= @total_pages %>
-
-
-                <% if page_number == @page %>
-
-                  <span
-                    class="payment-page-link active"
-                    aria-current="page"
-                  >
-
-                    <%= page_number %>
-
-                  </span>
-
-                <% else %>
-
-                  <%= link_to(
-                    page_number,
-                    admin_payments_path(
-                      request.query_parameters.merge(
-                        page: page_number
-                      )
-                    ),
-                    class: "payment-page-link"
-                  ) %>
-
-                <% end %>
-
-              <% end %>
-
-
-              <!-- RIGHT DOTS -->
-
-              <% if @page < @total_pages - 3 %>
-
-                <span class="payment-page-dots">
-                  …
-                </span>
-
-              <% end %>
-
-
-              <!-- LAST PAGE -->
-
-              <% if @page == @total_pages %>
-
-                <span
-                  class="payment-page-link active"
-                  aria-current="page"
-                >
-
-                  <%= @total_pages %>
-
-                </span>
-
-              <% else %>
-
-                <%= link_to(
-                  @total_pages,
-                  admin_payments_path(
-                    request.query_parameters.merge(
-                      page: @total_pages
-                    )
-                  ),
-                  class: "payment-page-link"
-                ) %>
-
-              <% end %>
-
-            <% end %>
-
-
-            <!-- NEXT -->
-
-            <% if @page < @total_pages %>
-
-              <%= link_to(
-                admin_payments_path(
-                  request.query_parameters.merge(
-                    page: @page + 1
-                  )
-                ),
-                class: "payment-page-link",
-                aria: {
-                  label: "Next page"
-                }
-              ) do %>
-
-                <i class="bi bi-chevron-right"></i>
-
-              <% end %>
-
-            <% else %>
-
-              <span
-                class="payment-page-link disabled"
-                aria-disabled="true"
-              >
-
-                <i class="bi bi-chevron-right"></i>
-
-              </span>
-
-            <% end %>
-
-          </div>
-
-        <% end %>
 
       </div>
 
@@ -3096,118 +1296,170 @@ body.payment-page-dark .payment-table-wrapper {
 
 </div>
 
+<script nonce="<%= content_security_policy_nonce %>">
+document.addEventListener("DOMContentLoaded", function () {
+  const body = document.body;
+  const toggle = document.getElementById("paymentThemeToggle");
+  const icon = document.getElementById("paymentThemeIcon");
+  const storageKey = "aone-payment-theme";
 
-<!-- =========================================================
-     PAYMENT PAGE THEME TOGGLE
-========================================================== -->
+  function applyTheme(theme) {
+    if (theme === "dark") {
+      body.classList.add("payment-page-dark");
+      if (icon) {
+        icon.className = "bi bi-sun-fill";
+      }
+    } else {
+      body.classList.remove("payment-page-dark");
+      if (icon) {
+        icon.className = "bi bi-moon-stars-fill";
+      }
+    }
+  }
+
+  const savedTheme = localStorage.getItem(storageKey) || "light";
+  applyTheme(savedTheme);
+
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      const nextTheme = body.classList.contains("payment-page-dark")
+        ? "light"
+        : "dark";
+
+      localStorage.setItem(storageKey, nextTheme);
+      applyTheme(nextTheme);
+    });
+  }
+});
+</script>
 
 <script nonce="<%= content_security_policy_nonce %>">
-
 document.addEventListener("DOMContentLoaded", function () {
+  const selectAll = document.getElementById("selectAllPayments");
+  const rowCheckboxes = Array.from(
+    document.querySelectorAll(".payment-row-checkbox")
+  );
 
-  const body =
-    document.body;
+  const selectedCount = document.getElementById("bulkSelectedCount");
+  const emailButton = document.getElementById("bulkEmailButton");
+  const whatsappButton = document.getElementById("bulkWhatsappButton");
+  const bothButton = document.getElementById("bulkBothButton");
 
-  const toggle =
-    document.getElementById(
-      "paymentThemeToggle"
-    );
+  const form = document.getElementById("bulkReminderForm");
+  const channelInput = document.getElementById("bulkChannel");
+  const paymentIdsContainer = document.getElementById("bulkPaymentIds");
 
-  const icon =
-    document.getElementById(
-      "paymentThemeIcon"
-    );
-
-  const text =
-    document.getElementById(
-      "paymentThemeText"
-    );
-
-
-  if (!toggle || !icon || !text) {
+  if (
+    !selectAll ||
+    !selectedCount ||
+    !emailButton ||
+    !whatsappButton ||
+    !bothButton ||
+    !form ||
+    !channelInput ||
+    !paymentIdsContainer
+  ) {
     return;
   }
 
-
-  function applyPaymentTheme(theme) {
-
-    if (theme === "dark") {
-
-      body.classList.add(
-        "payment-page-dark"
-      );
-
-      icon.className =
-        "bi bi-sun-fill";
-
-      text.textContent =
-        "Day";
-
-      toggle.title =
-        "Switch to day mode";
-
-    } else {
-
-      body.classList.remove(
-        "payment-page-dark"
-      );
-
-      icon.className =
-        "bi bi-moon-stars-fill";
-
-      text.textContent =
-        "Night";
-
-      toggle.title =
-        "Switch to night mode";
-
-    }
-
+  function getSelectedPayments() {
+    return rowCheckboxes.filter(function (checkbox) {
+      return checkbox.checked;
+    });
   }
 
+  function updateBulkUI() {
+    const selected = getSelectedPayments();
+    const count = selected.length;
 
-  const savedTheme =
-    localStorage.getItem(
-      "aone-payment-theme"
-    ) || "light";
+    selectedCount.textContent = `${count} selected`;
 
+    emailButton.disabled = count === 0;
+    whatsappButton.disabled = count === 0;
+    bothButton.disabled = count === 0;
 
-  applyPaymentTheme(
-    savedTheme
-  );
-
-
-  toggle.addEventListener(
-    "click",
-    function () {
-
-      const currentTheme =
-        body.classList.contains(
-          "payment-page-dark"
-        )
-          ? "dark"
-          : "light";
-
-
-      const newTheme =
-        currentTheme === "dark"
-          ? "light"
-          : "dark";
-
-
-      localStorage.setItem(
-        "aone-payment-theme",
-        newTheme
-      );
-
-
-      applyPaymentTheme(
-        newTheme
-      );
-
+    if (rowCheckboxes.length === 0) {
+      selectAll.checked = false;
+      selectAll.indeterminate = false;
+      return;
     }
-  );
 
+    selectAll.checked = count === rowCheckboxes.length;
+    selectAll.indeterminate =
+      count > 0 && count < rowCheckboxes.length;
+  }
+
+  selectAll.addEventListener("change", function () {
+    rowCheckboxes.forEach(function (checkbox) {
+      checkbox.checked = selectAll.checked;
+    });
+
+    updateBulkUI();
+  });
+
+  rowCheckboxes.forEach(function (checkbox) {
+    checkbox.addEventListener("change", updateBulkUI);
+  });
+
+  function sendBulkReminder(channel) {
+    const selected = getSelectedPayments();
+
+    if (selected.length === 0) {
+      window.alert("Please select at least one unpaid payment.");
+      return;
+    }
+
+    let channelName;
+
+    if (channel === "email") {
+      channelName = "Email";
+    } else if (channel === "whatsapp") {
+      channelName = "WhatsApp";
+    } else {
+      channelName = "Email and WhatsApp";
+    }
+
+    const confirmed = window.confirm(
+      `Send payment reminder by ${channelName} to ${selected.length} selected student(s)?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    paymentIdsContainer.innerHTML = "";
+
+    selected.forEach(function (checkbox) {
+      const input = document.createElement("input");
+
+      input.type = "hidden";
+      input.name = "payment_ids[]";
+      input.value = checkbox.dataset.paymentId;
+
+      paymentIdsContainer.appendChild(input);
+    });
+
+    channelInput.value = channel;
+
+    emailButton.disabled = true;
+    whatsappButton.disabled = true;
+    bothButton.disabled = true;
+
+    form.submit();
+  }
+
+  emailButton.addEventListener("click", function () {
+    sendBulkReminder("email");
+  });
+
+  whatsappButton.addEventListener("click", function () {
+    sendBulkReminder("whatsapp");
+  });
+
+  bothButton.addEventListener("click", function () {
+    sendBulkReminder("both");
+  });
+
+  updateBulkUI();
 });
-
 </script>

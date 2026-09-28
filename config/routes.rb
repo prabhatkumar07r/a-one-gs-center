@@ -179,14 +179,18 @@ Rails.application.routes.draw do
 
     # Admin payments
     resources :payments,
-              only: [:index, :show] do
+          only: [:index, :show] do
 
-      member do
-        post :send_email
-        post :send_reminder
-      end
+  member do
+    post :send_email
+    post :send_reminder
+  end
 
-    end
+  collection do
+    post :bulk_send_reminders
+  end
+
+end
 
 
     # Admin testimonials
@@ -804,12 +808,25 @@ get "/data-deletion", to: "legal_pages#data_deletion"
     # ==================================================
   # META WHATSAPP WEBHOOK
   # ==================================================
+get "/webhooks/whatsapp",
+    to: "whatsapp_webhooks#verify"
 
-  get "/webhooks/whatsapp",
-      to: "whatsapp_webhooks#verify"
+post "/webhooks/whatsapp",
+     to: "whatsapp_webhooks#receive"
 
-  post "/webhooks/whatsapp",
-       to: "whatsapp_webhooks#receive"
+namespace :admin do
+  get "/whatsapp",
+      to: "whatsapp_messages#index",
+      as: :whatsapp
+
+  get "/whatsapp/conversation/:phone",
+      to: "whatsapp_messages#conversation",
+      as: :whatsapp_conversation
+
+  post "/whatsapp/conversation/:phone/send",
+       to: "whatsapp_messages#send_message",
+       as: :send_whatsapp_message
+end
 
 
   # ==================================================
