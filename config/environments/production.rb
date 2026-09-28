@@ -49,7 +49,7 @@ Rails.application.configure do
   # CACHE
   # =========================================================
 
-  config.cache_store = :solid_cache_store
+  config.cache_store = :memory_store
 
   # =========================================================
   # ACTIVE JOB
