@@ -1295,6 +1295,32 @@
 
 
   /* =======================================================
+     A ONE GS CENTER
+     WHATSAPP INBOX - SINGLETON LIVE ENGINE
+  ======================================================== */
+
+  const GLOBAL_KEY =
+    "__AONE_GS_WHATSAPP_INBOX__";
+
+
+  /* =======================================================
+     DESTROY PREVIOUS INSTANCE
+  ======================================================== */
+
+  const previousInstance =
+    window[GLOBAL_KEY];
+
+  if (
+    previousInstance &&
+    typeof previousInstance.destroy === "function"
+  ) {
+
+    previousInstance.destroy();
+
+  }
+
+
+  /* =======================================================
      ELEMENTS
   ======================================================== */
 
@@ -1303,35 +1329,46 @@
       "aoneWhatsappPage"
     );
 
+  if (!page) {
+    return;
+  }
+
+
   const chatBody =
     document.getElementById(
       "waChatBody"
     );
+
 
   const messagesContainer =
     document.getElementById(
       "waMessagesContainer"
     );
 
+
   const form =
     document.getElementById(
       "waMessageForm"
     );
+
 
   const input =
     document.getElementById(
       "waMessageInput"
     );
 
+
   const sendButton =
     document.getElementById(
       "waSendButton"
     );
 
+
   const searchInput =
     document.getElementById(
       "waChatSearch"
     );
+
 
   const conversationList =
     document.getElementById(
@@ -1348,11 +1385,30 @@
 
 
   /* =======================================================
-     POLLING CURSORS
+     STATE
   ======================================================== */
+
+  let destroyed =
+    false;
+
+
+  let messageTimer =
+    null;
+
+
+  let listTimer =
+    null;
+
+
+  let messageRequest = null;
+
+
+  let listRequest = null;
+
 
   let latestMessageId =
     <%= @messages.to_a.last&.id.to_i %>;
+
 
   let statusCursor =
     "<%= j(
@@ -1365,13 +1421,6 @@
     ) %>";
 
 
-  let polling =
-    false;
-
-  let listPolling =
-    false;
-
-
   /* =======================================================
      CSRF
   ======================================================== */
@@ -1379,114 +1428,160 @@
   const csrfToken =
     document.querySelector(
       'meta[name="csrf-token"]'
-    )?.content;
+    )?.content || "";
 
 
   /* =======================================================
-     THEME
+     CLEANUP FUNCTIONS
   ======================================================== */
 
-  function applyTheme() {
+  const cleanupFunctions = [];
 
-    const saved =
-      localStorage.getItem(
-        "aone-whatsapp-theme"
+
+  function registerCleanup(
+    fn
+  ) {
+
+    cleanupFunctions.push(
+      fn
+    );
+
+  }
+
+
+  function destroy() {
+
+    if (destroyed) {
+      return;
+    }
+
+    destroyed = true;
+
+
+    /* -----------------------------------------------------
+       Stop timers
+    ----------------------------------------------------- */
+
+    if (messageTimer) {
+
+      clearTimeout(
+        messageTimer
       );
 
-    if (saved === "light") {
-
-      page?.classList.add(
-        "wa-light"
-      );
-
-    } else {
-
-      page?.classList.remove(
-        "wa-light"
-      );
+      messageTimer =
+        null;
 
     }
 
-    updateThemeButtons();
-  }
 
+    if (listTimer) {
 
-  function updateThemeButtons() {
-
-    const isLight =
-      page?.classList.contains(
-        "wa-light"
+      clearTimeout(
+        listTimer
       );
 
-    const icon =
-      isLight ? "🌙" : "☀️";
+      listTimer =
+        null;
 
-    document
-      .querySelectorAll(
-        "#waHeaderTheme, #waSidebarTheme"
-      )
-      .forEach(button => {
-        button.textContent = icon;
-      });
+    }
+
+
+    /* -----------------------------------------------------
+       Abort active requests
+    ----------------------------------------------------- */
+
+    try {
+
+      messageRequest?.abort();
+
+    } catch (_) {}
+
+
+    try {
+
+      listRequest?.abort();
+
+    } catch (_) {}
+
+
+    messageRequest =
+      null;
+
+    listRequest =
+      null;
+
+
+    /* -----------------------------------------------------
+       Remove event listeners
+    ----------------------------------------------------- */
+
+    cleanupFunctions
+      .splice(0)
+      .forEach(
+        cleanup => {
+
+          try {
+
+            cleanup();
+
+          } catch (_) {}
+
+        }
+      );
+
+
+    if (
+      window[GLOBAL_KEY] === api
+    ) {
+
+      window[GLOBAL_KEY] =
+        null;
+
+    }
+
   }
 
 
-  function toggleTheme() {
+  /* =======================================================
+     PUBLIC API
+  ======================================================== */
 
-    if (!page) return;
-
-    page.classList.toggle(
-      "wa-light"
-    );
-
-    localStorage.setItem(
-      "aone-whatsapp-theme",
-      page.classList.contains(
-        "wa-light"
-      )
-        ? "light"
-        : "dark"
-    );
-
-    updateThemeButtons();
-  }
+  const api = {
+    destroy
+  };
 
 
-  document
-    .getElementById("waHeaderTheme")
-    ?.addEventListener(
-      "click",
-      toggleTheme
-    );
-
-  document
-    .getElementById("waSidebarTheme")
-    ?.addEventListener(
-      "click",
-      toggleTheme
-    );
-
-  applyTheme();
+  window[GLOBAL_KEY] =
+    api;
 
 
   /* =======================================================
      TIME
   ======================================================== */
 
-  function formatTime(value) {
+  function formatTime(
+    value
+  ) {
 
-    if (!value) return "";
+    if (!value) {
+      return "";
+    }
+
 
     const date =
       new Date(value);
+
 
     if (
       Number.isNaN(
         date.getTime()
       )
     ) {
+
       return "";
+
     }
+
 
     return date.toLocaleTimeString(
       [],
@@ -1495,6 +1590,7 @@
         minute: "2-digit"
       }
     );
+
   }
 
 
@@ -1502,7 +1598,9 @@
      STATUS UI
   ======================================================== */
 
-  function statusDetails(status) {
+  function statusDetails(
+    status
+  ) {
 
     switch (status) {
 
@@ -1514,6 +1612,7 @@
           title: "Read"
         };
 
+
       case "delivered":
 
         return {
@@ -1521,6 +1620,7 @@
           className: "is-delivered",
           title: "Delivered"
         };
+
 
       case "failed":
 
@@ -1530,7 +1630,9 @@
           title: "Failed"
         };
 
+
       case "sent":
+
       default:
 
         return {
@@ -1538,50 +1640,104 @@
           className: "is-sent",
           title: "Sent"
         };
+
     }
+
   }
 
 
   /* =======================================================
-     UPDATE STATUS OF EXISTING MESSAGE
+     UPDATE MESSAGE STATUS
   ======================================================== */
 
-  function updateMessageStatus(message) {
+  function updateMessageStatus(
+    message
+  ) {
+
+    if (!message?.id) {
+      return false;
+    }
+
 
     const row =
       document.querySelector(
-        `.wa-message-row[data-message-id="${message.id}"]`
+        `.wa-message-row[data-message-id="${CSS.escape(
+          String(message.id)
+        )}"]`
       );
 
-    if (!row) return false;
 
-    const statusElement =
+    if (!row) {
+      return false;
+    }
+
+
+    let statusElement =
       row.querySelector(
         ".wa-status"
       );
 
+
+    /* -----------------------------------------------------
+       Outgoing message may not have status element yet.
+    ----------------------------------------------------- */
+
+    if (
+      !statusElement &&
+      message.direction === "outgoing"
+    ) {
+
+      const meta =
+        row.querySelector(
+          ".wa-message-meta"
+        );
+
+
+      if (meta) {
+
+        statusElement =
+          document.createElement(
+            "span"
+          );
+
+        meta.appendChild(
+          statusElement
+        );
+
+      }
+
+    }
+
+
     if (!statusElement) {
       return false;
     }
+
 
     const details =
       statusDetails(
         message.status
       );
 
+
     statusElement.textContent =
       details.icon;
+
 
     statusElement.className =
       `wa-status ${details.className}`;
 
+
     statusElement.dataset.status =
-      message.status;
+      message.status || "sent";
+
 
     statusElement.title =
       details.title;
 
+
     return true;
+
   }
 
 
@@ -1589,15 +1745,20 @@
      CREATE MESSAGE
   ======================================================== */
 
-  function createMessageElement(message) {
+  function createMessageElement(
+    message
+  ) {
 
     const row =
       document.createElement(
         "div"
       );
 
+
     const outgoing =
-      message.direction === "outgoing";
+      message.direction ===
+      "outgoing";
+
 
     row.className =
       `wa-message-row ${
@@ -1606,13 +1767,20 @@
           : "incoming"
       }`;
 
-    row.dataset.messageId =
-      message.id;
 
-    if (message.client_message_id) {
+    row.dataset.messageId =
+      String(
+        message.id ?? ""
+      );
+
+
+    if (
+      message.client_message_id
+    ) {
 
       row.dataset.clientMessageId =
         message.client_message_id;
+
     }
 
 
@@ -1620,6 +1788,7 @@
       document.createElement(
         "div"
       );
+
 
     bubble.className =
       "wa-bubble";
@@ -1630,8 +1799,10 @@
         "div"
       );
 
+
     body.className =
       "wa-message-body";
+
 
     body.textContent =
       message.body || "";
@@ -1642,6 +1813,7 @@
         "div"
       );
 
+
     meta.className =
       "wa-message-meta";
 
@@ -1650,6 +1822,7 @@
       document.createElement(
         "span"
       );
+
 
     time.textContent =
       formatTime(
@@ -1670,26 +1843,33 @@
           "span"
         );
 
+
       const details =
         statusDetails(
           message.status
         );
 
+
       status.className =
         `wa-status ${details.className}`;
+
 
       status.textContent =
         details.icon;
 
+
       status.dataset.status =
-        message.status;
+        message.status || "sent";
+
 
       status.title =
         details.title;
 
+
       meta.appendChild(
         status
       );
+
     }
 
 
@@ -1697,9 +1877,11 @@
       body
     );
 
+
     bubble.appendChild(
       meta
     );
+
 
     row.appendChild(
       bubble
@@ -1707,6 +1889,7 @@
 
 
     return row;
+
   }
 
 
@@ -1714,29 +1897,44 @@
      UPSERT MESSAGE
   ======================================================== */
 
-  function upsertMessage(message) {
+  function upsertMessage(
+    message
+  ) {
 
-    if (!messagesContainer) {
+    if (
+      !messagesContainer ||
+      !message
+    ) {
+
       return;
+
     }
 
-    /* -------------------------------------------------------
-       Existing message?
-       Only update status/content.
-    ------------------------------------------------------- */
+
+    /* -----------------------------------------------------
+       Existing real message
+    ----------------------------------------------------- */
 
     if (
       message.id &&
-      updateMessageStatus(message)
+      !String(
+        message.id
+      ).startsWith(
+        "optimistic-"
+      ) &&
+      updateMessageStatus(
+        message
+      )
     ) {
+
       return;
+
     }
 
 
-    /* -------------------------------------------------------
-       Client-side optimistic message
-       may already exist.
-    ------------------------------------------------------- */
+    /* -----------------------------------------------------
+       Optimistic message reconciliation
+    ----------------------------------------------------- */
 
     if (
       message.client_message_id
@@ -1749,21 +1947,51 @@
           )}"]`
         );
 
+
       if (optimistic) {
 
         optimistic.dataset.messageId =
-          message.id;
+          String(
+            message.id
+          );
+
 
         optimistic.classList.remove(
           "optimistic"
         );
 
+
         updateMessageStatus(
           message
         );
 
+
         return;
+
       }
+
+    }
+
+
+    /* -----------------------------------------------------
+       Do not insert duplicate ID
+    ----------------------------------------------------- */
+
+    if (
+      message.id &&
+      messagesContainer.querySelector(
+        `.wa-message-row[data-message-id="${CSS.escape(
+          String(message.id)
+        )}"]`
+      )
+    ) {
+
+      updateMessageStatus(
+        message
+      );
+
+      return;
+
     }
 
 
@@ -1772,9 +2000,11 @@
         message
       );
 
+
     messagesContainer.appendChild(
       element
     );
+
   }
 
 
@@ -1786,20 +2016,139 @@
     force = false
   ) {
 
-    if (!chatBody) return;
+    if (!chatBody) {
+      return;
+    }
+
 
     const distance =
       chatBody.scrollHeight -
       chatBody.scrollTop -
       chatBody.clientHeight;
 
+
     if (
       force ||
       distance < 220
     ) {
+
       chatBody.scrollTop =
         chatBody.scrollHeight;
+
     }
+
+  }
+
+
+  /* =======================================================
+     UPDATE CURSORS
+  ======================================================== */
+
+  function updateCursors(
+    messages,
+    data
+  ) {
+
+    if (
+      Array.isArray(messages)
+    ) {
+
+      messages.forEach(
+        message => {
+
+          if (
+            Number(message.id) >
+            Number(latestMessageId)
+          ) {
+
+            latestMessageId =
+              Number(
+                message.id
+              );
+
+          }
+
+
+          if (
+            message.status_updated_at
+          ) {
+
+            const oldTime =
+              statusCursor
+                ? new Date(
+                    statusCursor
+                  ).getTime()
+                : 0;
+
+
+            const newTime =
+              new Date(
+                message.status_updated_at
+              ).getTime();
+
+
+            if (
+              Number.isFinite(newTime) &&
+              newTime >= oldTime
+            ) {
+
+              statusCursor =
+                message.status_updated_at;
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+
+
+    if (
+      data?.latest_id &&
+      Number(data.latest_id) >
+      Number(latestMessageId)
+    ) {
+
+      latestMessageId =
+        Number(
+          data.latest_id
+        );
+
+    }
+
+
+    if (
+      data?.status_cursor
+    ) {
+
+      const serverTime =
+        new Date(
+          data.status_cursor
+        ).getTime();
+
+
+      const localTime =
+        statusCursor
+          ? new Date(
+              statusCursor
+            ).getTime()
+          : 0;
+
+
+      if (
+        Number.isFinite(serverTime) &&
+        serverTime > localTime
+      ) {
+
+        statusCursor =
+          data.status_cursor;
+
+      }
+
+    }
+
   }
 
 
@@ -1810,23 +2159,47 @@
   async function pollMessages() {
 
     if (
+      destroyed ||
       !currentPhone ||
-      polling
+      document.hidden
     ) {
+
+      return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       Extra safety:
+       never start another request while one exists.
+    ----------------------------------------------------- */
+
+    if (messageRequest) {
       return;
     }
 
-    polling = true;
+
+    const controller =
+      new AbortController();
+
+
+    messageRequest =
+      controller;
+
 
     try {
 
       const params =
         new URLSearchParams();
 
+
       params.set(
         "after_id",
-        latestMessageId
+        String(
+          latestMessageId
+        )
       );
+
 
       if (statusCursor) {
 
@@ -1834,6 +2207,7 @@
           "status_after",
           statusCursor
         );
+
       }
 
 
@@ -1859,6 +2233,9 @@
 
             cache: "no-store",
 
+            signal:
+              controller.signal,
+
             headers: {
               "Accept":
                 "application/json",
@@ -1871,12 +2248,32 @@
 
 
       if (!response.ok) {
+
+        console.warn(
+          "[WhatsApp polling] HTTP",
+          response.status
+        );
+
         return;
+
       }
 
 
       const data =
         await response.json();
+
+
+      if (destroyed) {
+        return;
+      }
+
+
+      const incoming =
+        Array.isArray(
+          data.messages
+        )
+          ? data.messages
+          : [];
 
 
       const wasNearBottom =
@@ -1889,14 +2286,6 @@
           : true;
 
 
-      const incoming =
-        Array.isArray(
-          data.messages
-        )
-          ? data.messages
-          : [];
-
-
       incoming.forEach(
         message => {
 
@@ -1904,128 +2293,170 @@
             message
           );
 
-          if (
-            Number(message.id) >
-            Number(latestMessageId)
-          ) {
-            latestMessageId =
-              Number(message.id);
-          }
-
-          if (
-            message.status_updated_at
-          ) {
-
-            const currentTime =
-              statusCursor
-                ? new Date(
-                    statusCursor
-                  ).getTime()
-                : 0;
-
-            const newTime =
-              new Date(
-                message.status_updated_at
-              ).getTime();
-
-            if (
-              Number.isFinite(
-                newTime
-              ) &&
-              newTime >= currentTime
-            ) {
-              statusCursor =
-                message.status_updated_at;
-            }
-          }
         }
       );
 
 
-      if (
-        data.status_cursor
-      ) {
-
-        const serverCursor =
-          new Date(
-            data.status_cursor
-          );
-
-        const localCursor =
-          statusCursor
-            ? new Date(
-                statusCursor
-              )
-            : new Date(0);
-
-        if (
-          serverCursor >
-          localCursor
-        ) {
-          statusCursor =
-            data.status_cursor;
-        }
-      }
-
-
-      if (
-        data.latest_id &&
-        Number(data.latest_id) >
-        Number(latestMessageId)
-      ) {
-        latestMessageId =
-          Number(data.latest_id);
-      }
+      updateCursors(
+        incoming,
+        data
+      );
 
 
       if (
         incoming.length &&
         wasNearBottom
       ) {
+
         scrollToBottom(
           true
         );
+
       }
 
     } catch (error) {
 
-      console.error(
-        "[WhatsApp polling]",
-        error
-      );
+      if (
+        error?.name !==
+        "AbortError"
+      ) {
+
+        console.error(
+          "[WhatsApp polling]",
+          error
+        );
+
+      }
 
     } finally {
 
-      polling = false;
+      if (
+        messageRequest ===
+        controller
+      ) {
+
+        messageRequest =
+          null;
+
+      }
+
     }
+
   }
 
 
   /* =======================================================
-     CONVERSATION LIST POLLING
+     MESSAGE POLLING SCHEDULER
+     
+     IMPORTANT:
+     setInterval is intentionally NOT used.
+     
+     Next request starts only after previous request
+     has completely finished.
+  ======================================================== */
+
+  function scheduleMessagePoll(
+    delay = 2000
+  ) {
+
+    if (destroyed) {
+      return;
+    }
+
+
+    if (messageTimer) {
+
+      clearTimeout(
+        messageTimer
+      );
+
+    }
+
+
+    messageTimer =
+      setTimeout(
+        async () => {
+
+          messageTimer =
+            null;
+
+
+          if (
+            destroyed ||
+            document.hidden
+          ) {
+
+            return;
+
+          }
+
+
+          await pollMessages();
+
+
+          if (!destroyed) {
+
+            scheduleMessagePoll(
+              2000
+            );
+
+          }
+
+        },
+        delay
+      );
+
+  }
+
+
+  /* =======================================================
+     CONVERSATION LIST
   ======================================================== */
 
   async function pollConversationList() {
 
     if (
-      listPolling ||
-      !conversationList
+      destroyed ||
+      !conversationList ||
+      document.hidden
     ) {
+
+      return;
+
+    }
+
+
+    if (listRequest) {
       return;
     }
 
-    listPolling = true;
+
+    const controller =
+      new AbortController();
+
+
+    listRequest =
+      controller;
+
 
     try {
 
       const url =
-        "<%= admin_whatsapp_path(format: :json) %>";
+        "<%= admin_whatsapp_path(
+              format: :json
+            ) %>";
+
 
       const response =
         await fetch(
           url,
           {
+            method: "GET",
+
             cache: "no-store",
+
+            signal:
+              controller.signal,
 
             headers: {
               "Accept":
@@ -2037,12 +2468,27 @@
           }
         );
 
+
       if (!response.ok) {
+
+        console.warn(
+          "[WhatsApp conversation polling] HTTP",
+          response.status
+        );
+
         return;
+
       }
+
 
       const data =
         await response.json();
+
+
+      if (destroyed) {
+        return;
+      }
+
 
       renderConversationList(
         data.conversations || []
@@ -2050,15 +2496,90 @@
 
     } catch (error) {
 
-      console.error(
-        "[WhatsApp conversation polling]",
-        error
-      );
+      if (
+        error?.name !==
+        "AbortError"
+      ) {
+
+        console.error(
+          "[WhatsApp conversation polling]",
+          error
+        );
+
+      }
 
     } finally {
 
-      listPolling = false;
+      if (
+        listRequest ===
+        controller
+      ) {
+
+        listRequest =
+          null;
+
+      }
+
     }
+
+  }
+
+
+  /* =======================================================
+     CONVERSATION LIST SCHEDULER
+  ======================================================== */
+
+  function scheduleListPoll(
+    delay = 8000
+  ) {
+
+    if (destroyed) {
+      return;
+    }
+
+
+    if (listTimer) {
+
+      clearTimeout(
+        listTimer
+      );
+
+    }
+
+
+    listTimer =
+      setTimeout(
+        async () => {
+
+          listTimer =
+            null;
+
+
+          if (
+            destroyed ||
+            document.hidden
+          ) {
+
+            return;
+
+          }
+
+
+          await pollConversationList();
+
+
+          if (!destroyed) {
+
+            scheduleListPoll(
+              8000
+            );
+
+          }
+
+        },
+        delay
+      );
+
   }
 
 
@@ -2070,9 +2591,14 @@
     conversations
   ) {
 
-    if (!conversationList) {
+    if (
+      !conversationList
+    ) {
+
       return;
+
     }
+
 
     const fragment =
       document.createDocumentFragment();
@@ -2083,12 +2609,14 @@
 
         const phone =
           String(
-            conversation.phone_number || ""
+            conversation.phone_number ||
+            ""
           )
           .replace(
             /\D/g,
             ""
           );
+
 
         const name =
           conversation.sender_name ||
@@ -2101,16 +2629,22 @@
             "a"
           );
 
+
         link.className =
           "wa-conversation-link";
 
+
         if (
-          phone === currentPhone
+          phone ===
+          currentPhone
         ) {
+
           link.classList.add(
             "active"
           );
+
         }
+
 
         link.href =
           "<%= admin_whatsapp_conversation_path(
@@ -2123,8 +2657,10 @@
               )
             );
 
+
         link.dataset.phone =
           phone;
+
 
         link.dataset.name =
           name;
@@ -2135,8 +2671,10 @@
             "div"
           );
 
+
         avatar.className =
           "wa-avatar";
+
 
         avatar.textContent =
           name
@@ -2149,6 +2687,7 @@
             "div"
           );
 
+
         content.className =
           "wa-conversation-content";
 
@@ -2157,6 +2696,7 @@
           document.createElement(
             "div"
           );
+
 
         top.className =
           "wa-conversation-top";
@@ -2167,8 +2707,10 @@
             "div"
           );
 
+
         nameElement.className =
           "wa-conversation-name";
+
 
         nameElement.textContent =
           name;
@@ -2179,8 +2721,10 @@
             "div"
           );
 
+
         time.className =
           "wa-conversation-time";
+
 
         time.textContent =
           formatTime(
@@ -2192,6 +2736,7 @@
           nameElement
         );
 
+
         top.appendChild(
           time
         );
@@ -2202,8 +2747,10 @@
             "div"
           );
 
+
         preview.className =
           "wa-conversation-preview";
+
 
         preview.textContent =
           conversation.body ||
@@ -2221,11 +2768,14 @@
               "span"
             );
 
+
           unread.className =
             "wa-unread";
 
+
           unread.textContent =
             conversation.unread_count;
+
 
           preview.appendChild(
             document.createTextNode(
@@ -2233,15 +2783,18 @@
             )
           );
 
+
           preview.appendChild(
             unread
           );
+
         }
 
 
         content.appendChild(
           top
         );
+
 
         content.appendChild(
           preview
@@ -2252,6 +2805,7 @@
           avatar
         );
 
+
         link.appendChild(
           content
         );
@@ -2260,6 +2814,7 @@
         fragment.appendChild(
           link
         );
+
       }
     );
 
@@ -2267,6 +2822,67 @@
     conversationList.replaceChildren(
       fragment
     );
+
+
+    /* -----------------------------------------------------
+       Re-apply current search
+    ----------------------------------------------------- */
+
+    applyConversationSearch();
+
+  }
+
+
+  /* =======================================================
+     CONVERSATION SEARCH
+  ======================================================== */
+
+  function applyConversationSearch() {
+
+    if (!searchInput) {
+      return;
+    }
+
+
+    const query =
+      searchInput.value
+        .toLowerCase()
+        .trim();
+
+
+    conversationList
+      ?.querySelectorAll(
+        ".wa-conversation-link"
+      )
+      .forEach(
+        link => {
+
+          const text =
+            (
+              link.dataset.name ||
+              ""
+            )
+            .toLowerCase();
+
+
+          const phone =
+            (
+              link.dataset.phone ||
+              ""
+            )
+            .toLowerCase();
+
+
+          link.style.display =
+            !query ||
+            text.includes(query) ||
+            phone.includes(query)
+              ? ""
+              : "none";
+
+        }
+      );
+
   }
 
 
@@ -2274,248 +2890,313 @@
      SEND MESSAGE
   ======================================================== */
 
-  form?.addEventListener(
-    "submit",
-    async event => {
+  async function sendMessage(
+    event
+  ) {
 
-      event.preventDefault();
+    event.preventDefault();
 
-      const body =
-        input?.value
-          .toString()
-          .trim();
 
-      if (!body) {
-        return;
+    const body =
+      input?.value
+        .toString()
+        .trim();
+
+
+    if (!body) {
+      return;
+    }
+
+
+    const clientMessageId =
+      `client-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2)}`;
+
+
+    const optimistic =
+      {
+        id:
+          `optimistic-${clientMessageId}`,
+
+        direction:
+          "outgoing",
+
+        body:
+          body,
+
+        status:
+          "sent",
+
+        created_at:
+          new Date().toISOString(),
+
+        whatsapp_timestamp:
+          new Date().toISOString(),
+
+        client_message_id:
+          clientMessageId
+      };
+
+
+    const element =
+      createMessageElement(
+        optimistic
+      );
+
+
+    element.classList.add(
+      "optimistic"
+    );
+
+
+    messagesContainer?.appendChild(
+      element
+    );
+
+
+    scrollToBottom(
+      true
+    );
+
+
+    input.value =
+      "";
+
+
+    if (sendButton) {
+      sendButton.disabled =
+        true;
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          form.action,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              "Accept":
+                "application/json",
+
+              "X-CSRF-Token":
+                csrfToken
+            },
+
+            body:
+              JSON.stringify({
+                body:
+                  body,
+
+                client_message_id:
+                  clientMessageId
+              })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to send message."
+        );
+
       }
 
 
-      const clientMessageId =
-        `client-${Date.now()}-${Math.random()
-          .toString(36)
-          .slice(2)}`;
-
-
-      /* ---------------------------------------------------
-         OPTIMISTIC UI
-      --------------------------------------------------- */
-
-      const optimistic =
-        {
-          id:
-            `optimistic-${clientMessageId}`,
-
-          direction:
-            "outgoing",
-
-          body:
-            body,
-
-          status:
-            "sent",
-
-          created_at:
-            new Date().toISOString(),
-
-          whatsapp_timestamp:
-            new Date().toISOString(),
-
-          client_message_id:
+      const optimisticRow =
+        messagesContainer?.querySelector(
+          `[data-client-message-id="${CSS.escape(
             clientMessageId
-        };
-
-
-      const element =
-        createMessageElement(
-          optimistic
+          )}"]`
         );
 
-      element.classList.add(
-        "optimistic"
+
+      if (optimisticRow) {
+
+        optimisticRow.remove();
+
+      }
+
+
+      upsertMessage(
+        data.message
       );
 
-      messagesContainer?.appendChild(
-        element
-      );
+
+      if (
+        Number(data.message.id) >
+        Number(latestMessageId)
+      ) {
+
+        latestMessageId =
+          Number(
+            data.message.id
+          );
+
+      }
+
+
+      if (
+        data.message.status_updated_at
+      ) {
+
+        statusCursor =
+          data.message.status_updated_at;
+
+      }
+
 
       scrollToBottom(
         true
       );
 
 
-      input.value =
-        "";
+    } catch (error) {
 
-      sendButton.disabled =
-        true;
-
-
-      try {
-
-        const response =
-          await fetch(
-            form.action,
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-
-                "Accept":
-                  "application/json",
-
-                "X-CSRF-Token":
-                  csrfToken || ""
-              },
-
-              body:
-                JSON.stringify({
-                  body:
-                    body,
-
-                  client_message_id:
-                    clientMessageId
-                })
-            }
-          );
+      console.error(
+        "[WhatsApp send]",
+        error
+      );
 
 
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-
-          throw new Error(
-            data.error ||
-            "Unable to send message."
-          );
-        }
-
-
-        /* -----------------------------------------------
-           Replace optimistic message
-           with real DB message.
-        ------------------------------------------------ */
-
-        const optimisticRow =
-          messagesContainer?.querySelector(
-            `[data-client-message-id="${CSS.escape(
-              clientMessageId
-            )}"]`
-          );
-
-
-        if (optimisticRow) {
-
-          optimisticRow.remove();
-        }
-
-
-        upsertMessage(
-          data.message
+      const optimisticRow =
+        messagesContainer?.querySelector(
+          `[data-client-message-id="${CSS.escape(
+            clientMessageId
+          )}"]`
         );
 
 
-        if (
-          Number(data.message.id) >
-          Number(latestMessageId)
-        ) {
-          latestMessageId =
-            Number(data.message.id);
-        }
+      if (optimisticRow) {
 
-
-        if (
-          data.message.status_updated_at
-        ) {
-          statusCursor =
-            data.message.status_updated_at;
-        }
-
-
-        scrollToBottom(
-          true
-        );
-
-      } catch (error) {
-
-        console.error(
-          "[WhatsApp send]",
-          error
-        );
-
-
-        const optimisticRow =
-          messagesContainer?.querySelector(
-            `[data-client-message-id="${CSS.escape(
-              clientMessageId
-            )}"]`
+        const status =
+          optimisticRow.querySelector(
+            ".wa-status"
           );
 
 
-        if (optimisticRow) {
+        if (status) {
 
-          const status =
-            optimisticRow.querySelector(
-              ".wa-status"
-            );
+          status.textContent =
+            "!";
 
-          if (status) {
 
-            status.textContent =
-              "!";
+          status.className =
+            "wa-status is-failed";
 
-            status.className =
-              "wa-status is-failed";
 
-            status.title =
-              "Failed";
-          }
+          status.title =
+            "Failed";
 
-          optimisticRow.classList.remove(
-            "optimistic"
-          );
         }
 
 
-        alert(
-          error.message ||
-          "Unable to send message."
+        optimisticRow.classList.remove(
+          "optimistic"
         );
 
-      } finally {
+      }
+
+
+      alert(
+        error.message ||
+        "Unable to send message."
+      );
+
+    } finally {
+
+      if (sendButton) {
 
         sendButton.disabled =
           false;
 
-        input?.focus();
       }
+
+
+      input?.focus();
+
     }
-  );
+
+  }
+
+
+  /* =======================================================
+     EVENT LISTENERS
+  ======================================================== */
+
+  if (form) {
+
+    form.addEventListener(
+      "submit",
+      sendMessage
+    );
+
+
+    registerCleanup(
+      () => {
+
+        form.removeEventListener(
+          "submit",
+          sendMessage
+        );
+
+      }
+    );
+
+  }
 
 
   /* =======================================================
      ENTER TO SEND
   ======================================================== */
 
+  function handleInputKeydown(
+    event
+  ) {
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      form?.requestSubmit();
+
+    }
+
+  }
+
+
   input?.addEventListener(
     "keydown",
-    event => {
+    handleInputKeydown
+  );
 
-      if (
-        event.key === "Enter" &&
-        !event.shiftKey
-      ) {
 
-        event.preventDefault();
+  registerCleanup(
+    () => {
 
-        form?.requestSubmit();
-      }
+      input?.removeEventListener(
+        "keydown",
+        handleInputKeydown
+      );
+
     }
   );
 
@@ -2523,6 +3204,29 @@
   /* =======================================================
      QUICK REPLIES
   ======================================================== */
+
+  function handleQuickReplyClick(
+    event
+  ) {
+
+    const button =
+      event.currentTarget;
+
+
+    if (!input) {
+      return;
+    }
+
+
+    input.value =
+      button.dataset.message ||
+      "";
+
+
+    input.focus();
+
+  }
+
 
   document
     .querySelectorAll(
@@ -2533,19 +3237,21 @@
 
         button.addEventListener(
           "click",
+          handleQuickReplyClick
+        );
+
+
+        registerCleanup(
           () => {
 
-            if (!input) {
-              return;
-            }
+            button.removeEventListener(
+              "click",
+              handleQuickReplyClick
+            );
 
-            input.value =
-              button.dataset.message ||
-              "";
-
-            input.focus();
           }
         );
+
       }
     );
 
@@ -2554,117 +3260,377 @@
      CHAT SEARCH
   ======================================================== */
 
-  searchInput?.addEventListener(
-    "input",
-    () => {
+  if (searchInput) {
 
-      const query =
-        searchInput.value
-          .toLowerCase()
-          .trim();
+    searchInput.addEventListener(
+      "input",
+      applyConversationSearch
+    );
 
 
-      document
-        .querySelectorAll(
-          ".wa-conversation-link"
-        )
-        .forEach(
-          link => {
+    registerCleanup(
+      () => {
 
-            const text =
-              (
-                link.dataset.name ||
-                ""
-              )
-              .toLowerCase();
-
-            const phone =
-              (
-                link.dataset.phone ||
-                ""
-              )
-              .toLowerCase();
-
-
-            link.style.display =
-              !query ||
-              text.includes(query) ||
-              phone.includes(query)
-                ? ""
-                : "none";
-          }
+        searchInput.removeEventListener(
+          "input",
+          applyConversationSearch
         );
-    }
-  );
+
+      }
+    );
+
+  }
 
 
   /* =======================================================
      MESSAGE SEARCH
   ======================================================== */
 
-  document
-    .getElementById(
+  const messageSearchButton =
+    document.getElementById(
       "waSearchMessages"
-    )
-    ?.addEventListener(
-      "click",
-      () => {
-
-        const query =
-          prompt(
-            "Search messages"
-          );
-
-        if (!query) {
-          return;
-        }
-
-        const wanted =
-          query
-            .toLowerCase()
-            .trim();
-
-
-        const rows =
-          document.querySelectorAll(
-            ".wa-message-row"
-          );
-
-
-        rows.forEach(
-          row => {
-
-            const text =
-              row.textContent
-                .toLowerCase();
-
-            row.style.display =
-              text.includes(wanted)
-                ? ""
-                : "none";
-          }
-        );
-      }
     );
+
+
+  function handleMessageSearch() {
+
+    const query =
+      prompt(
+        "Search messages"
+      );
+
+
+    if (!query) {
+      return;
+    }
+
+
+    const wanted =
+      query
+        .toLowerCase()
+        .trim();
+
+
+    document
+      .querySelectorAll(
+        ".wa-message-row"
+      )
+      .forEach(
+        row => {
+
+          const text =
+            row.textContent
+              .toLowerCase();
+
+
+          row.style.display =
+            text.includes(wanted)
+              ? ""
+              : "none";
+
+        }
+      );
+
+  }
+
+
+  messageSearchButton?.addEventListener(
+    "click",
+    handleMessageSearch
+  );
+
+
+  registerCleanup(
+    () => {
+
+      messageSearchButton?.removeEventListener(
+        "click",
+        handleMessageSearch
+      );
+
+    }
+  );
 
 
   /* =======================================================
      MORE OPTIONS
   ======================================================== */
 
-  document
-    .getElementById(
+  const moreButton =
+    document.getElementById(
       "waMoreOptions"
-    )
-    ?.addEventListener(
-      "click",
-      () => {
-
-        alert(
-          "WhatsApp Business inbox"
-        );
-      }
     );
+
+
+  function handleMoreOptions() {
+
+    alert(
+      "WhatsApp Business inbox"
+    );
+
+  }
+
+
+  moreButton?.addEventListener(
+    "click",
+    handleMoreOptions
+  );
+
+
+  registerCleanup(
+    () => {
+
+      moreButton?.removeEventListener(
+        "click",
+        handleMoreOptions
+      );
+
+    }
+  );
+
+
+  /* =======================================================
+     THEME
+  ======================================================== */
+
+  function updateThemeButtons() {
+
+    const isLight =
+      page.classList.contains(
+        "wa-light"
+      );
+
+
+    const icon =
+      isLight
+        ? "🌙"
+        : "☀️";
+
+
+    document
+      .querySelectorAll(
+        "#waHeaderTheme, #waSidebarTheme"
+      )
+      .forEach(
+        button => {
+
+          button.textContent =
+            icon;
+
+        }
+      );
+
+  }
+
+
+  function applyTheme() {
+
+    const saved =
+      localStorage.getItem(
+        "aone-whatsapp-theme"
+      );
+
+
+    if (
+      saved === "light"
+    ) {
+
+      page.classList.add(
+        "wa-light"
+      );
+
+    } else {
+
+      page.classList.remove(
+        "wa-light"
+      );
+
+    }
+
+
+    updateThemeButtons();
+
+  }
+
+
+  function toggleTheme() {
+
+    page.classList.toggle(
+      "wa-light"
+    );
+
+
+    localStorage.setItem(
+      "aone-whatsapp-theme",
+      page.classList.contains(
+        "wa-light"
+      )
+        ? "light"
+        : "dark"
+    );
+
+
+    updateThemeButtons();
+
+  }
+
+
+  const themeButtons =
+    document.querySelectorAll(
+      "#waHeaderTheme, #waSidebarTheme"
+    );
+
+
+  themeButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        toggleTheme
+      );
+
+
+      registerCleanup(
+        () => {
+
+          button.removeEventListener(
+            "click",
+            toggleTheme
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  applyTheme();
+
+
+  /* =======================================================
+     VISIBILITY HANDLING
+     
+     Hidden tab:
+       - cancel active requests
+       - stop timers
+     
+     Visible tab:
+       - immediately poll
+  ======================================================== */
+
+  function handleVisibilityChange() {
+
+    if (destroyed) {
+      return;
+    }
+
+
+    if (
+      document.hidden
+    ) {
+
+      if (messageTimer) {
+
+        clearTimeout(
+          messageTimer
+        );
+
+        messageTimer =
+          null;
+
+      }
+
+
+      if (listTimer) {
+
+        clearTimeout(
+          listTimer
+        );
+
+        listTimer =
+          null;
+
+      }
+
+
+      try {
+
+        messageRequest?.abort();
+
+      } catch (_) {}
+
+
+      try {
+
+        listRequest?.abort();
+
+      } catch (_) {}
+
+
+      return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       Tab visible again
+    ----------------------------------------------------- */
+
+    if (currentPhone) {
+
+      pollMessages()
+        .finally(
+          () => {
+
+            if (!destroyed) {
+
+              scheduleMessagePoll(
+                2000
+              );
+
+            }
+
+          }
+        );
+
+    }
+
+
+    pollConversationList()
+      .finally(
+        () => {
+
+          if (!destroyed) {
+
+            scheduleListPoll(
+              8000
+            );
+
+          }
+
+        }
+      );
+
+  }
+
+
+  document.addEventListener(
+    "visibilitychange",
+    handleVisibilityChange
+  );
+
+
+  registerCleanup(
+    () => {
+
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+      );
+
+    }
+  );
 
 
   /* =======================================================
@@ -2673,38 +3639,76 @@
 
   setTimeout(
     () => {
-      scrollToBottom(
-        true
-      );
+
+      if (!destroyed) {
+
+        scrollToBottom(
+          true
+        );
+
+      }
+
     },
     50
   );
 
 
   /* =======================================================
-     LIVE POLLING
+     START LIVE ENGINE
   ======================================================== */
 
   if (currentPhone) {
 
-    pollMessages();
+    pollMessages()
+      .finally(
+        () => {
 
-    setInterval(
-      pollMessages,
-      1500
-    );
+          if (!destroyed) {
+
+            scheduleMessagePoll(
+              2000
+            );
+
+          }
+
+        }
+      );
+
   }
 
 
+  pollConversationList()
+    .finally(
+      () => {
+
+        if (!destroyed) {
+
+          scheduleListPoll(
+            8000
+          );
+
+        }
+
+      }
+    );
+
+
   /* =======================================================
-     CONVERSATION LIST
+     DEBUG
   ======================================================== */
 
-  pollConversationList();
+  console.log(
+    "[A ONE WhatsApp] Live engine started",
+    {
+      phone:
+        currentPhone || null,
 
-  setInterval(
-    pollConversationList,
-    5000
+      latestMessageId:
+        latestMessageId,
+
+      statusCursor:
+        statusCursor || null
+    }
   );
 
 
