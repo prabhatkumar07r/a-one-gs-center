@@ -465,7 +465,32 @@
   outline-offset: 2px;
 }
 
+/* =========================================================
+   WHATSAPP INBOX
+========================================================= */
 
+.admin-sidebar .nav-link.whatsapp-inbox-link i {
+  color: #25d366;
+}
+
+.admin-sidebar .nav-link.whatsapp-inbox-link:hover i {
+  color: #25d366;
+}
+
+.admin-sidebar .nav-link.whatsapp-inbox-link.active {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,211,102,0.20),
+      rgba(37,211,102,0.08)
+    );
+
+  border: 1px solid rgba(37,211,102,0.18);
+}
+
+.admin-sidebar .nav-link.whatsapp-inbox-link.active i {
+  color: #25d366;
+}
 </style>
 
 
@@ -596,6 +621,22 @@
     <i class="bi bi-credit-card-2-front-fill"></i>
 
     <span>Payment Management</span>
+
+  <% end %>
+
+</li>
+
+<!-- =====================================================
+     WHATSAPP INBOX
+====================================================== -->
+
+<li class="nav-item">
+
+  <%= link_to admin_whatsapp_path,
+class: "nav-link whatsapp-inbox-link #{'active' if controller_path.start_with?('admin/whatsapp_messages')}"
+    <i class="bi bi-whatsapp"></i>
+
+    <span>WhatsApp Inbox</span>
 
   <% end %>
 

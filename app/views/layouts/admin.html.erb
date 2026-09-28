@@ -2,389 +2,45 @@
 <html>
 <head>
   <title>Admin Panel | A ONE GS CENTER</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <%= javascript_importmap_tags %>
-
-  
-<style nonce="<%= content_security_policy_nonce %>">
-
-/* =========================================================
-   ADMIN BODY
-========================================================= */
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-
-  width: 100%;
-  min-height: 100%;
-
-  overflow-x: hidden;
-}
-
-body.admin-body {
-
-  min-height: 100vh;
-
-  background:
-    radial-gradient(
-      circle at 10% 10%,
-      rgba(196, 181, 253, 0.30),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 90% 90%,
-      rgba(59, 130, 246, 0.22),
-      transparent 35%
-    ),
-    linear-gradient(
-      135deg,
-      #4c1d95 0%,
-      #6d28d9 45%,
-      #7c3aed 100%
-    ) !important;
-
-  color: #ffffff;
-
-  overflow-x: hidden;
-}
-
-
-/* =========================================================
-   ADMIN WRAPPER
-========================================================= */
-
-.admin-wrapper {
-
-  position: relative;
-
-  width: 100%;
-  min-height: 100vh;
-
-  margin: 0;
-  padding: 0;
-
-  background: transparent !important;
-}
-
-
-/* =========================================================
-   ADMIN MAIN
-========================================================= */
-
-.admin-main {
-
-  position: relative;
-
-  width: calc(100% - 260px);
-
-  min-height: 100vh;
-
-  margin-left: 260px;
-
-  background: transparent !important;
-
-  padding: 0;
-}
-
-
-/* =========================================================
-   ADMIN CONTENT
-========================================================= */
-
-.admin-content {
-
-  position: relative;
-
-  width: 100%;
-
-  min-height: 100vh;
-
-  margin: 0;
-
-  padding: 110px 30px 30px;
-
-  background: transparent !important;
-
-  color: #ffffff;
-
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   REMOVE WHITE BOOTSTRAP BACKGROUNDS
-========================================================= */
-
-.admin-content .container,
-.admin-content .container-fluid,
-.admin-content .row,
-.admin-content section {
-
-  background: transparent !important;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 991px) {
-
-  .admin-main {
-
-    width: 100%;
-
-    margin-left: 0;
-  }
-
-  .admin-content {
-
-    padding-top: 100px;
-
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 768px) {
-
-  .admin-main {
-
-    width: 100%;
-
-    margin-left: 0;
-  }
-
-  .admin-content {
-
-    padding-top: 88px;
-
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-bottom: 20px;
-  }
-
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 400px) {
-
-  .admin-content {
-
-    padding-top: 84px;
-
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-}
-
-
-/* =========================================================
-   ADMIN BACK BUTTON
-========================================================= */
-
-.admin-back-wrapper {
-  position: relative;
-
-  width: 100%;
-
-  margin-bottom: 18px;
-
-  display: flex;
-  align-items: center;
-}
-
-.admin-back-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 9px;
-
-  padding: 10px 17px;
-
-  border: 1px solid rgba(128, 9, 226, 0.14);
-  border-radius: 12px;
-
-  background: rgba(255, 255, 255, 0.96);
-
-  color: #5b21b6;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 5px 15px rgba(91, 33, 182, 0.10),
-    0 2px 4px rgba(0, 0, 0, 0.04);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-.admin-back-button i {
-  font-size: 15px;
-
-  transition:
-    transform 0.2s ease;
-}
-
-.admin-back-button:hover {
-  background: #f7f1ff;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 24px rgba(91, 33, 182, 0.15);
-}
-
-.admin-back-button:hover i {
-  transform: translateX(-4px);
-}
-
-.admin-back-button:active {
-  transform: translateY(0);
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 768px) {
-
-  .admin-back-wrapper {
-    margin-bottom: 14px;
-  }
-
-  .admin-back-button {
-    padding: 9px 14px;
-
-    font-size: 13px;
-
-    border-radius: 10px;
-  }
-
-}
-
-</style>
-
+  <style nonce="<%= content_security_policy_nonce %>">
+    html,body{margin:0;padding:0;width:100%;min-height:100%;overflow-x:hidden}
+    body.admin-body{min-height:100vh;background:radial-gradient(circle at 10% 10%,rgba(196,181,253,.30),transparent 30%),radial-gradient(circle at 90% 90%,rgba(59,130,246,.22),transparent 35%),linear-gradient(135deg,#4c1d95 0%,#6d28d9 45%,#7c3aed 100%) !important;color:#fff;overflow-x:hidden}
+    .admin-wrapper{position:relative;width:100%;min-height:100vh;margin:0;padding:0;background:transparent !important}
+    .admin-main{position:relative;width:calc(100% - 260px);min-height:100vh;margin-left:260px;background:transparent !important;padding:0}
+    .admin-content{position:relative;width:100%;min-height:100vh;margin:0;padding:110px 30px 30px;background:transparent !important;color:#fff;box-sizing:border-box}
+    .admin-content .container,.admin-content .container-fluid,.admin-content .row,.admin-content section{background:transparent !important}
+    .admin-back-wrapper{position:relative;width:100%;margin-bottom:18px;display:flex;align-items:center}
+    .admin-back-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:10px 17px;border:1px solid rgba(128,9,226,.14);border-radius:12px;background:rgba(255,255,255,.96);color:#5b21b6;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 5px 15px rgba(91,33,182,.10),0 2px 4px rgba(0,0,0,.04);transition:.2s ease}
+    .admin-back-button:hover{background:#f7f1ff;transform:translateY(-2px);box-shadow:0 10px 24px rgba(91,33,182,.15)}
+    body.whatsapp-inbox-layout{width:100vw !important;height:100vh !important;min-height:100vh !important;overflow:hidden !important;background:#f3f6f8 !important}
+    body.whatsapp-inbox-layout .admin-wrapper{width:100vw !important;height:100vh !important;min-height:100vh !important}
+    body.whatsapp-inbox-layout .admin-sidebar-shell,body.whatsapp-inbox-layout .admin-header-shell{display:none !important}
+    body.whatsapp-inbox-layout .admin-main{width:100vw !important;min-width:100vw !important;height:100vh !important;min-height:100vh !important;margin:0 !important;padding:0 !important}
+    body.whatsapp-inbox-layout .admin-content{width:100vw !important;height:100vh !important;min-height:100vh !important;margin:0 !important;padding:0 !important;overflow:hidden !important;background:#f3f6f8 !important}
+    body.whatsapp-inbox-layout .admin-back-wrapper,body.whatsapp-inbox-layout .admin-content>.alert{display:none !important}
+    @media(max-width:991px){.admin-main{width:100%;margin-left:0}.admin-content{padding:100px 20px 20px}}
+    @media(max-width:768px){.admin-content{padding:88px 12px 20px}}
+    @media(max-width:400px){.admin-content{padding:84px 10px 20px}}
+  </style>
 </head>
-
-
-<body class="admin-body">
-
-
-  <!-- =======================================================
-       ADMIN WRAPPER
-  ======================================================== -->
-
+<body class="admin-body <%= "whatsapp-inbox-layout" if controller_path == "admin/whatsapp_messages" %>">
   <div class="admin-wrapper">
-
-
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <%= render "layouts/admin_sidebar" %>
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
+    <div class="admin-sidebar-shell"><%= render "layouts/admin_sidebar" %></div>
     <div class="admin-main">
-
-
-      <!-- ===================================================
-           HEADER
-      ==================================================== -->
-
-      <%= render "layouts/admin_header" %>
-
-
-      <!-- ===================================================
-           CONTENT
-      ==================================================== -->
-
+      <div class="admin-header-shell"><%= render "layouts/admin_header" %></div>
       <main class="admin-content">
-      <%= render "admin/shared/back_button" %>
-
-        <!-- =================================================
-             SUCCESS MESSAGE
-        ================================================== -->
-
-        <% if notice %>
-
-          <div class="alert alert-success">
-
-            <%= notice %>
-
-          </div>
-
-        <% end %>
-
-
-        <!-- =================================================
-             ERROR MESSAGE
-        ================================================== -->
-
-        <% if alert %>
-
-          <div class="alert alert-danger">
-
-            <%= alert %>
-
-          </div>
-
-        <% end %>
-
-
-        <!-- =================================================
-             PAGE CONTENT
-        ================================================== -->
-
+        <%= render "admin/shared/back_button" %>
+        <% if notice %><div class="alert alert-success"><%= notice %></div><% end %>
+        <% if alert %><div class="alert alert-danger"><%= alert %></div><% end %>
         <%= yield %>
-
-
       </main>
-
     </div>
-
   </div>
-
-
-  <!-- =======================================================
-       BOOTSTRAP JS
-  ======================================================== -->
-
- 
-
 </body>
 </html>

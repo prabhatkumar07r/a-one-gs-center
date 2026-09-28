@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  # ==================================================
-  # HOME
-  # ==================================================
-
   root "sample#homepage"
 
   get "/homepage",
@@ -14,51 +10,34 @@ Rails.application.routes.draw do
       to: "sample#homepage"
 
 
-  # ==================================================
-  # TEST SERIES - STUDENT
-  # ==================================================
-
   resources :test_series,
             only: [:index, :show] do
 
-    # Instructions page
     member do
       get :instructions
     end
 
-    # Individual test
     resources :test_series_tests,
               only: [:show],
               controller: "test_series_tests" do
 
-      # Answer / Submit actions
       member do
         post :answer
         post :finish
         post :bookmark
       end
 
-      # Result
       resources :results,
                 controller: "test_series_results",
                 only: [:show]
-
     end
   end
 
-
-  # ==================================================
-  # TEST SERIES PURCHASE
-  # ==================================================
 
   post "/test_series/:test_series_id/purchase",
        to: "test_series_purchases#create",
        as: :purchase_test_series
 
-
-  # ==================================================
-  # TEST SERIES PAYMENT
-  # ==================================================
 
   get "/test_series_purchases/:id/payment",
       to: "test_series_purchases#payment",
@@ -77,16 +56,8 @@ Rails.application.routes.draw do
       as: :test_series_payment_failed
 
 
-  # ==================================================
-  # EVENTS
-  # ==================================================
-
   resources :events
 
-
-  # ==================================================
-  # AUTHENTICATION - DEVISE
-  # ==================================================
 
   devise_for :users,
              controllers: {
@@ -95,10 +66,6 @@ Rails.application.routes.draw do
                omniauth_callbacks: "users/omniauth_callbacks"
              }
 
-
-  # ==================================================
-  # DEBUG / STORAGE / CLOUDINARY
-  # ==================================================
 
   get "/debug_env",
       to: "sample#debug_env"
@@ -109,10 +76,6 @@ Rails.application.routes.draw do
   get "/blob_check",
       to: "sample#blob_check"
 
-
-  # ==================================================
-  # DASHBOARDS
-  # ==================================================
 
   get "/admin",
       to: "dashboard#index",
@@ -130,10 +93,6 @@ Rails.application.routes.draw do
       to: "smtp_test#index"
 
 
-  # ==================================================
-  # AI
-  # ==================================================
-
   namespace :ai do
 
     resources :conversations,
@@ -141,7 +100,6 @@ Rails.application.routes.draw do
 
       resources :messages,
                 only: [:create]
-
     end
 
     resources :support_requests,
@@ -150,50 +108,40 @@ Rails.application.routes.draw do
       resources :messages,
                 controller: "support_messages",
                 only: [:index, :create]
-
     end
 
   end
 
 
-  # ==================================================
-  # ADMIN
-  # ==================================================
-
   namespace :admin do
 
-    # Admin support requests
     resources :support_requests,
               only: [:index, :show, :update] do
 
       resources :messages,
                 controller: "support_messages",
                 only: [:index, :create]
+    end
+
+
+    resources :coupons
+
+
+    resources :payments,
+              only: [:index, :show] do
+
+      member do
+        post :send_email
+        post :send_reminder
+      end
+
+      collection do
+        post :bulk_send_reminders
+      end
 
     end
 
 
-    # Admin coupons
-    resources :coupons
-
-
-    # Admin payments
-    resources :payments,
-          only: [:index, :show] do
-
-  member do
-    post :send_email
-    post :send_reminder
-  end
-
-  collection do
-    post :bulk_send_reminders
-  end
-
-end
-
-
-    # Admin testimonials
     resources :testimonials do
 
       member do
@@ -202,10 +150,6 @@ end
 
     end
 
-
-    # ==================================================
-    # E-BOOK PAYMENTS
-    # ==================================================
 
     resources :ebook_purchases,
               only: [:index, :show] do
@@ -216,10 +160,6 @@ end
 
     end
 
-
-    # ==================================================
-    # E-BOOKS
-    # ==================================================
 
     resources :ebooks do
 
@@ -235,10 +175,6 @@ end
 
     end
 
-
-    # ==================================================
-    # ADMIN TEST SERIES
-    # ==================================================
 
     resources :test_series do
 
@@ -258,17 +194,9 @@ end
     end
 
 
-    # ==================================================
-    # ADMIN PROFILE
-    # ==================================================
-
     resource :profile,
              only: [:show, :edit, :update]
 
-
-    # ==================================================
-    # ADMIN SETTINGS
-    # ==================================================
 
     get "settings",
         to: "settings#index"
@@ -302,10 +230,6 @@ end
           as: :update_settings_password
 
 
-    # ==================================================
-    # ADMIN COURSES
-    # ==================================================
-
     resources :courses do
 
       resources :quizzes do
@@ -323,18 +247,10 @@ end
     end
 
 
-    # ==================================================
-    # ADMIN ENROLLMENTS
-    # ==================================================
-
     resources :enrollments
 
   end
 
-
-  # ==================================================
-  # PUBLIC COURSE DETAILS
-  # ==================================================
 
   get "/courses/:id/details",
       to: "courses#details",
@@ -345,18 +261,10 @@ end
        as: :enroll_free_course
 
 
-  # ==================================================
-  # STUDENT COURSE ENROLLMENT
-  # ==================================================
-
   post "/enrollments",
        to: "enrollments#create",
        as: :enrollments
 
-
-  # ==================================================
-  # STUDENT QUIZ
-  # ==================================================
 
   resources :courses,
             only: [] do
@@ -378,10 +286,6 @@ end
   end
 
 
-  # ==================================================
-  # LEARNING
-  # ==================================================
-
   get "/learn",
       to: "learning#index",
       as: :learning
@@ -399,17 +303,10 @@ end
        as: :complete_learning_video
 
 
-  # ==================================================
-  # STUDENT
-  # ==================================================
-
   namespace :student do
 
-    # Student enrollments
     resources :enrollments
 
-
-    # Student profile
     get "profile",
         to: "profile#show",
         as: :profile
@@ -432,11 +329,6 @@ end
   end
 
 
-  # ==================================================
-  # E-BOOK MODULE
-  # ==================================================
-
-  # Public e-books
   get "/ebooks/my",
       to: "ebooks#my",
       as: :my_ebooks
@@ -450,10 +342,6 @@ end
 
   end
 
-
-  # ==================================================
-  # E-BOOK PURCHASE / PAYMENT
-  # ==================================================
 
   post "/ebooks/:ebook_id/buy",
        to: "ebook_payments#create",
@@ -476,10 +364,6 @@ end
       as: :ebook_payment_failed
 
 
-  # ==================================================
-  # E-BOOK PDF FILE ACCESS
-  # ==================================================
-
   resources :ebook_files,
             only: [:show] do
 
@@ -489,10 +373,6 @@ end
 
   end
 
-
-  # ==================================================
-  # STUDENT NOTES
-  # ==================================================
 
   resources :notes,
             only: [:index, :show] do
@@ -505,17 +385,9 @@ end
   end
 
 
-  # ==================================================
-  # STUDENT RESOURCES
-  # ==================================================
-
   resources :resources,
             only: [:index, :show]
 
-
-  # ==================================================
-  # COURSE → PLAYLIST → RESOURCES
-  # ==================================================
 
   resources :courses,
             only: [] do
@@ -529,10 +401,6 @@ end
 
   end
 
-
-  # ==================================================
-  # STUDY NOTES
-  # ==================================================
 
   resources :study_notes,
             only: [
@@ -556,46 +424,29 @@ end
   end
 
 
-  # ==================================================
-  # TEACHER PANEL
-  # ==================================================
-
   namespace :teacher_panel do
 
-    # Teacher profile
     resource :profile,
              only: [:show, :edit, :update],
              controller: "profile"
 
 
-    # Teacher courses
     resources :courses,
               only: [:index, :show] do
 
-      # Teacher quizzes
       resources :quizzes do
         resources :questions
       end
 
-
-      # Teacher students
       resources :students,
                 only: [:index]
 
-
-      # Teacher videos
       resources :videos
 
-
-      # Teacher playlists
       resources :playlists
 
-
-      # Teacher resources
       resources :resources
 
-
-      # Teacher attendance
       resources :attendances,
                 only: [
                   :index,
@@ -610,7 +461,6 @@ end
     end
 
 
-    # Teacher test series
     resources :test_series do
 
       resources :test_series_tests,
@@ -631,10 +481,6 @@ end
   end
 
 
-  # ==================================================
-  # COURSE ATTENDANCE
-  # ==================================================
-
   get "/courses/:course_id/attendances",
       to: "attendances#index",
       as: :course_attendances
@@ -647,10 +493,6 @@ end
        to: "attendances#create",
        as: :create_course_attendance
 
-
-  # ==================================================
-  # MAIN RESOURCES
-  # ==================================================
 
   resources :demo_requests,
             only: [:new, :create]
@@ -672,10 +514,6 @@ end
   resources :certificates,
             only: [:index, :show]
 
-
-  # ==================================================
-  # COURSE PAYMENTS / RAZORPAY
-  # ==================================================
 
   get "/payments/:id",
       to: "payments#show",
@@ -702,10 +540,6 @@ end
        as: :apply_coupon
 
 
-  # ==================================================
-  # FEES
-  # ==================================================
-
   resources :fees do
 
     collection do
@@ -717,10 +551,6 @@ end
   end
 
 
-  # ==================================================
-  # DEMOS
-  # ==================================================
-
   resources :demos do
 
     collection do
@@ -730,16 +560,8 @@ end
   end
 
 
-  # ==================================================
-  # REGISTRATIONS
-  # ==================================================
-
   resources :registrations
 
-
-  # ==================================================
-  # PASSWORD RESETS
-  # ==================================================
 
   resources :password_resets,
             only: [
@@ -750,10 +572,6 @@ end
             ]
 
 
-  # ==================================================
-  # FORGOT PASSWORD
-  # ==================================================
-
   get "/forgot_password",
       to: "password_resets#new",
       as: :forgot_password
@@ -762,17 +580,9 @@ end
        to: "password_resets#create"
 
 
-  # ==================================================
-  # CONTACT
-  # ==================================================
-
   post "/contacts",
        to: "contacts#create"
 
-
-  # ==================================================
-  # API
-  # ==================================================
 
   namespace :api do
 
@@ -799,39 +609,45 @@ end
     end
 
   end
-  
-
-  get "/privacy-policy", to: "legal_pages#privacy_policy"
-get "/terms", to: "legal_pages#terms"
-get "/data-deletion", to: "legal_pages#data_deletion"
-
-    # ==================================================
-  # META WHATSAPP WEBHOOK
-  # ==================================================
-get "/webhooks/whatsapp",
-    to: "whatsapp_webhooks#verify"
-
-post "/webhooks/whatsapp",
-     to: "whatsapp_webhooks#receive"
-
-namespace :admin do
-  get "/whatsapp",
-      to: "whatsapp_messages#index",
-      as: :whatsapp
-
-  get "/whatsapp/conversation/:phone",
-      to: "whatsapp_messages#conversation",
-      as: :whatsapp_conversation
-
-  post "/whatsapp/conversation/:phone/send",
-       to: "whatsapp_messages#send_message",
-       as: :send_whatsapp_message
-end
 
 
-  # ==================================================
-  # ACTIVE STORAGE
-  # ==================================================
+  get "/privacy-policy",
+      to: "legal_pages#privacy_policy"
+
+  get "/terms",
+      to: "legal_pages#terms"
+
+  get "/data-deletion",
+      to: "legal_pages#data_deletion"
+
+
+  get "/webhooks/whatsapp",
+      to: "whatsapp_webhooks#verify"
+
+  post "/webhooks/whatsapp",
+       to: "whatsapp_webhooks#receive"
+
+
+  namespace :admin do
+
+    get "/whatsapp",
+        to: "whatsapp_messages#index",
+        as: :whatsapp
+
+    get "/whatsapp/conversation/:phone",
+        to: "whatsapp_messages#conversation",
+        as: :whatsapp_conversation
+
+    get "/whatsapp/conversation/:phone/messages",
+        to: "whatsapp_messages#messages",
+        as: :whatsapp_conversation_messages
+
+    post "/whatsapp/conversation/:phone/send",
+         to: "whatsapp_messages#send_message",
+         as: :send_whatsapp_message
+
+  end
+
 
   mount ActiveStorage::Engine =>
         "/rails/active_storage"
