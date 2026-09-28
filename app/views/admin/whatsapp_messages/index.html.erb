@@ -515,44 +515,69 @@
   color: #8696a0;
 }
 
+/* =========================================================
+   MESSAGE STATUS
+   IMPORTANT:
+   Do NOT use negative letter-spacing here.
+   It makes ✓✓ visually overlap and look like ✓.
+========================================================= */
+
 .wa-status {
   display: inline-flex;
 
   align-items: center;
+  justify-content: center;
+
+  min-width: 20px;
 
   font-size: 14px;
 
   line-height: 1;
 
-  letter-spacing: -3px;
+  letter-spacing: 0;
+
+  white-space: nowrap;
 
   color: #aebac1;
 
-  min-width: 18px;
-
   transition:
-    color .15s ease;
+    color .15s ease,
+    transform .15s ease;
 }
 
 /* =========================================================
-   BLUE DOUBLE TICK
+   SENT
 ========================================================= */
 
-.wa-status.is-read {
-  color: var(--wa-blue) !important;
-}
-
-/* Delivered is double gray */
-.wa-status.is-delivered {
-  color: #aebac1;
-}
-
-/* Sent is single gray */
 .wa-status.is-sent {
   color: #aebac1;
 }
 
-/* Failed */
+/* =========================================================
+   DELIVERED
+========================================================= */
+
+.wa-status.is-delivered {
+  color: #aebac1;
+}
+
+/* =========================================================
+   READ
+========================================================= */
+
+.wa-status.is-read {
+  color: #53bdeb !important;
+}
+
+/* Extra protection if class gets changed dynamically */
+.wa-status[data-status="read"] {
+  color: #53bdeb !important;
+}
+
+/* =========================================================
+   FAILED
+========================================================= */
+
 .wa-status.is-failed {
   color: #ff6b6b;
 
@@ -841,16 +866,20 @@
 ========================================================= */
 
 @media (max-width: 850px) {
+
   .wa-shell {
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns:
+      300px minmax(0, 1fr);
   }
 
   .wa-bubble {
     max-width: 82%;
   }
+
 }
 
 @media (max-width: 650px) {
+
   .wa-shell {
     grid-template-columns: 1fr;
   }
@@ -862,6 +891,7 @@
   .wa-bubble {
     max-width: 88%;
   }
+
 }
 
 </style>
@@ -1106,13 +1136,11 @@
                    message.direction == "outgoing" %>
 
               <% status =
-                   message.status.to_s %>
+                   message.status.to_s.downcase.strip %>
 
               <% status_icon =
                    case status
-                   when "read"
-                     "✓✓"
-                   when "delivered"
+                   when "read", "delivered"
                      "✓✓"
                    when "failed"
                      "!"
@@ -1158,8 +1186,8 @@
                           else
                             'is-sent'
                         end %>"
-                        data-status="<%= status %>"
-                        title="<%= status.capitalize %>"
+                        data-status="<%= status.presence || 'sent' %>"
+                        title="<%= status.present? ? status.capitalize : 'Sent' %>"
                       >
                         <%= status_icon %>
                       </span>
@@ -1329,6 +1357,7 @@
       "aoneWhatsappPage"
     );
 
+
   if (!page) {
     return;
   }
@@ -1400,10 +1429,12 @@
     null;
 
 
-  let messageRequest = null;
+  let messageRequest =
+    null;
 
 
-  let listRequest = null;
+  let listRequest =
+    null;
 
 
   let latestMessageId =
@@ -1432,19 +1463,15 @@
 
 
   /* =======================================================
-     CLEANUP FUNCTIONS
+     CLEANUP
   ======================================================== */
 
   const cleanupFunctions = [];
 
 
-  function registerCleanup(
-    fn
-  ) {
+  function registerCleanup(fn) {
 
-    cleanupFunctions.push(
-      fn
-    );
+    cleanupFunctions.push(fn);
 
   }
 
@@ -1455,12 +1482,9 @@
       return;
     }
 
+
     destroyed = true;
 
-
-    /* -----------------------------------------------------
-       Stop timers
-    ----------------------------------------------------- */
 
     if (messageTimer) {
 
@@ -1468,8 +1492,7 @@
         messageTimer
       );
 
-      messageTimer =
-        null;
+      messageTimer = null;
 
     }
 
@@ -1480,40 +1503,24 @@
         listTimer
       );
 
-      listTimer =
-        null;
+      listTimer = null;
 
     }
 
 
-    /* -----------------------------------------------------
-       Abort active requests
-    ----------------------------------------------------- */
-
     try {
-
       messageRequest?.abort();
-
     } catch (_) {}
 
 
     try {
-
       listRequest?.abort();
-
     } catch (_) {}
 
 
-    messageRequest =
-      null;
+    messageRequest = null;
+    listRequest = null;
 
-    listRequest =
-      null;
-
-
-    /* -----------------------------------------------------
-       Remove event listeners
-    ----------------------------------------------------- */
 
     cleanupFunctions
       .splice(0)
@@ -1521,9 +1528,7 @@
         cleanup => {
 
           try {
-
             cleanup();
-
           } catch (_) {}
 
         }
@@ -1534,8 +1539,7 @@
       window[GLOBAL_KEY] === api
     ) {
 
-      window[GLOBAL_KEY] =
-        null;
+      window[GLOBAL_KEY] = null;
 
     }
 
@@ -1559,9 +1563,7 @@
      TIME
   ======================================================== */
 
-  function formatTime(
-    value
-  ) {
+  function formatTime(value) {
 
     if (!value) {
       return "";
@@ -1596,13 +1598,20 @@
 
   /* =======================================================
      STATUS UI
+     ALWAYS NORMALIZE META/DB STATUS
   ======================================================== */
 
-  function statusDetails(
-    status
-  ) {
+  function statusDetails(status) {
 
-    switch (status) {
+    const normalized =
+      String(
+        status || "sent"
+      )
+      .toLowerCase()
+      .trim();
+
+
+    switch (normalized) {
 
       case "read":
 
@@ -1647,27 +1656,84 @@
 
 
   /* =======================================================
+     FIND MESSAGE ROW
+  ======================================================== */
+
+  function findMessageRow(messageId) {
+
+    if (
+      !messagesContainer ||
+      messageId == null
+    ) {
+
+      return null;
+
+    }
+
+
+    const wantedId =
+      String(messageId);
+
+
+    return Array
+      .from(
+        messagesContainer.querySelectorAll(
+          ".wa-message-row"
+        )
+      )
+      .find(
+        row =>
+          String(
+            row.dataset.messageId || ""
+          ) === wantedId
+      ) || null;
+
+  }
+
+
+  /* =======================================================
      UPDATE MESSAGE STATUS
   ======================================================== */
 
-  function updateMessageStatus(
-    message
-  ) {
+  function updateMessageStatus(message) {
 
     if (!message?.id) {
       return false;
     }
 
 
+    const messageId =
+      String(message.id);
+
+
     const row =
-      document.querySelector(
-        `.wa-message-row[data-message-id="${CSS.escape(
-          String(message.id)
-        )}"]`
+      findMessageRow(
+        messageId
       );
 
 
     if (!row) {
+      return false;
+    }
+
+
+    const outgoing =
+      message.direction === "outgoing" ||
+      row.classList.contains("outgoing");
+
+
+    if (!outgoing) {
+      return false;
+    }
+
+
+    const meta =
+      row.querySelector(
+        ".wa-message-meta"
+      );
+
+
+    if (!meta) {
       return false;
     }
 
@@ -1679,44 +1745,39 @@
 
 
     /* -----------------------------------------------------
-       Outgoing message may not have status element yet.
+       Create status element if missing.
     ----------------------------------------------------- */
 
-    if (
-      !statusElement &&
-      message.direction === "outgoing"
-    ) {
-
-      const meta =
-        row.querySelector(
-          ".wa-message-meta"
-        );
-
-
-      if (meta) {
-
-        statusElement =
-          document.createElement(
-            "span"
-          );
-
-        meta.appendChild(
-          statusElement
-        );
-
-      }
-
-    }
-
-
     if (!statusElement) {
-      return false;
+
+      statusElement =
+        document.createElement(
+          "span"
+        );
+
+
+      statusElement.className =
+        "wa-status";
+
+
+      meta.appendChild(
+        statusElement
+      );
+
     }
+
+
+    const normalizedStatus =
+      String(
+        message.status || "sent"
+      )
+      .toLowerCase()
+      .trim();
 
 
     const details =
       statusDetails(
-        message.status
+        normalizedStatus
       );
 
 
@@ -1729,11 +1790,19 @@
 
 
     statusElement.dataset.status =
-      message.status || "sent";
+      normalizedStatus;
 
 
     statusElement.title =
       details.title;
+
+
+    /*
+     * Force browser repaint so dynamic status
+     * changes are immediately visible.
+     */
+
+    void statusElement.offsetWidth;
 
 
     return true;
@@ -1745,9 +1814,7 @@
      CREATE MESSAGE
   ======================================================== */
 
-  function createMessageElement(
-    message
-  ) {
+  function createMessageElement(message) {
 
     const row =
       document.createElement(
@@ -1779,7 +1846,9 @@
     ) {
 
       row.dataset.clientMessageId =
-        message.client_message_id;
+        String(
+          message.client_message_id
+        );
 
     }
 
@@ -1844,9 +1913,17 @@
         );
 
 
+      const normalizedStatus =
+        String(
+          message.status || "sent"
+        )
+        .toLowerCase()
+        .trim();
+
+
       const details =
         statusDetails(
-          message.status
+          normalizedStatus
         );
 
 
@@ -1859,7 +1936,7 @@
 
 
       status.dataset.status =
-        message.status || "sent";
+        normalizedStatus;
 
 
       status.title =
@@ -1895,11 +1972,13 @@
 
   /* =======================================================
      UPSERT MESSAGE
+     
+     Important:
+     Existing messages must NOT be inserted again.
+     Status changes must update the existing row.
   ======================================================== */
 
-  function upsertMessage(
-    message
-  ) {
+  function upsertMessage(message) {
 
     if (
       !messagesContainer ||
@@ -1911,21 +1990,39 @@
     }
 
 
+    const messageId =
+      message.id != null
+        ? String(message.id)
+        : "";
+
+
     /* -----------------------------------------------------
        Existing real message
     ----------------------------------------------------- */
 
+    let existingRow = null;
+
+
     if (
-      message.id &&
-      !String(
-        message.id
-      ).startsWith(
+      messageId &&
+      !messageId.startsWith(
         "optimistic-"
-      ) &&
-      updateMessageStatus(
-        message
       )
     ) {
+
+      existingRow =
+        findMessageRow(
+          messageId
+        );
+
+    }
+
+
+    if (existingRow) {
+
+      updateMessageStatus(
+        message
+      );
 
       return;
 
@@ -1940,20 +2037,31 @@
       message.client_message_id
     ) {
 
-      const optimistic =
-        messagesContainer.querySelector(
-          `[data-client-message-id="${CSS.escape(
-            message.client_message_id
-          )}"]`
+      const clientId =
+        String(
+          message.client_message_id
         );
+
+
+      const optimistic =
+        Array
+          .from(
+            messagesContainer.querySelectorAll(
+              ".wa-message-row"
+            )
+          )
+          .find(
+            row =>
+              String(
+                row.dataset.clientMessageId || ""
+              ) === clientId
+          );
 
 
       if (optimistic) {
 
         optimistic.dataset.messageId =
-          String(
-            message.id
-          );
+          messageId;
 
 
         optimistic.classList.remove(
@@ -1974,15 +2082,13 @@
 
 
     /* -----------------------------------------------------
-       Do not insert duplicate ID
+       Final duplicate protection
     ----------------------------------------------------- */
 
     if (
-      message.id &&
-      messagesContainer.querySelector(
-        `.wa-message-row[data-message-id="${CSS.escape(
-          String(message.id)
-        )}"]`
+      messageId &&
+      findMessageRow(
+        messageId
       )
     ) {
 
@@ -1995,6 +2101,10 @@
     }
 
 
+    /* -----------------------------------------------------
+       Create new message
+    ----------------------------------------------------- */
+
     const element =
       createMessageElement(
         message
@@ -2003,6 +2113,17 @@
 
     messagesContainer.appendChild(
       element
+    );
+
+
+    /*
+     * Apply status again after insertion.
+     * This keeps status handling identical for
+     * server-rendered and dynamically inserted rows.
+     */
+
+    updateMessageStatus(
+      message
     );
 
   }
@@ -2168,11 +2289,6 @@
 
     }
 
-
-    /* -----------------------------------------------------
-       Extra safety:
-       never start another request while one exists.
-    ----------------------------------------------------- */
 
     if (messageRequest) {
       return;
@@ -2347,12 +2463,6 @@
 
   /* =======================================================
      MESSAGE POLLING SCHEDULER
-     
-     IMPORTANT:
-     setInterval is intentionally NOT used.
-     
-     Next request starts only after previous request
-     has completely finished.
   ======================================================== */
 
   function scheduleMessagePoll(
@@ -2591,12 +2701,8 @@
     conversations
   ) {
 
-    if (
-      !conversationList
-    ) {
-
+    if (!conversationList) {
       return;
-
     }
 
 
@@ -2824,10 +2930,6 @@
     );
 
 
-    /* -----------------------------------------------------
-       Re-apply current search
-    ----------------------------------------------------- */
-
     applyConversationSearch();
 
   }
@@ -2914,29 +3016,30 @@
         .slice(2)}`;
 
 
-    const optimistic =
-      {
-        id:
-          `optimistic-${clientMessageId}`,
+    const optimistic = {
 
-        direction:
-          "outgoing",
+      id:
+        `optimistic-${clientMessageId}`,
 
-        body:
-          body,
+      direction:
+        "outgoing",
 
-        status:
-          "sent",
+      body:
+        body,
 
-        created_at:
-          new Date().toISOString(),
+      status:
+        "sent",
 
-        whatsapp_timestamp:
-          new Date().toISOString(),
+      created_at:
+        new Date().toISOString(),
 
-        client_message_id:
-          clientMessageId
-      };
+      whatsapp_timestamp:
+        new Date().toISOString(),
+
+      client_message_id:
+        clientMessageId
+
+    };
 
 
     const element =
@@ -2991,11 +3094,13 @@
 
             body:
               JSON.stringify({
+
                 body:
                   body,
 
                 client_message_id:
                   clientMessageId
+
               })
           }
         );
@@ -3065,7 +3170,6 @@
         true
       );
 
-
     } catch (error) {
 
       console.error(
@@ -3098,6 +3202,10 @@
 
           status.className =
             "wa-status is-failed";
+
+
+          status.dataset.status =
+            "failed";
 
 
           status.title =
@@ -3510,13 +3618,6 @@
 
   /* =======================================================
      VISIBILITY HANDLING
-     
-     Hidden tab:
-       - cancel active requests
-       - stop timers
-     
-     Visible tab:
-       - immediately poll
   ======================================================== */
 
   function handleVisibilityChange() {
@@ -3526,9 +3627,7 @@
     }
 
 
-    if (
-      document.hidden
-    ) {
+    if (document.hidden) {
 
       if (messageTimer) {
 
@@ -3536,8 +3635,7 @@
           messageTimer
         );
 
-        messageTimer =
-          null;
+        messageTimer = null;
 
       }
 
@@ -3548,23 +3646,18 @@
           listTimer
         );
 
-        listTimer =
-          null;
+        listTimer = null;
 
       }
 
 
       try {
-
         messageRequest?.abort();
-
       } catch (_) {}
 
 
       try {
-
         listRequest?.abort();
-
       } catch (_) {}
 
 
@@ -3713,4 +3806,5 @@
 
 
 })();
+
 </script>
