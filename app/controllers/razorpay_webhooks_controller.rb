@@ -1,5 +1,5 @@
 class RazorpayWebhooksController < ApplicationController
-
+  skip_before_action :authenticate_user!, raise: false
   skip_forgery_protection
 
   # --------------------------------------------------
@@ -185,4 +185,4 @@ class RazorpayWebhooksController < ApplicationController
 
     head :internal_server_error
   end
-end
+ends

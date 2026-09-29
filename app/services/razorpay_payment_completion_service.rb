@@ -1,4 +1,5 @@
 class RazorpayPaymentCompletionService
+  
   Result = Struct.new(
     :success,
     :already_paid,
