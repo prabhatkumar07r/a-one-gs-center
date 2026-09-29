@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_28_143932) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_185512) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -743,6 +743,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_143932) do
     t.datetime "whatsapp_timestamp"
     t.index ["created_at"], name: "index_whatsapp_messages_on_created_at"
     t.index ["direction"], name: "index_whatsapp_messages_on_direction"
+    t.index ["phone_number", "created_at", "id"], name: "index_whatsapp_messages_on_phone_created_id"
     t.index ["phone_number"], name: "index_whatsapp_messages_on_phone_number"
     t.index ["read_at"], name: "index_whatsapp_messages_on_read_at"
     t.index ["status"], name: "index_whatsapp_messages_on_status"
