@@ -133,6 +133,7 @@ Rails.application.routes.draw do
       member do
         post :send_email
         post :send_reminder
+        post :sync
       end
 
       collection do
@@ -538,6 +539,9 @@ Rails.application.routes.draw do
   post "payments/:id/apply_coupon",
        to: "payments#apply_coupon",
        as: :apply_coupon
+  post "/razorpay/webhook",
+     to: "razorpay_webhooks#payment",
+     as: :razorpay_webhook     
 
 
   resources :fees do

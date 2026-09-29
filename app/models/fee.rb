@@ -70,36 +70,34 @@ class Fee < ApplicationRecord
   # CALCULATE DUE
   # ==========================================
 
-  def calculate_due_amount
-    payable_amount =
-      total_fee.to_d - discount_amount.to_d
+def calculate_due_amount
+  payable_amount =
+    total_fee.to_d -
+    discount_amount.to_d -
+    enrollment&.discount_amount.to_d
 
-    payable_amount = 0 if payable_amount < 0
+  payable_amount = 0 if payable_amount < 0
 
-    self.due_amount =
-      payable_amount - paid_amount.to_d
+  self.due_amount =
+    payable_amount - paid_amount.to_d
 
-    self.due_amount = 0 if self.due_amount < 0
+  self.due_amount = 0 if self.due_amount < 0
+end
+
+def calculate_status
+  payable_amount =
+    total_fee.to_d -
+    discount_amount.to_d -
+    enrollment&.discount_amount.to_d
+
+  payable_amount = 0 if payable_amount < 0
+
+  if paid_amount.to_d >= payable_amount
+    self.status = "Paid"
+  elsif paid_amount.to_d > 0
+    self.status = "Partial"
+  else
+    self.status = "Due"
   end
-
-  # ==========================================
-  # CALCULATE STATUS
-  # ==========================================
-
-  def calculate_status
-    payable_amount =
-      total_fee.to_d - discount_amount.to_d
-
-    payable_amount = 0 if payable_amount < 0
-
-    if paid_amount.to_d >= payable_amount
-      self.status = "Paid"
-
-    elsif paid_amount.to_d > 0
-      self.status = "Partial"
-
-    else
-      self.status = "Due"
-    end
-  end
+end
 end

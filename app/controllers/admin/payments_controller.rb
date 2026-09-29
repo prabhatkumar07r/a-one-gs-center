@@ -1,7 +1,7 @@
 class Admin::PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin
-  before_action :set_payment, only: [:show]
+ before_action :set_payment, only: [:show, :sync]
 
   layout "admin"
 
@@ -249,6 +249,40 @@ class Admin::PaymentsController < ApplicationController
 
   def show
   end
+
+def sync
+  if @payment.razorpay_order_id.blank?
+    redirect_to admin_payment_path(@payment),
+                alert: "Razorpay Order ID is missing for this payment."
+    return
+  end
+
+  if @payment.paid?
+    redirect_to admin_payment_path(@payment),
+                notice: "Payment is already marked as paid."
+    return
+  end
+
+  result =
+    RazorpayPaymentCompletionService.call(
+      payment: @payment,
+      razorpay_payment_id: nil,
+      razorpay_order_id: @payment.razorpay_order_id
+    )
+
+  if result.success
+    if result.already_paid
+      redirect_to admin_payment_path(@payment),
+                  notice: "Payment was already verified."
+    else
+      redirect_to admin_payment_path(@payment),
+                  notice: "Payment synced successfully with Razorpay."
+    end
+  else
+    redirect_to admin_payment_path(@payment),
+                alert: result.message
+  end
+end
 
   # =========================================================
   # SEND PAYMENT CONFIRMATION EMAIL

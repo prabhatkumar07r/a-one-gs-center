@@ -791,6 +791,15 @@ body.payment-page-dark .payment-status-badge.pending {
     width: 100%;
   }
 }
+
+
+.payment-sync-btn {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 </style>
 
 <div class="admin-payment-page">
@@ -1180,25 +1189,45 @@ body.payment-page-dark .payment-status-badge.pending {
 
                       <% end %>
 
-                    <% else %>
+               <% else %>
 
-                      <% if student&.email.present? || student&.mobile.present? || student&.phone.present? %>
+  <% if payment.razorpay_order_id.present? %>
 
-                        <%= button_to send_reminder_admin_payment_path(payment),
-                                      method: :post,
-                                      class: "payment-reminder-btn",
-                                      form: {
-                                        data: {
-                                          turbo_confirm: "Send payment reminder by Email and WhatsApp?"
-                                        }
-                                      } do %>
-                          <i class="bi bi-send"></i>
-                          Reminder
-                        <% end %>
+    <%= button_to sync_admin_payment_path(payment),
+                  method: :post,
+                  class: "payment-sync-btn",
+                  form: {
+                    data: {
+                      turbo_confirm:
+                        "Razorpay se payment ##{payment.id} ko verify aur sync karein?"
+                    }
+                  } do %>
+      <i class="bi bi-arrow-repeat"></i>
+      Sync
+    <% end %>
 
-                      <% end %>
+  <% end %>
 
-                    <% end %>
+  <% if student&.email.present? ||
+        student&.mobile.present? ||
+        student&.phone.present? %>
+
+    <%= button_to send_reminder_admin_payment_path(payment),
+                  method: :post,
+                  class: "payment-reminder-btn",
+                  form: {
+                    data: {
+                      turbo_confirm:
+                        "Send payment reminder by Email and WhatsApp?"
+                    }
+                  } do %>
+      <i class="bi bi-send"></i>
+      Reminder
+    <% end %>
+
+  <% end %>
+
+<% end %>
 
                   </div>
 
