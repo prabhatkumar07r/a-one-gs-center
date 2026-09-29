@@ -20,13 +20,7 @@ class BrevoPaymentNotificationService
     new(payment).send_success_email
   end
 
-  # =========================================================
-  # PAYMENT SUCCESS WHATSAPP
-  # =========================================================
 
-  def self.send_success_whatsapp(payment)
-    new(payment).send_success_whatsapp
-  end
 
   # =========================================================
   # PAYMENT REMINDER EMAIL
@@ -146,35 +140,7 @@ class BrevoPaymentNotificationService
     )
   end
 
-  # =========================================================
-  # SUCCESS WHATSAPP
-  # =========================================================
-
-  def send_success_whatsapp
-    phone = student_phone
-
-    raise "Student WhatsApp number is missing." if phone.blank?
-
-    template_id =
-      ENV["BREVO_PAYMENT_SUCCESS_WHATSAPP_TEMPLATE_ID"].to_s.strip
-
-    raise "Brevo WhatsApp success template is not configured." if template_id.blank?
-
-    payload = {
-      contactNumbers: phone,
-      templateId: template_id,
-      params: [
-        @student.name.to_s,
-        @course.Course_name.to_s,
-        @payment.amount.to_s
-      ]
-    }
-
-    send_brevo_request(
-      BREVO_WHATSAPP_URL,
-      payload
-    )
-  end
+ 
 
   # =========================================================
   # PAYMENT REMINDER EMAIL

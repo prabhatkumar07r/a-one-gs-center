@@ -58,20 +58,27 @@
 /* =========================================================
    SIDEBAR
 ========================================================= */
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
 .wa-sidebar {
   min-width: 0;
+  min-height: 0;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
 
   background: #111b21;
 
-  border-right:
-    1px solid var(--wa-border);
+  border-right: 1px solid var(--wa-border);
+
+  overflow: hidden;
 }
 
 .wa-sidebar-header {
+  flex: 0 0 72px;
   height: 72px;
 
   display: flex;
@@ -82,8 +89,7 @@
 
   background: #202c33;
 
-  border-bottom:
-    1px solid var(--wa-border);
+  border-bottom: 1px solid var(--wa-border);
 }
 
 .wa-sidebar-title {
@@ -98,41 +104,23 @@
   gap: 10px;
 }
 
-.wa-icon-button {
-  width: 40px;
-  height: 40px;
-
-  border: 0;
-  border-radius: 50%;
-
-  background: transparent;
-
-  color: #d1d7db;
-
-  font-size: 22px;
-
-  cursor: pointer;
-
-  transition: 0.2s ease;
-}
-
-.wa-icon-button:hover {
-  background: #2a3942;
-}
-
 /* =========================================================
    SEARCH
 ========================================================= */
 
 .wa-search-wrap {
+  flex: 0 0 auto;
+
   padding: 10px;
+
   background: #111b21;
 }
 
 .wa-search {
   width: 100%;
-
   height: 44px;
+
+  box-sizing: border-box;
 
   border: 0;
   border-radius: 8px;
@@ -140,7 +128,6 @@
   outline: none;
 
   background: #202c33;
-
   color: #e9edef;
 
   padding: 0 16px;
@@ -154,15 +141,49 @@
 
 /* =========================================================
    CONVERSATION LIST
+   IMPORTANT:
+   height: 0 + flex: 1 allows proper scrolling
 ========================================================= */
 
 .wa-conversation-list {
-  flex: 1;
+  flex: 1 1 auto;
 
+  min-width: 0;
   min-height: 0;
 
+  height: 0;
+
   overflow-y: auto;
+  overflow-x: hidden;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+  scrollbar-color: #3b4a54 transparent;
 }
+
+.wa-conversation-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+.wa-conversation-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.wa-conversation-list::-webkit-scrollbar-thumb {
+  background: #3b4a54;
+  border-radius: 10px;
+}
+
+.wa-conversation-list::-webkit-scrollbar-thumb:hover {
+  background: #52636e;
+}
+
+/* =========================================================
+   CONVERSATION ITEM
+========================================================= */
 
 .wa-conversation-link {
   display: flex;
@@ -175,17 +196,17 @@
 
   padding: 10px 14px;
 
+  box-sizing: border-box;
+
   text-decoration: none;
 
   color: inherit;
 
-  border-bottom:
-    1px solid rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.04);
 
   cursor: pointer;
 
-  transition:
-    background .15s ease;
+  transition: background .15s ease;
 }
 
 .wa-conversation-link:hover {
@@ -196,6 +217,10 @@
   background: #2a3942;
 }
 
+/* =========================================================
+   AVATAR
+========================================================= */
+
 .wa-avatar {
   width: 54px;
   height: 54px;
@@ -203,6 +228,7 @@
   flex: 0 0 54px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -221,19 +247,31 @@
   font-weight: 700;
 }
 
+/* =========================================================
+   CONTENT
+========================================================= */
+
 .wa-conversation-content {
-  flex: 1;
+  flex: 1 1 auto;
 
   min-width: 0;
+  overflow: hidden;
 }
 
 .wa-conversation-top {
   display: flex;
+
+  align-items: center;
   justify-content: space-between;
+
   gap: 10px;
+
+  min-width: 0;
 }
 
 .wa-conversation-name {
+  min-width: 0;
+
   color: #e9edef;
 
   font-weight: 700;
@@ -246,6 +284,8 @@
 }
 
 .wa-conversation-time {
+  flex: 0 0 auto;
+
   color: #8696a0;
 
   font-size: 12px;
@@ -253,23 +293,64 @@
   white-space: nowrap;
 }
 
+/* =========================================================
+   PREVIEW
+   Example:
+   You: Payment successful
+   Rahul: Sir course kab start hoga?
+========================================================= */
+
 .wa-conversation-preview {
   margin-top: 5px;
+
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
 
   color: #8696a0;
 
   font-size: 13px;
+  line-height: 20px;
+}
 
-  white-space: nowrap;
+.wa-conversation-sender {
+  flex: 0 0 auto;
+
+  margin-right: 4px;
+
+  color: #b6c2c8;
+
+  font-weight: 600;
+}
+
+.wa-conversation-sender.is-you {
+  color: #53bdeb;
+}
+
+.wa-conversation-preview-text {
+  min-width: 0;
+
+  flex: 1 1 auto;
 
   overflow: hidden;
 
   text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
+/* =========================================================
+   UNREAD
+========================================================= */
+
 .wa-unread {
+  flex: 0 0 auto;
+
   min-width: 20px;
   height: 20px;
+
+  margin-left: 6px;
 
   padding: 0 6px;
 
@@ -988,24 +1069,43 @@
 
               </div>
 
-              <div class="wa-conversation-preview">
 
-                <%= conversation.body.presence ||
-                    "[#{conversation.message_type}]" %>
+                <div class="wa-conversation-preview">
 
-                <% if unread.positive? %>
+                             <% if conversation.direction.to_s == "outgoing" %>
 
-                  <span class="wa-unread">
-                    <%= unread %>
-                  </span>
+                            <span class="wa-conversation-sender is-you">
+                              You:
+                             </span>
 
-                <% end %>
+                 <% else %>
 
-              </div>
+                         <span class="wa-conversation-sender">
+                         <%= name %>:
+                        </span>
 
-            </div>
+                      <% end %>
 
-          </a>
+                     <span class="wa-conversation-preview-text">
+
+                        <%= conversation.body.presence ||
+                              "[#{conversation.message_type}]" %>
+
+                       </span>
+
+                     <% if unread.positive? %>
+
+                     <span class="wa-unread">
+                             <%= unread %>
+                         </span>
+
+                        <% end %>
+
+                      </div>
+
+                  </div>
+
+              </a>
 
         <% end %>
 
@@ -1314,2234 +1414,240 @@
 
 </div>
 
-
 <script nonce="<%= content_security_policy_nonce %>">
-
 (() => {
 
   "use strict";
 
-
-  /* =======================================================
-     A ONE GS CENTER
-     WHATSAPP INBOX - SINGLETON LIVE ENGINE
-  ======================================================== */
-
-  const GLOBAL_KEY =
-    "__AONE_GS_WHATSAPP_INBOX__";
-
-
-  /* =======================================================
-     DESTROY PREVIOUS INSTANCE
-  ======================================================== */
-
-  const previousInstance =
-    window[GLOBAL_KEY];
-
-  if (
-    previousInstance &&
-    typeof previousInstance.destroy === "function"
-  ) {
-
-    previousInstance.destroy();
-
-  }
-
-
-  /* =======================================================
+  /* =========================================================
      ELEMENTS
-  ======================================================== */
+  ========================================================= */
 
   const page =
-    document.getElementById(
-      "aoneWhatsappPage"
-    );
-
+    document.getElementById("aoneWhatsappPage");
 
   if (!page) {
     return;
   }
 
-
-  const chatBody =
-    document.getElementById(
-      "waChatBody"
-    );
-
-
-  const messagesContainer =
-    document.getElementById(
-      "waMessagesContainer"
-    );
-
-
-  const form =
-    document.getElementById(
-      "waMessageForm"
-    );
-
-
-  const input =
-    document.getElementById(
-      "waMessageInput"
-    );
-
-
-  const sendButton =
-    document.getElementById(
-      "waSendButton"
-    );
-
+  const conversationList =
+    document.getElementById("waConversationList");
 
   const searchInput =
-    document.getElementById(
-      "waChatSearch"
-    );
+    document.getElementById("waChatSearch");
+
+  const searchMessagesInput =
+    document.getElementById("waSearchMessages");
+
+  const headerThemeButton =
+    document.getElementById("waHeaderTheme");
+
+  const sidebarThemeButton =
+    document.getElementById("waSidebarTheme");
+
+  const moreOptionsButton =
+    document.getElementById("waMoreOptions");
+
+  const chatMessages =
+    document.getElementById("waChatMessages");
+
+  const messageForm =
+    document.getElementById("waMessageForm");
+
+  const messageInput =
+    document.getElementById("waMessageInput");
+
+  const sendButton =
+    document.getElementById("waSendButton");
 
 
-  const conversationList =
-    document.getElementById(
-      "waConversationList"
-    );
-
-
-  /* =======================================================
-     CURRENT PHONE
-  ======================================================== */
-
-  const currentPhone =
-    "<%= j(@phone.to_s) %>";
-
-
-  /* =======================================================
-     STATE
-  ======================================================== */
-
-  let destroyed =
-    false;
-
-
-  let messageTimer =
-    null;
-
-
-  let listTimer =
-    null;
-
-
-  let messageRequest =
-    null;
-
-
-  let listRequest =
-    null;
-
-
-  let latestMessageId =
-    <%= @messages.to_a.last&.id.to_i %>;
-
-
-  let statusCursor =
-    "<%= j(
-      @messages.to_a
-        .map(&:status_updated_at)
-        .compact
-        .max
-        &.iso8601(6)
-        .to_s
-    ) %>";
-
-
-  /* =======================================================
-     CSRF
-  ======================================================== */
-
-  const csrfToken =
-    document.querySelector(
-      'meta[name="csrf-token"]'
-    )?.content || "";
-
-
-  /* =======================================================
+  /* =========================================================
      CLEANUP
-  ======================================================== */
+  ========================================================= */
 
   const cleanupFunctions = [];
 
-
   function registerCleanup(fn) {
-
-    cleanupFunctions.push(fn);
-
+    if (typeof fn === "function") {
+      cleanupFunctions.push(fn);
+    }
   }
 
-
-  function destroy() {
-
-    if (destroyed) {
-      return;
-    }
-
-
-    destroyed = true;
-
-
-    if (messageTimer) {
-
-      clearTimeout(
-        messageTimer
-      );
-
-      messageTimer = null;
-
-    }
-
-
-    if (listTimer) {
-
-      clearTimeout(
-        listTimer
-      );
-
-      listTimer = null;
-
-    }
-
-
-    try {
-      messageRequest?.abort();
-    } catch (_) {}
-
-
-    try {
-      listRequest?.abort();
-    } catch (_) {}
-
-
-    messageRequest = null;
-    listRequest = null;
-
-
-    cleanupFunctions
-      .splice(0)
-      .forEach(
-        cleanup => {
-
-          try {
-            cleanup();
-          } catch (_) {}
-
-        }
-      );
-
-
-    if (
-      window[GLOBAL_KEY] === api
-    ) {
-
-      window[GLOBAL_KEY] = null;
-
-    }
-
-  }
-
-
-  /* =======================================================
-     PUBLIC API
-  ======================================================== */
-
-  const api = {
-    destroy
-  };
-
-
-  window[GLOBAL_KEY] =
-    api;
-
-
-  /* =======================================================
-     TIME
-  ======================================================== */
-
-  function formatTime(value) {
-
-    if (!value) {
-      return "";
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return "";
-
-    }
-
-
-    return date.toLocaleTimeString(
-      [],
-      {
-        hour: "2-digit",
-        minute: "2-digit"
-      }
-    );
-
-  }
-
-
-  /* =======================================================
-     STATUS UI
-     ALWAYS NORMALIZE META/DB STATUS
-  ======================================================== */
-
-  function statusDetails(status) {
-
-    const normalized =
-      String(
-        status || "sent"
-      )
-      .toLowerCase()
-      .trim();
-
-
-    switch (normalized) {
-
-      case "read":
-
-        return {
-          icon: "✓✓",
-          className: "is-read",
-          title: "Read"
-        };
-
-
-      case "delivered":
-
-        return {
-          icon: "✓✓",
-          className: "is-delivered",
-          title: "Delivered"
-        };
-
-
-      case "failed":
-
-        return {
-          icon: "!",
-          className: "is-failed",
-          title: "Failed"
-        };
-
-
-      case "sent":
-
-      default:
-
-        return {
-          icon: "✓",
-          className: "is-sent",
-          title: "Sent"
-        };
-
-    }
-
-  }
-
-
-  /* =======================================================
-     FIND MESSAGE ROW
-  ======================================================== */
-
-  function findMessageRow(messageId) {
-
-    if (
-      !messagesContainer ||
-      messageId == null
-    ) {
-
-      return null;
-
-    }
-
-
-    const wantedId =
-      String(messageId);
-
-
-    return Array
-      .from(
-        messagesContainer.querySelectorAll(
-          ".wa-message-row"
-        )
-      )
-      .find(
-        row =>
-          String(
-            row.dataset.messageId || ""
-          ) === wantedId
-      ) || null;
-
-  }
-
-
-  /* =======================================================
-     UPDATE MESSAGE STATUS
-  ======================================================== */
-
-  function updateMessageStatus(message) {
-
-    if (!message?.id) {
-      return false;
-    }
-
-
-    const messageId =
-      String(message.id);
-
-
-    const row =
-      findMessageRow(
-        messageId
-      );
-
-
-    if (!row) {
-      return false;
-    }
-
-
-    const outgoing =
-      message.direction === "outgoing" ||
-      row.classList.contains("outgoing");
-
-
-    if (!outgoing) {
-      return false;
-    }
-
-
-    const meta =
-      row.querySelector(
-        ".wa-message-meta"
-      );
-
-
-    if (!meta) {
-      return false;
-    }
-
-
-    let statusElement =
-      row.querySelector(
-        ".wa-status"
-      );
-
-
-    /* -----------------------------------------------------
-       Create status element if missing.
-    ----------------------------------------------------- */
-
-    if (!statusElement) {
-
-      statusElement =
-        document.createElement(
-          "span"
-        );
-
-
-      statusElement.className =
-        "wa-status";
-
-
-      meta.appendChild(
-        statusElement
-      );
-
-    }
-
-
-    const normalizedStatus =
-      String(
-        message.status || "sent"
-      )
-      .toLowerCase()
-      .trim();
-
-
-    const details =
-      statusDetails(
-        normalizedStatus
-      );
-
-
-    statusElement.textContent =
-      details.icon;
-
-
-    statusElement.className =
-      `wa-status ${details.className}`;
-
-
-    statusElement.dataset.status =
-      normalizedStatus;
-
-
-    statusElement.title =
-      details.title;
-
-
-    /*
-     * Force browser repaint so dynamic status
-     * changes are immediately visible.
-     */
-
-    void statusElement.offsetWidth;
-
-
-    return true;
-
-  }
-
-
-  /* =======================================================
-     CREATE MESSAGE
-  ======================================================== */
-
-  function createMessageElement(message) {
-
-    const row =
-      document.createElement(
-        "div"
-      );
-
-
-    const outgoing =
-      message.direction ===
-      "outgoing";
-
-
-    row.className =
-      `wa-message-row ${
-        outgoing
-          ? "outgoing"
-          : "incoming"
-      }`;
-
-
-    row.dataset.messageId =
-      String(
-        message.id ?? ""
-      );
-
-
-    if (
-      message.client_message_id
-    ) {
-
-      row.dataset.clientMessageId =
-        String(
-          message.client_message_id
-        );
-
-    }
-
-
-    const bubble =
-      document.createElement(
-        "div"
-      );
-
-
-    bubble.className =
-      "wa-bubble";
-
-
-    const body =
-      document.createElement(
-        "div"
-      );
-
-
-    body.className =
-      "wa-message-body";
-
-
-    body.textContent =
-      message.body || "";
-
-
-    const meta =
-      document.createElement(
-        "div"
-      );
-
-
-    meta.className =
-      "wa-message-meta";
-
-
-    const time =
-      document.createElement(
-        "span"
-      );
-
-
-    time.textContent =
-      formatTime(
-        message.whatsapp_timestamp ||
-        message.created_at
-      );
-
-
-    meta.appendChild(
-      time
-    );
-
-
-    if (outgoing) {
-
-      const status =
-        document.createElement(
-          "span"
-        );
-
-
-      const normalizedStatus =
-        String(
-          message.status || "sent"
-        )
-        .toLowerCase()
-        .trim();
-
-
-      const details =
-        statusDetails(
-          normalizedStatus
-        );
-
-
-      status.className =
-        `wa-status ${details.className}`;
-
-
-      status.textContent =
-        details.icon;
-
-
-      status.dataset.status =
-        normalizedStatus;
-
-
-      status.title =
-        details.title;
-
-
-      meta.appendChild(
-        status
-      );
-
-    }
-
-
-    bubble.appendChild(
-      body
-    );
-
-
-    bubble.appendChild(
-      meta
-    );
-
-
-    row.appendChild(
-      bubble
-    );
-
-
-    return row;
-
-  }
-
-
-  /* =======================================================
-     UPSERT MESSAGE
-     
-     Important:
-     Existing messages must NOT be inserted again.
-     Status changes must update the existing row.
-  ======================================================== */
-
-  function upsertMessage(message) {
-
-    if (
-      !messagesContainer ||
-      !message
-    ) {
-
-      return;
-
-    }
-
-
-    const messageId =
-      message.id != null
-        ? String(message.id)
-        : "";
-
-
-    /* -----------------------------------------------------
-       Existing real message
-    ----------------------------------------------------- */
-
-    let existingRow = null;
-
-
-    if (
-      messageId &&
-      !messageId.startsWith(
-        "optimistic-"
-      )
-    ) {
-
-      existingRow =
-        findMessageRow(
-          messageId
-        );
-
-    }
-
-
-    if (existingRow) {
-
-      updateMessageStatus(
-        message
-      );
-
-      return;
-
-    }
-
-
-    /* -----------------------------------------------------
-       Optimistic message reconciliation
-    ----------------------------------------------------- */
-
-    if (
-      message.client_message_id
-    ) {
-
-      const clientId =
-        String(
-          message.client_message_id
-        );
-
-
-      const optimistic =
-        Array
-          .from(
-            messagesContainer.querySelectorAll(
-              ".wa-message-row"
-            )
-          )
-          .find(
-            row =>
-              String(
-                row.dataset.clientMessageId || ""
-              ) === clientId
-          );
-
-
-      if (optimistic) {
-
-        optimistic.dataset.messageId =
-          messageId;
-
-
-        optimistic.classList.remove(
-          "optimistic"
-        );
-
-
-        updateMessageStatus(
-          message
-        );
-
-
-        return;
-
-      }
-
-    }
-
-
-    /* -----------------------------------------------------
-       Final duplicate protection
-    ----------------------------------------------------- */
-
-    if (
-      messageId &&
-      findMessageRow(
-        messageId
-      )
-    ) {
-
-      updateMessageStatus(
-        message
-      );
-
-      return;
-
-    }
-
-
-    /* -----------------------------------------------------
-       Create new message
-    ----------------------------------------------------- */
-
-    const element =
-      createMessageElement(
-        message
-      );
-
-
-    messagesContainer.appendChild(
-      element
-    );
-
-
-    /*
-     * Apply status again after insertion.
-     * This keeps status handling identical for
-     * server-rendered and dynamically inserted rows.
-     */
-
-    updateMessageStatus(
-      message
-    );
-
-  }
-
-
-  /* =======================================================
-     SCROLL
-  ======================================================== */
-
-  function scrollToBottom(
-    force = false
-  ) {
-
-    if (!chatBody) {
-      return;
-    }
-
-
-    const distance =
-      chatBody.scrollHeight -
-      chatBody.scrollTop -
-      chatBody.clientHeight;
-
-
-    if (
-      force ||
-      distance < 220
-    ) {
-
-      chatBody.scrollTop =
-        chatBody.scrollHeight;
-
-    }
-
-  }
-
-
-  /* =======================================================
-     UPDATE CURSORS
-  ======================================================== */
-
-  function updateCursors(
-    messages,
-    data
-  ) {
-
-    if (
-      Array.isArray(messages)
-    ) {
-
-      messages.forEach(
-        message => {
-
-          if (
-            Number(message.id) >
-            Number(latestMessageId)
-          ) {
-
-            latestMessageId =
-              Number(
-                message.id
-              );
-
-          }
-
-
-          if (
-            message.status_updated_at
-          ) {
-
-            const oldTime =
-              statusCursor
-                ? new Date(
-                    statusCursor
-                  ).getTime()
-                : 0;
-
-
-            const newTime =
-              new Date(
-                message.status_updated_at
-              ).getTime();
-
-
-            if (
-              Number.isFinite(newTime) &&
-              newTime >= oldTime
-            ) {
-
-              statusCursor =
-                message.status_updated_at;
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-
-
-    if (
-      data?.latest_id &&
-      Number(data.latest_id) >
-      Number(latestMessageId)
-    ) {
-
-      latestMessageId =
-        Number(
-          data.latest_id
-        );
-
-    }
-
-
-    if (
-      data?.status_cursor
-    ) {
-
-      const serverTime =
-        new Date(
-          data.status_cursor
-        ).getTime();
-
-
-      const localTime =
-        statusCursor
-          ? new Date(
-              statusCursor
-            ).getTime()
-          : 0;
-
-
-      if (
-        Number.isFinite(serverTime) &&
-        serverTime > localTime
-      ) {
-
-        statusCursor =
-          data.status_cursor;
-
-      }
-
-    }
-
-  }
-
-
-  /* =======================================================
-     POLL MESSAGES
-  ======================================================== */
-
-  async function pollMessages() {
-
-    if (
-      destroyed ||
-      !currentPhone ||
-      document.hidden
-    ) {
-
-      return;
-
-    }
-
-
-    if (messageRequest) {
-      return;
-    }
-
-
-    const controller =
-      new AbortController();
-
-
-    messageRequest =
-      controller;
-
-
-    try {
-
-      const params =
-        new URLSearchParams();
-
-
-      params.set(
-        "after_id",
-        String(
-          latestMessageId
-        )
-      );
-
-
-      if (statusCursor) {
-
-        params.set(
-          "status_after",
-          statusCursor
-        );
-
-      }
-
-
-      const url =
-        "<%= admin_whatsapp_conversation_messages_path(
-              phone: "__PHONE__"
-            ) %>"
-          .replace(
-            "__PHONE__",
-            encodeURIComponent(
-              currentPhone
-            )
-          ) +
-        "?" +
-        params.toString();
-
-
-      const response =
-        await fetch(
-          url,
-          {
-            method: "GET",
-
-            cache: "no-store",
-
-            signal:
-              controller.signal,
-
-            headers: {
-              "Accept":
-                "application/json",
-
-              "Cache-Control":
-                "no-cache"
-            }
-          }
-        );
-
-
-      if (!response.ok) {
-
+  function cleanup() {
+    cleanupFunctions.forEach(fn => {
+      try {
+        fn();
+      } catch (error) {
         console.warn(
-          "[WhatsApp polling] HTTP",
-          response.status
-        );
-
-        return;
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      if (destroyed) {
-        return;
-      }
-
-
-      const incoming =
-        Array.isArray(
-          data.messages
-        )
-          ? data.messages
-          : [];
-
-
-      const wasNearBottom =
-        chatBody
-          ? (
-              chatBody.scrollHeight -
-              chatBody.scrollTop -
-              chatBody.clientHeight
-            ) < 220
-          : true;
-
-
-      incoming.forEach(
-        message => {
-
-          upsertMessage(
-            message
-          );
-
-        }
-      );
-
-
-      updateCursors(
-        incoming,
-        data
-      );
-
-
-      if (
-        incoming.length &&
-        wasNearBottom
-      ) {
-
-        scrollToBottom(
-          true
-        );
-
-      }
-
-    } catch (error) {
-
-      if (
-        error?.name !==
-        "AbortError"
-      ) {
-
-        console.error(
-          "[WhatsApp polling]",
+          "WhatsApp cleanup error:",
           error
         );
-
       }
+    });
 
-    } finally {
-
-      if (
-        messageRequest ===
-        controller
-      ) {
-
-        messageRequest =
-          null;
-
-      }
-
-    }
-
+    cleanupFunctions.length = 0;
   }
 
 
-  /* =======================================================
-     MESSAGE POLLING SCHEDULER
-  ======================================================== */
-
-  function scheduleMessagePoll(
-    delay = 2000
-  ) {
-
-    if (destroyed) {
-      return;
-    }
-
-
-    if (messageTimer) {
-
-      clearTimeout(
-        messageTimer
-      );
-
-    }
-
-
-    messageTimer =
-      setTimeout(
-        async () => {
-
-          messageTimer =
-            null;
-
-
-          if (
-            destroyed ||
-            document.hidden
-          ) {
-
-            return;
-
-          }
-
-
-          await pollMessages();
-
-
-          if (!destroyed) {
-
-            scheduleMessagePoll(
-              2000
-            );
-
-          }
-
-        },
-        delay
-      );
-
-  }
-
-
-  /* =======================================================
-     CONVERSATION LIST
-  ======================================================== */
-
-  async function pollConversationList() {
-
-    if (
-      destroyed ||
-      !conversationList ||
-      document.hidden
-    ) {
-
-      return;
-
-    }
-
-
-    if (listRequest) {
-      return;
-    }
-
-
-    const controller =
-      new AbortController();
-
-
-    listRequest =
-      controller;
-
-
-    try {
-
-      const url =
-        "<%= admin_whatsapp_path(
-              format: :json
-            ) %>";
-
-
-      const response =
-        await fetch(
-          url,
-          {
-            method: "GET",
-
-            cache: "no-store",
-
-            signal:
-              controller.signal,
-
-            headers: {
-              "Accept":
-                "application/json",
-
-              "Cache-Control":
-                "no-cache"
-            }
-          }
-        );
-
-
-      if (!response.ok) {
-
-        console.warn(
-          "[WhatsApp conversation polling] HTTP",
-          response.status
-        );
-
-        return;
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      if (destroyed) {
-        return;
-      }
-
-
-      renderConversationList(
-        data.conversations || []
-      );
-
-    } catch (error) {
-
-      if (
-        error?.name !==
-        "AbortError"
-      ) {
-
-        console.error(
-          "[WhatsApp conversation polling]",
-          error
-        );
-
-      }
-
-    } finally {
-
-      if (
-        listRequest ===
-        controller
-      ) {
-
-        listRequest =
-          null;
-
-      }
-
-    }
-
-  }
-
-
-  /* =======================================================
-     CONVERSATION LIST SCHEDULER
-  ======================================================== */
-
-  function scheduleListPoll(
-    delay = 8000
-  ) {
-
-    if (destroyed) {
-      return;
-    }
-
-
-    if (listTimer) {
-
-      clearTimeout(
-        listTimer
-      );
-
-    }
-
-
-    listTimer =
-      setTimeout(
-        async () => {
-
-          listTimer =
-            null;
-
-
-          if (
-            destroyed ||
-            document.hidden
-          ) {
-
-            return;
-
-          }
-
-
-          await pollConversationList();
-
-
-          if (!destroyed) {
-
-            scheduleListPoll(
-              8000
-            );
-
-          }
-
-        },
-        delay
-      );
-
-  }
-
-
-  /* =======================================================
-     RENDER CONVERSATION LIST
-  ======================================================== */
-
-  function renderConversationList(
-    conversations
-  ) {
-
-    if (!conversationList) {
-      return;
-    }
-
-
-    const fragment =
-      document.createDocumentFragment();
-
-
-    conversations.forEach(
-      conversation => {
-
-        const phone =
-          String(
-            conversation.phone_number ||
-            ""
-          )
-          .replace(
-            /\D/g,
-            ""
-          );
-
-
-        const name =
-          conversation.sender_name ||
-          phone ||
-          "Unknown";
-
-
-        const link =
-          document.createElement(
-            "a"
-          );
-
-
-        link.className =
-          "wa-conversation-link";
-
-
-        if (
-          phone ===
-          currentPhone
-        ) {
-
-          link.classList.add(
-            "active"
-          );
-
-        }
-
-
-        link.href =
-          "<%= admin_whatsapp_conversation_path(
-                phone: "__PHONE__"
-              ) %>"
-            .replace(
-              "__PHONE__",
-              encodeURIComponent(
-                phone
-              )
-            );
-
-
-        link.dataset.phone =
-          phone;
-
-
-        link.dataset.name =
-          name;
-
-
-        const avatar =
-          document.createElement(
-            "div"
-          );
-
-
-        avatar.className =
-          "wa-avatar";
-
-
-        avatar.textContent =
-          name
-            .charAt(0)
-            .toUpperCase();
-
-
-        const content =
-          document.createElement(
-            "div"
-          );
-
-
-        content.className =
-          "wa-conversation-content";
-
-
-        const top =
-          document.createElement(
-            "div"
-          );
-
-
-        top.className =
-          "wa-conversation-top";
-
-
-        const nameElement =
-          document.createElement(
-            "div"
-          );
-
-
-        nameElement.className =
-          "wa-conversation-name";
-
-
-        nameElement.textContent =
-          name;
-
-
-        const time =
-          document.createElement(
-            "div"
-          );
-
-
-        time.className =
-          "wa-conversation-time";
-
-
-        time.textContent =
-          formatTime(
-            conversation.created_at
-          );
-
-
-        top.appendChild(
-          nameElement
-        );
-
-
-        top.appendChild(
-          time
-        );
-
-
-        const preview =
-          document.createElement(
-            "div"
-          );
-
-
-        preview.className =
-          "wa-conversation-preview";
-
-
-        preview.textContent =
-          conversation.body ||
-          `[${conversation.message_type || "message"}]`;
-
-
-        if (
-          Number(
-            conversation.unread_count || 0
-          ) > 0
-        ) {
-
-          const unread =
-            document.createElement(
-              "span"
-            );
-
-
-          unread.className =
-            "wa-unread";
-
-
-          unread.textContent =
-            conversation.unread_count;
-
-
-          preview.appendChild(
-            document.createTextNode(
-              " "
-            )
-          );
-
-
-          preview.appendChild(
-            unread
-          );
-
-        }
-
-
-        content.appendChild(
-          top
-        );
-
-
-        content.appendChild(
-          preview
-        );
-
-
-        link.appendChild(
-          avatar
-        );
-
-
-        link.appendChild(
-          content
-        );
-
-
-        fragment.appendChild(
-          link
-        );
-
-      }
-    );
-
-
-    conversationList.replaceChildren(
-      fragment
-    );
-
-
-    applyConversationSearch();
-
-  }
-
-
-  /* =======================================================
+  /* =========================================================
      CONVERSATION SEARCH
-  ======================================================== */
+  ========================================================= */
 
   function applyConversationSearch() {
 
-    if (!searchInput) {
+    if (!searchInput || !conversationList) {
       return;
     }
-
 
     const query =
       searchInput.value
         .toLowerCase()
         .trim();
 
-
-    conversationList
-      ?.querySelectorAll(
+    const links =
+      conversationList.querySelectorAll(
         ".wa-conversation-link"
-      )
-      .forEach(
-        link => {
-
-          const text =
-            (
-              link.dataset.name ||
-              ""
-            )
-            .toLowerCase();
-
-
-          const phone =
-            (
-              link.dataset.phone ||
-              ""
-            )
-            .toLowerCase();
-
-
-          link.style.display =
-            !query ||
-            text.includes(query) ||
-            phone.includes(query)
-              ? ""
-              : "none";
-
-        }
       );
 
+    links.forEach(link => {
+
+      const name =
+        (
+          link.dataset.name ||
+          ""
+        )
+        .toLowerCase();
+
+      const phone =
+        (
+          link.dataset.phone ||
+          ""
+        )
+        .toLowerCase();
+
+      const preview =
+        (
+          link.dataset.preview ||
+          link.textContent ||
+          ""
+        )
+        .toLowerCase();
+
+      const matches =
+        !query ||
+        name.includes(query) ||
+        phone.includes(query) ||
+        preview.includes(query);
+
+      link.style.display =
+        matches ? "" : "none";
+
+    });
   }
 
 
-  /* =======================================================
-     SEND MESSAGE
-  ======================================================== */
-
-  async function sendMessage(
-    event
-  ) {
-
-    event.preventDefault();
-
-
-    const body =
-      input?.value
-        .toString()
-        .trim();
-
-
-    if (!body) {
-      return;
-    }
-
-
-    const clientMessageId =
-      `client-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}`;
-
-
-    const optimistic = {
-
-      id:
-        `optimistic-${clientMessageId}`,
-
-      direction:
-        "outgoing",
-
-      body:
-        body,
-
-      status:
-        "sent",
-
-      created_at:
-        new Date().toISOString(),
-
-      whatsapp_timestamp:
-        new Date().toISOString(),
-
-      client_message_id:
-        clientMessageId
-
-    };
-
-
-    const element =
-      createMessageElement(
-        optimistic
-      );
-
-
-    element.classList.add(
-      "optimistic"
-    );
-
-
-    messagesContainer?.appendChild(
-      element
-    );
-
-
-    scrollToBottom(
-      true
-    );
-
-
-    input.value =
-      "";
-
-
-    if (sendButton) {
-      sendButton.disabled =
-        true;
-    }
-
-
-    try {
-
-      const response =
-        await fetch(
-          form.action,
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json",
-
-              "Accept":
-                "application/json",
-
-              "X-CSRF-Token":
-                csrfToken
-            },
-
-            body:
-              JSON.stringify({
-
-                body:
-                  body,
-
-                client_message_id:
-                  clientMessageId
-
-              })
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (
-        !response.ok ||
-        !data.success
-      ) {
-
-        throw new Error(
-          data.error ||
-          "Unable to send message."
-        );
-
-      }
-
-
-      const optimisticRow =
-        messagesContainer?.querySelector(
-          `[data-client-message-id="${CSS.escape(
-            clientMessageId
-          )}"]`
-        );
-
-
-      if (optimisticRow) {
-
-        optimisticRow.remove();
-
-      }
-
-
-      upsertMessage(
-        data.message
-      );
-
-
-      if (
-        Number(data.message.id) >
-        Number(latestMessageId)
-      ) {
-
-        latestMessageId =
-          Number(
-            data.message.id
-          );
-
-      }
-
-
-      if (
-        data.message.status_updated_at
-      ) {
-
-        statusCursor =
-          data.message.status_updated_at;
-
-      }
-
-
-      scrollToBottom(
-        true
-      );
-
-    } catch (error) {
-
-      console.error(
-        "[WhatsApp send]",
-        error
-      );
-
-
-      const optimisticRow =
-        messagesContainer?.querySelector(
-          `[data-client-message-id="${CSS.escape(
-            clientMessageId
-          )}"]`
-        );
-
-
-      if (optimisticRow) {
-
-        const status =
-          optimisticRow.querySelector(
-            ".wa-status"
-          );
-
-
-        if (status) {
-
-          status.textContent =
-            "!";
-
-
-          status.className =
-            "wa-status is-failed";
-
-
-          status.dataset.status =
-            "failed";
-
-
-          status.title =
-            "Failed";
-
-        }
-
-
-        optimisticRow.classList.remove(
-          "optimistic"
-        );
-
-      }
-
-
-      alert(
-        error.message ||
-        "Unable to send message."
-      );
-
-    } finally {
-
-      if (sendButton) {
-
-        sendButton.disabled =
-          false;
-
-      }
-
-
-      input?.focus();
-
-    }
-
-  }
-
-
-  /* =======================================================
-     EVENT LISTENERS
-  ======================================================== */
-
-  if (form) {
-
-    form.addEventListener(
-      "submit",
-      sendMessage
-    );
-
-
-    registerCleanup(
-      () => {
-
-        form.removeEventListener(
-          "submit",
-          sendMessage
-        );
-
-      }
-    );
-
-  }
-
-
-  /* =======================================================
-     ENTER TO SEND
-  ======================================================== */
-
-  function handleInputKeydown(
-    event
-  ) {
+  /* =========================================================
+     MESSAGE SEARCH
+  ========================================================= */
+
+  function applyMessageSearch() {
 
     if (
-      event.key === "Enter" &&
-      !event.shiftKey
+      !searchMessagesInput ||
+      !chatMessages
     ) {
-
-      event.preventDefault();
-
-      form?.requestSubmit();
-
-    }
-
-  }
-
-
-  input?.addEventListener(
-    "keydown",
-    handleInputKeydown
-  );
-
-
-  registerCleanup(
-    () => {
-
-      input?.removeEventListener(
-        "keydown",
-        handleInputKeydown
-      );
-
-    }
-  );
-
-
-  /* =======================================================
-     QUICK REPLIES
-  ======================================================== */
-
-  function handleQuickReplyClick(
-    event
-  ) {
-
-    const button =
-      event.currentTarget;
-
-
-    if (!input) {
       return;
     }
-
-
-    input.value =
-      button.dataset.message ||
-      "";
-
-
-    input.focus();
-
-  }
-
-
-  document
-    .querySelectorAll(
-      ".wa-quick-reply"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          handleQuickReplyClick
-        );
-
-
-        registerCleanup(
-          () => {
-
-            button.removeEventListener(
-              "click",
-              handleQuickReplyClick
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-  /* =======================================================
-     CHAT SEARCH
-  ======================================================== */
-
-  if (searchInput) {
-
-    searchInput.addEventListener(
-      "input",
-      applyConversationSearch
-    );
-
-
-    registerCleanup(
-      () => {
-
-        searchInput.removeEventListener(
-          "input",
-          applyConversationSearch
-        );
-
-      }
-    );
-
-  }
-
-
-  /* =======================================================
-     MESSAGE SEARCH
-  ======================================================== */
-
-  const messageSearchButton =
-    document.getElementById(
-      "waSearchMessages"
-    );
-
-
-  function handleMessageSearch() {
 
     const query =
-      prompt(
-        "Search messages"
-      );
-
-
-    if (!query) {
-      return;
-    }
-
-
-    const wanted =
-      query
+      searchMessagesInput.value
         .toLowerCase()
         .trim();
 
-
-    document
-      .querySelectorAll(
-        ".wa-message-row"
-      )
-      .forEach(
-        row => {
-
-          const text =
-            row.textContent
-              .toLowerCase();
-
-
-          row.style.display =
-            text.includes(wanted)
-              ? ""
-              : "none";
-
-        }
+    const messages =
+      chatMessages.querySelectorAll(
+        ".wa-message-row, .wa-bubble"
       );
 
+    messages.forEach(message => {
+
+      if (!query) {
+        message.style.display = "";
+        return;
+      }
+
+      const text =
+        (
+          message.textContent ||
+          ""
+        )
+        .toLowerCase();
+
+      message.style.display =
+        text.includes(query)
+          ? ""
+          : "none";
+
+    });
   }
 
 
-  messageSearchButton?.addEventListener(
-    "click",
-    handleMessageSearch
-  );
-
-
-  registerCleanup(
-    () => {
-
-      messageSearchButton?.removeEventListener(
-        "click",
-        handleMessageSearch
-      );
-
-    }
-  );
-
-
-  /* =======================================================
-     MORE OPTIONS
-  ======================================================== */
-
-  const moreButton =
-    document.getElementById(
-      "waMoreOptions"
-    );
-
-
-  function handleMoreOptions() {
-
-    alert(
-      "WhatsApp Business inbox"
-    );
-
-  }
-
-
-  moreButton?.addEventListener(
-    "click",
-    handleMoreOptions
-  );
-
-
-  registerCleanup(
-    () => {
-
-      moreButton?.removeEventListener(
-        "click",
-        handleMoreOptions
-      );
-
-    }
-  );
-
-
-  /* =======================================================
+  /* =========================================================
      THEME
-  ======================================================== */
+  ========================================================= */
 
   function updateThemeButtons() {
 
     const isLight =
-      page.classList.contains(
-        "wa-light"
-      );
-
+      page.classList.contains("wa-light");
 
     const icon =
-      isLight
-        ? "🌙"
-        : "☀️";
+      isLight ? "🌙" : "☀️";
 
-
-    document
-      .querySelectorAll(
+    const buttons =
+      document.querySelectorAll(
         "#waHeaderTheme, #waSidebarTheme"
-      )
-      .forEach(
-        button => {
-
-          button.textContent =
-            icon;
-
-        }
       );
 
+    buttons.forEach(button => {
+
+      button.textContent = icon;
+
+      button.setAttribute(
+        "aria-label",
+        isLight
+          ? "Switch to dark mode"
+          : "Switch to light mode"
+      );
+
+      button.setAttribute(
+        "title",
+        isLight
+          ? "Switch to dark mode"
+          : "Switch to light mode"
+      );
+
+    });
   }
 
 
   function applyTheme() {
 
-    const saved =
-      localStorage.getItem(
-        "aone-whatsapp-theme"
+    let savedTheme = null;
+
+    try {
+      savedTheme =
+        localStorage.getItem(
+          "aone-whatsapp-theme"
+        );
+    } catch (error) {
+      console.warn(
+        "Unable to read theme preference.",
+        error
       );
+    }
 
-
-    if (
-      saved === "light"
-    ) {
+    if (savedTheme === "light") {
 
       page.classList.add(
         "wa-light"
@@ -3555,256 +1661,594 @@
 
     }
 
-
     updateThemeButtons();
-
   }
 
 
-  function toggleTheme() {
+  function toggleTheme(event) {
+
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     page.classList.toggle(
       "wa-light"
     );
 
-
-    localStorage.setItem(
-      "aone-whatsapp-theme",
+    const theme =
       page.classList.contains(
         "wa-light"
       )
         ? "light"
-        : "dark"
-    );
+        : "dark";
 
+    try {
+
+      localStorage.setItem(
+        "aone-whatsapp-theme",
+        theme
+      );
+
+    } catch (error) {
+
+      console.warn(
+        "Unable to save theme preference.",
+        error
+      );
+
+    }
 
     updateThemeButtons();
-
   }
 
 
-  const themeButtons =
-    document.querySelectorAll(
-      "#waHeaderTheme, #waSidebarTheme"
+  /* =========================================================
+     THEME EVENTS
+  ========================================================= */
+
+  if (headerThemeButton) {
+
+    headerThemeButton.addEventListener(
+      "click",
+      toggleTheme
     );
 
+    registerCleanup(() => {
 
-  themeButtons.forEach(
-    button => {
-
-      button.addEventListener(
+      headerThemeButton.removeEventListener(
         "click",
         toggleTheme
       );
 
+    });
 
-      registerCleanup(
-        () => {
+  }
 
-          button.removeEventListener(
-            "click",
-            toggleTheme
-          );
 
-        }
+  if (sidebarThemeButton) {
+
+    sidebarThemeButton.addEventListener(
+      "click",
+      toggleTheme
+    );
+
+    registerCleanup(() => {
+
+      sidebarThemeButton.removeEventListener(
+        "click",
+        toggleTheme
       );
 
+    });
+
+  }
+
+
+  /* =========================================================
+     SEARCH EVENTS
+  ========================================================= */
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "input",
+      applyConversationSearch
+    );
+
+    registerCleanup(() => {
+
+      searchInput.removeEventListener(
+        "input",
+        applyConversationSearch
+      );
+
+    });
+
+  }
+
+
+  if (searchMessagesInput) {
+
+    searchMessagesInput.addEventListener(
+      "input",
+      applyMessageSearch
+    );
+
+    registerCleanup(() => {
+
+      searchMessagesInput.removeEventListener(
+        "input",
+        applyMessageSearch
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     MORE OPTIONS
+  ========================================================= */
+
+  function handleMoreOptions(event) {
+
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-  );
 
+    const existingMenu =
+      document.querySelector(
+        ".wa-more-options-menu"
+      );
 
-  applyTheme();
-
-
-  /* =======================================================
-     VISIBILITY HANDLING
-  ======================================================== */
-
-  function handleVisibilityChange() {
-
-    if (destroyed) {
+    if (existingMenu) {
+      existingMenu.remove();
       return;
     }
 
-
-    if (document.hidden) {
-
-      if (messageTimer) {
-
-        clearTimeout(
-          messageTimer
-        );
-
-        messageTimer = null;
-
-      }
-
-
-      if (listTimer) {
-
-        clearTimeout(
-          listTimer
-        );
-
-        listTimer = null;
-
-      }
-
-
-      try {
-        messageRequest?.abort();
-      } catch (_) {}
-
-
-      try {
-        listRequest?.abort();
-      } catch (_) {}
-
-
+    if (!moreOptionsButton) {
       return;
-
     }
 
+    const menu =
+      document.createElement("div");
 
-    /* -----------------------------------------------------
-       Tab visible again
-    ----------------------------------------------------- */
+    menu.className =
+      "wa-more-options-menu";
 
-    if (currentPhone) {
+    menu.innerHTML = `
+      <button type="button" data-action="clear-search">
+        Clear Search
+      </button>
 
-      pollMessages()
-        .finally(
-          () => {
+      <button type="button" data-action="refresh">
+        Refresh
+      </button>
+    `;
 
-            if (!destroyed) {
+    document.body.appendChild(menu);
 
-              scheduleMessagePoll(
-                2000
-              );
+    const rect =
+      moreOptionsButton.getBoundingClientRect();
 
-            }
+    menu.style.position = "fixed";
+    menu.style.top =
+      `${rect.bottom + 6}px`;
 
-          }
-        );
+    menu.style.right =
+      `${Math.max(
+        10,
+        window.innerWidth - rect.right
+      )}px`;
 
-    }
+    menu.style.zIndex = "100000";
 
 
-    pollConversationList()
-      .finally(
-        () => {
+    function menuAction(e) {
 
-          if (!destroyed) {
+      const action =
+        e.target.dataset.action;
 
-            scheduleListPoll(
-              8000
-            );
+      if (action === "clear-search") {
 
-          }
-
+        if (searchMessagesInput) {
+          searchMessagesInput.value = "";
+          applyMessageSearch();
         }
+
+        if (searchInput) {
+          searchInput.value = "";
+          applyConversationSearch();
+        }
+
+        menu.remove();
+
+      }
+
+      if (action === "refresh") {
+
+        window.location.reload();
+
+      }
+
+    }
+
+
+    menu.addEventListener(
+      "click",
+      menuAction
+    );
+
+    registerCleanup(() => {
+
+      menu.removeEventListener(
+        "click",
+        menuAction
       );
 
+      menu.remove();
+
+    });
+
+  }
+
+
+  if (moreOptionsButton) {
+
+    moreOptionsButton.addEventListener(
+      "click",
+      handleMoreOptions
+    );
+
+    registerCleanup(() => {
+
+      moreOptionsButton.removeEventListener(
+        "click",
+        handleMoreOptions
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     CLOSE MORE OPTIONS WHEN CLICKING OUTSIDE
+  ========================================================= */
+
+  function closeMoreOptions(event) {
+
+    const menu =
+      document.querySelector(
+        ".wa-more-options-menu"
+      );
+
+    if (!menu) {
+      return;
+    }
+
+    if (
+      menu.contains(event.target) ||
+      moreOptionsButton?.contains(
+        event.target
+      )
+    ) {
+      return;
+    }
+
+    menu.remove();
   }
 
 
   document.addEventListener(
-    "visibilitychange",
-    handleVisibilityChange
+    "click",
+    closeMoreOptions
   );
 
+  registerCleanup(() => {
 
-  registerCleanup(
-    () => {
+    document.removeEventListener(
+      "click",
+      closeMoreOptions
+    );
 
-      document.removeEventListener(
-        "visibilitychange",
-        handleVisibilityChange
+  });
+
+
+  /* =========================================================
+     SEND MESSAGE
+  ========================================================= */
+
+  async function sendMessage(event) {
+
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (!messageInput) {
+      return;
+    }
+
+    const message =
+      messageInput.value.trim();
+
+    if (!message) {
+      return;
+    }
+
+    /*
+     * If your existing Rails form has its own
+     * submit handling, allow normal submission.
+     */
+
+    if (!messageForm) {
+      return;
+    }
+
+    const formAction =
+      messageForm.getAttribute(
+        "action"
       );
 
+    if (!formAction) {
+      return;
     }
-  );
+
+    const formData =
+      new FormData(messageForm);
+
+    try {
+
+      if (sendButton) {
+        sendButton.disabled = true;
+      }
+
+      const response =
+        await fetch(
+          formAction,
+          {
+            method:
+              messageForm.method ||
+              "POST",
+
+            body:
+              formData,
+
+            headers: {
+              "X-Requested-With":
+                "XMLHttpRequest",
+
+              "Accept":
+                "text/html, application/json"
+            },
+
+            credentials:
+              "same-origin"
+          }
+        );
 
 
-  /* =======================================================
-     INITIAL SCROLL
-  ======================================================== */
+      if (!response.ok) {
 
-  setTimeout(
-    () => {
-
-      if (!destroyed) {
-
-        scrollToBottom(
-          true
+        throw new Error(
+          `HTTP ${response.status}`
         );
 
       }
 
-    },
-    50
-  );
+
+      /*
+       * Clear message box after successful send.
+       */
+
+      messageInput.value = "";
+
+      messageInput.focus();
 
 
-  /* =======================================================
-     START LIVE ENGINE
-  ======================================================== */
+    } catch (error) {
 
-  if (currentPhone) {
-
-    pollMessages()
-      .finally(
-        () => {
-
-          if (!destroyed) {
-
-            scheduleMessagePoll(
-              2000
-            );
-
-          }
-
-        }
+      console.error(
+        "Message send failed:",
+        error
       );
+
+      /*
+       * If AJAX sending is not supported by
+       * your controller, submit normally.
+       */
+
+      try {
+
+        messageForm.removeEventListener(
+          "submit",
+          sendMessage
+        );
+
+        messageForm.submit();
+
+      } catch (fallbackError) {
+
+        console.error(
+          "Fallback message submission failed:",
+          fallbackError
+        );
+
+      }
+
+    } finally {
+
+      if (sendButton) {
+        sendButton.disabled = false;
+      }
+
+    }
 
   }
 
 
-  pollConversationList()
-    .finally(
-      () => {
+  if (messageForm) {
 
-        if (!destroyed) {
+    messageForm.addEventListener(
+      "submit",
+      sendMessage
+    );
 
-          scheduleListPoll(
-            8000
-          );
+    registerCleanup(() => {
+
+      messageForm.removeEventListener(
+        "submit",
+        sendMessage
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     ENTER TO SEND
+  ========================================================= */
+
+  function handleMessageKeydown(event) {
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      if (messageForm) {
+
+        if (
+          typeof messageForm.requestSubmit ===
+          "function"
+        ) {
+
+          messageForm.requestSubmit();
+
+        } else {
+
+          sendMessage(event);
 
         }
 
       }
+
+    }
+
+  }
+
+
+  if (messageInput) {
+
+    messageInput.addEventListener(
+      "keydown",
+      handleMessageKeydown
     );
 
+    registerCleanup(() => {
 
-  /* =======================================================
+      messageInput.removeEventListener(
+        "keydown",
+        handleMessageKeydown
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     CONVERSATION LIST
+  ========================================================= */
+
+  function renderConversationList(
+    html
+  ) {
+
+    if (!conversationList) {
+      return;
+    }
+
+    const previousScrollTop =
+      conversationList.scrollTop;
+
+    conversationList.innerHTML =
+      html;
+
+    conversationList.scrollTop =
+      previousScrollTop;
+
+    /*
+     * IMPORTANT:
+     * Re-apply search after the list
+     * has been replaced.
+     */
+
+    applyConversationSearch();
+  }
+
+
+  /* =========================================================
+     INITIAL STATE
+  ========================================================= */
+
+  applyTheme();
+
+  applyConversationSearch();
+
+  applyMessageSearch();
+
+
+  /* =========================================================
      DEBUG
-  ======================================================== */
+  ========================================================= */
 
   console.log(
-    "[A ONE WhatsApp] Live engine started",
-    {
-      phone:
-        currentPhone || null,
+    "A One GS WhatsApp UI initialized."
+  );
 
-      latestMessageId:
-        latestMessageId,
+  console.log(
+    "Conversation search:",
+    !!searchInput
+  );
 
-      statusCursor:
-        statusCursor || null
-    }
+  console.log(
+    "Sidebar theme button:",
+    !!sidebarThemeButton
+  );
+
+  console.log(
+    "Header theme button:",
+    !!headerThemeButton
   );
 
 
-})();
+  /* =========================================================
+     PAGE UNLOAD CLEANUP
+  ========================================================= */
 
+  window.addEventListener(
+    "pagehide",
+    cleanup,
+    {
+      once: true
+    }
+  );
+
+  registerCleanup(() => {
+
+    window.removeEventListener(
+      "pagehide",
+      cleanup
+    );
+
+  });
+
+
+})();
 </script>
