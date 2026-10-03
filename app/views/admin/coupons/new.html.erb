@@ -11,7 +11,7 @@
     <h1>Create Coupon</h1>
 
     <p>
-      Create a discount coupon for one course or a specific student.
+      Create a discount coupon for courses, test series, e-books, or all products.
     </p>
   </div>
 
@@ -38,57 +38,266 @@
 
     <div class="coupon-form-card">
 
-      <!-- COURSE -->
+      <!-- =====================================================
+           APPLICABLE TO
+      ====================================================== -->
 
       <div class="coupon-form-section">
 
         <div class="coupon-section-heading">
+
           <div class="coupon-section-icon">
-            <i class="fa-solid fa-book-open"></i>
+            <i class="fa-solid fa-layer-group"></i>
           </div>
 
           <div>
-            <h2>Course</h2>
-            <p>Select the course where this coupon can be used.</p>
+            <h2>Coupon Applicable To</h2>
+            <p>Choose where this coupon can be used.</p>
           </div>
+
         </div>
 
 
         <div class="coupon-field">
 
-          <%= form.label :course_id, "Select Course", class: "coupon-label" %>
+          <%= form.label :applicable_to,
+                        "Product Type",
+                        class: "coupon-label" %>
 
-          <%= form.collection_select(
-                :course_id,
-                @courses,
-                :id,
-                :Course_name,
-                { prompt: "Choose a course" },
-                { class: "coupon-input coupon-select", required: true }
+          <%= form.select(
+                :applicable_to,
+                [
+                  ["All Products", "all"],
+                  ["Courses", "courses"],
+                  ["Test Series", "test_series"],
+                  ["E-Books", "ebooks"]
+                ],
+                {},
+                {
+                  class: "coupon-input coupon-select",
+                  id: "coupon_applicable_to"
+                }
               ) %>
+
+          <div class="coupon-help">
+            <i class="fa-solid fa-circle-info"></i>
+
+            Choose whether this coupon works on all products
+            or only one product category.
+          </div>
 
         </div>
 
       </div>
 
 
-      <!-- COUPON TYPE -->
+      <!-- =====================================================
+           COURSE
+      ====================================================== -->
+
+      <div
+        class="coupon-form-section"
+        id="coupon-course-section"
+        style="<%= @coupon.applicable_to == 'courses' ? '' : 'display:none;' %>"
+      >
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+
+          <div>
+            <h2>Course</h2>
+
+            <p>
+              Select a specific course, or leave it blank to allow
+              the coupon on all courses.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :course_id,
+                        "Select Course",
+                        class: "coupon-label" %>
+
+          <%= form.collection_select(
+                :course_id,
+                @courses,
+                :id,
+                :Course_name,
+                { prompt: "All Courses" },
+                {
+                  class: "coupon-input coupon-select",
+                  id: "coupon_course_id"
+                }
+              ) %>
+
+          <div class="coupon-help">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Select a specific course, or choose
+            "All Courses" for every course.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           TEST SERIES
+      ====================================================== -->
+
+      <div
+        class="coupon-form-section"
+        id="coupon-test-series-section"
+        style="<%= @coupon.applicable_to == 'test_series' ? '' : 'display:none;' %>"
+      >
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-clipboard-question"></i>
+          </div>
+
+          <div>
+            <h2>Test Series</h2>
+
+            <p>
+              Select a specific Test Series, or allow the coupon
+              on all Test Series.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :test_series_id,
+                        "Select Test Series",
+                        class: "coupon-label" %>
+
+          <%= form.collection_select(
+                :test_series_id,
+                @test_series,
+                :id,
+                :title,
+                { prompt: "All Test Series" },
+                {
+                  class: "coupon-input coupon-select",
+                  id: "coupon_test_series_id"
+                }
+              ) %>
+
+          <div class="coupon-help">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Select a specific Test Series, or choose
+            "All Test Series" for every Test Series.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           E-BOOK
+      ====================================================== -->
+
+      <div
+        class="coupon-form-section"
+        id="coupon-ebook-section"
+        style="<%= @coupon.applicable_to == 'ebooks' ? '' : 'display:none;' %>"
+      >
+
+        <div class="coupon-section-heading">
+
+          <div class="coupon-section-icon">
+            <i class="fa-solid fa-book"></i>
+          </div>
+
+          <div>
+            <h2>E-Book</h2>
+
+            <p>
+              Select a specific E-Book, or allow the coupon
+              on all E-Books.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="coupon-field">
+
+          <%= form.label :ebook_id,
+                        "Select E-Book",
+                        class: "coupon-label" %>
+
+          <%= form.collection_select(
+                :ebook_id,
+                @ebooks,
+                :id,
+                :title,
+                { prompt: "All E-Books" },
+                {
+                  class: "coupon-input coupon-select",
+                  id: "coupon_ebook_id"
+                }
+              ) %>
+
+          <div class="coupon-help">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Select a specific E-Book, or choose
+            "All E-Books" for every E-Book.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           COUPON TYPE
+      ====================================================== -->
 
       <div class="coupon-form-section">
 
         <div class="coupon-section-heading">
+
           <div class="coupon-section-icon">
             <i class="fa-solid fa-users"></i>
           </div>
 
           <div>
             <h2>Who Can Use This Coupon?</h2>
-            <p>Choose whether this coupon is public or assigned to one student.</p>
+
+            <p>
+              Choose whether this coupon is public or assigned
+              to one student.
+            </p>
           </div>
+
         </div>
 
 
         <div class="coupon-type-options">
+
+          <!-- EVERYONE -->
 
           <label class="coupon-type-option">
 
@@ -105,17 +314,21 @@
               </div>
 
               <div>
+
                 <strong>Everyone</strong>
 
                 <span>
                   Any student can use this coupon.
                 </span>
+
               </div>
 
             </div>
 
           </label>
 
+
+          <!-- PERSONAL -->
 
           <label class="coupon-type-option">
 
@@ -132,11 +345,13 @@
               </div>
 
               <div>
+
                 <strong>Specific Student</strong>
 
                 <span>
                   Only one selected student can use this coupon.
                 </span>
+
               </div>
 
             </div>
@@ -148,7 +363,9 @@
       </div>
 
 
-      <!-- STUDENT -->
+      <!-- =====================================================
+           STUDENT
+      ====================================================== -->
 
       <div
         class="coupon-form-section"
@@ -163,8 +380,14 @@
           </div>
 
           <div>
+
             <h2>Specific Student</h2>
-            <p>Select the student who will receive this personal coupon.</p>
+
+            <p>
+              Select the student who will receive this
+              personal coupon.
+            </p>
+
           </div>
 
         </div>
@@ -172,7 +395,9 @@
 
         <div class="coupon-field">
 
-          <%= form.label :student_id, "Select Student", class: "coupon-label" %>
+          <%= form.label :student_id,
+                        "Select Student",
+                        class: "coupon-label" %>
 
           <%= form.collection_select(
                 :student_id,
@@ -187,8 +412,12 @@
               ) %>
 
           <div class="coupon-help">
+
             <i class="fa-solid fa-circle-info"></i>
-            This coupon will only work for the selected student's account.
+
+            This coupon will only work for the selected
+            student's account.
+
           </div>
 
         </div>
@@ -196,7 +425,9 @@
       </div>
 
 
-      <!-- CODE -->
+      <!-- =====================================================
+           CODE
+      ====================================================== -->
 
       <div class="coupon-form-section">
 
@@ -207,8 +438,13 @@
           </div>
 
           <div>
+
             <h2>Coupon Code</h2>
-            <p>Create the code students will enter during checkout.</p>
+
+            <p>
+              Create the code students will enter during checkout.
+            </p>
+
           </div>
 
         </div>
@@ -216,7 +452,9 @@
 
         <div class="coupon-field">
 
-          <%= form.label :code, "Coupon Code", class: "coupon-label" %>
+          <%= form.label :code,
+                        "Coupon Code",
+                        class: "coupon-label" %>
 
           <%= form.text_field(
                 :code,
@@ -227,8 +465,11 @@
               ) %>
 
           <div class="coupon-help">
+
             <i class="fa-solid fa-wand-magic-sparkles"></i>
+
             Use a short and easy-to-remember code.
+
           </div>
 
         </div>
@@ -236,7 +477,9 @@
       </div>
 
 
-      <!-- DISCOUNT -->
+      <!-- =====================================================
+           DISCOUNT
+      ====================================================== -->
 
       <div class="coupon-form-section">
 
@@ -247,8 +490,13 @@
           </div>
 
           <div>
+
             <h2>Discount</h2>
-            <p>Choose percentage or fixed amount discount.</p>
+
+            <p>
+              Choose percentage or fixed amount discount.
+            </p>
+
           </div>
 
         </div>
@@ -269,8 +517,10 @@
                     ["Fixed Amount (₹)", "fixed"]
                   ],
                   {},
-                  class: "coupon-input coupon-select",
-                  id: "coupon_discount_type"
+                  {
+                    class: "coupon-input coupon-select",
+                    id: "coupon_discount_type"
+                  }
                 ) %>
 
           </div>
@@ -288,7 +538,8 @@
                   placeholder: "Example: 20",
                   min: 0.01,
                   step: 0.01,
-                  required: true
+                  required: true,
+                  id: "coupon_discount_value"
                 ) %>
 
           </div>
@@ -303,11 +554,13 @@
           </div>
 
           <div>
-            <strong>Example</strong>
+
+            <strong>Discount Format</strong>
 
             <span id="coupon-discount-preview-text">
               Enter a discount value to see the discount format.
             </span>
+
           </div>
 
         </div>
@@ -315,7 +568,9 @@
       </div>
 
 
-      <!-- LIMIT & EXPIRY -->
+      <!-- =====================================================
+           LIMIT & EXPIRY
+      ====================================================== -->
 
       <div class="coupon-form-section">
 
@@ -326,8 +581,14 @@
           </div>
 
           <div>
+
             <h2>Usage Settings</h2>
-            <p>Control how many times the coupon can be used and when it expires.</p>
+
+            <p>
+              Control how many times the coupon can be used
+              and when it expires.
+            </p>
+
           </div>
 
         </div>
@@ -350,8 +611,11 @@
                 ) %>
 
             <div class="coupon-help">
+
               <i class="fa-solid fa-infinity"></i>
+
               Leave blank for unlimited usage.
+
             </div>
 
           </div>
@@ -369,8 +633,11 @@
                 ) %>
 
             <div class="coupon-help">
+
               <i class="fa-solid fa-calendar"></i>
+
               Leave blank if the coupon never expires.
+
             </div>
 
           </div>
@@ -380,7 +647,9 @@
       </div>
 
 
-      <!-- STATUS -->
+      <!-- =====================================================
+           STATUS
+      ====================================================== -->
 
       <div class="coupon-form-section">
 
@@ -393,11 +662,13 @@
             </div>
 
             <div>
+
               <strong>Coupon Status</strong>
 
               <span>
                 Only active coupons can be used by students.
               </span>
+
             </div>
 
           </div>
@@ -416,7 +687,9 @@
       </div>
 
 
-      <!-- FOOTER -->
+      <!-- =====================================================
+           FOOTER
+      ====================================================== -->
 
       <div class="coupon-form-footer">
 
@@ -429,8 +702,10 @@
         <% end %>
 
 
-        <%= form.submit "Create Coupon",
-                        class: "coupon-save-button" %>
+        <%= form.submit(
+              "Create Coupon",
+              class: "coupon-save-button"
+            ) %>
 
       </div>
 
@@ -441,11 +716,282 @@
 </div>
 
 
+<script nonce="<%= content_security_policy_nonce %>">
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =========================================================
+     ELEMENTS
+  ========================================================= */
+
+  const applicableTo =
+    document.getElementById("coupon_applicable_to");
+
+  const courseSection =
+    document.getElementById("coupon-course-section");
+
+  const testSeriesSection =
+    document.getElementById("coupon-test-series-section");
+
+  const ebookSection =
+    document.getElementById("coupon-ebook-section");
+
+  const courseSelect =
+    document.getElementById("coupon_course_id");
+
+  const testSeriesSelect =
+    document.getElementById("coupon_test_series_id");
+
+  const ebookSelect =
+    document.getElementById("coupon_ebook_id");
+
+
+  /* =========================================================
+     PRODUCT TARGET TOGGLE
+  ========================================================= */
+
+  function toggleTargetSections() {
+
+    if (!applicableTo) return;
+
+    const value = applicableTo.value;
+
+    const showCourses =
+      value === "courses";
+
+    const showTestSeries =
+      value === "test_series";
+
+    const showEbooks =
+      value === "ebooks";
+
+
+    /* Course */
+
+    if (courseSection) {
+      courseSection.style.display =
+        showCourses ? "block" : "none";
+    }
+
+    if (courseSelect) {
+
+      courseSelect.disabled =
+        !showCourses;
+
+      if (!showCourses) {
+        courseSelect.value = "";
+      }
+
+    }
+
+
+    /* Test Series */
+
+    if (testSeriesSection) {
+      testSeriesSection.style.display =
+        showTestSeries ? "block" : "none";
+    }
+
+    if (testSeriesSelect) {
+
+      testSeriesSelect.disabled =
+        !showTestSeries;
+
+      if (!showTestSeries) {
+        testSeriesSelect.value = "";
+      }
+
+    }
+
+
+    /* E-Book */
+
+    if (ebookSection) {
+      ebookSection.style.display =
+        showEbooks ? "block" : "none";
+    }
+
+    if (ebookSelect) {
+
+      ebookSelect.disabled =
+        !showEbooks;
+
+      if (!showEbooks) {
+        ebookSelect.value = "";
+      }
+
+    }
+
+  }
+
+
+  /* =========================================================
+     PERSONAL COUPON TOGGLE
+  ========================================================= */
+
+  const everyoneRadio =
+    document.getElementById("coupon_type_everyone");
+
+  const personalRadio =
+    document.getElementById("coupon_type_personal");
+
+  const studentSection =
+    document.getElementById("personal-student-section");
+
+  const studentSelect =
+    document.getElementById("coupon_student_id");
+
+
+  function toggleStudentSection() {
+
+    if (!studentSection) return;
+
+    const isPersonal =
+      personalRadio &&
+      personalRadio.checked;
+
+
+    studentSection.style.display =
+      isPersonal ? "block" : "none";
+
+
+    if (studentSelect) {
+
+      studentSelect.disabled =
+        !isPersonal;
+
+      if (!isPersonal) {
+        studentSelect.value = "";
+      }
+
+    }
+
+  }
+
+
+  /* =========================================================
+     DISCOUNT PREVIEW
+  ========================================================= */
+
+  const discountType =
+    document.getElementById("coupon_discount_type");
+
+  const discountValue =
+    document.getElementById("coupon_discount_value");
+
+  const discountPreview =
+    document.getElementById(
+      "coupon-discount-preview-text"
+    );
+
+
+  function updateDiscountPreview() {
+
+    if (!discountPreview) return;
+
+    const value =
+      discountValue
+        ? discountValue.value
+        : "";
+
+
+    if (!value) {
+
+      discountPreview.textContent =
+        "Enter a discount value to see the discount format.";
+
+      return;
+
+    }
+
+
+    if (
+      discountType &&
+      discountType.value === "percentage"
+    ) {
+
+      discountPreview.textContent =
+        value + "% discount will be applied.";
+
+    } else {
+
+      discountPreview.textContent =
+        "₹" + value + " discount will be applied.";
+
+    }
+
+  }
+
+
+  /* =========================================================
+     EVENTS
+  ========================================================= */
+
+  if (applicableTo) {
+
+    applicableTo.addEventListener(
+      "change",
+      toggleTargetSections
+    );
+
+  }
+
+
+  if (everyoneRadio) {
+
+    everyoneRadio.addEventListener(
+      "change",
+      toggleStudentSection
+    );
+
+  }
+
+
+  if (personalRadio) {
+
+    personalRadio.addEventListener(
+      "change",
+      toggleStudentSection
+    );
+
+  }
+
+
+  if (discountType) {
+
+    discountType.addEventListener(
+      "change",
+      updateDiscountPreview
+    );
+
+  }
+
+
+  if (discountValue) {
+
+    discountValue.addEventListener(
+      "input",
+      updateDiscountPreview
+    );
+
+  }
+
+
+  /* =========================================================
+     INITIAL STATE
+  ========================================================= */
+
+  toggleTargetSections();
+  toggleStudentSection();
+  updateDiscountPreview();
+
+});
+</script>
+
+
 <style nonce="<%= content_security_policy_nonce %>">
 
 /* =========================================================
    COUPON CREATE PAGE
-   Local white / purple admin override
 ========================================================= */
 
 .coupon-new-page {
@@ -454,7 +1000,6 @@
   margin: 0;
   padding: 0 24px 50px 0;
 
-  /* Override global admin background */
   background: transparent !important;
   color: #24113f;
 }
@@ -476,13 +1021,16 @@
   gap: 8px;
 
   padding: 7px 12px;
+
   border: 1px solid rgba(255,255,255,.18);
   border-radius: 999px;
 
   background: rgba(255,255,255,.12);
+
   backdrop-filter: blur(12px);
 
   color: #e9d5ff;
+
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 1.6px;
@@ -496,8 +1044,10 @@
   margin: 12px 0 5px;
 
   color: #ffffff;
+
   font-size: clamp(30px, 3vw, 42px);
   line-height: 1.05;
+
   font-weight: 950;
   letter-spacing: -1.4px;
 }
@@ -507,13 +1057,14 @@
   margin: 0;
 
   color: rgba(255,255,255,.72);
+
   font-size: 14px;
   line-height: 1.6;
 }
 
 
 /* =========================================================
-   ERROR BOX
+   ERROR
 ========================================================= */
 
 .coupon-error-box {
@@ -524,6 +1075,7 @@
   border-radius: 16px;
 
   background: rgba(127,29,29,.35);
+
   backdrop-filter: blur(15px);
 
   color: #fff;
@@ -550,6 +1102,7 @@
   padding: 0;
 
   color: rgba(255,255,255,.82);
+
   font-size: 12px;
   line-height: 1.7;
 }
@@ -584,10 +1137,9 @@
   isolation: isolate;
 }
 
-/* decorative glow */
-
 .coupon-form-card::before {
   content: "";
+
   position: absolute;
 
   top: -130px;
@@ -643,6 +1195,7 @@
 .coupon-section-icon {
   width: 46px;
   height: 46px;
+
   flex: 0 0 46px;
 
   display: grid;
@@ -673,8 +1226,10 @@
   margin: 0;
 
   color: #32104f;
+
   font-size: 17px;
   line-height: 1.2;
+
   font-weight: 900;
   letter-spacing: -.2px;
 }
@@ -683,6 +1238,7 @@
   margin: 4px 0 0;
 
   color: #8b8493;
+
   font-size: 12px;
   line-height: 1.5;
 }
@@ -702,6 +1258,7 @@
   margin-bottom: 8px;
 
   color: #492467;
+
   font-size: 12px;
   font-weight: 850;
   letter-spacing: .1px;
@@ -750,6 +1307,13 @@
   transform: translateY(-1px);
 }
 
+.coupon-input:disabled {
+  background: #f5f2f8;
+  color: #aaa2b2;
+  cursor: not-allowed;
+  opacity: .75;
+}
+
 .coupon-select {
   cursor: pointer;
 }
@@ -769,7 +1333,7 @@
 
 
 /* =========================================================
-   HELP TEXT
+   HELP
 ========================================================= */
 
 .coupon-help {
@@ -780,6 +1344,7 @@
   margin-top: 8px;
 
   color: #8b8493;
+
   font-size: 11px;
   line-height: 1.5;
 }
@@ -899,12 +1464,14 @@
 
 .coupon-type-option input:checked + .coupon-type-content::after {
   opacity: 1;
+
   background: #7c3aed;
 }
 
 .coupon-type-icon {
   width: 45px;
   height: 45px;
+
   flex: 0 0 45px;
 
   display: grid;
@@ -929,6 +1496,7 @@
   display: block;
 
   color: #35105f;
+
   font-size: 14px;
   font-weight: 900;
 }
@@ -939,6 +1507,7 @@
   margin-top: 4px;
 
   color: #89818f;
+
   font-size: 11px;
   line-height: 1.5;
 }
@@ -984,6 +1553,7 @@
 .coupon-preview-icon {
   width: 38px;
   height: 38px;
+
   flex: 0 0 38px;
 
   display: grid;
@@ -999,6 +1569,7 @@
   display: block;
 
   color: #432065;
+
   font-size: 12px;
   font-weight: 850;
 }
@@ -1009,6 +1580,7 @@
   margin-top: 3px;
 
   color: #81788b;
+
   font-size: 11px;
 }
 
@@ -1034,6 +1606,7 @@
 .coupon-status-icon {
   width: 43px;
   height: 43px;
+
   flex: 0 0 43px;
 
   display: grid;
@@ -1050,6 +1623,7 @@
   display: block;
 
   color: #35105f;
+
   font-size: 13px;
   font-weight: 900;
 }
@@ -1060,6 +1634,7 @@
   margin-top: 3px;
 
   color: #8b8493;
+
   font-size: 11px;
 }
 
@@ -1220,7 +1795,6 @@
 
 .coupon-cancel-button:hover {
   background: #faf7ff;
-
   color: #5b21b6;
 }
 
@@ -1231,7 +1805,7 @@
 
 
 /* =========================================================
-   DESKTOP WIDTH
+   DESKTOP
 ========================================================= */
 
 @media (min-width: 1200px) {

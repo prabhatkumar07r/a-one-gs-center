@@ -2,35 +2,16 @@
 <% content_for :hide_footer, true %>
 
 <style nonce="<%= content_security_policy_nonce %>">
-/* =========================================================
-   TEST SERIES PAYMENT PAGE
-========================================================= */
-
 .ts-payment-page {
   min-height: 100vh;
-
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(124, 58, 237, .12),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(37, 99, 235, .10),
-      transparent 35%
-    ),
+    radial-gradient(circle at top right, rgba(124, 58, 237, .12), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(37, 99, 235, .10), transparent 35%),
     #f8f9ff;
-
   color: #1f2937;
-
   padding-bottom: 60px;
 }
 
-
-/* =========================================================
-   TOP BAR
-========================================================= */
 .ts-payment-topbar {
   width: 100%;
   background: #ffffff;
@@ -41,9 +22,7 @@
   max-width: 1200px;
   margin: 0 auto;
   min-height: 82px;
-
   padding: 0 24px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,7 +33,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-
   color: #1e1b4b;
   font-size: 20px;
   font-weight: 800;
@@ -63,30 +41,23 @@
 .ts-payment-logo {
   width: 48px;
   height: 48px;
-
   object-fit: contain;
   display: block;
-
   border-radius: 10px;
 }
 
 .ts-payment-back {
   display: inline-flex;
   align-items: center;
-
   padding: 10px 16px;
-
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-
   background: #ffffff;
   color: #475569;
-
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
-
-  transition: all 0.2s ease;
+  transition: all .2s ease;
 }
 
 .ts-payment-back:hover {
@@ -94,86 +65,45 @@
   color: #6d28d9;
   border-color: #c4b5fd;
 }
-/* =========================================================
-   CONTAINER
-========================================================= */
 
 .ts-payment-container {
   max-width: 1100px;
-
   margin: auto;
-
   padding: 50px 25px;
 }
 
-
-/* =========================================================
-   TITLE
-========================================================= */
-
 .ts-payment-heading {
   text-align: center;
-
   margin-bottom: 35px;
 }
 
 .ts-payment-heading h1 {
   color: #1e1b4b;
-
   font-size: 34px;
-
   font-weight: 900;
-
   margin-bottom: 8px;
 }
 
 .ts-payment-heading p {
   color: #64748b;
-
   margin: 0;
-
   font-size: 15px;
 }
 
-
-/* =========================================================
-   GRID
-========================================================= */
-
 .ts-payment-grid {
   display: grid;
-
-  grid-template-columns:
-    minmax(0, 1.5fr)
-    minmax(320px, .8fr);
-
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, .8fr);
   gap: 30px;
-
   align-items: start;
 }
 
-
-/* =========================================================
-   MAIN CARD
-========================================================= */
-
 .ts-payment-card {
   background: #ffffff;
-
   border: 1px solid #e5e7eb;
-
   border-radius: 22px;
-
   padding: 32px;
-
-  box-shadow:
-    0 12px 35px rgba(79, 70, 229, .08);
+  box-shadow: 0 12px 35px rgba(79, 70, 229, .08);
 }
-
-
-/* =========================================================
-   SERIES INFO
-========================================================= */
 
 .ts-series-info {
   display: flex;
@@ -188,20 +118,12 @@
   width: 65px;
   height: 65px;
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 16px;
   overflow: hidden;
-
-  background: linear-gradient(
-    135deg,
-    #ede9fe,
-    #dbeafe
-  );
-
+  background: linear-gradient(135deg, #ede9fe, #dbeafe);
   color: #6d28d9;
   font-size: 28px;
 }
@@ -226,73 +148,41 @@
   font-size: 14px;
 }
 
-
-/* =========================================================
-   FEATURES
-========================================================= */
-
 .ts-payment-features {
   display: grid;
-
   grid-template-columns: repeat(2, 1fr);
-
   gap: 14px;
-
   margin-bottom: 25px;
 }
 
 .ts-payment-feature {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   padding: 14px;
-
   border-radius: 12px;
-
   background: #f8fafc;
-
   border: 1px solid #e5e7eb;
-
   color: #475569;
-
   font-size: 14px;
-
   font-weight: 600;
 }
 
 .ts-payment-feature i {
   color: #16a34a;
-
   font-size: 17px;
 }
 
-
-/* =========================================================
-   SECURITY
-========================================================= */
-
 .ts-payment-security {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   padding: 15px;
-
   border-radius: 12px;
-
   background: #f0fdf4;
-
   border: 1px solid #bbf7d0;
-
   color: #166534;
-
   font-size: 13px;
-
   line-height: 1.5;
 }
 
@@ -300,178 +190,221 @@
   font-size: 19px;
 }
 
-
-/* =========================================================
-   SUMMARY CARD
-========================================================= */
-
 .ts-payment-summary {
   background: #ffffff;
-
   border: 1px solid #ddd6fe;
-
   border-radius: 22px;
-
   padding: 28px;
-
-  box-shadow:
-    0 12px 35px rgba(79, 70, 229, .10);
-
+  box-shadow: 0 12px 35px rgba(79, 70, 229, .10);
   position: sticky;
-
   top: 25px;
 }
 
 .ts-summary-title {
   color: #312e81;
-
   font-size: 18px;
-
   font-weight: 850;
-
   margin-bottom: 22px;
 }
 
-
-/* =========================================================
-   PRICE
-========================================================= */
-
 .ts-price-row {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
+  gap: 15px;
   margin-bottom: 15px;
-
   color: #64748b;
-
   font-size: 14px;
 }
 
 .ts-price-row strong {
   color: #334155;
-
   font-size: 15px;
+}
+
+.ts-original-price {
+  text-decoration: line-through;
+  color: #94a3b8 !important;
+}
+
+.ts-discount-price {
+  color: #16a34a !important;
 }
 
 .ts-total-row {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
+  gap: 15px;
   padding-top: 20px;
-
   margin-top: 20px;
-
   border-top: 1px solid #e5e7eb;
 }
 
 .ts-total-label {
   color: #1e293b;
-
   font-size: 16px;
-
   font-weight: 800;
 }
 
 .ts-total-price {
   color: #312e81;
-
   font-size: 30px;
-
   font-weight: 900;
 }
 
+.ts-coupon-box {
+  margin: 25px 0 10px;
+  padding: 18px;
+  border: 1px solid #ddd6fe;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #faf5ff, #f8fafc);
+}
 
-/* =========================================================
-   PAY BUTTON
-========================================================= */
+.ts-coupon-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #312e81;
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.ts-coupon-title i {
+  color: #7c3aed;
+}
+
+.ts-coupon-form {
+  display: flex;
+  gap: 8px;
+}
+
+.ts-coupon-input {
+  flex: 1;
+  min-width: 0;
+  height: 45px;
+  padding: 0 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  outline: none;
+  text-transform: uppercase;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.ts-coupon-input:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, .12);
+}
+
+.ts-coupon-input::placeholder {
+  text-transform: none;
+  color: #94a3b8;
+}
+
+.ts-coupon-btn {
+  height: 45px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 10px;
+  background: #6d28d9;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s ease;
+}
+
+.ts-coupon-btn:hover {
+  background: #5b21b6;
+  transform: translateY(-1px);
+}
+
+.ts-coupon-help {
+  margin-top: 9px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ts-coupon-applied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 13px;
+  margin-top: 12px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ts-coupon-applied-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ts-coupon-remove {
+  border: none;
+  background: transparent;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 3px 0;
+}
+
+.ts-coupon-remove:hover {
+  text-decoration: underline;
+}
 
 .ts-pay-btn {
   width: 100%;
-
   border: none;
-
   border-radius: 12px;
-
   padding: 15px 20px;
-
   margin-top: 25px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 10px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #6d28d9,
-      #ec4899
-    );
-
+  background: linear-gradient(135deg, #2563eb, #6d28d9, #ec4899);
   color: #ffffff;
-
   font-size: 16px;
-
   font-weight: 800;
-
   cursor: pointer;
-
-  box-shadow:
-    0 8px 20px rgba(109, 40, 217, .25);
-
+  box-shadow: 0 8px 20px rgba(109, 40, 217, .25);
   transition: .2s ease;
 }
 
 .ts-pay-btn:hover {
   transform: translateY(-2px);
-
-  box-shadow:
-    0 12px 25px rgba(109, 40, 217, .35);
+  box-shadow: 0 12px 25px rgba(109, 40, 217, .35);
 }
 
 .ts-pay-btn:disabled {
   opacity: .7;
-
   cursor: not-allowed;
-
   transform: none;
 }
 
-
-/* =========================================================
-   RAZORPAY NOTE
-========================================================= */
-
 .ts-razorpay-note {
   text-align: center;
-
   color: #94a3b8;
-
   font-size: 12px;
-
   margin-top: 14px;
-
   line-height: 1.5;
 }
 
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media (max-width: 850px) {
-
   .ts-payment-grid {
     grid-template-columns: 1fr;
   }
@@ -479,22 +412,15 @@
   .ts-payment-summary {
     position: static;
   }
-
 }
 
 @media (max-width: 600px) {
-
   .ts-payment-topbar {
     padding: 12px 15px;
   }
 
   .ts-payment-topbar-inner {
     min-height: 56px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
     flex-direction: row;
     gap: 10px;
   }
@@ -508,7 +434,6 @@
   .ts-payment-logo {
     width: 40px;
     height: 40px;
-    flex-shrink: 0;
   }
 
   .ts-payment-brand span {
@@ -544,74 +469,60 @@
   .ts-series-info h2 {
     font-size: 20px;
   }
+
+  .ts-coupon-form {
+    flex-direction: column;
+  }
+
+  .ts-coupon-btn {
+    width: 100%;
+  }
 }
 </style>
 
-
 <div class="ts-payment-page">
 
-  <!-- =====================================================
-       TOP BAR
-  ====================================================== -->
-<div class="ts-payment-topbar">
-  <div class="ts-payment-topbar-inner">
+  <div class="ts-payment-topbar">
+    <div class="ts-payment-topbar-inner">
 
-    <div class="ts-payment-brand">
-      <%= image_tag "logo.jpeg",
-          alt: "A One GS Center",
-          class: "ts-payment-logo" %>
+      <div class="ts-payment-brand">
+        <%= image_tag "logo.jpeg",
+            alt: "A One GS Center",
+            class: "ts-payment-logo" %>
 
-      <span>Test Series Payment</span>
+        <span>Test Series Payment</span>
+      </div>
+
+      <%= link_to "← Back",
+                  test_series_path(@test_series),
+                  class: "ts-payment-back" %>
+
     </div>
-
-    <%= link_to "← Back",
-                test_series_path(@test_series),
-                class: "ts-payment-back" %>
-
   </div>
-</div>
-
-  <!-- =====================================================
-       CONTENT
-  ====================================================== -->
 
   <div class="ts-payment-container">
 
-
     <div class="ts-payment-heading">
-
-      <h1>
-        Complete Your Purchase
-      </h1>
+      <h1>Complete Your Purchase</h1>
 
       <p>
         Secure payment to unlock this Test Series.
       </p>
-
     </div>
-
 
     <div class="ts-payment-grid">
 
-
-      <!-- =================================================
-           LEFT INFORMATION
-      ================================================== -->
-
       <div class="ts-payment-card">
-
 
         <div class="ts-series-info">
 
-         <div class="ts-series-icon">
-          <%= image_tag "logo.jpeg",
-            alt: "A One GS Center",
-           class: "ts-series-logo" %>
+          <div class="ts-series-icon">
+            <%= image_tag "logo.jpeg",
+                alt: "A One GS Center",
+                class: "ts-series-logo" %>
           </div>
 
-
           <div>
-
             <h2>
               <%= @test_series.title %>
             </h2>
@@ -619,59 +530,33 @@
             <p>
               One-time purchase • Instant access
             </p>
-
           </div>
 
         </div>
-
 
         <div class="ts-payment-features">
 
           <div class="ts-payment-feature">
-
             <i class="fas fa-check-circle"></i>
-
-            <span>
-              Complete Test Series Access
-            </span>
-
+            <span>Complete Test Series Access</span>
           </div>
 
-
           <div class="ts-payment-feature">
-
             <i class="fas fa-check-circle"></i>
-
-            <span>
-              Unlimited Test Attempts
-            </span>
-
+            <span>Unlimited Test Attempts</span>
           </div>
 
-
           <div class="ts-payment-feature">
-
             <i class="fas fa-check-circle"></i>
-
-            <span>
-              Performance Tracking
-            </span>
-
+            <span>Performance Tracking</span>
           </div>
 
-
           <div class="ts-payment-feature">
-
             <i class="fas fa-check-circle"></i>
-
-            <span>
-              Instant Activation
-            </span>
-
+            <span>Instant Activation</span>
           </div>
 
         </div>
-
 
         <div class="ts-payment-security">
 
@@ -687,47 +572,123 @@
 
       </div>
 
-
-      <!-- =================================================
-           RIGHT SUMMARY
-      ================================================== -->
-
       <aside class="ts-payment-summary">
-
 
         <div class="ts-summary-title">
           Order Summary
         </div>
 
+        <% original_amount = if @purchase.respond_to?(:original_price)
+                               @purchase.original_price.to_d
+                             else
+                               @purchase.amount.to_d
+                             end %>
+
+        <% discount_amount = if @purchase.respond_to?(:coupon_discount)
+                               @purchase.coupon_discount.to_d
+                             else
+                               0.to_d
+                             end %>
+
+        <% payable_amount = if @purchase.respond_to?(:payable_amount)
+                              @purchase.payable_amount.to_d
+                            else
+                              @purchase.amount.to_d
+                            end %>
 
         <div class="ts-price-row">
-
-          <span>
-            Test Series
-          </span>
+          <span>Test Series</span>
 
           <strong>
             ₹<%= number_with_precision(
-              @purchase.amount,
+              original_amount,
               precision: 2
             ) %>
           </strong>
-
         </div>
 
+        <% if discount_amount > 0 %>
+          <div class="ts-price-row">
+            <span>Coupon Discount</span>
+
+            <strong class="ts-discount-price">
+              -₹<%= number_with_precision(
+                discount_amount,
+                precision: 2
+              ) %>
+            </strong>
+          </div>
+        <% end %>
+
+        <% if @purchase.coupon.present? %>
+          <div class="ts-coupon-applied">
+            <span class="ts-coupon-applied-code">
+              <i class="fas fa-circle-check"></i>
+              <%= @purchase.coupon.code %>
+            </span>
+
+            <span>
+              Applied
+            </span>
+          </div>
+        <% end %>
+
+        <div class="ts-coupon-box">
+
+          <div class="ts-coupon-title">
+            <i class="fas fa-ticket"></i>
+            <span>Have a coupon?</span>
+          </div>
+
+          <%= form_with url: apply_test_series_coupon_path(@purchase),
+                        method: :post,
+                        local: true,
+                        data: { turbo: false } do |form| %>
+
+            <div class="ts-coupon-form">
+
+              <%= form.text_field :coupon_code,
+                                  value: @purchase.coupon&.code,
+                                  placeholder: "Enter coupon code",
+                                  autocomplete: "off",
+                                  class: "ts-coupon-input",
+                                  maxlength: 50 %>
+
+              <%= form.submit(
+                    @purchase.coupon.present? ? "Update" : "Apply",
+                    class: "ts-coupon-btn"
+                  ) %>
+
+            </div>
+
+          <% end %>
+
+          <div class="ts-coupon-help">
+            Enter a valid coupon code to receive your discount.
+          </div>
+
+          <% if @purchase.coupon.present? %>
+            <%= form_with url: remove_test_series_coupon_path(@purchase),
+                          method: :delete,
+                          local: true,
+                          data: { turbo: false } do |form| %>
+
+              <button
+                type="submit"
+                class="ts-coupon-remove">
+                Remove coupon
+              </button>
+
+            <% end %>
+          <% end %>
+
+        </div>
 
         <div class="ts-price-row">
+          <span>Payment Type</span>
 
-          <span>
-            Payment Type
-          </span>
-
-          <strong>
-            One Time
-          </strong>
-
+          <strong>One Time</strong>
         </div>
-
 
         <div class="ts-total-row">
 
@@ -736,20 +697,13 @@
           </span>
 
           <span class="ts-total-price">
-
             ₹<%= number_with_precision(
-              @purchase.amount,
+              payable_amount,
               precision: 2
             ) %>
-
           </span>
 
         </div>
-
-
-        <!-- =================================================
-             RAZORPAY BUTTON
-        ================================================== -->
 
         <button
           type="button"
@@ -759,12 +713,11 @@
           <i class="fas fa-lock"></i>
 
           Pay ₹<%= number_with_precision(
-            @purchase.amount,
+            payable_amount,
             precision: 2
           ) %>
 
         </button>
-
 
         <div class="ts-razorpay-note">
 
@@ -782,20 +735,10 @@
 
 </div>
 
-
-<!-- =========================================================
-     RAZORPAY CHECKOUT
-========================================================= -->
-
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script nonce="<%= content_security_policy_nonce %>">
 (function () {
-
-  /* =========================================================
-     TEST SERIES RAZORPAY PAYMENT
-     Turbo-safe initialization
-  ========================================================= */
 
   function initializeTestSeriesPayment() {
 
@@ -804,21 +747,14 @@
 
     if (!payButton) return;
 
-    /* Prevent duplicate event listeners */
     if (payButton.dataset.initialized === "true") {
       return;
     }
 
     payButton.dataset.initialized = "true";
 
-
-    /* =======================================================
-       PAYMENT BUTTON
-    ======================================================= */
-
     payButton.addEventListener("click", function () {
 
-      /* Prevent double click */
       if (payButton.disabled) {
         return;
       }
@@ -828,17 +764,12 @@
       payButton.innerHTML =
         '<i class="fas fa-spinner fa-spin"></i> Opening Payment...';
 
-
-      /* =====================================================
-         RAZORPAY OPTIONS
-      ===================================================== */
-
       const options = {
 
         key: "<%= ENV["RAZORPAY_KEY_ID"] %>",
 
         amount:
-          <%= (@purchase.amount.to_d * 100).to_i %>,
+          <%= (@purchase.amount.to_d * 100).round.to_i %>,
 
         currency: "INR",
 
@@ -850,11 +781,6 @@
         order_id:
           "<%= @purchase.razorpay_order_id %>",
 
-
-        /* ===================================================
-           SUCCESS
-        =================================================== */
-
         handler: function (response) {
 
           const form =
@@ -865,12 +791,10 @@
           form.action =
             "<%= verify_test_series_payment_path(@purchase) %>";
 
-
           const csrfToken =
             document.querySelector(
               'meta[name="csrf-token"]'
             );
-
 
           function addHiddenInput(name, value) {
 
@@ -878,83 +802,50 @@
               document.createElement("input");
 
             input.type = "hidden";
-
             input.name = name;
-
             input.value = value;
 
             form.appendChild(input);
           }
 
-
-          /* CSRF */
-
           if (csrfToken) {
-
             addHiddenInput(
               "authenticity_token",
               csrfToken.content
             );
-
           }
-
-
-          /* Razorpay response */
 
           addHiddenInput(
             "razorpay_payment_id",
             response.razorpay_payment_id
           );
 
-
           addHiddenInput(
             "razorpay_order_id",
             response.razorpay_order_id
           );
-
 
           addHiddenInput(
             "razorpay_signature",
             response.razorpay_signature
           );
 
-
           document.body.appendChild(form);
 
           form.submit();
-
         },
 
-
-        /* ===================================================
-           PREFILL
-        =================================================== */
-
         prefill: {
-
           name:
             "<%= j current_user.respond_to?(:name) ? current_user.name.to_s : "" %>",
 
           email:
             "<%= j current_user.email.to_s %>"
-
         },
-
-
-        /* ===================================================
-           RAZORPAY THEME
-        =================================================== */
 
         theme: {
-
           color: "#6d28d9"
-
         },
-
-
-        /* ===================================================
-           MODAL CLOSED
-        =================================================== */
 
         modal: {
 
@@ -963,18 +854,11 @@
             payButton.disabled = false;
 
             payButton.innerHTML =
-              '<i class="fas fa-lock"></i> Pay ₹<%= number_with_precision(@purchase.amount, precision: 2) %>';
-
+              '<i class="fas fa-lock"></i> Pay ₹<%= number_with_precision(payable_amount, precision: 2) %>';
           }
 
         }
-
       };
-
-
-      /* =====================================================
-         RAZORPAY INSTANCE
-      ===================================================== */
 
       if (typeof Razorpay === "undefined") {
 
@@ -988,17 +872,10 @@
         );
 
         return;
-
       }
-
 
       const razorpay =
         new Razorpay(options);
-
-
-      /* =====================================================
-         PAYMENT FAILED
-      ===================================================== */
 
       razorpay.on(
         "payment.failed",
@@ -1010,35 +887,17 @@
         }
       );
 
-
-      /* =====================================================
-         OPEN CHECKOUT
-      ===================================================== */
-
       razorpay.open();
 
     });
-
   }
-
-
-  /* =========================================================
-     TURBO SUPPORT
-  ========================================================= */
 
   document.addEventListener(
     "turbo:load",
     initializeTestSeriesPayment
   );
 
-
-  /* =========================================================
-     DIRECT PAGE LOAD
-  ========================================================= */
-
-  if (
-    document.readyState === "loading"
-  ) {
+  if (document.readyState === "loading") {
 
     document.addEventListener(
       "DOMContentLoaded",

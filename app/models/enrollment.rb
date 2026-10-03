@@ -1,68 +1,67 @@
 class Enrollment < ApplicationRecord
-
   belongs_to :user
   belongs_to :course
 
   belongs_to :coupon,
              optional: true
 
-  # Payments
-  has_many :payments, dependent: :destroy
+  has_one :coupon_usage,
+          as: :purchasable,
+          dependent: :nullify
 
-  # Fee
-  has_one :fee, dependent: :destroy
+  has_many :payments,
+           dependent: :destroy
 
-  validates :status, presence: true
+  has_one :fee,
+          dependent: :destroy
 
-  attribute :status, default: "Pending"
+  validates :status,
+            presence: true
 
-  # ==================================================
-  # BASE COURSE PRICE
-  # ==================================================
+  attribute :status,
+            default: "Pending"
 
   def course_price
     course.fee.to_d
   end
 
-  # ==================================================
-  # EXISTING COURSE/FEE DISCOUNT
-  # ==================================================
-
   def course_discount_amount
     fee&.discount_amount.to_d
   end
 
-  # ==================================================
-  # PRICE AFTER EXISTING COURSE DISCOUNT
-  # ==================================================
-
   def price_after_course_discount
-    amount = course_price - course_discount_amount
+    amount =
+      course_price - course_discount_amount
 
     amount = 0 if amount < 0
 
     amount
   end
 
-  # ==================================================
-  # APPLY COUPON
-  # ==================================================
-
   def apply_coupon!(coupon)
-
     unless coupon.available_for_user?(user)
-      raise ActiveRecord::RecordInvalid,
-            "Coupon is not available for this student."
+      errors.add(
+        :coupon,
+        "is not available for this student"
+      )
+
+      raise ActiveRecord::RecordInvalid.new(self)
     end
 
-    unless coupon.course_id == course_id
-      raise ActiveRecord::RecordInvalid,
-            "This coupon is not valid for this course."
+    unless coupon.applicable_to?(course)
+      errors.add(
+        :coupon,
+        "is not valid for this course"
+      )
+
+      raise ActiveRecord::RecordInvalid.new(self)
     end
 
-    coupon_base_price = price_after_course_discount
+    coupon_base_price =
+      price_after_course_discount
 
-    discount = coupon.discount_for(coupon_base_price)
+    discount =
+      coupon.discount_for(coupon_base_price)
 
     update!(
       coupon: coupon,
@@ -72,12 +71,7 @@ class Enrollment < ApplicationRecord
     )
   end
 
-  # ==================================================
-  # REMOVE COUPON
-  # ==================================================
-
   def remove_coupon!
-
     update!(
       coupon: nil,
       original_amount: course_price,
@@ -86,26 +80,15 @@ class Enrollment < ApplicationRecord
     )
   end
 
-  # ==================================================
-  # FINAL PAYABLE AMOUNT
-  # ==================================================
-
   def payable_amount
-
     if coupon.present?
       final_amount.to_d
     else
       price_after_course_discount
     end
-
   end
-
-  # ==================================================
-  # DISPLAY NAME
-  # ==================================================
 
   def display_name
     "#{user.name} - #{course.Course_name}"
   end
-
 end

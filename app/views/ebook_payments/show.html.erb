@@ -12,6 +12,7 @@
 
     <!-- HEADER -->
     <div class="ebook-payment-header">
+
       <span class="ebook-payment-badge">
         <i class="bi bi-book"></i>
         E-BOOK
@@ -19,14 +20,15 @@
 
       <h1>Complete Your Payment</h1>
 
-<p>
-  Secure payment to unlock:
-</p>
+      <p>
+        Secure payment to unlock:
+      </p>
 
-<div class="payment-ebook-title">
-  <i class="bi bi-book-half"></i>
-  <strong><%= @ebook.title %></strong>
-</div>
+      <div class="payment-ebook-title">
+        <i class="bi bi-book-half"></i>
+        <strong><%= @ebook.title %></strong>
+      </div>
+
     </div>
 
 
@@ -53,56 +55,55 @@
 
       <div class="ebook-info">
 
-  <span class="ebook-label">
-    YOU ARE PURCHASING
-  </span>
+        <span class="ebook-label">
+          YOU ARE PURCHASING
+        </span>
 
-  <h2>
-    <%= @ebook.title %>
-  </h2>
+        <h2>
+          <%= @ebook.title %>
+        </h2>
 
-  <% if @ebook.author.present? %>
-    <p>
-      <i class="bi bi-person"></i>
-      By <%= @ebook.author %>
-    </p>
-  <% end %>
+        <% if @ebook.author.present? %>
+          <p>
+            <i class="bi bi-person"></i>
+            By <%= @ebook.author %>
+          </p>
+        <% end %>
 
-  <div class="ebook-meta">
+        <div class="ebook-meta">
 
-    <% if @ebook.category.present? %>
-      <span>
-        <i class="bi bi-bookmark"></i>
-        <%= @ebook.category %>
-      </span>
-    <% end %>
+          <% if @ebook.category.present? %>
+            <span>
+              <i class="bi bi-bookmark"></i>
+              <%= @ebook.category %>
+            </span>
+          <% end %>
 
-    <% if @ebook.language.present? %>
-      <span>
-        <i class="bi bi-translate"></i>
-        <%= @ebook.language %>
-      </span>
-    <% end %>
+          <% if @ebook.language.present? %>
+            <span>
+              <i class="bi bi-translate"></i>
+              <%= @ebook.language %>
+            </span>
+          <% end %>
 
-    <% if @ebook.exam_name.present? %>
-      <span>
-        <i class="bi bi-mortarboard"></i>
-        <%= @ebook.exam_name %>
-      </span>
-    <% end %>
+          <% if @ebook.exam_name.present? %>
+            <span>
+              <i class="bi bi-mortarboard"></i>
+              <%= @ebook.exam_name %>
+            </span>
+          <% end %>
 
-  </div>
+        </div>
 
-  <div class="payment-for-badge">
-    <i class="bi bi-check-circle-fill"></i>
-    Payment for this E-Book
-  </div>
+        <div class="payment-for-badge">
+          <i class="bi bi-check-circle-fill"></i>
+          Payment for this E-Book
+        </div>
 
-</div>
+      </div>
 
 
       <!-- PRICE -->
-
       <div class="ebook-price">
 
         <span>
@@ -118,7 +119,116 @@
     </div>
 
 
-    <!-- ORDER SUMMARY -->
+    <!-- =====================================================
+         COUPON
+    ====================================================== -->
+
+    <div class="ebook-payment-section coupon-section">
+
+      <div class="section-title">
+
+        <i class="bi bi-ticket-perforated"></i>
+
+        <h3>
+          Have a Coupon?
+        </h3>
+
+      </div>
+
+
+      <% if @purchase.coupon.present? %>
+
+        <!-- APPLIED COUPON -->
+
+        <div class="coupon-applied-box">
+
+          <div class="coupon-applied-left">
+
+            <div class="coupon-applied-icon">
+              <i class="bi bi-check-lg"></i>
+            </div>
+
+            <div>
+
+              <span class="coupon-applied-label">
+                COUPON APPLIED
+              </span>
+
+              <strong>
+                <%= @purchase.coupon.code %>
+              </strong>
+
+              <small>
+                You saved
+                ₹<%= number_with_delimiter(
+                  @purchase.coupon_discount.to_d.round(2)
+                ) %>
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <%= button_to remove_ebook_coupon_path(@purchase),
+                method: :delete,
+                class: "coupon-remove-button",
+                form: {
+                  data: {
+                    turbo: false
+                  }
+                } do %>
+
+            <i class="bi bi-x-circle"></i>
+            Remove
+
+          <% end %>
+
+        </div>
+
+
+      <% else %>
+
+        <!-- COUPON INPUT -->
+
+        <%= form_with url: apply_ebook_coupon_path(@purchase),
+                      method: :post,
+                      local: true,
+                      class: "coupon-form" do |form| %>
+
+          <div class="coupon-input-wrapper">
+
+            <i class="bi bi-ticket-perforated coupon-input-icon"></i>
+
+            <%= form.text_field :coupon_code,
+                  placeholder: "Enter coupon code",
+                  autocomplete: "off",
+                  autocapitalize: "characters",
+                  spellcheck: false,
+                  class: "coupon-input" %>
+
+          </div>
+
+
+          <%= form.submit "Apply Coupon",
+                class: "coupon-apply-button" %>
+
+        <% end %>
+
+
+        <p class="coupon-help-text">
+          <i class="bi bi-info-circle"></i>
+          Enter a valid coupon code to get a discount.
+        </p>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDER SUMMARY
+    ====================================================== -->
 
     <div class="ebook-payment-section">
 
@@ -133,6 +243,8 @@
       </div>
 
 
+      <!-- ORIGINAL PRICE -->
+
       <div class="summary-row">
 
         <span>
@@ -140,14 +252,41 @@
         </span>
 
         <strong>
-          ₹<%= number_with_delimiter(@purchase.amount.to_i) %>
+          ₹<%= number_with_delimiter(
+            @purchase.original_price.to_d.round(2)
+          ) %>
         </strong>
 
       </div>
 
 
+      <!-- COUPON DISCOUNT -->
+
+      <% if @purchase.coupon.present? &&
+            @purchase.coupon_discount.to_d > 0 %>
+
+        <div class="summary-row coupon-discount-row">
+
+          <span>
+            <i class="bi bi-tag-fill"></i>
+            Coupon Discount
+          </span>
+
+          <strong>
+            -₹<%= number_with_delimiter(
+              @purchase.coupon_discount.to_d.round(2)
+            ) %>
+          </strong>
+
+        </div>
+
+      <% end %>
+
+
       <div class="summary-divider"></div>
 
+
+      <!-- FINAL AMOUNT -->
 
       <div class="summary-row total">
 
@@ -156,7 +295,9 @@
         </span>
 
         <strong>
-          ₹<%= number_with_delimiter(@purchase.amount.to_i) %>
+          ₹<%= number_with_delimiter(
+            @purchase.payable_amount.to_d.round(2)
+          ) %>
         </strong>
 
       </div>
@@ -186,11 +327,15 @@
         </div>
 
         <div>
-          <strong>UPI / Card / Net Banking</strong>
+
+          <strong>
+            UPI / Card / Net Banking
+          </strong>
 
           <span>
             Google Pay, PhonePe, Paytm, Cards and more
           </span>
+
         </div>
 
         <i class="bi bi-check-circle-fill payment-check"></i>
@@ -236,7 +381,9 @@
       </span>
 
       <span id="ebook-pay-text">
-        Pay Now ₹<%= number_with_delimiter(@purchase.amount.to_i) %>
+        Pay Now ₹<%= number_with_delimiter(
+          @purchase.amount.to_d.round(2)
+        ) %>
       </span>
 
     </button>
@@ -610,7 +757,9 @@
 }
 
 
-/* E-BOOK CARD */
+/* =========================================================
+   E-BOOK CARD
+========================================================= */
 
 .ebook-payment-card {
   display: grid;
@@ -710,7 +859,9 @@
 }
 
 
-/* SECTION */
+/* =========================================================
+   SECTION
+========================================================= */
 
 .ebook-payment-section {
   padding: 18px;
@@ -770,7 +921,194 @@
 }
 
 
-/* PAYMENT METHOD */
+/* =========================================================
+   COUPON
+========================================================= */
+
+.coupon-section {
+  position: relative;
+}
+
+.coupon-form {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.coupon-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.coupon-input-icon {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  transform: translateY(-50%);
+  color: #1261d8;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.coupon-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 13px 0 39px;
+  border: 1px solid #d6dfeb;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #172033;
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  text-transform: uppercase;
+  transition: .2s ease;
+  box-sizing: border-box;
+}
+
+.coupon-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.coupon-input:focus {
+  border-color: #1261d8;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(18,97,216,.08);
+}
+
+.coupon-apply-button {
+  height: 46px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 9px;
+  background: #1261d8;
+  color: #fff;
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+  white-space: nowrap;
+}
+
+.coupon-apply-button:hover {
+  background: #0754c7;
+  transform: translateY(-1px);
+}
+
+.coupon-help-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 9px 0 0;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.coupon-help-text i {
+  color: #1261d8;
+}
+
+
+/* =========================================================
+   APPLIED COUPON
+========================================================= */
+
+.coupon-applied-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 13px;
+  border: 1px solid #b9e4c6;
+  border-radius: 10px;
+  background: #f2fff5;
+}
+
+.coupon-applied-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.coupon-applied-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #d8f6df;
+  color: #198754;
+  font-size: 17px;
+}
+
+.coupon-applied-label {
+  display: block;
+  color: #198754;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .7px;
+}
+
+.coupon-applied-left strong {
+  display: block;
+  margin-top: 1px;
+  color: #172033;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .4px;
+}
+
+.coupon-applied-left small {
+  display: block;
+  margin-top: 2px;
+  color: #198754;
+  font-size: 10px;
+}
+
+.coupon-remove-button {
+  min-height: 36px;
+  padding: 0 11px;
+  border: 1px solid #f0b8b8;
+  border-radius: 8px;
+  background: #fff;
+  color: #c0392b;
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.coupon-remove-button:hover {
+  background: #fff5f5;
+}
+
+
+/* COUPON DISCOUNT */
+
+.coupon-discount-row span {
+  color: #198754;
+}
+
+.coupon-discount-row span i {
+  margin-right: 4px;
+}
+
+.coupon-discount-row strong {
+  color: #198754;
+}
+
+
+/* =========================================================
+   PAYMENT METHOD
+========================================================= */
 
 .payment-method {
   min-height: 58px;
@@ -818,7 +1156,9 @@
 }
 
 
-/* SECURITY */
+/* =========================================================
+   SECURITY
+========================================================= */
 
 .ebook-security {
   display: flex;
@@ -857,7 +1197,9 @@
 }
 
 
-/* PAY BUTTON */
+/* =========================================================
+   PAY BUTTON
+========================================================= */
 
 .ebook-pay-button {
   width: 100%;
@@ -895,43 +1237,6 @@
   color: #94a3b8;
   font-size: 10px;
 }
-
-
-/* MOBILE */
-
-@media (max-width: 700px) {
-
-  .ebook-payment-page {
-    padding: 85px 12px 35px;
-  }
-
-  .ebook-payment-card {
-    grid-template-columns: 75px minmax(0,1fr);
-    gap: 12px;
-  }
-
-  .ebook-cover {
-    width: 75px;
-    height: 100px;
-  }
-
-  .ebook-price {
-    grid-column: 2;
-    text-align: left;
-    min-width: 0;
-  }
-
-  .ebook-price strong {
-    font-size: 22px;
-  }
-
-  .ebook-payment-header h1 {
-    font-size: 24px;
-  }
-
-}
-
-
 
 
 /* =========================================================
@@ -981,6 +1286,59 @@
 
 .payment-for-badge i {
   font-size: 11px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .ebook-payment-page {
+    padding: 85px 12px 35px;
+  }
+
+  .ebook-payment-card {
+    grid-template-columns: 75px minmax(0,1fr);
+    gap: 12px;
+  }
+
+  .ebook-cover {
+    width: 75px;
+    height: 100px;
+  }
+
+  .ebook-price {
+    grid-column: 2;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .ebook-price strong {
+    font-size: 22px;
+  }
+
+  .ebook-payment-header h1 {
+    font-size: 24px;
+  }
+
+  .coupon-form {
+    flex-direction: column;
+  }
+
+  .coupon-apply-button {
+    width: 100%;
+  }
+
+  .coupon-applied-box {
+    align-items: flex-start;
+  }
+
+  .coupon-remove-button {
+    flex-shrink: 0;
+  }
+
 }
 
 </style>

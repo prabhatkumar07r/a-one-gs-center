@@ -1,5 +1,4 @@
 class RazorpayPaymentCompletionService
-  
   Result = Struct.new(
     :success,
     :already_paid,
@@ -57,12 +56,6 @@ class RazorpayPaymentCompletionService
         @razorpay_payment_id
       )
 
-    # =========================================================
-    # Razorpay Ruby SDK 3.2.4
-    # Entity object => use .status, .order_id, .amount
-    # NOT ["status"], ["order_id"], ["amount"]
-    # =========================================================
-
     razorpay_status =
       razorpay_payment.status.to_s.downcase
 
@@ -91,7 +84,6 @@ class RazorpayPaymentCompletionService
 
     unless razorpay_amount_paise ==
            local_amount_paise
-
       return failure(
         "Payment amount mismatch. " \
         "Local: #{local_amount_paise} paise, " \
@@ -105,12 +97,6 @@ class RazorpayPaymentCompletionService
     Payment.transaction do
       locked_payment =
         Payment.lock.find(@payment.id)
-
-      # =======================================================
-      # Idempotency:
-      # Webhook + browser verification + admin sync
-      # ek hi payment ko double process nahi karenge.
-      # =======================================================
 
       if locked_payment.paid?
         already_paid = true
@@ -127,34 +113,22 @@ class RazorpayPaymentCompletionService
           course: enrollment.course
         )
 
-      # =======================================================
-      # Mark payment paid
-      # =======================================================
-
       locked_payment.update!(
         status: "paid",
         razorpay_payment_id: @razorpay_payment_id
       )
 
-      # =======================================================
-      # Update fee
-      # =======================================================
-
       fee.total_fee =
-       enrollment.course.fee.to_d
+        enrollment.course.fee.to_d
 
-    fee.discount_amount =
+      fee.discount_amount =
         enrollment.discount_amount.to_d
 
-   fee.paid_amount =
-      fee.paid_amount.to_d +
-      locked_payment.amount.to_d
+      fee.paid_amount =
+        fee.paid_amount.to_d +
+        locked_payment.amount.to_d
 
       fee.save!
-
-      # =======================================================
-      # Coupon usage
-      # =======================================================
 
       if enrollment.coupon.present?
         coupon = enrollment.coupon
@@ -163,7 +137,7 @@ class RazorpayPaymentCompletionService
           CouponUsage.create!(
             coupon: coupon,
             user: enrollment.user,
-            enrollment: enrollment,
+            purchasable: enrollment,
             discount_amount:
               enrollment.discount_amount.to_d,
             used_at: Time.current
@@ -171,14 +145,9 @@ class RazorpayPaymentCompletionService
         end
 
         coupon.update!(
-          used_count:
-            coupon.coupon_usages.count
+          used_count: coupon.coupon_usages.count
         )
       end
-
-      # =======================================================
-      # Approve enrollment
-      # =======================================================
 
       enrollment.update!(
         status: "Approved"
@@ -186,10 +155,6 @@ class RazorpayPaymentCompletionService
 
       notification_needed = true
     end
-
-    # =========================================================
-    # Send success notification AFTER transaction
-    # =========================================================
 
     if notification_needed
       PaymentSuccessNotificationJob.perform_later(
@@ -249,51 +214,45 @@ class RazorpayPaymentCompletionService
 
   private
 
-  # ===========================================================
-  # Find captured payment for a Razorpay order
-  # ===========================================================
-def find_captured_payment_id
-  order =
-    Razorpay::Order.fetch(
-      @razorpay_order_id
-    )
+  def find_captured_payment_id
+    order =
+      Razorpay::Order.fetch(
+        @razorpay_order_id
+      )
 
-  payments =
-    order.payments
+    payments =
+      order.payments
 
-  payment_items =
-    if payments.respond_to?(:items)
-      payments.items
-    else
-      []
+    payment_items =
+      if payments.respond_to?(:items)
+        payments.items
+      else
+        []
+      end
+
+    payment_items =
+      Array(payment_items)
+
+    captured_payments =
+      payment_items.select do |payment|
+        payment["status"].to_s.downcase == "captured"
+      end
+
+    return nil if captured_payments.empty?
+
+    if captured_payments.length > 1
+      Rails.logger.warn(
+        "[RAZORPAY COMPLETION] " \
+        "Multiple captured payments found for order " \
+        "#{@razorpay_order_id}: " \
+        "#{captured_payments.map { |p| p["id"] }.join(", ")}"
+      )
+
+      return nil
     end
 
-  payment_items =
-    Array(payment_items)
-
-  captured_payments =
-    payment_items.select do |payment|
-      payment["status"].to_s.downcase == "captured"
-    end
-
-  return nil if captured_payments.empty?
-
-  # Safety:
-  # Agar same order ke liye multiple captured payments hain,
-  # automatically guess nahi karenge.
-  if captured_payments.length > 1
-    Rails.logger.warn(
-      "[RAZORPAY COMPLETION] " \
-      "Multiple captured payments found for order " \
-      "#{@razorpay_order_id}: " \
-      "#{captured_payments.map { |p| p["id"] }.join(", ")}"
-    )
-
-    return nil
+    captured_payments.first["id"].to_s
   end
-
-  captured_payments.first["id"].to_s
-end
 
   def failure(message)
     Result.new(

@@ -47,6 +47,15 @@ Rails.application.routes.draw do
        to: "test_series_purchases#verify",
        as: :verify_test_series_payment
 
+post "/test_series_purchases/:id/apply_coupon",
+     to: "test_series_purchases#apply_coupon",
+     as: :apply_test_series_coupon
+
+delete "/test_series_purchases/:id/remove_coupon",
+       to: "test_series_purchases#remove_coupon",
+       as: :remove_test_series_coupon
+    
+
   get "/test_series_purchases/:id/payment/success",
       to: "test_series_purchases#success",
       as: :test_series_payment_success
@@ -351,6 +360,13 @@ Rails.application.routes.draw do
   get "/ebook-payments/:id",
       to: "ebook_payments#show",
       as: :ebook_payment
+  post "/ebook-payments/:id/apply_coupon",
+     to: "ebook_payments#apply_coupon",
+     as: :apply_ebook_coupon
+
+delete "/ebook-payments/:id/remove_coupon",
+       to: "ebook_payments#remove_coupon",
+       as: :remove_ebook_coupon   
 
   post "/ebook-payments/:id/verify",
        to: "ebook_payments#verify",

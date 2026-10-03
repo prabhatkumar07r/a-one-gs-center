@@ -1,7 +1,9 @@
 class CouponUsage < ApplicationRecord
   belongs_to :coupon
   belongs_to :user
-  belongs_to :enrollment
+
+  belongs_to :purchasable,
+             polymorphic: true
 
   validates :discount_amount,
             numericality: {

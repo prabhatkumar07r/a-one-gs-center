@@ -3,44 +3,643 @@
 <head>
   <title>Admin Panel | A ONE GS CENTER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
   <%= javascript_importmap_tags %>
+
   <style nonce="<%= content_security_policy_nonce %>">
-    html,body{margin:0;padding:0;width:100%;min-height:100%;overflow-x:hidden}
-    body.admin-body{min-height:100vh;background:radial-gradient(circle at 10% 10%,rgba(196,181,253,.30),transparent 30%),radial-gradient(circle at 90% 90%,rgba(59,130,246,.22),transparent 35%),linear-gradient(135deg,#4c1d95 0%,#6d28d9 45%,#7c3aed 100%) !important;color:#fff;overflow-x:hidden}
-    .admin-wrapper{position:relative;width:100%;min-height:100vh;margin:0;padding:0;background:transparent !important}
-    .admin-main{position:relative;width:calc(100% - 260px);min-height:100vh;margin-left:260px;background:transparent !important;padding:0}
-    .admin-content{position:relative;width:100%;min-height:100vh;margin:0;padding:110px 30px 30px;background:transparent !important;color:#fff;box-sizing:border-box}
-    .admin-content .container,.admin-content .container-fluid,.admin-content .row,.admin-content section{background:transparent !important}
-    .admin-back-wrapper{position:relative;width:100%;margin-bottom:18px;display:flex;align-items:center}
-    .admin-back-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:10px 17px;border:1px solid rgba(128,9,226,.14);border-radius:12px;background:rgba(255,255,255,.96);color:#5b21b6;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 5px 15px rgba(91,33,182,.10),0 2px 4px rgba(0,0,0,.04);transition:.2s ease}
-    .admin-back-button:hover{background:#f7f1ff;transform:translateY(-2px);box-shadow:0 10px 24px rgba(91,33,182,.15)}
-    body.whatsapp-inbox-layout{width:100vw !important;height:100vh !important;min-height:100vh !important;overflow:hidden !important;background:#f3f6f8 !important}
-    body.whatsapp-inbox-layout .admin-wrapper{width:100vw !important;height:100vh !important;min-height:100vh !important}
-    body.whatsapp-inbox-layout .admin-sidebar-shell,body.whatsapp-inbox-layout .admin-header-shell{display:none !important}
-    body.whatsapp-inbox-layout .admin-main{width:100vw !important;min-width:100vw !important;height:100vh !important;min-height:100vh !important;margin:0 !important;padding:0 !important}
-    body.whatsapp-inbox-layout .admin-content{width:100vw !important;height:100vh !important;min-height:100vh !important;margin:0 !important;padding:0 !important;overflow:hidden !important;background:#f3f6f8 !important}
-    body.whatsapp-inbox-layout .admin-back-wrapper,body.whatsapp-inbox-layout .admin-content>.alert{display:none !important}
-    @media(max-width:991px){.admin-main{width:100%;margin-left:0}.admin-content{padding:100px 20px 20px}}
-    @media(max-width:768px){.admin-content{padding:88px 12px 20px}}
-    @media(max-width:400px){.admin-content{padding:84px 10px 20px}}
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    body.admin-body {
+      min-height: 100vh;
+      background: #f5f7ff !important;
+      color: #172554;
+      overflow-x: hidden;
+    }
+
+    .admin-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+    }
+
+    .admin-main {
+      position: relative;
+      width: calc(100% - 260px);
+      min-height: 100vh;
+      margin-left: 260px;
+      padding: 0;
+      background: transparent !important;
+      box-sizing: border-box;
+    }
+
+    .admin-content {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 110px 30px 30px;
+      box-sizing: border-box;
+      color: #172554;
+      overflow: hidden;
+      isolation: isolate;
+
+      background:
+        radial-gradient(
+          circle at 8% 8%,
+          rgba(139,92,246,.22),
+          transparent 25%
+        ),
+        radial-gradient(
+          circle at 92% 10%,
+          rgba(96,165,250,.20),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 50% 45%,
+          rgba(167,139,250,.10),
+          transparent 40%
+        ),
+        radial-gradient(
+          circle at 95% 95%,
+          rgba(59,130,246,.16),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 5% 90%,
+          rgba(192,132,252,.13),
+          transparent 28%
+        ),
+        linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f9faff 45%,
+          #f3f5ff 100%
+        );
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.95),
+        inset 0 0 80px rgba(99,102,241,.04);
+    }
+
+    .admin-content::before {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      top: -220px;
+      right: -160px;
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 35%,
+          rgba(255,255,255,.95),
+          rgba(167,139,250,.25) 35%,
+          rgba(99,102,241,.08) 60%,
+          transparent 72%
+        );
+
+      filter: blur(2px);
+
+      box-shadow:
+        0 40px 100px rgba(99,102,241,.12);
+
+      transform:
+        translateZ(0)
+        rotate(8deg);
+
+      pointer-events: none;
+      z-index: -1;
+
+      animation:
+        adminContentFloatOne 12s ease-in-out infinite;
+    }
+
+    .admin-content::after {
+      content: "";
+      position: absolute;
+      width: 460px;
+      height: 460px;
+      left: -180px;
+      bottom: -180px;
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 60% 40%,
+          rgba(255,255,255,.95),
+          rgba(129,140,248,.18) 38%,
+          rgba(59,130,246,.07) 62%,
+          transparent 72%
+        );
+
+      filter: blur(2px);
+
+      box-shadow:
+        0 40px 100px rgba(59,130,246,.10);
+
+      pointer-events: none;
+      z-index: -1;
+
+      animation:
+        adminContentFloatTwo 15s ease-in-out infinite;
+    }
+
+    .admin-content .container,
+    .admin-content .container-fluid,
+    .admin-content .row,
+    .admin-content section {
+      background: transparent !important;
+    }
+
+    .admin-content > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .admin-content .card {
+      border: 1px solid rgba(255,255,255,.75);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.94),
+          rgba(248,250,255,.82)
+        );
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      box-shadow:
+        0 10px 25px rgba(30,41,59,.06),
+        0 25px 60px rgba(79,70,229,.06),
+        inset 0 1px 0 rgba(255,255,255,.95);
+
+      border-radius: 20px;
+
+      transition:
+        transform .30s ease,
+        box-shadow .30s ease;
+    }
+
+    .admin-content .card:hover {
+      transform:
+        translateY(-5px)
+        translateZ(10px);
+
+      box-shadow:
+        0 18px 35px rgba(30,41,59,.10),
+        0 30px 70px rgba(79,70,229,.10),
+        inset 0 1px 0 rgba(255,255,255,1);
+    }
+
+    .admin-back-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+    }
+
+    .admin-back-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 10px 17px;
+
+      border: 1px solid rgba(128,9,226,.14);
+      border-radius: 12px;
+
+      background: rgba(255,255,255,.96);
+      color: #5b21b6;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 5px 15px rgba(91,33,182,.10),
+        0 2px 4px rgba(0,0,0,.04);
+
+      transition: .2s ease;
+    }
+
+    .admin-back-button:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 10px 24px rgba(91,33,182,.15);
+    }
+
+    .admin-theme-toggle {
+      width: 42px;
+      height: 42px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(99,102,241,.18);
+      border-radius: 50%;
+
+      background: rgba(255,255,255,.90);
+      color: #4f46e5;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 6px 18px rgba(79,70,229,.12),
+        inset 0 1px 0 rgba(255,255,255,.95);
+
+      transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+    }
+
+    .admin-theme-toggle:hover {
+      transform:
+        translateY(-3px)
+        rotate(8deg);
+
+      box-shadow:
+        0 12px 25px rgba(79,70,229,.18);
+    }
+
+    body.admin-theme-enabled.admin-dark-mode {
+      background: #070b14 !important;
+      color: #e5e7eb !important;
+    }
+
+    body.admin-theme-enabled.admin-dark-mode .admin-content {
+      color: #e5e7eb !important;
+
+      background:
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(128,9,226,.15),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 90%,
+          rgba(59,130,246,.12),
+          transparent 35%
+        ),
+        linear-gradient(
+          145deg,
+          #070b14,
+          #0b1020,
+          #111827
+        ) !important;
+    }
+
+    body.admin-theme-enabled.admin-dark-mode .admin-content .card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(17,24,39,.94),
+          rgba(15,23,42,.88)
+        ) !important;
+
+      color: #e5e7eb !important;
+
+      border-color:
+        rgba(148,163,184,.15) !important;
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    body.admin-theme-enabled.admin-dark-mode .admin-content .card:hover {
+      box-shadow:
+        0 25px 60px rgba(0,0,0,.40),
+        0 0 30px rgba(128,9,226,.10);
+    }
+
+    body.admin-theme-enabled.admin-dark-mode .admin-theme-toggle {
+      background: #111827;
+      color: #facc15;
+      border-color: rgba(255,255,255,.12);
+    }
+
+    body.admin-theme-enabled.admin-dark-mode .admin-back-button {
+      background: #111827;
+      color: #c4b5fd;
+      border-color: rgba(148,163,184,.15);
+    }
+
+    body.admin-theme-enabled.admin-dark-mode .admin-back-button:hover {
+      background: #172033;
+    }
+
+    body.whatsapp-inbox-layout {
+      width: 100vw !important;
+      height: 100vh !important;
+      min-height: 100vh !important;
+      overflow: hidden !important;
+      background: #f3f6f8 !important;
+    }
+
+    body.whatsapp-inbox-layout .admin-wrapper {
+      width: 100vw !important;
+      height: 100vh !important;
+      min-height: 100vh !important;
+    }
+
+    body.whatsapp-inbox-layout .admin-sidebar-shell,
+    body.whatsapp-inbox-layout .admin-header-shell {
+      display: none !important;
+    }
+
+    body.whatsapp-inbox-layout .admin-main {
+      width: 100vw !important;
+      min-width: 100vw !important;
+      height: 100vh !important;
+      min-height: 100vh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    body.whatsapp-inbox-layout .admin-content {
+      width: 100vw !important;
+      height: 100vh !important;
+      min-height: 100vh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      background: #f3f6f8 !important;
+    }
+
+    body.whatsapp-inbox-layout .admin-back-wrapper,
+    body.whatsapp-inbox-layout .admin-content > .alert {
+      display: none !important;
+    }
+
+    body.whatsapp-inbox-layout .admin-content::before,
+    body.whatsapp-inbox-layout .admin-content::after {
+      display: none !important;
+    }
+
+    @keyframes adminContentFloatOne {
+      0%,
+      100% {
+        transform:
+          translate3d(0,0,0)
+          rotate(8deg);
+      }
+
+      50% {
+        transform:
+          translate3d(-30px,25px,0)
+          rotate(15deg);
+      }
+    }
+
+    @keyframes adminContentFloatTwo {
+      0%,
+      100% {
+        transform:
+          translate3d(0,0,0);
+      }
+
+      50% {
+        transform:
+          translate3d(35px,-25px,0);
+      }
+    }
+
+    @media (max-width: 991px) {
+      .admin-main {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .admin-content {
+        padding:
+          100px
+          20px
+          20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .admin-content {
+        padding:
+          88px
+          12px
+          20px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .admin-content {
+        padding:
+          84px
+          10px
+          20px;
+      }
+    }
+
   </style>
 </head>
-<body class="admin-body <%= "whatsapp-inbox-layout" if controller_path == "admin/whatsapp_messages" %>">
+
+<%
+  theme_enabled =
+    content_for?(:admin_theme_toggle) &&
+    content_for(:admin_theme_toggle).to_s == "true"
+
+  whatsapp_inbox =
+    controller_path == "admin/whatsapp_messages"
+%>
+
+<body class="admin-body <%= "admin-theme-enabled" if theme_enabled %> <%= "whatsapp-inbox-layout" if whatsapp_inbox %>">
+
   <div class="admin-wrapper">
-    <div class="admin-sidebar-shell"><%= render "layouts/admin_sidebar" %></div>
-    <div class="admin-main">
-      <div class="admin-header-shell"><%= render "layouts/admin_header" %></div>
-      <main class="admin-content">
-        <%= render "admin/shared/back_button" %>
-        <% if notice %><div class="alert alert-success"><%= notice %></div><% end %>
-        <% if alert %><div class="alert alert-danger"><%= alert %></div><% end %>
-        <%= yield %>
-      </main>
+
+    <div class="admin-sidebar-shell">
+      <%= render "layouts/admin_sidebar" %>
     </div>
+
+    <div class="admin-main">
+
+      <div class="admin-header-shell">
+        <%= render "layouts/admin_header" %>
+      </div>
+
+      <main class="admin-content">
+
+        <%= render "admin/shared/back_button" unless whatsapp_inbox %>
+
+        <% if theme_enabled %>
+          <div class="admin-theme-control">
+            <button
+              type="button"
+              id="adminThemeToggle"
+              class="admin-theme-toggle"
+              aria-label="Switch to dark mode"
+              title="Switch to dark mode">
+              <i
+                class="bi bi-moon-stars-fill"
+                id="adminThemeIcon">
+              </i>
+            </button>
+          </div>
+        <% end %>
+
+        <% if notice %>
+          <div class="alert alert-success">
+            <%= notice %>
+          </div>
+        <% end %>
+
+        <% if alert %>
+          <div class="alert alert-danger">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <%= yield %>
+
+      </main>
+
+    </div>
+
   </div>
+
+  <% if theme_enabled %>
+
+    <script nonce="<%= content_security_policy_nonce %>">
+
+      (function () {
+        "use strict";
+
+        function initializeAdminTheme() {
+
+          const toggle =
+            document.getElementById("adminThemeToggle");
+
+          const icon =
+            document.getElementById("adminThemeIcon");
+
+          if (!toggle) {
+            return;
+          }
+
+          function applyTheme(isDark) {
+
+            document.body.classList.toggle(
+              "admin-dark-mode",
+              isDark
+            );
+
+            if (icon) {
+              icon.className =
+                isDark
+                  ? "bi bi-sun-fill"
+                  : "bi bi-moon-stars-fill";
+            }
+
+            toggle.setAttribute(
+              "aria-label",
+              isDark
+                ? "Switch to light mode"
+                : "Switch to dark mode"
+            );
+
+            toggle.setAttribute(
+              "title",
+              isDark
+                ? "Switch to light mode"
+                : "Switch to dark mode"
+            );
+
+            try {
+              localStorage.setItem(
+                "aone_admin_theme",
+                isDark ? "dark" : "light"
+              );
+            } catch (error) {
+              console.warn(
+                "Could not save admin theme.",
+                error
+              );
+            }
+          }
+
+          let savedTheme = "light";
+
+          try {
+            savedTheme =
+              localStorage.getItem(
+                "aone_admin_theme"
+              ) || "light";
+          } catch (error) {
+            savedTheme = "light";
+          }
+
+          applyTheme(
+            savedTheme === "dark"
+          );
+
+          if (
+            toggle.dataset.bound === "true"
+          ) {
+            return;
+          }
+
+          toggle.dataset.bound = "true";
+
+          toggle.addEventListener(
+            "click",
+            function () {
+
+              const isDark =
+                document.body.classList.contains(
+                  "admin-dark-mode"
+                );
+
+              applyTheme(!isDark);
+            }
+          );
+        }
+
+        document.addEventListener(
+          "DOMContentLoaded",
+          initializeAdminTheme
+        );
+
+        document.addEventListener(
+          "turbo:load",
+          initializeAdminTheme
+        );
+
+      })();
+
+    </script>
+
+  <% end %>
+
 </body>
 </html>

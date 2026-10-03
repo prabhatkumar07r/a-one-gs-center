@@ -155,6 +155,11 @@
     color: #c43d3d;
   }
 
+  .coupon-status-exhausted {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
   .coupon-status-dot {
     width: 7px;
     height: 7px;
@@ -197,6 +202,44 @@
     line-height: 1.45;
   }
 
+  .coupon-product-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 7px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 850;
+  }
+
+  .coupon-product-badge.course {
+    background: #f3e8ff;
+    color: #7c3aed;
+  }
+
+  .coupon-product-badge.test-series {
+    background: #eff6ff;
+    color: #2563eb;
+  }
+
+  .coupon-product-badge.ebook {
+    background: #ecfdf5;
+    color: #047857;
+  }
+
+  .coupon-product-badge.all-products {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
+  .coupon-product-name {
+    display: block;
+    color: #351748;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
   /* ---------- DISCOUNT PREVIEW ---------- */
 
   .coupon-preview {
@@ -225,6 +268,13 @@
     color: #8009e2;
   }
 
+  .coupon-preview-note {
+    margin-top: 12px;
+    color: #8a7d94;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
   .coupon-price-preview {
     display: flex;
     align-items: center;
@@ -246,6 +296,12 @@
     color: #6b18aa;
     font-size: 28px;
     font-weight: 850;
+  }
+
+  .coupon-no-preview {
+    color: #81748b;
+    font-size: 13px;
+    line-height: 1.6;
   }
 
   /* ---------- USAGE ---------- */
@@ -279,6 +335,7 @@
   .coupon-usage-text {
     display: flex;
     justify-content: space-between;
+    gap: 15px;
     margin-top: 8px;
     color: #7e7188;
     font-size: 12px;
@@ -364,14 +421,29 @@
     .coupon-main-code {
       font-size: 18px;
     }
+
+    .coupon-price-preview {
+      gap: 12px;
+    }
+
+    .coupon-new-price {
+      font-size: 24px;
+    }
   }
 </style>
 
 
 <%
+  # ---------------------------------------------------------
+  # STATUS
+  # ---------------------------------------------------------
+
   if @coupon.expired?
     status_class = "coupon-status-expired"
     status_text = "Expired"
+  elsif @coupon.usage_exhausted?
+    status_class = "coupon-status-exhausted"
+    status_text = "Used Up"
   elsif @coupon.active?
     status_class = "coupon-status-active"
     status_text = "Active"
@@ -380,22 +452,81 @@
     status_text = "Inactive"
   end
 
+
+  # ---------------------------------------------------------
+  # USAGE
+  # ---------------------------------------------------------
+
   if @coupon.usage_limit.present? && @coupon.usage_limit.to_i > 0
     usage_percentage =
-      [(@coupon.used_count.to_f / @coupon.usage_limit.to_f) * 100, 100].min
+      [
+        (@coupon.used_count.to_f / @coupon.usage_limit.to_f) * 100,
+        100
+      ].min
   else
     usage_percentage = 0
   end
 
-  course_price = @coupon.course&.fee.to_d || 0.to_d
-  discount_amount = @coupon.discount_for(course_price)
-  final_price = course_price - discount_amount
+
+  # ---------------------------------------------------------
+  # PRODUCT / PREVIEW
+  # ---------------------------------------------------------
+
+  preview_product = nil
+  preview_price = nil
+
+  case @coupon.applicable_to
+
+  when "courses"
+
+    preview_product = @coupon.course
+
+    preview_price =
+      preview_product&.fee.to_d if preview_product.present?
+
+
+  when "test_series"
+
+    preview_product = @coupon.test_series
+
+    preview_price =
+      preview_product&.price.to_d if preview_product.present?
+
+
+  when "ebooks"
+
+    preview_product = @coupon.ebook
+
+    preview_price =
+      preview_product&.price.to_d if preview_product.present?
+
+
+  when "all"
+
+    preview_product = nil
+    preview_price = nil
+
+  end
+
+
+  discount_amount =
+    preview_price.present? ?
+      @coupon.discount_for(preview_price) :
+      nil
+
+  final_price =
+    preview_price.present? ?
+      preview_price - discount_amount :
+      nil
 %>
 
 
 <div class="coupon-show-page">
 
-  <!-- HEADER -->
+  <!-- =======================================================
+       HEADER
+  ======================================================== -->
+
   <div class="coupon-show-header">
 
     <div>
@@ -408,7 +539,7 @@
       <h1>Coupon Details</h1>
 
       <p>
-        View discount, course, student and usage information.
+        View discount, product, student and usage information.
       </p>
 
     </div>
@@ -438,10 +569,14 @@
   </div>
 
 
-  <!-- DETAIL CARD -->
+  <!-- =======================================================
+       DETAIL CARD
+  ======================================================== -->
+
   <div class="coupon-detail-card">
 
     <!-- TOP -->
+
     <div class="coupon-detail-top">
 
       <div class="coupon-main-code">
@@ -465,25 +600,90 @@
 
 
     <!-- BODY -->
+
     <div class="coupon-detail-body">
 
       <div class="coupon-info-grid">
 
-        <!-- COURSE -->
+        <!-- PRODUCT -->
+
         <div class="coupon-info-box">
 
           <div class="coupon-info-label">
-            Course
+            Product
           </div>
 
           <div class="coupon-info-value">
-            <%= @coupon.course&.Course_name || "—" %>
+
+            <% if @coupon.applicable_to == "courses" %>
+
+              <span class="coupon-product-badge course">
+                <i class="fa-solid fa-book-open"></i>
+                Course
+              </span>
+
+              <span class="coupon-product-name">
+                <%= @coupon.course.present? ?
+                      @coupon.course.Course_name :
+                      "All Courses" %>
+              </span>
+
+
+            <% elsif @coupon.applicable_to == "test_series" %>
+
+              <span class="coupon-product-badge test-series">
+                <i class="fa-solid fa-clipboard-question"></i>
+                Test Series
+              </span>
+
+              <span class="coupon-product-name">
+                <%= @coupon.test_series.present? ?
+                      @coupon.test_series.title :
+                      "All Test Series" %>
+              </span>
+
+
+            <% elsif @coupon.applicable_to == "ebooks" %>
+
+              <span class="coupon-product-badge ebook">
+                <i class="fa-solid fa-book"></i>
+                E-Book
+              </span>
+
+              <span class="coupon-product-name">
+                <%= @coupon.ebook.present? ?
+                      @coupon.ebook.title :
+                      "All E-Books" %>
+              </span>
+
+
+            <% elsif @coupon.applicable_to == "all" %>
+
+              <span class="coupon-product-badge all-products">
+                <i class="fa-solid fa-layer-group"></i>
+                All Products
+              </span>
+
+              <span class="coupon-product-name">
+                Courses + Test Series + E-Books
+              </span>
+
+
+            <% else %>
+
+              <span class="coupon-product-name">
+                —
+              </span>
+
+            <% end %>
+
           </div>
 
         </div>
 
 
         <!-- TYPE -->
+
         <div class="coupon-info-box">
 
           <div class="coupon-info-label">
@@ -493,11 +693,15 @@
           <div class="coupon-info-value">
 
             <% if @coupon.personal? %>
+
               <i class="fa-solid fa-user"></i>
               Personal
+
             <% else %>
+
               <i class="fa-solid fa-users"></i>
               Everyone
+
             <% end %>
 
           </div>
@@ -506,6 +710,7 @@
 
 
         <!-- STUDENT -->
+
         <div class="coupon-info-box">
 
           <div class="coupon-info-label">
@@ -531,6 +736,7 @@
 
 
         <!-- DISCOUNT -->
+
         <div class="coupon-info-box">
 
           <div class="coupon-info-label">
@@ -563,6 +769,7 @@
 
 
         <!-- USAGE -->
+
         <div class="coupon-info-box">
 
           <div class="coupon-info-label">
@@ -574,9 +781,13 @@
             <%= @coupon.used_count %>
 
             <% if @coupon.usage_limit.present? %>
+
               / <%= @coupon.usage_limit %>
+
             <% else %>
+
               / Unlimited
+
             <% end %>
 
           </div>
@@ -585,6 +796,7 @@
 
 
         <!-- EXPIRY -->
+
         <div class="coupon-info-box">
 
           <div class="coupon-info-label">
@@ -594,9 +806,15 @@
           <div class="coupon-info-value">
 
             <% if @coupon.expires_at.present? %>
-              <%= @coupon.expires_at.strftime("%d %B %Y, %I:%M %p") %>
+
+              <%= @coupon.expires_at.strftime(
+                    "%d %B %Y, %I:%M %p"
+                  ) %>
+
             <% else %>
+
               No expiry
+
             <% end %>
 
           </div>
@@ -606,7 +824,10 @@
       </div>
 
 
-      <!-- PREVIEW -->
+      <!-- =====================================================
+           PREVIEW
+      ====================================================== -->
+
       <div class="coupon-preview">
 
         <div class="coupon-preview-title">
@@ -618,39 +839,102 @@
         </div>
 
 
-        <div class="coupon-price-preview">
+        <% if preview_price.present? %>
 
-          <span class="coupon-old-price">
-            ₹<%= number_with_precision(
-                  course_price,
-                  precision: 2,
-                  strip_insignificant_zeros: true
-                ) %>
-          </span>
+          <div class="coupon-price-preview">
 
-          <span class="coupon-arrow">
-            <i class="fa-solid fa-arrow-right"></i>
-          </span>
+            <span class="coupon-old-price">
 
-          <span class="coupon-new-price">
-            ₹<%= number_with_precision(
-                  final_price,
-                  precision: 2,
-                  strip_insignificant_zeros: true
-                ) %>
-          </span>
+              ₹<%= number_with_precision(
+                    preview_price,
+                    precision: 2,
+                    strip_insignificant_zeros: true
+                  ) %>
 
-        </div>
+            </span>
+
+
+            <span class="coupon-arrow">
+
+              <i class="fa-solid fa-arrow-right"></i>
+
+            </span>
+
+
+            <span class="coupon-new-price">
+
+              ₹<%= number_with_precision(
+                    final_price,
+                    precision: 2,
+                    strip_insignificant_zeros: true
+                  ) %>
+
+            </span>
+
+          </div>
+
+
+          <div class="coupon-preview-note">
+
+            Preview based on:
+            <strong>
+              <%= @coupon.applicable_to == "courses" ?
+                    @coupon.course&.Course_name :
+                    @coupon.applicable_to == "test_series" ?
+                      @coupon.test_series&.title :
+                      @coupon.ebook&.title %>
+            </strong>
+
+          </div>
+
+
+        <% else %>
+
+          <div class="coupon-no-preview">
+
+            <% if @coupon.applicable_to == "all" %>
+
+              This coupon applies to all Courses, Test Series and
+              E-Books. A single preview price is not available.
+
+            <% elsif @coupon.applicable_to == "courses" %>
+
+              This coupon applies to all Courses.
+              Select a specific Course to see a price preview.
+
+            <% elsif @coupon.applicable_to == "test_series" %>
+
+              This coupon applies to all Test Series.
+              Select a specific Test Series to see a price preview.
+
+            <% elsif @coupon.applicable_to == "ebooks" %>
+
+              This coupon applies to all E-Books.
+              Select a specific E-Book to see a price preview.
+
+            <% else %>
+
+              No preview available.
+
+            <% end %>
+
+          </div>
+
+        <% end %>
 
       </div>
 
 
-      <!-- USAGE SECTION -->
+      <!-- =====================================================
+           USAGE SECTION
+      ====================================================== -->
+
       <div class="coupon-usage-section">
 
         <h3 class="coupon-section-title">
           Usage Progress
         </h3>
+
 
         <% if @coupon.usage_limit.present? %>
 
@@ -662,6 +946,7 @@
             </div>
 
           </div>
+
 
           <div class="coupon-usage-text">
 
@@ -675,9 +960,11 @@
 
           </div>
 
+
         <% else %>
 
           <div class="coupon-usage-text">
+
             <span>
               Unlimited usage
             </span>
@@ -685,6 +972,7 @@
             <span>
               <%= @coupon.used_count %> used
             </span>
+
           </div>
 
         <% end %>
@@ -695,13 +983,15 @@
 
 
     <!-- FOOTER -->
+
     <div class="coupon-detail-footer">
 
       <%= button_to admin_coupon_path(@coupon),
             method: :delete,
             class: "coupon-delete-button",
             data: {
-              turbo_confirm: "Are you sure you want to delete #{@coupon.code}?"
+              turbo_confirm:
+                "Are you sure you want to delete #{@coupon.code}?"
             } do %>
 
         <i class="fa-solid fa-trash"></i>

@@ -614,13 +614,17 @@
 
 <div class="admin-attendance-page">
 
+
+
+
   <!-- =====================================================
        PAGE HEADER
   ====================================================== -->
 
   <div class="attendance-page-header">
+    <% content_for :admin_theme_toggle, "true" %>
 
-```
+
 <div>
   <h1 class="attendance-page-title">
     Attendance Management
@@ -634,7 +638,6 @@
 <div class="attendance-header-icon">
   <i class="bi bi-calendar-check"></i>
 </div>
-```
 
   </div>
 
@@ -644,7 +647,6 @@
 
   <div class="attendance-stats">
 
-```
 <!-- TOTAL -->
 
 <div class="attendance-stat-card stat-total">
@@ -727,7 +729,6 @@
   </div>
 
 </div>
-```
 
   </div>
 
@@ -737,7 +738,6 @@
 
   <div class="attendance-filter-card">
 
-```
 <div class="attendance-filter-header">
 
   <h3 class="attendance-filter-title">
@@ -959,7 +959,7 @@
   </div>
 
 <% end %>
-```
+
 
   </div>
 
@@ -969,7 +969,6 @@
 
   <div class="attendance-table-card">
 
-```
 <div class="attendance-table-header">
 
   <h3 class="attendance-table-title">
@@ -1201,7 +1200,7 @@
   </div>
 
 <% end %>
-```
+
 
   </div>
 

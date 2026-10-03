@@ -11,7 +11,7 @@
       <h1>Coupons</h1>
 
       <p>
-        Create and manage course discount coupons for students.
+        Create and manage discount coupons for courses, test series and e-books.
       </p>
     </div>
 
@@ -87,7 +87,7 @@
     <div class="coupon-table-header">
       <div>
         <h2>All Coupons</h2>
-        <p>Manage your course discount codes.</p>
+        <p>Manage your course, test series and e-book discount codes.</p>
       </div>
     </div>
 
@@ -101,7 +101,7 @@
           <thead>
             <tr>
               <th>Coupon</th>
-              <th>Course</th>
+              <th>Product</th>
               <th>Type</th>
               <th>Discount</th>
               <th>Usage</th>
@@ -117,9 +117,12 @@
 
               <tr>
 
+                <!-- Coupon -->
+
                 <td>
                   <div class="coupon-code">
                     <i class="fa-solid fa-ticket"></i>
+
                     <strong>
                       <%= coupon.code %>
                     </strong>
@@ -127,14 +130,144 @@
                 </td>
 
 
-                <td>
-                  <div class="coupon-course">
-                    <strong>
-                      <%= coupon.course.Course_name %>
-                    </strong>
-                  </div>
-                </td>
+                <!-- Product -->
+                 <!-- Product -->
 
+<td>
+
+  <% if coupon.applicable_to == "courses" %>
+
+    <% if coupon.course.present? %>
+
+      <div class="coupon-course">
+
+        <span class="product-type-badge course">
+          <i class="fa-solid fa-book-open"></i>
+          Course
+        </span>
+
+        <strong>
+          <%= coupon.course.Course_name %>
+        </strong>
+
+      </div>
+
+    <% else %>
+
+      <div class="coupon-course">
+
+        <span class="product-type-badge course">
+          <i class="fa-solid fa-book-open"></i>
+          Course
+        </span>
+
+        <strong>
+          All Courses
+        </strong>
+
+      </div>
+
+    <% end %>
+
+
+  <% elsif coupon.applicable_to == "test_series" %>
+
+    <% if coupon.test_series.present? %>
+
+      <div class="coupon-course">
+
+        <span class="product-type-badge test-series">
+          <i class="fa-solid fa-clipboard-question"></i>
+          Test Series
+        </span>
+
+        <strong>
+          <%= coupon.test_series.title %>
+        </strong>
+
+      </div>
+
+    <% else %>
+
+      <div class="coupon-course">
+
+        <span class="product-type-badge test-series">
+          <i class="fa-solid fa-clipboard-question"></i>
+          Test Series
+        </span>
+
+        <strong>
+          All Test Series
+        </strong>
+
+      </div>
+
+    <% end %>
+
+
+  <% elsif coupon.applicable_to == "ebooks" %>
+
+    <% if coupon.ebook.present? %>
+
+      <div class="coupon-course">
+
+        <span class="product-type-badge ebook">
+          <i class="fa-solid fa-book"></i>
+          E-Book
+        </span>
+
+        <strong>
+          <%= coupon.ebook.title %>
+        </strong>
+
+      </div>
+
+    <% else %>
+
+      <div class="coupon-course">
+
+        <span class="product-type-badge ebook">
+          <i class="fa-solid fa-book"></i>
+          E-Book
+        </span>
+
+        <strong>
+          All E-Books
+        </strong>
+
+      </div>
+
+    <% end %>
+
+
+  <% elsif coupon.applicable_to == "all" %>
+
+    <div class="coupon-course">
+
+      <span class="product-type-badge all-products">
+        <i class="fa-solid fa-layer-group"></i>
+        All Products
+      </span>
+
+      <strong>
+        Courses + Test Series + E-Books
+      </strong>
+
+    </div>
+
+
+  <% else %>
+
+    <span class="coupon-no-expiry">
+      —
+    </span>
+
+  <% end %>
+
+</td>
+
+
+                <!-- Coupon Type -->
 
                 <td>
 
@@ -156,6 +289,8 @@
 
                 </td>
 
+
+                <!-- Discount -->
 
                 <td>
 
@@ -180,6 +315,8 @@
                 </td>
 
 
+                <!-- Usage -->
+
                 <td>
 
                   <div class="coupon-usage">
@@ -197,6 +334,8 @@
 
                 </td>
 
+
+                <!-- Status -->
 
                 <td>
 
@@ -233,6 +372,8 @@
                 </td>
 
 
+                <!-- Expiry -->
+
                 <td>
 
                   <% if coupon.expires_at.present? %>
@@ -249,6 +390,8 @@
 
                 </td>
 
+
+                <!-- Actions -->
 
                 <td>
 
@@ -306,7 +449,7 @@
         <h3>No coupons yet</h3>
 
         <p>
-          Create your first course discount coupon.
+          Create your first discount coupon.
         </p>
 
         <%= link_to new_admin_coupon_path,
