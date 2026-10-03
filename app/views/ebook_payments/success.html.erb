@@ -285,21 +285,19 @@
 
     <div class="success-actions">
 
-      <% if @ebook.pdf_file.attached? %>
+  <% if @ebook.ebook_files.exists? %>
 
-        <%= link_to "📖 Read E-Book",
-                    download_ebook_path(@ebook),
-                    target: "_blank",
-                    rel: "noopener",
-                    class: "success-btn primary-btn" %>
+    <%= link_to "📖 Read E-Book",
+                access_ebook_path(@ebook),
+                class: "success-btn primary-btn" %>
 
-      <% end %>
+  <% end %>
 
-      <%= link_to "📚 Back to E-Books",
-                  ebooks_path,
-                  class: "success-btn secondary-btn" %>
+  <%= link_to "📚 Back to E-Books",
+              ebooks_path,
+              class: "success-btn secondary-btn" %>
 
-    </div>
+</div>
 
     <div class="security-note">
       🔒 Your premium E-Book access is linked to your account.
