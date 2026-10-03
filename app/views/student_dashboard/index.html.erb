@@ -1,2111 +1,1175 @@
-<% content_for :title, "Student Dashboard" %>
-
-<style nonce="<%= content_security_policy_nonce %>">
-
-/* =========================================================
-   A ONE GS CENTER
-   STUDENT DASHBOARD / HOMEPAGE
-========================================================= */
-
-:root {
-  --student-primary: #6366f1;
-  --student-primary-dark: #4f46e5;
-  --student-primary-light: #8b5cf6;
-  --student-purple: #7c3aed;
-
-  --student-bg: #f7f8ff;
-  --student-card: #ffffff;
-
-  --student-text: #172554;
-  --student-heading: #1e1b4b;
-  --student-muted: #64748b;
-  --student-muted-light: #94a3b8;
-
-  --student-border: #e5e7eb;
-
-  --student-green: #10b981;
-  --student-green-dark: #059669;
-
-  --student-blue: #2563eb;
-  --student-pink: #db2777;
-  --student-orange: #f59e0b;
-
-  --student-radius: 18px;
-
-  --student-shadow:
-    0 8px 30px rgba(79, 70, 229, .07);
-
-  --student-shadow-hover:
-    0 15px 38px rgba(79, 70, 229, .13);
-}
-
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.student-dashboard {
-  min-height: 100vh;
-
-  padding:
-    105px
-    0
-    70px;
-
-  background:
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(124, 58, 237, .10),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 0% 100%,
-      rgba(37, 99, 235, .08),
-      transparent 30%
-    ),
-    #f7f8ff;
-
-  color: var(--student-text);
-}
-
-
-/* =========================================================
-   CONTAINER
-========================================================= */
-
-.student-dashboard-container {
-  width: min(
-    1380px,
-    calc(100% - 36px)
-  );
-
-  margin: 0 auto;
-}
-
-
-/* =========================================================
-   WELCOME HERO
-========================================================= */
-
-.student-welcome-card {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 25px;
-
-  min-height: 145px;
-
-  margin-bottom: 24px;
-
-  padding: 28px 32px;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(99, 102, 241, .10);
-
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff 0%,
-      #f4f1ff 58%,
-      #eeeaff 100%
-    );
-
-  box-shadow:
-    0 10px 35px rgba(79, 70, 229, .07);
-}
-
-
-.student-welcome-card::before {
-  content: "";
-
-  position: absolute;
-
-  right: -70px;
-  top: -80px;
-
-  width: 230px;
-  height: 230px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(124, 58, 237, .15),
-      rgba(124, 58, 237, 0)
-    );
-}
-
-
-.student-welcome-card::after {
-  content: "";
-
-  position: absolute;
-
-  right: 180px;
-  bottom: -90px;
-
-  width: 180px;
-  height: 180px;
-
-  border-radius: 50%;
-
-  background:
-    rgba(99, 102, 241, .05);
-}
-
-
-.student-welcome-left {
-  position: relative;
-
-  z-index: 2;
-
-  display: flex;
-  align-items: center;
-
-  gap: 20px;
-
-  min-width: 0;
-}
-
-
-.student-welcome-avatar {
-  width: 75px;
-  height: 75px;
-
-  min-width: 75px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #c4b5fd,
-      #ddd6fe
-    );
-
-  color: #4f46e5;
-
-  font-size: 32px;
-
-  box-shadow:
-    0 8px 20px rgba(99, 102, 241, .15);
-}
-
-
-.student-welcome-avatar img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-
-.student-welcome-text {
-  min-width: 0;
-}
-
-
-.student-welcome-text h1 {
-  margin: 0;
-
-  color: var(--student-heading);
-
-  font-size: 29px;
-
-  font-weight: 850;
-
-  letter-spacing: -.5px;
-}
-
-
-.student-welcome-text p {
-  margin: 7px 0 0;
-
-  color: var(--student-muted);
-
-  font-size: 14px;
-}
-
-
-.student-welcome-right {
-  position: relative;
-
-  z-index: 2;
-
-  max-width: 300px;
-
-  color: #4338ca;
-
-  font-size: 12px;
-
-  line-height: 1.7;
-
-  font-style: italic;
-
-  text-align: right;
-}
-
-
-/* =========================================================
-   STATISTICS
-========================================================= */
-
-.student-stat-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
-
-  gap: 17px;
-
-  margin-bottom: 24px;
-}
-
-
-.student-stat-card {
-  position: relative;
-
-  min-height: 135px;
-
-  padding: 20px;
-
-  overflow: hidden;
-
-  background: #fff;
-
-  border: 1px solid var(--student-border);
-
-  border-radius: var(--student-radius);
-
-  box-shadow: var(--student-shadow);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.student-stat-card:hover {
-  transform: translateY(-4px);
-
-  box-shadow: var(--student-shadow-hover);
-}
-
-
-.student-stat-card::after {
-  content: "";
-
-  position: absolute;
-
-  right: -35px;
-  bottom: -45px;
-
-  width: 120px;
-  height: 120px;
-
-  border-radius: 50%;
-
-  background: rgba(99, 102, 241, .055);
-}
-
-
-.student-stat-icon {
-  width: 43px;
-  height: 43px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 14px;
-
-  border-radius: 12px;
-
-  background: #ede9fe;
-
-  color: #6d28d9;
-
-  font-size: 18px;
-}
-
-
-.student-stat-card:nth-child(2)
-.student-stat-icon {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-
-.student-stat-card:nth-child(3)
-.student-stat-icon {
-  background: #dbeafe;
-  color: #2563eb;
-}
-
-
-.student-stat-card:nth-child(4)
-.student-stat-icon {
-  background: #fce7f3;
-  color: #db2777;
-}
-
-
-.student-stat-card h6 {
-  margin: 0 0 4px;
-
-  color: var(--student-muted);
-
-  font-size: 12px;
-
-  font-weight: 700;
-}
-
-
-.student-stat-card h3 {
-  margin: 0;
-
-  color: var(--student-heading);
-
-  font-size: 28px;
-
-  font-weight: 850;
-}
-
-
-/* =========================================================
-   MAIN GRID
-========================================================= */
-
-.student-main-grid {
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 1fr)
-    320px;
-
-  gap: 22px;
-
-  align-items: start;
-}
-
-
-.student-main-left {
-  min-width: 0;
-}
-
-
-.student-main-right {
-  min-width: 0;
-
-  position: sticky;
-
-  top: 95px;
-}
-
-
-/* =========================================================
-   COMMON CARD
-========================================================= */
-
-.student-card {
-  background: #fff;
-
-  border:
-    1px solid
-    var(--student-border);
-
-  border-radius: 19px;
-
-  box-shadow: var(--student-shadow);
-
-  overflow: hidden;
-}
-
-
-.student-card-header {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 15px;
-
-  padding: 18px 21px;
-
-  border-bottom:
-    1px solid
-    #eef2f7;
-}
-
-
-.student-card-header h3,
-.student-card-header h4 {
-  margin: 0;
-
-  color: var(--student-heading);
-
-  font-size: 17px;
-
-  font-weight: 800;
-}
-
-
-.student-card-header a {
-  color: var(--student-primary);
-
-  font-size: 11px;
-
-  font-weight: 700;
-
-  text-decoration: none;
-
-  white-space: nowrap;
-}
-
-
-.student-card-header a:hover {
-  color: var(--student-purple);
-}
-
-
-.student-card-body {
-  padding: 21px;
-}
-
-
-/* =========================================================
-   CONTINUE LEARNING
-========================================================= */
-
-.continue-card {
-  margin-bottom: 22px;
-}
-
-
-.continue-content {
-  display: grid;
-
-  grid-template-columns:
-    175px
-    minmax(0, 1fr);
-
-  gap: 22px;
-
-  align-items: center;
-}
-
-
-.continue-thumbnail {
-  width: 175px;
-  height: 105px;
-
-  overflow: hidden;
-
-  border-radius: 13px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #312e81,
-      #7c3aed
-    );
-
-  box-shadow:
-    0 7px 20px rgba(79, 70, 229, .18);
-}
-
-
-.continue-thumbnail img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-
-.continue-thumbnail-placeholder {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #fff;
-
-  font-size: 35px;
-}
-
-
-.continue-info {
-  min-width: 0;
-}
-
-
-.continue-label {
-  display: inline-flex;
-
-  margin-bottom: 7px;
-
-  padding: 5px 10px;
-
-  border-radius: 20px;
-
-  background: #ede9fe;
-
-  color: #6d28d9;
-
-  font-size: 10px;
-
-  font-weight: 800;
-}
-
-
-.continue-info h3 {
-  margin: 0 0 5px;
-
-  color: var(--student-heading);
-
-  font-size: 19px;
-
-  font-weight: 800;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-
-.continue-info p {
-  margin: 0 0 14px;
-
-  color: var(--student-muted);
-
-  font-size: 12px;
-}
-
-
-.continue-bottom {
-  display: flex;
-
-  align-items: center;
-
-  gap: 15px;
-}
-
-
-.continue-progress {
-  flex: 1;
-
-  min-width: 120px;
-}
-
-
-.progress-label-row {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  margin-bottom: 6px;
-
-  color: var(--student-muted);
-
-  font-size: 10px;
-
-  font-weight: 700;
-}
-
-
-.progress-track {
-  width: 100%;
-  height: 7px;
-
-  overflow: hidden;
-
-  border-radius: 20px;
-
-  background: #e9eaf5;
-}
-
-
-.progress-fill {
-  height: 100%;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(
-      90deg,
-      #6366f1,
-      #8b5cf6
-    );
-}
-
-
-.resume-btn {
-  flex-shrink: 0;
-
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  min-height: 40px;
-
-  padding: 9px 16px;
-
-  border: 0;
-
-  border-radius: 9px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #6366f1,
-      #7c3aed
-    );
-
-  color: #fff;
-
-  font-size: 11px;
-
-  font-weight: 750;
-
-  text-decoration: none;
-
-  box-shadow:
-    0 7px 17px rgba(99, 102, 241, .20);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.resume-btn:hover {
-  color: #fff;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 22px rgba(99, 102, 241, .28);
-}
-
-
-/* =========================================================
-   SECTION
-========================================================= */
-
-.student-section {
-  margin-top: 25px;
-}
-
-
-.student-section:first-child {
-  margin-top: 0;
-}
-
-
-.student-section-heading {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 15px;
-
-  margin-bottom: 14px;
-}
-
-
-.student-section-heading h2 {
-  margin: 0;
-
-  color: var(--student-heading);
-
-  font-size: 20px;
-
-  font-weight: 850;
-}
-
-
-.student-section-heading a {
-  color: var(--student-primary);
-
-  font-size: 11px;
-
-  font-weight: 700;
-
-  text-decoration: none;
-}
-
-
-/* =========================================================
-   COURSE GRID
-========================================================= */
-
-.student-course-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 16px;
-}
-
-
-.student-course-card {
-  height: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  overflow: hidden;
-
-  background: #fff;
-
-  border:
-    1px solid
-    var(--student-border);
-
-  border-radius: 17px;
-
-  box-shadow:
-    0 7px 23px rgba(15, 23, 42, .055);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.student-course-card:hover {
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 14px 32px rgba(79, 70, 229, .12);
-}
-
-
-.student-course-image {
-  position: relative;
-
-  height: 145px;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #312e81,
-      #7c3aed
-    );
-}
-
-
-.student-course-image img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  transition:
-    transform .35s ease;
-}
-
-
-.student-course-card:hover
-.student-course-image img {
-  transform: scale(1.04);
-}
-
-
-.student-course-placeholder {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #fff;
-
-  font-size: 42px;
-}
-
-
-.course-status-badge {
-  position: absolute;
-
-  top: 10px;
-  right: 10px;
-
-  padding: 5px 9px;
-
-  border-radius: 20px;
-
-  background: rgba(16, 185, 129, .94);
-
-  color: #fff;
-
-  font-size: 9px;
-
-  font-weight: 800;
-}
-
-
-.student-course-body {
-  display: flex;
-
-  flex-direction: column;
-
-  flex: 1;
-
-  padding: 16px;
-}
-
-
-.student-course-body h4 {
-  margin: 0 0 6px;
-
-  color: var(--student-heading);
-
-  font-size: 14px;
-
-  font-weight: 800;
-
-  line-height: 1.4;
-}
-
-
-.student-course-description {
-  margin: 0 0 13px;
-
-  color: var(--student-muted);
-
-  font-size: 11px;
-
-  line-height: 1.5;
-}
-
-
-.course-progress-area {
-  margin-top: auto;
-
-  margin-bottom: 13px;
-}
-
-
-.course-progress-row {
-  display: flex;
-
-  justify-content: space-between;
-
-  margin-bottom: 5px;
-
-  color: var(--student-muted);
-
-  font-size: 9px;
-
-  font-weight: 700;
-}
-
-
-.course-progress-track {
-  width: 100%;
-  height: 5px;
-
-  overflow: hidden;
-
-  border-radius: 20px;
-
-  background: #e9eaf5;
-}
-
-
-.course-progress-fill {
-  height: 100%;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(
-      90deg,
-      #6366f1,
-      #8b5cf6
-    );
-}
-
-
-.course-actions {
-  display: flex;
-
-  gap: 8px;
-}
-
-
-.course-actions .btn {
-  flex: 1;
-
-  min-height: 37px;
-
-  border-radius: 8px;
-
-  font-size: 10px;
-
-  font-weight: 700;
-}
-
-
-/* =========================================================
-   TEST SERIES
-========================================================= */
-
-.test-series-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 16px;
-}
-
-
-.test-series-card {
-  position: relative;
-
-  height: 100%;
-
-  padding: 18px;
-
-  background: #fff;
-
-  border:
-    1px solid
-    var(--student-border);
-
-  border-radius: 17px;
-
-  box-shadow:
-    0 7px 23px rgba(15, 23, 42, .055);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.test-series-card:hover {
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 14px 32px rgba(79, 70, 229, .11);
-}
-
-
-.test-series-icon {
-  width: 43px;
-  height: 43px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 13px;
-
-  border-radius: 12px;
-
-  background: #fce7f3;
-
-  color: #db2777;
-
-  font-size: 18px;
-}
-
-
-.test-series-card h4 {
-  margin: 0 0 8px;
-
-  color: var(--student-heading);
-
-  font-size: 15px;
-
-  font-weight: 800;
-
-  line-height: 1.45;
-}
-
-
-.test-series-meta {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  margin-bottom: 15px;
-
-  padding: 6px 9px;
-
-  border:
-    1px solid
-    #e2e8f0;
-
-  border-radius: 8px;
-
-  background: #f8fafc;
-
-  color: #475569;
-
-  font-size: 10px;
-
-  font-weight: 700;
-}
-
-
-.test-series-actions {
-  display: flex;
-
-  gap: 8px;
-}
-
-
-.test-series-actions .btn {
-  flex: 1;
-
-  font-size: 10px;
-
-  font-weight: 700;
-
-  border-radius: 8px;
-}
-
-
-/* =========================================================
-   RIGHT PROFILE CARD
-========================================================= */
-
-.student-profile-card {
-  margin-bottom: 18px;
-}
-
-
-.profile-card-top {
-  padding: 22px;
-
-  text-align: center;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f5f3ff,
-      #eef2ff
-    );
-}
-
-
-.profile-avatar {
-  width: 82px;
-  height: 82px;
-
-  margin: 0 auto 12px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-
-  border-radius: 50%;
-
-  border:
-    4px solid
-    #fff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #6366f1,
-      #9333ea
-    );
-
-  color: #fff;
-
-  font-size: 30px;
-
-  box-shadow:
-    0 7px 20px rgba(79, 70, 229, .20);
-}
-
-
-.profile-avatar img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-
-.profile-card-top h3 {
-  margin: 0 0 4px;
-
-  color: var(--student-heading);
-
-  font-size: 18px;
-
-  font-weight: 800;
-}
-
-
-.profile-card-top p {
-  margin: 0;
-
-  color: var(--student-muted);
-
-  font-size: 11px;
-}
-
-
-.profile-role {
-  display: inline-flex;
-
-  margin-top: 8px;
-
-  padding: 4px 9px;
-
-  border-radius: 20px;
-
-  background: #ede9fe;
-
-  color: #6d28d9;
-
-  font-size: 9px;
-
-  font-weight: 800;
-}
-
-
-.profile-details {
-  padding: 16px 20px;
-}
-
-
-.profile-detail-row {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 9px 0;
-
-  border-bottom:
-    1px solid
-    #f1f5f9;
-}
-
-
-.profile-detail-row:last-child {
-  border-bottom: 0;
-}
-
-
-.profile-detail-icon {
-  width: 30px;
-  height: 30px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 8px;
-
-  background: #f1f5f9;
-
-  color: #64748b;
-
-  font-size: 12px;
-}
-
-
-.profile-detail-content {
-  min-width: 0;
-}
-
-
-.profile-detail-content span {
-  display: block;
-
-  color: #94a3b8;
-
-  font-size: 9px;
-}
-
-
-.profile-detail-content strong {
-  display: block;
-
-  margin-top: 2px;
-
-  color: #334155;
-
-  font-size: 10px;
-
-  word-break: break-word;
-}
-
-
-/* =========================================================
-   PROGRESS CARD
-========================================================= */
-
-.progress-card {
-  margin-bottom: 18px;
-}
-
-
-.progress-overview {
-  padding: 20px;
-}
-
-
-.progress-circle {
-  position: relative;
-
-  width: 145px;
-  height: 145px;
-
-  margin: 0 auto 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background:
-    conic-gradient(
-      #6366f1 0deg 234deg,
-      #e5e7eb 234deg 360deg
-    );
-}
-
-
-.progress-circle::after {
-  content: "";
-
-  position: absolute;
-
-  width: 105px;
-  height: 105px;
-
-  border-radius: 50%;
-
-  background: #fff;
-
-  box-shadow:
-    inset 0 0 0 1px #f1f5f9;
-}
-
-
-.progress-circle-content {
-  position: relative;
-
-  z-index: 2;
-
-  text-align: center;
-}
-
-
-.progress-circle-content strong {
-  display: block;
-
-  color: var(--student-heading);
-
-  font-size: 27px;
-
-  font-weight: 850;
-}
-
-
-.progress-circle-content span {
-  color: var(--student-muted);
-
-  font-size: 9px;
-
-  font-weight: 700;
-}
-
-
-.progress-stat-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 11px;
-}
-
-
-.progress-stat-row {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 9px 10px;
-
-  border-radius: 9px;
-
-  background: #f8fafc;
-}
-
-
-.progress-stat-left {
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-}
-
-
-.progress-stat-dot {
-  width: 8px;
-  height: 8px;
-
-  border-radius: 50%;
-
-  background: #6366f1;
-}
-
-
-.progress-stat-dot.green {
-  background: #10b981;
-}
-
-
-.progress-stat-dot.pink {
-  background: #ec4899;
-}
-
-
-.progress-stat-left span {
-  color: #475569;
-
-  font-size: 10px;
-
-  font-weight: 600;
-}
-
-
-.progress-stat-row strong {
-  color: var(--student-heading);
-
-  font-size: 11px;
-
-  font-weight: 800;
-}
-
-
-/* =========================================================
-   ACTIVITY
-========================================================= */
-
-.activity-card {
-  margin-bottom: 18px;
-}
-
-
-.activity-list {
-  padding: 5px 20px 10px;
-}
-
-
-.activity-item {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 12px 0;
-
-  border-bottom:
-    1px solid
-    #f1f5f9;
-}
-
-
-.activity-item:last-child {
-  border-bottom: 0;
-}
-
-
-.activity-icon {
-  width: 32px;
-  height: 32px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #ede9fe;
-
-  color: #6366f1;
-
-  font-size: 12px;
-}
-
-
-.activity-icon.green {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-
-.activity-icon.pink {
-  background: #fce7f3;
-  color: #db2777;
-}
-
-
-.activity-text {
-  min-width: 0;
-}
-
-
-.activity-text strong {
-  display: block;
-
-  overflow: hidden;
-
-  color: #334155;
-
-  font-size: 10px;
-
-  font-weight: 700;
-
-  white-space: nowrap;
-
-  text-overflow: ellipsis;
-}
-
-
-.activity-text small {
-  color: #94a3b8;
-
-  font-size: 9px;
-}
-
-
-/* =========================================================
-   RESOURCES
-========================================================= */
-
-.resource-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 9px;
-}
-
-
-.resource-item {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 12px;
-
-  padding: 12px;
-
-  border:
-    1px solid
-    #e5e7eb;
-
-  border-radius: 11px;
-
-  background: #fff;
-
-  transition:
-    background .2s ease,
-    border-color .2s ease;
-}
-
-
-.resource-item:hover {
-  background: #f8fafc;
-
-  border-color:
-    #ddd6fe;
-}
-
-
-.resource-info {
-  min-width: 0;
-}
-
-
-.resource-info strong {
-  display: block;
-
-  color: #334155;
-
-  font-size: 12px;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-
-.resource-info small {
-  display: block;
-
-  margin-top: 3px;
-
-  color: #94a3b8;
-
-  font-size: 9px;
-}
-
-
-.resource-download {
-  flex-shrink: 0;
-
-  padding: 6px 10px;
-
-  border-radius: 7px;
-
-  background: #ecfdf5;
-
-  color: #059669;
-
-  font-size: 9px;
-
-  font-weight: 800;
-
-  text-decoration: none;
-}
-
-
-.resource-download:hover {
-  color: #047857;
-
-  background: #d1fae5;
-}
-
-
-/* =========================================================
-   NOTIFICATIONS
-========================================================= */
-
-.notification-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 9px;
-}
-
-
-.notification-item {
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: 10px;
-
-  padding: 12px;
-
-  border:
-    1px solid
-    #e5e7eb;
-
-  border-radius: 11px;
-
-  background: #fff;
-}
-
-
-.notification-icon {
-  width: 30px;
-  height: 30px;
-
-  min-width: 30px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 8px;
-
-  background: #ede9fe;
-
-  color: #6366f1;
-
-  font-size: 11px;
-}
-
-
-.notification-content {
-  min-width: 0;
-}
-
-
-.notification-content strong {
-  display: block;
-
-  color: #334155;
-
-  font-size: 11px;
-
-  line-height: 1.4;
-}
-
-
-.notification-content p {
-  margin: 3px 0 0;
-
-  color: #64748b;
-
-  font-size: 9px;
-
-  line-height: 1.45;
-}
-
-
-.notification-date {
-  margin-left: auto;
-
-  flex-shrink: 0;
-
-  color: #94a3b8;
-
-  font-size: 8px;
-}
-
-
-/* =========================================================
-   QUICK ACTIONS
-========================================================= */
-
-.quick-actions {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 9px;
-}
-
-
-.quick-action {
-  min-height: 40px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px;
-
-  border-radius: 8px;
-
-  font-size: 9px;
-
-  font-weight: 750;
-
-  text-decoration: none;
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.quick-action:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 6px 15px rgba(15, 23, 42, .10);
-}
-
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
-.student-empty {
-  padding: 35px 20px;
-
-  text-align: center;
-}
-
-
-.student-empty-icon {
-  width: 50px;
-  height: 50px;
-
-  margin: 0 auto 12px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #f1f5f9;
-
-  color: #94a3b8;
-
-  font-size: 20px;
-}
-
-
-.student-empty p {
-  margin: 0 0 13px;
-
-  color: var(--student-muted);
-
-  font-size: 12px;
-}
-
-
-/* =========================================================
-   CERTIFICATE BUTTON
-========================================================= */
-
-.certificate-btn {
-  width: 100%;
-
-  margin-top: 8px;
-
-  border-radius: 8px;
-
-  font-size: 10px;
-
-  font-weight: 700;
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-.logout-btn {
-  width: 100%;
-
-  min-height: 40px;
-
-  margin-top: 12px;
-
-  border-radius: 9px;
-
-  font-size: 11px;
-
-  font-weight: 700;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1200px) {
-
-  .student-main-grid {
-    grid-template-columns:
-      minmax(0, 1fr)
-      290px;
+<%# =========================================================
+    STUDENT DASHBOARD
+    app/views/student_dashboard/index.html.erb
+========================================================= %>
+
+<style>
+  /* =========================================================
+     DASHBOARD BASE
+  ========================================================= */
+
+  :root {
+    --student-primary: #4f46e5;
+    --student-primary-dark: #3730a3;
+    --student-secondary: #7c3aed;
+    --student-success: #10b981;
+    --student-warning: #f59e0b;
+    --student-danger: #ef4444;
+    --student-heading: #111827;
+    --student-text: #374151;
+    --student-muted: #6b7280;
+    --student-border: #e5e7eb;
+    --student-bg: #f8fafc;
+    --student-card: #ffffff;
   }
-
-  .student-course-grid,
-  .test-series-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-}
-
-
-@media (max-width: 1050px) {
-
-  .student-stat-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-  .student-main-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .student-main-right {
-    position: static;
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 18px;
-  }
-
-  .student-profile-card,
-  .progress-card,
-  .activity-card {
-    margin-bottom: 0;
-  }
-
-}
-
-
-@media (max-width: 760px) {
 
   .student-dashboard {
-    padding:
-      90px
-      0
-      50px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 18px 50px;
+    padding-top: 100px;
   }
 
-  .student-dashboard-container {
-    width:
-      calc(100% - 22px);
+  /* =========================================================
+     WELCOME
+  ========================================================= */
+
+  .student-welcome {
+    position: relative;
+    overflow: hidden;
+    padding: 28px;
+    margin-bottom: 22px;
+    border-radius: 22px;
+    color: #fff;
+    background:
+      linear-gradient(
+        135deg,
+        var(--student-primary-dark),
+        var(--student-primary),
+        var(--student-secondary)
+      );
+    box-shadow: 0 14px 35px rgba(79, 70, 229, .18);
   }
 
-  .student-welcome-card {
-    padding: 22px;
-
-    align-items: flex-start;
-
-    flex-direction: column;
+  .student-welcome::after {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    right: -80px;
+    top: -110px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
   }
 
-  .student-welcome-right {
-    max-width: 100%;
-
-    text-align: left;
+  .student-welcome-content {
+    position: relative;
+    z-index: 2;
   }
 
-  .student-welcome-text h1 {
-    font-size: 24px;
+  .student-welcome h1 {
+    margin: 0 0 8px;
+    font-size: clamp(23px, 4vw, 34px);
+    font-weight: 800;
   }
 
-  .student-main-right {
-    grid-template-columns: 1fr;
+  .student-welcome p {
+    margin: 0;
+    color: rgba(255,255,255,.88);
+    font-size: 14px;
   }
 
-  .student-course-grid,
-  .test-series-grid {
-    grid-template-columns: 1fr;
+  .student-welcome-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 8px 13px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 30px;
+    background: rgba(255,255,255,.10);
+    font-size: 12px;
+    font-weight: 700;
   }
 
-}
+  /* =========================================================
+     TAB NAVIGATION
+  ========================================================= */
 
-
-@media (max-width: 600px) {
-
-  .student-dashboard {
-    padding-top: 80px;
+  .student-tabs-wrapper {
+    position: sticky;
+    top: 10px;
+    z-index: 50;
+    margin-bottom: 22px;
   }
 
-  .student-stat-grid {
-    grid-template-columns: 1fr;
-
-    gap: 12px;
+  .student-tabs {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px;
+    overflow-x: auto;
+    border: 1px solid var(--student-border);
+    border-radius: 15px;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 8px 25px rgba(15,23,42,.07);
+    scrollbar-width: none;
   }
 
-  .student-stat-card {
-    min-height: 120px;
+  .student-tabs::-webkit-scrollbar {
+    display: none;
   }
 
-  .continue-content {
-    grid-template-columns: 1fr;
-  }
-
-  .continue-thumbnail {
-    width: 100%;
-    height: 170px;
-  }
-
-  .continue-bottom {
-    align-items: stretch;
-
-    flex-direction: column;
-  }
-
-  .continue-progress {
-    width: 100%;
-  }
-
-  .resume-btn {
+  .student-tab {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-
-    width: 100%;
+    gap: 7px;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--student-muted);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+      background .16s ease,
+      color .16s ease,
+      transform .16s ease;
   }
 
-  .student-card-header {
-    padding: 16px;
+  .student-tab:hover {
+    color: var(--student-primary);
+    background: #f5f3ff;
   }
 
-  .student-card-body {
-    padding: 16px;
+  .student-tab.active {
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      var(--student-primary),
+      var(--student-secondary)
+    );
+    box-shadow: 0 5px 14px rgba(79,70,229,.22);
+  }
+
+  .student-tab:active {
+    transform: scale(.97);
+  }
+
+  /* =========================================================
+     TAB PANELS
+  ========================================================= */
+
+  .dashboard-tab-panel {
+    display: none;
+  }
+
+  .dashboard-tab-panel.active {
+    display: block;
+    animation: studentTabIn .16s ease;
+  }
+
+  @keyframes studentTabIn {
+    from {
+      opacity: .65;
+      transform: translateY(3px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* =========================================================
+     SECTION
+  ========================================================= */
+
+  .student-section {
+    margin-bottom: 25px;
+  }
+
+  .student-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 13px;
   }
 
   .student-section-heading h2 {
+    margin: 0;
+    color: var(--student-heading);
     font-size: 18px;
+    font-weight: 800;
   }
 
-}
-
-
-@media (max-width: 430px) {
-
-  .student-welcome-left {
-    align-items: flex-start;
+  .student-section-heading a {
+    color: var(--student-primary);
+    font-size: 11px;
+    font-weight: 800;
+    text-decoration: none;
   }
 
-  .student-welcome-avatar {
-    width: 60px;
-    height: 60px;
-
-    min-width: 60px;
-
-    font-size: 24px;
+  .student-section-heading a:hover {
+    text-decoration: underline;
   }
 
-  .student-welcome-text h1 {
-    font-size: 21px;
+  /* =========================================================
+     STATISTICS
+  ========================================================= */
+
+  .student-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 25px;
   }
 
-  .student-welcome-text p {
+  .student-stat-card {
+    padding: 17px;
+    border: 1px solid var(--student-border);
+    border-radius: 16px;
+    background: var(--student-card);
+    box-shadow: 0 7px 23px rgba(15,23,42,.055);
+  }
+
+  .student-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 11px;
+    border-radius: 10px;
+    color: var(--student-primary);
+    background: #eef2ff;
+    font-size: 17px;
+  }
+
+  .student-stat-card h6 {
+    margin: 0 0 4px;
+    color: var(--student-muted);
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .student-stat-card h3 {
+    margin: 0;
+    color: var(--student-heading);
+    font-size: 25px;
+    font-weight: 850;
+  }
+
+  /* =========================================================
+     MAIN GRID
+  ========================================================= */
+
+  .student-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+  }
+
+  .student-card {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid var(--student-border);
+    border-radius: 17px;
+    background: var(--student-card);
+    box-shadow: 0 7px 23px rgba(15,23,42,.055);
+  }
+
+  .student-card:last-child {
+    margin-bottom: 0;
+  }
+
+  /* =========================================================
+     CONTINUE LEARNING
+  ========================================================= */
+
+  .continue-learning-card {
+    padding: 20px;
+    border-radius: 17px;
+    color: #fff;
+    background:
+      linear-gradient(
+        135deg,
+        #312e81,
+        #4f46e5,
+        #7c3aed
+      );
+    box-shadow: 0 12px 30px rgba(79,70,229,.17);
+  }
+
+  .continue-learning-card h3 {
+    margin: 0 0 7px;
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .continue-learning-card p {
+    margin: 0 0 15px;
+    color: rgba(255,255,255,.82);
     font-size: 12px;
   }
 
-  .quick-actions {
-    grid-template-columns: 1fr;
+  .continue-learning-card .btn {
+    border: 0;
+    background: #fff;
+    color: var(--student-primary-dark);
+    font-weight: 800;
   }
 
-  .course-actions,
-  .test-series-actions {
+  /* =========================================================
+     COURSE GRID
+  ========================================================= */
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+
+  .course-card {
+    display: flex;
     flex-direction: column;
+    height: 100%;
+    padding: 17px;
+    border: 1px solid var(--student-border);
+    border-radius: 15px;
+    background: #fff;
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
   }
 
+  .course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79,70,229,.10);
+  }
+
+  .course-card h4 {
+    margin: 0 0 8px;
+    color: var(--student-heading);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.4;
+  }
+
+  .course-card p {
+    margin: 0 0 13px;
+    color: var(--student-muted);
+    font-size: 10px;
+  }
+
+  .course-progress {
+    margin-bottom: 14px;
+  }
+
+  .course-progress-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+    color: var(--student-muted);
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  .course-progress-bar {
+    width: 100%;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e5e7eb;
+  }
+
+  .course-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--student-primary),
+      var(--student-secondary)
+    );
+  }
+
+  .course-card-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 7px;
+  }
+
+  .course-card-actions .btn {
+    flex: 1;
+    min-height: 36px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  /* =========================================================
+     TEST SERIES
+  ========================================================= */
+
+  .test-series-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+
+  .test-series-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 17px;
+    border: 1px solid var(--student-border);
+    border-radius: 15px;
+    background: #fff;
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+
+  .test-series-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79,70,229,.10);
+  }
+
+  .test-series-card h4 {
+    margin: 0 0 8px;
+    color: var(--student-heading);
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .test-series-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 13px;
+  }
+
+  .test-series-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: #f3f4f6;
+    color: var(--student-muted);
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  .test-series-card p {
+    margin: 0 0 14px;
+    color: var(--student-muted);
+    font-size: 10px;
+  }
+
+  .test-series-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 7px;
+  }
+
+  .test-series-actions .btn {
+    flex: 1;
+    min-height: 36px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  /* =========================================================
+     E-BOOKS
+  ========================================================= */
+
+  .ebook-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .ebook-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--student-border);
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 7px 23px rgba(15,23,42,.055);
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease;
+  }
+
+  .ebook-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(79,70,229,.12);
+  }
+
+  .ebook-cover {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      #312e81,
+      #7c3aed
+    );
+  }
+
+  .ebook-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease;
+  }
+
+  .ebook-card:hover .ebook-cover img {
+    transform: scale(1.04);
+  }
+
+  .ebook-cover-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 48px;
+  }
+
+  .ebook-purchased-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: rgba(16,185,129,.95);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .ebook-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+  }
+
+  .ebook-body h4 {
+    margin: 0 0 7px;
+    color: var(--student-heading);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.4;
+  }
+
+  .ebook-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 14px;
+    color: var(--student-muted);
+    font-size: 10px;
+  }
+
+  .ebook-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+  }
+
+  .ebook-actions .btn {
+    width: 100%;
+    min-height: 37px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  /* =========================================================
+     RESOURCES
+  ========================================================= */
+
+  .resource-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .resource-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--student-border);
+  }
+
+  .resource-item:last-child {
+    border-bottom: 0;
+  }
+
+  .resource-info {
+    min-width: 0;
+  }
+
+  .resource-info strong {
+    display: block;
+    overflow: hidden;
+    color: var(--student-heading);
+    font-size: 12px;
+    font-weight: 750;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .resource-info small {
+    color: var(--student-muted);
+    font-size: 9px;
+  }
+
+  /* =========================================================
+     NOTIFICATIONS
+  ========================================================= */
+
+  .notification-item {
+    display: flex;
+    gap: 11px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--student-border);
+  }
+
+  .notification-item:last-child {
+    border-bottom: 0;
+  }
+
+  .notification-icon {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: var(--student-primary);
+    background: #eef2ff;
+  }
+
+  .notification-content {
+    min-width: 0;
+  }
+
+  .notification-content strong {
+    display: block;
+    color: var(--student-heading);
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .notification-content p {
+    margin: 3px 0 0;
+    color: var(--student-muted);
+    font-size: 10px;
+  }
+
+  /* =========================================================
+     PROFILE
+  ========================================================= */
+
+  .profile-card {
+    text-align: center;
+  }
+
+  .profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      var(--student-primary),
+      var(--student-secondary)
+    );
+    font-size: 30px;
+  }
+
+  .profile-card h3 {
+    margin: 0 0 4px;
+    color: var(--student-heading);
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .profile-card p {
+    margin: 0 0 15px;
+    color: var(--student-muted);
+    font-size: 10px;
+    word-break: break-word;
+  }
+
+  /* =========================================================
+     EMPTY STATE
+  ========================================================= */
+
+  .student-empty {
+    padding: 35px 15px;
+    text-align: center;
+  }
+
+  .student-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    color: var(--student-primary);
+    background: #eef2ff;
+    font-size: 25px;
+  }
+
+  .student-empty p {
+    margin: 0 0 14px;
+    color: var(--student-muted);
+    font-size: 12px;
+  }
+
+  /* =========================================================
+     QUICK ACTIONS
+  ========================================================= */
+
+  .quick-actions {
+    display: grid;
+    gap: 9px;
+  }
+
+  .quick-action {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 12px;
+    border: 1px solid var(--student-border);
+    border-radius: 10px;
+    color: var(--student-heading);
+    background: #fff;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 750;
+    transition: .16s ease;
+  }
+
+  .quick-action:hover {
+    color: var(--student-primary);
+    border-color: #c7d2fe;
+    background: #f5f3ff;
+  }
+
+  .quick-action i {
+    color: var(--student-primary);
+    font-size: 15px;
+  }
+
+  /* =========================================================
+     PROGRESS
+  ========================================================= */
+
+  .progress-item {
+    margin-bottom: 14px;
+  }
+
+  .progress-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .progress-item-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 9px;
+    color: var(--student-muted);
+    font-weight: 700;
+  }
+
+  .progress-track {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e5e7eb;
+  }
+
+  .progress-value {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--student-primary),
+      var(--student-secondary)
+    );
+  }
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 1200px) {
+    .student-stat-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .student-main-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .student-dashboard {
+      padding: 16px 12px 35px;
+    }
+
+    .student-welcome {
+      padding: 22px 18px;
+      border-radius: 17px;
+    }
+
+    .student-stat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .course-grid,
+    .test-series-grid,
+    .ebook-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .student-tabs-wrapper {
+      top: 5px;
+    }
+
+    .student-tab {
+      min-height: 39px;
+      padding: 0 12px;
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .student-stat-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .course-card-actions,
+    .test-series-actions,
+    .ebook-actions {
+      flex-direction: column;
+    }
+
+    .student-section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
+
+
+  /* =========================
+   E-BOOK CARD
+   CARD FITS COVER
+   ========================= */
+
+.student-ebook-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-start;
 }
 
+.student-ebook-card {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+
+  background: #fff;
+  border-radius: 18px;
+
+  box-shadow: 0 12px 30px rgba(45, 55, 100, 0.10);
+}
+
+/* Cover controls the card width */
+.student-ebook-cover {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  background: #f1f3f8;
+}
+
+.student-ebook-cover img {
+  display: block;
+
+  /* Image keeps its original aspect ratio */
+  width: auto;
+  height: auto;
+
+  /* Don't become larger than the screen */
+  max-width: 100%;
+  max-height: 320px;
+
+  object-fit: contain;
+}
+
+/* Purchased badge */
+.student-ebook-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  padding: 7px 11px;
+  border-radius: 999px;
+
+  background: #20c997;
+  color: #fff;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Body follows the cover width */
+.student-ebook-body {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px 16px;
+}
+
+.student-ebook-title {
+  margin: 0 0 7px;
+
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.student-ebook-date {
+  margin: 0 0 14px;
+
+  color: #667085;
+  font-size: 13px;
+}
+
+/* Read button */
+.student-ebook-button {
+  width: 100%;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(90deg, #6d16d9, #286df5);
+  color: #fff;
+
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+
+  box-sizing: border-box;
+}
+
+.student-ebook-button:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 700px) {
+
+  .student-ebook-grid {
+    display: block;
+  }
+
+  .student-ebook-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .student-ebook-cover {
+    width: 100%;
+  }
+
+  .student-ebook-cover img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+  }
+}
 </style>
+
+
+
 
 
 <div class="student-dashboard">
 
-  <div class="student-dashboard-container">
+  <!-- =====================================================
+       WELCOME
+  ====================================================== -->
 
+  <section class="student-welcome">
 
-    <!-- =====================================================
-         WELCOME
-    ====================================================== -->
+    <div class="student-welcome-content">
 
-    <section class="student-welcome-card">
+      <h1>
+        Welcome,
+        <%= current_user.name.presence || current_user.email %> 👋
+      </h1>
 
-      <div class="student-welcome-left">
+      <p>
+        Continue your learning journey and access everything you have purchased.
+      </p>
 
-        <div class="student-welcome-avatar">
+      <div class="student-welcome-user">
+        <i class="bi bi-person-circle"></i>
 
-          <% if current_user.image.attached? %>
-
-            <%= image_tag(
-              current_user.image,
-              alt: current_user.name
-            ) %>
-
-          <% else %>
-
-            <i class="bi bi-person-fill"></i>
-
-          <% end %>
-
-        </div>
-
-
-        <div class="student-welcome-text">
-
-          <h1>
-            👋 Welcome, <%= current_user.name %>
-          </h1>
-
-          <p>
-            Keep learning, keep growing, and achieve your goals.
-          </p>
-
-        </div>
-
+        <%= current_user.email %>
       </div>
 
+    </div>
 
-      <div class="student-welcome-right">
-
-        “Success is the sum of small efforts,
-        repeated day in and day out.”
-
-        <br>
-
-        — Keep Learning 🚀
-
-      </div>
-
-    </section>
+  </section>
 
 
+  <!-- =====================================================
+       FAST DASHBOARD TABS
+  ====================================================== -->
 
-    <!-- =====================================================
+  <div class="student-tabs-wrapper">
+
+    <nav
+      class="student-tabs"
+      aria-label="Student Dashboard Navigation">
+
+      <!-- OVERVIEW -->
+
+      <button
+        type="button"
+        class="student-tab active"
+        data-dashboard-tab="overview">
+
+        <i class="bi bi-grid-1x2-fill"></i>
+
+        Overview
+
+      </button>
+
+
+      <!-- COURSES -->
+
+      <button
+        type="button"
+        class="student-tab"
+        data-dashboard-tab="courses">
+
+        <i class="bi bi-mortarboard-fill"></i>
+
+        My Courses
+
+        <span>
+          (<%= @courses.count %>)
+        </span>
+
+      </button>
+
+
+      <!-- TEST SERIES -->
+
+      <button
+        type="button"
+        class="student-tab"
+        data-dashboard-tab="test-series">
+
+        <i class="bi bi-journal-check"></i>
+
+        Test Series
+
+        <span>
+          (<%= @test_series_purchases.count %>)
+        </span>
+
+      </button>
+
+
+      <!-- E-BOOKS -->
+
+      <button
+        type="button"
+        class="student-tab"
+        data-dashboard-tab="ebooks">
+
+        <i class="bi bi-book-half"></i>
+
+        E-Books
+
+        <span>
+          (<%= @ebook_purchases.count %>)
+        </span>
+
+      </button>
+
+    </nav>
+
+  </div>
+
+
+  <!-- =====================================================
+       OVERVIEW TAB
+  ====================================================== -->
+
+  <section
+    class="dashboard-tab-panel active"
+    data-dashboard-panel="overview">
+
+
+    <!-- =================================================
          STATISTICS
-    ====================================================== -->
+    ================================================== -->
 
-    <section class="student-stat-grid">
-
+    <div class="student-stat-grid">
 
       <!-- COURSES -->
 
       <div class="student-stat-card">
 
         <div class="student-stat-icon">
-
-          <i class="bi bi-book"></i>
-
+          <i class="bi bi-mortarboard-fill"></i>
         </div>
 
         <h6>
@@ -2114,8 +1178,7 @@
 
         <h3
           class="student-counter"
-          data-count="<%= @courses.count %>"
-        >
+          data-count="<%= @courses.count %>">
           0
         </h3>
 
@@ -2127,9 +1190,7 @@
       <div class="student-stat-card">
 
         <div class="student-stat-icon">
-
-          <i class="bi bi-check-circle"></i>
-
+          <i class="bi bi-check-circle-fill"></i>
         </div>
 
         <h6>
@@ -2138,10 +1199,7 @@
 
         <h3
           class="student-counter"
-          data-count="<%= current_user.video_progresses
-                              .where(completed: true)
-                              .count %>"
-        >
+          data-count="<%= current_user.video_progresses.where(completed: true).count %>">
           0
         </h3>
 
@@ -2153,9 +1211,7 @@
       <div class="student-stat-card">
 
         <div class="student-stat-icon">
-
-          <i class="bi bi-play-btn"></i>
-
+          <i class="bi bi-play-circle-fill"></i>
         </div>
 
         <h6>
@@ -2164,8 +1220,7 @@
 
         <h3
           class="student-counter"
-          data-count="<%= Video.count %>"
-        >
+          data-count="<%= @total_course_videos %>">
           0
         </h3>
 
@@ -2177,159 +1232,79 @@
       <div class="student-stat-card">
 
         <div class="student-stat-icon">
-
-          <i class="bi bi-journal-text"></i>
-
+          <i class="bi bi-journal-check"></i>
         </div>
 
         <h6>
-          Enrolled Test Series
+          Test Series
         </h6>
 
         <h3
           class="student-counter"
-          data-count="<%= current_user.test_series_purchases
-                              .where(
-                                payment_status: "paid",
-                                status: "Active"
-                              )
-                              .count %>"
-        >
+          data-count="<%= @test_series_purchases.count %>">
           0
         </h3>
 
       </div>
 
-    </section>
+
+      <!-- EBOOKS -->
+
+      <div class="student-stat-card">
+
+        <div class="student-stat-icon">
+          <i class="bi bi-file-earmark-pdf-fill"></i>
+        </div>
+
+        <h6>
+          Purchased E-Books
+        </h6>
+
+        <h3
+          class="student-counter"
+          data-count="<%= @ebook_purchases.count %>">
+          0
+        </h3>
+
+      </div>
+
+    </div>
 
 
-
-    <!-- =====================================================
-         MAIN LAYOUT
-    ====================================================== -->
+    <!-- =================================================
+         MAIN OVERVIEW GRID
+    ================================================== -->
 
     <div class="student-main-grid">
 
+      <!-- =================================================
+           LEFT
+      ================================================== -->
 
-      <!-- ===================================================
-           LEFT CONTENT
-      ==================================================== -->
-
-      <main class="student-main-left">
+      <div>
 
 
-        <!-- =================================================
-             CONTINUE LEARNING
-        ================================================== -->
+        <!-- CONTINUE LEARNING -->
 
         <% if @last_progress.present? %>
 
-          <section class="student-card continue-card">
+          <section class="student-section">
 
-            <div class="student-card-header">
+            <div class="continue-learning-card">
 
               <h3>
-                ▶ Continue Learning
+                Continue Learning 📚
               </h3>
 
-            </div>
+              <p>
+                Continue from where you stopped last time.
+              </p>
 
-
-            <div class="student-card-body">
-
-              <div class="continue-content">
-
-
-                <!-- THUMBNAIL -->
-
-                <div class="continue-thumbnail">
-
-                  <% if @last_progress.video.course.image.attached? %>
-
-                    <%= image_tag(
-                      @last_progress.video.course.image,
-                      alt: @last_progress.video.course.Course_name
-                    ) %>
-
-                  <% else %>
-
-                    <div class="continue-thumbnail-placeholder">
-
-                      <i class="bi bi-book"></i>
-
-                    </div>
-
-                  <% end %>
-
-                </div>
-
-
-                <!-- INFO -->
-
-                <div class="continue-info">
-
-                  <span class="continue-label">
-                    Continue where you left off
-                  </span>
-
-
-                  <h3>
-                    <%= @last_progress.video.title %>
-                  </h3>
-
-
-                  <p>
-                    <%= @last_progress.video.course.Course_name %>
-                  </p>
-
-
-                  <div class="continue-bottom">
-
-                    <div class="continue-progress">
-
-                      <div class="progress-label-row">
-
-                        <span>
-                          Your Progress
-                        </span>
-
-                        <strong>
-                          Continue
-                        </strong>
-
-                      </div>
-
-                      <div class="progress-track">
-
-                        <div
-                          class="progress-fill"
-                          style="width: 65%;"
-                        ></div>
-
-                      </div>
-
-                    </div>
-
-
-                    <%= link_to(
-                      learning_video_path(
-                        @last_progress.video.course,
-                        @last_progress.video
-                      ),
-                      class: "resume-btn"
-                    ) do %>
-
-                      <i class="bi bi-play-fill"></i>
-
-                      Resume
-
-                    <% end %>
-
-                  </div>
-
-                </div>
-
-              </div>
+              <%= link_to(
+                "Continue Learning",
+                learning_course_path(@last_progress.video.course),
+                class: "btn btn-light"
+              ) %>
 
             </div>
 
@@ -2338,554 +1313,394 @@
         <% end %>
 
 
-
-        <!-- =================================================
-             MY COURSES
-        ================================================== -->
+        <!-- RECENT ACTIVITY -->
 
         <section class="student-section">
 
           <div class="student-section-heading">
 
             <h2>
-              📚 My Courses
+              ⚡ Recent Activity
             </h2>
-
-            <%= link_to(
-              "View All →",
-              learning_path
-            ) %>
 
           </div>
 
+          <div class="student-card">
 
-          <% if @courses.any? %>
+            <% if @last_progress.present? %>
 
-            <div class="student-course-grid">
+              <div class="notification-item">
 
+                <div class="notification-icon">
 
-              <% @courses.each do |course| %>
+                  <i class="bi bi-play-fill"></i>
 
+                </div>
 
-                <article class="student-course-card">
+                <div class="notification-content">
 
+                  <strong>
+                    Last watched video
+                  </strong>
 
-                  <!-- COURSE IMAGE -->
+                  <p>
+                    <%= @last_progress.video.title %>
+                  </p>
 
-                  <div class="student-course-image">
+                </div>
 
-                    <% if course.image.attached? %>
+              </div>
 
-                      <%= image_tag(
-                        course.image,
-                        alt: course.Course_name
-                      ) %>
+            <% end %>
 
-                    <% else %>
 
-                      <div class="student-course-placeholder">
+            <% if @courses.first.present? %>
 
-                        <i class="bi bi-book"></i>
+              <div class="notification-item">
 
-                      </div>
+                <div class="notification-icon">
 
-                    <% end %>
+                  <i class="bi bi-mortarboard"></i>
 
+                </div>
 
-                    <span class="course-status-badge">
+                <div class="notification-content">
 
-                      <i class="bi bi-check-circle"></i>
+                  <strong>
+                    Course enrolled
+                  </strong>
 
-                      Enrolled
+                  <p>
+                    <%= @courses.first.Course_name %>
+                  </p>
 
-                    </span>
+                </div>
 
-                  </div>
+              </div>
 
+            <% end %>
 
-                  <!-- COURSE BODY -->
 
-                  <div class="student-course-body">
+            <% if @test_series_purchases.first.present? %>
 
-                    <h4>
-                      <%= course.Course_name %>
-                    </h4>
+              <div class="notification-item">
 
+                <div class="notification-icon">
 
-                    <p class="student-course-description">
+                  <i class="bi bi-journal-check"></i>
 
-                      Continue your course learning
-                      and complete your lessons.
+                </div>
 
-                    </p>
+                <div class="notification-content">
 
+                  <strong>
+                    Test Series purchased
+                  </strong>
 
-                    <!-- PROGRESS -->
+                  <p>
+                    <%= @test_series_purchases.first.test_series.title %>
+                  </p>
 
-                    <div class="course-progress-area">
+                </div>
 
-                      <div class="course-progress-row">
+              </div>
 
-                        <span>
-                          Course Progress
-                        </span>
+            <% end %>
 
-                        <strong>
-                          Learning
-                        </strong>
 
-                      </div>
+            <% if @ebook_purchases.first.present? %>
 
-                      <div class="course-progress-track">
+              <div class="notification-item">
 
-                        <div
-                          class="course-progress-fill"
-                          style="width: 35%;"
-                        ></div>
-
-                      </div>
-
-                    </div>
-
-
-                    <!-- ACTIONS -->
-
-                    <div class="course-actions">
-
-                      <%= link_to(
-                        "Continue",
-                        learning_course_path(course),
-                        class: "btn btn-primary"
-                      ) %>
-
-                    </div>
-
-
-                    <!-- CERTIFICATE -->
-
-                    <%
-                      certificate =
-                        current_user
-                          .certificates
-                          .find_by(course: course)
-                    %>
-
-
-                    <% if certificate.present? %>
-
-                      <%= link_to(
-                        "🏆 View Certificate",
-                        certificate_path(certificate),
-                        class:
-                          "btn btn-success certificate-btn"
-                      ) %>
-
-                    <% else %>
-
-                      <button
-                        type="button"
-                        class:
-                          "btn btn-outline-secondary certificate-btn"
-                        disabled
-                      >
-
-                        🔒 Certificate Locked
-
-                      </button>
-
-                    <% end %>
-
-                  </div>
-
-                </article>
-
-
-              <% end %>
-
-
-            </div>
-
-
-          <% else %>
-
-
-            <div class="student-card">
-
-              <div class="student-empty">
-
-                <div class="student-empty-icon">
+                <div class="notification-icon">
 
                   <i class="bi bi-book"></i>
 
                 </div>
 
-                <p>
-                  You have not enrolled in any course yet.
-                </p>
+                <div class="notification-content">
 
-                <%= link_to(
-                  "Browse Courses",
-                  learning_path,
-                  class: "btn btn-primary"
-                ) %>
+                  <strong>
+                    E-Book purchased
+                  </strong>
+
+                  <p>
+                    <%= @ebook_purchases.first.ebook.title %>
+                  </p>
+
+                </div>
 
               </div>
 
-            </div>
+            <% end %>
 
 
-          <% end %>
-
-        </section>
-
-
-
-        <!-- =================================================
-             MY TEST SERIES
-        ================================================== -->
-
-        <section class="student-section">
-
-          <div class="student-section-heading">
-
-            <h2>
-              📝 My Test Series
-            </h2>
-
-            <%= link_to(
-              "View All →",
-              test_series_index_path
-            ) %>
-
-          </div>
-
-
-          <% if @test_series_purchases.any? %>
-
-            <div class="test-series-grid">
-
-
-              <% @test_series_purchases.each do |purchase| %>
-
-                <% test_series = purchase.test_series %>
-
-
-                <article class="test-series-card">
-
-
-                  <div class="test-series-icon">
-
-                    <i class="bi bi-journal-text"></i>
-
-                  </div>
-
-
-                  <h4>
-                    <%= test_series.title %>
-                  </h4>
-
-
-                  <div class="test-series-meta">
-
-                    <i class="bi bi-files"></i>
-
-                    <%= test_series
-                          .test_series_tests
-                          .active
-                          .count %>
-
-                    Tests
-
-                  </div>
-
-
-                  <div class="test-series-actions">
-
-                    <%= link_to(
-                      "Open",
-                      test_series_path(test_series),
-                      class: "btn btn-primary"
-                    ) %>
-
-
-                    <%
-                      first_test =
-                        test_series
-                          .test_series_tests
-                          .active
-                          .order(test_number: :asc)
-                          .first
-                    %>
-
-
-                    <% if first_test.present? %>
-
-                      <%= link_to(
-                        "▶ Start",
-                        instructions_test_series_path(
-                          test_series,
-                          test_id: first_test.id
-                        ),
-                        class: "btn btn-success"
-                      ) %>
-
-                    <% else %>
-
-                      <button
-                        type="button"
-                        class="btn btn-outline-secondary"
-                        disabled
-                      >
-                        No Test
-                      </button>
-
-                    <% end %>
-
-                  </div>
-
-                </article>
-
-              <% end %>
-
-
-            </div>
-
-
-          <% else %>
-
-
-            <div class="student-card">
+            <% if @last_progress.blank? &&
+                  @courses.blank? &&
+                  @test_series_purchases.blank? &&
+                  @ebook_purchases.blank? %>
 
               <div class="student-empty">
 
                 <div class="student-empty-icon">
-
-                  <i class="bi bi-journal-x"></i>
-
+                  <i class="bi bi-clock-history"></i>
                 </div>
 
                 <p>
-                  You have not enrolled in any Test Series yet.
+                  Your recent activity will appear here.
                 </p>
 
-                <%= link_to(
-                  "Browse Test Series",
-                  test_series_index_path,
-                  class: "btn btn-primary"
-                ) %>
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </section>
+
+
+        <!-- RESOURCES -->
+
+        <section class="student-section">
+
+          <div class="student-section-heading">
+
+            <h2>
+              📁 Latest Resources
+            </h2>
+
+          </div>
+
+          <div class="student-card">
+
+            <% if @resources.any? %>
+
+              <ul class="resource-list">
+
+                <% @resources.each do |resource| %>
+
+                  <li class="resource-item">
+
+                    <div class="resource-info">
+
+                      <strong>
+                        <%= resource.title %>
+                      </strong>
+
+                      <% if resource.playlist.present? %>
+
+                        <small>
+                          <%= resource.playlist.title %>
+                        </small>
+
+                      <% end %>
+
+                    </div>
+
+
+                    <% if resource.respond_to?(:file) &&
+                          resource.file.attached? %>
+
+                      <%= link_to(
+                        "Open",
+                        rails_blob_path(
+                          resource.file,
+                          disposition: "attachment"
+                        ),
+                        class: "btn btn-sm btn-outline-primary"
+                      ) %>
+
+                    <% end %>
+
+                  </li>
+
+                <% end %>
+
+              </ul>
+
+            <% else %>
+
+              <div class="student-empty">
+
+                <div class="student-empty-icon">
+                  <i class="bi bi-folder2-open"></i>
+                </div>
+
+                <p>
+                  No resources available yet.
+                </p>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </section>
+
+
+        <!-- NOTIFICATIONS -->
+
+        <section class="student-section">
+
+          <div class="student-section-heading">
+
+            <h2>
+              🔔 Notifications
+            </h2>
+
+          </div>
+
+          <div class="student-card">
+
+            <% if @notifications.any? %>
+
+              <% @notifications.each do |notification| %>
+
+                <div class="notification-item">
+
+                  <div class="notification-icon">
+
+                    <i class="bi bi-bell-fill"></i>
+
+                  </div>
+
+                  <div class="notification-content">
+
+                    <strong>
+                      <%= notification.title %>
+                    </strong>
+
+                    <p>
+                      <%= notification.description %>
+                    </p>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+            <% else %>
+
+              <div class="student-empty">
+
+                <div class="student-empty-icon">
+                  <i class="bi bi-bell-slash"></i>
+                </div>
+
+                <p>
+                  No notifications available.
+                </p>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- =================================================
+           RIGHT SIDEBAR
+      ================================================== -->
+
+      <aside>
+
+
+        <!-- PROFILE -->
+
+        <section class="student-card profile-card">
+
+          <div class="profile-avatar">
+
+            <i class="bi bi-person-fill"></i>
+
+          </div>
+
+          <h3>
+            <%= current_user.name.presence || "Student" %>
+          </h3>
+
+          <p>
+            <%= current_user.email %>
+          </p>
+
+          <%= link_to(
+            "View Profile",
+            student_profile_path,
+            class: "btn btn-primary btn-sm w-100"
+          ) %>
+
+        </section>
+
+
+        <!-- MY PROGRESS -->
+
+        <section class="student-card">
+
+          <div class="student-section-heading">
+
+            <h2>
+              📊 My Progress
+            </h2>
+
+          </div>
+
+
+          <% @courses.first(4).each do |course| %>
+
+            <% progress = @course_progress[course.id] || {
+              total: 0,
+              completed: 0,
+              percent: 0
+            } %>
+
+            <div class="progress-item">
+
+              <div class="progress-item-top">
+
+                <span>
+                  <%= course.Course_name %>
+                </span>
+
+                <span>
+                  <%= progress[:percent] %>%
+                </span>
+
+              </div>
+
+              <div class="progress-track">
+
+                <div
+                  class="progress-value"
+                  style="width: <%= progress[:percent] %>%">
+                </div>
 
               </div>
 
             </div>
 
+          <% end %>
+
+
+          <% if @courses.blank? %>
+
+            <p class="text-muted small mb-0">
+              No course progress available.
+            </p>
 
           <% end %>
 
         </section>
 
 
+        <!-- QUICK ACTIONS -->
 
-        <!-- =================================================
-             LATEST RESOURCES
-        ================================================== -->
-
-        <section class="student-section">
-
-          <div class="student-section-heading">
-
-            <h2>
-              📄 Latest Resources
-            </h2>
-
-          </div>
-
-
-          <div class="student-card">
-
-            <div class="student-card-body">
-
-
-              <% if @resources.present? && @resources.any? %>
-
-
-                <div class="resource-list">
-
-
-                  <% @resources.each do |resource| %>
-
-
-                    <div class="resource-item">
-
-
-                      <div class="resource-info">
-
-                        <strong>
-                          <%= resource.title %>
-                        </strong>
-
-                        <small>
-
-                          <%= resource.playlist&.title || "Study Material" %>
-
-                        </small>
-
-                      </div>
-
-
-                      <% if resource.file.attached? %>
-
-                        <%= link_to(
-                          "Download",
-                          rails_blob_path(
-                            resource.file,
-                            disposition: "attachment"
-                          ),
-                          class: "resource-download"
-                        ) %>
-
-                      <% end %>
-
-
-                    </div>
-
-
-                  <% end %>
-
-
-                </div>
-
-
-              <% else %>
-
-
-                <div class="student-empty">
-
-                  <div class="student-empty-icon">
-
-                    <i class="bi bi-file-earmark-x"></i>
-
-                  </div>
-
-                  <p>
-                    No resources available.
-                  </p>
-
-                </div>
-
-
-              <% end %>
-
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             NOTIFICATIONS
-        ================================================== -->
-
-        <section class="student-section">
-
-          <div class="student-section-heading">
-
-            <h2>
-              🔔 Latest Notifications
-            </h2>
-
-          </div>
-
-
-          <div class="student-card">
-
-            <div class="student-card-body">
-
-
-              <% if @notifications.present? && @notifications.any? %>
-
-
-                <div class="notification-list">
-
-
-                  <% @notifications.each do |notification| %>
-
-
-                    <div class="notification-item">
-
-
-                      <div class="notification-icon">
-
-                        <i class="bi bi-bell"></i>
-
-                      </div>
-
-
-                      <div class="notification-content">
-
-                        <strong>
-                          <%= notification.title %>
-                        </strong>
-
-                        <p>
-                          <%= notification.description %>
-                        </p>
-
-                      </div>
-
-
-                      <span class="notification-date">
-
-                        <%= notification.created_at.strftime("%d %b") %>
-
-                      </span>
-
-
-                    </div>
-
-
-                  <% end %>
-
-
-                </div>
-
-
-              <% else %>
-
-
-                <div class="student-empty">
-
-                  <div class="student-empty-icon">
-
-                    <i class="bi bi-bell-slash"></i>
-
-                  </div>
-
-                  <p>
-                    No notifications available.
-                  </p>
-
-                </div>
-
-
-              <% end %>
-
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             QUICK ACTIONS
-        ================================================== -->
-
-        <section class="student-section">
+        <section class="student-card">
 
           <div class="student-section-heading">
 
@@ -2895,759 +1710,836 @@
 
           </div>
 
+          <div class="quick-actions">
 
-          <div class="student-card">
 
-            <div class="student-card-body">
-
-              <div class="quick-actions">
-
-
-                <%= link_to(
-                  "📚 Browse Courses",
-                  learning_path,
-                  class:
-                    "quick-action btn btn-primary"
-                ) %>
-
-
-                <%= link_to(
-                  "📝 Test Series",
-                  test_series_index_path,
-                  class:
-                    "quick-action btn btn-info"
-                ) %>
-
-
-                <%= link_to(
-                  "👤 Edit Profile",
-                  edit_user_registration_path,
-                  class:
-                    "quick-action btn btn-warning"
-                ) %>
-
-
-                <%= link_to(
-                  "🏆 Certificates",
-                  certificates_path,
-                  class:
-                    "quick-action btn btn-success"
-                ) %>
-
-
-              </div>
-
-
-              <%= link_to(
-                destroy_user_session_path,
-                data: {
-                  turbo_method: :delete,
-                  turbo_confirm: "Are you sure?"
-                },
-                class:
-                  "btn btn-outline-danger logout-btn"
-              ) do %>
-
-                <i class="bi bi-box-arrow-right"></i>
-
-                Logout
-
-              <% end %>
-
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-      </main>
-
-
-
-      <!-- ===================================================
-           RIGHT SIDEBAR
-      ==================================================== -->
-
-      <aside class="student-main-right">
-
-
-        <!-- =================================================
-             PROFILE
-        ================================================== -->
-
-        <section class="student-card student-profile-card">
-
-          <div class="profile-card-top">
-
-
-            <div class="profile-avatar">
-
-              <% if current_user.image.attached? %>
-
-                <%= image_tag(
-                  current_user.image,
-                  alt: current_user.name
-                ) %>
-
-              <% else %>
-
-                <i class="bi bi-person-fill"></i>
-
-              <% end %>
-
-            </div>
-
-
-            <h3>
-              <%= current_user.name %>
-            </h3>
-
-
-            <p>
-              <%= current_user.email %>
-            </p>
-
-
-            <span class="profile-role">
-
-              <%= current_user.role.to_s.upcase %>
-
-            </span>
-
-
-          </div>
-
-
-          <div class="profile-details">
-
-
-            <div class="profile-detail-row">
-
-              <div class="profile-detail-icon">
-
-                <i class="bi bi-calendar"></i>
-
-              </div>
-
-              <div class="profile-detail-content">
-
-                <span>
-                  Joined
-                </span>
-
-                <strong>
-                  <%= current_user.created_at.strftime("%d %B %Y") %>
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <div class="profile-detail-row">
-
-              <div class="profile-detail-icon">
-
-                <i class="bi bi-book"></i>
-
-              </div>
-
-              <div class="profile-detail-content">
-
-                <span>
-                  Enrolled Courses
-                </span>
-
-                <strong>
-                  <%= @courses.count %>
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            <div class="profile-detail-row">
-
-              <div class="profile-detail-icon">
-
-                <i class="bi bi-check-circle"></i>
-
-              </div>
-
-              <div class="profile-detail-content">
-
-                <span>
-                  Completed Videos
-                </span>
-
-                <strong>
-                  <%= current_user.video_progresses
-                        .where(completed: true)
-                        .count %>
-                </strong>
-
-              </div>
-
-            </div>
-
+            <!-- PROFILE -->
 
             <%= link_to(
-              "Edit Profile",
-              edit_user_registration_path,
-              class:
-                "btn btn-outline-primary btn-sm w-100 mt-3"
-            ) %>
+              student_profile_path,
+              class: "quick-action"
+            ) do %>
 
+              <i class="bi bi-person"></i>
 
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             PROGRESS
-        ================================================== -->
-
-        <section class="student-card progress-card">
-
-          <div class="student-card-header">
-
-            <h3>
-              📊 My Progress
-            </h3>
-
-          </div>
-
-
-          <div class="progress-overview">
-
-
-            <%
-              completed_video_count =
-                current_user
-                  .video_progresses
-                  .where(completed: true)
-                  .count
-
-              total_video_count =
-                Video.count
-
-              overall_progress =
-                if total_video_count > 0
-                  [
-                    (
-                      completed_video_count.to_f /
-                      total_video_count
-                    ) * 100,
-                    100
-                  ].min.round
-                else
-                  0
-                end
-
-              progress_degrees =
-                (
-                  overall_progress.to_f / 100
-                ) * 360
-            %>
-
-
-            <div
-              class="progress-circle"
-              style="
-                background:
-                  conic-gradient(
-                    #6366f1
-                    0deg
-                    <%= progress_degrees %>deg,
-                    #e5e7eb
-                    <%= progress_degrees %>deg
-                    360deg
-                  );
-              "
-            >
-
-              <div class="progress-circle-content">
-
-                <strong>
-                  <%= overall_progress %>%
-                </strong>
-
-                <span>
-                  Overall Progress
-                </span>
-
-              </div>
-
-            </div>
-
-
-            <div class="progress-stat-list">
-
-
-              <div class="progress-stat-row">
-
-                <div class="progress-stat-left">
-
-                  <span class="progress-stat-dot"></span>
-
-                  <span>
-                    Courses
-                  </span>
-
-                </div>
-
-                <strong>
-                  <%= @courses.count %>
-                </strong>
-
-              </div>
-
-
-              <div class="progress-stat-row">
-
-                <div class="progress-stat-left">
-
-                  <span class="progress-stat-dot green"></span>
-
-                  <span>
-                    Completed Videos
-                  </span>
-
-                </div>
-
-                <strong>
-                  <%= completed_video_count %>
-                </strong>
-
-              </div>
-
-
-              <div class="progress-stat-row">
-
-                <div class="progress-stat-left">
-
-                  <span class="progress-stat-dot pink"></span>
-
-                  <span>
-                    Test Series
-                  </span>
-
-                </div>
-
-                <strong>
-                  <%= current_user.test_series_purchases
-                        .where(
-                          payment_status: "paid",
-                          status: "Active"
-                        )
-                        .count %>
-                </strong>
-
-              </div>
-
-
-              <div class="progress-stat-row">
-
-                <div class="progress-stat-left">
-
-                  <span class="progress-stat-dot"></span>
-
-                  <span>
-                    Certificates
-                  </span>
-
-                </div>
-
-                <strong>
-                  <%= current_user.certificates.count %>
-                </strong>
-
-              </div>
-
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             RECENT ACTIVITY
-        ================================================== -->
-
-        <section class="student-card activity-card">
-
-          <div class="student-card-header">
-
-            <h3>
-              🕘 Recent Activity
-            </h3>
-
-          </div>
-
-
-          <div class="activity-list">
-
-
-            <% if @last_progress.present? %>
-
-              <div class="activity-item">
-
-                <div class="activity-icon">
-
-                  <i class="bi bi-play-fill"></i>
-
-                </div>
-
-                <div class="activity-text">
-
-                  <strong>
-                    Watched:
-                    <%= @last_progress.video.title %>
-                  </strong>
-
-                  <small>
-                    Continue learning
-                  </small>
-
-                </div>
-
-              </div>
+              My Profile
 
             <% end %>
 
 
-            <% if @courses.any? %>
+            <!-- COURSE -->
 
-              <div class="activity-item">
+            <% if @courses.first.present? %>
 
-                <div class="activity-icon green">
+              <%= link_to(
+                course_details_path(@courses.first),
+                class: "quick-action"
+              ) do %>
 
-                  <i class="bi bi-book"></i>
+                <i class="bi bi-mortarboard"></i>
 
-                </div>
+                My Course
 
-                <div class="activity-text">
-
-                  <strong>
-                    Enrolled in:
-                    <%= @courses.first.Course_name %>
-                  </strong>
-
-                  <small>
-                    My Course
-                  </small>
-
-                </div>
-
-              </div>
+              <% end %>
 
             <% end %>
 
 
-            <div class="activity-item">
+            <!-- TEST SERIES -->
 
-              <div class="activity-icon pink">
+            <%= link_to(
+              test_series_index_path,
+              class: "quick-action"
+            ) do %>
 
-                <i class="bi bi-person"></i>
+              <i class="bi bi-journal-check"></i>
 
-              </div>
+              Browse Test Series
 
-              <div class="activity-text">
+            <% end %>
 
-                <strong>
-                  Student account active
-                </strong>
 
-                <small>
-                  Keep learning 🚀
-                </small>
+            <!-- E-BOOKS -->
 
-              </div>
+            <%= link_to(
+              ebooks_path,
+              class: "quick-action"
+            ) do %>
 
-            </div>
+              <i class="bi bi-book"></i>
 
+              Browse E-Books
+
+            <% end %>
 
           </div>
 
         </section>
-
 
       </aside>
 
-
     </div>
 
-  </div>
+  </section>
+
+
+  <!-- =====================================================
+       MY COURSES TAB
+  ====================================================== -->
+
+  <section
+    class="dashboard-tab-panel"
+    data-dashboard-panel="courses">
+
+    <section class="student-section">
+
+      <div class="student-section-heading">
+
+        <h2>
+          🎓 My Courses
+        </h2>
+
+        <% if @courses.first.present? %>
+
+          <%= link_to(
+            "Open Course →",
+            course_details_path(@courses.first)
+          ) %>
+
+        <% end %>
+
+      </div>
+
+
+      <% if @courses.any? %>
+
+        <div class="course-grid">
+
+          <% @courses.each do |course| %>
+
+            <% progress =
+              @course_progress[course.id] || {
+                total: 0,
+                completed: 0,
+                percent: 0
+              } %>
+
+            <article class="course-card">
+
+              <h4>
+                <%= course.Course_name %>
+              </h4>
+
+              <p>
+
+                <i class="bi bi-play-circle"></i>
+
+                <%= progress[:completed] %>
+                /
+                <%= progress[:total] %>
+                videos completed
+
+              </p>
+
+
+              <div class="course-progress">
+
+                <div class="course-progress-top">
+
+                  <span>
+                    Progress
+                  </span>
+
+                  <span>
+                    <%= progress[:percent] %>%
+                  </span>
+
+                </div>
+
+                <div class="course-progress-bar">
+
+                  <div
+                    class="course-progress-fill"
+                    style="width: <%= progress[:percent] %>%">
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="course-card-actions">
+
+                <%= link_to(
+                  "Continue Learning",
+                  learning_course_path(course),
+                  class: "btn btn-primary"
+                ) %>
+
+
+                <% if course.respond_to?(:certificate) &&
+                      course.certificate.present? %>
+
+                  <%= link_to(
+                    "Certificate",
+                    course.certificate,
+                    class: "btn btn-outline-success"
+                  ) %>
+
+                <% end %>
+
+              </div>
+
+            </article>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="student-card">
+
+          <div class="student-empty">
+
+            <div class="student-empty-icon">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+
+            <p>
+              You have not purchased any course yet.
+            </p>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </section>
+
+  </section>
+
+
+  <!-- =====================================================
+       TEST SERIES TAB
+  ====================================================== -->
+
+  <section
+    class="dashboard-tab-panel"
+    data-dashboard-panel="test-series">
+
+    <section class="student-section">
+
+      <div class="student-section-heading">
+
+        <h2>
+          📝 My Test Series
+        </h2>
+
+        <%= link_to(
+          "Browse Test Series →",
+          test_series_index_path
+        ) %>
+
+      </div>
+
+
+      <% if @test_series_purchases.any? %>
+
+        <div class="test-series-grid">
+
+          <% @test_series_purchases.each do |purchase| %>
+
+            <% test_series = purchase.test_series %>
+
+            <article class="test-series-card">
+
+              <h4>
+                <%= test_series.title %>
+              </h4>
+
+
+              <div class="test-series-meta">
+
+                <span>
+
+                  <i class="bi bi-calendar-check"></i>
+
+                  Purchased
+
+                </span>
+
+
+                <% if test_series.respond_to?(:mode) &&
+                      test_series.mode.present? %>
+
+                  <span>
+
+                    <i class="bi bi-display"></i>
+
+                    <%= test_series.mode %>
+
+                  </span>
+
+                <% end %>
+
+
+                <% if test_series.respond_to?(:language) &&
+                      test_series.language.present? %>
+
+                  <span>
+
+                    <i class="bi bi-translate"></i>
+
+                    <%= test_series.language %>
+
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <% if test_series.respond_to?(:description) &&
+                    test_series.description.present? %>
+
+                <p>
+
+                  <%= truncate(
+                    test_series.description,
+                    length: 130
+                  ) %>
+
+                </p>
+
+              <% end %>
+
+
+              <div class="test-series-actions">
+
+                <%= link_to(
+                  "Open Test Series",
+                  test_series_path(test_series),
+                  class: "btn btn-primary"
+                ) %>
+
+
+                <%= link_to(
+                  "Instructions",
+                  instructions_test_series_path(test_series),
+                  class: "btn btn-outline-secondary"
+                ) %>
+
+              </div>
+
+            </article>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="student-card">
+
+          <div class="student-empty">
+
+            <div class="student-empty-icon">
+
+              <i class="bi bi-journal-check"></i>
+
+            </div>
+
+            <p>
+              You have not purchased any Test Series yet.
+            </p>
+
+            <%= link_to(
+              "Browse Test Series",
+              test_series_index_path,
+              class: "btn btn-primary"
+            ) %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </section>
+
+
+    <!-- =================================================
+         TEST ATTEMPTS
+    ================================================== -->
+
+    <% if @test_attempts.present? %>
+
+      <section class="student-section">
+
+        <div class="student-section-heading">
+
+          <h2>
+            📈 Recent Test Activity
+          </h2>
+
+        </div>
+
+        <div class="student-card">
+
+          <% @test_attempts.each do |attempt| %>
+
+            <div class="notification-item">
+
+              <div class="notification-icon">
+
+                <i class="bi bi-bar-chart-fill"></i>
+
+              </div>
+
+              <div class="notification-content">
+
+                <strong>
+
+                  <% if attempt.test_series_test.present? %>
+
+                    <%= attempt.test_series_test.title %>
+
+                  <% else %>
+
+                    Test Attempt
+
+                  <% end %>
+
+                </strong>
+
+                <p>
+
+                  Completed
+
+                  <% if attempt.completed_at.present? %>
+
+                    ·
+
+                    <%= attempt.completed_at.strftime(
+                      "%d %b %Y, %I:%M %p"
+                    ) %>
+
+                  <% end %>
+
+                </p>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </section>
+
+    <% end %>
+
+  </section>
+
+
+  <!-- =====================================================
+       E-BOOKS TAB
+  ====================================================== -->
+
+  <section
+    class="dashboard-tab-panel"
+    data-dashboard-panel="ebooks">
+
+    <section class="student-section">
+
+      <div class="student-section-heading">
+
+        <h2>
+          📖 My E-Books
+        </h2>
+
+        <%= link_to(
+          "Browse E-Books →",
+          ebooks_path
+        ) %>
+
+      </div>
+
+
+      <% if @ebook_purchases.any? %>
+
+        <div class="ebook-grid">
+
+          <% @ebook_purchases.each do |purchase| %>
+
+            <% ebook = purchase.ebook %>
+
+            <article class="ebook-card">
+
+              <!-- COVER -->
+
+              <div class="ebook-cover">
+
+                <% if ebook.cover_image.attached? %>
+
+                  <%= image_tag(
+                    ebook.cover_image,
+                    alt: ebook.title,
+                    loading: "lazy"
+                  ) %>
+
+                <% else %>
+
+                  <div class="ebook-cover-placeholder">
+
+                    <i class="bi bi-file-earmark-pdf"></i>
+
+                  </div>
+
+                <% end %>
+
+
+                <span class="ebook-purchased-badge">
+
+                  <i class="bi bi-check-circle"></i>
+
+                  Purchased
+
+                </span>
+
+              </div>
+
+
+              <!-- BODY -->
+
+              <div class="ebook-body">
+
+                <h4>
+                  <%= ebook.title %>
+                </h4>
+
+
+                <div class="ebook-meta">
+
+                  <i class="bi bi-calendar-check"></i>
+
+                  Purchased
+
+                  <%= purchase.created_at.strftime(
+                    "%d %b %Y"
+                  ) %>
+
+                </div>
+
+
+                <div class="ebook-actions">
+
+                  <%= link_to(
+                    access_ebook_path(ebook),
+                    class: "btn btn-primary"
+                  ) do %>
+
+                    <i class="bi bi-book"></i>
+
+                    Read E-Book
+
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="student-card">
+
+          <div class="student-empty">
+
+            <div class="student-empty-icon">
+
+              <i class="bi bi-book"></i>
+
+            </div>
+
+            <p>
+              You have not purchased any E-Book yet.
+            </p>
+
+            <%= link_to(
+              "Browse E-Books",
+              ebooks_path,
+              class: "btn btn-primary"
+            ) %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </section>
+
+  </section>
 
 </div>
 
 
+<!-- =====================================================
+     FAST CLIENT-SIDE TAB JAVASCRIPT
+====================================================== -->
+
 <script nonce="<%= content_security_policy_nonce %>">
 
-(function () {
+  (() => {
 
-  "use strict";
+    const initializeStudentDashboard = () => {
 
-
-  /* =========================================================
-     STUDENT DASHBOARD INITIALIZATION
-  ========================================================== */
-
-  function initializeStudentDashboard() {
-
-    /* =======================================================
-       ANIMATED COUNTERS
-    ======================================================== */
-
-    const counters =
-      document.querySelectorAll(
-        ".student-counter"
-      );
-
-
-    counters.forEach(function (counter) {
-
-      if (
-        counter.dataset.counterInitialized === "true"
-      ) {
-        return;
-      }
-
-
-      counter.dataset.counterInitialized = "true";
-
-
-      const target =
-        parseInt(
-          counter.dataset.count || "0",
-          10
+      const tabs =
+        document.querySelectorAll(
+          "[data-dashboard-tab]"
         );
 
-
-      if (target <= 0) {
-
-        counter.textContent = "0";
-
-        return;
-
-      }
-
-
-      let current = 0;
-
-
-      const increment =
-        Math.max(
-          1,
-          Math.ceil(target / 30)
+      const panels =
+        document.querySelectorAll(
+          "[data-dashboard-panel]"
         );
 
-
-      const timer =
-        setInterval(function () {
-
-          /*
-           * Stop safely if Turbo has replaced
-           * the dashboard before animation ends.
-           */
-
-          if (
-            !document.documentElement.contains(counter)
-          ) {
-
-            clearInterval(timer);
-
-            return;
-
-          }
-
-
-          current += increment;
-
-
-          if (current >= target) {
-
-            current = target;
-
-            clearInterval(timer);
-
-          }
-
-
-          counter.textContent =
-            current;
-
-        }, 30);
-
-    });
-
-
-    /* =======================================================
-       CARD HOVER
-    ======================================================== */
-
-    const cards =
-      document.querySelectorAll(
-        ".student-course-card, " +
-        ".test-series-card, " +
-        ".student-stat-card"
-      );
-
-
-    cards.forEach(function (card) {
-
-      if (
-        card.dataset.hoverInitialized === "true"
-      ) {
+      if (!tabs.length || !panels.length) {
         return;
       }
 
 
-      card.dataset.hoverInitialized = "true";
+      /*
+       * TAB SWITCHING
+       * Pure client-side.
+       * No Rails request.
+       * No page reload.
+       */
 
+      tabs.forEach((tab) => {
 
-      card.addEventListener(
-        "mouseenter",
-        function () {
-
-          card.style.zIndex = "2";
-
+        if (tab.dataset.dashboardBound === "true") {
+          return;
         }
-      );
+
+        tab.dataset.dashboardBound = "true";
 
 
-      card.addEventListener(
-        "mouseleave",
-        function () {
+        tab.addEventListener("click", () => {
 
-          card.style.zIndex = "1";
-
-        }
-      );
-
-    });
+          const target =
+            tab.dataset.dashboardTab;
 
 
-    /* =======================================================
-       SMOOTH INTERNAL LINKS
-    ======================================================== */
+          tabs.forEach((item) => {
 
-    const internalLinks =
-      document.querySelectorAll(
-        'a[href^="#"]'
-      );
+            item.classList.toggle(
+              "active",
+              item === tab
+            );
 
-
-    internalLinks.forEach(function (link) {
-
-      if (
-        link.dataset.smoothScrollInitialized === "true"
-      ) {
-        return;
-      }
+          });
 
 
-      link.dataset.smoothScrollInitialized = "true";
+          panels.forEach((panel) => {
 
+            panel.classList.toggle(
+              "active",
+              panel.dataset.dashboardPanel === target
+            );
 
-      link.addEventListener(
-        "click",
-        function (event) {
-
-          const href =
-            link.getAttribute("href");
+          });
 
 
           /*
-           * Ignore empty "#" links.
+           * Remember selected tab.
            */
-
-          if (
-            !href ||
-            href === "#"
-          ) {
-            return;
-          }
-
-
-          let target = null;
-
 
           try {
 
-            target =
-              document.querySelector(href);
+            sessionStorage.setItem(
+              "student-dashboard-tab",
+              target
+            );
 
           } catch (error) {
 
-            /*
-             * Invalid CSS selector in href.
-             * Let the browser handle the link normally.
-             */
+            // Ignore storage errors.
+
+          }
+
+        });
+
+      });
+
+
+      /*
+       * RESTORE LAST TAB
+       */
+
+      let savedTab = null;
+
+      try {
+
+        savedTab =
+          sessionStorage.getItem(
+            "student-dashboard-tab"
+          );
+
+      } catch (error) {
+
+        savedTab = null;
+
+      }
+
+
+      if (savedTab) {
+
+        const savedButton =
+          document.querySelector(
+            `[data-dashboard-tab="${savedTab}"]`
+          );
+
+        if (savedButton) {
+          savedButton.click();
+        }
+
+      }
+
+
+      /*
+       * COUNTER ANIMATION
+       */
+
+      document
+        .querySelectorAll(".student-counter")
+        .forEach((counter) => {
+
+          if (counter.dataset.counterAnimated === "true") {
+            return;
+          }
+
+          counter.dataset.counterAnimated = "true";
+
+
+          const target =
+            Number(
+              counter.dataset.count || 0
+            );
+
+
+          let current = 0;
+
+
+          if (target <= 0) {
+
+            counter.textContent = "0";
 
             return;
 
           }
 
 
-          if (target) {
+          const duration = 700;
 
-            event.preventDefault();
+          const startTime =
+            performance.now();
 
 
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
+          const animateCounter =
+            (currentTime) => {
 
-          }
+              const elapsed =
+                currentTime - startTime;
 
-        }
+              const progress =
+                Math.min(
+                  elapsed / duration,
+                  1
+                );
+
+
+              const eased =
+                1 - Math.pow(
+                  1 - progress,
+                  3
+                );
+
+
+              current =
+                Math.floor(
+                  target * eased
+                );
+
+
+              counter.textContent =
+                current.toLocaleString();
+
+
+              if (progress < 1) {
+
+                requestAnimationFrame(
+                  animateCounter
+                );
+
+              } else {
+
+                counter.textContent =
+                  target.toLocaleString();
+
+              }
+
+            };
+
+
+          requestAnimationFrame(
+            animateCounter
+          );
+
+        });
+
+    };
+
+
+    /*
+     * Normal page load
+     */
+
+    if (
+      document.readyState === "loading"
+    ) {
+
+      document.addEventListener(
+        "DOMContentLoaded",
+        initializeStudentDashboard,
+        { once: true }
       );
 
-    });
+    } else {
 
-  }
+      initializeStudentDashboard();
 
-
-  /* =========================================================
-     TURBO NAVIGATION
-  ========================================================== */
-
-  document.addEventListener(
-    "turbo:load",
-    initializeStudentDashboard
-  );
+    }
 
 
-  /* =========================================================
-     NORMAL PAGE LOAD
-  ========================================================== */
-
-  if (
-    document.readyState !== "loading"
-  ) {
-
-    initializeStudentDashboard();
-
-  } else {
+    /*
+     * Rails Turbo navigation
+     */
 
     document.addEventListener(
-      "DOMContentLoaded",
-      initializeStudentDashboard,
-      { once: true }
+      "turbo:load",
+      initializeStudentDashboard
     );
 
-  }
-
-})();
+  })();
 
 </script>
