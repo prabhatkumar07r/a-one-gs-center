@@ -616,7 +616,11 @@ namespace :api do
       delete "logout", to: "sessions#destroy"
     end
 
-    resources :courses, only: [:index, :show]
+  resources :courses, only: [:index, :show] do
+  member do
+    get :access
+  end
+end
 
     resources :notes do
 
