@@ -555,6 +555,9 @@ delete "/ebook-payments/:id/remove_coupon",
   post "payments/:id/apply_coupon",
        to: "payments#apply_coupon",
        as: :apply_coupon
+   delete "payments/:id/remove_coupon",
+        to: "payments#remove_coupon",
+        as: :remove_coupon    
   post "/razorpay/webhook",
      to: "razorpay_webhooks#payment",
      as: :razorpay_webhook     
@@ -603,33 +606,39 @@ delete "/ebook-payments/:id/remove_coupon",
   post "/contacts",
        to: "contacts#create"
 
+namespace :api do
 
-  namespace :api do
+  namespace :v1 do
 
-    namespace :v1 do
+    namespace :auth do
+      post "login", to: "sessions#create"
+      get "me", to: "sessions#me"
+      delete "logout", to: "sessions#destroy"
+    end
 
-      resources :notes do
+    resources :courses, only: [:index, :show]
 
-        member do
-          get :download
-        end
+    resources :notes do
 
-        collection do
-          get :search
-
-          get "categories/:category",
-              to: "notes#by_category"
-        end
-
+      member do
+        get :download
       end
 
-      get "health",
-          to: "application#health_check"
+      collection do
+        get :search
+
+        get "categories/:category",
+            to: "notes#by_category"
+      end
 
     end
 
+    get "health",
+        to: "application#health_check"
+
   end
 
+end
 
   get "/privacy-policy",
       to: "legal_pages#privacy_policy"

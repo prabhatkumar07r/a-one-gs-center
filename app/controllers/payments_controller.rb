@@ -364,4 +364,53 @@ class PaymentsController < ApplicationController
     redirect_to payment_path(@enrollment),
                 alert: "Something went wrong while applying the coupon."
   end
+
+  def remove_coupon
+    @enrollment =
+      current_user.enrollments.find(params[:id])
+
+    if @enrollment.status == "Approved"
+      redirect_to payment_path(@enrollment),
+                  alert: "You already have access to this course."
+      return
+    end
+
+    if @enrollment.payments.where(status: "paid").exists?
+      redirect_to payment_path(@enrollment),
+                  alert: "A payment has already been completed."
+      return
+    end
+
+    unless @enrollment.coupon.present?
+      redirect_to payment_path(@enrollment),
+                  alert: "No coupon is currently applied."
+      return
+    end
+
+    @enrollment.remove_coupon!
+
+    redirect_to payment_path(@enrollment),
+                notice: "Coupon removed successfully."
+
+  rescue ActiveRecord::RecordNotFound
+    redirect_to courses_path,
+                alert: "Enrollment not found."
+
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error(
+      "COURSE COUPON REMOVE ERROR: #{e.message}"
+    )
+
+    redirect_to payment_path(@enrollment),
+                alert: "Unable to remove coupon."
+
+  rescue StandardError => e
+    Rails.logger.error(
+      "COURSE COUPON REMOVE ERROR: " \
+      "#{e.class}: #{e.message}"
+    )
+
+    redirect_to payment_path(@enrollment),
+                alert: "Something went wrong."
+  end
 end

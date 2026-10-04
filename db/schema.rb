@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_03_101708) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_04_081331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -125,6 +125,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_03_101708) do
     t.index ["user_id"], name: "index_ai_support_requests_on_user_id"
   end
 
+  create_table "api_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "last_used_at"
+    t.datetime "revoked_at"
+    t.string "token_digest", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["expires_at"], name: "index_api_tokens_on_expires_at"
+    t.index ["token_digest"], name: "index_api_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
+
   create_table "attendances", force: :cascade do |t|
     t.integer "course_id", null: false
     t.datetime "created_at", null: false
@@ -191,7 +204,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_03_101708) do
     t.datetime "used_at", null: false
     t.bigint "user_id", null: false
     t.index ["coupon_id", "user_id"], name: "index_coupon_usages_on_coupon_and_user", unique: true
-    t.index ["coupon_id", "user_id"], name: "index_coupon_usages_on_coupon_id_and_user_id", unique: true
     t.index ["coupon_id"], name: "index_coupon_usages_on_coupon_id"
     t.index ["purchasable_type", "purchasable_id"], name: "index_coupon_usages_on_purchasable"
     t.index ["user_id"], name: "index_coupon_usages_on_user_id"
@@ -777,6 +789,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_03_101708) do
   add_foreign_key "ai_support_requests", "ai_conversations"
   add_foreign_key "ai_support_requests", "users"
   add_foreign_key "ai_support_requests", "users", column: "admin_user_id"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "attendances", "courses"
   add_foreign_key "attendances", "users"
   add_foreign_key "batch_students", "batches"

@@ -1,39 +1,58 @@
-# File: app/controllers/api/application_controller.rb
 # ये base controller होगा सभी API controllers के लिए
 
 module Api
   class ApplicationController < ActionController::API
-    # ActionController::API use कर रहे हैं (normal ActionController::Base नहीं)
-    # क्योंकि API को HTML views नहीं चाहिए
-    
+    # API requests के लिए authentication required है
+    # Health check को बाद में public रखा जा सकता है अगर जरूरत हो
+
     before_action :authenticate_request
-    
+
+    attr_reader :current_user
+
     private
-    
+
     def authenticate_request
-      # Authentication logic (optional)
-      # Token based authentication के लिए
-      header = request.headers['Authorization']
-      token = header.split(' ').last if header
-      
-      if token
-        # Verify token logic
-        # @current_user = User.find_by(token: token)
-      else
-        render json: { error: 'Unauthorized' }, status: :unauthorized
+      token = bearer_token
+
+      api_token = ApiTokenService.find_active(token)
+
+      unless api_token
+        render json: {
+          success: false,
+          error: "Unauthorized"
+        }, status: :unauthorized
+
+        return
       end
+
+      @current_user = api_token.user
     end
-    
-    def current_user
-      @current_user
+
+    def bearer_token
+      header = request.headers["Authorization"]
+
+      return nil if header.blank?
+
+      scheme, token = header.split(" ", 2)
+
+      return nil unless scheme&.casecmp("Bearer")&.zero?
+
+      token
     end
-    
+
     def render_success(data = {}, message = "Success", status = :ok)
-      render json: { success: true, message: message, data: data }, status: status
+      render json: {
+        success: true,
+        message: message,
+        data: data
+      }, status: status
     end
-    
+
     def render_error(message = "Error", status = :unprocessable_entity)
-      render json: { success: false, error: message }, status: status
+      render json: {
+        success: false,
+        error: message
+      }, status: status
     end
   end
 end

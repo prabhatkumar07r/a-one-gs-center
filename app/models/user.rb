@@ -11,6 +11,7 @@ class User < ApplicationRecord
          omniauth_providers: [:google_oauth2]
 
   # ================= ASSOCIATIONS =================
+  has_many :api_tokens, dependent: :destroy
 
   has_one :teacher
   has_one_attached :image
