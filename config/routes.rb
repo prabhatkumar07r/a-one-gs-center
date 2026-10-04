@@ -619,6 +619,7 @@ namespace :api do
   resources :courses, only: [:index, :show] do
   member do
     get :access
+    get :learning
   end
 end
 

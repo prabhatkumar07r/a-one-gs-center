@@ -138,6 +138,80 @@ module Api
           error: "Course not found."
         }, status: :not_found
       end
+      def learning
+  course =
+    Course
+      .includes(
+        playlists: [
+          :resources,
+          :notes,
+          {
+            videos: :notes
+          }
+        ]
+      )
+      .find(params[:id])
+
+  unless course.status.to_s.casecmp("Active").zero?
+    return render json: {
+      success: false,
+      error: "Course is not available."
+    }, status: :not_found
+  end
+
+  enrollment =
+    current_user.enrollments.find_by(course_id: course.id)
+
+  unless enrollment &&
+         enrollment.status.to_s.casecmp("Approved").zero?
+    return render json: {
+      success: false,
+      error: "You do not have access to this course."
+    }, status: :forbidden
+  end
+
+  playlists =
+    course.playlists.map do |playlist|
+
+      videos =
+        playlist.videos
+                .where(status: :active)
+                .order(:position)
+
+      {
+        id: playlist.id,
+        title: playlist.title,
+        position: playlist.position,
+        videos: videos.map do |video|
+          {
+            id: video.id,
+            title: video.title,
+            position: video.position,
+            is_free: video.is_free,
+            youtube_id: video.youtube_id,
+            thumbnail: video.youtube_thumbnail
+          }
+        end
+      }
+    end
+
+  render json: {
+    success: true,
+    data: {
+      course: {
+        id: course.id,
+        name: course.Course_name
+      },
+      playlists: playlists
+    }
+  }, status: :ok
+
+rescue ActiveRecord::RecordNotFound
+  render json: {
+    success: false,
+    error: "Course not found."
+  }, status: :not_found
+end
 
       private
 
