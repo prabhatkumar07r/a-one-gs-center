@@ -609,6 +609,36 @@ delete "/ebook-payments/:id/remove_coupon",
 namespace :api do
 
   namespace :v1 do
+    resources :notifications, only: [:index]
+    resources :support_requests, only: [:index, :show, :create] do
+  resources :messages, only: [:index, :create],
+            controller: "support_messages"
+end
+    resources :notes, only: [:index]
+    post "ebooks/:id/purchase", to: "ebooks#purchase"
+    post "ebooks/purchases/:id/verify", to: "ebooks#verify_purchase"
+    resources :ebooks, only: [:index, :show] do
+  member do
+    get :access
+  end
+end
+get "ebooks/files/:id/download", to: "ebooks#download_file"
+    resources :quizzes, only: [:show] do
+  member do
+    post :attempt
+    get :attempts
+  end
+
+  get "attempts/:attempt_id", to: "quizzes#attempt_result", as: :attempt_result
+end
+    get "dashboard", to: "dashboard#show"
+    post "coupons/validate", to: "coupons#validate"
+    resources :enrollments, only: [:index,:show]
+    resources :payments, only: [:create, :show] do
+  member do
+    post :verify
+  end
+end
 
     namespace :auth do
       post "login", to: "sessions#create"
@@ -620,6 +650,12 @@ namespace :api do
   member do
     get :access
     get :learning
+  end
+end
+resources :videos, only: [] do
+  member do
+    get :progress
+    post :progress
   end
 end
 

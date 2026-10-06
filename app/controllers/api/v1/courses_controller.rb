@@ -138,7 +138,7 @@ module Api
           error: "Course not found."
         }, status: :not_found
       end
-      def learning
+     def learning
   course =
     Course
       .includes(
@@ -182,6 +182,31 @@ module Api
         id: playlist.id,
         title: playlist.title,
         position: playlist.position,
+
+        resources: playlist.resources.map do |resource|
+          {
+            id: resource.id,
+            title: resource.title,
+            description: resource.description,
+            resource_type: resource.resource_type,
+            file_available: resource.file.attached?
+          }
+        end,
+
+       notes: playlist.notes.map do |note|
+  {
+    id: note.id,
+    title: note.title,
+    description: note.description,
+    category: note.category,
+    subject: note.subject,
+    file_available: note.pdf_file.attached?,
+    download_url: note.pdf_file.attached? ?
+      Rails.application.routes.url_helpers.download_api_v1_note_path(note.id) :
+      nil
+  }
+end,
+
         videos: videos.map do |video|
           {
             id: video.id,
@@ -189,7 +214,18 @@ module Api
             position: video.position,
             is_free: video.is_free,
             youtube_id: video.youtube_id,
-            thumbnail: video.youtube_thumbnail
+            thumbnail: video.youtube_thumbnail,
+
+            notes: video.notes.map do |note|
+              {
+                id: note.id,
+                title: note.title,
+                description: note.description,
+                category: note.category,
+                subject: note.subject,
+                file_available: note.pdf_file.attached?
+              }
+            end
           }
         end
       }

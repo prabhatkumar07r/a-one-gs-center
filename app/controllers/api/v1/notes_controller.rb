@@ -3,11 +3,9 @@
 
 module Api
   module V1
-    class NotesController < ApplicationController
+    class NotesController < Api::ApplicationController
       # Skip ALL authentication callbacks
-      skip_before_action :authenticate_request, raise: false
-      skip_before_action :authenticate_user!, raise: false
-      skip_before_action :verify_authenticity_token, raise: false
+    
       # protect_from_forgery with: :null_session, if: -> { request.format.json? }
       
       def index
@@ -27,6 +25,28 @@ module Api
           render json: { error: "Note not found" }, status: :not_found
         end
       end
+      def download
+  note = Note.find_by(id: params[:id])
+
+  unless note
+    return render json: {
+      success: false,
+      error: "Note not found."
+    }, status: :not_found
+  end
+
+  unless note.pdf_file.attached?
+    return render json: {
+      success: false,
+      error: "PDF file is not available."
+    }, status: :not_found
+  end
+
+  redirect_to rails_blob_path(
+    note.pdf_file,
+    disposition: "inline"
+  )
+end
       
       def create
         note = Note.new(note_params)
