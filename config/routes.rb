@@ -635,6 +635,20 @@ get "ebooks/files/:id/download", to: "ebooks#download_file"
 
   get "attempts/:attempt_id", to: "quizzes#attempt_result", as: :attempt_result
 end
+    # TEST SERIES API
+    resources :test_series, only: [:index, :show] do
+      resources :tests,
+                controller: "test_series_tests",
+                only: [:show] do
+        member do
+          post :start
+          post :answer
+          post :bookmark
+          post :finish
+          get :result
+        end
+      end
+    end
     get "dashboard", to: "dashboard#show"
     post "coupons/validate", to: "coupons#validate"
     resources :enrollments, only: [:index,:show]
