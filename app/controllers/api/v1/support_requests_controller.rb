@@ -1,3 +1,4 @@
+
 module Api
   module V1
     class SupportRequestsController < Api::ApplicationController
@@ -45,17 +46,14 @@ module Api
       end
 
       def create
-        conversation =
-          current_user.ai_conversations.find(
-            support_request_params[:ai_conversation_id]
-          )
+        conversation = find_or_create_conversation
 
         ai_context = build_ai_context(conversation)
 
         support_request =
           current_user.ai_support_requests.create!(
             ai_conversation: conversation,
-            category: support_request_params[:category],
+            category: support_request_params[:category].presence || "other",
             subject: support_request_params[:subject],
             description: support_request_params[:description],
             ai_context: ai_context
@@ -97,6 +95,19 @@ module Api
           :subject,
           :description
         )
+      end
+
+      def find_or_create_conversation
+        conversation_id =
+          support_request_params[:ai_conversation_id].presence
+
+        if conversation_id
+          current_user.ai_conversations.find(conversation_id)
+        else
+          current_user.ai_conversations.create!(
+            title: "Support Request"
+          )
+        end
       end
 
       def build_ai_context(conversation)
@@ -149,6 +160,7 @@ module Api
           }
         }
       end
+
     end
   end
 end
