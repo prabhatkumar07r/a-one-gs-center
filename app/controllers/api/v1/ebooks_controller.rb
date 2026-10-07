@@ -189,8 +189,7 @@ end
           disposition: "inline"
         )
       end
-
-      def purchase
+def purchase
   ebook = Ebook.published.find_by(id: params[:id])
 
   unless ebook
@@ -225,14 +224,14 @@ end
         ebook_id: ebook.id,
         payment_status: existing_purchase.payment_status,
         status: existing_purchase.status,
-        access_granted: true
+        access_granted: true,
+        original_amount: existing_purchase.original_amount.to_d,
+        discount_amount: existing_purchase.discount_amount.to_d,
+        final_amount: existing_purchase.final_amount.to_d
       }
     }, status: :ok
   end
 
-  # Do not reuse old pending Razorpay orders.
-  # Mark the latest pending purchase as cancelled and create
-  # a completely fresh Razorpay order.
   pending_purchase =
     current_user
       .ebook_purchases
@@ -261,22 +260,9 @@ end
     }, status: :unprocessable_entity
   end
 
-  razorpay_amount = (amount * 100).to_i
-
-  if razorpay_amount <= 0
-    return render json: {
-      success: false,
-      error: "Invalid payment amount."
-    }, status: :unprocessable_entity
-  end
-
-  razorpay_order =
-    Razorpay::Order.create(
-      amount: razorpay_amount,
-      currency: "INR",
-      receipt:
-        "ebook_api_#{ebook.id}_user_#{current_user.id}_#{Time.current.to_i}"
-    )
+  # =========================================================
+  # CREATE PURCHASE
+  # =========================================================
 
   purchase =
     current_user.ebook_purchases.create!(
@@ -286,9 +272,89 @@ end
       discount_amount: 0,
       final_amount: amount,
       payment_status: "pending",
-      status: "pending",
+      status: "pending"
+    )
+
+  # =========================================================
+  # APPLY COUPON IF PROVIDED
+  # =========================================================
+
+  coupon_code = params[:coupon_code].to_s.strip.upcase
+
+  if coupon_code.present?
+    coupon = Coupon.find_by(
+      "LOWER(code) = ?",
+      coupon_code.downcase
+    )
+
+    unless coupon
+      purchase.destroy!
+
+      return render json: {
+        success: false,
+        error: "Invalid coupon code."
+      }, status: :unprocessable_entity
+    end
+
+    begin
+      purchase.apply_coupon!(coupon)
+    rescue ActiveRecord::RecordInvalid => e
+      purchase.destroy!
+
+      return render json: {
+        success: false,
+        error: e.record.errors.full_messages.to_sentence
+      }, status: :unprocessable_entity
+    end
+  end
+
+  final_amount = purchase.payable_amount
+
+  if final_amount <= 0
+    purchase.destroy!
+
+    return render json: {
+      success: false,
+      error: "Invalid final payment amount."
+    }, status: :unprocessable_entity
+  end
+
+  razorpay_amount = (final_amount * 100).to_i
+
+  if razorpay_amount <= 0
+    purchase.destroy!
+
+    return render json: {
+      success: false,
+      error: "Invalid payment amount."
+    }, status: :unprocessable_entity
+  end
+
+  # =========================================================
+  # CREATE FRESH RAZORPAY ORDER
+  # =========================================================
+
+  begin
+    razorpay_order =
+      Razorpay::Order.create(
+        amount: razorpay_amount,
+        currency: "INR",
+        receipt:
+          "ebook_api_#{ebook.id}_user_#{current_user.id}_#{Time.current.to_i}"
+      )
+
+    purchase.update!(
       razorpay_order_id: razorpay_order.id
     )
+
+  rescue Razorpay::Error
+    purchase.destroy!
+
+    return render json: {
+      success: false,
+      error: "Unable to create payment order."
+    }, status: :unprocessable_entity
+  end
 
   render json: {
     success: true,
@@ -298,7 +364,11 @@ end
       ebook_id: purchase.ebook_id,
       ebook_title: ebook.title,
       amount: purchase.amount.to_d,
+      original_amount: purchase.original_amount.to_d,
+      discount_amount: purchase.discount_amount.to_d,
+      final_amount: purchase.final_amount.to_d,
       currency: "INR",
+      coupon_code: purchase.coupon&.code,
       razorpay_order_id: purchase.razorpay_order_id,
       payment_status: purchase.payment_status,
       status: purchase.status,
@@ -317,13 +387,8 @@ rescue ActiveRecord::RecordInvalid => e
     success: false,
     error: e.record.errors.full_messages.to_sentence
   }, status: :unprocessable_entity
-
-rescue Razorpay::Error
-  render json: {
-    success: false,
-    error: "Unable to create payment order."
-  }, status: :unprocessable_entity
 end
+
       def verify_purchase
         purchase =
           current_user
