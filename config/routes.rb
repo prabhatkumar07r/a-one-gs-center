@@ -617,7 +617,11 @@ end
     resources :notes, only: [:index]
     post "ebooks/:id/purchase", to: "ebooks#purchase"
     post "ebooks/purchases/:id/verify", to: "ebooks#verify_purchase"
-    resources :ebooks, only: [:index, :show] do
+ resources :ebooks, only: [:index, :show] do
+  collection do
+    get :my
+  end
+
   member do
     get :access
   end

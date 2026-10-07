@@ -30,6 +30,59 @@ module Api
         }, status: :ok
       end
 
+  def my
+  purchases =
+    current_user
+      .ebook_purchases
+      .paid
+      .includes(
+        ebook: {
+          ebook_files: {
+            pdf_attachment: :blob
+          }
+        }
+      )
+      .order(created_at: :desc)
+
+  render json: {
+    success: true,
+    data: {
+      ebooks: purchases.map do |purchase|
+        ebook = purchase.ebook
+
+        {
+          purchase_id: purchase.id,
+          ebook_id: ebook.id,
+          title: ebook.title,
+          description: ebook.description,
+          author: ebook.author,
+          category: ebook.category,
+          language: ebook.language,
+          exam_name: ebook.exam_name,
+          price: ebook.price,
+          original_price: ebook.original_price,
+          discount_percentage: ebook.discount_percentage,
+          purchased_at: purchase.created_at,
+          access_granted: true,
+          files: ebook.ebook_files
+                       .where(status: "active")
+                       .order(:position)
+                       .select { |file| file.pdf.attached? }
+                       .map do |file|
+            {
+              id: file.id,
+              title: file.title,
+              description: file.description,
+              position: file.position,
+              pdf_available: true
+            }
+          end
+        }
+      end
+    }
+  }, status: :ok
+end
+
       def show
         ebook = Ebook.find_by(
           id: params[:id],
