@@ -84,14 +84,6 @@ module Api
         }, status: :not_found
       end
 
-      # GET /api/v1/courses/:id/access
-      #
-      # Returns the current student's access/enrollment
-      # status for the selected course.
-      #
-      # This endpoint does NOT create an enrollment.
-      # It does NOT create a payment.
-      # It does NOT calculate or modify any payment amount.
       def access
         course = Course.find(params[:id])
 
@@ -138,116 +130,141 @@ module Api
           error: "Course not found."
         }, status: :not_found
       end
-     def learning
-  course =
-    Course
-      .includes(
-        playlists: [
-          :resources,
-          :notes,
-          {
-            videos: :notes
-          }
-        ]
-      )
-      .find(params[:id])
 
-  unless course.status.to_s.casecmp("Active").zero?
-    return render json: {
-      success: false,
-      error: "Course is not available."
-    }, status: :not_found
-  end
+      def learning
+        course =
+          Course
+            .includes(
+              :quizzes,
+              playlists: [
+                :resources,
+                :notes,
+                {
+                  videos: :notes
+                }
+              ]
+            )
+            .find(params[:id])
 
-  enrollment =
-    current_user.enrollments.find_by(course_id: course.id)
-
-  unless enrollment &&
-         enrollment.status.to_s.casecmp("Approved").zero?
-    return render json: {
-      success: false,
-      error: "You do not have access to this course."
-    }, status: :forbidden
-  end
-
-  playlists =
-    course.playlists.map do |playlist|
-
-      videos =
-        playlist.videos
-                .where(status: :active)
-                .order(:position)
-
-      {
-        id: playlist.id,
-        title: playlist.title,
-        position: playlist.position,
-
-        resources: playlist.resources.map do |resource|
-          {
-            id: resource.id,
-            title: resource.title,
-            description: resource.description,
-            resource_type: resource.resource_type,
-            file_available: resource.file.attached?
-          }
-        end,
-
-       notes: playlist.notes.map do |note|
-  {
-    id: note.id,
-    title: note.title,
-    description: note.description,
-    category: note.category,
-    subject: note.subject,
-    file_available: note.pdf_file.attached?,
-    download_url: note.pdf_file.attached? ?
-      Rails.application.routes.url_helpers.download_api_v1_note_path(note.id) :
-      nil
-  }
-end,
-
-        videos: videos.map do |video|
-          {
-            id: video.id,
-            title: video.title,
-            position: video.position,
-            is_free: video.is_free,
-            youtube_id: video.youtube_id,
-            thumbnail: video.youtube_thumbnail,
-
-            notes: video.notes.map do |note|
-              {
-                id: note.id,
-                title: note.title,
-                description: note.description,
-                category: note.category,
-                subject: note.subject,
-                file_available: note.pdf_file.attached?
-              }
-            end
-          }
+        unless course.status.to_s.casecmp("Active").zero?
+          return render json: {
+            success: false,
+            error: "Course is not available."
+          }, status: :not_found
         end
-      }
-    end
 
-  render json: {
-    success: true,
-    data: {
-      course: {
-        id: course.id,
-        name: course.Course_name
-      },
-      playlists: playlists
-    }
-  }, status: :ok
+        enrollment =
+          current_user.enrollments.find_by(course_id: course.id)
 
-rescue ActiveRecord::RecordNotFound
-  render json: {
-    success: false,
-    error: "Course not found."
-  }, status: :not_found
-end
+        unless enrollment &&
+               enrollment.status.to_s.casecmp("Approved").zero?
+          return render json: {
+            success: false,
+            error: "You do not have access to this course."
+          }, status: :forbidden
+        end
+
+        playlists =
+          course.playlists.map do |playlist|
+
+            videos =
+              playlist.videos
+                      .where(status: :active)
+                      .order(:position)
+
+            {
+              id: playlist.id,
+              title: playlist.title,
+              position: playlist.position,
+
+              resources: playlist.resources.map do |resource|
+                {
+                  id: resource.id,
+                  title: resource.title,
+                  description: resource.description,
+                  resource_type: resource.resource_type,
+                  file_available: resource.file.attached?
+                }
+              end,
+
+              notes: playlist.notes.map do |note|
+                {
+                  id: note.id,
+                  title: note.title,
+                  description: note.description,
+                  category: note.category,
+                  subject: note.subject,
+                  file_available: note.pdf_file.attached?,
+                  download_url:
+                    note.pdf_file.attached? ?
+                      Rails.application.routes.url_helpers
+                        .download_api_v1_note_path(note.id) :
+                      nil
+                }
+              end,
+
+              videos: videos.map do |video|
+
+                video_quizzes =
+                  course.quizzes
+                        .where(
+                          video_id: video.id,
+                          status: "Active"
+                        )
+                        .order(:id)
+
+                {
+                  id: video.id,
+                  title: video.title,
+                  position: video.position,
+                  is_free: video.is_free,
+                  youtube_id: video.youtube_id,
+                  thumbnail: video.youtube_thumbnail,
+
+                  notes: video.notes.map do |note|
+                    {
+                      id: note.id,
+                      title: note.title,
+                      description: note.description,
+                      category: note.category,
+                      subject: note.subject,
+                      file_available: note.pdf_file.attached?
+                    }
+                  end,
+
+                  quizzes: video_quizzes.map do |quiz|
+                    {
+                      id: quiz.id,
+                      title: quiz.title,
+                      description: quiz.description,
+                      time_limit: quiz.time_limit,
+                      passing_percentage: quiz.passing_percentage,
+                      course_id: quiz.course_id,
+                      video_id: quiz.video_id
+                    }
+                  end
+                }
+              end
+            }
+          end
+
+        render json: {
+          success: true,
+          data: {
+            course: {
+              id: course.id,
+              name: course.Course_name
+            },
+            playlists: playlists
+          }
+        }, status: :ok
+
+      rescue ActiveRecord::RecordNotFound
+        render json: {
+          success: false,
+          error: "Course not found."
+        }, status: :not_found
+      end
 
       private
 
