@@ -49,13 +49,14 @@ module Api
 
         score = 0
 
-        ActiveRecord::Base.transaction do
+              ActiveRecord::Base.transaction do
           answers.each do |answer|
-
             question = quiz.questions.find(answer[:question_id])
 
             selected_option =
-              question.options.find_by(id: answer[:option_id])
+              question.options.find_by(
+                id: answer[:selected_option_id]
+              )
 
             unless selected_option
               raise ActiveRecord::RecordInvalid.new(
@@ -123,10 +124,14 @@ module Api
           error: "Quiz, question, or option not found."
         }, status: :not_found
 
-      rescue ActiveRecord::RecordInvalid
+      rescue ActiveRecord::RecordInvalid => e
+        Rails.logger.error "QUIZ SUBMIT VALIDATION ERROR: #{e.message}"
+        Rails.logger.error "QUIZ SUBMIT ERRORS: #{e.record.errors.full_messages.inspect}"
+
         render json: {
           success: false,
-          error: "Unable to submit quiz."
+          error: "Unable to submit quiz.",
+          details: e.record.errors.full_messages
         }, status: :unprocessable_entity
       end
 
