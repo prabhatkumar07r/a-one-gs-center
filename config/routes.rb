@@ -636,6 +636,9 @@ get "ebooks/files/:id/download", to: "ebooks#download_file"
   get "attempts/:attempt_id", to: "quizzes#attempt_result", as: :attempt_result
 end
     # TEST SERIES API
+    get "test_series/attempts",
+    to: "test_series_attempts#index",
+    as: :test_series_attempts
     resources :test_series, only: [:index, :show] do
       resources :tests,
                 controller: "test_series_tests",
