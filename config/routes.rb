@@ -637,10 +637,6 @@ get "ebooks/files/:id/download", to: "ebooks#download_file"
 end
     # TEST SERIES API
     resources :test_series, only: [:index, :show] do
-      member do
-        post :purchase
-      end
-
       resources :tests,
                 controller: "test_series_tests",
                 only: [:show] do
@@ -653,6 +649,10 @@ end
         end
       end
     end
+
+    post "test_series/:id/purchase",
+         to: "test_series_purchases#purchase",
+         as: :purchase_test_series
 
     post "test_series/purchases/:id/verify",
          to: "test_series_purchases#verify",
@@ -749,4 +749,5 @@ end
         "/rails/active_storage"
 
 end
+
 
