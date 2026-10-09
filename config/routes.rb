@@ -123,6 +123,13 @@ delete "/test_series_purchases/:id/remove_coupon",
 
 
   namespace :admin do
+     
+resources :banners do
+  member do
+    patch :toggle_status
+  end
+end
+
 
     resources :support_requests,
               only: [:index, :show, :update] do
@@ -609,6 +616,9 @@ delete "/ebook-payments/:id/remove_coupon",
 namespace :api do
 
   namespace :v1 do
+    
+      resources :banners, only: [:index]
+
      
     # Profile API
      get   "profile",      to: "profile#show"
