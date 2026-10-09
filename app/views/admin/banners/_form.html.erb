@@ -1,0 +1,616 @@
+
+<% if banner.errors.any? %>
+  <div class="banner-error-panel">
+    <strong>Please correct the following errors:</strong>
+    <ul>
+      <% banner.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="banner-editor">
+  <div class="banner-editor-heading">
+    <div class="banner-heading-icon">B</div>
+    <div>
+      <p class="banner-eyebrow">A ONE GS CENTER</p>
+      <h2><%= banner.persisted? ? "Edit Hero Banner" : "Create Hero Banner" %></h2>
+      <p>Design the first impression students see in your app.</p>
+    </div>
+  </div>
+
+  <%= form_with model: [:admin, banner],
+      local: true,
+      multipart: true,
+      class: "banner-3d-form" do |f| %>
+
+    <div class="banner-form-layout">
+
+      <section class="banner-glass-card banner-main-fields">
+        <div class="banner-section-heading">
+          <span class="banner-section-number">01</span>
+          <div>
+            <h3>Banner Content</h3>
+            <p>Set the message for your students.</p>
+          </div>
+        </div>
+
+        <div class="banner-field">
+          <%= f.label :title, "Banner Title *" %>
+          <%= f.text_field :title,
+              placeholder: "Your Preparation. Our Guidance. Your Success.",
+              required: true,
+              class: "banner-input" %>
+        </div>
+
+        <div class="banner-field">
+          <%= f.label :subtitle, "Subtitle / Description" %>
+          <%= f.text_area :subtitle,
+              rows: 3,
+              placeholder: "Learn today and achieve tomorrow...",
+              class: "banner-input banner-textarea" %>
+        </div>
+
+        <div class="banner-two-columns">
+          <div class="banner-field">
+            <%= f.label :button_text, "Button Text" %>
+            <%= f.text_field :button_text,
+                placeholder: "Explore Courses",
+                class: "banner-input" %>
+          </div>
+
+          <div class="banner-field">
+            <%= f.label :button_url, "Button URL" %>
+            <%= f.text_field :button_url,
+                placeholder: "/courses",
+                class: "banner-input" %>
+          </div>
+        </div>
+
+        <div class="banner-field">
+          <%= f.label :position, "Display Order" %>
+          <%= f.number_field :position,
+              min: 0,
+              class: "banner-input" %>
+          <small>Lower numbers appear first in the carousel.</small>
+        </div>
+
+        <div class="banner-status-row">
+          <div>
+            <strong>Publish Banner</strong>
+            <p>Show this banner in the app carousel.</p>
+          </div>
+          <label class="banner-switch">
+            <%= f.check_box :active %>
+            <span class="banner-switch-slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="banner-glass-card banner-visual-card">
+        <div class="banner-section-heading">
+          <span class="banner-section-number">02</span>
+          <div>
+            <h3>Visual Identity</h3>
+            <p>Upload your banner artwork.</p>
+          </div>
+        </div>
+
+        <div class="banner-live-preview" id="bannerLivePreview">
+          <% if banner.image.attached? %>
+            <%= image_tag url_for(banner.image),
+                id: "bannerPreviewImage",
+                class: "banner-preview-image",
+                alt: "Banner preview" %>
+          <% else %>
+            <div class="banner-preview-placeholder" id="bannerPreviewPlaceholder">
+              <span class="banner-preview-symbol">+</span>
+              <strong>Your Banner Preview</strong>
+              <span>Upload an image to preview it here</span>
+            </div>
+            <img id="bannerPreviewImage"
+                 class="banner-preview-image"
+                 alt="Banner preview"
+                 hidden>
+          <% end %>
+
+          <div class="banner-preview-overlay">
+            <span>HERO BANNER</span>
+          </div>
+        </div>
+
+        <div class="banner-field banner-upload-field">
+          <%= f.label :image, "Upload Banner Image *" %>
+          <%= f.file_field :image,
+              accept: "image/*",
+              class: "banner-input banner-file-input",
+              id: "bannerImageInput",
+              required: !banner.image.attached? %>
+          <small>Use a high-resolution landscape image for best results.</small>
+        </div>
+
+        <div class="banner-image-tips">
+          <span>Image upload</span>
+          <span>Live preview</span>
+          <span>Active status</span>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="banner-form-actions">
+      <%= link_to "Cancel", admin_banners_path,
+          class: "banner-cancel-button" %>
+
+      <%= f.submit(
+          banner.persisted? ? "Update Banner" : "Create Banner",
+          class: "banner-submit-button"
+      ) %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  (() => {
+    const input = document.getElementById("bannerImageInput");
+    if (!input || input.dataset.previewBound === "true") return;
+
+    input.dataset.previewBound = "true";
+
+    input.addEventListener("change", function () {
+      const file = this.files && this.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("Please select a valid image file.");
+        this.value = "";
+        return;
+      }
+
+      const image = document.getElementById("bannerPreviewImage");
+      const placeholder = document.getElementById("bannerPreviewPlaceholder");
+
+      if (image) {
+        image.src = URL.createObjectURL(file);
+        image.hidden = false;
+      }
+
+      if (placeholder) placeholder.hidden = true;
+    });
+  })();
+</script>
+
+<style>
+  .banner-editor {
+    --banner-purple: #7928ca;
+    --banner-violet: #a855f7;
+    --banner-ink: #261344;
+    color: var(--banner-ink);
+    padding: 28px;
+    border-radius: 28px;
+    background:
+      radial-gradient(ellipse at 8% 0%, rgba(168,85,247,.17), transparent 42%),
+      radial-gradient(ellipse at 100% 70%, rgba(124,58,237,.12), transparent 40%),
+      #f7f3ff;
+    perspective: 1200px;
+  }
+
+  .banner-editor-heading {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .banner-heading-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 64px;
+    height: 64px;
+    border-radius: 20px;
+    color: white;
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(145deg, #c084fc, #6d28d9);
+    box-shadow: 7px 7px 16px #c7b5e3, -4px -4px 12px #fff;
+  }
+
+  .banner-eyebrow {
+    color: #8036c5;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 0 0 5px;
+  }
+
+  .banner-editor-heading h2 {
+    font-size: clamp(23px, 3vw, 32px);
+    font-weight: 900;
+    margin: 0 0 5px;
+    letter-spacing: -.8px;
+  }
+
+  .banner-editor-heading p,
+  .banner-section-heading p,
+  .banner-status-row p {
+    color: #786b8c;
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .banner-form-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .banner-glass-card {
+    min-width: 0;
+    padding: 25px;
+    border: 1px solid rgba(255,255,255,.95);
+    border-radius: 24px;
+    background: rgba(255,255,255,.78);
+    box-shadow:
+      12px 12px 30px rgba(70,36,110,.10),
+      -7px -7px 20px rgba(255,255,255,.95),
+      inset 1px 1px 0 rgba(255,255,255,.9);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .banner-glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 15px 18px 36px rgba(70,36,110,.14);
+  }
+
+  .banner-section-heading {
+    display: flex;
+    gap: 13px;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .banner-section-number {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    flex: 0 0 43px;
+    border-radius: 14px;
+    color: white;
+    font-weight: 900;
+    background: linear-gradient(145deg, #a855f7, #6d28d9);
+    box-shadow: 4px 5px 10px rgba(109,40,217,.25);
+  }
+
+  .banner-section-heading h3 {
+    font-size: 17px;
+    font-weight: 850;
+    margin: 0 0 4px;
+  }
+
+  .banner-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 20px;
+  }
+
+  .banner-field label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #4c326b;
+  }
+
+  .banner-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 47px;
+    padding: 12px 14px;
+    border: 1px solid #e7dcf5;
+    border-radius: 13px;
+    outline: none;
+    background: #faf8ff;
+    color: #2c1745;
+    font: inherit;
+    font-size: 13px;
+    box-shadow: inset 3px 3px 7px rgba(77,42,119,.055);
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+
+  .banner-input:focus {
+    border-color: #a855f7;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(168,85,247,.12);
+  }
+
+  .banner-textarea {
+    resize: vertical;
+    min-height: 95px;
+  }
+
+  .banner-field small {
+    color: #857694;
+    font-size: 11px;
+  }
+
+  .banner-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .banner-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(120deg, #f4eaff, #fff);
+    border: 1px solid #eadcfb;
+  }
+
+  .banner-status-row strong {
+    font-size: 13px;
+  }
+
+  .banner-status-row p {
+    margin-top: 5px;
+    font-size: 11px;
+  }
+
+  .banner-switch {
+    position: relative;
+    display: inline-block;
+    width: 49px;
+    height: 27px;
+    flex: 0 0 49px;
+  }
+
+  .banner-switch input {
+    width: 1px;
+    height: 1px;
+    position: absolute;
+    opacity: 0;
+  }
+
+  .banner-switch-slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    border-radius: 30px;
+    background: #d6ccdf;
+    transition: .25s;
+  }
+
+  .banner-switch-slider::before {
+    content: "";
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    left: 3px;
+    top: 3px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 5px #8b7c99;
+    transition: .25s;
+  }
+
+  .banner-switch input:checked + .banner-switch-slider {
+    background: linear-gradient(100deg, #9333ea, #6d28d9);
+  }
+
+  .banner-switch input:checked + .banner-switch-slider::before {
+    transform: translateX(22px);
+  }
+
+  .banner-switch input:focus-visible + .banner-switch-slider {
+    outline: 3px solid #c084fc;
+    outline-offset: 3px;
+  }
+
+  .banner-live-preview {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 220px;
+    overflow: hidden;
+    border-radius: 19px;
+    background:
+      radial-gradient(circle at 15% 20%, #c084fc, transparent 38%),
+      linear-gradient(135deg, #32105c, #7e22ce 60%, #c026d3);
+    box-shadow: inset 0 0 24px rgba(31,10,56,.25), 0 10px 22px #dfd0f3;
+  }
+
+  .banner-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+  }
+
+  .banner-preview-placeholder strong {
+    font-size: 15px;
+  }
+
+  .banner-preview-placeholder span:last-child {
+    font-size: 11px;
+    opacity: .8;
+  }
+
+  .banner-preview-symbol {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(255,255,255,.65);
+    border-radius: 16px;
+    font-size: 28px;
+    background: rgba(255,255,255,.13);
+  }
+
+  .banner-preview-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .banner-preview-overlay {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    z-index: 1;
+  }
+
+  .banner-preview-overlay span {
+    display: inline-block;
+    padding: 6px 9px;
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 8px;
+    background: rgba(38,19,68,.55);
+    color: white;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    backdrop-filter: blur(8px);
+  }
+
+  .banner-upload-field {
+    margin-top: 22px;
+  }
+
+  .banner-file-input {
+    padding: 9px;
+    background: #fff;
+  }
+
+  .banner-file-input::file-selector-button {
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 9px;
+    margin-right: 10px;
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(135deg, #9333ea, #6d28d9);
+    cursor: pointer;
+  }
+
+  .banner-image-tips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 18px;
+  }
+
+  .banner-image-tips span {
+    padding: 7px 9px;
+    border-radius: 9px;
+    color: #7134a2;
+    font-size: 10px;
+    font-weight: 750;
+    background: #f1e5ff;
+  }
+
+  .banner-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 13px;
+    margin-top: 24px;
+  }
+
+  .banner-cancel-button,
+  .banner-submit-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 47px;
+    padding: 0 22px;
+    border-radius: 13px;
+    text-decoration: none;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+  }
+
+  .banner-cancel-button {
+    color: #624c77;
+    background: #fff;
+    border: 1px solid #e7dcf5;
+    box-shadow: 4px 4px 10px rgba(70,36,110,.08);
+  }
+
+  .banner-submit-button {
+    color: white;
+    border: 0;
+    background: linear-gradient(135deg, #a855f7, #6d28d9 65%, #581c87);
+    box-shadow: 0 8px 18px rgba(109,40,217,.30);
+  }
+
+  .banner-cancel-button:hover,
+  .banner-submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 11px 22px rgba(109,40,217,.23);
+  }
+
+  .banner-error-panel {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 15px;
+    color: #9f1239;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+  }
+
+  .banner-error-panel ul {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 850px) {
+    .banner-form-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .banner-editor {
+      padding: 17px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .banner-glass-card {
+      padding: 17px;
+    }
+
+    .banner-two-columns {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .banner-form-actions {
+      flex-direction: column-reverse;
+    }
+
+    .banner-cancel-button,
+    .banner-submit-button {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .banner-glass-card,
+    .banner-input,
+    .banner-cancel-button,
+    .banner-submit-button {
+      transition: none;
+    }
+  }
+</style>

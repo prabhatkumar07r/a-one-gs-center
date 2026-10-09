@@ -1,0 +1,562 @@
+
+<div class="banner-dashboard">
+
+  <div class="banner-dashboard-header">
+    <div>
+      <span class="banner-dashboard-eyebrow">A ONE GS CENTER / ADMIN</span>
+      <h1>Banner Management</h1>
+      <p>Manage your website and mobile app carousel banners.</p>
+    </div>
+
+    <%= link_to new_admin_banner_path, class: "banner-add-button" do %>
+      <span>+</span> Create New Banner
+    <% end %>
+  </div>
+
+  <div class="banner-stats-grid">
+    <div class="banner-stat-card">
+      <span class="banner-stat-label">Total Banners</span>
+      <strong><%= @banners.count %></strong>
+      <span class="banner-stat-caption">All uploaded banners</span>
+    </div>
+
+    <div class="banner-stat-card banner-stat-active">
+      <span class="banner-stat-label">Active Banners</span>
+      <strong><%= @banners.count(&:active?) %></strong>
+      <span class="banner-stat-caption">Eligible for the carousel</span>
+    </div>
+
+    <div class="banner-stat-card banner-stat-inactive">
+      <span class="banner-stat-label">Inactive Banners</span>
+      <strong><%= @banners.count { |banner| !banner.active? } %></strong>
+      <span class="banner-stat-caption">Currently hidden</span>
+    </div>
+  </div>
+
+  <div class="banner-list-heading">
+    <div>
+      <h2>Your Banners</h2>
+      <p>Cards are ordered by display position.</p>
+    </div>
+    <span class="banner-total-chip"><%= @banners.count %> banners</span>
+  </div>
+
+  <% if @banners.empty? %>
+    <div class="banner-empty-state">
+      <div class="banner-empty-icon">B</div>
+      <h3>No banners created yet</h3>
+      <p>Create your first banner to start managing the app carousel.</p>
+      <%= link_to "Create Your First Banner", new_admin_banner_path,
+          class: "banner-add-button" %>
+    </div>
+  <% else %>
+    <div class="banner-cards-grid">
+      <% @banners.each do |banner| %>
+        <article class="banner-admin-card">
+
+          <div class="banner-card-image">
+            <% if banner.image.attached? %>
+              <%= image_tag url_for(banner.image),
+                  alt: banner.title,
+                  loading: "lazy" %>
+            <% else %>
+              <div class="banner-card-no-image">
+                <span>BANNER</span>
+                <strong>Image not uploaded</strong>
+              </div>
+            <% end %>
+
+            <span class="banner-position-badge">
+              Position <%= banner.position %>
+            </span>
+
+            <span class="banner-status-badge <%= banner.active? ? 'is-active' : 'is-inactive' %>">
+              <%= banner.active? ? "Active" : "Inactive" %>
+            </span>
+          </div>
+
+          <div class="banner-card-content">
+            <h3><%= banner.title %></h3>
+
+            <p class="banner-card-subtitle">
+              <%= banner.subtitle.presence || "No subtitle added." %>
+            </p>
+
+            <% if banner.button_text.present? %>
+              <div class="banner-button-info">
+                <span>Button</span>
+                <strong><%= banner.button_text %></strong>
+              </div>
+            <% end %>
+
+            <div class="banner-card-meta">
+              <span>Banner ID: #<%= banner.id %></span>
+              <span>
+                Updated:
+                <%= banner.updated_at.strftime("%d %b %Y") %>
+              </span>
+            </div>
+
+            <div class="banner-card-actions">
+              <%= link_to "Edit",
+                  edit_admin_banner_path(banner),
+                  class: "banner-action-edit" %>
+
+              <%= button_to(
+                  banner.active? ? "Deactivate" : "Activate",
+                  toggle_status_admin_banner_path(banner),
+                  method: :patch,
+                  class: "banner-action-toggle",
+                  form: { class: "banner-action-form" }
+              ) %>
+
+              <%= button_to(
+                  "Delete",
+                  admin_banner_path(banner),
+                  method: :delete,
+                  class: "banner-action-delete",
+                  form: {
+                    class: "banner-action-form",
+                    data: {
+                      turbo_confirm: "Delete this banner permanently?"
+                    }
+                  }
+              ) %>
+            </div>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .banner-dashboard {
+    --bd-purple: #7928ca;
+    --bd-deep: #4c1d95;
+    --bd-text: #27133e;
+    color: var(--bd-text);
+    padding: 28px;
+    border-radius: 26px;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(192,132,252,.16), transparent 40%),
+      #f8f5ff;
+  }
+
+  .banner-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .banner-dashboard-eyebrow {
+    color: #9333ea;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
+
+  .banner-dashboard-header h1 {
+    margin: 8px 0;
+    font-size: clamp(25px, 3vw, 35px);
+    font-weight: 900;
+    letter-spacing: -.8px;
+  }
+
+  .banner-dashboard-header p,
+  .banner-list-heading p {
+    margin: 0;
+    color: #82738f;
+    font-size: 13px;
+  }
+
+  .banner-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 46px;
+    padding: 0 19px;
+    border-radius: 13px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 850;
+    background: linear-gradient(135deg, #a855f7, #6d28d9 65%, #581c87);
+    box-shadow: 0 8px 20px rgba(109,40,217,.28);
+    transition: transform .2s, box-shadow .2s;
+  }
+
+  .banner-add-button:hover {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(109,40,217,.36);
+  }
+
+  .banner-add-button span {
+    font-size: 21px;
+  }
+
+  .banner-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 19px;
+    margin-bottom: 36px;
+  }
+
+  .banner-stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 23px;
+    border-radius: 21px;
+    border: 1px solid white;
+    background: rgba(255,255,255,.86);
+    box-shadow: 9px 10px 23px rgba(70,36,110,.09),
+                -5px -5px 15px white;
+    transition: transform .25s;
+  }
+
+  .banner-stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .banner-stat-card::after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: -25px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    background: rgba(168,85,247,.10);
+  }
+
+  .banner-stat-label,
+  .banner-stat-caption {
+    display: block;
+    color: #81728e;
+    font-size: 12px;
+  }
+
+  .banner-stat-card strong {
+    display: block;
+    margin: 12px 0;
+    font-size: 35px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .banner-stat-active strong {
+    color: #15803d;
+  }
+
+  .banner-stat-inactive strong {
+    color: #b45309;
+  }
+
+  .banner-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 19px;
+  }
+
+  .banner-list-heading h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .banner-total-chip {
+    padding: 8px 12px;
+    border-radius: 10px;
+    color: #7134a2;
+    background: #efe3ff;
+    font-size: 11px;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .banner-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .banner-admin-card {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.95);
+    background: rgba(255,255,255,.9);
+    box-shadow: 10px 12px 27px rgba(70,36,110,.10),
+                -4px -4px 13px white;
+    transition: transform .25s, box-shadow .25s;
+  }
+
+  .banner-admin-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 14px 18px 34px rgba(70,36,110,.15);
+  }
+
+  .banner-card-image {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 205px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #32105c, #7e22ce, #c026d3);
+  }
+
+  .banner-card-image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .45s;
+  }
+
+  .banner-admin-card:hover .banner-card-image > img {
+    transform: scale(1.035);
+  }
+
+  .banner-card-no-image {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+  }
+
+  .banner-card-no-image span {
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: .8;
+  }
+
+  .banner-position-badge,
+  .banner-status-badge {
+    position: absolute;
+    top: 12px;
+    padding: 7px 10px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 900;
+    backdrop-filter: blur(10px);
+  }
+
+  .banner-position-badge {
+    left: 12px;
+    color: white;
+    background: rgba(35,15,58,.70);
+  }
+
+  .banner-status-badge {
+    right: 12px;
+  }
+
+  .banner-status-badge.is-active {
+    color: #166534;
+    background: rgba(220,252,231,.96);
+  }
+
+  .banner-status-badge.is-inactive {
+    color: #92400e;
+    background: rgba(254,243,199,.96);
+  }
+
+  .banner-card-content {
+    padding: 21px;
+  }
+
+  .banner-card-content h3 {
+    margin: 0 0 9px;
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 900;
+    overflow-wrap: anywhere;
+  }
+
+  .banner-card-subtitle {
+    min-height: 36px;
+    margin: 0 0 16px;
+    color: #80718e;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .banner-button-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 12px;
+    border-radius: 11px;
+    background: #f5edff;
+    font-size: 11px;
+  }
+
+  .banner-button-info span {
+    color: #89789a;
+  }
+
+  .banner-button-info strong {
+    color: #7134a2;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  .banner-card-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 13px;
+    border-top: 1px solid #f0e8f8;
+    color: #8a7b96;
+    font-size: 10px;
+  }
+
+  .banner-card-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+
+  .banner-action-form {
+    display: inline-flex;
+    margin: 0;
+  }
+
+  .banner-action-edit,
+  .banner-action-toggle,
+  .banner-action-delete {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 37px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 850;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s;
+  }
+
+  .banner-action-edit {
+    color: white;
+    border: 0;
+    background: linear-gradient(135deg, #9333ea, #6d28d9);
+  }
+
+  .banner-action-toggle {
+    color: #6d28d9;
+    border: 1px solid #e9d5ff;
+    background: #f5edff;
+  }
+
+  .banner-action-delete {
+    color: #be123c;
+    border: 1px solid #fecdd3;
+    background: #fff1f2;
+  }
+
+  .banner-action-edit:hover,
+  .banner-action-toggle:hover,
+  .banner-action-delete:hover {
+    transform: translateY(-2px);
+  }
+
+  .banner-empty-state {
+    padding: 55px 20px;
+    text-align: center;
+    border-radius: 24px;
+    border: 1px solid white;
+    background: rgba(255,255,255,.85);
+    box-shadow: 9px 10px 25px rgba(70,36,110,.09);
+  }
+
+  .banner-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 17px;
+    border-radius: 18px;
+    color: white;
+    font-size: 26px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a855f7, #6d28d9);
+  }
+
+  .banner-empty-state h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+  }
+
+  .banner-empty-state p {
+    margin: 0 0 22px;
+    color: #81728e;
+    font-size: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .banner-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .banner-dashboard {
+      padding: 16px;
+    }
+
+    .banner-stats-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .banner-stat-card {
+      padding: 18px;
+    }
+
+    .banner-card-image {
+      height: 180px;
+    }
+
+    .banner-card-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .banner-action-form {
+      width: 100%;
+    }
+
+    .banner-action-form button {
+      width: 100%;
+    }
+
+    .banner-action-edit {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .banner-admin-card,
+    .banner-stat-card,
+    .banner-card-image > img {
+      transition: none;
+    }
+  }
+</style>
