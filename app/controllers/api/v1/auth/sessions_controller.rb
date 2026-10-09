@@ -74,13 +74,20 @@ module Api
         end
 
         private
-
+         
         def user_json(user)
           {
             id: user.id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role: user.role,
+            image_url: if user.image.attached?
+              Rails.application.routes.url_helpers.rails_blob_url(
+                user.image,
+                host: "aonegscenter.com",
+                protocol: "https"
+              )
+            end
           }
         end
 
