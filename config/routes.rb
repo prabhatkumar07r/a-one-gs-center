@@ -609,6 +609,10 @@ delete "/ebook-payments/:id/remove_coupon",
 namespace :api do
 
   namespace :v1 do
+     
+    # Profile API
+     get   "profile",      to: "profile#show"
+    patch "profile",      to: "profile#update"
     resources :notifications, only: [:index]
     resources :support_requests, only: [:index, :show, :create] do
   resources :messages, only: [:index, :create],
