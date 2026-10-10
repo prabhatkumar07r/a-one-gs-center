@@ -676,7 +676,7 @@ end
          as: :verify_test_series_purchase
     get "dashboard", to: "dashboard#show"
     post "coupons/validate", to: "coupons#validate"
-    resources :enrollments, only: [:index,:show]
+    resources :enrollments, only: [:index, :show, :create]
     resources :payments, only: [:create, :show] do
   member do
     post :verify
