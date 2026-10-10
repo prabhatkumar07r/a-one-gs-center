@@ -43,7 +43,10 @@ module Api
 
       
 def create
-  course = Course.find_by(id: params[:course_id], status: "active")
+ 
+course = Course.where(id: params[:course_id])
+               .where("LOWER(status) = ?", "active")
+               .first
 
   unless course
     return render json: {
