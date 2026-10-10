@@ -326,17 +326,20 @@ end
 
       private
 
-      def payment_json(payment)
-        {
-          id: payment.id,
-          enrollment_id: payment.enrollment_id,
-          amount: payment.amount.to_d.to_f,
-          currency: "INR",
-          razorpay_order_id: payment.razorpay_order_id,
-          status: payment.status,
-          created_at: payment.created_at
-        }
-      end
+      
+def payment_json(payment)
+  {
+    id: payment.id,
+    enrollment_id: payment.enrollment_id,
+    amount: payment.amount.to_d.to_f,
+    currency: "INR",
+    razorpay_order_id: payment.razorpay_order_id,
+    razorpay_key_id: ENV.fetch("RAZORPAY_KEY_ID"),
+    status: payment.status,
+    created_at: payment.created_at
+  }
+end
+
 
     end
   end
