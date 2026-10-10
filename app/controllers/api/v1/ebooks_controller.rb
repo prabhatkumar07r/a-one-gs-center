@@ -1,7 +1,7 @@
+
 module Api
   module V1
     class EbooksController < Api::ApplicationController
-
       def index
         ebooks = Ebook.where(status: "published")
                       .order(published_at: :desc, created_at: :desc)
@@ -18,6 +18,7 @@ module Api
                 category: ebook.category,
                 language: ebook.language,
                 exam_name: ebook.exam_name,
+                cover_image_url: cover_image_url_for(ebook),
                 price: ebook.price,
                 original_price: ebook.original_price,
                 discount_percentage: ebook.discount_percentage,
@@ -30,64 +31,61 @@ module Api
         }, status: :ok
       end
 
-  def my
-  purchases =
-    current_user
-      .ebook_purchases
-      .paid
-      .includes(
-        ebook: {
-          ebook_files: {
-            pdf_attachment: :blob
+      def my
+        purchases = current_user.ebook_purchases
+                                .paid
+                                .includes(
+                                  ebook: {
+                                    cover_image_attachment: :blob,
+                                    ebook_files: {
+                                      pdf_attachment: :blob
+                                    }
+                                  }
+                                )
+                                .order(created_at: :desc)
+
+        render json: {
+          success: true,
+          data: {
+            ebooks: purchases.map do |purchase|
+              ebook = purchase.ebook
+
+              {
+                purchase_id: purchase.id,
+                ebook_id: ebook.id,
+                title: ebook.title,
+                description: ebook.description,
+                author: ebook.author,
+                category: ebook.category,
+                language: ebook.language,
+                exam_name: ebook.exam_name,
+                cover_image_url: cover_image_url_for(ebook),
+                price: ebook.price,
+                original_price: ebook.original_price,
+                discount_percentage: ebook.discount_percentage,
+                purchased_at: purchase.created_at,
+                access_granted: true,
+                files: ebook.ebook_files
+                             .where(status: "active")
+                             .order(:position)
+                             .select { |file| file.pdf.attached? }
+                             .map do |file|
+                  {
+                    id: file.id,
+                    title: file.title,
+                    description: file.description,
+                    position: file.position,
+                    pdf_available: true
+                  }
+                end
+              }
+            end
           }
-        }
-      )
-      .order(created_at: :desc)
-
-  render json: {
-    success: true,
-    data: {
-      ebooks: purchases.map do |purchase|
-        ebook = purchase.ebook
-
-        {
-          purchase_id: purchase.id,
-          ebook_id: ebook.id,
-          title: ebook.title,
-          description: ebook.description,
-          author: ebook.author,
-          category: ebook.category,
-          language: ebook.language,
-          exam_name: ebook.exam_name,
-          price: ebook.price,
-          original_price: ebook.original_price,
-          discount_percentage: ebook.discount_percentage,
-          purchased_at: purchase.created_at,
-          access_granted: true,
-          files: ebook.ebook_files
-                       .where(status: "active")
-                       .order(:position)
-                       .select { |file| file.pdf.attached? }
-                       .map do |file|
-            {
-              id: file.id,
-              title: file.title,
-              description: file.description,
-              position: file.position,
-              pdf_available: true
-            }
-          end
-        }
+        }, status: :ok
       end
-    }
-  }, status: :ok
-end
 
       def show
-        ebook = Ebook.find_by(
-          id: params[:id],
-          status: "published"
-        )
+        ebook = Ebook.find_by(id: params[:id], status: "published")
 
         unless ebook
           return render json: {
@@ -96,9 +94,7 @@ end
           }, status: :not_found
         end
 
-        files = ebook.ebook_files
-                    .where(status: "active")
-                    .order(:position)
+        files = ebook.ebook_files.where(status: "active").order(:position)
 
         render json: {
           success: true,
@@ -111,6 +107,7 @@ end
               category: ebook.category,
               language: ebook.language,
               exam_name: ebook.exam_name,
+              cover_image_url: cover_image_url_for(ebook),
               price: ebook.price,
               original_price: ebook.original_price,
               discount_percentage: ebook.discount_percentage,
@@ -118,7 +115,6 @@ end
               status: ebook.status,
               published_at: ebook.published_at
             },
-
             files: files.map do |file|
               {
                 id: file.id,
@@ -134,10 +130,10 @@ end
       end
 
       def download_file
-        ebook_file =
-          EbookFile
-            .includes(:ebook, pdf_attachment: :blob)
-            .find_by(id: params[:id])
+        ebook_file = EbookFile.includes(
+          :ebook,
+          pdf_attachment: :blob
+        ).find_by(id: params[:id])
 
         unless ebook_file
           return render json: {
@@ -170,11 +166,9 @@ end
         end
 
         unless ebook.free?
-          purchase =
-            current_user
-              .ebook_purchases
-              .paid
-              .find_by(ebook_id: ebook.id)
+          purchase = current_user.ebook_purchases
+                                .paid
+                                .find_by(ebook_id: ebook.id)
 
           unless purchase
             return render json: {
@@ -189,236 +183,230 @@ end
           disposition: "inline"
         )
       end
-def purchase
-  ebook = Ebook.published.find_by(id: params[:id])
 
-  unless ebook
-    return render json: {
-      success: false,
-      error: "E-Book not found."
-    }, status: :not_found
-  end
+      # Create an E-Book purchase and Razorpay order.
+      def purchase
+        ebook = Ebook.published.find_by(id: params[:id])
 
-  if ebook.free?
-    return render json: {
-      success: false,
-      error: "This E-Book is free. No purchase is required."
-    }, status: :unprocessable_entity
-  end
+        unless ebook
+          return render json: {
+            success: false,
+            error: "E-Book not found."
+          }, status: :not_found
+        end
 
-  existing_purchase =
-    current_user
-      .ebook_purchases
-      .find_by(
-        ebook_id: ebook.id,
-        payment_status: "paid",
-        status: "active"
-      )
+        if ebook.free?
+          return render json: {
+            success: false,
+            error: "This E-Book is free. No purchase is required."
+          }, status: :unprocessable_entity
+        end
 
-  if existing_purchase
-    return render json: {
-      success: true,
-      message: "E-Book already purchased.",
-      data: {
-        purchase_id: existing_purchase.id,
-        ebook_id: ebook.id,
-        payment_status: existing_purchase.payment_status,
-        status: existing_purchase.status,
-        access_granted: true,
-        original_amount: existing_purchase.original_amount.to_d,
-        discount_amount: existing_purchase.discount_amount.to_d,
-        final_amount: existing_purchase.final_amount.to_d
-      }
-    }, status: :ok
-  end
+        existing_purchase = current_user.ebook_purchases.find_by(
+          ebook_id: ebook.id,
+          payment_status: "paid",
+          status: "active"
+        )
 
-  pending_purchase =
-    current_user
-      .ebook_purchases
-      .where(
-        ebook_id: ebook.id,
-        payment_status: "pending",
-        status: "pending"
-      )
-      .where.not(razorpay_order_id: nil)
-      .order(id: :desc)
-      .first
+        if existing_purchase
+          return render json: {
+            success: true,
+            message: "E-Book already purchased.",
+            data: {
+              purchase_id: existing_purchase.id,
+              ebook_id: ebook.id,
+              payment_status: existing_purchase.payment_status,
+              status: existing_purchase.status,
+              access_granted: true,
+              original_amount: existing_purchase.original_amount.to_d,
+              discount_amount: existing_purchase.discount_amount.to_d,
+              final_amount: existing_purchase.final_amount.to_d
+            }
+          }, status: :ok
+        end
 
-  if pending_purchase
-    pending_purchase.update!(
-      payment_status: "cancelled",
-      status: "cancelled"
-    )
-  end
+        # Only the public Key ID is sent to Flutter. Never expose the secret.
+        razorpay_key_id = ENV["RAZORPAY_KEY_ID"].to_s.strip
 
-  amount = ebook.price.to_d
+        if razorpay_key_id.blank?
+          Rails.logger.error(
+            "RAZORPAY_KEY_ID is missing; E-Book checkout cannot start."
+          )
 
-  if amount <= 0
-    return render json: {
-      success: false,
-      error: "Invalid E-Book price."
-    }, status: :unprocessable_entity
-  end
+          return render json: {
+            success: false,
+            error: "Payment configuration is unavailable. Please contact support."
+          }, status: :internal_server_error
+        end
 
-  # =========================================================
-  # CREATE PURCHASE
-  # =========================================================
+        pending_purchase = current_user.ebook_purchases.where(
+          ebook_id: ebook.id,
+          payment_status: "pending",
+          status: "pending"
+        ).where.not(razorpay_order_id: nil).order(id: :desc).first
 
-  purchase =
-    current_user.ebook_purchases.create!(
-      ebook: ebook,
-      amount: amount,
-      original_amount: amount,
-      discount_amount: 0,
-      final_amount: amount,
-      payment_status: "pending",
-      status: "pending"
-    )
+        if pending_purchase
+          pending_purchase.update!(
+            payment_status: "cancelled",
+            status: "cancelled"
+          )
+        end
 
-  # =========================================================
-  # APPLY COUPON IF PROVIDED
-  # =========================================================
+        amount = ebook.price.to_d
 
-  coupon_code = params[:coupon_code].to_s.strip.upcase
+        if amount <= 0
+          return render json: {
+            success: false,
+            error: "Invalid E-Book price."
+          }, status: :unprocessable_entity
+        end
 
-  if coupon_code.present?
-    coupon = Coupon.find_by(
-      "LOWER(code) = ?",
-      coupon_code.downcase
-    )
+        purchase_record = current_user.ebook_purchases.create!(
+          ebook: ebook,
+          amount: amount,
+          original_amount: amount,
+          discount_amount: 0,
+          final_amount: amount,
+          payment_status: "pending",
+          status: "pending"
+        )
 
-    unless coupon
-      purchase.destroy!
+        coupon_code = params[:coupon_code].to_s.strip.upcase
 
-      return render json: {
-        success: false,
-        error: "Invalid coupon code."
-      }, status: :unprocessable_entity
-    end
+        if coupon_code.present?
+          coupon = Coupon.find_by(
+            "LOWER(code) = ?",
+            coupon_code.downcase
+          )
 
-    begin
-      purchase.apply_coupon!(coupon)
-    rescue ActiveRecord::RecordInvalid => e
-      purchase.destroy!
+          unless coupon
+            purchase_record.destroy!
 
-      return render json: {
-        success: false,
-        error: e.record.errors.full_messages.to_sentence
-      }, status: :unprocessable_entity
-    end
-  end
+            return render json: {
+              success: false,
+              error: "Invalid coupon code."
+            }, status: :unprocessable_entity
+          end
 
-  final_amount = purchase.payable_amount
+          begin
+            purchase_record.apply_coupon!(coupon)
+          rescue ActiveRecord::RecordInvalid => e
+            purchase_record.destroy!
 
-  if final_amount <= 0
-    purchase.destroy!
+            return render json: {
+              success: false,
+              error: e.record.errors.full_messages.to_sentence
+            }, status: :unprocessable_entity
+          end
+        end
 
-    return render json: {
-      success: false,
-      error: "Invalid final payment amount."
-    }, status: :unprocessable_entity
-  end
+        final_amount = purchase_record.payable_amount.to_d
 
-  razorpay_amount = (final_amount * 100).to_i
+        if final_amount <= 0
+          purchase_record.destroy!
 
-  if razorpay_amount <= 0
-    purchase.destroy!
+          return render json: {
+            success: false,
+            error: "Invalid final payment amount."
+          }, status: :unprocessable_entity
+        end
 
-    return render json: {
-      success: false,
-      error: "Invalid payment amount."
-    }, status: :unprocessable_entity
-  end
+        razorpay_amount = (final_amount * 100).round
 
-  # =========================================================
-  # CREATE FRESH RAZORPAY ORDER
-  # =========================================================
+        if razorpay_amount <= 0
+          purchase_record.destroy!
 
-  begin
-    razorpay_order =
-      Razorpay::Order.create(
-        amount: razorpay_amount,
-        currency: "INR",
-        receipt:
-          "ebook_api_#{ebook.id}_user_#{current_user.id}_#{Time.current.to_i}"
-      )
+          return render json: {
+            success: false,
+            error: "Invalid payment amount."
+          }, status: :unprocessable_entity
+        end
 
-    purchase.update!(
-      razorpay_order_id: razorpay_order.id
-    )
+        begin
+          razorpay_order = Razorpay::Order.create(
+            amount: razorpay_amount,
+            currency: "INR",
+            receipt: "ebook_api_#{ebook.id}_user_#{current_user.id}_#{Time.current.to_i}"
+          )
 
-  rescue Razorpay::Error
-    purchase.destroy!
+          purchase_record.update!(
+            razorpay_order_id: razorpay_order.id,
+            final_amount: final_amount
+          )
+        rescue Razorpay::Error => e
+          Rails.logger.error(
+            "E-Book Razorpay order creation failed: #{e.class}"
+          )
+          purchase_record.destroy!
 
-    return render json: {
-      success: false,
-      error: "Unable to create payment order."
-    }, status: :unprocessable_entity
-  end
+          return render json: {
+            success: false,
+            error: "Unable to create payment order. Please try again."
+          }, status: :unprocessable_entity
+        end
 
-  render json: {
-    success: true,
-    message: "E-Book purchase created successfully.",
-    data: {
-      purchase_id: purchase.id,
-      ebook_id: purchase.ebook_id,
-      ebook_title: ebook.title,
-      amount: purchase.amount.to_d,
-      original_amount: purchase.original_amount.to_d,
-      discount_amount: purchase.discount_amount.to_d,
-      final_amount: purchase.final_amount.to_d,
-      currency: "INR",
-      coupon_code: purchase.coupon&.code,
-      razorpay_order_id: purchase.razorpay_order_id,
-      payment_status: purchase.payment_status,
-      status: purchase.status,
-      access_granted: false
-    }
-  }, status: :created
+        render json: {
+          success: true,
+          message: "E-Book purchase created successfully.",
+          data: {
+            purchase_id: purchase_record.id,
+            ebook_id: purchase_record.ebook_id,
+            ebook_title: ebook.title,
+            amount: final_amount,
+            original_amount: purchase_record.original_amount.to_d,
+            discount_amount: purchase_record.discount_amount.to_d,
+            final_amount: final_amount,
+            currency: "INR",
+            coupon_code: purchase_record.coupon&.code,
+            razorpay_key_id: razorpay_key_id,
+            razorpay_order_id: purchase_record.razorpay_order_id,
+            payment_status: purchase_record.payment_status,
+            status: purchase_record.status,
+            access_granted: false
+          }
+        }, status: :created
+      rescue ActiveRecord::RecordNotFound
+        render json: {
+          success: false,
+          error: "E-Book not found."
+        }, status: :not_found
+      rescue ActiveRecord::RecordInvalid => e
+        render json: {
+          success: false,
+          error: e.record.errors.full_messages.to_sentence
+        }, status: :unprocessable_entity
+      end
 
-rescue ActiveRecord::RecordNotFound
-  render json: {
-    success: false,
-    error: "E-Book not found."
-  }, status: :not_found
-
-rescue ActiveRecord::RecordInvalid => e
-  render json: {
-    success: false,
-    error: e.record.errors.full_messages.to_sentence
-  }, status: :unprocessable_entity
-end
-
+      # Verify the Razorpay payment before granting access.
       def verify_purchase
-        purchase =
-          current_user
-            .ebook_purchases
-            .find_by(id: params[:id])
+        purchase_record = current_user.ebook_purchases.find_by(
+          id: params[:id]
+        )
 
-        unless purchase
+        unless purchase_record
           return render json: {
             success: false,
             error: "E-Book purchase not found."
           }, status: :not_found
         end
 
-        if purchase.paid?
+        if purchase_record.paid?
           return render json: {
             success: true,
             message: "Payment already verified.",
             data: {
-              purchase_id: purchase.id,
-              ebook_id: purchase.ebook_id,
-              payment_status: purchase.payment_status,
-              status: purchase.status,
+              purchase_id: purchase_record.id,
+              ebook_id: purchase_record.ebook_id,
+              payment_status: purchase_record.payment_status,
+              status: purchase_record.status,
               access_granted: true
             }
           }, status: :ok
         end
 
-        payment_id = params[:razorpay_payment_id]
-        order_id = params[:razorpay_order_id]
-        signature = params[:razorpay_signature]
+        payment_id = params[:razorpay_payment_id].to_s.strip
+        order_id = params[:razorpay_order_id].to_s.strip
+        signature = params[:razorpay_signature].to_s.strip
 
         if payment_id.blank? || order_id.blank? || signature.blank?
           return render json: {
@@ -427,7 +415,7 @@ end
           }, status: :unprocessable_entity
         end
 
-        unless order_id == purchase.razorpay_order_id
+        unless order_id == purchase_record.razorpay_order_id.to_s
           return render json: {
             success: false,
             error: "Razorpay order does not match this purchase."
@@ -436,11 +424,9 @@ end
 
         begin
           Razorpay::Utility.verify_payment_signature(
-            {
-              razorpay_order_id: order_id,
-              razorpay_payment_id: payment_id,
-              razorpay_signature: signature
-            }
+            razorpay_order_id: order_id,
+            razorpay_payment_id: payment_id,
+            razorpay_signature: signature
           )
         rescue SecurityError
           return render json: {
@@ -451,14 +437,18 @@ end
 
         begin
           payment = Razorpay::Payment.fetch(payment_id)
-        rescue StandardError
+        rescue StandardError => e
+          Rails.logger.error(
+            "E-Book Razorpay payment fetch failed: #{e.class}"
+          )
+
           return render json: {
             success: false,
             error: "Unable to fetch Razorpay payment."
           }, status: :unprocessable_entity
         end
 
-        unless payment.order_id.to_s == purchase.razorpay_order_id.to_s
+        unless payment.order_id.to_s == purchase_record.razorpay_order_id.to_s
           return render json: {
             success: false,
             error: "Payment order does not match this purchase."
@@ -472,13 +462,14 @@ end
           }, status: :unprocessable_entity
         end
 
-        expected_amount =
-          (purchase.amount.to_d * 100).to_i
-
-        actual_amount =
-          payment.amount.to_i
+        expected_amount = (purchase_record.payable_amount.to_d * 100).round
+        actual_amount = payment.amount.to_i
 
         unless actual_amount == expected_amount
+          Rails.logger.warn(
+            "E-Book payment amount mismatch for purchase #{purchase_record.id}."
+          )
+
           return render json: {
             success: false,
             error: "Payment amount does not match the purchase amount."
@@ -492,28 +483,29 @@ end
           }, status: :unprocessable_entity
         end
 
-        purchase.with_lock do
-          purchase.update!(
-            razorpay_payment_id: payment_id,
-            razorpay_signature: signature,
-            payment_status: "paid",
-            status: "active"
-          )
+        purchase_record.with_lock do
+          unless purchase_record.paid?
+            purchase_record.update!(
+              razorpay_payment_id: payment_id,
+              razorpay_signature: signature,
+              payment_status: "paid",
+              status: "active"
+            )
+          end
         end
 
         render json: {
           success: true,
           message: "E-Book payment verified successfully.",
           data: {
-            purchase_id: purchase.id,
-            ebook_id: purchase.ebook_id,
+            purchase_id: purchase_record.id,
+            ebook_id: purchase_record.ebook_id,
             payment_id: payment_id,
-            payment_status: purchase.payment_status,
-            status: purchase.status,
+            payment_status: purchase_record.payment_status,
+            status: purchase_record.status,
             access_granted: true
           }
         }, status: :ok
-
       rescue ActiveRecord::RecordInvalid
         render json: {
           success: false,
@@ -521,6 +513,7 @@ end
         }, status: :unprocessable_entity
       end
 
+      # Check whether the current user can access an E-Book.
       def access
         ebook = Ebook.find_by(
           id: params[:id],
@@ -545,16 +538,13 @@ end
           }, status: :ok
         end
 
-        purchase =
-          current_user
-            .ebook_purchases
-            .find_by(
-              ebook_id: ebook.id,
-              payment_status: "paid",
-              status: "active"
-            )
+        purchase_record = current_user.ebook_purchases.find_by(
+          ebook_id: ebook.id,
+          payment_status: "paid",
+          status: "active"
+        )
 
-        unless purchase
+        unless purchase_record
           return render json: {
             success: true,
             data: {
@@ -571,11 +561,18 @@ end
             ebook_id: ebook.id,
             access_granted: true,
             access_type: "purchased",
-            purchase_id: purchase.id
+            purchase_id: purchase_record.id
           }
         }, status: :ok
       end
 
+      private
+
+      def cover_image_url_for(ebook)
+        return nil unless ebook.cover_image.attached?
+
+        "#{request.base_url}#{rails_blob_path(ebook.cover_image, only_path: true)}"
+      end
     end
   end
 end
