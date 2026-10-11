@@ -269,39 +269,48 @@ module Api
       private
 
       def course_json(course)
-        fee = course.fee.to_f
-        original_fee = course.original_fee.to_f
-        discount_percentage = course.discount_percentage.to_f
+  fee = course.fee.to_f
+  original_fee = course.original_fee.to_f
+  discount_percentage = course.discount_percentage.to_f
 
-        if discount_percentage <= 0 &&
-            original_fee > fee &&
-            original_fee > 0
-          discount_percentage =
-            ((original_fee - fee) / original_fee * 100).round
-        end
+  image_url =
+    if course.image.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(
+        course.image,
+        host: ENV.fetch("APP_HOST", "https://aonegscenter.com")
+      )
+    end
 
-        {
-          id: course.id,
-          name: course.Course_name,
-          description: course.description,
-          course_type: course.course_type,
-          fee: fee,
-          original_fee: original_fee > 0 ? original_fee : nil,
-          discount_percentage:
-            discount_percentage > 0 ? discount_percentage : 0,
-          duration: course.duration,
-          learning_outcomes: course.learning_outcomes,
-          requirements: course.requirements,
-          status: course.status,
+  if discount_percentage <= 0 &&
+      original_fee > fee &&
+      original_fee > 0
+    discount_percentage =
+      ((original_fee - fee) / original_fee * 100).round
+  end
 
-          teacher: {
-            id: course.teacher&.id,
-            name: course.teacher&.name
-          },
+  {
+    id: course.id,
+    name: course.Course_name,
+    description: course.description,
+    course_type: course.course_type,
+    fee: fee,
+    original_fee: original_fee > 0 ? original_fee : nil,
+    discount_percentage:
+      discount_percentage > 0 ? discount_percentage : 0,
+    duration: course.duration,
+    learning_outcomes: course.learning_outcomes,
+    requirements: course.requirements,
+    status: course.status,
+    image_url: image_url,
 
-          is_free: fee <= 0
-        }
-      end
+    teacher: {
+      id: course.teacher&.id,
+      name: course.teacher&.name
+    },
+
+    is_free: fee <= 0
+  }
+end
     end
   end
 end
