@@ -24,8 +24,7 @@ module Api
           }, status: :unprocessable_entity
         end
 
-        payable_amount =
-          enrollment.payable_amount.to_d
+        payable_amount = enrollment.payable_amount.to_d
 
         if payable_amount <= 0
           return render json: {
@@ -45,42 +44,37 @@ module Api
             return render json: {
               success: true,
               message: "Existing payment order found.",
-              data: payment_json(existing_payment)
+              data: {
+                payment: payment_json(existing_payment)
+              }
             }, status: :ok
           end
 
-          existing_payment.update!(
-            status: "cancelled"
-          )
+          existing_payment.update!(status: "cancelled")
         end
 
         fee =
           enrollment.fee ||
           enrollment.build_fee
 
-        fee.total_fee =
-          course.fee.to_d
+        fee.total_fee = course.fee.to_d
 
         if fee.discount_amount.to_d.zero? &&
            course.has_active_discount?
 
-          discount =
-            course.active_discount
+          discount = course.active_discount
 
           fee.discount_amount =
             discount.calculate_discount(course.fee)
 
-          fee.discount_name =
-            discount.name
+          fee.discount_name = discount.name
         end
 
         fee.paid_amount ||= 0
         fee.save!
 
         if fee.paid_amount.to_d >= payable_amount
-          enrollment.update!(
-            status: "Approved"
-          )
+          enrollment.update!(status: "Approved")
 
           return render json: {
             success: true,
@@ -92,8 +86,7 @@ module Api
           }, status: :ok
         end
 
-        amount_paise =
-          (payable_amount * 100).to_i
+        amount_paise = (payable_amount * 100).to_i
 
         if amount_paise <= 0
           return render json: {
@@ -102,25 +95,36 @@ module Api
           }, status: :unprocessable_entity
         end
 
-        razorpay_order =
-          Razorpay::Order.create(
-            amount: amount_paise,
-            currency: "INR",
-            receipt:
-              "enrollment_#{enrollment.id}_#{Time.current.to_i}"
-          )
+        razorpay_order = Razorpay::Order.create(
+          amount: amount_paise,
+          currency: "INR",
+          receipt: "enrollment_#{enrollment.id}_#{Time.current.to_i}"
+        )
 
-        payment =
-          enrollment.payments.create!(
-            amount: payable_amount,
-            razorpay_order_id: razorpay_order.id,
-            status: "created"
-          )
+        unless razorpay_order.present? && razorpay_order.id.present?
+          return render json: {
+            success: false,
+            error: "Razorpay order was not created."
+          }, status: :unprocessable_entity
+        end
+
+        payment = enrollment.payments.create!(
+          amount: payable_amount,
+          razorpay_order_id: razorpay_order.id,
+          status: "created"
+        )
 
         render json: {
           success: true,
           message: "Payment order created successfully.",
-          data: payment_json(payment)
+          data: {
+            payment: payment_json(payment),
+            order: {
+              id: razorpay_order.id,
+              amount: razorpay_order.amount.to_i,
+              currency: razorpay_order.currency.to_s
+            }
+          }
         }, status: :created
 
       rescue ActiveRecord::RecordNotFound
@@ -131,7 +135,7 @@ module Api
 
       rescue Razorpay::Error => e
         Rails.logger.error(
-          "API RAZORPAY ORDER ERROR: #{e.message}"
+          "API RAZORPAY ORDER ERROR: #{e.class}: #{e.message}"
         )
 
         render json: {
@@ -141,7 +145,7 @@ module Api
 
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.error(
-          "API PAYMENT/FEE RECORD ERROR: #{e.message}"
+          "API PAYMENT/FEE RECORD ERROR: #{e.class}: #{e.message}"
         )
 
         render json: {
@@ -149,198 +153,195 @@ module Api
           error: "Unable to create payment record."
         }, status: :unprocessable_entity
       end
+
       def verify
-  payment =
-    current_user
-      .enrollments
-      .joins(:payments)
-      .merge(Payment.where(id: params[:id]))
-      .first
-      &.payments
-      &.find_by(id: params[:id])
+        payment =
+          current_user
+            .enrollments
+            .joins(:payments)
+            .merge(Payment.where(id: params[:id]))
+            .first
+            &.payments
+            &.find_by(id: params[:id])
 
-  unless payment
-    return render json: {
-      success: false,
-      error: "Payment not found."
-    }, status: :not_found
-  end
+        unless payment
+          return render json: {
+            success: false,
+            error: "Payment not found."
+          }, status: :not_found
+        end
 
-  enrollment = payment.enrollment
+        enrollment = payment.enrollment
 
-  razorpay_payment_id =
-    params[:razorpay_payment_id].to_s.strip
+        razorpay_payment_id =
+          params[:razorpay_payment_id].to_s.strip
 
-  razorpay_order_id =
-    params[:razorpay_order_id].to_s.strip
+        razorpay_order_id =
+          params[:razorpay_order_id].to_s.strip
 
-  razorpay_signature =
-    params[:razorpay_signature].to_s.strip
+        razorpay_signature =
+          params[:razorpay_signature].to_s.strip
 
-  if razorpay_payment_id.blank? ||
-     razorpay_order_id.blank? ||
-     razorpay_signature.blank?
+        if razorpay_payment_id.blank? ||
+           razorpay_order_id.blank? ||
+           razorpay_signature.blank?
 
-    return render json: {
-      success: false,
-      error: "Payment verification details are incomplete."
-    }, status: :unprocessable_entity
-  end
+          return render json: {
+            success: false,
+            error: "Payment verification details are incomplete."
+          }, status: :unprocessable_entity
+        end
 
-  begin
-    unless payment.razorpay_order_id.to_s == razorpay_order_id
-      return render json: {
-        success: false,
-        error: "Razorpay order does not match the local payment."
-      }, status: :unprocessable_entity
-    end
+        begin
+          unless payment.razorpay_order_id.to_s == razorpay_order_id
+            return render json: {
+              success: false,
+              error: "Razorpay order does not match the local payment."
+            }, status: :unprocessable_entity
+          end
 
-    if payment.paid?
-      return render json: {
-        success: true,
-        message: "Payment has already been verified.",
-        data: {
-          payment_id: payment.id,
-          enrollment_id: enrollment.id,
-          payment_status: payment.status,
-          enrollment_status: enrollment.status
-        }
-      }, status: :ok
-    end
+          if payment.paid?
+            return render json: {
+              success: true,
+              message: "Payment has already been verified.",
+              data: {
+                payment_id: payment.id,
+                enrollment_id: enrollment.id,
+                payment_status: payment.status,
+                enrollment_status: enrollment.status
+              }
+            }, status: :ok
+          end
 
-    generated_signature =
-      OpenSSL::HMAC.hexdigest(
-        OpenSSL::Digest.new("SHA256"),
-        ENV.fetch("RAZORPAY_KEY_SECRET"),
-        "#{payment.razorpay_order_id}|#{razorpay_payment_id}"
-      )
+          generated_signature =
+            OpenSSL::HMAC.hexdigest(
+              OpenSSL::Digest.new("SHA256"),
+              ENV.fetch("RAZORPAY_KEY_SECRET"),
+              "#{payment.razorpay_order_id}|#{razorpay_payment_id}"
+            )
 
-    unless ActiveSupport::SecurityUtils.secure_compare(
-      generated_signature,
-      razorpay_signature
-    )
-      return render json: {
-        success: false,
-        error: "Payment verification failed."
-      }, status: :unprocessable_entity
-    end
+          unless ActiveSupport::SecurityUtils.secure_compare(
+            generated_signature,
+            razorpay_signature
+          )
+            return render json: {
+              success: false,
+              error: "Payment verification failed."
+            }, status: :unprocessable_entity
+          end
 
-    result =
-      RazorpayPaymentCompletionService.call(
-        payment: payment,
-        razorpay_payment_id: razorpay_payment_id,
-        razorpay_order_id: razorpay_order_id
-      )
+          result =
+            RazorpayPaymentCompletionService.call(
+              payment: payment,
+              razorpay_payment_id: razorpay_payment_id,
+              razorpay_order_id: razorpay_order_id
+            )
 
-    if result.success
-      return render json: {
-        success: true,
-        message: result.message,
-        data: {
-          payment_id: result.payment.id,
-          enrollment_id: enrollment.id,
-          payment_status: result.payment.status,
-          enrollment_status: enrollment.reload.status,
-          already_paid: result.already_paid
-        }
-      }, status: :ok
-    end
+          if result.success
+            return render json: {
+              success: true,
+              message: result.message,
+              data: {
+                payment_id: result.payment.id,
+                enrollment_id: enrollment.id,
+                payment_status: result.payment.status,
+                enrollment_status: enrollment.reload.status,
+                already_paid: result.already_paid
+              }
+            }, status: :ok
+          end
 
-    render json: {
-      success: false,
-      error: result.message
-    }, status: :unprocessable_entity
+          render json: {
+            success: false,
+            error: result.message
+          }, status: :unprocessable_entity
 
-  rescue ActiveRecord::RecordNotFound
-    render json: {
-      success: false,
-      error: "Payment record could not be found."
-    }, status: :not_found
+        rescue ActiveRecord::RecordNotFound
+          render json: {
+            success: false,
+            error: "Payment record could not be found."
+          }, status: :not_found
 
-  rescue StandardError => e
-    Rails.logger.error(
-      "[API PAYMENT VERIFY] #{e.class}: #{e.message}"
-    )
+        rescue StandardError => e
+          Rails.logger.error(
+            "[API PAYMENT VERIFY] #{e.class}: #{e.message}"
+          )
 
-    Rails.logger.error(
-      e.backtrace.first(20).join("\n")
-    )
+          Rails.logger.error(
+            e.backtrace.first(20).join("\n")
+          )
 
-    render json: {
-      success: false,
-      error: "Payment verification failed. Please contact support."
-    }, status: :unprocessable_entity
-  end
-end
+          render json: {
+            success: false,
+            error: "Payment verification failed. Please contact support."
+          }, status: :unprocessable_entity
+        end
+      end
 
-def show
-  payment =
-    current_user
-      .enrollments
-      .joins(:payments)
-      .merge(Payment.where(id: params[:id]))
-      .first
-      &.payments
-      &.find_by(id: params[:id])
+      def show
+        payment =
+          current_user
+            .enrollments
+            .joins(:payments)
+            .merge(Payment.where(id: params[:id]))
+            .first
+            &.payments
+            &.find_by(id: params[:id])
 
-  unless payment
-    return render json: {
-      success: false,
-      error: "Payment not found."
-    }, status: :not_found
-  end
+        unless payment
+          return render json: {
+            success: false,
+            error: "Payment not found."
+          }, status: :not_found
+        end
 
-  enrollment = payment.enrollment
-  course = enrollment.course
+        enrollment = payment.enrollment
+        course = enrollment.course
 
-  render json: {
-    success: true,
-    data: {
-      payment: {
-        id: payment.id,
-        enrollment_id: enrollment.id,
-        amount: payment.amount.to_d.to_f,
-        currency: "INR",
-        razorpay_order_id: payment.razorpay_order_id,
-        status: payment.status,
-        created_at: payment.created_at
-      },
-      enrollment: {
-        id: enrollment.id,
-        status: enrollment.status
-      },
-      course: {
-        id: course.id,
-        name: course.Course_name,
-        fee: course.fee.to_d.to_f
-      }
-    }
-  }, status: :ok
+        render json: {
+          success: true,
+          data: {
+            payment: payment_json(payment),
+            enrollment: {
+              id: enrollment.id,
+              status: enrollment.status
+            },
+            course: {
+              id: course.id,
+              name: course.Course_name,
+              fee: course.fee.to_d.to_f
+            }
+          }
+        }, status: :ok
 
-rescue ActiveRecord::RecordNotFound
-  render json: {
-    success: false,
-    error: "Payment not found."
-  }, status: :not_found
-end
+      rescue ActiveRecord::RecordNotFound
+        render json: {
+          success: false,
+          error: "Payment not found."
+        }, status: :not_found
+      end
 
       private
 
-      
-def payment_json(payment)
-  {
-    id: payment.id,
-    enrollment_id: payment.enrollment_id,
-    amount: payment.amount.to_d.to_f,
-    currency: "INR",
-    razorpay_order_id: payment.razorpay_order_id,
-    razorpay_key_id: ENV.fetch("RAZORPAY_KEY_ID"),
-    status: payment.status,
-    created_at: payment.created_at
-  }
-end
+      def payment_json(payment)
+        amount = payment.amount.to_d
+        amount_paise = (amount * 100).to_i
 
-
+        {
+          id: payment.id,
+          payment_id: payment.id,
+          enrollment_id: payment.enrollment_id,
+          amount: amount.to_f,
+          amount_paise: amount_paise,
+          payable_amount: amount.to_f,
+          currency: "INR",
+          razorpay_order_id: payment.razorpay_order_id,
+          order_id: payment.razorpay_order_id,
+          razorpay_key_id: ENV.fetch("RAZORPAY_KEY_ID"),
+          status: payment.status,
+          created_at: payment.created_at
+        }
+      end
     end
   end
 end
