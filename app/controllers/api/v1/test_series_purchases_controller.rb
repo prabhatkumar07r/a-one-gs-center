@@ -288,11 +288,16 @@ module Api
             coupon_code:
               purchase.coupon&.code,
 
-            razorpay_order_id:
-              purchase.razorpay_order_id,
+            
+razorpay_order_id:
+  purchase.razorpay_order_id,
 
-            payment_status:
-              purchase.payment_status,
+razorpay_key_id:
+  ENV.fetch("RAZORPAY_KEY_ID"),
+
+payment_status:
+  purchase.payment_status,
+
 
             status:
               purchase.status,
