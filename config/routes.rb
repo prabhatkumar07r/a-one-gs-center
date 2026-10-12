@@ -686,6 +686,7 @@ end
 end
 
     namespace :auth do
+      post "register", to: "registrations#create"
       post "login", to: "sessions#create"
       get "me", to: "sessions#me"
       delete "logout", to: "sessions#destroy"
