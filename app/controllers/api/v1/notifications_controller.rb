@@ -1,9 +1,8 @@
 module Api
   module V1
     class NotificationsController < Api::ApplicationController
-
       def index
-        notifications = Notification.active
+        notifications = Notification.active.order(created_at: :desc)
 
         render json: {
           success: true,
