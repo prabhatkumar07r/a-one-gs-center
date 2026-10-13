@@ -686,6 +686,7 @@ end
 end
 
     namespace :auth do
+      post "forgot_password", to: "passwords#create"
       post "register", to: "registrations#create"
       post "login", to: "sessions#create"
       get "me", to: "sessions#me"
