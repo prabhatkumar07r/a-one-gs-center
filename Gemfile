@@ -23,6 +23,7 @@ gem "prawn"
 gem "prawn-table"
 gem "matrix"
 gem "rqrcode"
+gem "googleauth"
 gem "cloudinary"
 gem "activestorage-cloudinary-service"
 gem "httparty"
@@ -95,3 +96,5 @@ end
 
 gem "kaminari", "~> 1.2"
 
+
+gem "rack-attack", "~> 6.8"

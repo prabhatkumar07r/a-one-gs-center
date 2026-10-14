@@ -2,12 +2,19 @@
 
 module Api
   class ApplicationController < ActionController::API
+   rescue_from ActionDispatch::Http::Parameters::ParseError, with: :render_invalid_json
     # API requests के लिए authentication required है
     # Health check को बाद में public रखा जा सकता है अगर जरूरत हो
 
     before_action :authenticate_request
 
     attr_reader :current_user
+   def render_invalid_json
+  render json: {
+    success: false,
+    error: "Invalid JSON request."
+  }, status: :bad_request
+end
 
     private
 
