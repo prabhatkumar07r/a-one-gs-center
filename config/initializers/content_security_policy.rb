@@ -25,7 +25,7 @@
 #   # config.content_security_policy_nonce_auto = true
 #
 #   # Report violations without enforcing the policy.
-#   # config.content_security_policy_report_only = true
+#   # config.content_security_policy_report_only = false
 # end
 
 
@@ -147,5 +147,5 @@ Rails.application.configure do
 
   # IMPORTANT:
   # Keep Report-Only initially so existing pages do not break.
-  config.content_security_policy_report_only = true
+  config.content_security_policy_report_only = Rails.env.development?
 end

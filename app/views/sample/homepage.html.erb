@@ -4351,13 +4351,18 @@ function initializeTestimonialCarousel() {
     return;
   }
 
-  const style =
-    document.createElement(
-      "style"
-    );
+ const style =
+  document.createElement(
+    "style"
+  );
 
-  style.id =
-    "homepageScrollAnimationStyle";
+style.setAttribute(
+  "nonce",
+  "<%= content_security_policy_nonce %>"
+);
+
+style.id =
+  "homepageScrollAnimationStyle";
 
   style.textContent = `
 
