@@ -1,3 +1,4 @@
+
 module Api
   module V1
     class PaymentsController < Api::ApplicationController
@@ -33,6 +34,7 @@ module Api
           }, status: :unprocessable_entity
         end
 
+        # Reuse the latest payment only when its amount matches.
         existing_payment =
           enrollment.payments
                     .where(status: ["created", "pending"])
@@ -41,16 +43,48 @@ module Api
 
         if existing_payment.present?
           if existing_payment.amount.to_d == payable_amount
+            existing_order_id =
+              existing_payment.razorpay_order_id.to_s
+
+            if existing_order_id.start_with?("order_")
+              return render json: {
+                success: true,
+                message: "Existing payment order found.",
+                data: {
+                  payment: payment_json(existing_payment),
+                  order: {
+                    id: existing_order_id,
+                    amount: (
+                      existing_payment.amount.to_d * 100
+                    ).to_i,
+                    currency: "INR"
+                  }
+                }
+              }, status: :ok
+            end
+
+            Rails.logger.warn(
+              "[PAYMENT CHECKOUT] Existing payment " \
+              "#{existing_payment.id} has an invalid order ID."
+            )
+
             return render json: {
-              success: true,
-              message: "Existing payment order found.",
-              data: {
-                payment: payment_json(existing_payment)
-              }
-            }, status: :ok
+              success: false,
+              error: "Existing payment order is invalid. Please contact support."
+            }, status: :unprocessable_entity
           end
 
-          existing_payment.update!(status: "cancelled")
+          # Do not silently cancel an existing payment when
+          # its amount differs from the current payable amount.
+          Rails.logger.warn(
+            "[PAYMENT CHECKOUT] Amount mismatch for payment " \
+            "#{existing_payment.id}, enrollment #{enrollment.id}."
+          )
+
+          return render json: {
+            success: false,
+            error: "An existing payment has a different amount. Please contact support."
+          }, status: :unprocessable_entity
         end
 
         fee =
@@ -91,7 +125,7 @@ module Api
         if amount_paise <= 0
           return render json: {
             success: false,
-            error: "Invalid course fee."
+            error: "Invalid Razorpay amount."
           }, status: :unprocessable_entity
         end
 
@@ -101,7 +135,9 @@ module Api
           receipt: "enrollment_#{enrollment.id}_#{Time.current.to_i}"
         )
 
-        unless razorpay_order.present? && razorpay_order.id.present?
+        unless razorpay_order.present? &&
+               razorpay_order.id.to_s.start_with?("order_")
+
           return render json: {
             success: false,
             error: "Razorpay order was not created."
@@ -325,14 +361,13 @@ module Api
 
       def payment_json(payment)
         amount = payment.amount.to_d
-        amount_paise = (amount * 100).to_i
 
         {
           id: payment.id,
           payment_id: payment.id,
           enrollment_id: payment.enrollment_id,
           amount: amount.to_f,
-          amount_paise: amount_paise,
+          amount_paise: (amount * 100).to_i,
           payable_amount: amount.to_f,
           currency: "INR",
           razorpay_order_id: payment.razorpay_order_id,
