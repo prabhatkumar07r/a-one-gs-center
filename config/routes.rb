@@ -616,7 +616,8 @@ delete "/ebook-payments/:id/remove_coupon",
 namespace :api do
 
   namespace :v1 do
-    
+
+    resources :achievements, only: [:index]
       resources :banners, only: [:index]
 
      
