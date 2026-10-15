@@ -41,12 +41,11 @@ module Api
         }, status: :not_found
       end
 
-      
+
 def create
- 
-course = Course.where(id: params[:course_id])
-               .where("LOWER(status) = ?", "active")
-               .first
+  course = Course.where(id: params[:course_id])
+                 .where("LOWER(status) = ?", "active")
+                 .first
 
   unless course
     return render json: {
@@ -56,29 +55,51 @@ course = Course.where(id: params[:course_id])
   end
 
   enrollment = nil
+  coupon_code = params[:coupon_code].to_s.strip.upcase
 
   Enrollment.transaction do
-    enrollment = current_user.enrollments.lock.find_by(course_id: course.id)
+    enrollment = current_user.enrollments.lock.find_by(
+      course_id: course.id
+    )
 
     if enrollment&.status == "Approved"
-      # Existing approved enrollment ko dobara create nahi karna.
-    elsif enrollment&.status == "Pending"
-      # Existing pending enrollment ko reuse karna.
+      # Existing approved enrollment ko change nahi karna.
     else
-      enrollment&.destroy!
+      if enrollment.nil?
+        enrollment = current_user.enrollments.create!(
+          course: course,
+          status: "Pending"
+        )
+      end
 
-      enrollment = current_user.enrollments.create!(
-        course: course,
-        status: "Pending"
-      )
-    end
+      if course.free?
+        enrollment.update!(status: "Approved")
+      else
+        fee = enrollment.fee || enrollment.build_fee
+        fee.total_fee = course.fee.to_d
+        fee.save!
 
-    if course.free?
-      enrollment.update!(status: "Approved")
-    else
-      fee = enrollment.fee || enrollment.build_fee
-      fee.total_fee = course.fee.to_d
-      fee.save!
+        if coupon_code.present?
+          coupon = Coupon.find_by(
+            "LOWER(code) = ?",
+            coupon_code.downcase
+          )
+
+          unless coupon &&
+                 coupon.available_for_user?(current_user) &&
+                 coupon.applicable_to?(course)
+            raise ActiveRecord::RecordInvalid.new(
+              enrollment.tap do |e|
+                e.errors.add(:coupon, "is invalid or unavailable")
+              end
+            )
+          end
+
+          enrollment.apply_coupon!(coupon)
+        else
+          enrollment.remove_coupon! if enrollment.coupon.present?
+        end
+      end
     end
   end
 
