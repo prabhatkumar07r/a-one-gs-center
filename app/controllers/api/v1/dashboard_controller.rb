@@ -57,18 +57,32 @@ module Api
               }
             end,
 
-            recent_progress: progress
-              .sort_by { |item| item.last_watched_at || item.updated_at }
-              .reverse
-              .first(10)
-              .map do |item|
-                {
-                  video_id: item.video_id,
-                  video_title: item.video.title,
-                  completed: item.completed,
-                  last_watched_at: item.last_watched_at
-                }
-              end
+            
+recent_progress: progress
+  .select { |item| item.video.present? }
+  .sort_by { |item| item.last_watched_at || item.updated_at }
+  .reverse
+  .first(10)
+  .map do |item|
+    video = item.video
+    course = video.course
+
+    {
+      video_id: video.id,
+      video_title: video.title,
+      course_id: course&.id,
+      course_name: course&.Course_name,
+      video_thumbnail_url: video.youtube_thumbnail.presence ||
+        (Rails.application.routes.url_helpers.rails_blob_url(
+          video.thumbnail,
+          only_path: false
+        ) if video.thumbnail.attached?),
+      completed: item.completed,
+      progress_percentage: item.completed ? 100 : 0,
+      last_watched_at: item.last_watched_at
+    }
+  end
+
           }
         }, status: :ok
       end
