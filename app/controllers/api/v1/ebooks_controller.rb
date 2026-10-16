@@ -1,4 +1,4 @@
-
+﻿
 module Api
   module V1
     class EbooksController < Api::ApplicationController
@@ -390,28 +390,46 @@ module Api
           }, status: :not_found
         end
 
-        if purchase_record.paid?
-          return render json: {
-            success: true,
-            message: "Payment already verified.",
-            data: {
-              purchase_id: purchase_record.id,
-              ebook_id: purchase_record.ebook_id,
-              payment_status: purchase_record.payment_status,
-              status: purchase_record.status,
-              access_granted: true
-            }
-          }, status: :ok
-        end
-
         payment_id = params[:razorpay_payment_id].to_s.strip
         order_id = params[:razorpay_order_id].to_s.strip
         signature = params[:razorpay_signature].to_s.strip
 
-        if payment_id.blank? || order_id.blank? || signature.blank?
+        # Previously verified purchases may be retried without payment details.
+        if purchase_record.paid? &&
+           payment_id.blank? && order_id.blank? && signature.blank?
+          payment_id = purchase_record.razorpay_payment_id.to_s
+          order_id = purchase_record.razorpay_order_id.to_s
+        elsif payment_id.blank? || order_id.blank? || signature.blank?
           return render json: {
             success: false,
             error: "Payment verification details are incomplete."
+          }, status: :unprocessable_entity
+        else
+          unless order_id == purchase_record.razorpay_order_id.to_s
+            return render json: {
+              success: false,
+              error: "Razorpay order does not match this purchase."
+            }, status: :unprocessable_entity
+          end
+
+          begin
+            Razorpay::Utility.verify_payment_signature(
+              razorpay_order_id: order_id,
+              razorpay_payment_id: payment_id,
+              razorpay_signature: signature
+            )
+          rescue SecurityError
+            return render json: {
+              success: false,
+              error: "Payment signature verification failed."
+            }, status: :unprocessable_entity
+          end
+        end
+
+        if payment_id.blank? || order_id.blank?
+          return render json: {
+            success: false,
+            error: "Stored payment details are incomplete."
           }, status: :unprocessable_entity
         end
 
@@ -422,97 +440,44 @@ module Api
           }, status: :unprocessable_entity
         end
 
-        begin
-          Razorpay::Utility.verify_payment_signature(
-            razorpay_order_id: order_id,
-            razorpay_payment_id: payment_id,
-            razorpay_signature: signature
-          )
-        rescue SecurityError
-          return render json: {
-            success: false,
-            error: "Payment signature verification failed."
-          }, status: :unprocessable_entity
-        end
-
-        begin
-          payment = Razorpay::Payment.fetch(payment_id)
-        rescue StandardError => e
-          Rails.logger.error(
-            "E-Book Razorpay payment fetch failed: #{e.class}"
-          )
-
-          return render json: {
-            success: false,
-            error: "Unable to fetch Razorpay payment."
-          }, status: :unprocessable_entity
-        end
-
-        unless payment.order_id.to_s == purchase_record.razorpay_order_id.to_s
-          return render json: {
-            success: false,
-            error: "Payment order does not match this purchase."
-          }, status: :unprocessable_entity
-        end
-
-        unless payment.currency.to_s.upcase == "INR"
-          return render json: {
-            success: false,
-            error: "Invalid payment currency."
-          }, status: :unprocessable_entity
-        end
-
-        expected_amount = (purchase_record.payable_amount.to_d * 100).round
-        actual_amount = payment.amount.to_i
-
-        unless actual_amount == expected_amount
-          Rails.logger.warn(
-            "E-Book payment amount mismatch for purchase #{purchase_record.id}."
-          )
-
-          return render json: {
-            success: false,
-            error: "Payment amount does not match the purchase amount."
-          }, status: :unprocessable_entity
-        end
-
-        unless payment.status.to_s == "captured"
-          return render json: {
-            success: false,
-            error: "Payment has not been captured."
-          }, status: :unprocessable_entity
-        end
-
-        purchase_record.with_lock do
-          unless purchase_record.paid?
-            purchase_record.update!(
-              razorpay_payment_id: payment_id,
-              razorpay_signature: signature,
-              payment_status: "paid",
-              status: "active"
-            )
-          end
-        end
+        completed_purchase = EbookPaymentCompletionService.call(
+          purchase: purchase_record,
+          payment_id: payment_id,
+          order_id: order_id,
+          signature: signature.presence
+        )
 
         render json: {
           success: true,
           message: "E-Book payment verified successfully.",
           data: {
-            purchase_id: purchase_record.id,
-            ebook_id: purchase_record.ebook_id,
-            payment_id: payment_id,
-            payment_status: purchase_record.payment_status,
-            status: purchase_record.status,
-            access_granted: true
+            purchase_id: completed_purchase.id,
+            ebook_id: completed_purchase.ebook_id,
+            payment_id: completed_purchase.razorpay_payment_id,
+            payment_status: completed_purchase.payment_status,
+            status: completed_purchase.status,
+            access_granted: completed_purchase.paid?
           }
         }, status: :ok
-      rescue ActiveRecord::RecordInvalid
+
+      rescue EbookPaymentCompletionService::Error => e
+        Rails.logger.warn(
+          "[EBOOK VERIFY] Completion failed: #{e.message}"
+        )
+        render json: {
+          success: false,
+          error: e.message
+        }, status: :unprocessable_entity
+
+      rescue ActiveRecord::RecordInvalid => e
+        Rails.logger.error(
+          "[EBOOK VERIFY] Purchase update failed: #{e.record.errors.full_messages.to_sentence}"
+        )
         render json: {
           success: false,
           error: "Unable to update E-Book purchase."
         }, status: :unprocessable_entity
       end
-
       # Check whether the current user can access an E-Book.
       def access
         ebook = Ebook.find_by(
@@ -576,3 +541,4 @@ module Api
     end
   end
 end
+
