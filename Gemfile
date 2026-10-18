@@ -27,8 +27,7 @@ gem "googleauth"
 gem "cloudinary"
 gem "activestorage-cloudinary-service"
 gem "httparty"
-
-
+gem "sitemap_generator"
 
 
 

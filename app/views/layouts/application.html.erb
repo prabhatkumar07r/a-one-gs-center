@@ -2,30 +2,41 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <% is_homepage = controller_name == "sample" && action_name == "homepage" %>
 
-  <title>A One GS Center</title>
+  <% if is_homepage %>
+    <title>A One GS Center | Competitive Exams & Arts Classes 11th–12th</title>
+    <meta name="description" content="A One GS Center in Bara Chakia, East Champaran offers competitive exam preparation for SSC, Railway, Bihar Police and BPSC, along with Arts classes for Class 11th and 12th in History, Geography, Political Science and Economics.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://aonegscenter.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="A One GS Center">
+    <meta property="og:title" content="A One GS Center | Competitive Exams & Arts Classes 11th–12th">
+    <meta property="og:description" content="Prepare for SSC, Railway, Bihar Police and BPSC, and study Arts subjects for Class 11th–12th at A One GS Center, Bara Chakia, East Champaran.">
+    <meta property="og:url" content="https://aonegscenter.com/">
+    <meta property="og:image" content="https://aonegscenter.com/assets/Coaching_logo.jpeg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="A One GS Center | Competitive Exams & Arts Classes 11th–12th">
+    <meta name="twitter:description" content="Competitive exam preparation and Class 11th–12th Arts classes in Bara Chakia, East Champaran.">
+  <% else %>
+    <title><%= content_for?(:title) ? yield(:title) : "A One GS Center" %></title>
+  <% end %>
+
   <%= favicon_link_tag "favicon.ico" %>
-
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-
   <%= yield :head %>
 
-  <%= stylesheet_link_tag "application",
-      "data-turbo-track": "reload" %>
-
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 
-
-  <% if controller_name == "sample" && action_name == "homepage" %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
-
+  <% if is_homepage %>
+    <meta name="turbo-cache-control" content="no-cache">
+  <% end %>
 
   <style nonce="<%= content_security_policy_nonce %>">
     /* =========================================================
@@ -37,107 +48,70 @@
       top: 90px;
       left: 50%;
       transform: translateX(-50%);
-
       z-index: 999999;
-
       width: min(420px, calc(100vw - 30px));
       min-height: 64px;
-
       display: flex;
       align-items: center;
       gap: 12px;
-
       padding: 13px 15px;
-
       background: #ffffff;
-
       border: 1px solid #e5e7eb;
       border-radius: 12px;
-
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-
       animation: contactToastSlideDown 0.35s ease forwards;
     }
 
-    .contact-toast-success {
-      border-left: 5px solid #198754;
-    }
-
-    .contact-toast-success .contact-toast-icon {
-      color: #198754;
-    }
-
-    .contact-toast-error {
-      border-left: 5px solid #dc3545;
-    }
-
-    .contact-toast-error .contact-toast-icon {
-      color: #dc3545;
-    }
+    .contact-toast-success { border-left: 5px solid #198754; }
+    .contact-toast-success .contact-toast-icon { color: #198754; }
+    .contact-toast-error { border-left: 5px solid #dc3545; }
+    .contact-toast-error .contact-toast-icon { color: #dc3545; }
 
     .contact-toast-icon {
       flex: 0 0 auto;
-
       width: 30px;
       height: 30px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       font-size: 23px;
     }
 
     .contact-toast-content {
       min-width: 0;
       flex: 1;
-
       display: flex;
       flex-direction: column;
-
       gap: 2px;
     }
 
     .contact-toast-content strong {
       color: #172033;
-
       font-size: 14px;
       font-weight: 700;
-
       line-height: 1.3;
     }
 
     .contact-toast-content span {
       color: #596273;
-
       font-size: 13px;
-
       line-height: 1.4;
-
       overflow-wrap: anywhere;
     }
 
     .contact-toast-close {
       flex: 0 0 auto;
-
       width: 30px;
       height: 30px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       border: none;
       background: transparent;
-
       color: #7a808c;
-
       font-size: 22px;
-
       cursor: pointer;
-
       border-radius: 7px;
-
       transition: all 0.2s ease;
     }
 
@@ -147,17 +121,8 @@
     }
 
     @keyframes contactToastSlideDown {
-
-      from {
-        opacity: 0;
-        transform: translate(-50%, -25px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-
+      from { opacity: 0; transform: translate(-50%, -25px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
     }
 
     .contact-toast.hide {
@@ -165,268 +130,130 @@
     }
 
     @keyframes contactToastSlideUp {
-
-      from {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-
-      to {
-        opacity: 0;
-        transform: translate(-50%, -25px);
-      }
-
+      from { opacity: 1; transform: translate(-50%, 0); }
+      to { opacity: 0; transform: translate(-50%, -25px); }
     }
 
     @media (max-width: 768px) {
-
       .contact-toast {
         top: 80px;
         width: min(400px, calc(100vw - 30px));
         padding: 12px 14px;
       }
-
     }
 
     @media (max-width: 576px) {
-
       .contact-toast {
         top: 15px;
-
         width: calc(100vw - 24px);
-
         min-height: 58px;
-
         padding: 10px 12px;
-
         gap: 9px;
-
         border-radius: 10px;
       }
 
-      .contact-toast-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 21px;
-      }
-
-      .contact-toast-content strong {
-        font-size: 13px;
-      }
-
-      .contact-toast-content span {
-        font-size: 12px;
-      }
-
-      .contact-toast-close {
-        width: 27px;
-        height: 27px;
-        font-size: 20px;
-      }
-
+      .contact-toast-icon { width: 28px; height: 28px; font-size: 21px; }
+      .contact-toast-content strong { font-size: 13px; }
+      .contact-toast-content span { font-size: 12px; }
+      .contact-toast-close { width: 27px; height: 27px; font-size: 20px; }
     }
 
     @media (max-width: 360px) {
-
       .contact-toast {
         width: calc(100vw - 16px);
         padding: 9px 10px;
         gap: 7px;
       }
 
-      .contact-toast-content span {
-        font-size: 11.5px;
-      }
-
+      .contact-toast-content span { font-size: 11.5px; }
     }
-
   </style>
-
 </head>
 
-
 <body>
-
   <% if flash[:notice].present? %>
-
-    <div class="contact-toast contact-toast-success"
-         data-contact-toast>
-
+    <div class="contact-toast contact-toast-success" data-contact-toast>
       <div class="contact-toast-icon">
         <i class="bi bi-check-circle-fill"></i>
       </div>
-
       <div class="contact-toast-content">
-
         <strong>Success</strong>
-
-        <span>
-          <%= flash[:notice] %>
-        </span>
-
+        <span><%= flash[:notice] %></span>
       </div>
-
-      <button type="button"
-        class="contact-toast-close"
-        data-close-contact-toast
-        aria-label="Close notification">
-
+      <button type="button" class="contact-toast-close" data-close-contact-toast aria-label="Close notification">
         <i class="bi bi-x"></i>
-
       </button>
-
     </div>
-
   <% end %>
 
-
   <% if flash[:alert].present? %>
-
-    <div class="contact-toast contact-toast-error"
-         data-contact-toast>
-
+    <div class="contact-toast contact-toast-error" data-contact-toast>
       <div class="contact-toast-icon">
         <i class="bi bi-exclamation-circle-fill"></i>
       </div>
-
       <div class="contact-toast-content">
-
         <strong>Error</strong>
-
-        <span>
-          <%= flash[:alert] %>
-        </span>
-
+        <span><%= flash[:alert] %></span>
       </div>
-
-      <button type="button"
-        class="contact-toast-close"
-        data-close-contact-toast
-        aria-label="Close notification">
-
+      <button type="button" class="contact-toast-close" data-close-contact-toast aria-label="Close notification">
         <i class="bi bi-x"></i>
-
       </button>
-
     </div>
-
   <% end %>
-
 
   <% unless content_for?(:hide_header) %>
-
     <%= render "layouts/header" %>
-
   <% end %>
-
 
   <main>
     <%= yield %>
   </main>
 
-
   <% unless content_for?(:hide_footer) %>
-
     <%= render "layouts/footer" %>
-
   <% end %>
-  <% if user_signed_in? %>
-  <%= render "shared/ai_chatbot" %>
-<% end %>
 
+  <% if user_signed_in? %>
+    <%= render "shared/ai_chatbot" %>
+  <% end %>
 
   <script nonce="<%= content_security_policy_nonce %>">
+    function closeContactToast(button) {
+      const toast = button.closest("[data-contact-toast]");
+      if (!toast) return;
 
-  function closeContactToast(button) {
-
-    const toast = button.closest("[data-contact-toast]");
-
-    if (!toast) {
-      return;
-    }
-
-    toast.classList.add("hide");
-
-    setTimeout(function () {
-      toast.remove();
-    }, 300);
-
-  }
-
-
-  function initializeContactToasts() {
-
-    const toasts =
-      document.querySelectorAll("[data-contact-toast]");
-
-    if (!toasts.length) {
-      return;
-    }
-
-    toasts.forEach(function (toast) {
-
-      if (toast.dataset.toastInitialized === "true") {
-        return;
-      }
-
-      toast.dataset.toastInitialized = "true";
-
+      toast.classList.add("hide");
       setTimeout(function () {
+        toast.remove();
+      }, 300);
+    }
 
-        if (toast && toast.isConnected) {
+    function initializeContactToasts() {
+      const toasts = document.querySelectorAll("[data-contact-toast]");
+      if (!toasts.length) return;
 
-          toast.classList.add("hide");
+      toasts.forEach(function (toast) {
+        if (toast.dataset.toastInitialized === "true") return;
+        toast.dataset.toastInitialized = "true";
 
-          setTimeout(function () {
+        setTimeout(function () {
+          if (toast && toast.isConnected) {
+            toast.classList.add("hide");
+            setTimeout(function () {
+              if (toast && toast.isConnected) toast.remove();
+            }, 300);
+          }
+        }, 4000);
+      });
+    }
 
-            if (toast && toast.isConnected) {
-              toast.remove();
-            }
-
-          }, 300);
-
-        }
-
-      }, 4000);
-
+    document.addEventListener("click", function (event) {
+      const button = event.target.closest("[data-close-contact-toast]");
+      if (button) closeContactToast(button);
     });
 
-  }
-
-
-  /* =========================================================
-     CLOSE TOAST BUTTON
-  ========================================================= */
-
-  document.addEventListener("click", function (event) {
-
-    const button =
-      event.target.closest("[data-close-contact-toast]");
-
-    if (!button) {
-      return;
-    }
-
-    closeContactToast(button);
-
-  });
-
-
-  /* =========================================================
-     INITIALIZE TOASTS
-  ========================================================= */
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initializeContactToasts
-  );
-
-  document.addEventListener(
-    "turbo:load",
-    initializeContactToasts
-  );
-
-</script>
+    document.addEventListener("DOMContentLoaded", initializeContactToasts);
+    document.addEventListener("turbo:load", initializeContactToasts);
+  </script>
 </body>
-
 </html>
