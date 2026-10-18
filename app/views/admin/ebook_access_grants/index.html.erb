@@ -1,0 +1,229 @@
+
+<style>
+  .grant-page {
+    padding: 24px;
+    font-family: Poppins, sans-serif;
+    color: #25213a;
+  }
+
+  .grant-card {
+    background: #fff;
+    border: 1px solid #e9e3f3;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 5px 18px rgba(48, 22, 80, .06);
+  }
+
+  .grant-page h1 {
+    color: #8009e2;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .grant-page h2 {
+    font-size: 19px;
+    margin-bottom: 18px;
+  }
+
+  .grant-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .grant-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 7px;
+  }
+
+  .grant-field select,
+  .grant-field textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d9cce8;
+    border-radius: 9px;
+    background: #fff;
+  }
+
+  .grant-field textarea {
+    min-height: 90px;
+  }
+
+  .grant-button {
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 17px;
+    color: #fff;
+    background: #8009e2;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .grant-revoke {
+    background: #b42318;
+    padding: 8px 12px;
+  }
+
+  .grant-table-wrap {
+    overflow-x: auto;
+  }
+
+  .grant-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .grant-table th,
+  .grant-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #eee8f5;
+    vertical-align: top;
+  }
+
+  .grant-table th {
+    background: #f7f1ff;
+  }
+
+  .grant-status {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .grant-active {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .grant-revoked {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  @media (max-width: 650px) {
+    .grant-page {
+      padding: 12px;
+    }
+
+    .grant-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="grant-page">
+  <h1>E-book Access Management</h1>
+  <p>Students ko manual access dein aur existing grants manage karein.</p>
+
+  <div class="grant-card">
+    <h2>Grant E-book Access</h2>
+
+    <% if @students.empty? %>
+      <p>Koi student account nahi mila.</p>
+    <% elsif @ebooks.empty? %>
+      <p>Koi E-book available nahi hai.</p>
+    <% else %>
+      <%= form_with url: admin_ebook_access_grants_path,
+                    method: :post,
+                    local: true do %>
+
+        <div class="grant-form-grid">
+          <div class="grant-field">
+            <label for="user_id">Select Student</label>
+            <%= select_tag :user_id,
+                  options_from_collection_for_select(
+                    @students, :id, :email
+                  ),
+                  prompt: "Choose student",
+                  required: true %>
+          </div>
+
+          <div class="grant-field">
+            <label for="ebook_id">Select E-book</label>
+            <%= select_tag :ebook_id,
+                  options_from_collection_for_select(
+                    @ebooks, :id, :title
+                  ),
+                  prompt: "Choose E-book",
+                  required: true %>
+          </div>
+
+          <div class="grant-field" style="grid-column: 1 / -1;">
+            <label for="reason">Reason for manual access</label>
+            <%= text_area_tag :reason, nil,
+                  required: true,
+                  maxlength: 2000,
+                  placeholder: "Example: Payment received via UPI; verified by admin." %>
+          </div>
+        </div>
+
+        <p style="margin-top: 16px;">
+          <%= submit_tag "Grant Access", class: "grant-button" %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="grant-card">
+    <h2>Access Grant History</h2>
+
+    <div class="grant-table-wrap">
+      <table class="grant-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>E-book</th>
+            <th>Reason</th>
+            <th>Granted By</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @grants.each do |grant| %>
+            <tr>
+              <td><%= grant.user.email %></td>
+              <td><%= grant.ebook.title %></td>
+              <td><%= grant.reason %></td>
+              <td><%= grant.granted_by.email %></td>
+              <td>
+                <% if grant.active? %>
+                  <span class="grant-status grant-active">Active</span>
+                <% else %>
+                  <span class="grant-status grant-revoked">Revoked</span>
+                <% end %>
+              </td>
+              <td>
+                <% if grant.active? %>
+                  <%= button_to "Revoke",
+                        revoke_admin_ebook_access_grant_path(grant),
+                        method: :patch,
+                        class: "grant-button grant-revoke",
+                        form: {
+                          data: {
+                            turbo_confirm: "Is student ka manual access revoke karein?"
+                          }
+                        } %>
+                <% else %>
+                  <span>Revoked</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% if @grants.empty? %>
+            <tr>
+              <td colspan="6">Abhi koi manual access grant nahi hai.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

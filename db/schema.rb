@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_190009) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_18_053056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -294,6 +294,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_190009) do
     t.date "start_date"
     t.string "status"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ebook_access_grants", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "ebook_id", null: false
+    t.bigint "granted_by_id", null: false
+    t.text "reason"
+    t.datetime "revoked_at"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["ebook_id"], name: "index_ebook_access_grants_on_ebook_id"
+    t.index ["granted_by_id"], name: "index_ebook_access_grants_on_granted_by_id"
+    t.index ["user_id", "ebook_id"], name: "index_ebook_access_grants_on_user_id_and_ebook_id", unique: true
+    t.index ["user_id"], name: "index_ebook_access_grants_on_user_id"
   end
 
   create_table "ebook_files", force: :cascade do |t|
@@ -819,6 +833,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_190009) do
   add_foreign_key "course_discounts", "courses"
   add_foreign_key "course_discounts", "discounts"
   add_foreign_key "courses", "teachers"
+  add_foreign_key "ebook_access_grants", "ebooks"
+  add_foreign_key "ebook_access_grants", "users"
+  add_foreign_key "ebook_access_grants", "users", column: "granted_by_id"
   add_foreign_key "ebook_files", "ebooks"
   add_foreign_key "ebook_purchases", "coupons"
   add_foreign_key "ebook_purchases", "ebooks"

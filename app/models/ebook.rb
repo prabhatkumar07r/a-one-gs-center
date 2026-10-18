@@ -7,6 +7,8 @@ class Ebook < ApplicationRecord
 
   has_many :ebook_purchases,
            dependent: :restrict_with_error
+  has_many :ebook_access_grants,
+           dependent: :destroy
 
   before_validation :calculate_discount
 

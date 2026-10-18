@@ -54,7 +54,7 @@ post "/test_series_purchases/:id/apply_coupon",
 delete "/test_series_purchases/:id/remove_coupon",
        to: "test_series_purchases#remove_coupon",
        as: :remove_test_series_coupon
-    
+
 
   get "/test_series_purchases/:id/payment/success",
       to: "test_series_purchases#success",
@@ -123,7 +123,7 @@ delete "/test_series_purchases/:id/remove_coupon",
 
 
   namespace :admin do
-     
+
 resources :banners do
   member do
     patch :toggle_status
@@ -176,6 +176,14 @@ end
       end
 
     end
+
+
+resources :ebook_access_grants, only: [:index, :create] do
+  member do
+    patch :revoke
+  end
+end
+
 
 
     resources :ebooks do
@@ -373,7 +381,7 @@ end
 
 delete "/ebook-payments/:id/remove_coupon",
        to: "ebook_payments#remove_coupon",
-       as: :remove_ebook_coupon   
+       as: :remove_ebook_coupon
 
   post "/ebook-payments/:id/verify",
        to: "ebook_payments#verify",
@@ -564,10 +572,10 @@ delete "/ebook-payments/:id/remove_coupon",
        as: :apply_coupon
    delete "payments/:id/remove_coupon",
         to: "payments#remove_coupon",
-        as: :remove_coupon    
+        as: :remove_coupon
   post "/razorpay/webhook",
      to: "razorpay_webhooks#payment",
-     as: :razorpay_webhook     
+     as: :razorpay_webhook
 
 
   resources :fees do
@@ -620,7 +628,7 @@ namespace :api do
     resources :achievements, only: [:index]
       resources :banners, only: [:index]
 
-     
+
     # Profile API
      get   "profile",      to: "profile#show"
     patch "profile",      to: "profile#update"

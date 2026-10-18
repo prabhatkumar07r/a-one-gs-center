@@ -1,4 +1,4 @@
-﻿
+
 module Api
   module V1
     class EbooksController < Api::ApplicationController
@@ -30,59 +30,74 @@ module Api
           }
         }, status: :ok
       end
+   def my
+       purchases = current_user.ebook_purchases
+                          .paid
+                          .includes(:ebook)
+                          .order(created_at: :desc)
 
-      def my
-        purchases = current_user.ebook_purchases
-                                .paid
-                                .includes(
-                                  ebook: {
-                                    cover_image_attachment: :blob,
-                                    ebook_files: {
-                                      pdf_attachment: :blob
-                                    }
-                                  }
-                                )
-                                .order(created_at: :desc)
+       grants = EbookAccessGrant.active
+                           .where(user_id: current_user.id)
+                           .includes(:ebook)
 
-        render json: {
-          success: true,
-          data: {
-            ebooks: purchases.map do |purchase|
-              ebook = purchase.ebook
+      purchase_by_ebook = purchases.index_by(&:ebook_id)
+      grant_by_ebook = grants.index_by(&:ebook_id)
 
-              {
-                purchase_id: purchase.id,
-                ebook_id: ebook.id,
-                title: ebook.title,
-                description: ebook.description,
-                author: ebook.author,
-                category: ebook.category,
-                language: ebook.language,
-                exam_name: ebook.exam_name,
-                cover_image_url: cover_image_url_for(ebook),
-                price: ebook.price,
-                original_price: ebook.original_price,
-                discount_percentage: ebook.discount_percentage,
-                purchased_at: purchase.created_at,
-                access_granted: true,
-                files: ebook.ebook_files
-                             .where(status: "active")
-                             .order(:position)
-                             .select { |file| file.pdf.attached? }
-                             .map do |file|
-                  {
-                    id: file.id,
-                    title: file.title,
-                    description: file.description,
-                    position: file.position,
-                    pdf_available: true
-                  }
-                end
-              }
-            end
-          }
-        }, status: :ok
+   ebook_ids = (
+    purchase_by_ebook.keys + grant_by_ebook.keys
+   ).uniq
+
+  ebooks = Ebook.where(
+    id: ebook_ids,
+    status: "published"
+  ).includes(
+    cover_image_attachment: :blob,
+    ebook_files: { pdf_attachment: :blob }
+  )
+
+  render json: {
+    success: true,
+    data: {
+      ebooks: ebooks.map do |ebook|
+        purchase = purchase_by_ebook[ebook.id]
+        grant = grant_by_ebook[ebook.id]
+
+        {
+          purchase_id: purchase&.id,
+          ebook_id: ebook.id,
+          title: ebook.title,
+          description: ebook.description,
+          author: ebook.author,
+          category: ebook.category,
+          language: ebook.language,
+          exam_name: ebook.exam_name,
+          cover_image_url: cover_image_url_for(ebook),
+          price: ebook.price,
+          original_price: ebook.original_price,
+          discount_percentage: ebook.discount_percentage,
+          purchased_at: purchase&.created_at,
+          access_granted_at: grant&.created_at,
+          access_granted: true,
+          access_type: purchase ? "purchased" : "admin_granted",
+          files: ebook.ebook_files
+                       .where(status: "active")
+                       .order(:position)
+                       .select { |file| file.pdf.attached? }
+                       .map do |file|
+            {
+              id: file.id,
+              title: file.title,
+              description: file.description,
+              position: file.position,
+              pdf_available: true
+            }
+          end
+        }
       end
+    }
+  }, status: :ok
+end
+
 
       def show
         ebook = Ebook.find_by(id: params[:id], status: "published")
@@ -165,18 +180,25 @@ module Api
           }, status: :not_found
         end
 
-        unless ebook.free?
-          purchase = current_user.ebook_purchases
-                                .paid
-                                .find_by(ebook_id: ebook.id)
 
-          unless purchase
-            return render json: {
-              success: false,
-              error: "You do not have access to this PDF."
-            }, status: :forbidden
-          end
-        end
+unless ebook.free?
+  purchased = current_user.ebook_purchases
+                          .paid
+                          .exists?(ebook_id: ebook.id)
+
+  admin_granted = EbookAccessGrant.active.exists?(
+    user_id: current_user.id,
+    ebook_id: ebook.id
+  )
+
+  unless purchased || admin_granted
+    return render json: {
+      success: false,
+      error: "You do not have access to this PDF."
+    }, status: :forbidden
+  end
+end
+
 
         redirect_to rails_blob_path(
           ebook_file.pdf,
@@ -479,57 +501,74 @@ module Api
         }, status: :unprocessable_entity
       end
       # Check whether the current user can access an E-Book.
-      def access
-        ebook = Ebook.find_by(
-          id: params[:id],
-          status: "published"
-        )
 
-        unless ebook
-          return render json: {
-            success: false,
-            error: "E-Book not found."
-          }, status: :not_found
-        end
+def access
+  ebook = Ebook.find_by(
+    id: params[:id],
+    status: "published"
+  )
 
-        if ebook.is_free?
-          return render json: {
-            success: true,
-            data: {
-              ebook_id: ebook.id,
-              access_granted: true,
-              access_type: "free"
-            }
-          }, status: :ok
-        end
+  unless ebook
+    return render json: {
+      success: false,
+      error: "E-Book not found."
+    }, status: :not_found
+  end
 
-        purchase_record = current_user.ebook_purchases.find_by(
-          ebook_id: ebook.id,
-          payment_status: "paid",
-          status: "active"
-        )
+  if ebook.free?
+    return render json: {
+      success: true,
+      data: {
+        ebook_id: ebook.id,
+        access_granted: true,
+        access_type: "free"
+      }
+    }, status: :ok
+  end
 
-        unless purchase_record
-          return render json: {
-            success: true,
-            data: {
-              ebook_id: ebook.id,
-              access_granted: false,
-              access_type: "purchase_required"
-            }
-          }, status: :ok
-        end
+  purchase = current_user.ebook_purchases.paid.find_by(
+    ebook_id: ebook.id
+  )
 
-        render json: {
-          success: true,
-          data: {
-            ebook_id: ebook.id,
-            access_granted: true,
-            access_type: "purchased",
-            purchase_id: purchase_record.id
-          }
-        }, status: :ok
-      end
+  if purchase
+    return render json: {
+      success: true,
+      data: {
+        ebook_id: ebook.id,
+        access_granted: true,
+        access_type: "purchased",
+        purchase_id: purchase.id
+      }
+    }, status: :ok
+  end
+
+  grant = EbookAccessGrant.active.find_by(
+    user_id: current_user.id,
+    ebook_id: ebook.id
+  )
+
+  if grant
+    return render json: {
+      success: true,
+      data: {
+        ebook_id: ebook.id,
+        access_granted: true,
+        access_type: "admin_granted",
+        grant_id: grant.id
+      }
+    }, status: :ok
+  end
+
+  render json: {
+    success: true,
+    data: {
+      ebook_id: ebook.id,
+      access_granted: false,
+      access_type: "purchase_required"
+    }
+  }, status: :ok
+end
+
 
       private
 

@@ -54,6 +54,13 @@ has_many :admin_ai_support_requests,
   has_many :test_series_attempts, dependent: :destroy
 has_many :test_series_answers, through: :test_series_attempts
 has_many :ebook_purchases, dependent: :restrict_with_error
+ has_many :ebook_access_grants,
+         dependent: :destroy
+
+has_many :admin_granted_ebook_access_grants,
+         class_name: "EbookAccessGrant",
+         foreign_key: :granted_by_id,
+         dependent: :restrict_with_error
   # ================= GOOGLE LOGIN =================
 
   def self.from_omniauth(auth)
