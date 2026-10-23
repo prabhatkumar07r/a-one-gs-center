@@ -1,15 +1,14 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
   user: one
-  token_digest: MyString
-  expires_at: 2026-10-03 22:44:07
-  revoked_at: 2026-10-03 22:44:07
-  last_used_at: 2026-10-03 22:44:07
+  token_digest: test_digest_one
+  expires_at: <%= 1.day.from_now %>
+  revoked_at:
+  last_used_at:
 
 two:
   user: two
-  token_digest: MyString
-  expires_at: 2026-10-03 22:44:07
-  revoked_at: 2026-10-03 22:44:07
-  last_used_at: 2026-10-03 22:44:07
+  token_digest: test_digest_two
+  expires_at: <%= 1.day.from_now %>
+  revoked_at:
+  last_used_at:

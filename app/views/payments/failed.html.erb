@@ -130,17 +130,17 @@
       Please try again or return to your payment page.
     </p>
 
-    <div class="payment-failed-actions">
-      <%= link_to payments_path, class: "payment-failed-btn payment-failed-btn-primary" do %>
-        <i class="bi bi-arrow-repeat"></i>
-        Try Again
-      <% end %>
+<div class="payment-failed-actions">
+  <%= link_to payment_path(@enrollment), class: "payment-failed-btn payment-failed-btn-primary" do %>
+    <i class="bi bi-arrow-repeat"></i>
+    Try Again
+  <% end %>
 
-      <%= link_to root_path, class: "payment-failed-btn payment-failed-btn-secondary" do %>
-        <i class="bi bi-house"></i>
-        Go Home
-      <% end %>
-    </div>
+  <%= link_to root_path, class: "payment-failed-btn payment-failed-btn-secondary" do %>
+    <i class="bi bi-house"></i>
+    Go Home
+  <% end %>
+</div>
 
   </div>
 </div>

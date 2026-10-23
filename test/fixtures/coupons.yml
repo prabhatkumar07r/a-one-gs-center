@@ -1,25 +1,23 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  code: MyString
-  coupon_type: MyString
+  code: TEST_COUPON_ONE
+  coupon_type: everyone
   student: one
-  discount_type: MyString
-  discount_value: 9.99
-  usage_limit: 1
-  used_count: 1
-  expires_at: 2026-09-18 20:09:21
-  active: false
+  discount_type: percentage
+  discount_value: 10
+  usage_limit: 100
+  used_count: 0
+  expires_at: <%= 30.days.from_now %>
+  active: true
   course: one
 
 two:
-  code: MyString
-  coupon_type: MyString
+  code: TEST_COUPON_TWO
+  coupon_type: personal
   student: two
-  discount_type: MyString
-  discount_value: 9.99
-  usage_limit: 1
-  used_count: 1
-  expires_at: 2026-09-18 20:09:21
-  active: false
+  discount_type: fixed
+  discount_value: 50
+  usage_limit: 10
+  used_count: 0
+  expires_at: <%= 30.days.from_now %>
+  active: true
   course: two

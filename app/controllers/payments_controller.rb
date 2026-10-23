@@ -365,6 +365,31 @@ class PaymentsController < ApplicationController
                 alert: "Something went wrong while applying the coupon."
   end
 
+
+  def success
+    @enrollment =
+      current_user.enrollments.find(params[:id])
+
+    @course = @enrollment.course
+
+    @payment =
+      @enrollment.payments
+                 .order(created_at: :desc)
+                 .first
+  end
+
+  def failed
+    @enrollment =
+      current_user.enrollments.find(params[:id])
+
+    @course = @enrollment.course
+
+    @payment =
+      @enrollment.payments
+                 .order(created_at: :desc)
+                 .first
+  end
+
   def remove_coupon
     @enrollment =
       current_user.enrollments.find(params[:id])

@@ -1,18 +1,23 @@
 require "test_helper"
 
 class Admin::TestimonialsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in users(:admin)
+  end
+
   test "should get index" do
-    get admin_testimonials_index_url
+    get admin_testimonials_url
     assert_response :success
   end
 
   test "should get new" do
-    get admin_testimonials_new_url
+    get new_admin_testimonial_url
     assert_response :success
   end
 
   test "should get edit" do
-    get admin_testimonials_edit_url
+    testimonial = testimonials(:one)
+    get edit_admin_testimonial_url(testimonial)
     assert_response :success
   end
 end

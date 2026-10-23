@@ -431,24 +431,21 @@
                      PHOTO
                 ========================================== -->
 
-                <div class="topper-image-wrapper">
-
-                  <% if achievement.photo.attached? %>
-
-                    <%= image_tag achievement.photo,
-                        class: "topper-image",
-                        alt: "#{achievement.student_name.presence || 'Student'} - #{achievement.title.presence || 'Achievement'}",
-                        loading: "lazy" %>
-
-                  <% else %>
-
-                    <div class="achievement-no-image">
-                      <i class="bi bi-trophy-fill"></i>
-                    </div>
-
-                  <% end %>
-
-                </div>
+                           <div class="topper-image-wrapper">
+  <% if achievement.photo.attached? %>
+    <%= image_tag achievement.photo,
+        class: "topper-image",
+        alt: "#{achievement.student_name.presence || 'Student'} - #{achievement.title.presence || 'Achievement'}",
+        loading: "lazy",
+        decoding: "async",
+        width: 600,
+        height: 450 %>
+  <% else %>
+    <div class="achievement-no-image">
+      <i class="bi bi-trophy-fill"></i>
+    </div>
+  <% end %>
+</div>
 
 
                 <!-- =========================================
