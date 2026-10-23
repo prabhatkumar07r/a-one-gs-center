@@ -1,4 +1,5 @@
 class DemoRequestsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:new, :create]
 
   def new
     @demo = Demo.new
@@ -13,7 +14,6 @@ class DemoRequestsController < ApplicationController
                   notice: "Demo class request submitted successfully."
     else
       @courses = Course.order(created_at: :desc)
-
       render :new, status: :unprocessable_entity
     end
   end
@@ -22,14 +22,8 @@ class DemoRequestsController < ApplicationController
 
   def demo_params
     params.require(:demo).permit(
-      :name,
-      :phone,
-      :email,
-      :course,
-      :batch,
-      :batch_time,
-      :preferred_time
+      :name, :phone, :email, :course,
+      :batch, :batch_time, :preferred_time
     )
   end
-
 end
