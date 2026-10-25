@@ -7,11 +7,13 @@ class RazorpayWebhooksController < ApplicationController
   def payment
     raw_body = request.raw_post
     signature = request.headers["X-Razorpay-Signature"].to_s.strip
-    secret = ENV.fetch("RAZORPAY_WEBHOOK_SECRET")
+    secret = ENV["RAZORPAY_WEBHOOK_SECRET"].to_s
 
-    if signature.blank?
-      Rails.logger.warn("[RAZORPAY WEBHOOK] Missing signature.")
-      return head :unauthorized
+    if signature.blank? || secret.blank?
+      Rails.logger.warn(
+        "[RAZORPAY WEBHOOK] Missing signature or webhook secret."
+      )
+      return head(signature.blank? ? :unauthorized : :internal_server_error)
     end
 
     expected_signature = OpenSSL::HMAC.hexdigest(
@@ -33,13 +35,10 @@ class RazorpayWebhooksController < ApplicationController
 
     Rails.logger.info("[RAZORPAY WEBHOOK] Event: #{event}")
 
-    # Only process payment completion events.
     unless %w[payment.captured order.paid].include?(event)
       return head :ok
     end
 
-    # payment.captured contains a payment entity.
-    # order.paid identifies the order; its ID is NOT a payment ID.
     if event == "payment.captured"
       entity = payload.dig("payload", "payment", "entity")
       razorpay_payment_id = entity&.dig("id").to_s.strip
@@ -57,7 +56,7 @@ class RazorpayWebhooksController < ApplicationController
       return head :ok
     end
 
-    # Preserve the existing course-payment completion flow.
+    # 1. Existing course-payment flow — keep unchanged.
     course_payment = Payment.find_by(
       razorpay_order_id: razorpay_order_id
     )
@@ -79,23 +78,39 @@ class RazorpayWebhooksController < ApplicationController
       return head :ok
     end
 
-    # E-book payments are stored in EbookPurchase, not Payment.
+    # 2. E-book purchase.
     ebook_purchase = EbookPurchase.find_by(
       razorpay_order_id: razorpay_order_id
     )
 
-    unless ebook_purchase
-      Rails.logger.warn(
-        "[RAZORPAY WEBHOOK] No local course or e-book purchase " \
-        "found for order #{razorpay_order_id}."
+    if ebook_purchase
+      complete_ebook_purchase!(
+        ebook_purchase,
+        razorpay_payment_id,
+        razorpay_order_id
       )
+
       return head :ok
     end
 
-    complete_ebook_purchase!(
-      ebook_purchase,
-      razorpay_payment_id,
-      razorpay_order_id
+    # 3. Test Series purchase.
+    test_series_purchase = TestSeriesPurchase.find_by(
+      razorpay_order_id: razorpay_order_id
+    )
+
+    if test_series_purchase
+      complete_test_series_purchase!(
+        test_series_purchase,
+        razorpay_payment_id,
+        razorpay_order_id
+      )
+
+      return head :ok
+    end
+
+    Rails.logger.warn(
+      "[RAZORPAY WEBHOOK] No local course, e-book, or Test Series " \
+      "purchase found for order #{razorpay_order_id}."
     )
 
     head :ok
@@ -127,7 +142,7 @@ class RazorpayWebhooksController < ApplicationController
   private
 
   def complete_ebook_purchase!(purchase, payment_id, order_id)
-    # order.paid may not contain the payment ID.
+    # order.paid may not include a payment ID.
     payment_id = find_captured_payment_id(order_id) if payment_id.blank?
 
     if payment_id.blank?
@@ -135,19 +150,43 @@ class RazorpayWebhooksController < ApplicationController
             "No unique captured payment found for e-book order #{order_id}."
     end
 
-    EbookPaymentCompletionService.call(
+   EbookPaymentCompletionService.call_from_webhook(
+  purchase: purchase,
+  payment_id: payment_id,
+  order_id: order_id
+)
+end
+
+  def complete_test_series_purchase!(purchase, payment_id, order_id)
+    # order.paid may not include a payment ID.
+    payment_id = find_captured_payment_id(order_id) if payment_id.blank?
+
+    if payment_id.blank?
+      raise TestSeriesPaymentCompletionService::Error,
+            "No unique captured payment found for Test Series order #{order_id}."
+    end
+
+    # This webhook has already passed Razorpay's webhook HMAC check.
+    # Next step: add a dedicated trusted-webhook entry point to the
+    # completion service instead of bypassing checkout signature checks.
+    TestSeriesPaymentCompletionService.call_from_webhook(
       purchase: purchase,
       payment_id: payment_id,
       order_id: order_id
     )
   end
+
   def find_captured_payment_id(order_id)
     order = Razorpay::Order.fetch(order_id)
     payments = order.payments
 
     items = payments.respond_to?(:items) ? payments.items : []
+
     captured = Array(items).select do |item|
-      item["status"].to_s.downcase == "captured"
+      status =
+        item.respond_to?(:status) ? item.status : item["status"]
+
+      status.to_s.downcase == "captured"
     end
 
     if captured.length != 1
@@ -158,7 +197,7 @@ class RazorpayWebhooksController < ApplicationController
       return nil
     end
 
-    captured.first["id"].to_s
+    item = captured.first
+    item.respond_to?(:id) ? item.id.to_s : item["id"].to_s
   end
 end
-

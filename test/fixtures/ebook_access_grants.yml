@@ -1,15 +1,16 @@
+
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
   user: one
   ebook: one
-  granted_by_id:
+  granted_by: admin
   reason: MyText
   revoked_at: 2026-10-18 00:59:31
 
 two:
   user: two
   ebook: two
-  granted_by_id:
+  granted_by: admin
   reason: MyText
   revoked_at: 2026-10-18 00:59:31

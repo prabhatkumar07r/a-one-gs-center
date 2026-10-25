@@ -580,351 +580,86 @@ class EbookPaymentsController < ApplicationController
   # VERIFY RAZORPAY PAYMENT
   # =========================================================
 
-  def verify
-    @purchase =
-      current_user.ebook_purchases.find(params[:id])
+def verify
+  @purchase = current_user.ebook_purchases.find(params[:id])
+  @ebook = @purchase.ebook
 
-    @ebook = @purchase.ebook
+  payment_id = params[:razorpay_payment_id].to_s.strip
+  order_id = params[:razorpay_order_id].to_s.strip
+  signature = params[:razorpay_signature].to_s.strip
 
-    payment_id =
-      params[:razorpay_payment_id]
-        .to_s
-        .strip
-
-    order_id =
-      params[:razorpay_order_id]
-        .to_s
-        .strip
-
-    signature =
-      params[:razorpay_signature]
-        .to_s
-        .strip
-
-    # ---------------------------------------------------------
-    # REQUIRED DATA
-    # ---------------------------------------------------------
-
-    if payment_id.blank? ||
-       order_id.blank? ||
-       signature.blank?
-
-      Rails.logger.warn(
-        "EBOOK PAYMENT VERIFICATION DATA MISSING: " \
-        "purchase=#{@purchase.id}"
-      )
-
-      redirect_to ebook_payment_failed_path(@purchase),
-                  alert:
-                    "Payment verification information is missing."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # ALREADY PAID
-    # ---------------------------------------------------------
-
-    if @purchase.paid?
-      redirect_to ebook_payment_success_path(@purchase),
-                  notice: "Payment has already been verified."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # VERIFY ORDER BELONGS TO PURCHASE
-    # ---------------------------------------------------------
-
-    expected_order_id =
-      @purchase.razorpay_order_id
-               .to_s
-               .strip
-
-    unless expected_order_id.present? &&
-           expected_order_id == order_id
-
-      Rails.logger.warn(
-        "EBOOK PAYMENT ORDER MISMATCH: " \
-        "purchase=#{@purchase.id}, " \
-        "expected=#{expected_order_id}, " \
-        "received=#{order_id}"
-      )
-
-      redirect_to ebook_payment_failed_path(@purchase),
-                  alert: "Payment order does not match."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # VERIFY RAZORPAY SIGNATURE
-    # ---------------------------------------------------------
-
-    Razorpay::Utility.verify_payment_signature(
-      razorpay_order_id: order_id,
-      razorpay_payment_id: payment_id,
-      razorpay_signature: signature
-    )
-
-    # ---------------------------------------------------------
-    # FETCH ACTUAL PAYMENT
-    # ---------------------------------------------------------
-
-    razorpay_payment =
-      Razorpay::Payment.fetch(payment_id)
-
-    # ---------------------------------------------------------
-    # VERIFY PAYMENT ORDER
-    # ---------------------------------------------------------
-
-    razorpay_payment_order_id =
-      razorpay_payment.order_id
-                      .to_s
-                      .strip
-
-    unless razorpay_payment_order_id == order_id
-
-      Rails.logger.error(
-        "EBOOK PAYMENT RAZORPAY ORDER MISMATCH: " \
-        "purchase=#{@purchase.id}, " \
-        "expected=#{order_id}, " \
-        "received=#{razorpay_payment_order_id}"
-      )
-
-      redirect_to ebook_payment_failed_path(@purchase),
-                  alert:
-                    "Payment order verification failed."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # VERIFY CURRENCY
-    # ---------------------------------------------------------
-
-    razorpay_currency =
-      razorpay_payment.currency
-                      .to_s
-                      .upcase
-
-    unless razorpay_currency == "INR"
-
-      Rails.logger.error(
-        "EBOOK PAYMENT CURRENCY MISMATCH: " \
-        "purchase=#{@purchase.id}, " \
-        "expected=INR, " \
-        "received=#{razorpay_currency}"
-      )
-
-      redirect_to ebook_payment_failed_path(@purchase),
-                  alert:
-                    "Payment currency verification failed."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # VERIFY AMOUNT
-    # ---------------------------------------------------------
-
-    expected_amount_paise =
-      (@purchase.amount.to_d * 100).to_i
-
-    received_amount_paise =
-      razorpay_payment.amount.to_i
-
-    unless received_amount_paise == expected_amount_paise
-
-      Rails.logger.error(
-        "EBOOK PAYMENT AMOUNT MISMATCH: " \
-        "purchase=#{@purchase.id}, " \
-        "expected_paise=#{expected_amount_paise}, " \
-        "received_paise=#{received_amount_paise}"
-      )
-
-      redirect_to ebook_payment_failed_path(@purchase),
-                  alert:
-                    "Payment amount verification failed."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # VERIFY PAYMENT STATUS
-    # ---------------------------------------------------------
-
-    razorpay_status =
-      razorpay_payment.status
-                      .to_s
-                      .downcase
-
-    unless razorpay_status == "captured"
-
-      Rails.logger.warn(
-        "EBOOK PAYMENT NOT CAPTURED: " \
-        "purchase=#{@purchase.id}, " \
-        "payment=#{payment_id}, " \
-        "status=#{razorpay_status}"
-      )
-
-      redirect_to ebook_payment_failed_path(@purchase),
-                  alert:
-                    "Payment has not been captured yet."
-      return
-    end
-
-    # ---------------------------------------------------------
-    # SAVE PAYMENT + COUPON USAGE ATOMICALLY
-    # ---------------------------------------------------------
-
-    ActiveRecord::Base.transaction do
-      @purchase.with_lock do
-
-        # -----------------------------------------------------
-        # Re-check after database lock
-        # -----------------------------------------------------
-
-        unless @purchase.paid?
-
-          # -----------------------------------------------
-          # PAYMENT
-          # -----------------------------------------------
-
-          @purchase.update!(
-            razorpay_payment_id: payment_id,
-            razorpay_signature: signature,
-            payment_status: "paid",
-            status: "active"
-          )
-
-          # -----------------------------------------------
-          # COUPON USAGE
-          # -----------------------------------------------
-
-          if @purchase.coupon.present?
-
-            coupon =
-              Coupon.lock.find(
-                @purchase.coupon_id
-              )
-
-            # ---------------------------------------------
-            # Prevent duplicate usage
-            # ---------------------------------------------
-
-            unless coupon.already_used_by?(
-              @purchase.user
-            )
-
-              CouponUsage.create!(
-                coupon: coupon,
-                user: @purchase.user,
-                purchasable: @purchase,
-                discount_amount:
-                  @purchase.discount_amount.to_d,
-                used_at: Time.current
-              )
-
-              coupon.increment!(
-                :used_count
-              )
-
-            end
-          end
-        end
-      end
-    end
-
-    # ---------------------------------------------------------
-    # SUCCESS LOG
-    # ---------------------------------------------------------
-
-    Rails.logger.info(
-      "EBOOK PAYMENT VERIFIED SUCCESSFULLY: " \
-      "purchase=#{@purchase.id}, " \
-      "ebook=#{@ebook.id}, " \
-      "payment=#{payment_id}, " \
-      "order=#{order_id}, " \
-      "amount_paise=#{received_amount_paise}, " \
-      "coupon=#{@purchase.coupon_id || 'none'}, " \
-      "discount=#{@purchase.discount_amount.to_d}"
-    )
-
-    redirect_to ebook_payment_success_path(@purchase),
-                notice:
-                  "Payment successful. " \
-                  "You now have access to this E-Book."
-
-  # =========================================================
-  # SIGNATURE VERIFICATION FAILURE
-  # =========================================================
-
-  rescue Razorpay::SignatureVerificationError => e
-
-    Rails.logger.error(
-      "EBOOK RAZORPAY SIGNATURE VERIFICATION FAILED: " \
-      "purchase=#{@purchase&.id}, " \
-      "error=#{e.message}"
-    )
-
+  if payment_id.blank? || order_id.blank? || signature.blank?
     redirect_to ebook_payment_failed_path(@purchase),
-                alert: "Payment verification failed."
-
-  # =========================================================
-  # RAZORPAY API ERROR
-  # =========================================================
-
-  rescue Razorpay::Error => e
-
-    Rails.logger.error(
-      "EBOOK RAZORPAY API ERROR DURING VERIFY: " \
-      "purchase=#{@purchase&.id}, " \
-      "error=#{e.class} - #{e.message}"
-    )
-
-    redirect_to ebook_payment_failed_path(@purchase),
-                alert:
-                  "Unable to verify the payment with Razorpay. " \
-                  "If money was deducted, please contact administration."
-
-  # =========================================================
-  # PURCHASE NOT FOUND
-  # =========================================================
-
-  rescue ActiveRecord::RecordNotFound
-
-    redirect_to ebooks_path,
-                alert: "E-Book purchase not found."
-
-  # =========================================================
-  # DATABASE ERROR
-  # =========================================================
-
-  rescue ActiveRecord::RecordInvalid => e
-
-    Rails.logger.error(
-      "EBOOK PAYMENT RECORD ERROR: " \
-      "purchase=#{@purchase&.id}, " \
-      "error=#{e.message}"
-    )
-
-    redirect_to ebook_payment_failed_path(@purchase),
-                alert:
-                  "Payment was received but could not be recorded. " \
-                  "Please contact administration."
-
-  # =========================================================
-  # UNEXPECTED ERROR
-  # =========================================================
-
-  rescue StandardError => e
-
-    Rails.logger.error(
-      "EBOOK RAZORPAY VERIFY ERROR: " \
-      "purchase=#{@purchase&.id}, " \
-      "error=#{e.class} - #{e.message}"
-    )
-
-    redirect_to ebook_payment_failed_path(@purchase),
-                alert:
-                  "Something went wrong while verifying payment. " \
-                  "Please contact administration."
+                alert: "Payment verification information is missing."
+    return
   end
+
+  unless @purchase.razorpay_order_id.to_s == order_id
+    Rails.logger.warn(
+      "[EBOOK PAYMENT] Order mismatch for purchase #{@purchase.id}"
+    )
+
+    redirect_to ebook_payment_failed_path(@purchase),
+                alert: "Payment order does not match."
+    return
+  end
+
+  # If already paid, do not create another completion or notification.
+  if @purchase.paid?
+    redirect_to ebook_payment_success_path(@purchase),
+                notice: "Payment has already been verified."
+    return
+  end
+
+  completed_purchase = EbookPaymentCompletionService.call(
+    purchase: @purchase,
+    payment_id: payment_id,
+    order_id: order_id,
+    signature: signature
+  )
+
+  @purchase = completed_purchase.reload
+
+  Rails.logger.info(
+    "[EBOOK PAYMENT] Verified successfully: " \
+    "purchase=#{@purchase.id}, ebook=#{@ebook.id}, " \
+    "payment=#{payment_id}, order=#{order_id}"
+  )
+
+  redirect_to ebook_payment_success_path(@purchase),
+              notice: "Payment successful. You now have access to this E-Book."
+
+rescue EbookPaymentCompletionService::Error => e
+  Rails.logger.error(
+    "[EBOOK PAYMENT] Verification failed: " \
+    "purchase=#{@purchase&.id}, error=#{e.class}: #{e.message}"
+  )
+
+  redirect_to ebook_payment_failed_path(@purchase),
+              alert: "Payment could not be verified. If money was deducted, please contact administration."
+
+rescue ActiveRecord::RecordNotFound
+  redirect_to ebooks_path,
+              alert: "E-Book purchase not found."
+
+rescue ActiveRecord::RecordInvalid => e
+  Rails.logger.error(
+    "[EBOOK PAYMENT] Record error: " \
+    "purchase=#{@purchase&.id}, error=#{e.message}"
+  )
+
+  redirect_to ebook_payment_failed_path(@purchase),
+              alert: "Payment could not be recorded. If money was deducted, please contact administration."
+
+rescue StandardError => e
+  Rails.logger.error(
+    "[EBOOK PAYMENT] Unexpected verification error: " \
+    "purchase=#{@purchase&.id}, error=#{e.class}: #{e.message}"
+  )
+
+  redirect_to ebook_payment_failed_path(@purchase),
+              alert: "We could not confirm your payment yet. If money was deducted, please contact administration."
+end
 
 
   # =========================================================

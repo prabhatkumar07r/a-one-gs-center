@@ -276,132 +276,78 @@ class TestSeriesPurchasesController < ApplicationController
     redirect_to test_series_payment_path(@purchase),
                 alert: "Unable to remove coupon. Please try again."
   end
-
-  def verify
+ def verify
     @purchase =
-      current_user.test_series_purchases.find(params[:id])
+     current_user.test_series_purchases.find(params[:id])
 
-    @test_series = @purchase.test_series
+  @test_series = @purchase.test_series
 
-    payment_id = params[:razorpay_payment_id]
-    order_id = params[:razorpay_order_id]
-    signature = params[:razorpay_signature]
+  payment_id = params[:razorpay_payment_id]
+  order_id = params[:razorpay_order_id]
+  signature = params[:razorpay_signature]
 
-    if payment_id.blank? ||
-       order_id.blank? ||
-       signature.blank?
-
-      redirect_to test_series_payment_failed_path(@purchase),
-                  alert: "Payment verification information is missing."
-      return
-    end
-
-    unless @purchase.razorpay_order_id == order_id
-      redirect_to test_series_payment_failed_path(@purchase),
-                  alert: "Invalid payment order."
-      return
-    end
-
-    if @purchase.payment_status == "paid" &&
-       @purchase.status == "Active"
-
-      redirect_to test_series_payment_success_path(@purchase),
-                  notice: "Payment has already been verified."
-      return
-    end
-
-    Razorpay::Utility.verify_payment_signature(
-      razorpay_order_id: order_id,
-      razorpay_payment_id: payment_id,
-      razorpay_signature: signature
-    )
-
-    razorpay_payment = Razorpay::Payment.fetch(payment_id)
-
-    unless razorpay_payment.order_id.to_s == order_id.to_s
-      raise StandardError, "Razorpay payment order mismatch"
-    end
-
-    unless razorpay_payment.status.to_s.downcase == "captured"
-      raise StandardError, "Razorpay payment was not captured"
-    end
-
-    expected_amount =
-      (@purchase.payable_amount.to_d * 100).round
-
-    actual_amount =
-      razorpay_payment.amount.to_d
-
-    unless actual_amount == expected_amount
-      raise StandardError,
-            "Razorpay amount mismatch. Expected #{expected_amount}, received #{actual_amount}"
-    end
-
-    TestSeriesPurchase.transaction do
-      @purchase.with_lock do
-        @purchase.update!(
-          amount: @purchase.payable_amount,
-          razorpay_payment_id: payment_id,
-          razorpay_signature: signature,
-          payment_status: "paid",
-          status: "Active"
-        )
-
-        if @purchase.coupon.present?
-          CouponUsage.create!(
-            coupon: @purchase.coupon,
-            user: @purchase.user,
-            purchasable: @purchase,
-            discount_amount: @purchase.discount_amount.to_d,
-            used_at: Time.current
-          )
-
-          @purchase.coupon.increment!(:used_count)
-        end
-      end
-    end
-
-    redirect_to test_series_payment_success_path(@purchase),
-                notice: "Payment successful. You now have access to this Test Series."
-
-  rescue Razorpay::SignatureVerificationError
-    Rails.logger.error(
-      "TEST SERIES RAZORPAY SIGNATURE VERIFICATION FAILED"
-    )
-
-    @purchase&.update(
-      payment_status: "failed",
-      status: "Failed"
-    )
-
+  if payment_id.blank? || order_id.blank? || signature.blank?
     redirect_to test_series_payment_failed_path(@purchase),
-                alert: "Payment verification failed."
-
-  rescue ActiveRecord::RecordNotFound
-    redirect_to test_series_index_path,
-                alert: "Purchase not found."
-
-  rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error(
-      "TEST SERIES PAYMENT ERROR: #{e.message}"
-    )
-
-    redirect_to test_series_payment_failed_path(@purchase),
-                alert: "Payment was received but could not be recorded."
-
-  rescue StandardError => e
-    Rails.logger.error(
-      "TEST SERIES PAYMENT ERROR: #{e.class} - #{e.message}"
-    )
-
-    @purchase&.update(
-      payment_status: "failed",
-      status: "Failed"
-    )
-
-    redirect_to test_series_payment_failed_path(@purchase),
-                alert: "Something went wrong while verifying payment."
+                alert: "Payment verification information is missing."
+    return
   end
+
+  unless @purchase.razorpay_order_id.to_s == order_id.to_s
+    redirect_to test_series_payment_failed_path(@purchase),
+                alert: "Invalid payment order."
+    return
+  end
+
+  if @purchase.paid?
+    redirect_to test_series_payment_success_path(@purchase),
+                notice: "Payment has already been verified."
+    return
+  end
+
+  TestSeriesPaymentCompletionService.call(
+    purchase: @purchase,
+    payment_id: payment_id,
+    order_id: order_id,
+    signature: signature
+  )
+
+  # Reload the final state recorded by the completion service.
+  @purchase.reload
+
+  redirect_to test_series_payment_success_path(@purchase),
+              notice: "Payment successful. You now have access to this Test Series."
+
+rescue TestSeriesPaymentCompletionService::Error,
+       Razorpay::SignatureVerificationError => e
+  Rails.logger.error(
+    "TEST SERIES PAYMENT VERIFICATION FAILED: " \
+    "#{e.class} - #{e.message}"
+  )
+
+  redirect_to test_series_payment_failed_path(@purchase),
+              alert: "Payment could not be verified. If money was deducted, please contact support."
+
+rescue ActiveRecord::RecordNotFound
+  redirect_to test_series_index_path,
+              alert: "Purchase not found."
+
+rescue ActiveRecord::RecordInvalid => e
+  Rails.logger.error(
+    "TEST SERIES PAYMENT RECORD ERROR: #{e.message}"
+  )
+
+  redirect_to test_series_payment_failed_path(@purchase),
+              alert: "Payment could not be recorded. If money was deducted, please contact support."
+
+rescue StandardError => e
+  Rails.logger.error(
+    "TEST SERIES PAYMENT ERROR: #{e.class} - #{e.message}"
+  )
+
+  redirect_to test_series_payment_failed_path(@purchase),
+              alert: "We could not confirm your payment yet. If money was deducted, please contact support."
+end
+
 
   def success
     @purchase =
