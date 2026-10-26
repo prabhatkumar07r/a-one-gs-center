@@ -1,881 +1,100 @@
 <style nonce="<%= content_security_policy_nonce %>">
-
-.admin-ts-form-page {
-  width: 100%;
-  min-height: calc(100vh - 70px);
-  padding: 24px;
-}
-
-.admin-ts-form-shell {
-  width: 100%;
-  max-width: 1050px;
-  margin: 0 auto;
-}
-
-.admin-ts-form-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 18px;
-}
-
-.admin-ts-form-breadcrumb {
-  margin-bottom: 7px;
-  color: #7b8194;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.admin-ts-form-breadcrumb a {
-  color: #6366f1;
-  text-decoration: none;
-}
-
-.admin-ts-form-breadcrumb a:hover {
-  color: #4f46e5;
-}
-
-.admin-ts-form-title {
-  margin: 0;
-  color: #202033;
-  font-size: 25px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.admin-ts-form-subtitle {
-  margin: 6px 0 0;
-  color: #7b8194;
-  font-size: 12px;
-}
-
-.admin-ts-form-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.admin-ts-form-back,
-.admin-ts-form-theme {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 38px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  transition: .2s ease;
-}
-
-.admin-ts-form-back {
-  padding: 8px 13px;
-  color: #4b5563 !important;
-  background: #ffffff !important;
-  border: 1px solid #dfe3eb !important;
-  text-decoration: none !important;
-}
-
-.admin-ts-form-back:hover {
-  color: #4f46e5 !important;
-  background: #f5f3ff !important;
-  border-color: #c4b5fd !important;
-  transform: translateY(-1px);
-}
-
-.admin-ts-form-theme {
-  width: 38px;
-  min-width: 38px;
-  padding: 0;
-  color: #5b21b6 !important;
-  background: #ffffff !important;
-  border: 1px solid #dfe3eb !important;
-  cursor: pointer;
-}
-
-.admin-ts-form-theme:hover {
-  color: #4f46e5 !important;
-  background: #f5f3ff !important;
-  border-color: #c4b5fd !important;
-  transform: translateY(-1px);
-}
-
-.admin-ts-form-card {
-  width: 100%;
-  padding: 22px;
-  background: #ffffff;
-  border: 1px solid #e3e6ee;
-  border-radius: 15px;
-  box-shadow: 0 7px 25px rgba(25, 25, 50, .045);
-}
-
-.admin-ts-form {
-  width: 100%;
-}
-
-.admin-ts-form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 17px;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #e3e6ee;
-  border-radius: 13px;
-}
-
-.admin-ts-field {
-  min-width: 0;
-}
-
-.admin-ts-field.full {
-  grid-column: 1 / -1;
-}
-
-.admin-ts-field label {
-  display: block;
-  margin-bottom: 7px;
-  color: #303446;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.admin-ts-input,
-.admin-ts-textarea {
-  width: 100%;
-  padding: 10px 12px;
-  color: #25283a;
-  background: #ffffff;
-  border: 1px solid #dfe3eb;
-  border-radius: 8px;
-  outline: none;
-  font-size: 12px;
-  font-family: inherit;
-  transition: .2s ease;
-  box-sizing: border-box;
-}
-
-.admin-ts-input {
-  min-height: 40px;
-}
-
-.admin-ts-textarea {
-  min-height: 105px;
-  resize: vertical;
-  line-height: 1.6;
-}
-
-.admin-ts-input:hover,
-.admin-ts-textarea:hover {
-  border-color: #bfc5d4;
-}
-
-.admin-ts-input:focus,
-.admin-ts-textarea:focus {
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, .12);
-}
-
-.admin-ts-input::placeholder,
-.admin-ts-textarea::placeholder {
-  color: #9aa1b2;
-}
-
-.admin-ts-section-header.form-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 22px 0 12px;
-}
-
-.admin-ts-section-header.form-section h2 {
-  margin: 0;
-  color: #242638;
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.admin-ts-section-header.form-section p {
-  margin: 4px 0 0;
-  color: #858b9d;
-  font-size: 10px;
-}
-
-#adminOptionsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.admin-ts-option-form {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  padding: 12px;
-  background: #ffffff;
-  border: 1px solid #e2e5ed;
-  border-radius: 10px;
-  transition: .2s ease;
-}
-
-.admin-ts-option-form:hover {
-  border-color: #c8ccef;
-  box-shadow: 0 5px 16px rgba(50, 60, 110, .05);
-}
-
-.admin-ts-option-number {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #5b21b6;
-  background: #f1ecff;
-  border: 1px solid #ddd2ff;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.admin-ts-option-fields {
-  min-width: 0;
-}
-
-.admin-ts-option-fields label {
-  display: block;
-  margin-bottom: 6px;
-  color: #343746;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.admin-ts-option-correct {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 7px;
-}
-
-.admin-ts-option-correct label {
-  margin: 0;
-  color: #5f6575;
-  font-size: 10px;
-  font-weight: 600;
-}
-
-.admin-ts-option-correct input[type="radio"] {
-  accent-color: #6366f1;
-}
-
-.admin-ts-remove-option {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-height: 34px;
-  padding: 7px 10px;
-  color: #dc2626 !important;
-  background: #fff5f5 !important;
-  border: 1px solid #fecaca !important;
-  border-radius: 7px;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s ease;
-}
-
-.admin-ts-remove-option:hover {
-  color: #b91c1c !important;
-  background: #fee2e2 !important;
-  border-color: #fca5a5 !important;
-}
-
-.admin-ts-form #adminAddOption {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 36px;
-  padding: 8px 13px;
-  color: #4f46e5 !important;
-  background: #ffffff !important;
-  border: 1px solid #dfe3eb !important;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s ease;
-}
-
-.admin-ts-form #adminAddOption:hover {
-  color: #4338ca !important;
-  background: #f5f3ff !important;
-  border-color: #c4b5fd !important;
-  transform: translateY(-1px);
-}
-
-.admin-ts-errors {
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  color: #b91c1c;
-  background: #fff5f5;
-  border: 1px solid #fecaca;
-  border-left: 4px solid #ef4444;
-  border-radius: 8px;
-  font-size: 11px;
-}
-
-.admin-ts-form-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 9px;
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid #e7e9ef;
-}
-
-.admin-ts-form-actions .admin-ts-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 38px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  text-decoration: none !important;
-  cursor: pointer;
-  transition: .2s ease;
-}
-
-.admin-ts-form-actions .admin-ts-btn-primary {
-  color: #ffffff !important;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
-  border: 1px solid #6d28d9 !important;
-  box-shadow: 0 5px 14px rgba(79, 70, 229, .18);
-}
-
-.admin-ts-form-actions .admin-ts-btn-primary:hover {
-  color: #ffffff !important;
-  background: linear-gradient(135deg, #6d28d9, #4338ca) !important;
-  transform: translateY(-1px);
-}
-
-.admin-ts-form-actions .admin-ts-btn-light {
-  color: #4b5563 !important;
-  background: #ffffff !important;
-  border: 1px solid #dfe3eb !important;
-}
-
-.admin-ts-form-actions .admin-ts-btn-light:hover {
-  color: #4f46e5 !important;
-  background: #f5f3ff !important;
-  border-color: #c4b5fd !important;
-}
-
-body:not(.admin-ts-dark):has(.admin-ts-form-page),
-body:not(.admin-ts-dark):has(.admin-ts-form-page) main,
-body:not(.admin-ts-dark):has(.admin-ts-form-page) .main-content,
-body:not(.admin-ts-dark):has(.admin-ts-form-page) .admin-main,
-body:not(.admin-ts-dark):has(.admin-ts-form-page) .content-wrapper {
-  background: #f3f5ff !important;
-}
-
-body.admin-ts-dark:has(.admin-ts-form-page),
-body.admin-ts-dark:has(.admin-ts-form-page) main,
-body.admin-ts-dark:has(.admin-ts-form-page) .main-content,
-body.admin-ts-dark:has(.admin-ts-form-page) .admin-main,
-body.admin-ts-dark:has(.admin-ts-form-page) .content-wrapper {
-  background: #0e1222 !important;
-}
-
-body.admin-ts-dark .admin-ts-form-card,
-body.admin-ts-dark .admin-ts-form-grid {
-  background: #191e33 !important;
-  border-color: #303852 !important;
-  box-shadow: 0 7px 25px rgba(0, 0, 0, .18);
-}
-
-body.admin-ts-dark .admin-ts-form-breadcrumb {
-  color: #8f98b1;
-}
-
-body.admin-ts-dark .admin-ts-form-breadcrumb a {
-  color: #a78bfa;
-}
-
-body.admin-ts-dark .admin-ts-form-title {
-  color: #f5f7ff;
-}
-
-body.admin-ts-dark .admin-ts-form-subtitle {
-  color: #9da6bd;
-}
-
-body.admin-ts-dark .admin-ts-form-back {
-  color: #c7ccda !important;
-  background: #191e33 !important;
-  border-color: #3b4565 !important;
-}
-
-body.admin-ts-dark .admin-ts-form-back:hover {
-  color: #c4b5fd !important;
-  background: #252044 !important;
-  border-color: #5146a8 !important;
-}
-
-body.admin-ts-dark .admin-ts-form-theme {
-  color: #fbbf24 !important;
-  background: #191e33 !important;
-  border-color: #3b4565 !important;
-}
-
-body.admin-ts-dark .admin-ts-form-theme:hover {
-  color: #fcd34d !important;
-  background: #252b43 !important;
-  border-color: #596582 !important;
-}
-
-body.admin-ts-dark .admin-ts-field label,
-body.admin-ts-dark .admin-ts-option-fields label {
-  color: #dce1ee;
-}
-
-body.admin-ts-dark .admin-ts-input,
-body.admin-ts-dark .admin-ts-textarea {
-  color: #f1f3f8;
-  background: #151a2c;
-  border-color: #39415d;
-}
-
-body.admin-ts-dark .admin-ts-input:hover,
-body.admin-ts-dark .admin-ts-textarea:hover {
-  border-color: #505b7b;
-}
-
-body.admin-ts-dark .admin-ts-input:focus,
-body.admin-ts-dark .admin-ts-textarea:focus {
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, .14);
-}
-
-body.admin-ts-dark .admin-ts-input::placeholder,
-body.admin-ts-dark .admin-ts-textarea::placeholder {
-  color: #737c96;
-}
-
-body.admin-ts-dark .admin-ts-section-header.form-section h2 {
-  color: #f4f5fb;
-}
-
-body.admin-ts-dark .admin-ts-section-header.form-section p {
-  color: #9da6bd;
-}
-
-body.admin-ts-dark .admin-ts-option-form {
-  background: #191e33;
-  border-color: #303852;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, .16);
-}
-
-body.admin-ts-dark .admin-ts-option-form:hover {
-  border-color: #5146a8;
-  box-shadow: 0 7px 20px rgba(0, 0, 0, .22);
-}
-
-body.admin-ts-dark .admin-ts-option-number {
-  color: #c4b5fd;
-  background: #252044;
-  border-color: #5146a8;
-}
-
-body.admin-ts-dark .admin-ts-option-correct label {
-  color: #c8cede;
-}
-
-body.admin-ts-dark .admin-ts-option-correct input[type="radio"] {
-  accent-color: #818cf8;
-}
-
-body.admin-ts-dark .admin-ts-remove-option {
-  color: #fca5a5 !important;
-  background: #351b22 !important;
-  border-color: #71313d !important;
-}
-
-body.admin-ts-dark .admin-ts-remove-option:hover {
-  color: #fecaca !important;
-  background: #46202a !important;
-  border-color: #91404e !important;
-}
-
-body.admin-ts-dark .admin-ts-form #adminAddOption {
-  color: #c4b5fd !important;
-  background: #191e33 !important;
-  border-color: #3b4565 !important;
-}
-
-body.admin-ts-dark .admin-ts-form #adminAddOption:hover {
-  color: #ddd6fe !important;
-  background: #252044 !important;
-  border-color: #5146a8 !important;
-}
-
-body.admin-ts-dark .admin-ts-errors {
-  color: #fca5a5;
-  background: #351b22;
-  border-color: #71313d;
-  border-left-color: #ef4444;
-}
-
-body.admin-ts-dark .admin-ts-form-actions {
-  border-top-color: #303852;
-}
-
-body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light {
-  color: #c7ccda !important;
-  background: #191e33 !important;
-  border-color: #3b4565 !important;
-}
-
-body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light:hover {
-  color: #c4b5fd !important;
-  background: #252044 !important;
-  border-color: #5146a8 !important;
-}
-
-@media (max-width: 800px) {
-  .admin-ts-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-ts-field.full {
-    grid-column: auto;
-  }
-
-  .admin-ts-option-form {
-    grid-template-columns: 36px minmax(0, 1fr);
-  }
-
-  .admin-ts-remove-option {
-    grid-column: 2;
-    justify-self: start;
-  }
-}
-
-@media (max-width: 600px) {
-  .admin-ts-form-page {
-    padding: 14px;
-  }
-
-  .admin-ts-form-header {
-    align-items: flex-start;
-  }
-
-  .admin-ts-form-title {
-    font-size: 21px;
-  }
-
-  .admin-ts-form-card {
-    padding: 14px;
-    border-radius: 12px;
-  }
-
-  .admin-ts-form-grid {
-    padding: 14px;
-  }
-
-  .admin-ts-section-header.form-section {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .admin-ts-form-actions {
-    flex-direction: column-reverse;
-    align-items: stretch;
-  }
-
-  .admin-ts-form-actions .admin-ts-btn {
-    width: 100%;
-  }
-
-  .admin-ts-form-back {
-    width: 38px;
-    padding: 0;
-  }
-
-  .admin-ts-form-back span {
-    display: none;
-  }
-}
-
-@media (max-width: 430px) {
-  .admin-ts-form-page {
-    padding: 9px;
-  }
-
-  .admin-ts-form-title {
-    font-size: 19px;
-  }
-
-  .admin-ts-form-breadcrumb {
-    font-size: 9px;
-  }
-
-  .admin-ts-form-subtitle {
-    display: none;
-  }
-
-  .admin-ts-form-card {
-    padding: 10px;
-  }
-
-  .admin-ts-form-grid {
-    padding: 11px;
-  }
-
-  .admin-ts-option-form {
-    padding: 9px;
-    gap: 8px;
-  }
-}
-
-
-#adminOptionsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.admin-ts-option-form {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
-  padding: 15px;
-  background: #ffffff;
-  border: 1px solid #e2e5ed;
-  border-radius: 11px;
-  box-shadow: 0 2px 8px rgba(30, 35, 60, .035);
-  transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-.admin-ts-option-form:hover {
-  border-color: #c8ccef;
-  box-shadow: 0 6px 18px rgba(50, 60, 110, .07);
-}
-
-.admin-ts-option-number {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #5b21b6;
-  background: #f1ecff;
-  border: 1px solid #ddd2ff;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.admin-ts-option-fields {
-  min-width: 0;
-  width: 100%;
-}
-
-.admin-ts-option-fields label {
-  display: block;
-  margin-bottom: 6px;
-  color: #343746;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.admin-ts-option-fields .admin-ts-input {
-  display: block;
-  width: 100%;
-  min-height: 40px;
-  box-sizing: border-box;
-}
-
-.admin-ts-option-correct {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 9px;
-}
-
-.admin-ts-option-correct label {
-  margin: 0;
-  color: #5f6575;
-  font-size: 10px;
-  font-weight: 600;
-}
-
-.admin-ts-option-correct input[type="radio"] {
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  accent-color: #6366f1;
-}
-
-.admin-ts-remove-option {
-  grid-column: 2;
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-height: 32px;
-  margin-top: -2px;
-  padding: 6px 10px;
-  color: #dc2626 !important;
-  background: #fff5f5 !important;
-  border: 1px solid #fecaca !important;
-  border-radius: 7px;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s ease;
-}
-
-.admin-ts-remove-option:hover {
-  color: #b91c1c !important;
-  background: #fee2e2 !important;
-  border-color: #fca5a5 !important;
-  transform: translateY(-1px);
-}
-
-body.admin-ts-dark .admin-ts-option-form {
-  background: #191e33;
-  border-color: #303852;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, .16);
-}
-
-body.admin-ts-dark .admin-ts-option-form:hover {
-  border-color: #5146a8;
-  box-shadow: 0 7px 20px rgba(0, 0, 0, .22);
-}
-
-body.admin-ts-dark .admin-ts-option-number {
-  color: #c4b5fd;
-  background: #252044;
-  border-color: #5146a8;
-}
-
-body.admin-ts-dark .admin-ts-option-fields label {
-  color: #dce1ee;
-}
-
-body.admin-ts-dark .admin-ts-option-correct label {
-  color: #c8cede;
-}
-
-body.admin-ts-dark .admin-ts-option-correct input[type="radio"] {
-  accent-color: #818cf8;
-}
-
-body.admin-ts-dark .admin-ts-remove-option {
-  color: #fca5a5 !important;
-  background: #351b22 !important;
-  border-color: #71313d !important;
-}
-
-body.admin-ts-dark .admin-ts-remove-option:hover {
-  color: #fecaca !important;
-  background: #46202a !important;
-  border-color: #91404e !important;
-}
-
+.admin-ts-form-page{width:100%;min-height:calc(100vh - 70px);padding:24px;box-sizing:border-box}
+.admin-ts-form-shell{width:100%;max-width:1050px;margin:0 auto}
+.admin-ts-form-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}
+.admin-ts-form-breadcrumb{margin-bottom:7px;color:#7b8194;font-size:11px;font-weight:600}
+.admin-ts-form-breadcrumb a{color:#6366f1;text-decoration:none}
+.admin-ts-form-breadcrumb a:hover{color:#4f46e5}
+.admin-ts-form-title{margin:0;color:#202033;font-size:25px;font-weight:800;line-height:1.2}
+.admin-ts-form-subtitle{margin:6px 0 0;color:#7b8194;font-size:12px}
+.admin-ts-form-header-actions{display:flex;align-items:center;gap:8px}
+.admin-ts-form-back,.admin-ts-form-theme{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border-radius:8px;font-size:11px;font-weight:700;transition:.2s ease}
+.admin-ts-form-back{padding:8px 13px;color:#4b5563!important;background:#fff!important;border:1px solid #dfe3eb!important;text-decoration:none!important}
+.admin-ts-form-back:hover{color:#4f46e5!important;background:#f5f3ff!important;border-color:#c4b5fd!important}
+.admin-ts-form-theme{width:38px;min-width:38px;padding:0;color:#5b21b6!important;background:#fff!important;border:1px solid #dfe3eb!important;cursor:pointer}
+.admin-ts-form-card{width:100%;padding:22px;background:#fff;border:1px solid #e3e6ee;border-radius:15px;box-shadow:0 7px 25px rgba(25,25,50,.045);box-sizing:border-box}
+.admin-ts-form{width:100%}
+.admin-ts-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;padding:20px;background:#fff;border:1px solid #e3e6ee;border-radius:13px}
+.admin-ts-field{min-width:0}
+.admin-ts-field.full{grid-column:1/-1}
+.admin-ts-field label,.admin-ts-option-fields label{display:block;margin-bottom:7px;color:#303446;font-size:11px;font-weight:700}
+.admin-ts-input,.admin-ts-textarea{display:block;width:100%;padding:10px 12px;color:#25283a;background:#fff;border:1px solid #dfe3eb;border-radius:8px;outline:none;font-size:12px;font-family:inherit;transition:.2s ease;box-sizing:border-box}
+.admin-ts-input{min-height:40px}
+.admin-ts-textarea{min-height:105px;resize:vertical;line-height:1.6}
+.admin-ts-input:focus,.admin-ts-textarea:focus{border-color:#818cf8;box-shadow:0 0 0 3px rgba(129,140,248,.12)}
+.admin-ts-input::placeholder,.admin-ts-textarea::placeholder{color:#9aa1b2}
+.admin-ts-section-header.form-section{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 12px}
+.admin-ts-section-header.form-section h2{margin:0;color:#242638;font-size:15px;font-weight:800}
+.admin-ts-section-header.form-section p{margin:4px 0 0;color:#858b9d;font-size:10px}
+#adminOptionsContainer{display:flex;flex-direction:column;gap:12px}
+.admin-ts-option-form{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;align-items:start;padding:15px;background:#fff;border:1px solid #e2e5ed;border-radius:11px;box-shadow:0 2px 8px rgba(30,35,60,.035)}
+.admin-ts-option-number{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#5b21b6;background:#f1ecff;border:1px solid #ddd2ff;border-radius:8px;font-size:11px;font-weight:800;box-sizing:border-box}
+.admin-ts-option-fields{min-width:0;width:100%}
+.admin-ts-option-fields label{margin-bottom:6px}
+.admin-ts-option-fields .admin-ts-input{min-height:40px}
+.admin-ts-option-correct{display:flex;align-items:center;gap:7px;margin-top:9px}
+.admin-ts-option-correct label{margin:0;color:#5f6575;font-size:10px;font-weight:600}
+.admin-ts-option-correct input[type=radio]{width:15px;height:15px;margin:0;accent-color:#6366f1}
+.admin-ts-remove-option{grid-column:2;justify-self:start;display:inline-flex;align-items:center;gap:5px;min-height:32px;margin-top:-2px;padding:6px 10px;color:#dc2626!important;background:#fff5f5!important;border:1px solid #fecaca!important;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer}
+.admin-ts-remove-option:hover{background:#fee2e2!important}
+.admin-ts-form #adminAddOption{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:8px 13px;color:#4f46e5!important;background:#fff!important;border:1px solid #dfe3eb!important;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer}
+.admin-ts-errors{margin-bottom:16px;padding:12px 14px;color:#b91c1c;background:#fff5f5;border:1px solid #fecaca;border-left:4px solid #ef4444;border-radius:8px;font-size:11px}
+.admin-ts-form-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;margin-top:18px;padding-top:16px;border-top:1px solid #e7e9ef}
+.admin-ts-form-actions .admin-ts-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:700;text-decoration:none!important;cursor:pointer}
+.admin-ts-form-actions .admin-ts-btn-primary{color:#fff!important;background:linear-gradient(135deg,#7c3aed,#4f46e5)!important;border:1px solid #6d28d9!important}
+.admin-ts-form-actions .admin-ts-btn-light{color:#4b5563!important;background:#fff!important;border:1px solid #dfe3eb!important}
+body:not(.admin-ts-dark):has(.admin-ts-form-page),body:not(.admin-ts-dark):has(.admin-ts-form-page) main,body:not(.admin-ts-dark):has(.admin-ts-form-page) .main-content,body:not(.admin-ts-dark):has(.admin-ts-form-page) .admin-main,body:not(.admin-ts-dark):has(.admin-ts-form-page) .content-wrapper{background:#f3f5ff!important}
+body.admin-ts-dark:has(.admin-ts-form-page),body.admin-ts-dark:has(.admin-ts-form-page) main,body.admin-ts-dark:has(.admin-ts-form-page) .main-content,body.admin-ts-dark:has(.admin-ts-form-page) .admin-main,body.admin-ts-dark:has(.admin-ts-form-page) .content-wrapper{background:#0e1222!important}
+body.admin-ts-dark .admin-ts-form-card,body.admin-ts-dark .admin-ts-form-grid,body.admin-ts-dark .admin-ts-option-form{background:#191e33!important;border-color:#303852!important}
+body.admin-ts-dark .admin-ts-form-title,body.admin-ts-dark .admin-ts-field label,body.admin-ts-dark .admin-ts-option-fields label,body.admin-ts-dark .admin-ts-section-header.form-section h2{color:#f1f3f8}
+body.admin-ts-dark .admin-ts-form-breadcrumb,body.admin-ts-dark .admin-ts-form-subtitle,body.admin-ts-dark .admin-ts-section-header.form-section p{color:#9da6bd}
+body.admin-ts-dark .admin-ts-form-breadcrumb a{color:#a78bfa}
+body.admin-ts-dark .admin-ts-input,body.admin-ts-dark .admin-ts-textarea{color:#f1f3f8;background:#151a2c;border-color:#39415d}
+body.admin-ts-dark .admin-ts-option-number{color:#c4b5fd;background:#252044;border-color:#5146a8}
+body.admin-ts-dark .admin-ts-option-correct label{color:#c8cede}
+body.admin-ts-dark .admin-ts-form-back,body.admin-ts-dark .admin-ts-form-theme,body.admin-ts-dark .admin-ts-form #adminAddOption,body.admin-ts-dark .admin-ts-form-actions .admin-ts-btn-light{color:#c7ccda!important;background:#191e33!important;border-color:#3b4565!important}
+body.admin-ts-dark .admin-ts-remove-option{color:#fca5a5!important;background:#351b22!important;border-color:#71313d!important}
+body.admin-ts-dark .admin-ts-errors{color:#fca5a5;background:#351b22;border-color:#71313d}
+body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
+@media(max-width:800px){.admin-ts-form-grid{grid-template-columns:1fr}.admin-ts-field.full{grid-column:auto}}
+@media(max-width:600px){.admin-ts-form-page{padding:14px}.admin-ts-form-header{align-items:flex-start}.admin-ts-form-title{font-size:21px}.admin-ts-form-card{padding:14px}.admin-ts-form-grid{padding:14px}.admin-ts-section-header.form-section{align-items:flex-start;flex-direction:column}.admin-ts-form-actions{flex-direction:column-reverse;align-items:stretch}.admin-ts-form-actions .admin-ts-btn{width:100%;box-sizing:border-box}.admin-ts-form-back{width:38px;padding:0}.admin-ts-form-back span{display:none}}
+@media(max-width:430px){.admin-ts-form-page{padding:9px}.admin-ts-form-title{font-size:19px}.admin-ts-form-breadcrumb{font-size:9px}.admin-ts-form-subtitle{display:none}.admin-ts-form-card{padding:10px}.admin-ts-form-grid{padding:11px}.admin-ts-option-form{padding:9px;gap:8px}}
 </style>
 
 <div class="admin-ts-form-page">
-
   <div class="admin-ts-form-shell">
-
     <div class="admin-ts-form-header">
-
       <div>
-
         <div class="admin-ts-form-breadcrumb">
-
-          <%= link_to @test_series.title,
-                      admin_test_series_path(@test_series) %>
-
+          <%= link_to @test_series.title, admin_test_series_path(@test_series) %>
           /
-
-          <%= link_to @test.title,
-                      admin_test_series_test_path(
-                        @test_series,
-                        @test
-                      ) %>
-
+          <%= link_to @test.title, admin_test_series_test_path(@test_series, @test) %>
           /
-
           <%= @question.persisted? ? "Edit Question" : "Add Question" %>
-
         </div>
-
         <h1 class="admin-ts-form-title">
           <%= @question.persisted? ? "Edit Question" : "Add New Question" %>
         </h1>
-
-        <p class="admin-ts-form-subtitle">
-          Create the question and answer options in Hindi.
-        </p>
-
+        <p class="admin-ts-form-subtitle">Create the question and answer options in Hindi.</p>
       </div>
 
       <div class="admin-ts-form-header-actions">
-
-        <%= link_to admin_test_series_test_path(
-                      @test_series,
-                      @test
-                    ),
-                    class: "admin-ts-form-back" do %>
-
-          <i class="fas fa-arrow-left"></i>
-
-          <span>Back</span>
-
+        <%= link_to admin_test_series_test_path(@test_series, @test), class: "admin-ts-form-back" do %>
+          <i class="fas fa-arrow-left"></i><span>Back</span>
         <% end %>
-
-        <button
-          type="button"
-          class="admin-ts-form-theme"
-          id="adminTsFormThemeToggle"
-          aria-label="Switch to night mode"
-          title="Switch to night mode">
-
-          <i class="fas fa-moon"
-             id="adminTsFormThemeIcon"></i>
-
+        <button type="button" class="admin-ts-form-theme" id="adminTsFormThemeToggle"
+                aria-label="Switch to night mode" title="Switch to night mode">
+          <i class="fas fa-moon" id="adminTsFormThemeIcon"></i>
         </button>
-
       </div>
-
     </div>
 
     <div class="admin-ts-form-card">
-
       <%= form_with(
             model: @question,
             url: @question.persisted? ?
-              admin_test_series_test_question_path(
-                @test_series,
-                @test,
-                @question
-              ) :
-              admin_test_series_test_questions_path(
-                @test_series,
-                @test
-              ),
+              admin_test_series_test_question_path(@test_series, @test, @question) :
+              admin_test_series_test_questions_path(@test_series, @test),
             method: @question.persisted? ? :patch : :post,
             local: true,
             class: "admin-ts-form",
@@ -883,627 +102,346 @@ body.admin-ts-dark .admin-ts-remove-option:hover {
           ) do |form| %>
 
         <% if @question.errors.any? %>
-
           <div class="admin-ts-errors">
-
-            <strong>
-              Please correct the following errors:
-            </strong>
-
+            <strong>Please correct the following errors:</strong>
             <ul>
               <% @question.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
             </ul>
-
           </div>
-
         <% end %>
 
         <div class="admin-ts-form-grid">
-
           <div class="admin-ts-field full">
-
-            <%= form.label :question_text_hindi, "Question" %>
-
+            <%= form.label :question_text_hindi, "Question (Hindi)" %>
             <%= form.text_area :question_text_hindi,
+                  value: @question.question_text_hindi.presence || @question.question_text,
                   class: "admin-ts-textarea",
                   rows: 4,
-                  placeholder: "Enter question in Hindi" %>
+                  placeholder: "प्रश्न हिंदी में लिखें",
+                  required: true,
+                  data: { question_hindi: true } %>
 
+            <%= form.hidden_field :question_text,
+                  value: @question.question_text_hindi.presence || @question.question_text,
+                  data: { question_canonical: true } %>
           </div>
 
           <div class="admin-ts-field">
-
             <%= form.label :marks, "Marks" %>
-
-            <%= form.number_field :marks,
-                  class: "admin-ts-input",
-                  min: 1,
-                  step: 1,
-                  placeholder: "e.g. 1" %>
-
+            <%= form.number_field :marks, class: "admin-ts-input", min: 1, step: 1, placeholder: "e.g. 1", required: true %>
           </div>
 
           <div class="admin-ts-field">
-
             <%= form.label :position, "Question Number" %>
-
-            <%= form.number_field :position,
-                  class: "admin-ts-input",
-                  min: 1,
-                  step: 1,
-                  placeholder: "e.g. 1" %>
-
+            <%= form.number_field :position, class: "admin-ts-input", min: 1, step: 1, placeholder: "e.g. 1", required: true %>
           </div>
 
           <div class="admin-ts-field">
-
             <%= form.label :question_type, "Question Type" %>
-
-            <%= form.text_field :question_type,
-                  class: "admin-ts-input",
-                  placeholder: "MCQ" %>
-
+            <%= form.text_field :question_type, class: "admin-ts-input", placeholder: "MCQ", required: true %>
           </div>
 
           <div class="admin-ts-field full">
-
-            <%= form.label :explanation_hindi, "Explanation" %>
-
+            <%= form.label :explanation_hindi, "Explanation (Hindi)" %>
             <%= form.text_area :explanation_hindi,
                   class: "admin-ts-textarea",
                   rows: 4,
-                  placeholder: "Enter the explanation for the correct answer in Hindi" %>
-
+                  placeholder: "सही उत्तर का स्पष्टीकरण हिंदी में लिखें" %>
           </div>
-
         </div>
 
         <div class="admin-ts-section-header form-section">
-
           <div>
-
-            <h2>
-              Answer Options
-            </h2>
-
-            <p>
-              Add at least two options and select only one correct answer.
-            </p>
-
+            <h2>Answer Options</h2>
+            <p>Add at least two options and select one correct answer.</p>
           </div>
-
-          <button
-            type="button"
-            id="adminAddOption">
-
-            <i class="fas fa-plus"></i>
-
-            Add Option
-
+          <button type="button" id="adminAddOption">
+            <i class="fas fa-plus"></i> Add Option
           </button>
-
         </div>
 
         <div id="adminOptionsContainer">
+          <%= form.fields_for :test_series_options do |option_form| %>
+            <% option = option_form.object %>
+            <% option_index = option_form.index %>
 
-          <% @question.test_series_options.each_with_index do |option, index| %>
-
-            <div class="admin-ts-option-form">
-
-              <div class="admin-ts-option-number">
-                <%= index + 1 %>
-              </div>
+            <div class="admin-ts-option-form" data-option-row>
+              <div class="admin-ts-option-number"><%= option_index.to_i + 1 %></div>
 
               <div class="admin-ts-option-fields">
+                <%= option_form.hidden_field :id if option.persisted? %>
 
-                <%= form.fields_for :test_series_options, option do |option_form| %>
+                <%= option_form.hidden_field :_destroy, value: "0", data: { option_destroy: true } %>
 
-                  <%= option_form.hidden_field :id if option.persisted? %>
+                <label for="option_hindi_<%= option_index %>">Option (Hindi)</label>
+                <%= option_form.text_field :option_text_hindi,
+                      id: "option_hindi_#{option_index}",
+                      value: option.option_text_hindi.presence || option.option_text,
+                      class: "admin-ts-input",
+                      placeholder: "विकल्प हिंदी में लिखें",
+                      required: !option.persisted?,
+                      data: { option_hindi: true } %>
 
-                  <%= option_form.label :option_text_hindi, "Option" %>
+                <%= option_form.hidden_field :option_text,
+                      value: option.option_text_hindi.presence || option.option_text,
+                      data: { option_canonical: true } %>
 
-                  <%= option_form.text_field :option_text_hindi,
-                        class: "admin-ts-input",
-                        placeholder: "Enter option in Hindi" %>
+                <%= option_form.hidden_field :is_correct,
+                      value: option.is_correct? ? "1" : "0",
+                      class: "admin-hidden-correct",
+                      data: { correct_value: true } %>
 
-                  <div class="admin-ts-option-correct">
-
-                    <%= option_form.radio_button :is_correct,
-                          true,
-                          class: "admin-correct-radio" %>
-
-                    <%= option_form.label :is_correct,
-                          "Correct Answer" %>
-
-                  </div>
-
-                <% end %>
-
+                <div class="admin-ts-option-correct">
+                  <input type="radio"
+                         name="admin_correct_option"
+                         value="<%= option_index %>"
+                         class="admin-correct-radio"
+                         data-correct-radio
+                         <%= "checked" if option.is_correct? %>>
+                  <label for="correct_option_<%= option_index %>">Correct Answer</label>
+                </div>
               </div>
 
-              <button
-                type="button"
-                class="admin-ts-remove-option">
-
-                <i class="fas fa-trash-alt"></i>
-
-                Remove
-
+              <button type="button" class="admin-ts-remove-option" data-remove-option>
+                <i class="fas fa-trash-alt"></i> Remove
               </button>
-
             </div>
-
           <% end %>
-
         </div>
 
         <div class="admin-ts-form-actions">
-
-          <%= link_to admin_test_series_test_path(
-                        @test_series,
-                        @test
-                      ),
-                      class: "admin-ts-btn admin-ts-btn-light" do %>
-
-            <i class="fas fa-times"></i>
-
-            Cancel
-
+          <%= link_to admin_test_series_test_path(@test_series, @test), class: "admin-ts-btn admin-ts-btn-light" do %>
+            <i class="fas fa-times"></i> Cancel
           <% end %>
-
           <%= form.submit(
-                @question.persisted? ?
-                  "Update Question" :
-                  "Create Question",
+                @question.persisted? ? "Update Question" : "Create Question",
                 class: "admin-ts-btn admin-ts-btn-primary"
               ) %>
-
         </div>
-
       <% end %>
-
     </div>
-
   </div>
-
 </div>
 
 <script nonce="<%= content_security_policy_nonce %>">
-(function() {
-
-  function applyAdminTsFormTheme() {
-
-    const isDark =
-      localStorage.getItem("admin-ts-theme") === "dark";
-
-    const icon =
-      document.getElementById("adminTsFormThemeIcon");
-
-    const toggle =
-      document.getElementById("adminTsFormThemeToggle");
-
-    document.body.classList.toggle(
-      "admin-ts-dark",
-      isDark
-    );
-
-    if (icon) {
-
-      icon.classList.remove(
-        "fa-moon",
-        "fa-sun"
-      );
-
-      icon.classList.add(
-        isDark ? "fa-sun" : "fa-moon"
-      );
-
-    }
-
-    if (toggle) {
-
-      const label =
-        isDark
-          ? "Switch to day mode"
-          : "Switch to night mode";
-
-      toggle.setAttribute(
-        "aria-label",
-        label
-      );
-
-      toggle.setAttribute(
-        "title",
-        label
-      );
-
-    }
-
-  }
-
+(function () {
   function initAdminTsFormTheme() {
+    const toggle = document.getElementById("adminTsFormThemeToggle");
+    const icon = document.getElementById("adminTsFormThemeIcon");
+    if (!toggle || toggle.dataset.ready === "true") return;
 
-    applyAdminTsFormTheme();
+    toggle.dataset.ready = "true";
 
-    const toggle =
-      document.getElementById(
-        "adminTsFormThemeToggle"
-      );
-
-    if (
-      !toggle ||
-      toggle.dataset.themeReady === "true"
-    ) {
-      return;
+    function applyTheme() {
+      const dark = localStorage.getItem("admin-ts-theme") === "dark";
+      document.body.classList.toggle("admin-ts-dark", dark);
+      if (icon) {
+        icon.classList.toggle("fa-sun", dark);
+        icon.classList.toggle("fa-moon", !dark);
+      }
+      toggle.title = dark ? "Switch to day mode" : "Switch to night mode";
+      toggle.setAttribute("aria-label", toggle.title);
     }
 
-    toggle.dataset.themeReady = "true";
+    toggle.addEventListener("click", function () {
+      const dark = document.body.classList.contains("admin-ts-dark");
+      localStorage.setItem("admin-ts-theme", dark ? "light" : "dark");
+      applyTheme();
+    });
 
-    toggle.addEventListener(
-      "click",
-      function() {
-
-        const isDark =
-          !document.body.classList.contains(
-            "admin-ts-dark"
-          );
-
-        document.body.classList.toggle(
-          "admin-ts-dark",
-          isDark
-        );
-
-        localStorage.setItem(
-          "admin-ts-theme",
-          isDark ? "dark" : "light"
-        );
-
-        applyAdminTsFormTheme();
-
-      }
-    );
-
+    applyTheme();
   }
 
   function initializeAdminQuestionForm() {
+    const container = document.getElementById("adminOptionsContainer");
+    const addButton = document.getElementById("adminAddOption");
+    const form = document.getElementById("adminQuestionForm");
 
-    const container =
-      document.getElementById(
-        "adminOptionsContainer"
-      );
+    if (!container || !addButton || !form || form.dataset.ready === "true") return;
+    form.dataset.ready = "true";
 
-    const addButton =
-      document.getElementById(
-        "adminAddOption"
-      );
-
-    const form =
-      document.getElementById(
-        "adminQuestionForm"
-      );
-
-    if (!container || !addButton || !form) {
-      return;
+    function rows() {
+      return Array.from(container.querySelectorAll("[data-option-row]"))
+        .filter(row => row.dataset.removed !== "true");
     }
 
-    if (
-      form.dataset.questionFormReady === "true"
-    ) {
-      return;
-    }
-
-    form.dataset.questionFormReady = "true";
-
-    function getActiveRows() {
-
-      return Array.from(
-        container.querySelectorAll(
-          ".admin-ts-option-form"
-        )
-      );
-
-    }
-
-    function updatePositions() {
-
-      getActiveRows().forEach(
-        function(row, index) {
-
-          const number =
-            row.querySelector(
-              ".admin-ts-option-number"
-            );
-
-          if (number) {
-            number.textContent = index + 1;
-          }
-
-        }
-      );
-
-    }
-
-    function enforceSingleCorrect(selectedRadio) {
-
-      const radios =
-        container.querySelectorAll(
-          'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
-        );
-
-      radios.forEach(
-        function(radio) {
-
-          if (radio !== selectedRadio) {
-            radio.checked = false;
-          }
-
-        }
-      );
-
+    function updateNumbers() {
+      rows().forEach((row, index) => {
+        const number = row.querySelector(".admin-ts-option-number");
+        if (number) number.textContent = index + 1;
+      });
     }
 
     function nextIndex() {
+      let max = -1;
+      container.querySelectorAll('input[name*="[test_series_options_attributes]"]').forEach(input => {
+        const match = input.name.match(/\[test_series_options_attributes\]\[(\d+)\]/);
+        if (match) max = Math.max(max, Number(match[1]));
+      });
+      return max + 1;
+    }
 
-      return container.querySelectorAll(
-        ".admin-ts-option-form"
-      ).length;
+    function syncOption(row) {
+      const hindi = row.querySelector("[data-option-hindi]");
+      const canonical = row.querySelector("[data-option-canonical]");
+      if (hindi && canonical) canonical.value = hindi.value;
+    }
 
+    function syncCorrectAnswer() {
+      const activeRows = rows();
+      let selected = null;
+
+      activeRows.forEach(row => {
+        const radio = row.querySelector("[data-correct-radio]");
+        if (radio && radio.checked) selected = row;
+      });
+
+      activeRows.forEach(row => {
+        const hidden = row.querySelector("[data-correct-value]");
+        if (hidden) hidden.value = row === selected ? "1" : "0";
+      });
     }
 
     function addOption() {
+      const index = nextIndex();
+      const prefix = `test_series_question[test_series_options_attributes][${index}]`;
+      const row = document.createElement("div");
+      row.className = "admin-ts-option-form";
+      row.dataset.optionRow = "";
 
-      const index =
-        nextIndex();
-
-      const wrapper =
-        document.createElement("div");
-
-      wrapper.className =
-        "admin-ts-option-form";
-
-      wrapper.innerHTML = `
-        <div class="admin-ts-option-number">
-          ${index + 1}
-        </div>
-
+      row.innerHTML = `
+        <div class="admin-ts-option-number">${rows().length + 1}</div>
         <div class="admin-ts-option-fields">
-
-          <label>
-            Option
-          </label>
-
-          <input
-            type="text"
-            name="question[test_series_options_attributes][${index}][option_text_hindi]"
-            class="admin-ts-input"
-            placeholder="Enter option in Hindi"
-          >
-
-          <input
-            type="hidden"
-            name="question[test_series_options_attributes][${index}][is_correct]"
-            value="0"
-            class="admin-hidden-correct"
-          >
-
+          <input type="hidden" name="${prefix}[_destroy]" value="0" data-option-destroy>
+          <label for="option_hindi_${index}">Option (Hindi)</label>
+          <input type="text" id="option_hindi_${index}"
+                 name="${prefix}[option_text_hindi]"
+                 class="admin-ts-input" placeholder="विकल्प हिंदी में लिखें"
+                 required data-option-hindi>
+          <input type="hidden" name="${prefix}[option_text]" value="" data-option-canonical>
+          <input type="hidden" name="${prefix}[is_correct]" value="0"
+                 class="admin-hidden-correct" data-correct-value>
           <div class="admin-ts-option-correct">
-
-            <input
-              type="radio"
-              name="admin_correct_option"
-              value="${index}"
-              class="admin-dynamic-correct-radio"
-              data-correct-option="${index}"
-            >
-
-            <label>
-              Correct Answer
-            </label>
-
+            <input type="radio" name="admin_correct_option" value="${index}"
+                   class="admin-correct-radio" data-correct-radio>
+            <label for="correct_option_${index}">Correct Answer</label>
           </div>
-
         </div>
-
-        <button
-          type="button"
-          class="admin-ts-remove-option">
-
-          <i class="fas fa-trash-alt"></i>
-
-          Remove
-
+        <button type="button" class="admin-ts-remove-option" data-remove-option>
+          <i class="fas fa-trash-alt"></i> Remove
         </button>
       `;
-
-      container.appendChild(wrapper);
-
-      updatePositions();
-
+      container.appendChild(row);
+      updateNumbers();
     }
 
-    addButton.addEventListener(
-      "click",
-      function() {
-        addOption();
+    addButton.addEventListener("click", addOption);
+
+    container.addEventListener("input", function (event) {
+      const row = event.target.closest("[data-option-row]");
+      if (row) syncOption(row);
+
+      if (event.target.matches("[data-question-hindi]")) {
+        const canonical = form.querySelector("[data-question-canonical]");
+        if (canonical) canonical.value = event.target.value;
       }
-    );
+    });
 
-    container.addEventListener(
-      "click",
-      function(event) {
-
-        const removeButton =
-          event.target.closest(
-            ".admin-ts-remove-option"
-          );
-
-        if (!removeButton) {
-          return;
-        }
-
-        const rows =
-          getActiveRows();
-
-        if (rows.length <= 2) {
-
-          alert(
-            "At least 2 options are required."
-          );
-
-          return;
-        }
-
-        const row =
-          removeButton.closest(
-            ".admin-ts-option-form"
-          );
-
-        if (row) {
-          row.remove();
-        }
-
-        updatePositions();
-
+    container.addEventListener("change", function (event) {
+      if (event.target.matches("[data-correct-radio]")) {
+        syncCorrectAnswer();
       }
-    );
+    });
 
-    container.addEventListener(
-      "change",
-      function(event) {
+    container.addEventListener("click", function (event) {
+      const button = event.target.closest("[data-remove-option]");
+      if (!button) return;
 
-        const radio =
-          event.target.closest(
-            'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
-          );
-
-        if (!radio) {
-          return;
-        }
-
-        enforceSingleCorrect(radio);
-
-        getActiveRows().forEach(
-          function(row) {
-
-            const correctRadio =
-              row.querySelector(
-                'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
-              );
-
-            const hidden =
-              row.querySelector(
-                ".admin-hidden-correct"
-              );
-
-            if (hidden) {
-
-              hidden.value =
-                correctRadio &&
-                correctRadio.checked
-                  ? "1"
-                  : "0";
-
-            }
-
-          }
-        );
-
+      const activeRows = rows();
+      if (activeRows.length <= 2) {
+        alert("At least 2 options are required.");
+        return;
       }
-    );
 
-    form.addEventListener(
-      "submit",
-      function(event) {
+      const row = button.closest("[data-option-row]");
+      const destroy = row.querySelector("[data-option-destroy]");
 
-        const rows =
-          getActiveRows();
-
-        if (rows.length < 2) {
-
-          event.preventDefault();
-
-          alert(
-            "At least 2 options are required."
-          );
-
-          return;
-
-        }
-
-        const checked =
-          container.querySelectorAll(
-            'input[type="radio"].admin-correct-radio:checked, input[type="radio"].admin-dynamic-correct-radio:checked'
-          );
-
-        if (checked.length !== 1) {
-
-          event.preventDefault();
-
-          alert(
-            "Please select only one correct answer."
-          );
-
-          return;
-
-        }
-
-        rows.forEach(
-          function(row) {
-
-            const correctRadio =
-              row.querySelector(
-                'input[type="radio"].admin-correct-radio, input[type="radio"].admin-dynamic-correct-radio'
-              );
-
-            const hidden =
-              row.querySelector(
-                ".admin-hidden-correct"
-              );
-
-            if (hidden) {
-
-              hidden.value =
-                correctRadio &&
-                correctRadio.checked
-                  ? "1"
-                  : "0";
-
-            }
-
-          }
-        );
-
+      if (row.querySelector('input[name$="[id]"]')) {
+        if (destroy) destroy.value = "1";
+        row.dataset.removed = "true";
+        row.style.display = "none";
+        row.querySelectorAll("input, textarea, select").forEach(input => {
+          if (input.type === "radio") input.checked = false;
+          if (input.dataset.optionHindi !== undefined) input.required = false;
+        });
+      } else {
+        row.remove();
       }
-    );
 
-    updatePositions();
+      syncCorrectAnswer();
+      updateNumbers();
+    });
 
+    form.addEventListener("submit", function (event) {
+      const questionHindi = form.querySelector("[data-question-hindi]");
+      const questionCanonical = form.querySelector("[data-question-canonical]");
+      if (questionHindi && questionCanonical) {
+        questionCanonical.value = questionHindi.value;
+      }
+
+      const activeRows = rows();
+      activeRows.forEach(syncOption);
+      syncCorrectAnswer();
+
+      if (activeRows.length < 2) {
+        event.preventDefault();
+        alert("At least 2 options are required.");
+        return;
+      }
+
+      const correctCount = activeRows.filter(row => {
+        const hidden = row.querySelector("[data-correct-value]");
+        return hidden && hidden.value === "1";
+      }).length;
+
+      if (correctCount !== 1) {
+        event.preventDefault();
+        alert("Please select exactly one correct answer.");
+        return;
+      }
+
+      const emptyOption = activeRows.some(row => {
+        const field = row.querySelector("[data-option-hindi]");
+        return !field || !field.value.trim();
+      });
+
+      if (emptyOption) {
+        event.preventDefault();
+        alert("Please fill in every option.");
+      }
+    });
+
+    // Keep the required canonical question field synced on page load.
+    const questionHindi = form.querySelector("[data-question-hindi]");
+    const questionCanonical = form.querySelector("[data-question-canonical]");
+    if (questionHindi && questionCanonical) {
+      questionCanonical.value = questionHindi.value;
+    }
+
+    rows().forEach(syncOption);
+    syncCorrectAnswer();
+    updateNumbers();
   }
 
-  document.addEventListener(
-    "turbo:load",
-    function() {
+  function initialize() {
+    initAdminTsFormTheme();
+    initializeAdminQuestionForm();
+  }
 
-      initAdminTsFormTheme();
-      initializeAdminQuestionForm();
-
-    }
-  );
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-      initAdminTsFormTheme();
-      initializeAdminQuestionForm();
-
-    }
-  );
-
-  initAdminTsFormTheme();
-  initializeAdminQuestionForm();
-
+  document.addEventListener("turbo:load", initialize);
+  document.addEventListener("DOMContentLoaded", initialize);
+  initialize();
 })();
 </script>

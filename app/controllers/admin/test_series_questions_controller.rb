@@ -113,20 +113,19 @@ class Admin::TestSeriesQuestionsController < ApplicationController
   end
 
   def build_missing_options
-    existing_count =
-      @question.test_series_options.size
+  existing_count = @question.test_series_options.size
+  missing_count = [4 - existing_count, 0].max
 
-    missing_count =
-      4 - existing_count
+  next_position = (
+    @question.test_series_options.map(&:position).compact.max || 0
+  ) + 1
 
-    missing_count.times do
-      @question.test_series_options.build(
-        position: existing_count + 1
-      )
-
-      existing_count += 1
-    end
+  missing_count.times do |index|
+    @question.test_series_options.build(
+      position: next_position + index
+    )
   end
+end
 
   def question_params
     params
