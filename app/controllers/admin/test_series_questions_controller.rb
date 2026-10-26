@@ -35,43 +35,36 @@ class Admin::TestSeriesQuestionsController < ApplicationController
     build_missing_options
   end
 
-  def create
-    @question =
-      @test
-        .test_series_questions
-        .new(question_params)
+ 
+def create
+  @question = @test.test_series_questions.new(question_params)
+  assign_new_option_positions
 
-    if @question.save
-      redirect_to admin_test_series_test_path(
-        @test_series,
-        @test
-      ),
-      notice: "Question created successfully."
-    else
-      build_missing_options
-
-      render :new,
-             status: :unprocessable_entity
-    end
+  if @question.save
+    redirect_to admin_test_series_test_path(@test_series, @test),
+                notice: "Question created successfully."
+  else
+    build_missing_options
+    render :new, status: :unprocessable_entity
   end
+end
+
+def update
+  @question.assign_attributes(question_params)
+  assign_new_option_positions
+
+  if @question.save
+    redirect_to admin_test_series_test_path(@test_series, @test),
+                notice: "Question updated successfully."
+  else
+    build_missing_options
+    render :edit, status: :unprocessable_entity
+  end
+end
+
 
   def edit
     build_missing_options
-  end
-
-  def update
-    if @question.update(question_params)
-      redirect_to admin_test_series_test_path(
-        @test_series,
-        @test
-      ),
-      notice: "Question updated successfully."
-    else
-      build_missing_options
-
-      render :edit,
-             status: :unprocessable_entity
-    end
   end
 
   def destroy
@@ -126,6 +119,28 @@ class Admin::TestSeriesQuestionsController < ApplicationController
     )
   end
 end
+
+
+def assign_new_option_positions
+  options = @question.test_series_options.to_a
+
+  existing_positions = options
+    .reject(&:new_record?)
+    .reject(&:marked_for_destruction?)
+    .map(&:position)
+    .compact
+
+  next_position = existing_positions.max.to_i + 1
+
+  options.each do |option|
+    next unless option.new_record?
+    next if option.marked_for_destruction?
+
+    option.position = next_position
+    next_position += 1
+  end
+end
+
 
   def question_params
     params
