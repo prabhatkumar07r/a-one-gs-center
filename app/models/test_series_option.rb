@@ -1,5 +1,7 @@
 class TestSeriesOption < ApplicationRecord
 
+  has_one_attached :option_image
+
   # ==================================================
   # ASSOCIATIONS
   # ==================================================

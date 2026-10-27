@@ -60,9 +60,10 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
 @media(max-width:600px){.admin-ts-form-page{padding:14px}.admin-ts-form-header{align-items:flex-start}.admin-ts-form-title{font-size:21px}.admin-ts-form-card{padding:14px}.admin-ts-form-grid{padding:14px}.admin-ts-section-header.form-section{align-items:flex-start;flex-direction:column}.admin-ts-form-actions{flex-direction:column-reverse;align-items:stretch}.admin-ts-form-actions .admin-ts-btn{width:100%;box-sizing:border-box}.admin-ts-form-back{width:38px;padding:0}.admin-ts-form-back span{display:none}}
 @media(max-width:430px){.admin-ts-form-page{padding:9px}.admin-ts-form-title{font-size:19px}.admin-ts-form-breadcrumb{font-size:9px}.admin-ts-form-subtitle{display:none}.admin-ts-form-card{padding:10px}.admin-ts-form-grid{padding:11px}.admin-ts-option-form{padding:9px;gap:8px}}
 </style>
-
 <div class="admin-ts-form-page">
   <div class="admin-ts-form-shell">
+
+    <!-- Header -->
     <div class="admin-ts-form-header">
       <div>
         <div class="admin-ts-form-breadcrumb">
@@ -72,24 +73,36 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
           /
           <%= @question.persisted? ? "Edit Question" : "Add Question" %>
         </div>
+
         <h1 class="admin-ts-form-title">
           <%= @question.persisted? ? "Edit Question" : "Add New Question" %>
         </h1>
-        <p class="admin-ts-form-subtitle">Create the question and answer options in Hindi.</p>
+
+        <p class="admin-ts-form-subtitle">
+          Create the question and answer options in Hindi.
+        </p>
       </div>
 
       <div class="admin-ts-form-header-actions">
-        <%= link_to admin_test_series_test_path(@test_series, @test), class: "admin-ts-form-back" do %>
-          <i class="fas fa-arrow-left"></i><span>Back</span>
+        <%= link_to admin_test_series_test_path(@test_series, @test),
+                    class: "admin-ts-form-back" do %>
+          <i class="fas fa-arrow-left"></i>
+          <span>Back</span>
         <% end %>
-        <button type="button" class="admin-ts-form-theme" id="adminTsFormThemeToggle"
-                aria-label="Switch to night mode" title="Switch to night mode">
+
+        <button type="button"
+                class="admin-ts-form-theme"
+                id="adminTsFormThemeToggle"
+                aria-label="Switch to night mode"
+                title="Switch to night mode">
           <i class="fas fa-moon" id="adminTsFormThemeIcon"></i>
         </button>
       </div>
     </div>
 
+    <!-- Form Card -->
     <div class="admin-ts-form-card">
+
       <%= form_with(
             model: @question,
             url: @question.persisted? ?
@@ -97,10 +110,12 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
               admin_test_series_test_questions_path(@test_series, @test),
             method: @question.persisted? ? :patch : :post,
             local: true,
+            multipart: true,
             class: "admin-ts-form",
             id: "adminQuestionForm"
           ) do |form| %>
 
+        <!-- Validation Errors -->
         <% if @question.errors.any? %>
           <div class="admin-ts-errors">
             <strong>Please correct the following errors:</strong>
@@ -112,9 +127,12 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
           </div>
         <% end %>
 
+        <!-- Question Details -->
         <div class="admin-ts-form-grid">
+
           <div class="admin-ts-field full">
             <%= form.label :question_text_hindi, "Question (Hindi)" %>
+
             <%= form.text_area :question_text_hindi,
                   value: @question.question_text_hindi.presence || @question.question_text,
                   class: "admin-ts-textarea",
@@ -128,54 +146,107 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
                   data: { question_canonical: true } %>
           </div>
 
+          <!-- Question Image Upload -->
+          <div class="admin-ts-field full">
+            <%= form.label :question_image, "Question Diagram / Image (Optional)" %>
+
+            <%= form.file_field :question_image,
+                  accept: "image/png,image/jpeg,image/webp",
+                  class: "admin-ts-input",
+                  data: { image_upload: true } %>
+
+            <p>Upload a reasoning diagram, figure, or question screenshot.</p>
+
+            <% if @question.question_image.attached? %>
+              <div style="margin-top: 12px;">
+                <p>Current question image:</p>
+
+                <%= image_tag @question.question_image,
+                      alt: "Question diagram",
+                      style: "display:block;max-width:100%;max-height:300px;object-fit:contain;border-radius:8px;" %>
+              </div>
+            <% end %>
+          </div>
+
           <div class="admin-ts-field">
             <%= form.label :marks, "Marks" %>
-            <%= form.number_field :marks, class: "admin-ts-input", min: 1, step: 1, placeholder: "e.g. 1", required: true %>
+
+            <%= form.number_field :marks,
+                  class: "admin-ts-input",
+                  min: 1,
+                  step: 1,
+                  placeholder: "e.g. 1",
+                  required: true %>
           </div>
 
           <div class="admin-ts-field">
             <%= form.label :position, "Question Number" %>
-            <%= form.number_field :position, class: "admin-ts-input", min: 1, step: 1, placeholder: "e.g. 1", required: true %>
+
+            <%= form.number_field :position,
+                  class: "admin-ts-input",
+                  min: 1,
+                  step: 1,
+                  placeholder: "e.g. 1",
+                  required: true %>
           </div>
 
           <div class="admin-ts-field">
             <%= form.label :question_type, "Question Type" %>
-            <%= form.text_field :question_type, class: "admin-ts-input", placeholder: "MCQ", required: true %>
+
+            <%= form.text_field :question_type,
+                  class: "admin-ts-input",
+                  placeholder: "MCQ",
+                  required: true %>
           </div>
 
           <div class="admin-ts-field full">
             <%= form.label :explanation_hindi, "Explanation (Hindi)" %>
+
             <%= form.text_area :explanation_hindi,
                   class: "admin-ts-textarea",
                   rows: 4,
                   placeholder: "सही उत्तर का स्पष्टीकरण हिंदी में लिखें" %>
           </div>
+
         </div>
 
+        <!-- Answer Options Header -->
         <div class="admin-ts-section-header form-section">
           <div>
             <h2>Answer Options</h2>
             <p>Add at least two options and select one correct answer.</p>
           </div>
+
           <button type="button" id="adminAddOption">
             <i class="fas fa-plus"></i> Add Option
           </button>
         </div>
 
+        <!-- Answer Options Container -->
         <div id="adminOptionsContainer">
+
           <%= form.fields_for :test_series_options do |option_form| %>
             <% option = option_form.object %>
             <% option_index = option_form.index %>
 
             <div class="admin-ts-option-form" data-option-row>
-              <div class="admin-ts-option-number"><%= option_index.to_i + 1 %></div>
+              <div class="admin-ts-option-number">
+                <%= option_index.to_i + 1 %>
+              </div>
 
               <div class="admin-ts-option-fields">
+
                 <%= option_form.hidden_field :id if option.persisted? %>
 
-                <%= option_form.hidden_field :_destroy, value: "0", data: { option_destroy: true } %>
+                <%= option_form.hidden_field :_destroy,
+                      value: "0",
+                      data: { option_destroy: true } %>
 
-                <label for="option_hindi_<%= option_index %>">Option (Hindi)</label>
+                <!-- Option Text -->
+                <label for="option_hindi_<%= option_index %>">
+                  Option (Hindi)
+                </label>
+
                 <%= option_form.text_field :option_text_hindi,
                       id: "option_hindi_#{option_index}",
                       value: option.option_text_hindi.presence || option.option_text,
@@ -188,195 +259,365 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
                       value: option.option_text_hindi.presence || option.option_text,
                       data: { option_canonical: true } %>
 
+                <!-- Option Image Upload -->
+                <div class="admin-ts-field full" style="margin-top: 12px;">
+                  <%= option_form.label :option_image, "Option Image (Optional)" %>
+
+                  <%= option_form.file_field :option_image,
+                        accept: "image/png,image/jpeg,image/webp",
+                        class: "admin-ts-input",
+                        data: { image_upload: true } %>
+
+                  <% if option.option_image.attached? %>
+                    <div style="margin-top: 8px;">
+                      <p>Current option image:</p>
+
+                      <%= image_tag option.option_image,
+                            alt: "Option diagram",
+                            style: "display:block;max-width:220px;max-height:160px;object-fit:contain;border-radius:8px;" %>
+                    </div>
+                  <% end %>
+                </div>
+
+                <!-- Correct Answer Value -->
                 <%= option_form.hidden_field :is_correct,
                       value: option.is_correct? ? "1" : "0",
                       class: "admin-hidden-correct",
                       data: { correct_value: true } %>
 
+                <!-- Correct Answer Radio -->
                 <div class="admin-ts-option-correct">
                   <input type="radio"
+                         id="correct_option_<%= option_index %>"
                          name="admin_correct_option"
                          value="<%= option_index %>"
                          class="admin-correct-radio"
                          data-correct-radio
                          <%= "checked" if option.is_correct? %>>
-                  <label for="correct_option_<%= option_index %>">Correct Answer</label>
+
+                  <label for="correct_option_<%= option_index %>">
+                    Correct Answer
+                  </label>
                 </div>
+
               </div>
 
-              <button type="button" class="admin-ts-remove-option" data-remove-option>
+              <button type="button"
+                      class="admin-ts-remove-option"
+                      data-remove-option>
                 <i class="fas fa-trash-alt"></i> Remove
               </button>
             </div>
           <% end %>
+
         </div>
 
+        <!-- Form Actions -->
         <div class="admin-ts-form-actions">
-          <%= link_to admin_test_series_test_path(@test_series, @test), class: "admin-ts-btn admin-ts-btn-light" do %>
+          <%= link_to admin_test_series_test_path(@test_series, @test),
+                      class: "admin-ts-btn admin-ts-btn-light" do %>
             <i class="fas fa-times"></i> Cancel
           <% end %>
+
           <%= form.submit(
                 @question.persisted? ? "Update Question" : "Create Question",
                 class: "admin-ts-btn admin-ts-btn-primary"
               ) %>
         </div>
+
       <% end %>
     </div>
   </div>
 </div>
 
+<!-- JavaScript -->
 <script nonce="<%= content_security_policy_nonce %>">
 (function () {
-  function initAdminTsFormTheme() {
+  function initializeAdminTsForm() {
+    initializeTheme();
+    initializeQuestionForm();
+  }
+
+  // -------------------------------
+  // Theme Toggle
+  // -------------------------------
+  function initializeTheme() {
     const toggle = document.getElementById("adminTsFormThemeToggle");
     const icon = document.getElementById("adminTsFormThemeIcon");
+
     if (!toggle || toggle.dataset.ready === "true") return;
 
     toggle.dataset.ready = "true";
 
     function applyTheme() {
-      const dark = localStorage.getItem("admin-ts-theme") === "dark";
+      let dark = false;
+
+      try {
+        dark = localStorage.getItem("admin-ts-theme") === "dark";
+      } catch (error) {
+        dark = document.body.classList.contains("admin-ts-dark");
+      }
+
       document.body.classList.toggle("admin-ts-dark", dark);
+
       if (icon) {
         icon.classList.toggle("fa-sun", dark);
         icon.classList.toggle("fa-moon", !dark);
       }
+
       toggle.title = dark ? "Switch to day mode" : "Switch to night mode";
       toggle.setAttribute("aria-label", toggle.title);
     }
 
     toggle.addEventListener("click", function () {
-      const dark = document.body.classList.contains("admin-ts-dark");
-      localStorage.setItem("admin-ts-theme", dark ? "light" : "dark");
-      applyTheme();
+      const dark = !document.body.classList.contains("admin-ts-dark");
+
+      try {
+        localStorage.setItem("admin-ts-theme", dark ? "dark" : "light");
+      } catch (error) {
+        // Theme can still be changed for the current page.
+      }
+
+      document.body.classList.toggle("admin-ts-dark", dark);
+
+      if (icon) {
+        icon.classList.toggle("fa-sun", dark);
+        icon.classList.toggle("fa-moon", !dark);
+      }
+
+      toggle.title = dark ? "Switch to day mode" : "Switch to night mode";
+      toggle.setAttribute("aria-label", toggle.title);
     });
 
     applyTheme();
   }
 
-  function initializeAdminQuestionForm() {
+  // -------------------------------
+  // Question Form
+  // -------------------------------
+  function initializeQuestionForm() {
     const container = document.getElementById("adminOptionsContainer");
     const addButton = document.getElementById("adminAddOption");
     const form = document.getElementById("adminQuestionForm");
 
-    if (!container || !addButton || !form || form.dataset.ready === "true") return;
+    if (!container || !addButton || !form || form.dataset.ready === "true") {
+      return;
+    }
+
     form.dataset.ready = "true";
 
     function rows() {
       return Array.from(container.querySelectorAll("[data-option-row]"))
-        .filter(row => row.dataset.removed !== "true");
+        .filter(function (row) {
+          return row.dataset.removed !== "true";
+        });
     }
 
     function updateNumbers() {
-      rows().forEach((row, index) => {
+      rows().forEach(function (row, index) {
         const number = row.querySelector(".admin-ts-option-number");
-        if (number) number.textContent = index + 1;
+
+        if (number) {
+          number.textContent = index + 1;
+        }
       });
     }
 
     function nextIndex() {
       let max = -1;
-      container.querySelectorAll('input[name*="[test_series_options_attributes]"]').forEach(input => {
-        const match = input.name.match(/\[test_series_options_attributes\]\[(\d+)\]/);
-        if (match) max = Math.max(max, Number(match[1]));
+
+      container.querySelectorAll(
+        'input[name*="[test_series_options_attributes]"]'
+      ).forEach(function (input) {
+        const match = input.name.match(
+          /\[test_series_options_attributes\]\[(\d+)\]/
+        );
+
+        if (match) {
+          max = Math.max(max, Number(match[1]));
+        }
       });
+
       return max + 1;
     }
 
     function syncOption(row) {
       const hindi = row.querySelector("[data-option-hindi]");
       const canonical = row.querySelector("[data-option-canonical]");
-      if (hindi && canonical) canonical.value = hindi.value;
+
+      if (hindi && canonical) {
+        canonical.value = hindi.value;
+      }
+    }
+
+    function syncQuestion() {
+      const hindi = form.querySelector("[data-question-hindi]");
+      const canonical = form.querySelector("[data-question-canonical]");
+
+      if (hindi && canonical) {
+        canonical.value = hindi.value;
+      }
     }
 
     function syncCorrectAnswer() {
       const activeRows = rows();
-      let selected = null;
+      const selectedRadio = container.querySelector(
+        "[data-correct-radio]:checked"
+      );
 
-      activeRows.forEach(row => {
+      activeRows.forEach(function (row) {
         const radio = row.querySelector("[data-correct-radio]");
-        if (radio && radio.checked) selected = row;
-      });
-
-      activeRows.forEach(row => {
         const hidden = row.querySelector("[data-correct-value]");
-        if (hidden) hidden.value = row === selected ? "1" : "0";
+
+        if (hidden) {
+          hidden.value =
+            selectedRadio && radio === selectedRadio ? "1" : "0";
+        }
       });
     }
 
+    // -------------------------------
+    // Add Option, including image input
+    // -------------------------------
     function addOption() {
       const index = nextIndex();
-      const prefix = `test_series_question[test_series_options_attributes][${index}]`;
+      const prefix =
+        `test_series_question[test_series_options_attributes][${index}]`;
+
       const row = document.createElement("div");
       row.className = "admin-ts-option-form";
       row.dataset.optionRow = "";
 
       row.innerHTML = `
         <div class="admin-ts-option-number">${rows().length + 1}</div>
+
         <div class="admin-ts-option-fields">
-          <input type="hidden" name="${prefix}[_destroy]" value="0" data-option-destroy>
+
+          <input type="hidden"
+                 name="${prefix}[_destroy]"
+                 value="0"
+                 data-option-destroy>
+
           <label for="option_hindi_${index}">Option (Hindi)</label>
-          <input type="text" id="option_hindi_${index}"
+
+          <input type="text"
+                 id="option_hindi_${index}"
                  name="${prefix}[option_text_hindi]"
-                 class="admin-ts-input" placeholder="विकल्प हिंदी में लिखें"
-                 required data-option-hindi>
-          <input type="hidden" name="${prefix}[option_text]" value="" data-option-canonical>
-          <input type="hidden" name="${prefix}[is_correct]" value="0"
-                 class="admin-hidden-correct" data-correct-value>
-          <div class="admin-ts-option-correct">
-            <input type="radio" name="admin_correct_option" value="${index}"
-                   class="admin-correct-radio" data-correct-radio>
-            <label for="correct_option_${index}">Correct Answer</label>
+                 class="admin-ts-input"
+                 placeholder="विकल्प हिंदी में लिखें"
+                 required
+                 data-option-hindi>
+
+          <input type="hidden"
+                 name="${prefix}[option_text]"
+                 value=""
+                 data-option-canonical>
+
+          <div class="admin-ts-field full" style="margin-top: 12px;">
+            <label for="option_image_${index}">
+              Option Image (Optional)
+            </label>
+
+            <input type="file"
+                   id="option_image_${index}"
+                   name="${prefix}[option_image]"
+                   accept="image/png,image/jpeg,image/webp"
+                   class="admin-ts-input"
+                   data-image-upload>
           </div>
+
+          <input type="hidden"
+                 name="${prefix}[is_correct]"
+                 value="0"
+                 class="admin-hidden-correct"
+                 data-correct-value>
+
+          <div class="admin-ts-option-correct">
+            <input type="radio"
+                   id="correct_option_${index}"
+                   name="admin_correct_option"
+                   value="${index}"
+                   class="admin-correct-radio"
+                   data-correct-radio>
+
+            <label for="correct_option_${index}">
+              Correct Answer
+            </label>
+          </div>
+
         </div>
-        <button type="button" class="admin-ts-remove-option" data-remove-option>
+
+        <button type="button"
+                class="admin-ts-remove-option"
+                data-remove-option>
           <i class="fas fa-trash-alt"></i> Remove
         </button>
       `;
+
       container.appendChild(row);
       updateNumbers();
     }
 
     addButton.addEventListener("click", addOption);
 
-    container.addEventListener("input", function (event) {
-      const row = event.target.closest("[data-option-row]");
-      if (row) syncOption(row);
-
+    // -------------------------------
+    // Keep Hindi and canonical text synced
+    // -------------------------------
+    form.addEventListener("input", function (event) {
       if (event.target.matches("[data-question-hindi]")) {
-        const canonical = form.querySelector("[data-question-canonical]");
-        if (canonical) canonical.value = event.target.value;
+        syncQuestion();
+      }
+
+      const row = event.target.closest("[data-option-row]");
+
+      if (row && event.target.matches("[data-option-hindi]")) {
+        syncOption(row);
       }
     });
 
+    // -------------------------------
+    // Correct Answer Selection
+    // -------------------------------
     container.addEventListener("change", function (event) {
       if (event.target.matches("[data-correct-radio]")) {
         syncCorrectAnswer();
       }
     });
 
+    // -------------------------------
+    // Remove Option
+    // -------------------------------
     container.addEventListener("click", function (event) {
       const button = event.target.closest("[data-remove-option]");
+
       if (!button) return;
 
-      const activeRows = rows();
-      if (activeRows.length <= 2) {
+      const row = button.closest("[data-option-row]");
+
+      if (!row) return;
+
+      if (rows().length <= 2) {
         alert("At least 2 options are required.");
         return;
       }
 
-      const row = button.closest("[data-option-row]");
       const destroy = row.querySelector("[data-option-destroy]");
+      const persistedId = row.querySelector('input[name$="[id]"]');
 
-      if (row.querySelector('input[name$="[id]"]')) {
-        if (destroy) destroy.value = "1";
+      if (persistedId && destroy) {
+        // Existing database record: mark it for destruction.
+        destroy.value = "1";
         row.dataset.removed = "true";
-        row.style.display = "none";
-        row.querySelectorAll("input, textarea, select").forEach(input => {
-          if (input.type === "radio") input.checked = false;
-          if (input.dataset.optionHindi !== undefined) input.required = false;
+        row.hidden = true;
+
+        row.querySelectorAll("input, textarea, select").forEach(function (input) {
+          input.disabled = true;
         });
+
+        // The _destroy field must still be submitted.
+        destroy.disabled = false;
       } else {
+        // New unsaved option: remove it from the form.
         row.remove();
       }
 
@@ -384,16 +625,16 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
       updateNumbers();
     });
 
+    // -------------------------------
+    // Form Submit Validation
+    // -------------------------------
     form.addEventListener("submit", function (event) {
-      const questionHindi = form.querySelector("[data-question-hindi]");
-      const questionCanonical = form.querySelector("[data-question-canonical]");
-      if (questionHindi && questionCanonical) {
-        questionCanonical.value = questionHindi.value;
-      }
+      syncQuestion();
+
+      rows().forEach(syncOption);
+      syncCorrectAnswer();
 
       const activeRows = rows();
-      activeRows.forEach(syncOption);
-      syncCorrectAnswer();
 
       if (activeRows.length < 2) {
         event.preventDefault();
@@ -401,18 +642,16 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
         return;
       }
 
-      const correctCount = activeRows.filter(row => {
-        const hidden = row.querySelector("[data-correct-value]");
-        return hidden && hidden.value === "1";
-      }).length;
+      const emptyQuestion = form.querySelector("[data-question-hindi]");
 
-      if (correctCount !== 1) {
+      if (!emptyQuestion || !emptyQuestion.value.trim()) {
         event.preventDefault();
-        alert("Please select exactly one correct answer.");
+        alert("Please enter the question in Hindi.");
+        if (emptyQuestion) emptyQuestion.focus();
         return;
       }
 
-      const emptyOption = activeRows.some(row => {
+      const emptyOption = activeRows.find(function (row) {
         const field = row.querySelector("[data-option-hindi]");
         return !field || !field.value.trim();
       });
@@ -420,28 +659,32 @@ body.admin-ts-dark .admin-ts-form-actions{border-top-color:#303852}
       if (emptyOption) {
         event.preventDefault();
         alert("Please fill in every option.");
+        const field = emptyOption.querySelector("[data-option-hindi]");
+        if (field) field.focus();
+        return;
+      }
+
+      const correctCount = activeRows.filter(function (row) {
+        const hidden = row.querySelector("[data-correct-value]");
+        return hidden && hidden.value === "1";
+      }).length;
+
+      if (correctCount !== 1) {
+        event.preventDefault();
+        alert("Please select exactly one correct answer.");
       }
     });
 
-    // Keep the required canonical question field synced on page load.
-    const questionHindi = form.querySelector("[data-question-hindi]");
-    const questionCanonical = form.querySelector("[data-question-canonical]");
-    if (questionHindi && questionCanonical) {
-      questionCanonical.value = questionHindi.value;
-    }
-
+    // Initial synchronization
+    syncQuestion();
     rows().forEach(syncOption);
     syncCorrectAnswer();
     updateNumbers();
   }
 
-  function initialize() {
-    initAdminTsFormTheme();
-    initializeAdminQuestionForm();
-  }
+  document.addEventListener("turbo:load", initializeAdminTsForm);
+  document.addEventListener("DOMContentLoaded", initializeAdminTsForm);
 
-  document.addEventListener("turbo:load", initialize);
-  document.addEventListener("DOMContentLoaded", initialize);
-  initialize();
+  initializeAdminTsForm();
 })();
 </script>

@@ -859,6 +859,56 @@
       display: none;
     }
   }
+
+
+
+  
+/* Question diagram */
+.question-image-wrapper {
+  margin: 0 0 26px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  text-align: left;
+}
+
+.exam-question-image {
+  display: block;
+  max-width: 100%;
+  max-height: 420px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* Answer option diagram */
+.option-image-wrapper {
+  display: block;
+  margin: 10px 0 4px;
+}
+
+.exam-option-image {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  max-height: 220px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+@media (max-width: 650px) {
+  .exam-question-image {
+    max-height: 300px;
+  }
+
+  .exam-option-image {
+    max-height: 160px;
+  }
+}
+
 </style>
 
 
@@ -1031,14 +1081,21 @@
 
         </div>
 
+       
+<div class="question-text">
+  <%= simple_format(
+    @question.question_for(@language)
+  ) %>
+</div>
 
-        <div class="question-text">
+<% if @question.question_image.attached? %>
+  <div class="question-image-wrapper">
+    <%= image_tag @question.question_image,
+          alt: "Question diagram",
+          class: "exam-question-image" %>
+  </div>
+<% end %>
 
-          <%= simple_format(
-            @question.question_for(@language)
-          ) %>
-
-        </div>
 
 
         <!-- ANSWER FORM -->

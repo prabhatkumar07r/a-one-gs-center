@@ -5,6 +5,7 @@ class TestSeriesQuestion < ApplicationRecord
   # ==================================================
 
   belongs_to :test_series_test
+  has_one_attached :question_image
 
   has_many :test_series_options,
            dependent: :destroy

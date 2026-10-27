@@ -1026,13 +1026,75 @@
 
 }
 
+
+
+/* Question and option images */
+.review-question-image-wrapper {
+  margin: 16px 0 22px;
+}
+
+.review-question-image,
+.review-option-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.review-question-image {
+  max-height: 420px;
+}
+
+.review-option-image {
+  max-height: 180px;
+  margin-top: 10px;
+}
+
+/* Hindi explanations and mathematical content */
+.review-question-text,
+.review-explanation-content {
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.review-explanation-content p,
+.review-question-text p {
+  margin-bottom: 12px;
+}
+
+.review-answer-value .math-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.review-answer-value .math-content p {
+  margin-bottom: 8px;
+}
+
+/* Long mathematical formulas on smaller screens */
+.math-content mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+
+@media (max-width: 650px) {
+  .review-question-image {
+    max-height: 300px;
+  }
+
+  .review-option-image {
+    max-height: 140px;
+  }
+}
+
 </style>
-
-
 <div class="test-result-page">
 
   <div class="result-container">
-
 
     <!-- ======================================================
          TOP BAR
@@ -1041,7 +1103,6 @@
     <div class="result-topbar">
 
       <div>
-
         <div class="result-breadcrumb">
           Test Series / Result
         </div>
@@ -1053,16 +1114,11 @@
         <p class="result-subtitle">
           Review your performance and answers
         </p>
-
       </div>
 
-
       <div class="completed-badge">
-
         <span>✓</span>
-
         Test Completed
-
       </div>
 
     </div>
@@ -1076,37 +1132,30 @@
 
       <div class="result-hero-content">
 
-
         <div>
 
           <div class="result-series-name">
-
             <%= @test_series.exam_name.presence ||
                 @test_series.title %>
-
           </div>
 
           <h2>
-
             <%= @test.title.presence ||
                 "Test #{@test.test_number}" %>
-
           </h2>
 
           <div class="result-message">
-
             <%= result_message %>
-
           </div>
 
           <div class="result-completed-time">
-
             Completed
 
             <% if @attempt.completed_at.present? %>
-        <%= @attempt.completed_at.in_time_zone.strftime("%d %b %Y, %I:%M %p") %>
-       <% end %>
-
+              <%= @attempt.completed_at.in_time_zone.strftime(
+                    "%d %b %Y, %I:%M %p"
+                  ) %>
+            <% end %>
           </div>
 
         </div>
@@ -1123,26 +1172,19 @@
             <div class="score-circle-content">
 
               <span class="score-percentage">
-
                 <%= percentage %>%
-
               </span>
 
               <span class="score-label">
-
                 Score
-
               </span>
 
             </div>
-
           </div>
 
         </div>
 
-
       </div>
-
     </div>
 
 
@@ -1151,7 +1193,6 @@
     ======================================================= -->
 
     <div class="summary-grid">
-
 
       <!-- SCORE -->
 
@@ -1162,16 +1203,11 @@
         </div>
 
         <span class="summary-value">
-
           <%= obtained_marks %>
-
         </span>
 
         <span class="summary-label">
-
-          Marks Obtained /
-          <%= total_marks %>
-
+          Marks Obtained / <%= total_marks %>
         </span>
 
       </div>
@@ -1186,15 +1222,11 @@
         </div>
 
         <span class="summary-value">
-
           <%= correct_count %>
-
         </span>
 
         <span class="summary-label">
-
           Correct Answers
-
         </span>
 
       </div>
@@ -1209,15 +1241,11 @@
         </div>
 
         <span class="summary-value">
-
           <%= incorrect_count %>
-
         </span>
 
         <span class="summary-label">
-
           Incorrect Answers
-
         </span>
 
       </div>
@@ -1228,19 +1256,15 @@
       <div class="summary-card">
 
         <div class="summary-icon orange">
-          —
+          
         </div>
 
         <span class="summary-value">
-
           <%= unanswered_count %>
-
         </span>
 
         <span class="summary-label">
-
           Unanswered
-
         </span>
 
       </div>
@@ -1264,15 +1288,11 @@
         <div class="result-card-header">
 
           <h3>
-
             Question-wise Review
-
           </h3>
 
           <p>
-
             Review your answers, correct answers and explanations.
-
           </p>
 
         </div>
@@ -1280,28 +1300,23 @@
 
         <div class="question-review">
 
-
           <% @test.test_series_questions
                .includes(:test_series_options)
                .order(position: :asc)
                .each_with_index do |question, index| %>
-
 
             <% answer =
                  @attempt.test_series_answers.find_by(
                    test_series_question: question
                  ) %>
 
-
             <% selected_option =
                  answer&.test_series_option %>
-
 
             <% correct_option =
                  question.test_series_options.find_by(
                    is_correct: true
                  ) %>
-
 
             <% correct =
                  answer.present? &&
@@ -1322,12 +1337,9 @@
                             end %>">
 
 
-              <!-- =================================================
-                   QUESTION HEADER
-              ================================================== -->
+              <!-- QUESTION HEADER -->
 
               <div class="review-question-header">
-
 
                 <div class="review-question-number
                             <%= if answer.nil?
@@ -1346,42 +1358,28 @@
                 <div class="review-question-title">
 
                   <span>
-
                     Question <%= index + 1 %>
-
                   </span>
-
 
                   <% if answer.nil? %>
 
                     <span class="review-status unanswered">
-
                       <i class="fas fa-minus-circle"></i>
-
                       Not Answered
-
                     </span>
-
 
                   <% elsif correct %>
 
                     <span class="review-status correct">
-
                       <i class="fas fa-check-circle"></i>
-
                       Correct
-
                     </span>
-
 
                   <% else %>
 
                     <span class="review-status incorrect">
-
                       <i class="fas fa-times-circle"></i>
-
                       Incorrect
-
                     </span>
 
                   <% end %>
@@ -1392,13 +1390,9 @@
                 <div class="review-marks">
 
                   <% if answer.present? %>
-
                     <%= answer.marks_obtained.to_f %>
-
                   <% else %>
-
                     0
-
                   <% end %>
 
                   /
@@ -1406,7 +1400,6 @@
                   <%= question.marks.to_f %>
 
                 </div>
-
 
               </div>
 
@@ -1418,13 +1411,31 @@
               <div class="review-question-body">
 
 
-                <!-- QUESTION -->
+                <!-- QUESTION TEXT: HINDI FIRST -->
 
-                <div class="review-question-text">
+                <div class="review-question-text math-content">
 
-                  <%= question.question_text %>
+                  <%= simple_format(
+                        question.question_text_hindi.presence ||
+                        question.question_text
+                      ) %>
 
                 </div>
+
+
+                <!-- QUESTION IMAGE -->
+
+                <% if question.question_image.attached? %>
+
+                  <div class="review-question-image-wrapper">
+
+                    <%= image_tag question.question_image,
+                          alt: "Question diagram",
+                          class: "review-question-image" %>
+
+                  </div>
+
+                <% end %>
 
 
                 <!-- =================================================
@@ -1436,7 +1447,6 @@
                   <div class="review-answer-label your-answer-label">
 
                     <i class="fas fa-user-check"></i>
-
                     Your Answer
 
                   </div>
@@ -1450,16 +1460,27 @@
                                     'answer-incorrect' %>">
 
                       <% if correct %>
-
                         <i class="fas fa-check-circle"></i>
-
                       <% else %>
-
                         <i class="fas fa-times-circle"></i>
-
                       <% end %>
 
-                      <%= selected_option.option_text %>
+                      <div class="math-content">
+
+                        <%= simple_format(
+                              selected_option.option_text_hindi.presence ||
+                              selected_option.option_text
+                            ) %>
+
+                        <% if selected_option.option_image.attached? %>
+
+                          <%= image_tag selected_option.option_image,
+                                alt: "Your selected option image",
+                                class: "review-option-image" %>
+
+                        <% end %>
+
+                      </div>
 
                     </div>
 
@@ -1468,7 +1489,6 @@
                     <div class="review-answer-value answer-unanswered">
 
                       <i class="fas fa-minus-circle"></i>
-
                       Not Answered
 
                     </div>
@@ -1489,7 +1509,6 @@
                     <div class="review-answer-label correct-answer-label">
 
                       <i class="fas fa-circle-check"></i>
-
                       Correct Answer
 
                     </div>
@@ -1499,7 +1518,22 @@
 
                       <i class="fas fa-check-circle"></i>
 
-                      <%= correct_option.option_text %>
+                      <div class="math-content">
+
+                        <%= simple_format(
+                              correct_option.option_text_hindi.presence ||
+                              correct_option.option_text
+                            ) %>
+
+                        <% if correct_option.option_image.attached? %>
+
+                          <%= image_tag correct_option.option_image,
+                                alt: "Correct option image",
+                                class: "review-option-image" %>
+
+                        <% end %>
+
+                      </div>
 
                     </div>
 
@@ -1509,64 +1543,46 @@
 
 
                 <!-- =================================================
-                     EXPLANATION
+                     EXPLANATION: HINDI FIRST
                 ================================================== -->
 
-                <% if question.explanation.present? %>
+                <div class="review-explanation">
 
-                  <div class="review-explanation">
+                  <div class="review-explanation-title">
 
-                    <div class="review-explanation-title">
-
-                      <i class="fas fa-lightbulb"></i>
-
-                      Explanation
-
-                    </div>
-
-
-                    <div class="review-explanation-content">
-
-                      <%= simple_format(
-                            question.explanation
-                          ) %>
-
-                    </div>
+                    <i class="fas fa-lightbulb"></i>
+                    व्याख्या (Explanation)
 
                   </div>
 
-                <% else %>
 
-                  <div class="review-explanation">
+                  <div class="review-explanation-content math-content">
 
-                    <div class="review-explanation-title">
+                    <% explanation =
+                         question.explanation_hindi.presence ||
+                         question.explanation %>
 
-                      <i class="fas fa-lightbulb"></i>
+                    <% if explanation.present? %>
 
-                      Explanation
+                      <%= simple_format(explanation) %>
 
-                    </div>
+                    <% else %>
 
-                    <div class="review-explanation-content">
+                      इस प्रश्न की व्याख्या अभी उपलब्ध नहीं है।
 
-                      Explanation has not been added for this question yet.
-
-                    </div>
+                    <% end %>
 
                   </div>
 
-                <% end %>
+                </div>
 
 
               </div>
-
             </div>
-
 
           <% end %>
 
         </div>
-
       </div>
 
 
@@ -1576,15 +1592,12 @@
 
       <div>
 
-
         <div class="result-card">
 
           <div class="performance-card">
 
             <h3 class="performance-title">
-
               Performance Summary
-
             </h3>
 
 
@@ -1594,20 +1607,13 @@
 
               <div class="performance-top">
 
-                <span>
-                  Correct
-                </span>
+                <span>Correct</span>
 
                 <span>
-
-                  <%= correct_count %>
-                  /
-                  <%= total_questions %>
-
+                  <%= correct_count %> / <%= total_questions %>
                 </span>
 
               </div>
-
 
               <div class="progress-bar">
 
@@ -1627,20 +1633,13 @@
 
               <div class="performance-top">
 
-                <span>
-                  Incorrect
-                </span>
+                <span>Incorrect</span>
 
                 <span>
-
-                  <%= incorrect_count %>
-                  /
-                  <%= total_questions %>
-
+                  <%= incorrect_count %> / <%= total_questions %>
                 </span>
 
               </div>
-
 
               <div class="progress-bar">
 
@@ -1660,20 +1659,13 @@
 
               <div class="performance-top">
 
-                <span>
-                  Unanswered
-                </span>
+                <span>Unanswered</span>
 
                 <span>
-
-                  <%= unanswered_count %>
-                  /
-                  <%= total_questions %>
-
+                  <%= unanswered_count %> / <%= total_questions %>
                 </span>
 
               </div>
-
 
               <div class="progress-bar">
 
@@ -1687,97 +1679,49 @@
             </div>
 
 
-            <!-- =================================================
-                 DETAILS
-            ================================================== -->
+            <!-- DETAILS -->
 
             <div class="score-detail-list">
 
-
               <div class="score-detail">
-
-                <span>
-                  Total Questions
-                </span>
-
-                <span>
-                  <%= total_questions %>
-                </span>
-
+                <span>Total Questions</span>
+                <span><%= total_questions %></span>
               </div>
 
-
               <div class="score-detail">
-
-                <span>
-                  Total Marks
-                </span>
-
-                <span>
-                  <%= total_marks %>
-                </span>
-
+                <span>Total Marks</span>
+                <span><%= total_marks %></span>
               </div>
 
-
               <div class="score-detail">
-
-                <span>
-                  Marks Obtained
-                </span>
-
-                <span>
-                  <%= obtained_marks %>
-                </span>
-
+                <span>Marks Obtained</span>
+                <span><%= obtained_marks %></span>
               </div>
 
-
               <div class="score-detail">
-
-                <span>
-                  Accuracy
-                </span>
-
-                <span>
-                  <%= accuracy %>%
-                </span>
-
+                <span>Accuracy</span>
+                <span><%= accuracy %>%</span>
               </div>
 
-
               <div class="score-detail">
-
-                <span>
-                  Status
-                </span>
-
-                <span>
-                  Completed
-                </span>
-
+                <span>Status</span>
+                <span>Completed</span>
               </div>
-
 
             </div>
 
           </div>
-
         </div>
 
 
-        <!-- ==================================================
-             ACTION BUTTONS
-        =================================================== -->
+        <!-- ACTION BUTTONS -->
 
         <div class="result-actions">
-
 
           <%= link_to test_series_path(@test_series),
               class: "result-action secondary-action" do %>
 
             <i class="fas fa-arrow-left me-2"></i>
-
             Test Series
 
           <% end %>
@@ -1787,19 +1731,61 @@
               class: "result-action primary-action" do %>
 
             Back to Tests
-
             <i class="fas fa-arrow-right ms-2"></i>
 
           <% end %>
 
-
         </div>
-
 
       </div>
 
     </div>
-
   </div>
-
 </div>
+
+
+<!-- ======================================================
+     MATHJAX: FORMULA RENDERING
+     Supports \( inline \) and \[ display \] formulas
+======================================================= -->
+
+<script nonce="<%= content_security_policy_nonce %>">
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']]
+    },
+    startup: {
+      typeset: false
+    }
+  };
+</script>
+
+<script
+  nonce="<%= content_security_policy_nonce %>"
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  async>
+</script>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  (function () {
+    function renderMath() {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise(
+          document.querySelectorAll(".math-content")
+        ).catch(function (error) {
+          console.error("MathJax rendering error:", error);
+        });
+      }
+    }
+
+    document.addEventListener("turbo:load", renderMath);
+    document.addEventListener("DOMContentLoaded", renderMath);
+
+    window.addEventListener("load", renderMath);
+
+    if (window.MathJax && window.MathJax.startup) {
+      window.MathJax.startup.promise.then(renderMath).catch(function () {});
+    }
+  })();
+</script>

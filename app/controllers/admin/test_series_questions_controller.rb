@@ -35,112 +35,96 @@ class Admin::TestSeriesQuestionsController < ApplicationController
     build_missing_options
   end
 
- 
-def create
-  @question = @test.test_series_questions.new(question_params)
-  assign_new_option_positions
+  def create
+    @question = @test.test_series_questions.new(question_params)
 
-  if @question.save
-    redirect_to admin_test_series_test_path(@test_series, @test),
-                notice: "Question created successfully."
-  else
-    build_missing_options
-    render :new, status: :unprocessable_entity
+    assign_new_option_positions
+
+    if @question.save
+      redirect_to admin_test_series_test_path(@test_series, @test),
+                  notice: "Question created successfully."
+    else
+      build_missing_options
+      render :new, status: :unprocessable_entity
+    end
   end
-end
-
-def update
-  @question.assign_attributes(question_params)
-  assign_new_option_positions
-
-  if @question.save
-    redirect_to admin_test_series_test_path(@test_series, @test),
-                notice: "Question updated successfully."
-  else
-    build_missing_options
-    render :edit, status: :unprocessable_entity
-  end
-end
-
 
   def edit
     build_missing_options
   end
 
+  def update
+    @question.assign_attributes(question_params)
+
+    assign_new_option_positions
+
+    if @question.save
+      redirect_to admin_test_series_test_path(@test_series, @test),
+                  notice: "Question updated successfully."
+    else
+      build_missing_options
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @question.destroy
 
-    redirect_to admin_test_series_test_path(
-      @test_series,
-      @test
-    ),
-    notice: "Question deleted successfully."
+    redirect_to admin_test_series_test_path(@test_series, @test),
+                notice: "Question deleted successfully."
   end
 
   private
 
   def set_test_series
-    @test_series =
-      TestSeries.find(params[:test_series_id])
+    @test_series = TestSeries.find(params[:test_series_id])
   end
 
   def set_test
-    @test =
-      @test_series
-        .test_series_tests
-        .find(params[:test_id])
+    @test = @test_series.test_series_tests.find(params[:test_id])
   end
 
   def set_question
-    @question =
-      @test
-        .test_series_questions
-        .find(params[:id])
+    @question = @test.test_series_questions.find(params[:id])
   end
 
   def next_position
-    @test
-      .test_series_questions
-      .maximum(:position)
-      .to_i + 1
+    @test.test_series_questions.maximum(:position).to_i + 1
   end
 
   def build_missing_options
-  existing_count = @question.test_series_options.size
-  missing_count = [4 - existing_count, 0].max
+    existing_count = @question.test_series_options.size
+    missing_count = [4 - existing_count, 0].max
 
-  next_position = (
-    @question.test_series_options.map(&:position).compact.max || 0
-  ) + 1
+    next_option_position =
+      (@question.test_series_options.map(&:position).compact.max || 0) + 1
 
-  missing_count.times do |index|
-    @question.test_series_options.build(
-      position: next_position + index
-    )
+    missing_count.times do |index|
+      @question.test_series_options.build(
+        position: next_option_position + index
+      )
+    end
   end
-end
 
+  def assign_new_option_positions
+    options = @question.test_series_options.to_a
 
-def assign_new_option_positions
-  options = @question.test_series_options.to_a
+    existing_positions = options
+      .reject(&:new_record?)
+      .reject(&:marked_for_destruction?)
+      .map(&:position)
+      .compact
 
-  existing_positions = options
-    .reject(&:new_record?)
-    .reject(&:marked_for_destruction?)
-    .map(&:position)
-    .compact
+    next_option_position = existing_positions.max.to_i + 1
 
-  next_position = existing_positions.max.to_i + 1
+    options.each do |option|
+      next unless option.new_record?
+      next if option.marked_for_destruction?
 
-  options.each do |option|
-    next unless option.new_record?
-    next if option.marked_for_destruction?
-
-    option.position = next_position
-    next_position += 1
+      option.position = next_option_position
+      next_option_position += 1
+    end
   end
-end
-
 
   def question_params
     params
@@ -148,6 +132,7 @@ end
       .permit(
         :question_text,
         :question_text_hindi,
+        :question_image,
         :explanation,
         :explanation_hindi,
         :question_type,
@@ -158,6 +143,7 @@ end
           :id,
           :option_text,
           :option_text_hindi,
+          :option_image,
           :position,
           :is_correct,
           :_destroy

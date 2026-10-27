@@ -33,6 +33,31 @@
 
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
+  
+  <!-- MathJax: Render mathematical formulas in Test Series -->
+  <script nonce="<%= content_security_policy_nonce %>">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: [
+          'script', 'noscript', 'style', 'textarea', 'pre', 'code'
+        ]
+      },
+      startup: {
+        typeset: true
+      }
+    };
+  </script>
+
+  <script
+    defer
+    nonce="<%= content_security_policy_nonce %>"
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  </script>
+
 
   <% if is_homepage %>
     <meta name="turbo-cache-control" content="no-cache">
