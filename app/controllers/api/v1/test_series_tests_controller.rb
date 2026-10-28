@@ -322,19 +322,43 @@ module Api
         }
       end
 
+      
+def mobile_math_text(value)
+  return value if value.blank?
+
+  value
+    .gsub(/\\\(/, "")
+    .gsub(/\\\)/, "")
+    .gsub(/\\\[/, "")
+    .gsub(/\\\]/, "")
+    .gsub(/\\sqrt\s*\{([^{}]+)\}/, '√\1')
+    .gsub(/\\times\b/, "×")
+    .gsub(/\\cdot\b/, "·")
+    .gsub(/\\div\b/, "÷")
+    .gsub(/\\pi\b/, "π")
+    .gsub(/\\leq\b|\\le\b/, "≤")
+    .gsub(/\\geq\b|\\ge\b/, "≥")
+    .gsub(/\\neq\b|\\ne\b/, "≠")
+    .gsub(/\\infty\b/, "∞")
+    .gsub(/\\%/, "%")
+    .gsub(/[ \t]+/, " ")
+    .strip
+end
+
+
       def question_json(question)
         {
           id: question.id,
-          question_text: question.question_text,
-          question_text_hindi: question.question_text_hindi,
+          question_text: mobile_math_text(question.question_text),
+          question_text_hindi: mobile_math_text(question.question_text_hindi),
           question_type: question.question_type,
           marks: question.marks,
           position: question.position,
           options: question.test_series_options.order(:position).map do |option|
             {
               id: option.id,
-              option_text: option.option_text,
-              option_text_hindi: option.option_text_hindi,
+              option_text: mobile_math_text(option.option_text),
+              option_text_hindi: mobile_math_text(option.option_text_hindi),
               position: option.position
             }
           end
