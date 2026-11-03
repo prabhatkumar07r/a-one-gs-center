@@ -753,7 +753,7 @@
         class="nav-link"
         data-bs-toggle="collapse"
         role="button"
-        aria-expanded="<%= controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series', 'admin/ebooks') %>"
+        aria-expanded="<%= controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series', 'admin/ebooks','admin/ebook_access_grants') %>"
         aria-controls="academicMenu">
 
         <i class="bi bi-mortarboard"></i>
@@ -766,7 +766,7 @@
 
 
       <div
-        class="collapse <%= 'show' if controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series','admin/ebooks') %>"
+        class="collapse <%= 'show' if controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series','admin/ebooks','admin/ebook_access_grants') %>"
         id="academicMenu">
 
         <ul class="nav flex-column submenu">
@@ -854,6 +854,14 @@
   <% end %>
 
 </li>
+<!-- E-BOOK ACCESS GRANTS -->
+<li class="nav-item">
+  <%= link_to admin_ebook_access_grants_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/ebook_access_grants')}" do %>
+    <i class="bi bi-unlock"></i>
+    <span>E-Book Access Grants</span>
+  <% end %>
+</li>
 
 
           <!-- Test Series -->
@@ -922,7 +930,7 @@
         class="nav-link"
         data-bs-toggle="collapse"
         role="button"
-        aria-expanded="<%= controller_path.start_with?('galleries', 'achievements', 'admin/testimonials', 'notifications', 'demos') %>"
+        aria-expanded="<%= controller_path.start_with?('galleries', 'achievements', 'admin/testimonials', 'notifications', 'demos','admin/banners') %>"
         aria-controls="websiteMenu">
 
         <i class="bi bi-globe"></i>
@@ -1016,6 +1024,21 @@
               <i class="bi bi-camera-video"></i>
 
               <span>Demo Requests</span>
+
+            <% end %>
+
+          </li>
+
+                    <!-- Banners -->
+
+          <li class="nav-item">
+
+            <%= link_to admin_banners_path,
+                class: "nav-link #{'active' if controller_path.start_with?('admin/banners')}" do %>
+
+              <i class="bi bi-images"></i>
+
+              <span>Banners</span>
 
             <% end %>
 

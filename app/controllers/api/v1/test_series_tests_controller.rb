@@ -322,7 +322,7 @@ module Api
         }
       end
 
-      
+
 def mobile_math_text(value)
   return value if value.blank?
 
@@ -346,24 +346,39 @@ def mobile_math_text(value)
 end
 
 
-      def question_json(question)
-        {
-          id: question.id,
-          question_text: mobile_math_text(question.question_text),
-          question_text_hindi: mobile_math_text(question.question_text_hindi),
-          question_type: question.question_type,
-          marks: question.marks,
-          position: question.position,
-          options: question.test_series_options.order(:position).map do |option|
-            {
-              id: option.id,
-              option_text: mobile_math_text(option.option_text),
-              option_text_hindi: mobile_math_text(option.option_text_hindi),
-              position: option.position
-            }
-          end
-        }
-      end
+      
+def question_json(question)
+  {
+    id: question.id,
+    question_text: mobile_math_text(question.question_text),
+    question_text_hindi: mobile_math_text(question.question_text_hindi),
+    question_type: question.question_type,
+    marks: question.marks,
+    position: question.position,
+
+    question_image_url: attachment_url_for(question.question_image),
+
+    options: question.test_series_options.order(:position).map do |option|
+      {
+        id: option.id,
+        option_text: mobile_math_text(option.option_text),
+        option_text_hindi: mobile_math_text(option.option_text_hindi),
+        option_image_url: attachment_url_for(option.option_image),
+        position: option.position
+      }
+    end
+  }
+end
+
+def attachment_url_for(attachment)
+  return nil unless attachment.attached?
+
+  Rails.application.routes.url_helpers.rails_blob_url(
+    attachment,
+    host: ENV.fetch("APP_HOST", "https://aonegscenter.com")
+  )
+end
+
 
       def attempt_json(attempt)
         duration_seconds =
