@@ -2,349 +2,695 @@
 
 <div class="learning-page">
 
-  <!-- =========================================================
+  <!-- =====================================================
        BACK BUTTON
-  ========================================================== -->
+  ====================================================== -->
 
   <div class="learning-back-wrapper">
-    <button type="button" class="learning-back-btn" id="learningBackBtn">
+    <button
+      type="button"
+      class="learning-back-btn"
+      id="learningBackBtn"
+      aria-label="Go back to course"
+    >
       <span class="back-arrow">←</span>
       <span>Back to Course</span>
     </button>
   </div>
 
-  <!-- =========================================================
+
+  <!-- =====================================================
        MAIN LEARNING CONTAINER
-  ========================================================== -->
+  ====================================================== -->
 
   <div class="learning-main-container">
 
 
-<!-- =======================================================
-     LEFT SIDE — COURSE CONTENT
-======================================================== -->
+    <!-- ===================================================
+         LEFT SIDE — COURSE CONTENT
+    ==================================================== -->
 
-<section class="learning-left">
-
-
-  <!-- =====================================================
-       COURSE HERO
-  ====================================================== -->
-
-  <div class="learning-course-hero">
-
-    <div class="learning-brand-badge">
-      🎓 A ONE GS CENTER
-    </div>
-
-    <div class="learning-hero-icon">
-      🎓
-    </div>
-
-    <div class="learning-hero-content">
-
-      <span class="learning-label">
-        CURRENT COURSE
-      </span>
-
-      <h1>
-        <%= @course.Course_name %>
-      </h1>
-
-      <% if @course.description.present? %>
-
-        <p>
-          <%= @course.description %>
-        </p>
-
-      <% else %>
-
-        <p>
-          Learn. Practice. Grow.
-        </p>
-
-      <% end %>
-
-    </div>
-
-  </div>
+    <section class="learning-left">
 
 
-  <!-- =====================================================
-       LEARNING PROGRESS
-  ====================================================== -->
+      <!-- =================================================
+           COURSE HERO
+      ================================================== -->
 
-  <div class="learning-progress-card">
+      <div class="learning-course-hero">
 
-    <div class="progress-top">
+        <div class="learning-brand-badge">
+          🎓 A ONE GS CENTER
+        </div>
 
-      <div>
+        <div class="learning-hero-icon">
+          🎓
+        </div>
 
-        <span class="progress-label">
-          YOUR LEARNING PROGRESS
-        </span>
+        <div class="learning-hero-content">
 
-        <h3>
-          Keep going — you're doing great!
-        </h3>
+          <span class="learning-label">
+            CURRENT COURSE
+          </span>
+
+          <h1>
+            <%= @course.Course_name %>
+          </h1>
+
+          <% if @course.description.present? %>
+            <p><%= @course.description %></p>
+          <% else %>
+            <p>Learn. Practice. Grow.</p>
+          <% end %>
+
+        </div>
 
       </div>
 
-      <div class="progress-circle">
-        <%= @progress.to_i %>%
-      </div>
 
-    </div>
+      <!-- =================================================
+           LEARNING PROGRESS
+      ================================================== -->
 
+      <div class="learning-progress-card">
 
-    <div class="progress-track">
+        <div class="progress-top">
 
-      <div
-        class="progress-fill"
-        style="width:<%= @progress.to_i %>%;">
-      </div>
+          <div>
 
-    </div>
-
-
-    <div class="progress-bottom">
-
-      <span>
-        <strong><%= @completed_videos %></strong>
-        of
-        <strong><%= @total_videos %></strong>
-        lessons completed
-      </span>
-
-      <span>
-        🎥 Video Lessons
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       PLAYLISTS
-  ====================================================== -->
-
-  <% if @playlists.present? && @playlists.any? %>
-
-    <% @playlists.each_with_index do |playlist, playlist_index| %>
-
-      <div class="learning-playlist-card">
-
-
-        <!-- PLAYLIST HEADER -->
-
-        <div class="playlist-top">
-
-          <div class="playlist-number">
-            <%= playlist_index + 1 %>
-          </div>
-
-          <div class="playlist-heading">
-
-            <span>
-              COURSE PLAYLIST
+            <span class="progress-label">
+              YOUR LEARNING PROGRESS
             </span>
 
-            <h2>
-              <%= playlist.title %>
-            </h2>
+            <h3>
+              Keep going — you're doing great!
+            </h3>
 
-            <% if playlist.description.present? %>
+          </div>
 
-              <p>
-                <%= playlist.description %>
-              </p>
+          <div class="progress-circle">
+            <%= [[@progress.to_i, 0].max, 100].min %>%
+          </div>
+
+        </div>
+
+
+        <div class="progress-track">
+          <div
+            class="progress-fill"
+            style="width:<%= [[@progress.to_i, 0].max, 100].min %>%;"
+          ></div>
+        </div>
+
+
+        <div class="progress-bottom">
+
+          <span>
+            <strong><%= @completed_videos %></strong>
+            of
+            <strong><%= @total_videos %></strong>
+            lessons completed
+          </span>
+
+          <span>
+            🎥 Video Lessons
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           LEARNING TABS
+      ================================================== -->
+
+      <nav
+        class="learning-tabs"
+        aria-label="Course learning sections"
+        role="tablist"
+      >
+
+        <!-- LIVE -->
+
+        <button
+          type="button"
+          class="learning-tab is-active"
+          id="learning-tab-live"
+          role="tab"
+          aria-selected="true"
+          data-learning-tab="live"
+        >
+
+          <span class="learning-tab-icon">🔴</span>
+          <span>Live Classes</span>
+
+          <span class="learning-tab-count">
+            <%= @live_classes.size %>
+          </span>
+
+        </button>
+
+
+        <!-- RECORDINGS -->
+
+        <button
+          type="button"
+          class="learning-tab"
+          id="learning-tab-recordings"
+          role="tab"
+          aria-selected="false"
+          data-learning-tab="recordings"
+        >
+
+          <span class="learning-tab-icon">▶</span>
+          <span>Recordings</span>
+
+          <span class="learning-tab-count">
+            <%= @total_videos %>
+          </span>
+
+        </button>
+
+
+        <!-- STUDY MATERIAL -->
+
+        <button
+          type="button"
+          class="learning-tab"
+          id="learning-tab-study"
+          role="tab"
+          aria-selected="false"
+          data-learning-tab="study"
+        >
+
+          <span class="learning-tab-icon">📚</span>
+          <span>Study Material</span>
+
+        </button>
+
+      </nav>
+
+
+      <!-- =================================================
+           LIVE CLASSES PANEL
+      ================================================== -->
+
+      <div
+        class="learning-live-card"
+        id="learning-panel-live"
+        data-learning-panel="live"
+      >
+
+        <div class="learning-live-header">
+
+          <div class="learning-live-icon">
+            🔴
+          </div>
+
+          <div>
+            <span>LIVE LEARNING</span>
+            <h2>Live Classes</h2>
+          </div>
+
+        </div>
+
+
+        <% if @live_classes.present? && @live_classes.any? %>
+
+          <div class="learning-live-list">
+
+            <% @live_classes.each do |live_class| %>
+
+              <div class="learning-live-item">
+
+                <div class="learning-live-info">
+
+                  <h3>
+                    <%= live_class.title %>
+                  </h3>
+
+                  <% if live_class.description.present? %>
+                    <p><%= live_class.description %></p>
+                  <% end %>
+
+
+                  <div class="learning-live-meta">
+
+                    <% if live_class.scheduled_at.present? %>
+
+                      <span>
+                        📅 <%= live_class.scheduled_at.strftime("%d %b %Y") %>
+                      </span>
+
+                      <span>
+                        🕒 <%= live_class.scheduled_at.strftime("%I:%M %p") %>
+                      </span>
+
+                    <% end %>
+
+
+                    <% if live_class.duration.present? %>
+
+                      <span>
+                        ⏱ <%= live_class.duration %> min
+                      </span>
+
+                    <% end %>
+
+                  </div>
+
+                </div>
+
+
+                <div class="learning-live-action">
+
+                  <% if live_class.upcoming? %>
+
+                    <span class="live-status upcoming">
+                      UPCOMING
+                    </span>
+
+                    <%= link_to(
+                          "View Details",
+                          watch_course_live_class_path(@course, live_class),
+                          class: "join-live-button"
+                        ) %>
+
+
+                  <% elsif live_class.live? %>
+
+                    <span class="live-status live">
+                      🔴 LIVE NOW
+                    </span>
+
+                    <%= link_to(
+                          "Join Live Class",
+                          watch_course_live_class_path(@course, live_class),
+                          class: "join-live-button"
+                        ) %>
+
+
+                  <% elsif live_class.ended? %>
+
+                    <span class="live-status ended">
+                      ENDED
+                    </span>
+
+                    <%= link_to(
+                          "View Class Details",
+                          watch_course_live_class_path(@course, live_class),
+                          class: "watch-recording-button"
+                        ) %>
+
+                  <% end %>
+
+                </div>
+
+              </div>
 
             <% end %>
 
           </div>
 
-        </div>
+        <% else %>
+
+          <div class="learning-empty">
+            <span>🔴</span>
+            <p>No live classes scheduled yet.</p>
+          </div>
+
+        <% end %>
+
+      </div>
 
 
-        <!-- =================================================
-             VIDEOS
-        ================================================== -->
+      <!-- =================================================
+           RECORDINGS PANEL
+      ================================================== -->
 
-        <div class="learning-section">
+      <div
+        class="learning-recordings-wrapper"
+        id="learning-panel-recordings"
+        data-learning-panel="recordings"
+        hidden
+      >
 
-          <div class="learning-section-heading">
+        <% if @playlists.present? && @playlists.any? %>
 
-            <div class="section-icon video-icon">
-              🎥
-            </div>
+          <!-- PLAYLIST DROPDOWN -->
 
-            <div>
+          <div class="learning-playlist-selector">
 
-              <h3>
-                Videos
-              </h3>
+            <label
+              for="learning_playlist_select"
+              class="form-label fw-semibold"
+            >
+              Select Playlist
+            </label>
 
-              <span>
-                <%= playlist.videos.count %>
-                lessons available
-              </span>
+            <select
+              id="learning_playlist_select"
+              class="form-select"
+            >
 
-            </div>
+              <% @playlists.each do |playlist| %>
+
+                <option value="<%= playlist.id %>">
+                  <%= playlist.title %>
+                </option>
+
+              <% end %>
+
+            </select>
 
           </div>
 
 
-          <% if playlist.videos.present? && playlist.videos.any? %>
+          <!-- PLAYLIST VIDEO CONTENT -->
 
-            <div class="learning-video-list">
+          <% @playlists.each_with_index do |playlist, playlist_index| %>
 
-              <% playlist.videos.order(:position).each do |video| %>
+            <div
+              class="learning-playlist-card"
+              data-learning-playlist
+              data-playlist-id="<%= playlist.id %>"
+              <%= "hidden" unless playlist_index == 0 %>
+            >
 
-                <%= link_to learning_video_path(@course, video),
-                    class: "learning-video-item" do %>
+              <!-- PLAYLIST HEADER -->
+
+              <div class="playlist-top">
+
+                <div class="playlist-number">
+                  <%= playlist_index + 1 %>
+                </div>
+
+                <div class="playlist-heading">
+
+                  <span>
+                    COURSE PLAYLIST
+                  </span>
+
+                  <h2>
+                    <%= playlist.title %>
+                  </h2>
+
+                  <% if playlist.description.present? %>
+                    <p><%= playlist.description %></p>
+                  <% end %>
+
+                </div>
+
+              </div>
 
 
-                  <div class="video-position">
-                    <%= video.position %>
+              <!-- VIDEOS -->
+
+              <div class="learning-section learning-recordings-section">
+
+                <div class="learning-section-heading">
+
+                  <div class="section-icon video-icon">
+                    🎥
                   </div>
 
+                  <div>
 
-                  <div class="learning-video-info">
-
-                    <h4>
-                      <%= video.title %>
-                    </h4>
-
-                    <% if video.description.present? %>
-
-                      <p>
-                        <%= video.description %>
-                      </p>
-
-                    <% end %>
-
-                    <% if video.duration.present? %>
-
-                      <small>
-                        ⏱ <%= video.duration %>
-                      </small>
-
-                    <% end %>
-
-                  </div>
-
-
-                  <div class="video-play">
+                    <h3>Videos</h3>
 
                     <span>
-                      ▶
+                      <%= playlist.videos.count %>
+                      lessons available
                     </span>
 
                   </div>
 
+                </div>
+
+
+                <% if playlist.videos.present? && playlist.videos.any? %>
+
+                  <div class="learning-video-list">
+
+                    <% playlist.videos.order(:position).each do |video| %>
+
+                      <%= link_to(
+                            learning_video_path(@course, video),
+                            class: "learning-video-item"
+                          ) do %>
+
+                        <div class="video-position">
+                          <%= video.position %>
+                        </div>
+
+
+                        <div class="learning-video-info">
+
+                          <h4>
+                            <%= video.title %>
+                          </h4>
+
+                          <% if video.description.present? %>
+                            <p><%= video.description %></p>
+                          <% end %>
+
+
+                          <% if video.duration.present? %>
+
+                            <small>
+                              ⏱ <%= video.duration %>
+                            </small>
+
+                          <% end %>
+
+                        </div>
+
+
+                        <div class="video-play">
+                          <span>▶</span>
+                        </div>
+
+                      <% end %>
+
+                    <% end %>
+
+                  </div>
+
+                <% else %>
+
+                  <div class="learning-empty">
+                    <span>🎥</span>
+                    <p>No videos available in this playlist.</p>
+                  </div>
 
                 <% end %>
 
-              <% end %>
+              </div>
 
-            </div>
-
-          <% else %>
-
-            <div class="learning-empty">
-              <span>🎥</span>
-              <p>No videos available in this playlist.</p>
             </div>
 
           <% end %>
 
-        </div>
+        <% else %>
 
+          <div class="learning-empty large-empty">
 
-        <!-- =================================================
-             STUDY NOTES
-        ================================================== -->
+            <span>📚</span>
 
-        <div class="learning-section">
+            <h3>
+              No Playlists Available
+            </h3>
 
-          <div class="learning-section-heading">
-
-            <div class="section-icon notes-icon">
-              📝
-            </div>
-
-            <div>
-
-              <h3>
-                Study Notes
-              </h3>
-
-              <span>
-                Downloadable learning material
-              </span>
-
-            </div>
+            <p>
+              Course learning content will be available soon.
+            </p>
 
           </div>
 
+        <% end %>
 
-          <% if playlist.notes.present? && playlist.notes.any? %>
+      </div>
 
-            <div class="learning-download-list">
 
-              <% playlist.notes.each do |note| %>
+      <!-- =================================================
+           STUDY MATERIAL PANEL
+      ================================================== -->
 
-                <div class="learning-download-item">
+      <div
+        class="learning-study-wrapper"
+        id="learning-panel-study"
+        data-learning-panel="study"
+        hidden
+      >
 
-                  <div class="download-left">
+        <% if @playlists.present? && @playlists.any? %>
 
-                    <div class="download-file-icon">
-                      📄
-                    </div>
+          <% @playlists.each do |playlist| %>
 
-                    <div>
+            <% if playlist.notes.present? && playlist.notes.any? %>
 
-                      <h4>
-                        <%= note.title %>
-                      </h4>
+              <div class="learning-section learning-study-section">
 
-                      <% if note.description.present? %>
+                <div class="learning-section-heading">
 
-                        <p>
-                          <%= note.description %>
-                        </p>
+                  <div class="section-icon notes-icon">
+                    📝
+                  </div>
+
+                  <div>
+
+                    <h3>
+                      <%= playlist.title %>
+                    </h3>
+
+                    <span>
+                      Study Notes
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div class="learning-download-list">
+
+                  <% playlist.notes.each do |note| %>
+
+                    <div class="learning-download-item">
+
+                      <div class="download-left">
+
+                        <div class="download-file-icon">
+                          📄
+                        </div>
+
+                        <div>
+
+                          <h4>
+                            <%= note.title %>
+                          </h4>
+
+                          <% if note.description.present? %>
+                            <p><%= note.description %></p>
+                          <% end %>
+
+                        </div>
+
+                      </div>
+
+
+                      <% if note.pdf_file.attached? %>
+
+                        <%= link_to(
+                              rails_blob_path(
+                                note.pdf_file,
+                                disposition: "attachment"
+                              ),
+                              class: "download-action",
+                              title: "Download PDF"
+                            ) do %>
+
+                          <span>↓</span>
+                          <strong>PDF</strong>
+
+                        <% end %>
+
+                      <% else %>
+
+                        <span class="file-unavailable">
+                          No PDF
+                        </span>
 
                       <% end %>
 
                     </div>
 
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            <% end %>
+
+          <% end %>
+
+        <% end %>
+
+
+        <!-- RESOURCES -->
+
+        <div class="learning-side-card">
+
+          <div class="side-card-header">
+
+            <div class="side-icon resource-side-icon">
+              📂
+            </div>
+
+            <div>
+              <span>COURSE MATERIAL</span>
+              <h3>Resources</h3>
+            </div>
+
+          </div>
+
+
+          <p class="side-card-description">
+            Access additional files and resources provided by your teacher.
+          </p>
+
+
+          <% resources = @playlists.flat_map(&:resources) %>
+
+          <% if resources.present? && resources.any? %>
+
+            <div class="resource-list">
+
+              <% resources.each do |resource| %>
+
+                <div class="resource-item">
+
+                  <div class="resource-info">
+
+                    <div class="resource-icon">
+                      📎
+                    </div>
+
+                    <div>
+
+                      <h4>
+                        <%= resource.title %>
+                      </h4>
+
+                      <span>
+                        <%= resource.resource_type.to_s.upcase %>
+                      </span>
+
+                    </div>
+
                   </div>
 
 
-                  <% if note.pdf_file.attached? %>
+                  <% if resource.file.attached? %>
 
-                    <%= link_to rails_blob_path(
-                          note.pdf_file,
-                          disposition: "attachment"
-                        ),
-                        class: "download-action",
-                        title: "Download PDF" do %>
+                    <%= link_to(
+                          rails_blob_path(
+                            resource.file,
+                            disposition: "attachment"
+                          ),
+                          class: "resource-download"
+                        ) do %>
 
-                      <span>
-                        ↓
-                      </span>
-
-                      <strong>
-                        PDF
-                      </strong>
+                      ↓
 
                     <% end %>
 
                   <% else %>
 
-                    <span class="file-unavailable">
-                      No PDF
+                    <span class="resource-disabled">
+                      —
                     </span>
 
                   <% end %>
@@ -357,400 +703,210 @@
 
           <% else %>
 
-            <div class="learning-empty">
-              <span>📝</span>
-              <p>No study notes available.</p>
+            <div class="side-empty">
+              <span>📂</span>
+              <p>No resources available.</p>
             </div>
 
           <% end %>
 
         </div>
 
-
       </div>
 
-    <% end %>
-
-  <% else %>
-
-    <div class="learning-empty large-empty">
-
-      <span>📚</span>
-
-      <h3>
-        No Playlists Available
-      </h3>
-
-      <p>
-        Course learning content will be available soon.
-      </p>
-
-    </div>
-
-  <% end %>
+    </section>
 
 
-</section>
+    <!-- ===================================================
+         RIGHT SIDE — COURSE INFO + QUIZ
+    ==================================================== -->
+
+    <aside class="learning-right">
 
 
+      <!-- COURSE OVERVIEW -->
 
-<!-- =======================================================
-     RIGHT SIDE — RESOURCES + QUIZ
-======================================================== -->
+      <div class="learning-side-card course-summary-card">
 
-<aside class="learning-right">
+        <div class="side-card-header">
 
+          <div class="side-icon">
+            🎓
+          </div>
 
-  <!-- =====================================================
-       COURSE QUICK INFO
-  ====================================================== -->
+          <div>
+            <span>LEARNING</span>
+            <h3>Course Overview</h3>
+          </div>
 
-  <div class="learning-side-card course-summary-card">
-
-    <div class="side-card-header">
-
-      <div class="side-icon">
-        🎓
-      </div>
-
-      <div>
-
-        <span>
-          LEARNING
-        </span>
-
-        <h3>
-          Course Overview
-        </h3>
-
-      </div>
-
-    </div>
+        </div>
 
 
-    <div class="course-summary-list">
+        <div class="course-summary-list">
 
-      <div class="summary-item">
+          <div class="summary-item">
+            <span>📚 Playlists</span>
+            <strong><%= @playlists.count %></strong>
+          </div>
 
-        <span>
-          📚 Playlists
-        </span>
+          <div class="summary-item">
+            <span>🎥 Lessons</span>
+            <strong><%= @total_videos %></strong>
+          </div>
 
-        <strong>
-          <%= @playlists.count %>
-        </strong>
+          <div class="summary-item">
+            <span>✅ Completed</span>
+            <strong><%= @completed_videos %></strong>
+          </div>
+
+        </div>
 
       </div>
 
 
-      <div class="summary-item">
+      <!-- =================================================
+           QUIZ CENTER
+      ================================================== -->
 
-        <span>
-          🎥 Lessons
-        </span>
+      <div class="learning-side-card quiz-side-card">
 
-        <strong>
-          <%= @total_videos %>
-        </strong>
+        <div class="side-card-header">
 
-      </div>
+          <div class="side-icon quiz-side-icon">
+            🧠
+          </div>
 
+          <div>
+            <span>TEST YOUR KNOWLEDGE</span>
+            <h3>Quiz Center</h3>
+          </div>
 
-      <div class="summary-item">
-
-        <span>
-          ✅ Completed
-        </span>
-
-        <strong>
-          <%= @completed_videos %>
-        </strong>
-
-      </div>
-
-    </div>
-
-  </div>
+        </div>
 
 
-
-  <!-- =====================================================
-       RESOURCES
-  ====================================================== -->
-
-  <div class="learning-side-card">
-
-    <div class="side-card-header">
-
-      <div class="side-icon resource-side-icon">
-        📂
-      </div>
-
-      <div>
-
-        <span>
-          COURSE MATERIAL
-        </span>
-
-        <h3>
-          Resources
-        </h3>
-
-      </div>
-
-    </div>
+        <p class="side-card-description">
+          Test your understanding of the complete course with
+          course-level quizzes.
+        </p>
 
 
-    <p class="side-card-description">
-      Access additional files and resources provided by your teacher.
-    </p>
+        <% full_course_quizzes = @quizzes.where(video_id: nil) %>
 
 
-    <div class="resource-list">
+        <% if full_course_quizzes.present? && full_course_quizzes.any? %>
 
-      <% resources = @playlists.flat_map(&:resources) %>
+          <div class="quiz-list">
 
-      <% if resources.present? && resources.any? %>
+            <% full_course_quizzes.each do |quiz| %>
 
-        <% resources.each do |resource| %>
+              <div class="quiz-card">
 
-          <div class="resource-item">
+                <div class="quiz-card-top">
 
-            <div class="resource-info">
+                  <div class="quiz-number">
+                    🧠
+                  </div>
 
-              <div class="resource-icon">
-                📎
-              </div>
+                  <span class="quiz-active">
+                    ACTIVE
+                  </span>
 
-              <div>
+                </div>
+
 
                 <h4>
-                  <%= resource.title %>
+                  <%= quiz.title %>
                 </h4>
 
-                <span>
-                  <%= resource.resource_type.to_s.upcase %>
-                </span>
+
+                <% if quiz.description.present? %>
+                  <p><%= quiz.description %></p>
+                <% else %>
+                  <p>
+                    Test your knowledge with this full course quiz.
+                  </p>
+                <% end %>
+
+
+                <div class="quiz-details">
+
+                  <span>
+                    📝 <%= quiz.questions.count %>
+                  </span>
+
+                  <span>
+                    ⏱ <%= quiz.time_limit.to_i %> min
+                  </span>
+
+                </div>
+
+
+                <%= button_to(
+                      start_course_quiz_path(@course, quiz),
+                      method: :post,
+                      class: "start-quiz-button"
+                    ) do %>
+
+                  <span>🚀</span>
+                  Start Quiz
+
+                <% end %>
 
               </div>
 
-            </div>
-
-
-            <% if resource.file.attached? %>
-
-              <%= link_to rails_blob_path(
-                    resource.file,
-                    disposition: "attachment"
-                  ),
-                  class: "resource-download",
-                  title: "Download Resource" do %>
-
-                ↓
-
-              <% end %>
-
-            <% else %>
-
-              <span class="resource-disabled">
-                —
-              </span>
-
             <% end %>
+
+          </div>
+
+        <% else %>
+
+          <div class="side-empty quiz-empty">
+
+            <span>🧠</span>
+
+            <h4>
+              No Full Course Quizzes
+            </h4>
+
+            <p>
+              Full course quizzes will appear here.
+            </p>
 
           </div>
 
         <% end %>
 
-      <% else %>
+      </div>
 
-        <div class="side-empty">
 
-          <span>📂</span>
+      <!-- LEARNING TIP -->
+
+      <div class="learning-tip-card">
+
+        <div class="tip-icon">
+          💡
+        </div>
+
+        <div>
+
+          <h4>
+            Learning Tip
+          </h4>
 
           <p>
-            No resources available.
+            Complete each video and review the notes before attempting the quiz.
           </p>
 
         </div>
 
-      <% end %>
+      </div>
 
-    </div>
-
-  </div>
-
-
-<!-- =====================================================
-     QUIZ CENTER — FULL COURSE QUIZZES ONLY
-======================================================== -->
-
-<div class="learning-side-card quiz-side-card">
-
-  <div class="side-card-header">
-
-    <div class="side-icon quiz-side-icon">
-      🧠
-    </div>
-
-    <div>
-
-      <span>
-        TEST YOUR KNOWLEDGE
-      </span>
-
-      <h3>
-        Quiz Center
-      </h3>
-
-    </div>
-
-  </div>
-
-
-  <p class="side-card-description">
-    Test your understanding of the complete course with
-    course-level quizzes.
-  </p>
-
-
-  <% full_course_quizzes = @quizzes.where(video_id: nil) %>
-
-
-  <% if full_course_quizzes.present? && full_course_quizzes.any? %>
-
-    <div class="quiz-list">
-
-      <% full_course_quizzes.each do |quiz| %>
-
-        <div class="quiz-card">
-
-          <div class="quiz-card-top">
-
-            <div class="quiz-number">
-              🧠
-            </div>
-
-            <span class="quiz-active">
-              ACTIVE
-            </span>
-
-          </div>
-
-
-          <h4>
-            <%= quiz.title %>
-          </h4>
-
-
-          <% if quiz.description.present? %>
-
-            <p>
-              <%= quiz.description %>
-            </p>
-
-          <% else %>
-
-            <p>
-              Test your knowledge with this full course quiz.
-            </p>
-
-          <% end %>
-
-
-          <div class="quiz-details">
-
-            <span>
-              📝 <%= quiz.questions.count %>
-            </span>
-
-            <span>
-              ⏱ <%= quiz.time_limit.to_i %> min
-            </span>
-
-            <% if quiz.respond_to?(:passing_percentage) &&
-                  quiz.passing_percentage.present? %>
-
-              <span>
-                🎯 <%= quiz.passing_percentage %>%
-              </span>
-
-            <% end %>
-
-          </div>
-
-
-          <%= button_to start_course_quiz_path(@course, quiz),
-              method: :post,
-              class: "start-quiz-button" do %>
-
-            <span>
-              🚀
-            </span>
-
-            Start Quiz
-
-          <% end %>
-
-        </div>
-
-      <% end %>
-
-    </div>
-
-
-  <% else %>
-
-    <div class="side-empty quiz-empty">
-
-      <span>🧠</span>
-
-      <h4>
-        No Full Course Quizzes
-      </h4>
-
-      <p>
-        Full course quizzes will appear here.
-      </p>
-
-    </div>
-
-  <% end %>
-
-</div>
-
-
-  <!-- =====================================================
-       LEARNING TIP
-  ====================================================== -->
-
-  <div class="learning-tip-card">
-
-    <div class="tip-icon">
-      💡
-    </div>
-
-    <div>
-
-      <h4>
-        Learning Tip
-      </h4>
-
-      <p>
-        Complete each video and review the notes before attempting the quiz.
-      </p>
-
-    </div>
-
-  </div>
-
-
-</aside>
-
+    </aside>
 
   </div>
 
 </div>
+
 
 <style nonce="<%= content_security_policy_nonce %>">
 
@@ -1255,6 +1411,50 @@
   color: #5d3c99;
 }
 
+
+
+/* =========================================================
+   PLAYLIST SELECTOR
+========================================================= */
+
+.learning-playlist-selector {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #e1dce9;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #efedf6
+    );
+  box-shadow:
+    10px 11px 24px rgba(65,54,90,.10),
+    -7px -7px 16px rgba(255,255,255,.95);
+}
+
+.learning-playlist-selector label {
+  display: block;
+  margin-bottom: 8px;
+  color: #5d3c99;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.learning-playlist-selector .form-select {
+  min-height: 48px;
+  border: 1px solid #d9d0e7;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #332d44;
+  font-weight: 700;
+  box-shadow: inset 1px 1px 3px rgba(255,255,255,.8);
+}
+
+.learning-playlist-selector .form-select:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 .2rem rgba(124,58,237,.12);
+}
 
 /* =========================================================
    PLAYLIST CARD — 3D
@@ -2573,6 +2773,145 @@
 }
 
 
+
+/* =========================================================
+   PRODUCTION LEARNING TABS
+========================================================= */
+.learning-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 22px 0 18px;
+  padding: 7px;
+  border: 1px solid #e4deef;
+  border-radius: 16px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 8px 24px rgba(48, 37, 75, .06);
+}
+
+.learning-tab {
+  min-width: 0;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: #6e687b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.learning-tab:hover {
+  background: #f4f0fb;
+  color: #5b35a0;
+}
+
+.learning-tab.is-active {
+  border-color: #6d3bc0;
+  background: linear-gradient(135deg, #8b5cf6, #5b21b6);
+  color: #fff;
+  box-shadow: 0 7px 16px rgba(91, 33, 182, .22);
+}
+
+.learning-tab:focus-visible,
+.learning-back-btn:focus-visible,
+.learning-video-item:focus-visible,
+.join-live-button:focus-visible,
+.watch-recording-button:focus-visible,
+.start-quiz-button:focus-visible {
+  outline: 3px solid rgba(124, 58, 237, .35);
+  outline-offset: 3px;
+}
+
+.learning-tab-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.learning-tab-count {
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border-radius: 20px;
+  background: rgba(108, 75, 160, .10);
+  color: inherit;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.learning-tab.is-active .learning-tab-count {
+  background: rgba(255,255,255,.18);
+}
+
+.learning-page [hidden] {
+  display: none !important;
+}
+
+.learning-live-card {
+  scroll-margin-top: 24px;
+}
+
+.learning-playlist-card {
+  scroll-margin-top: 24px;
+}
+
+.learning-video-item {
+  min-height: 68px;
+}
+
+.learning-live-item {
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.learning-live-item:hover {
+  transform: translateY(-2px);
+  border-color: #cfc0eb;
+}
+
+@media (max-width: 560px) {
+  .learning-tabs {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  .learning-tab {
+    min-height: 48px;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 4px;
+    font-size: 10px;
+  }
+
+  .learning-tab-icon {
+    font-size: 14px;
+  }
+
+  .learning-tab-count {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learning-page *,
+  .learning-page *::before,
+  .learning-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
 /* =========================================================
    RESPONSIVE — 1050px
 ========================================================= */
@@ -2810,136 +3149,197 @@
 </style>
 
 <script nonce="<%= content_security_policy_nonce %>">
-
 (function () {
-
-  /* =====================================================
-     LEARNING PAGE
-     TURBO SAFE + DUPLICATE SAFE
-  ===================================================== */
-
   function initializeLearningPage() {
-
     /* =====================================================
        BACK BUTTON
     ===================================================== */
+    const backBtn = document.getElementById("learningBackBtn");
 
-    const backBtn =
-      document.getElementById("learningBackBtn");
-
-    if (
-      backBtn &&
-      backBtn.dataset.initialized !== "true"
-    ) {
-
+    if (backBtn && backBtn.dataset.initialized !== "true") {
       backBtn.dataset.initialized = "true";
 
       backBtn.addEventListener("click", function (event) {
-
         event.preventDefault();
 
-        if (
-          document.referrer &&
-          document.referrer !== window.location.href
-        ) {
-
+        if (document.referrer && document.referrer !== window.location.href) {
           window.history.back();
-
         } else {
-
           window.location.href = "/";
-
         }
-
       });
-
     }
 
-
     /* =====================================================
-       PREVENT DOUBLE-CLICKING QUIZ BUTTONS
+       PLAYLIST SELECTOR
+       Selected playlist only shows its own videos.
     ===================================================== */
+    const playlistSelect = document.getElementById("learning_playlist_select");
+    const playlistCards = Array.from(
+      document.querySelectorAll("[data-learning-playlist]")
+    );
 
-    const quizButtons =
-      document.querySelectorAll(".start-quiz-button");
+    function showSelectedPlaylist() {
+      if (!playlistCards.length) return;
 
+      const selectedPlaylistId =
+        playlistSelect && playlistSelect.value
+          ? playlistSelect.value
+          : playlistCards[0].dataset.playlistId;
 
-    quizButtons.forEach(function (button) {
+      playlistCards.forEach(function (card) {
+        card.hidden = card.dataset.playlistId !== selectedPlaylistId;
+      });
+    }
 
-      if (button.dataset.quizInitialized === "true") {
-        return;
+    if (playlistSelect) {
+      if (!playlistSelect.value && playlistCards.length) {
+        playlistSelect.value = playlistCards[0].dataset.playlistId;
       }
 
-      button.dataset.quizInitialized = "true";
+      if (playlistSelect.dataset.initialized !== "true") {
+        playlistSelect.dataset.initialized = "true";
 
+        playlistSelect.addEventListener("change", function () {
+          showSelectedPlaylist();
+        });
+      }
+    }
 
-      button.addEventListener("click", function () {
+    /* =====================================================
+       LEARNING TABS
+    ===================================================== */
+    const tabButtons = Array.from(
+      document.querySelectorAll("[data-learning-tab]")
+    );
 
-        if (button.dataset.clicked === "true") {
+    const panels = Array.from(
+      document.querySelectorAll("[data-learning-panel]")
+    );
+
+    function setActiveLearningTab(selectedTab, moveFocus) {
+      tabButtons.forEach(function (tabButton) {
+        const isActive =
+          tabButton.dataset.learningTab === selectedTab;
+
+        tabButton.classList.toggle("is-active", isActive);
+        tabButton.setAttribute(
+          "aria-selected",
+          isActive ? "true" : "false"
+        );
+        tabButton.tabIndex = isActive ? 0 : -1;
+      });
+
+      panels.forEach(function (panel) {
+        panel.hidden =
+          panel.dataset.learningPanel !== selectedTab;
+      });
+
+      // When Recordings opens, keep only the selected playlist visible.
+      if (selectedTab === "recordings") {
+        showSelectedPlaylist();
+      }
+
+      if (moveFocus) {
+        const activeButton = document.querySelector(
+          '[data-learning-tab="' + selectedTab + '"]'
+        );
+
+        if (activeButton) activeButton.focus();
+      }
+    }
+
+    tabButtons.forEach(function (tabButton) {
+      if (tabButton.dataset.initialized === "true") return;
+
+      tabButton.dataset.initialized = "true";
+
+      tabButton.addEventListener("click", function () {
+        setActiveLearningTab(
+          tabButton.dataset.learningTab,
+          false
+        );
+      });
+
+      tabButton.addEventListener("keydown", function (event) {
+        const currentIndex = tabButtons.indexOf(tabButton);
+        let nextIndex = currentIndex;
+
+        if (event.key === "ArrowRight") {
+          nextIndex = (currentIndex + 1) % tabButtons.length;
+        } else if (event.key === "ArrowLeft") {
+          nextIndex =
+            (currentIndex - 1 + tabButtons.length) %
+            tabButtons.length;
+        } else if (event.key === "Home") {
+          nextIndex = 0;
+        } else if (event.key === "End") {
+          nextIndex = tabButtons.length - 1;
+        } else {
           return;
         }
 
+        event.preventDefault();
 
-        button.dataset.clicked = "true";
-
-
-        const originalHTML =
-          button.innerHTML;
-
-
-        button.innerHTML =
-          "<span>⏳</span> Starting Quiz...";
-
-
-        setTimeout(function () {
-
-          if (document.body.contains(button)) {
-
-            button.innerHTML =
-              originalHTML;
-
-            button.dataset.clicked =
-              "false";
-
-          }
-
-        }, 5000);
-
+        setActiveLearningTab(
+          tabButtons[nextIndex].dataset.learningTab,
+          true
+        );
       });
-
     });
 
+    if (tabButtons.length) {
+      const currentActiveTab =
+        document.querySelector("[data-learning-tab].is-active");
+
+      setActiveLearningTab(
+        currentActiveTab
+          ? currentActiveTab.dataset.learningTab
+          : "live",
+        false
+      );
+    }
+
+    /* =====================================================
+       PREVENT DOUBLE QUIZ SUBMISSION
+    ===================================================== */
+    document.querySelectorAll(".start-quiz-button").forEach(
+      function (button) {
+        if (button.dataset.quizInitialized === "true") return;
+
+        button.dataset.quizInitialized = "true";
+
+        button.addEventListener("click", function () {
+          if (button.dataset.clicked === "true") return;
+
+          button.dataset.clicked = "true";
+
+          const originalHTML = button.innerHTML;
+
+          button.innerHTML =
+            "<span>⏳</span> Starting Quiz...";
+
+          setTimeout(function () {
+            if (document.body.contains(button)) {
+              button.innerHTML = originalHTML;
+              button.dataset.clicked = "false";
+            }
+          }, 5000);
+        });
+      }
+    );
   }
 
-
-  /* =====================================================
-     TURBO SUPPORT
-  ===================================================== */
-
-  document.addEventListener(
-    "turbo:load",
-    initializeLearningPage
-  );
-
-
-  /* =====================================================
-     INITIAL PAGE LOAD
-  ===================================================== */
+  document.addEventListener("turbo:load", initializeLearningPage);
 
   if (document.readyState !== "loading") {
-
     initializeLearningPage();
-
   } else {
-
     document.addEventListener(
       "DOMContentLoaded",
       initializeLearningPage,
       { once: true }
     );
-
   }
-
 })();
-
 </script>

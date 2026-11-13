@@ -1,0 +1,2 @@
+module LiveCoursesHelper
+end

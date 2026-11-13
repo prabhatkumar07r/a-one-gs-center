@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "live_courses/index"
 
   root "sample#homepage"
 
@@ -9,7 +10,9 @@ Rails.application.routes.draw do
   get "/sample/homepage",
       to: "sample#homepage"
 
-
+  get "live-courses",
+    to: "live_courses#index",
+    as: :live_courses
   resources :test_series,
             only: [:index, :show] do
 
@@ -273,6 +276,8 @@ end
 
 
     resources :enrollments
+    resources :live_classes
+   
 
   end
 
@@ -454,7 +459,9 @@ delete "/ebook-payments/:id/remove_coupon",
     end
 
   end
-
+  get "courses/:course_id/live_classes/:id/watch",
+    to: "live_classes#watch",
+    as: :watch_course_live_class
 
   namespace :teacher_panel do
 

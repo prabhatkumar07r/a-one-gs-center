@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_18_053056) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_105735) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -336,6 +336,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_053056) do
     t.string "razorpay_payment_id"
     t.string "razorpay_signature"
     t.string "status"
+    t.datetime "success_email_sent_at"
+    t.datetime "success_whatsapp_sent_at"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["coupon_id"], name: "index_ebook_purchases_on_coupon_id"
@@ -419,6 +421,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_053056) do
     t.string "status"
     t.string "title"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "live_classes", force: :cascade do |t|
+    t.string "access_type", default: "enrolled", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.integer "duration"
+    t.boolean "manual_status", default: false, null: false
+    t.bigint "playlist_id"
+    t.string "provider", default: "youtube", null: false
+    t.string "recording_url"
+    t.datetime "scheduled_at"
+    t.string "status", default: "upcoming", null: false
+    t.string "stream_url"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_live_classes_on_course_id"
+    t.index ["playlist_id"], name: "index_live_classes_on_playlist_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -674,6 +695,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_053056) do
     t.string "razorpay_payment_id"
     t.string "razorpay_signature"
     t.string "status"
+    t.datetime "success_email_sent_at"
+    t.datetime "success_whatsapp_sent_at"
     t.bigint "test_series_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -845,6 +868,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_053056) do
   add_foreign_key "enrollments", "users"
   add_foreign_key "fee_payments", "fees"
   add_foreign_key "fees", "enrollments"
+  add_foreign_key "live_classes", "courses"
+  add_foreign_key "live_classes", "playlists"
   add_foreign_key "notes", "playlists"
   add_foreign_key "notes", "videos"
   add_foreign_key "options", "questions"

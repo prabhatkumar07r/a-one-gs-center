@@ -1,0 +1,1892 @@
+<% content_for :show_layout, true %>
+
+<div class="live-courses-page">
+
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
+  <section class="live-hero">
+
+    <div class="live-hero-content">
+
+      <div class="live-hero-badge">
+        <span class="live-pulse-dot"></span>
+        LIVE LEARNING CENTER
+      </div>
+
+      <h1>
+        Learn <span>Live.</span>
+        Learn Better.
+      </h1>
+
+      <p>
+        Join your live classes, check upcoming sessions,
+        and watch previous class recordings — all in one place.
+      </p>
+
+      <div class="live-hero-actions">
+
+        <% if @live_now.any? %>
+          <a href="#live-now-section"
+             class="live-primary-btn">
+            🔴 Join Live Now
+          </a>
+        <% else %>
+          <a href="#upcoming-section"
+             class="live-primary-btn">
+            📅 View Upcoming Classes
+          </a>
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <!-- HERO VISUAL -->
+
+    <div class="live-hero-visual">
+
+      <div class="live-floating-card live-card-one">
+        🔴
+      </div>
+
+      <div class="live-main-icon">
+        📺
+      </div>
+
+      <div class="live-floating-card live-card-two">
+        🎓
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       STATISTICS
+  ====================================================== -->
+
+  <section class="live-statistics">
+
+    <div class="live-stat-card">
+
+      <div class="live-stat-icon red-icon">
+        🔴
+      </div>
+
+      <div>
+        <span>LIVE NOW</span>
+        <strong><%= @live_now.count %></strong>
+      </div>
+
+    </div>
+
+
+    <div class="live-stat-card">
+
+      <div class="live-stat-icon blue-icon">
+        📅
+      </div>
+
+      <div>
+        <span>UPCOMING</span>
+        <strong><%= @upcoming_classes.count %></strong>
+      </div>
+
+    </div>
+
+
+    <div class="live-stat-card">
+
+      <div class="live-stat-icon purple-icon">
+        📺
+      </div>
+
+      <div>
+        <span>PAST CLASSES</span>
+        <strong><%= @ended_classes.count %></strong>
+      </div>
+
+    </div>
+
+
+    <div class="live-stat-card">
+
+      <div class="live-stat-icon green-icon">
+        🎓
+      </div>
+
+      <div>
+        <span>TOTAL AVAILABLE</span>
+        <strong>
+          <%= @live_now.count +
+              @upcoming_classes.count +
+              @ended_classes.count %>
+        </strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       LIVE NOW
+  ====================================================== -->
+
+  <section id="live-now-section"
+           class="live-section">
+
+    <div class="live-section-header">
+
+      <div>
+
+        <div class="section-label live-label">
+          <span class="live-pulse-dot"></span>
+          HAPPENING NOW
+        </div>
+
+        <h2>
+          Live Classes
+        </h2>
+
+        <p>
+          Join your class and learn with your teacher in real time.
+        </p>
+
+      </div>
+
+      <span class="live-section-count">
+        <%= @live_now.count %>
+      </span>
+
+    </div>
+
+
+    <% if @live_now.any? %>
+
+      <div class="live-classes-grid">
+
+        <% @live_now.each do |live_class| %>
+
+          <article class="live-class-card is-live">
+
+            <div class="live-card-top">
+
+              <span class="live-status-badge">
+                <span class="live-pulse-dot"></span>
+                LIVE NOW
+              </span>
+
+              <% if live_class.course.present? %>
+                <span class="live-course-badge">
+                  <%= live_class.course.Course_name %>
+                </span>
+              <% end %>
+
+            </div>
+
+
+            <div class="live-class-icon">
+              📹
+            </div>
+
+
+            <h3>
+              <%= live_class.title %>
+            </h3>
+
+
+            <% if live_class.description.present? %>
+
+              <p class="live-class-description">
+                <%= truncate(
+                      live_class.description,
+                      length: 150
+                    ) %>
+              </p>
+
+            <% else %>
+
+              <p class="live-class-description">
+                Join this live learning session and study with your teacher.
+              </p>
+
+            <% end %>
+
+
+            <div class="live-class-meta">
+
+              <% if live_class.scheduled_at.present? %>
+
+                <span>
+                  🕒
+                  Started at
+                  <strong>
+                    <%= live_class.scheduled_at.strftime("%I:%M %p") %>
+                  </strong>
+                </span>
+
+              <% end %>
+
+
+              <% if live_class.duration.present? %>
+
+                <span>
+                  ⏱
+                  <%= live_class.duration %> min
+                </span>
+
+              <% end %>
+
+            </div>
+
+
+            <%= link_to(
+                  watch_course_live_class_path(
+                    live_class.course,
+                    live_class
+                  ),
+                  class: "join-live-btn"
+                ) do %>
+
+              <span>🔴</span>
+              Join Live Class
+
+              <span class="join-arrow">
+                →
+              </span>
+
+            <% end %>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+
+    <% else %>
+
+      <div class="live-empty-state">
+
+        <div class="empty-icon">
+          📡
+        </div>
+
+        <h3>
+          No Live Class Right Now
+        </h3>
+
+        <p>
+          There are no live classes running at the moment.
+          Check the upcoming classes below.
+        </p>
+
+        <a href="#upcoming-section"
+           class="empty-action-btn">
+
+          View Upcoming Classes →
+
+        </a>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       UPCOMING CLASSES
+  ====================================================== -->
+
+  <section id="upcoming-section"
+           class="live-section upcoming-section">
+
+    <div class="live-section-header">
+
+      <div>
+
+        <div class="section-label upcoming-label">
+          📅 SCHEDULE YOUR LEARNING
+        </div>
+
+        <h2>
+          Upcoming Classes
+        </h2>
+
+        <p>
+          Plan your learning and never miss an important class.
+        </p>
+
+      </div>
+
+      <span class="live-section-count upcoming-count">
+        <%= @upcoming_classes.count %>
+      </span>
+
+    </div>
+
+
+    <% if @upcoming_classes.any? %>
+
+      <div class="upcoming-list">
+
+        <% @upcoming_classes.each do |live_class| %>
+
+          <article class="upcoming-class-card">
+
+            <!-- DATE -->
+
+            <div class="upcoming-date-box">
+
+              <% if live_class.scheduled_at.present? %>
+
+                <span class="date-day">
+                  <%= live_class.scheduled_at.strftime("%d") %>
+                </span>
+
+                <span class="date-month">
+                  <%= live_class.scheduled_at.strftime("%b") %>
+                </span>
+
+              <% else %>
+
+                <span class="date-day">—</span>
+
+              <% end %>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="upcoming-content">
+
+              <% if live_class.course.present? %>
+
+                <span class="upcoming-course">
+                  🎓 <%= live_class.course.Course_name %>
+                </span>
+
+              <% end %>
+
+
+              <h3>
+                <%= live_class.title %>
+              </h3>
+
+
+              <% if live_class.description.present? %>
+
+                <p>
+                  <%= truncate(
+                        live_class.description,
+                        length: 120
+                      ) %>
+                </p>
+
+              <% end %>
+
+
+              <div class="upcoming-meta">
+
+                <% if live_class.scheduled_at.present? %>
+
+                  <span>
+                    🕒
+                    <%= live_class.scheduled_at.strftime(
+                          "%I:%M %p"
+                        ) %>
+                  </span>
+
+                  <span>
+                    📅
+                    <%= live_class.scheduled_at.strftime(
+                          "%A"
+                        ) %>
+                  </span>
+
+                <% end %>
+
+
+                <% if live_class.duration.present? %>
+
+                  <span>
+                    ⏱
+                    <%= live_class.duration %> min
+                  </span>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+
+            <!-- ACTION -->
+
+            <div class="upcoming-action">
+
+              <span class="upcoming-status">
+                UPCOMING
+              </span>
+
+
+              <%= link_to(
+                    watch_course_live_class_path(
+                      live_class.course,
+                      live_class
+                    ),
+                    class: "view-details-btn"
+                  ) do %>
+
+                View Details
+                →
+
+              <% end %>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+
+    <% else %>
+
+      <div class="live-empty-state compact-empty">
+
+        <div class="empty-icon">
+          📅
+        </div>
+
+        <h3>
+          No Upcoming Classes
+        </h3>
+
+        <p>
+          New live classes will appear here when scheduled.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       PAST / ENDED CLASSES
+  ====================================================== -->
+
+  <section class="live-section recordings-section">
+
+    <div class="live-section-header">
+
+      <div>
+
+        <div class="section-label recording-label">
+          📺 LEARN ANYTIME
+        </div>
+
+        <h2>
+          Previous Classes
+        </h2>
+
+        <p>
+          Review previous sessions and continue learning at your own pace.
+        </p>
+
+      </div>
+
+      <span class="live-section-count recording-count">
+        <%= @ended_classes.count %>
+      </span>
+
+    </div>
+
+
+    <% if @ended_classes.any? %>
+
+      <div class="recordings-grid">
+
+        <% @ended_classes.each do |live_class| %>
+
+          <article class="recording-card">
+
+            <div class="recording-thumbnail">
+
+              <div class="recording-play-icon">
+                ▶
+              </div>
+
+              <span class="recording-label">
+                RECORDING
+              </span>
+
+            </div>
+
+
+            <div class="recording-content">
+
+              <% if live_class.course.present? %>
+
+                <span class="recording-course">
+                  <%= live_class.course.Course_name %>
+                </span>
+
+              <% end %>
+
+
+              <h3>
+                <%= live_class.title %>
+              </h3>
+
+
+              <% if live_class.scheduled_at.present? %>
+
+                <span class="recording-date">
+                  📅
+                  <%= live_class.scheduled_at.strftime(
+                        "%d %b %Y"
+                      ) %>
+                </span>
+
+              <% end %>
+
+
+              <%= link_to(
+                    watch_course_live_class_path(
+                      live_class.course,
+                      live_class
+                    ),
+                    class: "watch-recording-btn"
+                  ) do %>
+
+                ▶ Watch Class
+
+              <% end %>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+
+    <% else %>
+
+      <div class="live-empty-state compact-empty">
+
+        <div class="empty-icon">
+          📺
+        </div>
+
+        <h3>
+          No Previous Classes Yet
+        </h3>
+
+        <p>
+          Completed class recordings will appear here.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+</div>
+
+
+
+<!-- =====================================================
+     STYLES
+===================================================== -->
+
+<style>
+
+  /* =====================================================
+     PAGE
+  ===================================================== */
+
+  .live-courses-page {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 24px 70px;
+  }
+
+
+  /* =====================================================
+     HERO
+  ===================================================== */
+
+  .live-hero {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 340px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 40px;
+
+    padding: 55px 60px;
+
+    border-radius: 30px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #25064d,
+        #6512a8,
+        #8b18d1
+      );
+
+    color: white;
+
+    box-shadow:
+      0 25px 60px rgba(75, 12, 130, .30),
+      inset 0 1px 0 rgba(255,255,255,.15);
+  }
+
+
+  .live-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -100px;
+    top: -130px;
+
+    border-radius: 50%;
+
+    background:
+      rgba(255,255,255,.08);
+  }
+
+
+  .live-hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 650px;
+  }
+
+
+  .live-hero-badge,
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+  }
+
+
+  .live-hero-badge {
+    background: rgba(255,255,255,.14);
+
+    border: 1px solid rgba(255,255,255,.18);
+  }
+
+
+  .live-hero h1 {
+    margin: 20px 0 15px;
+
+    font-size: clamp(34px, 5vw, 58px);
+
+    line-height: 1.08;
+
+    font-weight: 800;
+  }
+
+
+  .live-hero h1 span {
+    color: #ffcf4a;
+  }
+
+
+  .live-hero p {
+    max-width: 580px;
+
+    margin: 0;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    opacity: .88;
+  }
+
+
+  .live-hero-actions {
+    margin-top: 28px;
+  }
+
+
+  .live-primary-btn {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 14px 24px;
+
+    border-radius: 14px;
+
+    background: white;
+
+    color: #5f139d;
+
+    text-decoration: none;
+
+    font-weight: 800;
+
+    box-shadow:
+      0 8px 0 rgba(0,0,0,.12),
+      0 14px 30px rgba(0,0,0,.20);
+
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease;
+  }
+
+
+  .live-primary-btn:hover {
+    transform: translateY(-3px);
+
+    color: #5f139d;
+  }
+
+
+  /* HERO VISUAL */
+
+  .live-hero-visual {
+    position: relative;
+    z-index: 2;
+
+    width: 280px;
+    height: 250px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .live-main-icon {
+    width: 145px;
+    height: 145px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 35px;
+
+    font-size: 65px;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.25),
+        rgba(255,255,255,.06)
+      );
+
+    border:
+      1px solid rgba(255,255,255,.20);
+
+    box-shadow:
+      20px 25px 40px rgba(0,0,0,.18);
+  }
+
+
+  .live-floating-card {
+    position: absolute;
+
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: white;
+
+    font-size: 28px;
+
+    box-shadow:
+      0 15px 30px rgba(0,0,0,.20);
+  }
+
+
+  .live-card-one {
+    left: 5px;
+    top: 25px;
+
+    transform: rotate(-12deg);
+  }
+
+
+  .live-card-two {
+    right: 5px;
+    bottom: 20px;
+
+    transform: rotate(12deg);
+  }
+
+
+  /* =====================================================
+     STATISTICS
+  ===================================================== */
+
+  .live-statistics {
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin: 28px 0 50px;
+  }
+
+
+  .live-stat-card {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 22px;
+
+    border-radius: 20px;
+
+    background: #fff;
+
+    border: 1px solid rgba(0,0,0,.05);
+
+    box-shadow:
+      0 12px 28px rgba(20,20,50,.08),
+      0 3px 0 rgba(0,0,0,.04);
+
+    transition:
+      transform .25s ease;
+  }
+
+
+  .live-stat-card:hover {
+    transform:
+      translateY(-6px)
+      rotateX(2deg);
+  }
+
+
+  .live-stat-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    font-size: 24px;
+
+    box-shadow:
+      inset 0 2px 6px rgba(255,255,255,.7),
+      0 8px 15px rgba(0,0,0,.08);
+  }
+
+
+  .red-icon {
+    background:
+      linear-gradient(135deg, #ffdfdf, #ff9b9b);
+  }
+
+
+  .blue-icon {
+    background:
+      linear-gradient(135deg, #dcecff, #8ec2ff);
+  }
+
+
+  .purple-icon {
+    background:
+      linear-gradient(135deg, #eadcff, #bd91ff);
+  }
+
+
+  .green-icon {
+    background:
+      linear-gradient(135deg, #d9ffe8, #84e7b1);
+  }
+
+
+  .live-stat-card span {
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .8px;
+
+    color: #7b7b8a;
+  }
+
+
+  .live-stat-card strong {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 28px;
+
+    color: #292438;
+  }
+
+
+  /* =====================================================
+     SECTION
+  ===================================================== */
+
+  .live-section {
+    margin-top: 55px;
+  }
+
+
+  .live-section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+  }
+
+
+  .section-label {
+    background: #f1e8ff;
+
+    color: #7514bb;
+  }
+
+
+  .live-label {
+    color: #e12b3b;
+
+    background: #fff0f1;
+  }
+
+
+  .upcoming-label {
+    color: #1765c1;
+
+    background: #eaf3ff;
+  }
+
+
+  .recording-label {
+    color: #7c28c6;
+
+    background: #f2e9ff;
+  }
+
+
+  .live-section h2 {
+    margin: 12px 0 8px;
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+    color: #292438;
+  }
+
+
+  .live-section-header p {
+    margin: 0;
+
+    color: #747080;
+
+    line-height: 1.6;
+  }
+
+
+  .live-section-count {
+    min-width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+      linear-gradient(135deg, #6c18ad, #9b40e3);
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    box-shadow:
+      0 10px 18px rgba(108,24,173,.20);
+  }
+
+
+  .upcoming-count {
+    background:
+      linear-gradient(135deg, #1976d2, #56a8ff);
+  }
+
+
+  .recording-count {
+    background:
+      linear-gradient(135deg, #673ab7, #a878f2);
+  }
+
+
+  /* =====================================================
+     LIVE GRID
+  ===================================================== */
+
+  .live-classes-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 22px;
+  }
+
+
+  .live-class-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border-radius: 24px;
+
+    background: white;
+
+    border: 1px solid #f0e8e8;
+
+    box-shadow:
+      0 15px 35px rgba(25,20,45,.08),
+      0 4px 0 rgba(225,43,59,.12);
+
+    transition:
+      transform .25s ease,
+      box-shadow .25s ease;
+  }
+
+
+  .live-class-card:hover {
+    transform:
+      translateY(-8px)
+      scale(1.01);
+
+    box-shadow:
+      0 24px 45px rgba(25,20,45,.13);
+  }
+
+
+  .live-card-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 12px;
+  }
+
+
+  .live-status-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 10px;
+
+    border-radius: 999px;
+
+    background: #fff0f1;
+
+    color: #e12b3b;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: .8px;
+  }
+
+
+  .live-course-badge {
+    max-width: 150px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    padding: 6px 9px;
+
+    border-radius: 9px;
+
+    background: #f5efff;
+
+    color: #7431ae;
+
+    font-size: 10px;
+
+    font-weight: 700;
+  }
+
+
+  .live-class-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 25px 0 18px;
+
+    border-radius: 20px;
+
+    background:
+      linear-gradient(135deg, #ff6b77, #e31b2c);
+
+    font-size: 30px;
+
+    box-shadow:
+      0 10px 20px rgba(227,27,44,.22);
+  }
+
+
+  .live-class-card h3,
+  .recording-card h3,
+  .upcoming-class-card h3 {
+    margin: 0;
+
+    color: #2c2638;
+
+    font-size: 20px;
+
+    line-height: 1.4;
+  }
+
+
+  .live-class-description {
+    min-height: 52px;
+
+    margin: 12px 0 20px;
+
+    color: #777282;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+  }
+
+
+  .live-class-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+
+    font-size: 12px;
+
+    color: #746f7e;
+  }
+
+
+  .live-class-meta strong {
+    color: #3b3447;
+  }
+
+
+  .join-live-btn {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background:
+      linear-gradient(135deg, #e3172b, #ff4f5e);
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 800;
+
+    box-shadow:
+      0 7px 0 #b50f20,
+      0 13px 20px rgba(227,23,43,.18);
+
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease;
+  }
+
+
+  .join-live-btn:hover {
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 5px 0 #b50f20,
+      0 10px 16px rgba(227,23,43,.18);
+  }
+
+
+  .join-arrow {
+    font-size: 18px;
+  }
+
+
+  /* =====================================================
+     UPCOMING
+  ===================================================== */
+
+  .upcoming-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+
+  .upcoming-class-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background: white;
+
+    border: 1px solid #edf0f6;
+
+    box-shadow:
+      0 10px 25px rgba(20,40,80,.06);
+
+    transition:
+      transform .2s ease;
+  }
+
+
+  .upcoming-class-card:hover {
+    transform: translateX(6px);
+  }
+
+
+  .upcoming-date-box {
+    width: 70px;
+    height: 75px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background:
+      linear-gradient(135deg, #1976d2, #6db6ff);
+
+    color: white;
+
+    box-shadow:
+      0 10px 20px rgba(25,118,210,.20);
+  }
+
+
+  .date-day {
+    font-size: 27px;
+
+    font-weight: 800;
+
+    line-height: 1;
+  }
+
+
+  .date-month {
+    margin-top: 4px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+  }
+
+
+  .upcoming-content {
+    flex: 1;
+  }
+
+
+  .upcoming-course {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #5f21a1;
+
+    font-size: 11px;
+
+    font-weight: 700;
+  }
+
+
+  .upcoming-content p {
+    margin: 8px 0;
+
+    color: #7a7585;
+
+    font-size: 13px;
+  }
+
+
+  .upcoming-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin-top: 10px;
+
+    font-size: 12px;
+
+    color: #666170;
+  }
+
+
+  .upcoming-action {
+    min-width: 150px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 12px;
+  }
+
+
+  .upcoming-status {
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    background: #eaf3ff;
+
+    color: #1765c1;
+
+    font-size: 10px;
+
+    font-weight: 800;
+  }
+
+
+  .view-details-btn {
+    padding: 10px 15px;
+
+    border-radius: 11px;
+
+    background: #f3ebff;
+
+    color: #7025aa;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+  }
+
+
+  .view-details-btn:hover {
+    color: #7025aa;
+
+    background: #eadcff;
+  }
+
+
+  /* =====================================================
+     RECORDINGS
+  ===================================================== */
+
+  .recordings-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 22px;
+  }
+
+
+  .recording-card {
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    background: white;
+
+    border: 1px solid #eeeaf4;
+
+    box-shadow:
+      0 12px 28px rgba(45,25,80,.07);
+
+    transition:
+      transform .25s ease;
+  }
+
+
+  .recording-card:hover {
+    transform:
+      translateY(-7px);
+  }
+
+
+  .recording-thumbnail {
+    position: relative;
+
+    height: 145px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+      linear-gradient(
+        135deg,
+        #4b176d,
+        #9b4ad9
+      );
+  }
+
+
+  .recording-thumbnail::before {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background:
+      rgba(255,255,255,.08);
+  }
+
+
+  .recording-play-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-left: 3px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    color: #7a2eb5;
+
+    font-size: 22px;
+
+    box-shadow:
+      0 10px 25px rgba(0,0,0,.18);
+  }
+
+
+  .recording-label {
+    position: absolute;
+
+    top: 14px;
+    left: 14px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    background:
+      rgba(255,255,255,.16);
+
+    color: white;
+
+    border:
+      1px solid rgba(255,255,255,.15);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+  }
+
+
+  .recording-content {
+    padding: 20px;
+  }
+
+
+  .recording-course {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #7930ad;
+
+    font-size: 11px;
+
+    font-weight: 700;
+  }
+
+
+  .recording-date {
+    display: block;
+
+    margin: 12px 0 17px;
+
+    color: #797382;
+
+    font-size: 12px;
+  }
+
+
+  .watch-recording-btn {
+    display: block;
+
+    padding: 11px;
+
+    border-radius: 11px;
+
+    background: #f3ebff;
+
+    color: #7229aa;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+  }
+
+
+  .watch-recording-btn:hover {
+    background: #e9d8ff;
+
+    color: #7229aa;
+  }
+
+
+  /* =====================================================
+     EMPTY STATE
+  ===================================================== */
+
+  .live-empty-state {
+    padding: 55px 25px;
+
+    border-radius: 25px;
+
+    text-align: center;
+
+    background:
+      linear-gradient(
+        145deg,
+        #fbf9ff,
+        #f4effa
+      );
+
+    border:
+      1px dashed #d9c9e8;
+  }
+
+
+  .compact-empty {
+    padding: 40px 25px;
+  }
+
+
+  .empty-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 18px;
+
+    border-radius: 22px;
+
+    background: white;
+
+    font-size: 35px;
+
+    box-shadow:
+      0 12px 25px rgba(70,40,110,.10);
+  }
+
+
+  .live-empty-state h3 {
+    margin: 0 0 8px;
+
+    color: #373041;
+
+    font-size: 21px;
+
+    font-weight: 800;
+  }
+
+
+  .live-empty-state p {
+    max-width: 500px;
+
+    margin: 0 auto;
+
+    color: #777182;
+
+    line-height: 1.6;
+  }
+
+
+  .empty-action-btn {
+    display: inline-block;
+
+    margin-top: 20px;
+
+    padding: 11px 17px;
+
+    border-radius: 11px;
+
+    background: #eee2ff;
+
+    color: #7229aa;
+
+    text-decoration: none;
+
+    font-weight: 800;
+  }
+
+
+  /* =====================================================
+     LIVE DOT
+  ===================================================== */
+
+  .live-pulse-dot {
+    width: 8px;
+    height: 8px;
+
+    display: inline-block;
+
+    border-radius: 50%;
+
+    background: #ff2c3b;
+
+    animation:
+      livePulse 1.5s infinite;
+  }
+
+
+  @keyframes livePulse {
+
+    0% {
+      box-shadow:
+        0 0 0 0 rgba(255,44,59,.7);
+    }
+
+    70% {
+      box-shadow:
+        0 0 0 8px rgba(255,44,59,0);
+    }
+
+    100% {
+      box-shadow:
+        0 0 0 0 rgba(255,44,59,0);
+    }
+
+  }
+
+
+  /* =====================================================
+     RESPONSIVE
+  ===================================================== */
+
+  @media (max-width: 1000px) {
+
+    .live-statistics {
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+
+  }
+
+
+  @media (max-width: 768px) {
+
+    .live-courses-page {
+      padding: 20px 15px 50px;
+    }
+
+
+    .live-hero {
+      min-height: auto;
+
+      padding: 38px 28px;
+
+      flex-direction: column;
+
+      align-items: flex-start;
+    }
+
+
+    .live-hero-visual {
+      width: 100%;
+
+      height: 180px;
+    }
+
+
+    .live-main-icon {
+      width: 110px;
+      height: 110px;
+
+      font-size: 48px;
+    }
+
+
+    .live-hero h1 {
+      font-size: 38px;
+    }
+
+
+    .upcoming-class-card {
+      align-items: flex-start;
+
+      flex-wrap: wrap;
+    }
+
+
+    .upcoming-action {
+      width: 100%;
+
+      align-items: flex-start;
+
+      flex-direction: row;
+
+      justify-content: space-between;
+    }
+
+  }
+
+
+  @media (max-width: 520px) {
+
+    .live-statistics {
+      grid-template-columns: 1fr;
+    }
+
+
+    .live-section-header {
+      align-items: center;
+    }
+
+
+    .live-section h2 {
+      font-size: 25px;
+    }
+
+
+    .upcoming-date-box {
+      width: 62px;
+      height: 67px;
+    }
+
+
+    .live-hero {
+      padding: 32px 22px;
+    }
+
+
+    .live-hero h1 {
+      font-size: 32px;
+    }
+
+  }
+
+</style>
