@@ -753,7 +753,7 @@
         class="nav-link"
         data-bs-toggle="collapse"
         role="button"
-        aria-expanded="<%= controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series', 'admin/ebooks','admin/ebook_access_grants') %>"
+      aria-expanded="<%= controller_path.start_with?('teachers', 'admin/courses', 'admin/live_classes', 'batches', 'study_notes', 'admin/test_series', 'admin/ebooks', 'admin/ebook_access_grants') %>"
         aria-controls="academicMenu">
 
         <i class="bi bi-mortarboard"></i>
@@ -766,7 +766,7 @@
 
 
       <div
-        class="collapse <%= 'show' if controller_path.start_with?('teachers', 'admin/courses', 'batches', 'study_notes', 'admin/test_series','admin/ebooks','admin/ebook_access_grants') %>"
+        class="collapse <%= 'show' if controller_path.start_with?('teachers', 'admin/courses', 'admin/live_classes', 'batches', 'study_notes', 'admin/test_series', 'admin/ebooks', 'admin/ebook_access_grants') %>"
         id="academicMenu">
 
         <ul class="nav flex-column submenu">
@@ -802,6 +802,21 @@
             <% end %>
 
           </li>
+
+           <!-- Live Classes -->
+
+<li class="nav-item">
+
+  <%= link_to admin_live_classes_path,
+      class: "nav-link #{'active' if controller_path.start_with?('admin/live_classes')}" do %>
+
+    <i class="bi bi-camera-video"></i>
+
+    <span>Live Classes</span>
+
+  <% end %>
+
+</li>
 
 
 
