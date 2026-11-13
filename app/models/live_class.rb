@@ -120,42 +120,41 @@ class LiveClass < ApplicationRecord
   def stream_url_required?
     manual_status? && status == "live"
   end
+# ==========================================
+# CONVERT YOUTUBE URL TO EMBED URL
+# ==========================================
 
-  # ==========================================
-  # CONVERT YOUTUBE URL TO EMBED URL
-  # ==========================================
+def youtube_embed_url(url)
+  return nil if url.blank?
 
-  def youtube_embed_url(url)
-    return nil if url.blank?
+  video_id = extract_youtube_video_id(url)
+  return nil if video_id.blank?
 
-    video_id = extract_youtube_video_id(url)
+  "https://www.youtube.com/embed/#{video_id}"
+end
 
-    return nil if video_id.blank?
 
-    "https://www.youtube.com/embed/#{video_id}"
+# ==========================================
+# EXTRACT YOUTUBE VIDEO ID
+# ==========================================
+
+def extract_youtube_video_id(url)
+  return nil if url.blank?
+
+  patterns = [
+    %r{youtu\.be/([^?&/]+)},
+    %r{youtube\.com/live/([^?&/]+)},
+    %r{youtube\.com/watch\?v=([^?&/]+)},
+    %r{youtube\.com/embed/([^?&/]+)}
+  ]
+
+  patterns.each do |pattern|
+    match = url.match(pattern)
+    return match[1] if match
   end
 
-  # ==========================================
-  # EXTRACT YOUTUBE VIDEO ID
-  # ==========================================
-
-  def extract_youtube_video_id(url)
-    return nil if url.blank?
-
-    patterns = [
-      %r{youtu\.be/([^?&/]+)},
-      %r{youtube\.com/live/([^?&/]+)},
-      %r{youtube\.com/watch\?v=([^?&/]+)},
-      %r{youtube\.com/embed/([^?&/]+)}
-    ]
-
-    patterns.each do |pattern|
-      match = url.match(pattern)
-      return match[1] if match
-    end
-
-    nil
-  end
+  nil
+end
 
   # ==========================================
   # VALIDATE STREAM URL

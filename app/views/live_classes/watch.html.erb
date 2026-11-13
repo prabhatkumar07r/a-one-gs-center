@@ -1,6 +1,7 @@
 <% content_for :title do %>
   <%= @live_class.title %> | A One GS Center
 <% end %>
+<% current_status = @live_class.effective_status %>
 
 <div class="live-watch-page">
 
@@ -92,7 +93,7 @@
     =========================================== -->
     <section class="live-player-section">
 
-      <% if @live_class.status.to_s == "live" && @live_class.stream_url.present? %>
+      <% if current_status == "live" && @live_class.embed_stream_url.present? %>
 
         <div class="live-player-card">
 
@@ -126,7 +127,7 @@
       <!-- ==========================================
            UPCOMING STATE
       =========================================== -->
-      <% elsif @live_class.status.to_s == "upcoming" %>
+      <% elsif current_status == "upcoming" %>
 
         <div class="live-state-card">
 
@@ -181,7 +182,7 @@
       <!-- ==========================================
            RECORDING / ENDED STATE
       =========================================== -->
-      <% elsif @live_class.status.to_s == "ended" %>
+      <% elsif current_status == "ended" %>
 
         <% if @live_class.recording_url.present? %>
 
