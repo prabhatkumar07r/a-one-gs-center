@@ -1,0 +1,792 @@
+<% content_for :title do %>
+  <%= @live_class.title %> | A One GS Center
+<% end %>
+
+<div class="live-watch-page">
+
+  <!-- ==========================================
+       TOP NAVIGATION / BACK
+  =========================================== -->
+  <div class="live-topbar">
+    <div class="container">
+
+      <%= link_to learning_course_path(@course),
+          class: "live-back-link" do %>
+        <span>←</span>
+        <span>Back to Course</span>
+      <% end %>
+
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       MAIN LIVE CONTENT
+  =========================================== -->
+  <main class="container live-main">
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+    <section class="live-header">
+
+      <div class="live-header-content">
+
+        <div class="live-course-name">
+          <span class="live-dot"></span>
+          <%= @course.Course_name %>
+        </div>
+
+        <h1>
+          <%= @live_class.title %>
+        </h1>
+
+        <% if @live_class.description.present? %>
+          <p class="live-description">
+            <%= @live_class.description %>
+          </p>
+        <% end %>
+
+      </div>
+
+
+      <!-- ==========================================
+           STATUS BADGE
+      =========================================== -->
+      <div class="live-status-wrapper">
+
+        <% if @live_class.live? %>
+
+          <span class="live-status-badge is-live">
+            <span class="status-pulse"></span>
+            LIVE NOW
+          </span>
+
+        <% elsif @live_class.upcoming? %>
+
+          <span class="live-status-badge is-upcoming">
+            UPCOMING
+          </span>
+
+        <% elsif @live_class.ended? %>
+
+          <span class="live-status-badge is-ended">
+            ENDED
+          </span>
+
+        <% else %>
+
+          <span class="live-status-badge">
+            <%= @live_class.status.to_s.upcase %>
+          </span>
+
+        <% end %>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         VIDEO / LIVE PLAYER
+    =========================================== -->
+    <section class="live-player-section">
+
+      <% if @live_class.status.to_s == "live" && @live_class.stream_url.present? %>
+
+        <div class="live-player-card">
+
+          <div class="live-player">
+
+            <iframe
+               src="<%= "#{@live_class.embed_stream_url}?enablejsapi=1&origin=#{ERB::Util.url_encode(request.base_url)}" %>"
+               title="<%= @live_class.title %>"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+
+          </div>
+
+          <div class="live-player-footer">
+
+            <div class="live-indicator">
+              <span class="status-pulse"></span>
+              Live class is currently in progress
+            </div>
+
+            <span class="live-duration">
+              ⏱ <%= @live_class.duration %> minutes
+            </span>
+
+          </div>
+
+        </div>
+
+
+      <!-- ==========================================
+           UPCOMING STATE
+      =========================================== -->
+      <% elsif @live_class.status.to_s == "upcoming" %>
+
+        <div class="live-state-card">
+
+          <div class="live-state-icon">
+            📅
+          </div>
+
+          <h2>Class Starting Soon</h2>
+
+          <p>
+            This live class has not started yet.
+            Please join at the scheduled time.
+          </p>
+
+          <% if @live_class.scheduled_at.present? %>
+
+            <div class="scheduled-time-box">
+
+              <div class="scheduled-item">
+
+                <span class="scheduled-label">
+                  DATE
+                </span>
+
+                <strong>
+                  <%= @live_class.scheduled_at.strftime("%d %B %Y") %>
+                </strong>
+
+              </div>
+
+              <div class="scheduled-divider"></div>
+
+              <div class="scheduled-item">
+
+                <span class="scheduled-label">
+                  TIME
+                </span>
+
+                <strong>
+                  <%= @live_class.scheduled_at.strftime("%I:%M %p") %>
+                </strong>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+
+      <!-- ==========================================
+           RECORDING / ENDED STATE
+      =========================================== -->
+      <% elsif @live_class.status.to_s == "ended" %>
+
+        <% if @live_class.recording_url.present? %>
+
+          <div class="live-player-card">
+
+            <div class="recording-label">
+              📹 CLASS RECORDING
+            </div>
+
+            <div class="live-player">
+
+              <iframe
+                src="<%= "#{@live_class.embed_recording_url}?enablejsapi=1&origin=#{ERB::Util.url_encode(request.base_url)}" %>"
+                title="<%= @live_class.title %> Recording"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+
+            </div>
+
+            <div class="live-player-footer">
+
+              <div class="recording-indicator">
+                ✓ Recording Available
+              </div>
+
+            </div>
+
+          </div>
+
+        <% else %>
+
+          <div class="live-state-card">
+
+            <div class="live-state-icon">
+              ✓
+            </div>
+
+            <h2>Class Ended</h2>
+
+            <p>
+              This live class has ended.
+              The recording is not available yet.
+            </p>
+
+          </div>
+
+        <% end %>
+
+
+      <!-- ==========================================
+           FALLBACK
+      =========================================== -->
+      <% else %>
+
+        <div class="live-state-card">
+
+          <div class="live-state-icon">
+            ℹ️
+          </div>
+
+          <h2>Live Class</h2>
+
+          <p>
+            🔴 Live class is starting. Please wait while the stream becomes available.
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </section>
+
+
+    <!-- ==========================================
+         CLASS INFORMATION
+    =========================================== -->
+    <section class="live-info-grid">
+
+      <div class="live-info-card">
+
+        <div class="info-icon">
+          📅
+        </div>
+
+        <div>
+
+          <span>Scheduled Date</span>
+
+          <strong>
+            <%= @live_class.scheduled_at.present? ?
+                @live_class.scheduled_at.strftime("%d %b %Y") :
+                "Not available" %>
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="live-info-card">
+
+        <div class="info-icon">
+          🕒
+        </div>
+
+        <div>
+
+          <span>Scheduled Time</span>
+
+          <strong>
+            <%= @live_class.scheduled_at.present? ?
+                @live_class.scheduled_at.strftime("%I:%M %p") :
+                "Not available" %>
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="live-info-card">
+
+        <div class="info-icon">
+          ⏱
+        </div>
+
+        <div>
+
+          <span>Duration</span>
+
+          <strong>
+            <%= @live_class.duration.present? ?
+                "#{@live_class.duration} Minutes" :
+                "Not specified" %>
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="live-info-card">
+
+        <div class="info-icon">
+          🔐
+        </div>
+
+        <div>
+
+          <span>Access</span>
+
+          <strong>
+            <%= @live_class.access_type.to_s == "free" ?
+                "Free Access" :
+                "Enrolled Students" %>
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         COURSE INFORMATION
+    =========================================== -->
+    <section class="live-course-card">
+
+      <div>
+
+        <span class="course-card-label">
+          YOU ARE WATCHING FROM
+        </span>
+
+        <h3>
+          <%= @course.Course_name %>
+        </h3>
+
+      </div>
+
+      <%= link_to "View Course",
+          learning_course_path(@course),
+          class: "live-course-button" %>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<style>
+
+  /* ==========================================
+     PAGE
+  ========================================== */
+
+  .live-watch-page {
+    min-height: 100vh;
+    background: #f6f7fb;
+    color: #1f2937;
+    padding-bottom: 60px;
+  }
+
+
+  /* ==========================================
+     TOPBAR
+  ========================================== */
+
+  .live-topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 0;
+  }
+
+  .live-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #4f46e5;
+  }
+
+  .live-back-link:hover {
+    color: #3730a3;
+  }
+
+
+  /* ==========================================
+     MAIN
+  ========================================== */
+
+  .live-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+
+
+  /* ==========================================
+     HEADER
+  ========================================== */
+
+  .live-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+
+  .live-course-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .live-dot {
+    width: 9px;
+    height: 9px;
+    background: #4f46e5;
+    border-radius: 50%;
+  }
+
+  .live-header h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: #111827;
+  }
+
+  .live-description {
+    color: #6b7280;
+    font-size: 16px;
+    margin: 0;
+    max-width: 750px;
+    line-height: 1.7;
+  }
+
+
+  /* ==========================================
+     STATUS
+  ========================================== */
+
+  .live-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+
+  .is-live {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  .is-upcoming {
+    background: #fef3c7;
+    color: #b45309;
+  }
+
+  .is-ended {
+    background: #e5e7eb;
+    color: #4b5563;
+  }
+
+  .status-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: livePulse 1.5s infinite;
+  }
+
+  @keyframes livePulse {
+
+    0% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, .7);
+    }
+
+    70% {
+      box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+
+  }
+
+
+  /* ==========================================
+     PLAYER
+  ========================================== */
+
+  .live-player-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    margin-bottom: 30px;
+  }
+
+  .live-player {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: #000000;
+  }
+
+  .live-player iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .live-player-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 22px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #dc2626;
+    font-weight: 600;
+  }
+
+  .live-duration {
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .recording-label {
+    padding: 14px 20px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .recording-indicator {
+    color: #059669;
+    font-weight: 600;
+  }
+
+
+  /* ==========================================
+     STATE CARD
+  ========================================== */
+
+  .live-state-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 60px 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+    margin-bottom: 30px;
+  }
+
+  .live-state-icon {
+    font-size: 46px;
+    margin-bottom: 18px;
+  }
+
+  .live-state-card h2 {
+    font-size: 25px;
+    margin-bottom: 12px;
+    color: #111827;
+  }
+
+  .live-state-card p {
+    color: #6b7280;
+    max-width: 550px;
+    margin: auto;
+    line-height: 1.7;
+  }
+
+
+  /* ==========================================
+     SCHEDULED BOX
+  ========================================== */
+
+  .scheduled-time-box {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 30px;
+    background: #f8fafc;
+    padding: 20px 30px;
+    border-radius: 12px;
+  }
+
+  .scheduled-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .scheduled-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #9ca3af;
+    letter-spacing: .8px;
+  }
+
+  .scheduled-divider {
+    width: 1px;
+    height: 45px;
+    background: #d1d5db;
+    margin: 0 30px;
+  }
+
+
+  /* ==========================================
+     INFO GRID
+  ========================================== */
+
+  .live-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .live-info-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #eef0f4;
+  }
+
+  .info-icon {
+    font-size: 24px;
+  }
+
+  .live-info-card span {
+    display: block;
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+  }
+
+  .live-info-card strong {
+    font-size: 14px;
+    color: #374151;
+  }
+
+
+  /* ==========================================
+     COURSE CARD
+  ========================================== */
+
+  .live-course-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px;
+    border-radius: 18px;
+    background: #111827;
+    color: #ffffff;
+  }
+
+  .course-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: .6;
+  }
+
+  .live-course-card h3 {
+    margin: 7px 0 0;
+    font-size: 21px;
+  }
+
+  .live-course-button {
+    padding: 11px 20px;
+    background: #ffffff;
+    color: #111827;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .live-course-button:hover {
+    background: #e5e7eb;
+  }
+
+
+  /* ==========================================
+     MOBILE
+  ========================================== */
+
+  @media (max-width: 768px) {
+
+    .live-main {
+      padding: 25px 15px 0;
+    }
+
+    .live-header {
+      flex-direction: column;
+    }
+
+    .live-header h1 {
+      font-size: 27px;
+    }
+
+    .live-info-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .live-course-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .live-player-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+  }
+
+
+  @media (max-width: 480px) {
+
+    .live-info-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .scheduled-time-box {
+      width: 100%;
+      justify-content: center;
+      padding: 18px 15px;
+    }
+
+    .scheduled-divider {
+      margin: 0 15px;
+    }
+
+    .live-state-card {
+      padding: 45px 20px;
+    }
+
+  }
+
+</style>

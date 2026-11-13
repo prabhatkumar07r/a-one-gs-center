@@ -10,9 +10,16 @@ module Admin
 
     layout "admin"
 
-    def index
-      @playlists = @course.playlists.order(:position)
+   def index
+  @playlists = @course.playlists.order(:position)
+
+  respond_to do |format|
+    format.html
+    format.json do
+      render json: @playlists.select(:id, :title)
     end
+  end
+end
 
     def show
     end

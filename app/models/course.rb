@@ -30,7 +30,7 @@ class Course < ApplicationRecord
   has_many :videos, dependent: :destroy
   has_many :batches, dependent: :destroy
   has_many :playlists, dependent: :destroy
-
+  has_many :live_classes, dependent: :destroy
   has_many :notes, through: :playlists
   has_many :resources, through: :playlists
 

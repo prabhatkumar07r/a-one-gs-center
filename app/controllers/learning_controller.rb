@@ -22,8 +22,23 @@ before_action :check_video_access,
   # =========================================================
 
   def show
+  # =======================================================
+  # LIVE CLASSES
+  # =======================================================
 
-    @course = Course.find(params[:id])
+  @live_classes =
+  @course.live_classes
+         .order(
+           Arel.sql(
+             "CASE status
+                WHEN 'live' THEN 1
+                WHEN 'upcoming' THEN 2
+                WHEN 'ended' THEN 3
+                ELSE 4
+              END"
+           )
+         )
+         .order(scheduled_at: :asc)
 
     # =======================================================
     # PLAYLISTS

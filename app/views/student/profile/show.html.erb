@@ -2,6 +2,30 @@
 
 <div class="student-profile-page">
 
+  <% profile_course_ids = (@courses || []).map(&:id) %>
+  <% profile_live_classes =
+       if profile_course_ids.any?
+         LiveClass
+           .where(course_id: profile_course_ids)
+           .where(status: ["upcoming", "live"])
+           .order(status: :asc, scheduled_at: :asc)
+           .limit(6)
+           .to_a
+       else
+         []
+       end %>
+
+  <% live_now_count = profile_live_classes.count { |live_class| live_class.status == "live" } %>
+  <% upcoming_live_count = profile_live_classes.count { |live_class| live_class.status == "upcoming" } %>
+  <% lecture_progress =
+       if (@total_lectures || 0).to_i > 0
+         ((@completed_videos || 0).to_f / @total_lectures.to_i * 100).round
+       else
+         0
+       end %>
+  <% lecture_progress = [[lecture_progress, 0].max, 100].min %>
+
+
   <!-- =========================================================
        PROFILE HEADER
   ========================================================== -->
@@ -115,7 +139,7 @@
         <span>Completed Courses</span>
 
         <strong>
-          <%= @completed_courses%>
+          <%= @completed_courses || 0 %>
         </strong>
 
       </div>
@@ -137,6 +161,33 @@
 
         <strong>
           <%= @lectures_done || 0 %>
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- LIVE CLASSES -->
+
+    <div class="student-stat-card student-stat-card-live">
+
+      <div class="student-stat-icon">
+        <i class="bi bi-broadcast"></i>
+      </div>
+
+      <div class="student-stat-content">
+
+        <span>
+          <% if live_now_count > 0 %>
+            Live Now
+          <% else %>
+            Upcoming Live
+          <% end %>
+        </span>
+
+        <strong>
+          <%= live_now_count > 0 ? live_now_count : upcoming_live_count %>
         </strong>
 
       </div>
@@ -229,6 +280,20 @@
 
       <i class="bi bi-grid-1x2"></i>
       Overview
+
+    </button>
+
+    <button
+      type="button"
+      class="student-profile-tab"
+      data-profile-tab="live-classes">
+
+      <i class="bi bi-broadcast"></i>
+      Live Classes
+
+      <% if live_now_count > 0 %>
+        <span class="student-tab-live-dot"></span>
+      <% end %>
 
     </button>
 
@@ -723,6 +788,46 @@
       </div>
 
 
+      <div class="student-progress-overview">
+
+        <div class="student-progress-ring"
+             style="--progress: <%= lecture_progress %>;">
+
+          <div class="student-progress-ring-inner">
+            <strong><%= lecture_progress %>%</strong>
+            <span>Complete</span>
+          </div>
+
+        </div>
+
+        <div class="student-progress-summary">
+
+          <span class="student-progress-eyebrow">
+            OVERALL VIDEO PROGRESS
+          </span>
+
+          <h3>
+            Keep going, <%= @student.name.to_s.split.first.presence || "Student" %>! 🚀
+          </h3>
+
+          <p>
+            You have completed
+            <strong><%= @completed_videos || 0 %></strong>
+            out of
+            <strong><%= @total_lectures || 0 %></strong>
+            lectures.
+          </p>
+
+          <div class="student-progress-bar">
+            <div class="student-progress-bar-fill"
+                 style="width: <%= lecture_progress %>%;"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+
       <div class="student-learning-stats">
 
 
@@ -768,7 +873,7 @@
             </span>
 
             <strong>
-              <%= @completed_videos%>
+              <%= @completed_videos || 0 %>
             </strong>
 
           </div>
@@ -857,6 +962,160 @@
 
   </div>
 
+
+
+  <!-- =======================================================
+       LIVE CLASSES TAB
+  ======================================================== -->
+
+  <div
+    class="student-profile-tab-content"
+    data-profile-content="live-classes">
+
+    <!-- =======================================================
+         LIVE CLASSES
+    ======================================================== -->
+
+    <div class="student-content-card student-live-section">
+
+      <div class="student-content-title">
+
+        <div>
+          <i class="bi bi-broadcast"></i>
+          Live Classes
+        </div>
+
+        <span class="student-section-count student-live-count">
+          <%= live_now_count %> Live • <%= upcoming_live_count %> Upcoming
+        </span>
+
+      </div>
+
+
+      <% if profile_live_classes.any? %>
+
+        <div class="student-live-grid">
+
+          <% profile_live_classes.each do |live_class| %>
+
+            <div class="student-live-card <%= live_class.status == "live" ? "is-live" : "is-upcoming" %>">
+
+              <div class="student-live-card-top">
+
+                <div class="student-live-icon">
+                  <i class="bi bi-camera-video-fill"></i>
+                </div>
+
+                <% if live_class.status == "live" %>
+
+                  <span class="student-live-badge">
+                    <span class="student-live-pulse"></span>
+                    LIVE NOW
+                  </span>
+
+                <% else %>
+
+                  <span class="student-upcoming-badge">
+                    UPCOMING
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <h3>
+                <%= live_class.title %>
+              </h3>
+
+
+              <% if live_class.description.present? %>
+
+                <p>
+                  <%= truncate(live_class.description, length: 110) %>
+                </p>
+
+              <% else %>
+
+                <p>
+                  Join your instructor and continue learning live.
+                </p>
+
+              <% end %>
+
+
+              <div class="student-live-meta">
+
+                <% if live_class.scheduled_at.present? %>
+
+                  <span>
+                    <i class="bi bi-calendar3"></i>
+                    <%= live_class.scheduled_at.strftime("%d %b") %>
+                  </span>
+
+                  <span>
+                    <i class="bi bi-clock"></i>
+                    <%= live_class.scheduled_at.strftime("%I:%M %p") %>
+                  </span>
+
+                <% end %>
+
+
+                <% if live_class.duration.present? %>
+
+                  <span>
+                    <i class="bi bi-hourglass-split"></i>
+                    <%= live_class.duration %> min
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <%= link_to learning_course_path(live_class.course),
+                  class: "student-live-button" do %>
+
+                <% if live_class.status == "live" %>
+                  Join Live Class
+                <% else %>
+                  View Class
+                <% end %>
+
+                <i class="bi bi-arrow-right"></i>
+
+              <% end %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="student-empty-state student-live-empty">
+
+          <div class="student-empty-icon">
+            <i class="bi bi-broadcast"></i>
+          </div>
+
+          <h3>
+            No Live Classes Scheduled
+          </h3>
+
+          <p>
+            Upcoming live classes for your enrolled courses will appear here.
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+  </div>
 
 
   <!-- =======================================================
@@ -1165,7 +1424,7 @@
   display: grid;
 
   grid-template-columns:
-    repeat(6, minmax(0, 1fr));
+    repeat(7, minmax(0, 1fr));
 
   gap: 15px;
 }
@@ -2183,6 +2442,21 @@
 }
 
 
+
+.student-tab-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, .16), 0 0 14px rgba(239, 68, 68, .9);
+  animation: studentLiveTabPulse 1.4s infinite;
+}
+
+@keyframes studentLiveTabPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: .65; }
+}
+
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -2205,6 +2479,333 @@
   }
 
 }
+
+
+/* =========================================================
+   LIVE CLASSES + 3D COLOR UPGRADE
+========================================================= */
+
+.student-profile-page {
+  background:
+    radial-gradient(circle at 8% 10%, rgba(128, 9, 226, .20), transparent 26%),
+    radial-gradient(circle at 92% 12%, rgba(56, 189, 248, .12), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(236, 72, 153, .08), transparent 30%),
+    #080b14;
+}
+
+.student-profile-header-inner,
+.student-content-card,
+.student-stat-card {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, .28),
+    inset 0 1px 0 rgba(255, 255, 255, .07);
+}
+
+.student-profile-header-inner::before,
+.student-content-card::before,
+.student-stat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.08),
+    transparent 32%,
+    transparent 70%,
+    rgba(128,9,226,.07)
+  );
+}
+
+.student-stat-card {
+  min-height: 96px;
+  transform: translateZ(0);
+}
+
+.student-stat-card:hover {
+  transform: translateY(-6px) perspective(800px) rotateX(2deg);
+  box-shadow:
+    0 22px 45px rgba(0,0,0,.38),
+    0 0 28px rgba(128,9,226,.12);
+}
+
+.student-stat-card-live .student-stat-icon {
+  background: rgba(239, 68, 68, .15);
+  color: #fca5a5;
+  box-shadow: 0 8px 22px rgba(239,68,68,.15);
+}
+
+.student-live-section {
+  background:
+    linear-gradient(145deg, rgba(128,9,226,.11), rgba(15,23,42,.55) 55%, rgba(56,189,248,.05));
+}
+
+.student-live-count {
+  background: rgba(239, 68, 68, .10);
+  color: #fca5a5;
+  border: 1px solid rgba(239,68,68,.18);
+}
+
+.student-live-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.student-live-card {
+  position: relative;
+  padding: 20px;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(30,41,59,.90), rgba(9,13,24,.92));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.student-live-card:hover {
+  transform: translateY(-6px) perspective(900px) rotateX(2deg);
+  border-color: rgba(168,85,247,.45);
+  box-shadow:
+    0 24px 45px rgba(0,0,0,.38),
+    0 0 32px rgba(128,9,226,.12);
+}
+
+.student-live-card.is-live {
+  border-color: rgba(239,68,68,.34);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.28),
+    0 0 28px rgba(239,68,68,.08);
+}
+
+.student-live-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.student-live-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #8009e2, #a855f7);
+  color: #fff;
+  font-size: 20px;
+  box-shadow: 0 10px 24px rgba(128,9,226,.28);
+}
+
+.student-live-badge,
+.student-upcoming-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+.student-live-badge {
+  background: rgba(239,68,68,.13);
+  color: #fca5a5;
+  border: 1px solid rgba(239,68,68,.20);
+}
+
+.student-upcoming-badge {
+  background: rgba(56,189,248,.10);
+  color: #7dd3fc;
+  border: 1px solid rgba(56,189,248,.18);
+}
+
+.student-live-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 0 0 rgba(239,68,68,.7);
+  animation: studentLivePulse 1.7s infinite;
+}
+
+@keyframes studentLivePulse {
+  70% { box-shadow: 0 0 0 7px rgba(239,68,68,0); }
+  100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+
+.student-live-card h3 {
+  margin: 0 0 9px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.student-live-card p {
+  min-height: 42px;
+  margin: 0 0 15px;
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.student-live-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.student-live-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.student-live-meta i {
+  color: #c4b5fd;
+}
+
+.student-live-button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #8009e2, #a855f7);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(128,9,226,.20);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.student-live-button:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 25px rgba(128,9,226,.34);
+}
+
+.student-progress-overview {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 24px;
+  padding: 24px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(128,9,226,.16), rgba(56,189,248,.07));
+  border: 1px solid rgba(168,85,247,.18);
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.student-progress-ring {
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    conic-gradient(#a855f7 calc(var(--progress) * 1%), rgba(255,255,255,.08) 0);
+  box-shadow: 0 12px 28px rgba(128,9,226,.25);
+}
+
+.student-progress-ring-inner {
+  width: 108px;
+  height: 108px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #101522;
+  box-shadow: inset 0 2px 12px rgba(0,0,0,.28);
+}
+
+.student-progress-ring-inner strong {
+  font-size: 25px;
+}
+
+.student-progress-ring-inner span,
+.student-progress-eyebrow {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.student-progress-summary h3 {
+  margin: 5px 0 8px;
+  font-size: 23px;
+}
+
+.student-progress-summary p {
+  margin: 0 0 15px;
+  color: #94a3b8;
+}
+
+.student-progress-summary p strong {
+  color: #f8fafc;
+}
+
+.student-progress-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+}
+
+.student-progress-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8009e2, #a855f7, #38bdf8);
+  box-shadow: 0 0 18px rgba(168,85,247,.35);
+  transition: width .5s ease;
+}
+
+@media (max-width: 1100px) {
+  .student-profile-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .student-live-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .student-live-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-progress-overview {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .student-profile-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .student-progress-summary h3 {
+    font-size: 19px;
+  }
+}
+
 </style>
 
 <script nonce="<%= content_security_policy_nonce %>">

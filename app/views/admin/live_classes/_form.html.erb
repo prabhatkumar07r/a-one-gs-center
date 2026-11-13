@@ -1,0 +1,361 @@
+<% if live_class.errors.any? %>
+  <div class="alert alert-danger">
+    <strong>Please fix the following errors:</strong>
+
+    <ul class="mb-0 mt-2">
+      <% live_class.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-4">
+
+    <%= form_with model: [:admin, live_class] do |f| %>
+
+      <!-- BASIC INFORMATION -->
+
+      <h5 class="mb-3">
+        <i class="bi bi-camera-video"></i>
+        Live Class Information
+      </h5>
+
+      <div class="row">
+
+ <!-- COURSE -->
+
+<div class="col-md-6 mb-3">
+
+  <%= f.label :course_id,
+      "Course",
+      class: "form-label fw-semibold" %>
+
+  <%= f.collection_select :course_id,
+      Course.order(:Course_name),
+      :id,
+      :Course_name,
+      { prompt: "Select Course" },
+      {
+        class: "form-select",
+        id: "live_class_course_id"
+      } %>
+
+</div>
+
+
+<!-- PLAYLIST -->
+
+<!-- PLAYLIST -->
+
+<div class="col-md-6 mb-3">
+
+  <%= f.label :playlist_id,
+      "Playlist",
+      class: "form-label fw-semibold" %>
+
+  <%= f.collection_select :playlist_id,
+      live_class.course_id.present? ?
+        Playlist.where(course_id: live_class.course_id).order(:position) :
+        [],
+      :id,
+      :title,
+      {
+        prompt: "Select Playlist (optional)"
+      },
+      {
+        class: "form-select",
+        id: "live_class_playlist_id"
+      } %>
+
+  <small class="text-muted">
+    Recording will be added to this playlist after the live class ends.
+  </small>
+
+</div>
+
+
+  <!-- TITLE -->
+
+  <div class="col-md-12 mb-3">
+
+    <%= f.label :title,
+        "Live Class Title",
+        class: "form-label fw-semibold" %>
+
+    <%= f.text_field :title,
+        class: "form-control",
+        placeholder: "Example: Bihar Police GS Live Class" %>
+
+  </div>
+
+</div>
+
+      <!-- DESCRIPTION -->
+
+      <div class="mb-4">
+
+        <%= f.label :description,
+            "Description",
+            class: "form-label fw-semibold" %>
+
+        <%= f.text_area :description,
+            rows: 4,
+            class: "form-control",
+            placeholder: "Enter live class details..." %>
+
+      </div>
+
+
+      <hr>
+
+
+      <!-- SCHEDULE -->
+
+      <h5 class="mb-3">
+        <i class="bi bi-calendar-event"></i>
+        Schedule
+      </h5>
+
+      <div class="row">
+
+        <!-- DATE TIME -->
+
+        <div class="col-md-6 mb-3">
+
+          <%= f.label :scheduled_at,
+              "Scheduled Date & Time",
+              class: "form-label fw-semibold" %>
+
+          <%= f.datetime_local_field :scheduled_at,
+              class: "form-control" %>
+
+        </div>
+
+
+        <!-- DURATION -->
+
+        <div class="col-md-6 mb-3">
+
+          <%= f.label :duration,
+              "Duration (minutes)",
+              class: "form-label fw-semibold" %>
+
+          <%= f.number_field :duration,
+              min: 1,
+              class: "form-control",
+              placeholder: "Example: 60" %>
+
+        </div>
+
+      </div>
+
+
+      <hr>
+
+
+      <!-- ACCESS -->
+
+      <h5 class="mb-3">
+        <i class="bi bi-shield-lock"></i>
+        Access Settings
+      </h5>
+
+      <div class="row">
+
+        <!-- ACCESS TYPE -->
+
+        <div class="col-md-6 mb-3">
+
+          <%= f.label :access_type,
+              "Who Can Watch?",
+              class: "form-label fw-semibold" %>
+
+          <%= f.select :access_type,
+              [
+                ["Free - Everyone", "free"],
+                ["Enrolled Students Only", "enrolled"]
+              ],
+              {},
+              class: "form-select" %>
+
+          <small class="text-muted">
+            Free classes can be watched without course enrollment.
+          </small>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="col-md-6 mb-3">
+
+          <%= f.label :status,
+              "Class Status",
+              class: "form-label fw-semibold" %>
+
+          <%= f.select :status,
+              [
+                ["Upcoming", "upcoming"],
+                ["Live Now", "live"],
+                ["Ended", "ended"]
+              ],
+              {},
+              class: "form-select" %>
+
+        </div>
+
+      </div>
+
+
+      <hr>
+
+
+      <!-- YOUTUBE -->
+
+      <h5 class="mb-3">
+        <i class="bi bi-youtube"></i>
+        YouTube Details
+      </h5>
+
+      <div class="row">
+
+        <!-- PROVIDER -->
+
+        <div class="col-md-6 mb-3">
+
+          <%= f.label :provider,
+              "Provider",
+              class: "form-label fw-semibold" %>
+
+          <%= f.select :provider,
+              [["YouTube", "youtube"]],
+              {},
+              class: "form-select" %>
+
+        </div>
+
+
+        <!-- STREAM URL -->
+
+        <div class="col-md-6 mb-3">
+
+          <%= f.label :stream_url,
+              "YouTube Live URL",
+              class: "form-label fw-semibold" %>
+
+          <%= f.url_field :stream_url,
+              class: "form-control",
+              placeholder: "https://www.youtube.com/watch?v=..." %>
+
+        </div>
+
+      </div>
+
+
+      <!-- RECORDING URL -->
+
+      <div class="mb-4">
+
+        <%= f.label :recording_url,
+            "Recording URL",
+            class: "form-label fw-semibold" %>
+
+        <%= f.url_field :recording_url,
+            class: "form-control",
+            placeholder: "Add recording URL after live class ends" %>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="d-flex gap-2 justify-content-end">
+
+        <%= link_to "Cancel",
+            admin_live_classes_path,
+            class: "btn btn-outline-secondary" %>
+
+        <%= f.submit(
+              live_class.persisted? ?
+                "Update Live Class" :
+                "Create Live Class",
+              class: "btn btn-primary"
+            ) %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
+
+
+<script>
+document.addEventListener("turbo:load", function () {
+
+  const courseSelect =
+    document.getElementById("live_class_course_id");
+
+  const playlistSelect =
+    document.getElementById("live_class_playlist_id");
+
+  if (!courseSelect || !playlistSelect) return;
+
+  courseSelect.addEventListener("change", async function () {
+
+    const courseId = this.value;
+
+    playlistSelect.innerHTML =
+      '<option value="">Loading playlists...</option>';
+
+    if (!courseId) {
+      playlistSelect.innerHTML =
+        '<option value="">Select Course First</option>';
+
+      return;
+    }
+
+    try {
+
+      const response =
+        await fetch(
+          `/admin/courses/${courseId}/playlists.json`
+        );
+
+      const playlists =
+        await response.json();
+
+      playlistSelect.innerHTML =
+        '<option value="">Select Playlist (optional)</option>';
+
+      playlists.forEach(function (playlist) {
+
+        const option =
+          document.createElement("option");
+
+        option.value = playlist.id;
+
+        option.textContent = playlist.title;
+
+        playlistSelect.appendChild(option);
+
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Unable to load playlists:",
+        error
+      );
+
+      playlistSelect.innerHTML =
+        '<option value="">Unable to load playlists</option>';
+
+    }
+
+  });
+
+});
+</script>
